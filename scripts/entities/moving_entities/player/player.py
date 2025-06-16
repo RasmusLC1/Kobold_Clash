@@ -191,7 +191,8 @@ class Player(Moving_Entity):
 
     def Find_Nearby_Chests(self, range):
         self.nearby_chests = self.game.chest_handler.Find_Nearby_Chests(self.pos, range)
-    
+
+
     def Check_If_Dead(self):
         # Check if the player can be revived
         if self.health <= 0:

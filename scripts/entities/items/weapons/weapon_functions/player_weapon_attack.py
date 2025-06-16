@@ -15,9 +15,13 @@ class Player_Weapon_Attack():
         self.nearby_enemies = [] # Nearby enemies that the weapon can interact with
         self.nearby_decoration = [] # Nearby decoration that the weapon can interact with
         self.player = self.game.player
+        self.enemy_hit_effect_cooldown = 0
 
     # Update the attack logic
     def Update_Attack(self):
+
+        self.Update_Enemy_Hit_Effect_Cooldown()
+
         if not self.attacking:
             return False
 
@@ -25,7 +29,6 @@ class Player_Weapon_Attack():
         self.attacking -= 1
         self.player.Reduce_Movement(4) # Reduce movement to a quarter when attacking
         return self.ready_to_delete
-    
 
 
     # Initialise the attack and reset attack values
@@ -48,6 +51,7 @@ class Player_Weapon_Attack():
 
         enemy_hit = self.Enemy_Collision()        
         if enemy_hit:
+            self.Set_Enemy_Hit_Effect()
             return enemy_hit
         return self.Decoration_Collision()
     
@@ -128,3 +132,24 @@ class Player_Weapon_Attack():
     
     def Reset_Entities_Hit(self):
         self.entities_hit.clear()
+
+        
+    # Cooldown function to prevent constant screenshake and freezeframes
+    def Update_Enemy_Hit_Effect_Cooldown(self):
+        if not self.enemy_hit_effect_cooldown:
+            return
+        self.enemy_hit_effect_cooldown -= 1
+
+    def Set_Enemy_Hit_Effect(self):
+        if self.enemy_hit_effect_cooldown:
+            return
+        
+
+        damage = self.weapon.damage_handler.Get_Damage()
+        damage_freeze = max(5, min(20, damage // 10))
+        self.game.logic_update.Set_Freeze_Frame(damage_freeze)
+
+        self.game.camera_update.Set_Screen_Shake(damage_freeze, damage_freeze // 2)
+        self.enemy_hit_effect_cooldown = 20
+        self.game.sound_handler.Play_Sound('enemy_hit', 0.3)
+

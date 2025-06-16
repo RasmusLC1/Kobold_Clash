@@ -11,7 +11,7 @@ class Camera_Update():
     def Camera_Scroll(self):
         self.game.scroll[0] += (self.game.player.rect().centerx - self.game.display.get_width() / 2 - self.game.scroll[0]) / self.camera_speed
         self.game.scroll[1] += (self.game.player.rect().centery - self.game.display.get_height() / 2 - self.game.scroll[1]) / self.camera_speed
-        shake_x, shake_y = self.Set_Screen_Shake()
+        shake_x, shake_y = self.Update_Screen_Shake()
         self.game.render_scroll = (int(self.game.scroll[0]) + shake_x, int(self.game.scroll[1]) + shake_y)
 
     def Set_Camera_Position(self, pos):
@@ -36,11 +36,11 @@ class Camera_Update():
              return
         self.game.inventory.Update_Inventory_Slot_Pos()
 
-    def Trigger_Shake(self, duration, magnitude):
+    def Set_Screen_Shake(self, duration, magnitude):
         self.shake_duration = duration
         self.shake_magnitude = magnitude
 
-    def Set_Screen_Shake(self):
+    def Update_Screen_Shake(self):
         shake_x = shake_y = 0
         if self.shake_duration > 0:
             shake_x = random.randint(-self.shake_magnitude, self.shake_magnitude)

@@ -348,7 +348,7 @@ class Moving_Entity(PhysicsEntity):
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
         if self.Check_Blocking_Direction(direction):
             return False
-
+        
         self.damage_text_handler.Spawn_Damage_Text(self.pos, effect[0], str(damage))
 
         self.damage_cooldown = self.damage_cooldown_max

@@ -13,6 +13,7 @@ class Ranged_Damage_Handler_Weapon(Damage_Handler_Weapon):
         weapon_entity = self.weapon.entity
         if not weapon_entity:
             return
+        self.Set_Entity_Hit_Effect(entity)
         for damage_type in self.damage:
             effect = self.Check_Effects(damage_type)
             damage = self.Calculate_Ranged_Damage(damage_type)
@@ -57,3 +58,15 @@ class Ranged_Damage_Handler_Weapon(Damage_Handler_Weapon):
 
     def Set_Damage_Multiplier(self, multiplier):
         self.damage_multiplier = max(0, min(100, multiplier))
+
+
+    def Set_Entity_Hit_Effect(self, entity):
+        if entity.type != keys.player and self.weapon.entity.type != keys.player:
+            return
+        damage = self.weapon.damage_handler.Get_Damage()
+        damage_freeze = max(5, min(20, damage // 10))
+        game = self.weapon.game
+        game.logic_update.Set_Freeze_Frame(damage_freeze)
+
+        game.camera_update.Set_Screen_Shake(damage_freeze, damage_freeze // 2)
+        game.sound_handler.Play_Sound('projectile_hit', 0.2)

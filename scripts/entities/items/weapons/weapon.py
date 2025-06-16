@@ -262,6 +262,7 @@ class Weapon(Item):
         return self.damage_handler.Decoration_Hit(decoration)
 
     def Set_Description(self):
+        
         self.description = (
                             f"Damage {self.damage_handler.Get_Damage()}\n"
                             f"speed {self.speed}\n"
