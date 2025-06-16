@@ -3,8 +3,13 @@ from scripts.engine.assets.keys import keys
 class Logic_Update():
     def __init__(self, game) -> None:
         self.game = game
+        self.freeze_frame = 0 # Used to freeze the game temporarily during attacks
+
 
     def Update(self):
+            
+            if not self.Update_Freeze_Frame():
+                 return
             
             self.Check_Keyboard_Input()
             
@@ -28,7 +33,15 @@ class Logic_Update():
             self.game.health_bar.Update_Health()
 
 
+    def Update_Freeze_Frame(self):
+         if not self.freeze_frame:
+              return True
+         self.freeze_frame = max(0, self.freeze_frame - 1)
+         return False
 
+
+    def Set_Freeze_Frame(self, duration):
+         self.freeze_frame = duration
 
             
     def Check_Keyboard_Input(self):
