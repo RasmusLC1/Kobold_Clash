@@ -31,7 +31,7 @@ class Path_Finding():
 
 
 
-    def Path_Finding(self, look_for_new_path = False):
+    def Path_Finding(self):
         self.Calculate_Distance_To_Player()
 
         self.Set_Position_Holder()
@@ -52,17 +52,7 @@ class Path_Finding():
             if self.player_found:
                 self.player_found = False
                 self.entity.Set_Target(self.game.player.pos)
-                look_for_new_path = True
-        
-   
 
-        # Only run this if we need a new path
-        if look_for_new_path:
-            self.Find_Shortest_Path()
-        
-        if self.entity.attack_strategy == 'idle_find_path':
-            self.Find_Patrol_Path()
-        
         if not self.Navigate_Path():
             self.Moving_Random()
 
@@ -72,9 +62,7 @@ class Path_Finding():
     # Makes the pathing easier
     def Find_Patrol_Path(self):
         enemy = self.game.enemy_handler.Get_Random_Enemy()
-        self.entity.Set_Target(enemy.pos.copy())
-        self.Find_Shortest_Path()
-        self.entity.Set_Attack_Strategy('patroling')
+        self.game.enemy_handler.Add_To_Pattrol_Queue(self.entity, enemy.pos.copy())
 
 
     def Navigate_Path(self):
@@ -124,12 +112,12 @@ class Path_Finding():
         self.Calculate_Destination_Position(self.entity.target)
         self.path = self.game.a_star.a_star_search([self.src_x, self.src_y], [self.des_x, self.des_y], self.entity.path_finding_strategy)
         if not self.path:
-            return
+            return False
         
         self.path = [(x + self.game.a_star.min_x, y + self.game.a_star.min_y) for (x, y) in self.path]
 
         
-        return
+        return True
     
 
     # Move the entity if they're to close to a wall

@@ -18,6 +18,9 @@ class Enemy_Handler():
         self.enemies = []
         self.pathfinding_queue = []
         self.pathfinding_queue_cooldown = 0
+
+        self.patrol_queue_cooldown = 0
+        self.patrol_queue = []
         self.nearby_enemies = []
         self.saved_data = {}
 
@@ -278,6 +281,7 @@ class Enemy_Handler():
 
     def Update(self):
         self.Update_Pathfinding_Queue()
+        self.Update_Patrol_Queue()
         for enemy in self.enemies:
             enemy.Update(self.game.tilemap)      
                 
@@ -302,8 +306,12 @@ class Enemy_Handler():
     def Add_To_Pathfinding_Queue(self, enemy, destination):
         if enemy in self.pathfinding_queue:
             return
+        
+        if enemy in self.patrol_queue:
+            self.patrol_queue.remove(enemy)
+
         self.pathfinding_queue.append(enemy)
-        enemy.Set_Destination(destination)
+        enemy.Set_Target(destination)
         enemy.Set_Locked_On_Target(2000)
 
     # Gradually let enemies pathfind towards the target destination
@@ -315,9 +323,10 @@ class Enemy_Handler():
             self.pathfinding_queue_cooldown = max(0, self.pathfinding_queue_cooldown - 1)
             return
         
-        self.pathfinding_queue_cooldown = 20
+        self.pathfinding_queue_cooldown = 40
         self.pathfinding_queue[0].Find_New_Path()
         self.pathfinding_queue.pop(0)
+
 
     # Sort the pathfinding queue to simulate sound spreading
     def Sort_Pathfinding_Queue(self):
@@ -325,7 +334,28 @@ class Enemy_Handler():
             key=lambda entity: (entity.pos[0] - self.game.player.pos[0]) ** 2 +
                             (entity.pos[1] - self.game.player.pos[1]) ** 2
         )
+    
+
+    # Seperate low priority queue for patrol to prevent patrol from clogging the active pathfinding
+    def Add_To_Pattrol_Queue(self, enemy, destination):
+        if enemy in self.patrol_queue or enemy in self.pathfinding_queue:
+            return
+        self.patrol_queue.append(enemy)
+        enemy.Set_Target(destination)
+        enemy.Set_Locked_On_Target(2000)
+
+    # Gradually let enemies pathfind towards the target destination
+    def Update_Patrol_Queue(self):
+        if not self.patrol_queue:
+            return
         
+        if self.patrol_queue_cooldown:
+            self.patrol_queue_cooldown = max(0, self.patrol_queue_cooldown - 1)
+            return
+        
+        self.patrol_queue_cooldown = 100
+        self.patrol_queue[0].Find_New_Path()
+        self.patrol_queue.pop(0)
 
 
     def Find_Enemy(self, ID):
