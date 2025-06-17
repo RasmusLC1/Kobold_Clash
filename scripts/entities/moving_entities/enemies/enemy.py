@@ -84,7 +84,7 @@ class Enemy(Moving_Entity):
         self.path_finding.Path_Finding()
         movement = self.direction
         
-        super().Update(tilemap, movement = movement)
+        super().Update(tilemap, movement)
 
         self.Set_Direction_Holder()
 

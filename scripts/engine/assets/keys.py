@@ -195,6 +195,11 @@ class keys():
     
     skeleton_ranger_3_attack = "skeleton_ranger_3_attack"
 
+    skeleton_warlock = "skeleton_warlock"
+
+    skeleton_warlock_attack = "skeleton_warlock_attack"
+
+
     # Skeleton Cleric Assets
     
     skeleton_cleric = "skeleton_cleric"
@@ -304,6 +309,35 @@ class keys():
     spear_attack_stab = "spear_attack_stab"
 
     
+    magic_staff = "magic_staff"
+
+    magic_staff_attack = "magic_staff_attack"
+
+    magic_staff_fire = "magic_staff_fire"
+
+    magic_staff_fire_attack = "magic_staff_fire_attack"
+
+    magic_staff_frozen = "magic_staff_frozen"
+
+    magic_staff_frozen_attack = "magic_staff_frozen_attack"
+
+    magic_staff_poison = "magic_staff_poison"
+
+    magic_staff_poison_attack = "magic_staff_poison_attack"
+
+    magic_staff_vampiric = "magic_staff_vampiric"
+
+    magic_staff_vampiric_attack = "magic_staff_vampiric_attack"
+
+    magic_staff_electric = "magic_staff_electric"
+
+    magic_staff_electric_attack = "magic_staff_electric_attack"
+
+    magic_staff = "magic_staff"
+
+    magic_staff_attack = "magic_staff_attack"
+
+
     bow = "bow"
 
     

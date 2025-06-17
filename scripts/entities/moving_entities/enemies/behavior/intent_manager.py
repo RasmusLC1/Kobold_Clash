@@ -11,16 +11,18 @@ class Intent_Manager():
         self.intent_index = 0
         self.intent_length = 0
         self.intent_cooldown = 0
-        self.intent_cooldown_max = 200 # Lower value means faster response rate
+        self.intent_cooldown_max = 100 # Lower value means faster response rate
         self.attack_cooldown = 0
         self.attack_cooldown_max = round(self.entity.max_weapon_charge * 1.2)
+        # Lookup for 
         self.base_cooldown = {
             "direct": 0,
             "attack": 0,
+            "idle": 0,
             'long_range': self.intent_cooldown_max * 2,
             "medium_range": self.intent_cooldown_max,
-            "short_range": self.intent_cooldown_max,
-            "keep_position": self.intent_cooldown_max * 0.5,
+            "short_range": round(self.intent_cooldown_max * 0.5),
+            "keep_position": self.intent_cooldown_max,
         }
         # Lambda stores the function to be called later
         self.actions = {
@@ -29,7 +31,7 @@ class Intent_Manager():
             "medium_range": lambda: self.Set_Attack_Strategy("medium_range"),
             "short_range":  lambda: self.Set_Attack_Strategy("short_range"),
             "keep_position":lambda: self.Set_Attack_Strategy("keep_position"),
-            "idle" : self.Set_Idle(),
+            "idle" : self.Set_Idle,
             "attack": self.Update_Attack_Cooldown,
         }
         # self.Set_Attack_Strategy(entity.attack_strategy)
@@ -96,9 +98,10 @@ class Intent_Manager():
         if not max_cooldown:
             return
         try:
-            self.intent_cooldown = random.randint(max_cooldown, (max_cooldown +  max_cooldown // 3))
+            offset = round(max_cooldown // 3)
+            self.intent_cooldown = random.randint(max_cooldown - offset, max_cooldown +  offset)
         except Exception as e:
-                print(f"WRONG INTENT COOLDOWN: {e}", max_cooldown, (max_cooldown +  max_cooldown // 3))
+            print(f"WRONG INTENT COOLDOWN: {e}", max_cooldown, offset)
 
     # Return false on when cooldown is active
     def Update_Intent_Cooldown(self):
