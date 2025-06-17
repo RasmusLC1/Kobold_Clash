@@ -60,9 +60,21 @@ class Path_Finding():
         if look_for_new_path:
             self.Find_Shortest_Path()
         
+        if self.entity.attack_strategy == 'idle_find_path':
+            self.Find_Patrol_Path()
+        
         if not self.Navigate_Path():
             self.Moving_Random()
 
+    # Path to a random part of the dungeon
+    # Path towards the position of a random enemy
+    # since they all need to be able to reach each other
+    # Makes the pathing easier
+    def Find_Patrol_Path(self):
+        enemy = self.game.enemy_handler.Get_Random_Enemy()
+        self.entity.Set_Target(enemy.pos.copy())
+        self.Find_Shortest_Path()
+        self.entity.Set_Attack_Strategy('patroling')
 
 
     def Navigate_Path(self):

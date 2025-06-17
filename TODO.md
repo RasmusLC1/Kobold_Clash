@@ -503,4 +503,3 @@ Upgrade weapons
     Ancient ruins, undead enemies, rare runes
 
     Water caves, need to traverse lots of water, Deep water contains enemies, look for shallow water. More Treasure chests
-

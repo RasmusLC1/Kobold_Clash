@@ -6,6 +6,7 @@ class Intent_Manager():
         self.game = game
         self.entity = entity
 
+        self.current_intent = 'idle'
         self.intent = [] # Enemy's attack pattern and intent
         self.intent_index = 0
         self.intent_length = 0
@@ -28,6 +29,7 @@ class Intent_Manager():
             "medium_range": lambda: self.Set_Attack_Strategy("medium_range"),
             "short_range":  lambda: self.Set_Attack_Strategy("short_range"),
             "keep_position":lambda: self.Set_Attack_Strategy("keep_position"),
+            "idle" : self.Set_Idle(),
             "attack": self.Update_Attack_Cooldown,
         }
         # self.Set_Attack_Strategy(entity.attack_strategy)
@@ -46,6 +48,8 @@ class Intent_Manager():
     # Update the entity's behavior
     def Update_Behavior(self):
         if self.entity.distance_to_player > 300:  # skip if out of range
+            if not self.current_intent == 'idle':
+                self.current_intent = 'idle'
             return
 
         self.Handle_Attack()
@@ -53,12 +57,12 @@ class Intent_Manager():
         if not self.Update_Intent_Cooldown():
             return
 
-        current_intent = self.intent[self.intent_index]
-        action_function = self.actions.get(current_intent)
+        self.current_intent = self.intent[self.intent_index]
+        action_function = self.actions.get(self.current_intent, 'idle')
         if action_function:
             action_function()
         else:
-            print(f"Intent '{current_intent}' missing or unrecognized.")
+            print(f"Intent '{self.current_intent}' missing or unrecognized.")
         return
 
     # setting the player's attack strategy
@@ -66,6 +70,12 @@ class Intent_Manager():
         self.entity.Set_Attack_Strategy(strategy)
         self.Set_Intent_Cooldown()
         self.Increment_Intent()
+
+    def Set_Idle(self):
+        self.entity.Set_Attack_Strategy('idle_find_path')
+        self.Set_Intent_Cooldown()
+        self.intent_index = random.randint(0, self.intent_length - 1)
+
 
     def Set_Intent(self, intent):
         self.intent = intent
