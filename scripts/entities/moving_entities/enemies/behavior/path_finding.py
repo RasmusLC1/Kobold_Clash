@@ -42,6 +42,7 @@ class Path_Finding():
         self.Update_Stuck_Timer()
         if self.Stuck_Check():
             return
+            # print("TESTTESTTEST ", self.entity.ID)
         
         if self.entity.Attack_Strategy():
             self.entity.Trap_Collision_Handler()
@@ -167,20 +168,21 @@ class Path_Finding():
         if self.stuck_timer < 20:
             return False
         
-        self.entity.random_movement_cooldown = 200
         self.Moving_Random()
+        self.entity.random_movement_cooldown = 200
         return True
     
     def Moving_Random(self):
+        self.entity.Reduce_Movement(4)
         self.entity.direction = (self.entity.direction_x, self.entity.direction_y)
         if self.entity.random_movement_cooldown:
             self.entity.random_movement_cooldown -= 1
             return
-        self.entity.direction_x = random.randint(-1, 1) / 10
-        self.entity.direction_y = random.randint(-1, 1) / 10
+        self.entity.direction_x = random.randint(-1, 1) 
+        self.entity.direction_y = random.randint(-1, 1) 
         
         self.entity.direction = (self.entity.direction_x, self.entity.direction_y)
-        self.entity.random_movement_cooldown = 20
+        self.entity.random_movement_cooldown = 100
 
         self.entity.Trap_Collision_Handler()
 

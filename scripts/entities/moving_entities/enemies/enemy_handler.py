@@ -72,7 +72,7 @@ class Enemy_Handler():
             spawner_index = random.randint(0, spawners_length - 1)
             spawner = spawners[spawner_index]
             enemy_types = {
-                keys.skeleton_warrior: 0.39,
+                keys.skeleton_warrior: 100.39,
                 keys.skeleton_ranger: 0.2,
                 keys.fire_spirit: 0.05,
                 keys.ice_spirit: 0.05,
@@ -353,7 +353,7 @@ class Enemy_Handler():
             self.patrol_queue_cooldown = max(0, self.patrol_queue_cooldown - 1)
             return
         
-        self.patrol_queue_cooldown = 100
+        self.patrol_queue_cooldown = 10
         self.patrol_queue[0].Find_New_Path()
         self.patrol_queue.pop(0)
 

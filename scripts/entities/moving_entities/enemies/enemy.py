@@ -79,6 +79,7 @@ class Enemy(Moving_Entity):
 
 
     def Update(self, tilemap, movement=(0, 0)):
+        self.Reset_Max_Speed()
         self.intent_manager.Update_Behavior()
         self.path_finding.Path_Finding()
         movement = self.direction
