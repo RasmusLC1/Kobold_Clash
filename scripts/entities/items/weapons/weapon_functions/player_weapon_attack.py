@@ -27,7 +27,6 @@ class Player_Weapon_Attack():
 
         entity = self.Attack_Collision_Check()
         self.attacking -= 1
-        self.player.Reduce_Movement(4) # Reduce movement to a quarter when attacking
         return self.ready_to_delete
 
 
@@ -36,9 +35,10 @@ class Player_Weapon_Attack():
         if not self.Check_Entity_Cooldown():
             return False
         self.Reset_Entities_Hit()
+        self.player.Attack_Direction_Handler()
         
         # Compute attack each time to account for changing player agility level
-        self.attacking = max(int((self.weapon.speed * 30) // self.player.agility), self.weapon.attack_animation_max) 
+        self.Set_Attacking()
         self.nearby_enemies = self.game.enemy_handler.Find_Nearby_Enemies(self.player, 3) # Find nearby enemies to attack
         self.nearby_decoration = self.game.decoration_handler.Find_Nearby_Decorations(self.player.pos, 3)
         return True
@@ -65,7 +65,6 @@ class Player_Weapon_Attack():
             if enemy in self.entities_hit:
                 continue
             # Check for collision with enemy
-            # print(self.attack_hitbox.size, self.attack_hitbox.colliderect(enemy.rect()))
             if self.attack_hitbox.colliderect(enemy.rect()):
                 self.weapon.Entity_Hit(enemy)
                 self.entities_hit.append(enemy)
@@ -117,6 +116,7 @@ class Player_Weapon_Attack():
         
         self.attacking = 0
         self.weapon.Reset_Attack_Animation()
+        self.player.Reset_Attack_Direction()
 
         return True
     
@@ -124,12 +124,10 @@ class Player_Weapon_Attack():
     def Set_Attack_Hitbox(self):
         if not self.player:
             return
-            
         pos_x = self.weapon.rect().center[0] - 2 + self.player.attack_direction[0] * self.game.tilemap.tile_size
         pos_y = self.weapon.rect().center[1] - 2 + self.player.attack_direction[1] * self.game.tilemap.tile_size
         self.attack_hitbox = pygame.Rect(pos_x, pos_y, self.attack_hitbox_size[0] * self.weapon.range, self.attack_hitbox_size[1] * self.weapon.range)
-        
-    
+
     def Reset_Entities_Hit(self):
         self.entities_hit.clear()
 
@@ -139,6 +137,9 @@ class Player_Weapon_Attack():
         if not self.enemy_hit_effect_cooldown:
             return
         self.enemy_hit_effect_cooldown -= 1
+
+    def Set_Attacking(self):
+        self.attacking = max(int((self.weapon.speed * 20) // self.player.agility), self.weapon.attack_animation_max) 
 
     def Set_Enemy_Hit_Effect(self):
         if self.enemy_hit_effect_cooldown:

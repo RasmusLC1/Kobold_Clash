@@ -135,7 +135,7 @@ class Weapon(Item):
         tile = self.game.tilemap.Current_Tile(tile_key)
         if not tile:
             return True
-        if 'wall' in tile.type:
+        if not self.wall_hit and 'wall' in tile.type:
             self.wall_hit = True
             target_position = (self.pos[0] - self.game.tilemap.tile_size * self.entity.attack_direction[0], self.pos[1] - self.game.tilemap.tile_size * self.entity.attack_direction[1])
             self.game.clatter.Generate_Clatter(target_position, 400)

@@ -123,13 +123,6 @@ class Player(Moving_Entity):
     def Remove_Active_Weapon(self):
         self.weapon_handler.Remove_Active_Weapon()
 
-    def Attack_Direction_Handler(self, offset = (0,0)):
-        super().Attack_Direction_Handler(offset)
-
-    def Set_Charge(self, charge_speed, offset=(0, 0)):
-        super().Set_Charge(charge_speed, offset)
-        
-
     def Set_Health(self, health):
         self.health = health
 

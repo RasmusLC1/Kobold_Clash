@@ -404,13 +404,19 @@ class Moving_Entity(PhysicsEntity):
             self.animation_handler.Set_Animation('attack')
 
 
-    def Set_Attack_Direction(self, attack_direction = None):
+    def Set_Attack_Direction(self, attack_direction=None):
         if not attack_direction:
             attack_direction = self.target
-        self.attack_direction = pygame.math.Vector2(attack_direction[0] - self.pos[0], attack_direction[1] - self.pos[1])
-        if not self.attack_direction:
+        self.attack_direction = pygame.math.Vector2(
+            attack_direction[0] - self.pos[0],
+            attack_direction[1] - self.pos[1]
+        )
+        if self.attack_direction.length_squared() == 0:
             return
         self.attack_direction.normalize_ip()
+
+    def Reset_Attack_Direction(self):
+        self.attack_direction = (0, 0)
 
     def Set_Charge(self, charge_speed, offset=(0, 0)):
         if not self.charging:

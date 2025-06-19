@@ -77,8 +77,7 @@ class Fire_Spirit(Enemy):
             for trap in nearby_traps:
 
                 if trap.type == keys.lava_env:
-                    self.Set_Target(trap.pos)
-                    self.Find_New_Path()
+                    self.game.enemy_handler.Add_To_Pathfinding_Queue(self, trap.pos)
                     self.locked_on_target = True
                     break
 

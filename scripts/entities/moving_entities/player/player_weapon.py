@@ -72,7 +72,7 @@ class Player_Weapon_Handler():
         if self.game.mouse.inventory_clicked:
             return 0
         if weapon.attacking:
-            cooldown = max(5 + weapon.attacking, 100/self.player.agility + weapon.attacking)
+            cooldown = max(5 + weapon.attacking, 100 / self.player.agility + weapon.attacking)
             return cooldown
         return 0
     

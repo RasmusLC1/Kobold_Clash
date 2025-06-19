@@ -56,7 +56,7 @@ class Skeleton_Undertaker(Skeleton):
             return
             
         self.locked_on_target = False
-        self.Find_New_Path(nearby_bones[0].pos)
+        self.game.enemy_handler.Add_To_Pathfinding_Queue(self, nearby_bones[0].pos)
         self.Set_Attack_Strategy("medium_range")
         self.target_bones = nearby_bones[0]
 
