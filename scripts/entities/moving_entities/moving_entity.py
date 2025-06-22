@@ -335,6 +335,8 @@ class Moving_Entity(PhysicsEntity):
         
         # Check if any active effects affect damage
         self.effects.Damage_Taken(damage)
+        if direction:
+            self.Push(direction, self.game.tilemap, damage)
         
         if effect[1] > 0 and not keys.vampiric in effect[0]:
             self.effects.Set_Effect(effect[0], effect[1])
@@ -451,8 +453,8 @@ class Moving_Entity(PhysicsEntity):
         self.max_speed = self.max_speed_holder
         
     # Push the entity in the given direction
-    def Push(self, direction, tilemap):
-        self.Set_Frame_movement((direction[0] * -1, direction[1] * -1))
+    def Push(self, direction, tilemap, push_strength = -1):
+        self.Set_Frame_movement((direction[0] * push_strength, direction[1] * push_strength))
         self.effects.Push(direction)
         self.Tile_Map_Collision_Detection(tilemap)
 

@@ -1,4 +1,5 @@
 from scripts.engine.assets.keys import keys
+import pygame
 
 class Damage_Handler_Weapon():
     def __init__(self, weapon, effect, damage):
@@ -14,10 +15,29 @@ class Damage_Handler_Weapon():
         for damage_type in self.damage:
             damage = self.Calculate_Damage(damage_type)
             effect = self.Check_Effects(damage_type)
-            entity.Damage_Taken(damage, effect, weapon_entity.attack_direction)
+            knockback_direction = self.Calculate_Damage_Direction(entity)
+            entity.Damage_Taken(damage, effect, knockback_direction)
 
             if entity.effects.thorns.effect:
                 weapon_entity.Damage_Taken(entity.effects.thorns.effect)
+
+
+    def Calculate_Damage_Direction(self, entity):
+        entity_pos_vec = pygame.math.Vector2(entity.pos)
+        weapon_entity_pos_vec = pygame.math.Vector2(self.weapon.entity.pos)
+
+        direction = entity_pos_vec - weapon_entity_pos_vec
+
+        # Normalize to get unit direction (if not zero vector)
+        if direction.length() != 0:
+            direction = direction.normalize()
+
+        # Move entity_2 away from entity_1
+        # Add weapon knockback here 
+        # knockback = 3
+        # entity_2_pos += direction * knockback
+
+        return direction
 
 
     def Decoration_Hit(self, decoration):

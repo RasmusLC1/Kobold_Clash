@@ -11,7 +11,7 @@ class Attack_Stategies():
 
 
         self.player_found = 0
-        self.player_found_max = 200
+        self.player_found_max = 400
 
         self.direct_pathing_cooldown = 0
 
@@ -41,7 +41,6 @@ class Attack_Stategies():
     def Update_Player_Found(self):
         if not self.player_found:
             return False
-        
         self.player_found -= 1
         return True
 
@@ -117,6 +116,7 @@ class Attack_Stategies():
         
         return False
 
+    # Enemies check for line of sight and sets player found cooldown accordingly
     def Handle_Line_Of_Sight(self):
         if not self.Line_Of_Sight(self.game.player.pos):
             if not self.player_found:
