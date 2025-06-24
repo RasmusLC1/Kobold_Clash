@@ -76,6 +76,6 @@ class Damage_Handler_Weapon():
             self.damage[damage_type] = damage
 
     # Iterate over the damage dictionary once and get the first key
-    def Get_First_Effect(self):
-        return next(iter(self.damage), None)
+    def Get_Dominant_Effect(self):
+        return max(self.damage, key=self.damage.get, default=None)
     

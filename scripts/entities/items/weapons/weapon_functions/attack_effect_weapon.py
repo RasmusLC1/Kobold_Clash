@@ -6,6 +6,7 @@ class Attack_Effect_Weapon():
     def __init__(self, game, weapon):
         self.game = game
         self.weapon = weapon
+        self.effect_type = None
         self.attack_effect_animation = 0 # current effect animation frame
         self.attack_effect_animation_max = 6 # Amount of effect animation frames
         self.attack_effect_animation_time = 0 # Time it takes to change between frames
@@ -33,7 +34,8 @@ class Attack_Effect_Weapon():
         self.attack_effect_animation_counter += 1
 
 
-    def Set_Attack_Effect_Animation_Time(self):
+    def Init_Attack_Effect_Animation(self):
+        self.effect_type = self.weapon.Get_Dominant_Effect() + '_' + self.weapon.attack_type + '_' + keys.effect
         self.attack_effect_animation_time = self.weapon.entity_attack_type.attacking / self.attack_effect_animation_max
 
     def Set_Special_Attack_Effect_Animation_Time(self):
@@ -70,8 +72,7 @@ class Attack_Effect_Weapon():
         if not self.weapon.entity_attack_type.attacking:
             return
         pos = self.Attack_Effect_Position(offset)
-        effect_type = self.weapon.Get_First_Effect() + '_' + self.weapon.attack_type + '_' + keys.effect
-        attack_effect = self.game.assets[effect_type][self.attack_effect_animation]
+        attack_effect = self.game.assets[self.effect_type][self.attack_effect_animation]
         # attack_effect.set_alpha()
         attack_effect = pygame.transform.rotate(attack_effect, self.weapon.rotate)
         surf.blit( pygame.transform.flip(attack_effect, self.weapon.flip_x, False), (pos[0], pos[1]))

@@ -43,7 +43,7 @@ class Warhammer(Weapon):
         
     def Smash_Attack_Effect(self):
         self.attack_effect_handler.Update_Special_Attack_Effect_Animation()
-        effect_type = self.Get_First_Effect() + '_' + self.attack_type + '_' + keys.effect
+        effect_type = self.Get_Dominant_Effect() + '_' + self.attack_type + '_' + keys.effect
         attack_effect = self.game.assets[effect_type][self.attack_effect_animation]
         pos_x = self.entity.pos[0] - self.game.render_scroll[0] - 10
         pos_y = self.entity.pos[1] - self.game.render_scroll[1] - 10

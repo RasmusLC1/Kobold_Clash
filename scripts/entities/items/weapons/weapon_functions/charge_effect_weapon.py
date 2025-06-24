@@ -5,7 +5,7 @@ class Charge_Effect_Weapon():
     def __init__(self, game, weapon):
         self.game = game
         self.weapon = weapon
-        self.charge_effect = weapon.Get_First_Effect()  + '_charge_effect'
+        self.charge_effect = weapon.Get_Dominant_Effect()  + '_charge_effect'
         self.charge_effect_animation = 0
         self.charge_effect_animation_max = 5
         self.charge_effect_cooldown = 0

@@ -146,7 +146,7 @@ class Weapon(Item):
     
 
     def Handle_Attack_Animation(self):
-        self.attack_effect_handler.Set_Attack_Effect_Animation_Time()
+        self.attack_effect_handler.Init_Attack_Effect_Animation()
         self.Set_Rotation()
         self.rotate += 90
 
@@ -306,8 +306,8 @@ class Weapon(Item):
         else:
             self.flip_x = False
 
-    def Get_First_Effect(self):
-        return self.damage_handler.Get_First_Effect()
+    def Get_Dominant_Effect(self):
+        return self.damage_handler.Get_Dominant_Effect()
 
     # Handle deletion of items when enemies drop weapons, don't want them to linger forever
     def Update_Delete_Countdown(self):

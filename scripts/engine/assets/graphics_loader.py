@@ -105,28 +105,28 @@ class Graphics_Loader:
     
     def Asset_Magic_Attack_List(self):
         particle_assets = {
-       keys.fire_particle_attack : get_tiles_from_sheet('weapons/magic_attacks/fire/fire_particle.png', 3, 0, 0, 0, 4, 4),
-       keys.fire_ball : get_tiles_from_sheet('weapons/magic_attacks/fire/fire_ball.png', 0, 0, 0, 0, 16, 16),
-       keys.fire_explosion : get_tiles_from_sheet('weapons/magic_attacks/fire/fire_explosion.png', 7, 0, 0, 0, 32, 32),
+       keys.fire_particle_attack : get_tiles_from_sheet('items/weapons/magic_attacks/fire/fire_particle.png', 3, 0, 0, 0, 4, 4),
+       keys.fire_ball : get_tiles_from_sheet('items/weapons/magic_attacks/fire/fire_ball.png', 0, 0, 0, 0, 16, 16),
+       keys.fire_explosion : get_tiles_from_sheet('items/weapons/magic_attacks/fire/fire_explosion.png', 7, 0, 0, 0, 32, 32),
 
-       keys.ice_particle_attack : get_tiles_from_sheet('weapons/magic_attacks/ice/ice_particle.png', 3, 0, 0, 0, 4, 4),
-       keys.ice_ball : get_tiles_from_sheet('weapons/magic_attacks/ice/ice_ball.png', 0, 0, 0, 0, 16, 16),
-       keys.ice_explosion : get_tiles_from_sheet('weapons/magic_attacks/ice/ice_explosion.png', 5, 0, 0, 0, 32, 32),
-       keys.ice_storm : get_tiles_from_sheet('weapons/magic_attacks/ice/ice_storm.png', 9, 0, 0, 0, 32, 32),
+       keys.ice_particle_attack : get_tiles_from_sheet('items/weapons/magic_attacks/ice/ice_particle.png', 3, 0, 0, 0, 4, 4),
+       keys.ice_ball : get_tiles_from_sheet('items/weapons/magic_attacks/ice/ice_ball.png', 0, 0, 0, 0, 16, 16),
+       keys.ice_explosion : get_tiles_from_sheet('items/weapons/magic_attacks/ice/ice_explosion.png', 5, 0, 0, 0, 32, 32),
+       keys.ice_storm : get_tiles_from_sheet('items/weapons/magic_attacks/ice/ice_storm.png', 9, 0, 0, 0, 32, 32),
 
-       keys.poison_particle_attack : get_tiles_from_sheet('weapons/magic_attacks/poison/poison_particle.png', 3, 0, 0, 0, 4, 4),
-       keys.poison_ball : get_tiles_from_sheet('weapons/magic_attacks/poison/poison_ball.png', 0, 0, 0, 0, 16, 16),
-       keys.poison_explosion : get_tiles_from_sheet('weapons/magic_attacks/poison/poison_explosion.png', 5, 0, 0, 0, 32, 32),
-       keys.poison_cloud : get_tiles_from_sheet('weapons/magic_attacks/poison/poison_cloud.png', 3, 0, 0, 0, 32, 32),
+       keys.poison_particle_attack : get_tiles_from_sheet('items/weapons/magic_attacks/poison/poison_particle.png', 3, 0, 0, 0, 4, 4),
+       keys.poison_ball : get_tiles_from_sheet('items/weapons/magic_attacks/poison/poison_ball.png', 0, 0, 0, 0, 16, 16),
+       keys.poison_explosion : get_tiles_from_sheet('items/weapons/magic_attacks/poison/poison_explosion.png', 5, 0, 0, 0, 32, 32),
+       keys.poison_cloud : get_tiles_from_sheet('items/weapons/magic_attacks/poison/poison_cloud.png', 3, 0, 0, 0, 32, 32),
 
 
-       keys.electric_particle_attack : get_tiles_from_sheet('weapons/magic_attacks/electric/electric_particle.png', 0, 0, 0, 0, 16, 16),
-       keys.electric_ball : get_tiles_from_sheet('weapons/magic_attacks/electric/electric_ball.png', 0, 0, 0, 0, 16, 16),
-       keys.electric_explosion : get_tiles_from_sheet('weapons/magic_attacks/electric/electric_explosion.png', 5, 0, 0, 0, 32, 32),
+       keys.electric_particle_attack : get_tiles_from_sheet('items/weapons/magic_attacks/electric/electric_particle.png', 0, 0, 0, 0, 16, 16),
+       keys.electric_ball : get_tiles_from_sheet('items/weapons/magic_attacks/electric/electric_ball.png', 0, 0, 0, 0, 16, 16),
+       keys.electric_explosion : get_tiles_from_sheet('items/weapons/magic_attacks/electric/electric_explosion.png', 5, 0, 0, 0, 32, 32),
 
-        keys.soul_reap : get_tiles_from_sheet('weapons/magic_attacks/vampiric/soul_reap.png', 0, 0, 0, 0, 32, 32),
-        keys.vampiric_ball : get_tiles_from_sheet('weapons/magic_attacks/vampiric/vampiric_ball.png', 0, 0, 0, 0, 16, 16),
-        keys.soul_pit : get_tiles_from_sheet('weapons/magic_attacks/vampiric/soul_pit.png', 6, 0, 0, 0, 32, 32),
+        keys.soul_reap : get_tiles_from_sheet('items/weapons/magic_attacks/vampiric/soul_reap.png', 0, 0, 0, 0, 32, 32),
+        keys.vampiric_ball : get_tiles_from_sheet('items/weapons/magic_attacks/vampiric/vampiric_ball.png', 0, 0, 0, 0, 16, 16),
+        keys.soul_pit : get_tiles_from_sheet('items/weapons/magic_attacks/vampiric/soul_pit.png', 6, 0, 0, 0, 32, 32),
         
         }
         self.assets.update(particle_assets)
@@ -241,104 +241,104 @@ class Graphics_Loader:
 
     def Asset_Weapons_List(self):
         Weapons_assets = {
-            keys.sword: get_tiles_from_sheet('weapons/sword/sword.png', 3, 0, 0, 0, 32, 32),
-            keys.sword_attack_cut: get_tiles_from_sheet('weapons/sword/sword.png', 3, 0, 0, 0, 32, 32),
-            keys.sword_attack_stab: get_tiles_from_sheet('weapons/sword/sword_attack.png', 3, 0, 0, 0, 32, 32),
+            keys.sword: get_tiles_from_sheet('items/weapons/sword/sword.png', 3, 0, 0, 0, 32, 32),
+            keys.sword_attack_cut: get_tiles_from_sheet('items/weapons/sword/sword.png', 3, 0, 0, 0, 32, 32),
+            keys.sword_attack_stab: get_tiles_from_sheet('items/weapons/sword/sword_attack.png', 3, 0, 0, 0, 32, 32),
             
-            keys.torch: get_tiles_from_sheet('weapons/torch/torch.png', 8, 0, 0, 0, 32, 32),
-            keys.torch_attack_cut: get_tiles_from_sheet('weapons/torch/torch_attack.png', 8, 0, 0, 0, 32, 32),
+            keys.torch: get_tiles_from_sheet('items/weapons/torch/torch.png', 8, 0, 0, 0, 32, 32),
+            keys.torch_attack_cut: get_tiles_from_sheet('items/weapons/torch/torch_attack.png', 8, 0, 0, 0, 32, 32),
             
-            keys.spear: get_tiles_from_sheet('weapons/spear/spear.png', 8, 0, 0, 0, 32, 32),
-            keys.spear_attack_stab: get_tiles_from_sheet('weapons/spear/spear.png', 8, 0, 0, 0, 32, 32),
+            keys.spear: get_tiles_from_sheet('items/weapons/spear/spear.png', 8, 0, 0, 0, 32, 32),
+            keys.spear_attack_stab: get_tiles_from_sheet('items/weapons/spear/spear.png', 8, 0, 0, 0, 32, 32),
             
-            keys.bow: get_tiles_from_sheet('weapons/bow/bow.png', 0, 0, 0, 0, 32, 32),
-            keys.bow_attack: get_tiles_from_sheet('weapons/bow/bow_attack.png', 2, 0, 0, 0, 32, 32),
+            keys.bow: get_tiles_from_sheet('items/weapons/bow/bow.png', 0, 0, 0, 0, 32, 32),
+            keys.bow_attack: get_tiles_from_sheet('items/weapons/bow/bow_attack.png', 2, 0, 0, 0, 32, 32),
             
-            keys.arrow: get_tiles_from_sheet('weapons/arrow/arrow.png', 0, 0, 0, 0, 32, 32),
-            keys.arrow_attack: get_tiles_from_sheet('weapons/arrow/arrow.png', 0, 0, 0, 0, 32, 32),
+            keys.arrow: get_tiles_from_sheet('items/weapons/arrow/arrow.png', 0, 0, 0, 0, 32, 32),
+            keys.arrow_attack: get_tiles_from_sheet('items/weapons/arrow/arrow.png', 0, 0, 0, 0, 32, 32),
 
-            keys.shield: get_tiles_from_sheet('weapons/shield/shields.png', 4, 4, 0, 0, 32, 32),
-            keys.shield_attack: get_tiles_from_sheet('weapons/shield/shields.png', 4, 4, 0, 0, 32, 32),
+            keys.shield: get_tiles_from_sheet('items/weapons/shield/shields.png', 4, 4, 0, 0, 32, 32),
+            keys.shield_attack: get_tiles_from_sheet('items/weapons/shield/shields.png', 4, 4, 0, 0, 32, 32),
 
-            keys.halberd: get_tiles_from_sheet('weapons/halberd/halberd.png', 6, 0, 0, 0, 32, 32),
-            keys.halberd_attack_stab: get_tiles_from_sheet('weapons/halberd/halberd_stab_attack.png', 6, 0, 0, 0, 32, 50),
-            keys.halberd_attack_cut: get_tiles_from_sheet('weapons/halberd/halberd_cut_attack.png', 13, 0, 0, 0, 32, 32),
+            keys.halberd: get_tiles_from_sheet('items/weapons/halberd/halberd.png', 6, 0, 0, 0, 32, 32),
+            keys.halberd_attack_stab: get_tiles_from_sheet('items/weapons/halberd/halberd_stab_attack.png', 6, 0, 0, 0, 32, 50),
+            keys.halberd_attack_cut: get_tiles_from_sheet('items/weapons/halberd/halberd_cut_attack.png', 13, 0, 0, 0, 32, 32),
 
-            keys.battle_axe: get_tiles_from_sheet('weapons/battle_axe/battle_axe.png', 5, 0, 0, 0, 32, 32),
-            keys.battle_axe_attack_cut: get_tiles_from_sheet('weapons/battle_axe/battle_axe_cut_attack.png', 15, 0, 0, 0, 32, 32),
+            keys.battle_axe: get_tiles_from_sheet('items/weapons/battle_axe/battle_axe.png', 5, 0, 0, 0, 32, 32),
+            keys.battle_axe_attack_cut: get_tiles_from_sheet('items/weapons/battle_axe/battle_axe_cut_attack.png', 15, 0, 0, 0, 32, 32),
             
-            keys.hammer: get_tiles_from_sheet('weapons/hammer/hammer.png', 6, 0, 0, 0, 32, 32),
-            keys.hammer_attack_cut: get_tiles_from_sheet('weapons/hammer/hammer_cut_attack.png', 9, 0, 0, 0, 32, 32),
+            keys.hammer: get_tiles_from_sheet('items/weapons/hammer/hammer.png', 6, 0, 0, 0, 32, 32),
+            keys.hammer_attack_cut: get_tiles_from_sheet('items/weapons/hammer/hammer_cut_attack.png', 9, 0, 0, 0, 32, 32),
 
-            keys.hatchet: get_tiles_from_sheet('weapons/hatchet/hatchet.png', 7, 0, 0, 0, 32, 32),
-            keys.hatchet_attack_cut: get_tiles_from_sheet('weapons/hatchet/hatchet_cut_attack.png', 8, 0, 0, 0, 32, 32),
+            keys.hatchet: get_tiles_from_sheet('items/weapons/hatchet/hatchet.png', 7, 0, 0, 0, 32, 32),
+            keys.hatchet_attack_cut: get_tiles_from_sheet('items/weapons/hatchet/hatchet_cut_attack.png', 8, 0, 0, 0, 32, 32),
 
-            keys.warhammer: get_tiles_from_sheet('weapons/warhammer/warhammer.png', 6, 0, 0, 0, 32, 32),
-            keys.warhammer_attack_cut: get_tiles_from_sheet('weapons/warhammer/warhammer_cut_attack.png', 12, 0, 0, 0, 32, 32),
+            keys.warhammer: get_tiles_from_sheet('items/weapons/warhammer/warhammer.png', 6, 0, 0, 0, 32, 32),
+            keys.warhammer_attack_cut: get_tiles_from_sheet('items/weapons/warhammer/warhammer_cut_attack.png', 12, 0, 0, 0, 32, 32),
 
-            keys.crossbow: get_tiles_from_sheet('weapons/crossbow/crossbow.png', 8, 0, 0, 0, 32, 32),
-            keys.crossbow_attack: get_tiles_from_sheet('weapons/crossbow/crossbow_attack.png', 2, 0, 0, 0, 32, 32),
+            keys.crossbow: get_tiles_from_sheet('items/weapons/crossbow/crossbow.png', 8, 0, 0, 0, 32, 32),
+            keys.crossbow_attack: get_tiles_from_sheet('items/weapons/crossbow/crossbow_attack.png', 2, 0, 0, 0, 32, 32),
 
-            keys.bell: get_tiles_from_sheet('weapons/bell/bell.png', 7, 0, 0, 0, 32, 32),
-            keys.bell_attack_cut: get_tiles_from_sheet('weapons/bell/bell_attack_cut.png', 9, 0, 0, 0, 32, 32),
+            keys.bell: get_tiles_from_sheet('items/weapons/bell/bell.png', 7, 0, 0, 0, 32, 32),
+            keys.bell_attack_cut: get_tiles_from_sheet('items/weapons/bell/bell_attack_cut.png', 9, 0, 0, 0, 32, 32),
 
-            keys.sceptre: get_tiles_from_sheet('weapons/sceptre/sceptre.png', 7, 0, 0, 0, 32, 32),
-            keys.sceptre_attack_cut: get_tiles_from_sheet('weapons/sceptre/sceptre_cut_attack.png', 9, 0, 0, 0, 32, 32),
+            keys.sceptre: get_tiles_from_sheet('items/weapons/sceptre/sceptre.png', 7, 0, 0, 0, 32, 32),
+            keys.sceptre_attack_cut: get_tiles_from_sheet('items/weapons/sceptre/sceptre_cut_attack.png', 9, 0, 0, 0, 32, 32),
 
-            keys.scythe: get_tiles_from_sheet('weapons/scythe/scythe.png', 7, 0, 0, 0, 32, 32),
-            keys.scythe_attack_cut: get_tiles_from_sheet('weapons/scythe/scythe_attack.png', 9, 0, 0, 0, 32, 32),
+            keys.scythe: get_tiles_from_sheet('items/weapons/scythe/scythe.png', 7, 0, 0, 0, 32, 32),
+            keys.scythe_attack_cut: get_tiles_from_sheet('items/weapons/scythe/scythe_attack.png', 9, 0, 0, 0, 32, 32),
         }
         self.assets.update(Weapons_assets)
 
     def Asset_Weapons_Effects(self):
         Weapons_assets = {
-            keys.slash_cut_effect: get_tiles_from_sheet('weapons/weapon_effects/slash_cut_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.slash_stab_effect: get_tiles_from_sheet('weapons/weapon_effects/slash_stab_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.slash_spin_effect: get_tiles_from_sheet('weapons/weapon_effects/slash_spin_attack.png', 7, 0, 0, 0, 64, 64),
-            keys.slash_smash_effect: get_tiles_from_sheet('weapons/weapon_effects/slash_smash_attack.png', 5, 0, 0, 0, 64, 64),
-            keys.slash_charge_effect: get_tiles_from_sheet('weapons/weapon_effects/slash_charge_attack.png', 5, 0, 0, 0, 32, 32),
+            keys.slash_cut_effect: get_tiles_from_sheet('items/weapons/weapon_effects/slash_cut_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.slash_stab_effect: get_tiles_from_sheet('items/weapons/weapon_effects/slash_stab_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.slash_spin_effect: get_tiles_from_sheet('items/weapons/weapon_effects/slash_spin_attack.png', 7, 0, 0, 0, 64, 64),
+            keys.slash_smash_effect: get_tiles_from_sheet('items/weapons/weapon_effects/slash_smash_attack.png', 5, 0, 0, 0, 64, 64),
+            keys.slash_charge_effect: get_tiles_from_sheet('items/weapons/weapon_effects/slash_charge_attack.png', 5, 0, 0, 0, 32, 32),
 
-            keys.blunt_cut_effect: get_tiles_from_sheet('weapons/weapon_effects/blunt_cut_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.blunt_stab_effect: get_tiles_from_sheet('weapons/weapon_effects/blunt_stab_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.blunt_spin_effect: get_tiles_from_sheet('weapons/weapon_effects/blunt_spin_attack.png', 7, 0, 0, 0, 64, 64),
-            keys.blunt_smash_effect: get_tiles_from_sheet('weapons/weapon_effects/blunt_smash_attack.png', 5, 0, 0, 0, 64, 64),
-            keys.blunt_charge_effect: get_tiles_from_sheet('weapons/weapon_effects/blunt_charge_attack.png', 5, 0, 0, 0, 32, 32),
+            keys.blunt_cut_effect: get_tiles_from_sheet('items/weapons/weapon_effects/blunt_cut_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.blunt_stab_effect: get_tiles_from_sheet('items/weapons/weapon_effects/blunt_stab_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.blunt_spin_effect: get_tiles_from_sheet('items/weapons/weapon_effects/blunt_spin_attack.png', 7, 0, 0, 0, 64, 64),
+            keys.blunt_smash_effect: get_tiles_from_sheet('items/weapons/weapon_effects/blunt_smash_attack.png', 5, 0, 0, 0, 64, 64),
+            keys.blunt_charge_effect: get_tiles_from_sheet('items/weapons/weapon_effects/blunt_charge_attack.png', 5, 0, 0, 0, 32, 32),
 
-            keys.electric_cut_effect: get_tiles_from_sheet('weapons/weapon_effects/electric_cut_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.electric_stab_effect: get_tiles_from_sheet('weapons/weapon_effects/electric_stab_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.electric_spin_effect: get_tiles_from_sheet('weapons/weapon_effects/electric_spin_attack.png', 7, 0, 0, 0, 64, 64),
-            keys.electric_smash_effect: get_tiles_from_sheet('weapons/weapon_effects/electric_smash_attack.png', 5, 0, 0, 0, 64, 64),
-            keys.electric_charge_effect: get_tiles_from_sheet('weapons/weapon_effects/electric_charge_attack.png', 5, 0, 0, 0, 32, 32),
+            keys.electric_cut_effect: get_tiles_from_sheet('items/weapons/weapon_effects/electric_cut_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.electric_stab_effect: get_tiles_from_sheet('items/weapons/weapon_effects/electric_stab_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.electric_spin_effect: get_tiles_from_sheet('items/weapons/weapon_effects/electric_spin_attack.png', 7, 0, 0, 0, 64, 64),
+            keys.electric_smash_effect: get_tiles_from_sheet('items/weapons/weapon_effects/electric_smash_attack.png', 5, 0, 0, 0, 64, 64),
+            keys.electric_charge_effect: get_tiles_from_sheet('items/weapons/weapon_effects/electric_charge_attack.png', 5, 0, 0, 0, 32, 32),
 
-            keys.fire_cut_effect: get_tiles_from_sheet('weapons/weapon_effects/fire_cut_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.fire_stab_effect: get_tiles_from_sheet('weapons/weapon_effects/fire_stab_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.fire_spin_effect: get_tiles_from_sheet('weapons/weapon_effects/fire_spin_attack.png', 7, 0, 0, 0, 64, 64),
-            keys.fire_smash_effect: get_tiles_from_sheet('weapons/weapon_effects/fire_smash_attack.png', 5, 0, 0, 0, 64, 64),
-            keys.fire_charge_effect: get_tiles_from_sheet('weapons/weapon_effects/fire_charge_attack.png', 5, 0, 0, 0, 32, 32),
+            keys.fire_cut_effect: get_tiles_from_sheet('items/weapons/weapon_effects/fire_cut_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.fire_stab_effect: get_tiles_from_sheet('items/weapons/weapon_effects/fire_stab_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.fire_spin_effect: get_tiles_from_sheet('items/weapons/weapon_effects/fire_spin_attack.png', 7, 0, 0, 0, 64, 64),
+            keys.fire_smash_effect: get_tiles_from_sheet('items/weapons/weapon_effects/fire_smash_attack.png', 5, 0, 0, 0, 64, 64),
+            keys.fire_charge_effect: get_tiles_from_sheet('items/weapons/weapon_effects/fire_charge_attack.png', 5, 0, 0, 0, 32, 32),
 
-            keys.frozen_cut_effect: get_tiles_from_sheet('weapons/weapon_effects/frozen_cut_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.frozen_stab_effect: get_tiles_from_sheet('weapons/weapon_effects/frozen_stab_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.frozen_spin_effect: get_tiles_from_sheet('weapons/weapon_effects/frozen_spin_attack.png', 7, 0, 0, 0, 64, 64),
-            keys.frozen_smash_effect: get_tiles_from_sheet('weapons/weapon_effects/frozen_smash_attack.png', 5, 0, 0, 0, 64, 64),
-            keys.frozen_charge_effect: get_tiles_from_sheet('weapons/weapon_effects/frozen_charge_attack.png', 5, 0, 0, 0, 32, 32),
+            keys.frozen_cut_effect: get_tiles_from_sheet('items/weapons/weapon_effects/frozen_cut_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.frozen_stab_effect: get_tiles_from_sheet('items/weapons/weapon_effects/frozen_stab_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.frozen_spin_effect: get_tiles_from_sheet('items/weapons/weapon_effects/frozen_spin_attack.png', 7, 0, 0, 0, 64, 64),
+            keys.frozen_smash_effect: get_tiles_from_sheet('items/weapons/weapon_effects/frozen_smash_attack.png', 5, 0, 0, 0, 64, 64),
+            keys.frozen_charge_effect: get_tiles_from_sheet('items/weapons/weapon_effects/frozen_charge_attack.png', 5, 0, 0, 0, 32, 32),
 
-            keys.poison_cut_effect: get_tiles_from_sheet('weapons/weapon_effects/poison_cut_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.poison_stab_effect: get_tiles_from_sheet('weapons/weapon_effects/poison_stab_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.poison_spin_effect: get_tiles_from_sheet('weapons/weapon_effects/poison_spin_attack.png', 7, 0, 0, 0, 64, 64),
-            keys.poison_smash_effect: get_tiles_from_sheet('weapons/weapon_effects/poison_smash_attack.png', 5, 0, 0, 0, 64, 64),
-            keys.poison_charge_effect: get_tiles_from_sheet('weapons/weapon_effects/poison_charge_attack.png', 5, 0, 0, 0, 32, 32),
+            keys.poison_cut_effect: get_tiles_from_sheet('items/weapons/weapon_effects/poison_cut_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.poison_stab_effect: get_tiles_from_sheet('items/weapons/weapon_effects/poison_stab_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.poison_spin_effect: get_tiles_from_sheet('items/weapons/weapon_effects/poison_spin_attack.png', 7, 0, 0, 0, 64, 64),
+            keys.poison_smash_effect: get_tiles_from_sheet('items/weapons/weapon_effects/poison_smash_attack.png', 5, 0, 0, 0, 64, 64),
+            keys.poison_charge_effect: get_tiles_from_sheet('items/weapons/weapon_effects/poison_charge_attack.png', 5, 0, 0, 0, 32, 32),
 
-            keys.regen_cut_effect: get_tiles_from_sheet('weapons/weapon_effects/regen_cut_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.regen_stab_effect: get_tiles_from_sheet('weapons/weapon_effects/regen_stab_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.regen_spin_effect: get_tiles_from_sheet('weapons/weapon_effects/regen_spin_attack.png', 7, 0, 0, 0, 64, 64),
-            keys.regen_smash_effect: get_tiles_from_sheet('weapons/weapon_effects/regen_smash_attack.png', 5, 0, 0, 0, 64, 64),
-            keys.regen_charge_effect: get_tiles_from_sheet('weapons/weapon_effects/regen_charge_attack.png', 5, 0, 0, 0, 32, 32),
+            keys.regen_cut_effect: get_tiles_from_sheet('items/weapons/weapon_effects/regen_cut_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.regen_stab_effect: get_tiles_from_sheet('items/weapons/weapon_effects/regen_stab_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.regen_spin_effect: get_tiles_from_sheet('items/weapons/weapon_effects/regen_spin_attack.png', 7, 0, 0, 0, 64, 64),
+            keys.regen_smash_effect: get_tiles_from_sheet('items/weapons/weapon_effects/regen_smash_attack.png', 5, 0, 0, 0, 64, 64),
+            keys.regen_charge_effect: get_tiles_from_sheet('items/weapons/weapon_effects/regen_charge_attack.png', 5, 0, 0, 0, 32, 32),
 
-            keys.vampiric_cut_effect: get_tiles_from_sheet('weapons/weapon_effects/vampiric_cut_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.vampiric_stab_effect: get_tiles_from_sheet('weapons/weapon_effects/vampiric_stab_attack.png', 6, 0, 0, 0, 64, 64),
-            keys.vampiric_spin_effect: get_tiles_from_sheet('weapons/weapon_effects/vampiric_spin_attack.png', 7, 0, 0, 0, 64, 64),
-            keys.vampiric_smash_effect: get_tiles_from_sheet('weapons/weapon_effects/vampiric_smash_attack.png', 5, 0, 0, 0, 64, 64),
-            keys.vampiric_charge_effect: get_tiles_from_sheet('weapons/weapon_effects/vampiric_charge_attack.png', 5, 0, 0, 0, 32, 32),
+            keys.vampiric_cut_effect: get_tiles_from_sheet('items/weapons/weapon_effects/vampiric_cut_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.vampiric_stab_effect: get_tiles_from_sheet('items/weapons/weapon_effects/vampiric_stab_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.vampiric_spin_effect: get_tiles_from_sheet('items/weapons/weapon_effects/vampiric_spin_attack.png', 7, 0, 0, 0, 64, 64),
+            keys.vampiric_smash_effect: get_tiles_from_sheet('items/weapons/weapon_effects/vampiric_smash_attack.png', 5, 0, 0, 0, 64, 64),
+            keys.vampiric_charge_effect: get_tiles_from_sheet('items/weapons/weapon_effects/vampiric_charge_attack.png', 5, 0, 0, 0, 32, 32),
         }
         self.assets.update(Weapons_assets)
 
