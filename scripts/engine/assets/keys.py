@@ -308,35 +308,6 @@ class keys():
     
     spear_attack_stab = "spear_attack_stab"
 
-    
-    magic_staff = "magic_staff"
-
-    magic_staff_attack = "magic_staff_attack"
-
-    magic_staff_fire = "magic_staff_fire"
-
-    magic_staff_fire_attack = "magic_staff_fire_attack"
-
-    magic_staff_frozen = "magic_staff_frozen"
-
-    magic_staff_frozen_attack = "magic_staff_frozen_attack"
-
-    magic_staff_poison = "magic_staff_poison"
-
-    magic_staff_poison_attack = "magic_staff_poison_attack"
-
-    magic_staff_vampiric = "magic_staff_vampiric"
-
-    magic_staff_vampiric_attack = "magic_staff_vampiric_attack"
-
-    magic_staff_electric = "magic_staff_electric"
-
-    magic_staff_electric_attack = "magic_staff_electric_attack"
-
-    magic_staff = "magic_staff"
-
-    magic_staff_attack = "magic_staff_attack"
-
 
     bow = "bow"
 
@@ -409,8 +380,29 @@ class keys():
     
     scythe = "scythe"
 
-    
     scythe_attack_cut = "scythe_attack_cut"
+    
+    staff = "staff"
+
+    fire_staff = "fire_staff"
+
+    fire_staff_attack_cut = "fire_staff_attack_cut"
+
+    frozen_staff = "frozen_staff"
+
+    frozen_staff_attack_cut = "frozen_staff_attack_cut"    
+
+    poison_staff = "poison_staff"
+
+    poison_staff_attack_cut = "poison_staff_attack_cut"    
+
+    vampiric_staff = "vampiric_staff"
+
+    vampiric_staff_attack_cut = "vampiric_staff_attack_cut"    
+
+    electric_staff = "electric_staff"
+
+    electric_staff_attack_cut = "electric_staff_attack_cut"
 
 
     # Weapon Effects

@@ -285,8 +285,20 @@ class Graphics_Loader:
             keys.sceptre: get_tiles_from_sheet('items/weapons/sceptre/sceptre.png', 7, 0, 0, 0, 32, 32),
             keys.sceptre_attack_cut: get_tiles_from_sheet('items/weapons/sceptre/sceptre_cut_attack.png', 9, 0, 0, 0, 32, 32),
 
-            keys.scythe: get_tiles_from_sheet('items/weapons/scythe/scythe.png', 7, 0, 0, 0, 32, 32),
-            keys.scythe_attack_cut: get_tiles_from_sheet('items/weapons/scythe/scythe_attack.png', 9, 0, 0, 0, 32, 32),
+            keys.fire_staff: get_tiles_from_sheet('items/weapons/staff/fire_staff.png', 0, 0, 0, 0, 32, 32),
+            keys.fire_staff_attack_cut: get_tiles_from_sheet('items/weapons/staff/fire_staff_attack.png', 5, 0, 0, 0, 32, 32),
+
+            keys.frozen_staff: get_tiles_from_sheet('items/weapons/staff/frozen_staff.png', 0, 0, 0, 0, 32, 32),
+            keys.frozen_staff_attack_cut: get_tiles_from_sheet('items/weapons/staff/frozen_staff_attack.png', 5, 0, 0, 0, 32, 32),
+
+            keys.poison_staff: get_tiles_from_sheet('items/weapons/staff/poison_staff.png', 0, 0, 0, 0, 32, 32),
+            keys.poison_staff_attack_cut: get_tiles_from_sheet('items/weapons/staff/poison_staff_attack.png', 5, 0, 0, 0, 32, 32),
+
+            keys.vampiric_staff: get_tiles_from_sheet('items/weapons/staff/vampiric_staff.png', 0, 0, 0, 0, 32, 32),
+            keys.vampiric_staff_attack_cut: get_tiles_from_sheet('items/weapons/staff/vampiric_staff_attack.png', 5, 0, 0, 0, 32, 32),
+
+            keys.electric_staff: get_tiles_from_sheet('items/weapons/staff/electric_staff.png', 0, 0, 0, 0, 32, 32),
+            keys.electric_staff_attack_cut: get_tiles_from_sheet('items/weapons/staff/electric_staff_attack.png', 5, 0, 0, 0, 32, 32),
         }
         self.assets.update(Weapons_assets)
 
