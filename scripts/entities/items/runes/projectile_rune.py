@@ -43,7 +43,7 @@ class Projectile_Rune(Rune):
         
         # Handle shooting
         if self.charge:
-            self.game.player.Attack_Direction_Handler(self.game.render_scroll)
+            self.game.player.Attack_Direction_Handler()
             self.Generate_Projectile()
             return
         

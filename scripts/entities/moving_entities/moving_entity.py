@@ -1,7 +1,5 @@
 import math
 import pygame
-import random
-from scripts.entities.moving_entities.moving_entity_functions.damage_text_handler import Damage_Text_Handler
 from scripts.entities.moving_entities.effects.effects_handler import Status_Effect_Handler
 from scripts.entities.moving_entities.animation.animation_handler import Animation_Handler
 from scripts.entities.entities import PhysicsEntity
@@ -84,7 +82,7 @@ class Moving_Entity(PhysicsEntity):
         self.effects = self._effect_handler(self)
         self.animation_handler = self._animation_handler(self)
         
-        self.damage_text_handler = Damage_Text_Handler(self.game)
+        
 
         self.Set_Sprite()
 
@@ -137,7 +135,6 @@ class Moving_Entity(PhysicsEntity):
 
         self.Movement(movement, tilemap)
         self.Update_Tile()
-        self.damage_text_handler.Update()
     
 
     def Update_Movement(self, movement):
@@ -324,8 +321,7 @@ class Moving_Entity(PhysicsEntity):
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
         if self.Check_Blocking_Direction(direction):
             return False
-        
-        self.damage_text_handler.Spawn_Damage_Text(self.pos, effect[0], str(damage))
+        self.game.text_box_handler.Spawn_Damage_Text(self.pos.copy(), effect[0], str(damage))
 
         self.damage_cooldown = self.damage_cooldown_max
         self.Set_Health(self.health - damage)
@@ -390,7 +386,7 @@ class Moving_Entity(PhysicsEntity):
         return False
 
 
-    def Attack_Direction_Handler(self, offset = (0, 0)):
+    def Attack_Direction_Handler(self):
         self.Set_Attack_Direction()
         
         if self.attack_direction[0] < 0:
@@ -536,7 +532,6 @@ class Moving_Entity(PhysicsEntity):
     
     def Render_Damage(self, surf, offset):
         self.Lightup(self.rendered_image)
-        self.damage_text_handler.Render(surf, offset)
 
 
     def Lightup(self, entity_image):

@@ -60,6 +60,8 @@ class PhysicsEntity:
 
     # Called when entity is deleted by garbage collection
     def __del__(self):
+        if not hasattr(self, "ID"):
+            return
         PhysicsEntity._available_IDs.append(self.ID)
 
     # Called when entity is deleted

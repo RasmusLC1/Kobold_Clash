@@ -131,7 +131,7 @@ class Player(Moving_Entity):
             return
         
         if weapon.attacking and not self.attacking:
-            self.Attack_Direction_Handler(offset)
+            self.Attack_Direction_Handler()
 
 
             direction_x = 5 * self.attack_direction[0]

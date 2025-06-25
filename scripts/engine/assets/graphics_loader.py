@@ -279,6 +279,9 @@ class Graphics_Loader:
             keys.crossbow: get_tiles_from_sheet('items/weapons/crossbow/crossbow.png', 8, 0, 0, 0, 32, 32),
             keys.crossbow_attack: get_tiles_from_sheet('items/weapons/crossbow/crossbow_attack.png', 2, 0, 0, 0, 32, 32),
 
+            keys.scythe: get_tiles_from_sheet('items/weapons/scythe/scythe.png', 7, 0, 0, 0, 32, 32),
+            keys.scythe_attack_cut: get_tiles_from_sheet('items/weapons/scythe/scythe_attack.png', 9, 0, 0, 0, 32, 32),
+
             keys.bell: get_tiles_from_sheet('items/weapons/bell/bell.png', 7, 0, 0, 0, 32, 32),
             keys.bell_attack_cut: get_tiles_from_sheet('items/weapons/bell/bell_attack_cut.png', 9, 0, 0, 0, 32, 32),
 

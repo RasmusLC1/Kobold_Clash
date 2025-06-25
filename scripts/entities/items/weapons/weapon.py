@@ -17,6 +17,7 @@ class Weapon(Item):
         super().__init__(game, type, keys.weapon, pos, size, 1, add_to_tile)
         self.speed = 10 - speed # Speed of the weapon
         self.range = range # Range of the weapon
+        self.damage = damage
         self.entity = None # Entity that holds the weapon
         self.attack_type = attack_type # Different kinds of attacks, like cutting and stabbing
         self.in_inventory = False # Is the weapon in an inventory
@@ -233,7 +234,7 @@ class Weapon(Item):
     def Set_Special_Attack(self, offset = (0, 0)):
         if not self.entity:
             return
-        self.entity.Attack_Direction_Handler(offset)
+        self.entity.Attack_Direction_Handler()
         self.Set_Block_Direction()
         self.special_attack = min(self.charge_time, self.max_charge_time)
         self.Set_Rotation()
@@ -273,7 +274,7 @@ class Weapon(Item):
 
     # Set the attack direction   
     def Set_Block_Direction(self):
-        self.entity.Attack_Direction_Handler(self.game.render_scroll)
+        self.entity.Attack_Direction_Handler()
         if not self.entity.attack_direction[0] or not self.entity.attack_direction[1]:
             return
         # self.entity.attack_direction = pygame.math.Vector2(self.entity.attack_direction[0], self.entity.attack_direction[1])

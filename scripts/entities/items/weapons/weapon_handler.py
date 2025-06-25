@@ -6,6 +6,7 @@ from scripts.entities.items.weapons.close_combat.battle_axe import Battle_Axe
 from scripts.entities.items.weapons.close_combat.sceptre import Sceptre
 from scripts.entities.items.weapons.close_combat.bell import Bell
 from scripts.entities.items.weapons.close_combat.scythe import Scythe
+from scripts.entities.items.weapons.close_combat.staff import Staff
 
 from scripts.entities.items.weapons.projectiles.spear import Spear
 from scripts.entities.items.weapons.projectiles.hatchet import Hatchet
@@ -31,6 +32,7 @@ class Weapon_Handler():
             keys.hammer : Hammer,
             keys.warhammer : Warhammer,
             keys.battle_axe : Battle_Axe,
+            keys.staff : Staff,
             keys.shield : Shield,
             keys.spear : Spear,
             keys.torch : Torch,
@@ -42,20 +44,22 @@ class Weapon_Handler():
         }
 
         self.random_weapon_map = {
-            0 : Sword,
-            1 : Halberd,
-            2 : Hatchet,
-            3 : Hammer,
-            4 : Warhammer,
-            5 : Battle_Axe,
-            6 : Spear,
-            7 : Sceptre,
-            8 : Bell,
-            9 : Scythe,
-            10 : Bow,
-            11 : Crossbow,
-            range(12, 17) : Arrow,
+            Sword: 1,
+            Halberd: 1,
+            Hatchet: 1,
+            Hammer: 1,
+            Warhammer: 0.5,
+            Staff: 0.2,
+            Battle_Axe: 1,
+            Spear: 1,
+            Sceptre: 0.3,
+            Bell: 0.5,
+            Scythe: 0.3,
+            Bow: 1,
+            Crossbow: 0.5,
+            Arrow: 4,
         }
+
 
 
     def Weapon_Spawner(self, name, pos_x, pos_y, amount=0, data=None):
@@ -84,15 +88,14 @@ class Weapon_Handler():
         return weapon
 
     def Spawn_Random_Weapon(self, pos):
-        random_weapon_index = random.randint(0, 17)
 
-        selected_weapon = self.random_weapon_map.get(random_weapon_index)
+        selected_weapon = random.choices(
+                weights=list(self.random_weapon_map.values()),
+                population=list(self.random_weapon_map.keys()),
+                k=1
+            )[0]
 
-        # If the random weapon is an arrow
-        if random_weapon_index >= 12:
-            weapon = Arrow(self.game, pos, random.randint(0, 8))
-        else:
-            weapon = selected_weapon(self.game, pos)
+        weapon = selected_weapon(self.game, pos)
         # Finally, add to the item handler
         self.game.item_handler.Add_Item(weapon)
         return True

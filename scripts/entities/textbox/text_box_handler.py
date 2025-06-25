@@ -1,4 +1,5 @@
-import pygame
+from scripts.entities.moving_entities.moving_entity_functions.damage_text_handler import Damage_Text_Handler
+
 
 class Text_Box_handler():
     def __init__(self, game):
@@ -6,11 +7,14 @@ class Text_Box_handler():
         self.nearby_items = []
         self.nearby_item_cooldown = 0
         self.current_item = None
+        self.damage_text_handler = Damage_Text_Handler(self.game)
 
     def Update(self):
         self.current_item = None
         self.Check_Items()
         self.Check_Inventory_Slots()
+        self.damage_text_handler.Update()
+
 
     def Check_Items(self):
         for entity in self.game.entities_render.entities:
@@ -28,8 +32,13 @@ class Text_Box_handler():
             if self.current_item:
                 return
 
+    def Spawn_Damage_Text(self, pos, effect, damage):
+        self.damage_text_handler.Spawn_Damage_Text(pos, effect, str(damage))
 
     def Render(self, surf, offset=(0, 0)):
+        self.damage_text_handler.Render(surf, offset)
+
         if not self.current_item:
             return
         self.current_item.text_box.Render(surf, offset)
+

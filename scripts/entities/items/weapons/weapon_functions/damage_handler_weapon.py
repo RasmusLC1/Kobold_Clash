@@ -32,11 +32,6 @@ class Damage_Handler_Weapon():
         if direction.length() != 0:
             direction = direction.normalize()
 
-        # Move entity_2 away from entity_1
-        # Add weapon knockback here 
-        # knockback = 3
-        # entity_2_pos += direction * knockback
-
         return direction
 
 
@@ -64,7 +59,7 @@ class Damage_Handler_Weapon():
         return (damage_type, effect_strength)
 
     def Calculate_Damage(self, damage_type):
-        return self.weapon.entity.strength * self.damage[damage_type]
+        return max(1, self.damage[damage_type] * self.weapon.damage // 2 * self.weapon.entity.strength // 2)
     
     def Get_Damage(self):
         return sum(self.damage.values())
