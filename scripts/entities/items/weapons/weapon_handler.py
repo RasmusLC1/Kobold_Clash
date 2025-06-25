@@ -98,4 +98,4 @@ class Weapon_Handler():
         weapon = selected_weapon(self.game, pos)
         # Finally, add to the item handler
         self.game.item_handler.Add_Item(weapon)
-        return True
+        return weapon

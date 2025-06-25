@@ -59,7 +59,7 @@ class Ice_Spirit(Enemy):
     def Shoot_Ice_Particle(self):
         self.Set_Target(self.game.player.pos)
         self.Set_Attack_Direction()
-        self.charge = self.ice_shooter.Particle_Creation(self.charge, self)
+        self.charge = self.ice_shooter.Particle_Creation(self, self.charge)
 
 
     def Set_Action(self, movement):

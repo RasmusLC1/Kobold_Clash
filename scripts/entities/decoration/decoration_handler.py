@@ -74,6 +74,18 @@ class Decoration_Handler():
         self.Link_Teleportation_Circles()
         self.Set_Item_Sacrifice_Decorations()
 
+        self.Spawn_Items()
+
+
+    def Spawn_Items(self):
+        for decoration in self.decorations:
+            if decoration.type == keys.weapon_rack:
+                decoration.Spawn_Weapons()
+                continue
+
+            if decoration.type == keys.plinth:
+                decoration.Spawn_Rune()
+
     
     def Find_Decorations_In_Tilemap(self, depth):
         # door initialisation

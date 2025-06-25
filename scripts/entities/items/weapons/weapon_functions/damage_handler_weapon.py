@@ -59,7 +59,7 @@ class Damage_Handler_Weapon():
         return (damage_type, effect_strength)
 
     def Calculate_Damage(self, damage_type):
-        return max(1, self.damage[damage_type] * self.weapon.damage // 2 * self.weapon.entity.strength // 2)
+        return round(max(1, self.damage[damage_type] * (self.weapon.damage + self.weapon.entity.strength) / 2))
     
     def Get_Damage(self):
         return sum(self.damage.values())

@@ -8,7 +8,7 @@ class Ice_Shooter(Particle_Shooter):
         super().__init__(game)
         self.ice_cooldown = 0
 
-    def Particle_Creation(self, special_attack, entity):
+    def Particle_Creation(self, entity, special_attack):
         # Handle cooldown for spacing between fire particles
         if self.ice_cooldown:
             self.ice_cooldown -= 1
