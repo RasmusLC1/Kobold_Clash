@@ -55,6 +55,9 @@ class Audio_Loader:
             'torch_equipped' : pygame.mixer.Sound('data/sounds/weapons/torch_equipped.wav'),
             'sword_swing' : pygame.mixer.Sound('data/sounds/weapons/sword_swing.wav'),
             'weapon_break' : pygame.mixer.Sound('data/sounds/weapons/weapon_break.wav'),
+            'enemy_hit' : pygame.mixer.Sound('data/sounds/weapons/enemy_hit.wav'),
+            'player_hit' : pygame.mixer.Sound('data/sounds/weapons/player_hit.wav'),
+            'projectile_hit' : pygame.mixer.Sound('data/sounds/weapons/projectile_hit.wav'),
         }
 
         self.sfx.update(weapon_effects)
@@ -69,6 +72,9 @@ class Audio_Loader:
         self.sfx['torch_equipped'].set_volume(0.2)
         self.sfx['sword_swing'].set_volume(0.2)
         self.sfx['weapon_break'].set_volume(0.2)
+        self.sfx['enemy_hit'].set_volume(0.2)
+        self.sfx['player_hit'].set_volume(0.2)
+        self.sfx['projectile_hit'].set_volume(0.2)
 
     def Magic_Effects(self):
         weapon_effects ={

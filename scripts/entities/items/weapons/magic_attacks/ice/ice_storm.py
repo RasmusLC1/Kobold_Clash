@@ -62,7 +62,7 @@ class Ice_Storm(PhysicsEntity):
         pos_x = math.cos(base_angle) * speed
         pos_y = math.sin(base_angle) * speed
         direction = (pos_x, pos_y)
-        self.ice_shooter.Shoot_Particles(self.entity, direction)
+        self.ice_shooter.Shoot_Particles(self.entity, 10, direction)
 
     
     def Render(self, surf, offset=(0, 0)):

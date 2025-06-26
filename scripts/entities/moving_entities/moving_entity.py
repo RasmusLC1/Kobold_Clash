@@ -1,7 +1,5 @@
 import math
 import pygame
-import random
-from scripts.entities.moving_entities.moving_entity_functions.damage_text_handler import Damage_Text_Handler
 from scripts.entities.moving_entities.effects.effects_handler import Status_Effect_Handler
 from scripts.entities.moving_entities.animation.animation_handler import Animation_Handler
 from scripts.entities.entities import PhysicsEntity
@@ -84,7 +82,7 @@ class Moving_Entity(PhysicsEntity):
         self.effects = self._effect_handler(self)
         self.animation_handler = self._animation_handler(self)
         
-        self.damage_text_handler = Damage_Text_Handler(self.game)
+        
 
         self.Set_Sprite()
 
@@ -137,7 +135,6 @@ class Moving_Entity(PhysicsEntity):
 
         self.Movement(movement, tilemap)
         self.Update_Tile()
-        self.damage_text_handler.Update()
     
 
     def Update_Movement(self, movement):
@@ -168,30 +165,6 @@ class Moving_Entity(PhysicsEntity):
             self.velocity[1] / self.game.render_scale
         ))
 
-
-    # def Update_Movement(self, movement):
-    #     # Apply acceleration to velocity based on input
-    #     self.velocity[0] += movement[0] * self.acceleration
-    #     self.velocity[1] += movement[1] * self.acceleration
-
-    #     # Clamp the velocity to max speed
-    #     self.velocity[0] = max(-self.max_speed, min(self.velocity[0], self.max_speed))
-    #     self.velocity[1] = max(-self.max_speed, min(self.velocity[1], self.max_speed))
-        
-    #     self.velocity[0] *= 0.85 if abs(self.velocity[0]) > 0.1 else 0
-    #     self.velocity[1] *= 0.85 if abs(self.velocity[1]) > 0.1 else 0
-        
-    #     # Avoids sliding
-    #     if abs(self.velocity[0]) < 0.05:
-    #         self.velocity[0] = 0
-    #     if abs(self.velocity[1]) < 0.05:
-    #         self.velocity[1] = 0
-
-    #     self.direction_x = movement[0]
-    #     self.direction_y = movement[1]
-
-    #     # Calculate frame movement based on updated velocity
-    #     self.Set_Frame_movement((self.velocity[0] / self.game.render_scale, self.velocity[1] / self.game.render_scale))
 
     # Movement handling
     def Movement(self, movement, tilemap):
@@ -224,6 +197,9 @@ class Moving_Entity(PhysicsEntity):
 
         self.update_tile_cooldown = 10
         new_tile_key = str(int(self.pos[0] // self.game.tilemap.tile_size)) + ';' + str(int(self.pos[1] // self.game.tilemap.tile_size))
+        if not self.tile:
+            print("ERROR TILE NOT FOUND")
+            return
         if new_tile_key != self.tile.pos:
             new_tile = self.game.tilemap.Current_Tile(new_tile_key)
             if not new_tile:
@@ -348,8 +324,7 @@ class Moving_Entity(PhysicsEntity):
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
         if self.Check_Blocking_Direction(direction):
             return False
-
-        self.damage_text_handler.Spawn_Damage_Text(self.pos, effect[0], str(damage))
+        self.game.text_box_handler.Spawn_Damage_Text(self.pos.copy(), effect[0], str(damage))
 
         self.damage_cooldown = self.damage_cooldown_max
         self.Set_Health(self.health - damage)
@@ -359,6 +334,8 @@ class Moving_Entity(PhysicsEntity):
         
         # Check if any active effects affect damage
         self.effects.Damage_Taken(damage)
+        if direction:
+            self.Push(direction, self.game.tilemap, damage)
         
         if effect[1] > 0 and not keys.vampiric in effect[0]:
             self.effects.Set_Effect(effect[0], effect[1])
@@ -412,7 +389,7 @@ class Moving_Entity(PhysicsEntity):
         return False
 
 
-    def Attack_Direction_Handler(self, offset = (0, 0)):
+    def Attack_Direction_Handler(self):
         self.Set_Attack_Direction()
         
         if self.attack_direction[0] < 0:
@@ -428,13 +405,19 @@ class Moving_Entity(PhysicsEntity):
             self.animation_handler.Set_Animation('attack')
 
 
-    def Set_Attack_Direction(self, attack_direction = None):
+    def Set_Attack_Direction(self, attack_direction=None):
         if not attack_direction:
             attack_direction = self.target
-        self.attack_direction = pygame.math.Vector2(attack_direction[0] - self.pos[0], attack_direction[1] - self.pos[1])
-        if not self.attack_direction:
+        self.attack_direction = pygame.math.Vector2(
+            attack_direction[0] - self.pos[0],
+            attack_direction[1] - self.pos[1]
+        )
+        if self.attack_direction.length_squared() == 0:
             return
         self.attack_direction.normalize_ip()
+
+    def Reset_Attack_Direction(self):
+        self.attack_direction = (0, 0)
 
     def Set_Charge(self, charge_speed, offset=(0, 0)):
         if not self.charging:
@@ -469,8 +452,8 @@ class Moving_Entity(PhysicsEntity):
         self.max_speed = self.max_speed_holder
         
     # Push the entity in the given direction
-    def Push(self, direction, tilemap):
-        self.Set_Frame_movement((direction[0] * -1, direction[1] * -1))
+    def Push(self, direction, tilemap, push_strength = -1):
+        self.Set_Frame_movement((direction[0] * push_strength, direction[1] * push_strength))
         self.effects.Push(direction)
         self.Tile_Map_Collision_Detection(tilemap)
 
@@ -552,7 +535,6 @@ class Moving_Entity(PhysicsEntity):
     
     def Render_Damage(self, surf, offset):
         self.Lightup(self.rendered_image)
-        self.damage_text_handler.Render(surf, offset)
 
 
     def Lightup(self, entity_image):

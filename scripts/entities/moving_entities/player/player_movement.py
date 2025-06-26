@@ -38,7 +38,7 @@ class Player_Movement():
     def Back_Step(self,  offset=(0, 0)):
         if self.back_step or self.stamina:
             return
-        self.player.Attack_Direction_Handler(offset)
+        self.player.Attack_Direction_Handler()
         # Inverse attack Direction
         self.player.attack_direction = pygame.math.Vector2(self.player.attack_direction[0] * -1, self.player.attack_direction[1] * -1)
         self.back_step = 20
@@ -55,7 +55,7 @@ class Player_Movement():
         
         if self.player.attack_direction.length() > 0:
 
-            self.player.friction = 0
+            self.player.friction = 1
             self.player.max_speed = 40  # Adjust max speed speed for dashing distance
 
 
@@ -66,7 +66,7 @@ class Player_Movement():
     def Roll_Forward(self,  offset=(0, 0)):
         if self.roll_forward or self.stamina:
             return
-        self.player.Attack_Direction_Handler(offset)
+        self.player.Attack_Direction_Handler()
         self.roll_forward = 30
         self.Set_Stamina(120)
 
@@ -81,7 +81,7 @@ class Player_Movement():
         
         if self.player.attack_direction.length() > 0:
 
-            self.player.friction = 0
+            self.player.friction = 1
             self.player.max_speed = 40  # Adjust max speed speed for dashing distance
 
 
@@ -92,7 +92,7 @@ class Player_Movement():
     def Dashing_Update(self, offset=(0, 0)):
         if not self.dashing:
             return
-
+        
         self.player.effects.Set_Effect("player_movement_invunerable", 1)
 
 
@@ -106,10 +106,9 @@ class Player_Movement():
 
 
         if self.dashing > 50:
-            
             if self.player.attack_direction.length() > 0:
                 # Temporarily set friction to zero to avoid deceleration during dash
-                self.player.friction = 0
+                self.player.friction = 1
                 self.player.max_speed = 40  # Adjust max speed speed for dashing distance
 
 
@@ -126,8 +125,9 @@ class Player_Movement():
 
     def Dash(self, offset=(0, 0)):
         if not self.dashing:
-            self.player.Attack_Direction_Handler(offset)
+            self.player.Attack_Direction_Handler()
             self.dashing = 60
+            print(self.player.attack_direction)
             return True
         
         return False

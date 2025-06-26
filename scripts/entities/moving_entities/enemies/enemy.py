@@ -25,7 +25,6 @@ class Enemy(Moving_Entity):
         self.target = self.game.player.pos # Default target is set to player
 
         self.path_finding = Path_Finding(game, self) # Pathfinding logic for enemy
-        self.destination = (0,0)
         self.attack_strategies = Attack_Stategies(game, self) # Pathfinding logic for enemy
 
         self.distance_to_player = 9999 # Distance to player
@@ -80,11 +79,12 @@ class Enemy(Moving_Entity):
 
 
     def Update(self, tilemap, movement=(0, 0)):
+        self.Reset_Max_Speed()
         self.intent_manager.Update_Behavior()
         self.path_finding.Path_Finding()
         movement = self.direction
         
-        super().Update(tilemap, movement = movement)
+        super().Update(tilemap, movement)
 
         self.Set_Direction_Holder()
 
@@ -165,13 +165,12 @@ class Enemy(Moving_Entity):
     def Set_Alert_Cooldown(self, amount):
         self.alert_cooldown = amount
 
-    def Set_Destination(self, destination):
-        self.destination = destination
-
     def Find_New_Path(self):
+        if not self.path_finding.Find_Shortest_Path():
+            self.target = None
+            return False
         
-        self.Set_Target(self.destination)
-        self.path_finding.Find_Shortest_Path()
+        return True
 
     def Weapon_Cooldown(self):
         if self.weapon_cooldown:
@@ -186,7 +185,7 @@ class Enemy(Moving_Entity):
     def Set_Locked_On_Target(self, value):
         self.locked_on_target = value
         
-    def Damage_Taken(self, damage, effect = None, direction = (0, 0)):
+    def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
         # No damage done simply return
         self.Spawn_Damaged_Particles()
         if not super().Damage_Taken(damage, effect, direction):

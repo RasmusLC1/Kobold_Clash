@@ -4,6 +4,7 @@ from scripts.entities.moving_entities.enemies.skeleton.skeleton_ranger import Sk
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_bell_toller import Skeleton_Bell_Toller
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_cleric import Skeleton_Cleric
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_undertaker import Skeleton_Undertaker 
+from scripts.entities.moving_entities.enemies.skeleton.skeleton_warlock import Skeleton_Warlock 
 from scripts.entities.moving_entities.enemies.fire_spirit import Fire_Spirit
 from scripts.entities.moving_entities.enemies.ice_spirit import Ice_Spirit
 from scripts.entities.moving_entities.enemies.spider.spider import Spider
@@ -18,6 +19,9 @@ class Enemy_Handler():
         self.enemies = []
         self.pathfinding_queue = []
         self.pathfinding_queue_cooldown = 0
+
+        self.patrol_queue_cooldown = 0
+        self.patrol_queue = []
         self.nearby_enemies = []
         self.saved_data = {}
 
@@ -30,7 +34,8 @@ class Enemy_Handler():
             keys.wight_king : self.Spawn_Wight_King,
             keys.skeleton_bell_toller : self.Spawn_Skeleton_Bell_Toller,
             keys.skeleton_cleric : self.Spawn_Skeleton_Cleric,
-            keys.skeleton_undertaker : self.Spawn_Skeleton_Undertaker
+            keys.skeleton_undertaker : self.Spawn_Skeleton_Undertaker,
+            keys.skeleton_warlock : self.Spawn_Skeleton_Warlock,
         }
 
 
@@ -69,7 +74,7 @@ class Enemy_Handler():
             spawner_index = random.randint(0, spawners_length - 1)
             spawner = spawners[spawner_index]
             enemy_types = {
-                keys.skeleton_warrior: 0.39,
+                keys.skeleton_warrior: 0.4,
                 keys.skeleton_ranger: 0.2,
                 keys.fire_spirit: 0.05,
                 keys.ice_spirit: 0.05,
@@ -77,6 +82,7 @@ class Enemy_Handler():
                 keys.skeleton_bell_toller: 0.1,
                 keys.skeleton_cleric: 0.05,
                 keys.skeleton_undertaker: 0.05,
+                keys.skeleton_warlock: 1000.05,
                 keys.wight_king: 0.01,
             }
 
@@ -114,7 +120,7 @@ class Enemy_Handler():
     
 
     def Spawn_Skeleton_Warrior(self, pos):
-        health = 50
+        health = 100
         strength = 3
         speed = 2
         agility = 2 
@@ -131,7 +137,7 @@ class Enemy_Handler():
             stamina)
         
     def Spawn_Skeleton_Ranger(self, pos):
-        health = 30
+        health = 60
         strength = 2
         speed = 3
         agility = 2 
@@ -148,7 +154,7 @@ class Enemy_Handler():
             stamina)
     
     def Spawn_Skeleton_Bell_Toller(self, pos):
-        health = 40
+        health = 80
         strength = 3
         speed = 2
         agility = 2 
@@ -165,7 +171,7 @@ class Enemy_Handler():
             stamina)
     
     def Spawn_Skeleton_Cleric(self, pos):
-        health = 30
+        health = 60
         strength = 1
         speed = 2
         agility = 2 
@@ -181,8 +187,25 @@ class Enemy_Handler():
             intelligence,
             stamina)
     
+    def Spawn_Skeleton_Warlock(self, pos):
+        health = 60
+        strength = 1
+        speed = 1
+        agility = 2 
+        intelligence = 5
+        stamina = 2
+        return Skeleton_Warlock(
+            self.game,
+            pos, 
+            health,
+            strength,
+            speed,
+            agility,
+            intelligence,
+            stamina)
+    
     def Spawn_Skeleton_Undertaker(self, pos):
-        health = 70
+        health = 140
         strength = 5
         speed = 2
         agility = 2 
@@ -200,7 +223,7 @@ class Enemy_Handler():
         
         
     def Spawn_Fire_Spirit(self, pos):
-        health = 60
+        health = 120
         strength = 4
         speed = 5
         agility = 4 
@@ -218,7 +241,7 @@ class Enemy_Handler():
         
 
     def Spawn_Ice_Spirit(self, pos):
-        health = 100
+        health = 200
         strength = 7
         speed = 3
         agility = 3
@@ -238,7 +261,7 @@ class Enemy_Handler():
     def Spawn_Spider(self, pos):
         health = 80
         strength = 4
-        speed = 3
+        speed = 6
         agility = 3
         intelligence = 5
         stamina = 2
@@ -253,7 +276,7 @@ class Enemy_Handler():
                     stamina)
     
     def Spawn_Wight_King(self, pos):
-        health = 150
+        health = 300
         strength = 3
         speed = 3
         agility = 6
@@ -278,6 +301,7 @@ class Enemy_Handler():
 
     def Update(self):
         self.Update_Pathfinding_Queue()
+        self.Update_Patrol_Queue()
         for enemy in self.enemies:
             enemy.Update(self.game.tilemap)      
                 
@@ -302,8 +326,12 @@ class Enemy_Handler():
     def Add_To_Pathfinding_Queue(self, enemy, destination):
         if enemy in self.pathfinding_queue:
             return
+        
+        if enemy in self.patrol_queue:
+            self.patrol_queue.remove(enemy)
+
         self.pathfinding_queue.append(enemy)
-        enemy.Set_Destination(destination)
+        enemy.Set_Target(destination)
         enemy.Set_Locked_On_Target(2000)
 
     # Gradually let enemies pathfind towards the target destination
@@ -315,9 +343,10 @@ class Enemy_Handler():
             self.pathfinding_queue_cooldown = max(0, self.pathfinding_queue_cooldown - 1)
             return
         
-        self.pathfinding_queue_cooldown = 20
+        self.pathfinding_queue_cooldown = 40
         self.pathfinding_queue[0].Find_New_Path()
         self.pathfinding_queue.pop(0)
+
 
     # Sort the pathfinding queue to simulate sound spreading
     def Sort_Pathfinding_Queue(self):
@@ -325,7 +354,28 @@ class Enemy_Handler():
             key=lambda entity: (entity.pos[0] - self.game.player.pos[0]) ** 2 +
                             (entity.pos[1] - self.game.player.pos[1]) ** 2
         )
+    
+
+    # Seperate low priority queue for patrol to prevent patrol from clogging the active pathfinding
+    def Add_To_Pattrol_Queue(self, enemy, destination):
+        if enemy in self.patrol_queue or enemy in self.pathfinding_queue:
+            return
+        self.patrol_queue.append(enemy)
+        enemy.Set_Target(destination)
+        enemy.Set_Locked_On_Target(2000)
+
+    # Gradually let enemies pathfind towards the target destination
+    def Update_Patrol_Queue(self):
+        if not self.patrol_queue:
+            return
         
+        if self.patrol_queue_cooldown:
+            self.patrol_queue_cooldown = max(0, self.patrol_queue_cooldown - 1)
+            return
+        
+        self.patrol_queue_cooldown = 100
+        self.patrol_queue[0].Find_New_Path()
+        self.patrol_queue.pop(0)
 
 
     def Find_Enemy(self, ID):
@@ -334,3 +384,6 @@ class Enemy_Handler():
                 return enemy
             
         return None
+    
+    def Get_Random_Enemy(self):
+        return random.choice(self.enemies)

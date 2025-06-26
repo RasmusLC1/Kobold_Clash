@@ -4,10 +4,14 @@ from scripts.engine.assets.keys import keys
 
 
 class Soul_Reap_Shooter():
-    def Spawn_Soul_Reap(game, entity):
-        damage = 3 # Multiplied with entity strength for damage calc
+    def __init__(self, game):
+        self.game = game
+
+
+    def Spawn_Soul_Reap(self, entity, damage):
         speed = 1.5
         max_range = 240
+        print(damage)
        
 
         # Calculate the base angle using atan2(y, x)
@@ -17,7 +21,7 @@ class Soul_Reap_Shooter():
         pos_y = math.sin(base_angle) * speed
         direction = (pos_x, pos_y)
         ice_particle = Soul_Reap(
-                game,
+                self.game,
                 entity.rect(),
                 damage,
                 speed,
@@ -27,4 +31,4 @@ class Soul_Reap_Shooter():
                 entity
             )
         
-        game.item_handler.Add_Item(ice_particle)
+        self.game.item_handler.Add_Item(ice_particle)

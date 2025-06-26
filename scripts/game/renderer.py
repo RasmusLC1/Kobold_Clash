@@ -10,7 +10,7 @@ class Renderer():
         self.back_ground_image = pygame.transform.scale(self.game.assets['background'], (self.game.screen_width/self.game.render_scale, self.game.screen_height/self.game.render_scale))
 
     def Render(self):
-
+        
         render_scroll = self.game.render_scroll
         surf = self.game.display
         surf.blit(self.back_ground_image, (0, 0))
@@ -30,6 +30,7 @@ class Renderer():
         self.game.player.effects.Render_Effects_Symbols(surf)
         self.game.souls_interface.Render(surf)
         self.game.health_bar.Health_Bar(surf)
+
 
 
 

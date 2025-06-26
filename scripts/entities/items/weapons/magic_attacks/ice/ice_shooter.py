@@ -8,7 +8,7 @@ class Ice_Shooter(Particle_Shooter):
         super().__init__(game)
         self.ice_cooldown = 0
 
-    def Particle_Creation(self, special_attack, entity):
+    def Particle_Creation(self, entity, special_attack, damage):
         # Handle cooldown for spacing between fire particles
         if self.ice_cooldown:
             self.ice_cooldown -= 1
@@ -20,10 +20,10 @@ class Ice_Shooter(Particle_Shooter):
             if not special_attack:
                 return 0
             
-        self.Shoot_Particles(entity)
+        self.Shoot_Particles(entity, damage)
         return special_attack
     
-    def Shoot_Particles(self, entity, direction = None):
+    def Shoot_Particles(self, entity, damage, direction = None):
         
         ice_particle = self.Find_Particle()
 
@@ -40,7 +40,7 @@ class Ice_Shooter(Particle_Shooter):
             pos_y = math.sin(base_angle) * speed
             direction = (pos_x, pos_y)
 
-        ice_particle.Set_Enabled(entity.rect(), speed, 100, direction, entity, 100)
+        ice_particle.Set_Enabled(entity.rect(), speed, 100, direction, entity, 100, damage)
         
     
     # Append extra fire particle to the pool in case it runs out

@@ -31,7 +31,7 @@ class Path_Finding():
 
 
 
-    def Path_Finding(self, look_for_new_path = False):
+    def Path_Finding(self):
         self.Calculate_Distance_To_Player()
 
         self.Set_Position_Holder()
@@ -42,6 +42,7 @@ class Path_Finding():
         self.Update_Stuck_Timer()
         if self.Stuck_Check():
             return
+            # print("TESTTESTTEST ", self.entity.ID)
         
         if self.entity.Attack_Strategy():
             self.entity.Trap_Collision_Handler()
@@ -52,17 +53,17 @@ class Path_Finding():
             if self.player_found:
                 self.player_found = False
                 self.entity.Set_Target(self.game.player.pos)
-                look_for_new_path = True
-        
-   
 
-        # Only run this if we need a new path
-        if look_for_new_path:
-            self.Find_Shortest_Path()
-        
         if not self.Navigate_Path():
             self.Moving_Random()
 
+    # Path to a random part of the dungeon
+    # Path towards the position of a random enemy
+    # since they all need to be able to reach each other
+    # Makes the pathing easier
+    def Find_Patrol_Path(self):
+        enemy = self.game.enemy_handler.Get_Random_Enemy()
+        self.game.enemy_handler.Add_To_Pattrol_Queue(self.entity, enemy.pos.copy())
 
 
     def Navigate_Path(self):
@@ -112,12 +113,12 @@ class Path_Finding():
         self.Calculate_Destination_Position(self.entity.target)
         self.path = self.game.a_star.a_star_search([self.src_x, self.src_y], [self.des_x, self.des_y], self.entity.path_finding_strategy)
         if not self.path:
-            return
+            return False
         
         self.path = [(x + self.game.a_star.min_x, y + self.game.a_star.min_y) for (x, y) in self.path]
 
         
-        return
+        return True
     
 
     # Move the entity if they're to close to a wall
@@ -167,20 +168,21 @@ class Path_Finding():
         if self.stuck_timer < 20:
             return False
         
-        self.entity.random_movement_cooldown = 200
         self.Moving_Random()
+        self.entity.random_movement_cooldown = 200
         return True
     
     def Moving_Random(self):
+        self.entity.Reduce_Movement(4)
         self.entity.direction = (self.entity.direction_x, self.entity.direction_y)
         if self.entity.random_movement_cooldown:
             self.entity.random_movement_cooldown -= 1
             return
-        self.entity.direction_x = random.randint(-1, 1) / 10
-        self.entity.direction_y = random.randint(-1, 1) / 10
+        self.entity.direction_x = random.randint(-1, 1) 
+        self.entity.direction_y = random.randint(-1, 1) 
         
         self.entity.direction = (self.entity.direction_x, self.entity.direction_y)
-        self.entity.random_movement_cooldown = 20
+        self.entity.random_movement_cooldown = 100
 
         self.entity.Trap_Collision_Handler()
 

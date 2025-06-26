@@ -195,6 +195,11 @@ class keys():
     
     skeleton_ranger_3_attack = "skeleton_ranger_3_attack"
 
+    skeleton_warlock = "skeleton_warlock"
+
+    skeleton_warlock_attack = "skeleton_warlock_attack"
+
+
     # Skeleton Cleric Assets
     
     skeleton_cleric = "skeleton_cleric"
@@ -222,6 +227,11 @@ class keys():
     
     
     skeleton_undertaker_1_attack = "skeleton_undertaker_1_attack"
+
+    # Skeleton Warlock
+    skeleton_warlock = "skeleton_warlock"
+    
+    skeleton_warlock_attack = "skeleton_warlock_attack"
 
     # Fire Spirit
     
@@ -303,7 +313,7 @@ class keys():
     
     spear_attack_stab = "spear_attack_stab"
 
-    
+
     bow = "bow"
 
     
@@ -375,8 +385,29 @@ class keys():
     
     scythe = "scythe"
 
-    
     scythe_attack_cut = "scythe_attack_cut"
+    
+    staff = "staff"
+
+    fire_staff = "fire_staff"
+
+    fire_staff_attack_cut = "fire_staff_attack_cut"
+
+    frozen_staff = "frozen_staff"
+
+    frozen_staff_attack_cut = "frozen_staff_attack_cut"    
+
+    poison_staff = "poison_staff"
+
+    poison_staff_attack_cut = "poison_staff_attack_cut"    
+
+    vampiric_staff = "vampiric_staff"
+
+    vampiric_staff_attack_cut = "vampiric_staff_attack_cut"    
+
+    electric_staff = "electric_staff"
+
+    electric_staff_attack_cut = "electric_staff_attack_cut"
 
 
     # Weapon Effects

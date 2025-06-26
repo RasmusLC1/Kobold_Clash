@@ -10,7 +10,8 @@ class Attack_Stategies():
         self.entity = entity
 
 
-        self.player_found = False
+        self.player_found = 0
+        self.player_found_max = 400
 
         self.direct_pathing_cooldown = 0
 
@@ -18,19 +19,30 @@ class Attack_Stategies():
     def Attack_Strategy(self) -> bool:
         if self.game.player.effects.invisibility.effect:
             return False
-        if self.entity.attack_strategy == 'direct': # charge the player
+        
+        self.Update_Player_Found()
+        attack_strategy = self.entity.attack_strategy 
+        if attack_strategy == 'direct': # charge the player
             return self.Direct_Pathing()
-        elif self.entity.attack_strategy == 'long_range': # keep long distance
+        elif attack_strategy == 'long_range': # keep long distance
             return self.Keep_Distance(200, 160)
-        elif self.entity.attack_strategy == 'medium_range': # keep medium distance
+        elif attack_strategy == 'medium_range': # keep medium distance
             return self.Keep_Distance(120, 80)
-        elif self.entity.attack_strategy == 'short_range':
+        elif attack_strategy == 'short_range':
             return self.Keep_Distance(80, 40)
-        elif self.entity.attack_strategy == 'keep_position':
+        elif attack_strategy == 'keep_position':
             self.entity.direction = (0, 0)
-            return True
+        elif attack_strategy == 'idle':
+            return False
         else:
             return self.Direct_Pathing()
+        
+
+    def Update_Player_Found(self):
+        if not self.player_found:
+            return False
+        self.player_found -= 1
+        return True
 
     def Keep_Distance(self, max_range, closest_range):
         # Cooldown since the player's relative position does not need constant update
@@ -84,10 +96,11 @@ class Attack_Stategies():
         # Player is close, so the enemy charge directly
         
     def Run_Away(self, distance):
-        if self.entity.distance_to_player < distance:
+        if self.entity.distance_to_player < distance or self.player_found:
             # Check if the enemy has 
-            if not self.Line_Of_Sight(self.game.player.pos):
+            if not self.Handle_Line_Of_Sight():
                 return False
+
             dx = (self.game.player.pos[0] - self.entity.pos[0]) * -1
             dy = (self.game.player.pos[1] - self.entity.pos[1]) * -1
             self.entity.direction = pygame.math.Vector2(dx, dy)
@@ -95,7 +108,6 @@ class Attack_Stategies():
                 return False
             
             self.entity.direction.normalize_ip()
-            self.player_found = True
             if not self.entity.alert_cooldown:
                 self.entity.Set_Alert_Cooldown(400)
                 self.game.clatter.Generate_Clatter(self.entity.pos, 400) # Generate clatter to alert nearby enemies
@@ -104,12 +116,19 @@ class Attack_Stategies():
         
         return False
 
-
+    # Enemies check for line of sight and sets player found cooldown accordingly
+    def Handle_Line_Of_Sight(self):
+        if not self.Line_Of_Sight(self.game.player.pos):
+            if not self.player_found:
+                return False
+        else:
+            self.player_found = self.player_found_max
+            return True
 
     def Charge_player(self, distance):
-        if self.entity.distance_to_player < distance:
+        if self.entity.distance_to_player < distance or self.player_found:
             # Check if the enemy has 
-            if not self.Line_Of_Sight(self.game.player.pos):
+            if not self.Handle_Line_Of_Sight():
                 return False
             dx = self.game.player.pos[0] - self.entity.pos[0]
             dy = self.game.player.pos[1] - self.entity.pos[1]
@@ -117,7 +136,6 @@ class Attack_Stategies():
             if self.entity.direction[0] == 0 and self.entity.direction[1] == 0:
                 return False
             self.entity.direction.normalize_ip()
-            self.player_found = True
             # Only update every 1000 ticks since you don't want
             # the enemies to spam the ability and lag the game
             if not self.entity.alert_cooldown:

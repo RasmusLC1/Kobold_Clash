@@ -58,7 +58,7 @@ class Fire_Spirit(Enemy):
     def Shoot_Fire(self):
         self.Set_Target(self.game.player.pos)
         self.Set_Attack_Direction()
-        self.charge = self.flame_thrower.Particle_Creation(self, self.charge)
+        self.charge = self.flame_thrower.Particle_Creation(self, self.charge, 5)
 
 
     # TODO: IMPLEMENT
@@ -77,8 +77,7 @@ class Fire_Spirit(Enemy):
             for trap in nearby_traps:
 
                 if trap.type == keys.lava_env:
-                    self.Set_Destination(trap.pos)
-                    self.Find_New_Path()
+                    self.game.enemy_handler.Add_To_Pathfinding_Queue(self, trap.pos)
                     self.locked_on_target = True
                     break
 

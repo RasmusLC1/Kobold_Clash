@@ -113,7 +113,7 @@ class Ranged_Weapon(Weapon):
 
         arrow = Arrow(self.game, (self.pos[0] + 2, self.pos[1]), 1, (16, 16))
         self.arrow = arrow
-        self.entity.Attack_Direction_Handler(self.game.render_scroll)
+        self.entity.Attack_Direction_Handler()
 
         self.arrow.Shooting_Setup(self.entity, self.entity.attack_direction)
         return True

@@ -1,4 +1,5 @@
 from scripts.engine.assets.keys import keys
+import pygame
 
 class Damage_Handler_Weapon():
     def __init__(self, weapon, effect, damage):
@@ -14,10 +15,24 @@ class Damage_Handler_Weapon():
         for damage_type in self.damage:
             damage = self.Calculate_Damage(damage_type)
             effect = self.Check_Effects(damage_type)
-            entity.Damage_Taken(damage, effect, weapon_entity.attack_direction)
+            knockback_direction = self.Calculate_Damage_Direction(entity)
+            entity.Damage_Taken(damage, effect, knockback_direction)
 
             if entity.effects.thorns.effect:
                 weapon_entity.Damage_Taken(entity.effects.thorns.effect)
+
+
+    def Calculate_Damage_Direction(self, entity):
+        entity_pos_vec = pygame.math.Vector2(entity.pos)
+        weapon_entity_pos_vec = pygame.math.Vector2(self.weapon.entity.pos)
+
+        direction = entity_pos_vec - weapon_entity_pos_vec
+
+        # Normalize to get unit direction (if not zero vector)
+        if direction.length() != 0:
+            direction = direction.normalize()
+
+        return direction
 
 
     def Decoration_Hit(self, decoration):
@@ -44,7 +59,7 @@ class Damage_Handler_Weapon():
         return (damage_type, effect_strength)
 
     def Calculate_Damage(self, damage_type):
-        return self.weapon.entity.strength * self.damage[damage_type]
+        return round(max(1, self.damage[damage_type] * (self.weapon.damage + self.weapon.entity.strength) / 2))
     
     def Get_Damage(self):
         return sum(self.damage.values())
@@ -56,6 +71,6 @@ class Damage_Handler_Weapon():
             self.damage[damage_type] = damage
 
     # Iterate over the damage dictionary once and get the first key
-    def Get_First_Effect(self):
-        return next(iter(self.damage), None)
+    def Get_Dominant_Effect(self):
+        return max(self.damage, key=self.damage.get, default=None)
     

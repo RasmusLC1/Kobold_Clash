@@ -8,11 +8,11 @@ class Soul_Reap_Rune(Projectile_Rune):
         self.animation_time_max = 30
         self.animation_size_max = 15
         self.activate_cooldown_max = 100
+        self.soul_reap_shooter = Soul_Reap_Shooter(game)
 
-    def Set_Charge(self):
-        self.charge = self.current_power * 100
 
     def Generate_Projectile(self):
-        self.charge = Soul_Reap_Shooter.Spawn_Soul_Reap(self.game ,self.game.player)
+        self.soul_reap_shooter.Spawn_Soul_Reap(self.game.player, self.current_power * 10)
         self.Set_Activate_Cooldown(self.activate_cooldown_max)
+        self.Reset_Charge()
         return

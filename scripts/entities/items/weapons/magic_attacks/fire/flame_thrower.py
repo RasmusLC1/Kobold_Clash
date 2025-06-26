@@ -8,7 +8,7 @@ class Flame_Thrower(Particle_Shooter):
         super().__init__(game)
         self.fire_cooldown = 0
 
-    def Particle_Creation(self, entity, special_attack):
+    def Particle_Creation(self, entity, special_attack, damage):
         if self.fire_cooldown:
             self.fire_cooldown -= 1
             return special_attack
@@ -18,11 +18,11 @@ class Flame_Thrower(Particle_Shooter):
             if special_attack <= 0:
                 return 0
             
-        self.Shoot_Particles(entity, special_attack)
+        self.Shoot_Particles(entity, special_attack, damage)
         return special_attack
 
 
-    def Shoot_Particles(self, entity, special_attack):
+    def Shoot_Particles(self, entity, special_attack, damage):
         # Basic raycasting attributes
         num_lines = 8  # Define the number of lines and the spread angle (in degrees)
         spread_angle = 50  # Total spread of the fan (in degrees)
@@ -46,7 +46,7 @@ class Flame_Thrower(Particle_Shooter):
             pos_y = math.sin(angle) * speed
             direction = (pos_x, pos_y)
             
-            fire_particle.Set_Enabled(entity.rect(), speed, special_attack, direction, entity, 50)
+            fire_particle.Set_Enabled(entity.rect(), speed, special_attack, direction, entity, 50, damage)
 
     
     # Append extra fire particle to the pool in case it runs out

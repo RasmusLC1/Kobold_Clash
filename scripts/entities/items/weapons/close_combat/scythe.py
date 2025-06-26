@@ -7,6 +7,7 @@ class Scythe(Weapon):
         super().__init__(game, pos, keys.scythe, 4, 2, 6, 100, 'two_handed_melee', damage_type)
         self.max_animation = 7
         self.attack_animation_max = 9
+        self.soul_reap_shooter = Soul_Reap_Shooter(game)
 
     # Handle special attack charge
     def Special_Attack(self):
@@ -20,5 +21,5 @@ class Scythe(Weapon):
 
     # Initialise the charge logic
     def Spawn_Soul_Reap(self):
-        Soul_Reap_Shooter.Spawn_Soul_Reap(self.game, self.entity)
+        self.soul_reap_shooter.Spawn_Soul_Reap(self.entity, 5)
         self.special_attack = 0

@@ -14,7 +14,7 @@ class Freeze_Spray_Rune(Projectile_Rune):
         self.charge = self.current_power * 100
 
     def Generate_Projectile(self):
-        self.charge = self.ice_shooter.Particle_Creation(self.charge ,self.game.player)
+        self.charge = self.ice_shooter.Particle_Creation(self.charge ,self.game.player, self.current_power * 10)
         if self.charge <= 0:
             self.Set_Activate_Cooldown(self.activate_cooldown_max)
         else:

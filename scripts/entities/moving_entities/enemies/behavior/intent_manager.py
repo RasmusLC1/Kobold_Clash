@@ -6,20 +6,23 @@ class Intent_Manager():
         self.game = game
         self.entity = entity
 
+        self.current_intent = ''
         self.intent = [] # Enemy's attack pattern and intent
         self.intent_index = 0
         self.intent_length = 0
         self.intent_cooldown = 0
-        self.intent_cooldown_max = 200 # Lower value means faster response rate
+        self.intent_cooldown_max = 100 # Lower value means faster response rate
         self.attack_cooldown = 0
         self.attack_cooldown_max = round(self.entity.max_weapon_charge * 1.2)
+        # Lookup for 
         self.base_cooldown = {
             "direct": 0,
             "attack": 0,
+            "idle": 0,
             'long_range': self.intent_cooldown_max * 2,
             "medium_range": self.intent_cooldown_max,
-            "short_range": self.intent_cooldown_max,
-            "keep_position": self.intent_cooldown_max * 0.5,
+            "short_range": round(self.intent_cooldown_max * 0.5),
+            "keep_position": self.intent_cooldown_max,
         }
         # Lambda stores the function to be called later
         self.actions = {
@@ -46,6 +49,7 @@ class Intent_Manager():
     # Update the entity's behavior
     def Update_Behavior(self):
         if self.entity.distance_to_player > 300:  # skip if out of range
+            self.Set_Idle()
             return
 
         self.Handle_Attack()
@@ -53,19 +57,30 @@ class Intent_Manager():
         if not self.Update_Intent_Cooldown():
             return
 
-        current_intent = self.intent[self.intent_index]
-        action_function = self.actions.get(current_intent)
+        self.Set_Current_Intent(self.intent[self.intent_index])
+        action_function = self.actions.get(self.current_intent)
         if action_function:
             action_function()
         else:
-            print(f"Intent '{current_intent}' missing or unrecognized.")
+            print(f"Intent '{self.current_intent}' missing or unrecognized.")
         return
+
+    def Set_Current_Intent(self, intent):
+        self.current_intent = intent 
 
     # setting the player's attack strategy
     def Set_Attack_Strategy(self, strategy):
         self.entity.Set_Attack_Strategy(strategy)
         self.Set_Intent_Cooldown()
         self.Increment_Intent()
+
+    def Set_Idle(self):
+        if self.current_intent == 'idle' and not self.entity.target:
+            return
+        self.Set_Current_Intent('idle')
+        self.intent_index = random.randint(0, self.intent_length - 1)
+        self.entity.path_finding.Find_Patrol_Path()
+
 
     def Set_Intent(self, intent):
         self.intent = intent
@@ -86,9 +101,10 @@ class Intent_Manager():
         if not max_cooldown:
             return
         try:
-            self.intent_cooldown = random.randint(max_cooldown, (max_cooldown +  max_cooldown // 3))
+            offset = round(max_cooldown // 3)
+            self.intent_cooldown = random.randint(max_cooldown - offset, max_cooldown +  offset)
         except Exception as e:
-                print(f"WRONG INTENT COOLDOWN: {e}", max_cooldown, (max_cooldown +  max_cooldown // 3))
+            print(f"WRONG INTENT COOLDOWN: {e}", max_cooldown, offset)
 
     # Return false on when cooldown is active
     def Update_Intent_Cooldown(self):

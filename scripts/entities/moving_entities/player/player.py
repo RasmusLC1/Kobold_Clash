@@ -123,13 +123,6 @@ class Player(Moving_Entity):
     def Remove_Active_Weapon(self):
         self.weapon_handler.Remove_Active_Weapon()
 
-    def Attack_Direction_Handler(self, offset = (0,0)):
-        super().Attack_Direction_Handler(offset)
-
-    def Set_Charge(self, charge_speed, offset=(0, 0)):
-        super().Set_Charge(charge_speed, offset)
-        
-
     def Set_Health(self, health):
         self.health = health
 
@@ -138,7 +131,7 @@ class Player(Moving_Entity):
             return
         
         if weapon.attacking and not self.attacking:
-            self.Attack_Direction_Handler(offset)
+            self.Attack_Direction_Handler()
 
 
             direction_x = 5 * self.attack_direction[0]
@@ -191,7 +184,8 @@ class Player(Moving_Entity):
 
     def Find_Nearby_Chests(self, range):
         self.nearby_chests = self.game.chest_handler.Find_Nearby_Chests(self.pos, range)
-    
+
+
     def Check_If_Dead(self):
         # Check if the player can be revived
         if self.health <= 0:

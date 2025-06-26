@@ -9,7 +9,7 @@ class Electric_Shooter(Particle_Shooter):
         super().__init__(game)
         self.electric_cooldown = 0
 
-    def Particle_Creation(self, entity, special_attack):
+    def Particle_Creation(self, entity, special_attack, damage):
         # Handle cooldown for spacing between fire particles
         if self.electric_cooldown:
             self.electric_cooldown -= 1
@@ -20,10 +20,10 @@ class Electric_Shooter(Particle_Shooter):
             if not special_attack:
                 return 0
             
-        self.Shoot_Particles(entity, special_attack)
+        self.Shoot_Particles(entity, special_attack, damage)
         return special_attack
             
-    def Shoot_Particles(self, entity, special_attack):
+    def Shoot_Particles(self, entity, special_attack, damage):
         speed = 2
 
         electric_particle = self.Find_Particle()
@@ -38,7 +38,7 @@ class Electric_Shooter(Particle_Shooter):
         pos_x = math.cos(base_angle) * speed
         pos_y = math.sin(base_angle) * speed
         direction = (pos_x, pos_y)
-        electric_particle.Set_Enabled(entity.rect(), speed, special_attack, direction, entity, 100)
+        electric_particle.Set_Enabled(entity.rect(), speed, special_attack, direction, entity, 100, damage)
         
         
         

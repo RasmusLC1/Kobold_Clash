@@ -5,7 +5,7 @@ import random
 class Plinth(Decoration):
     def __init__(self, game, pos):
         super().__init__(game, keys.plinth, pos, (32, 32), True, 20)
-        self.Spawn_Rune()
+        
         
 
     def Spawn_Rune(self):

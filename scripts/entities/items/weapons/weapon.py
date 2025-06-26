@@ -17,6 +17,7 @@ class Weapon(Item):
         super().__init__(game, type, keys.weapon, pos, size, 1, add_to_tile)
         self.speed = 10 - speed # Speed of the weapon
         self.range = range # Range of the weapon
+        self.damage = damage
         self.entity = None # Entity that holds the weapon
         self.attack_type = attack_type # Different kinds of attacks, like cutting and stabbing
         self.in_inventory = False # Is the weapon in an inventory
@@ -135,7 +136,7 @@ class Weapon(Item):
         tile = self.game.tilemap.Current_Tile(tile_key)
         if not tile:
             return True
-        if 'wall' in tile.type:
+        if not self.wall_hit and 'wall' in tile.type:
             self.wall_hit = True
             target_position = (self.pos[0] - self.game.tilemap.tile_size * self.entity.attack_direction[0], self.pos[1] - self.game.tilemap.tile_size * self.entity.attack_direction[1])
             self.game.clatter.Generate_Clatter(target_position, 400)
@@ -146,7 +147,7 @@ class Weapon(Item):
     
 
     def Handle_Attack_Animation(self):
-        self.attack_effect_handler.Set_Attack_Effect_Animation_Time()
+        self.attack_effect_handler.Init_Attack_Effect_Animation()
         self.Set_Rotation()
         self.rotate += 90
 
@@ -233,7 +234,7 @@ class Weapon(Item):
     def Set_Special_Attack(self, offset = (0, 0)):
         if not self.entity:
             return
-        self.entity.Attack_Direction_Handler(offset)
+        self.entity.Attack_Direction_Handler()
         self.Set_Block_Direction()
         self.special_attack = min(self.charge_time, self.max_charge_time)
         self.Set_Rotation()
@@ -262,6 +263,7 @@ class Weapon(Item):
         return self.damage_handler.Decoration_Hit(decoration)
 
     def Set_Description(self):
+        
         self.description = (
                             f"Damage {self.damage_handler.Get_Damage()}\n"
                             f"speed {self.speed}\n"
@@ -272,7 +274,7 @@ class Weapon(Item):
 
     # Set the attack direction   
     def Set_Block_Direction(self):
-        self.entity.Attack_Direction_Handler(self.game.render_scroll)
+        self.entity.Attack_Direction_Handler()
         if not self.entity.attack_direction[0] or not self.entity.attack_direction[1]:
             return
         # self.entity.attack_direction = pygame.math.Vector2(self.entity.attack_direction[0], self.entity.attack_direction[1])
@@ -305,8 +307,8 @@ class Weapon(Item):
         else:
             self.flip_x = False
 
-    def Get_First_Effect(self):
-        return self.damage_handler.Get_First_Effect()
+    def Get_Dominant_Effect(self):
+        return self.damage_handler.Get_Dominant_Effect()
 
     # Handle deletion of items when enemies drop weapons, don't want them to linger forever
     def Update_Delete_Countdown(self):
