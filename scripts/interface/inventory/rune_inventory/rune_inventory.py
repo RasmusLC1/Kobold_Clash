@@ -33,12 +33,12 @@ class Rune_Inventory(Base_Inventory):
         
         return inventory_slot.Add_Item(new_rune)
 
-    def Update_Descriptions(self):
+    def Set_Descriptions(self):
         for inventory_slot in self.inventory:  # Each value is a list of slots
             item = inventory_slot.item
             if not item:
                 continue
-            item.Update_Description()
+            item.Set_Description()
 
 
 

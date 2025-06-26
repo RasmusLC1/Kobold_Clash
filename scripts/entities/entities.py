@@ -147,7 +147,7 @@ class PhysicsEntity:
         else:
             return True
     
-    def Update_Description(self):
+    def Set_Description(self):
         pass
 
     def Update_Text_Box(self, hitbox_1, hitbox_2):

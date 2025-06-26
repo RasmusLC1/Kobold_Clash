@@ -485,6 +485,10 @@ class Moving_Entity(PhysicsEntity):
     def Set_Healing_Enabled(self, state):
         self.healing_enabled = state
 
+    def Update_Health(self, value):
+        self.health = min(self.max_health, self.health + value)
+        self.Set_Description()
+
     def Set_Action(self, movement):
         if not movement[0] and not movement[1]:
             if self.direction_y_holder < 0:

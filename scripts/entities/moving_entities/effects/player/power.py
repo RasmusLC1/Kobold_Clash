@@ -11,7 +11,7 @@ class Power(Effect):
         if not super().Set_Effect(effect_time, permanent):
             return False
         
-        self.entity.game.inventory.rune_inventory.Update_Descriptions()
+        self.entity.game.inventory.rune_inventory.Set_Descriptions()
 
         return True
     
@@ -19,6 +19,6 @@ class Power(Effect):
         if not super().Remove_Effect(reduce_permanent):
             return False
         
-        self.entity.game.inventory.rune_inventory.Update_Descriptions()
+        self.entity.game.inventory.rune_inventory.Set_Descriptions()
         
         return True

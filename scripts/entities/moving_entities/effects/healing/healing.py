@@ -15,5 +15,5 @@ class Healing(Effect):
         if self.entity.health >= self.entity.max_health:
             return False    
          
-        self.entity.health = min(self.entity.max_health, self.entity.health + effect_time)
+        self.entity.Update_Health(effect_time)
         return True

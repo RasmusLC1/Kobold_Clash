@@ -31,12 +31,12 @@ class Skeleton_Cleric(Skeleton):
     def Heal_Nearby_Enemies(self):
         if self.healing_cooldown:
             return
-        self.nearby_enemies = self.game.enemy_handler.Find_Nearby_Enemies(self, 5)
+        self.nearby_enemies = self.game.enemy_handler.Find_Nearby_Enemies(self, 200)
         if not self.nearby_enemies:
-            self.healing_cooldown = 500
+            self.healing_cooldown = 200
             return
         self.game.particle_handler.Activate_Particles(10, keys.gold_particle, self.rect().center, frame=random.randint(20, 40))
         for enemy in self.nearby_enemies:
             enemy.effects.Set_Effect(keys.healing, 15)
-        self.healing_cooldown = 1000
+        self.healing_cooldown = 300
 
