@@ -1,26 +1,34 @@
 from scripts.entities.moving_entities.enemies.skeleton.skeleton import Skeleton
-from scripts.entities.items.weapons.ranged_weapons.bow import Bow
+from scripts.entities.items.weapons.close_combat.staff import Staff
 from scripts.engine.assets.keys import keys
 
 import random
 
 
-class Skeleton_Ranger(Skeleton):
+class Skeleton_Warlock(Skeleton):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.skeleton_warlock, health, strength, max_speed, agility, intelligence, stamina, 60)
+        super().__init__(game, pos, keys.skeleton_warlock, health, strength, max_speed, agility, intelligence, stamina, 80)
         self.animation_handler.Set_Animation_Num_Max(3)
-        self.animation_handler.Set_Attack_Animation_Num_Max(3)
+        self.animation_handler.Set_Attack_Animation_Num_Max(4)
         self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(100)
         self.animation_handler.Set_Animation_Num_Cooldown_Max(150)
         self.attack_distance  = 200
+        self.min_attack_range = 50
         self.attack_strategy = 'long_range'
         self.intent_manager.Set_Intent([ 'attack'])
 
+
         
         self.shooting_distance = False
-        self.Equip_Weapon(Bow(self.game, self.pos))
+        self.Equip_Weapon(Staff(self.game, self.pos))
         
+    def Equip_Weapon(self, weapon):
+        super().Equip_Weapon(weapon)
 
+        if self.active_weapon.sub_type == keys.fire_staff:
+            self.attack_distance  = 100
+            self.min_attack_range = 30
+            self.attack_strategy = 'medium_range'
 
     def Attack(self):
         if self.game.player.effects.invisibility.effect:
@@ -29,20 +37,20 @@ class Skeleton_Ranger(Skeleton):
         if not self.active_weapon:
             return False
 
-        if self.weapon_cooldown:
-            return False
         
         # If Player is to close, then archer cannot shoot
-        if self.distance_to_player < 50:
+        if self.distance_to_player < self.min_attack_range:
             return False
 
-        self.Set_Target(self.game.player.pos)
-        if self.active_weapon.type == keys.magic_staff:
+        if "staff" in self.active_weapon.type:
             self.charge += 1
             self.active_weapon.Set_Charging_Enemy()
-            if self.active_weapon.Enemy_Shooting():
-                self.Reset_Charge()
-
-                self.weapon_cooldown = 100
+            if self.charge < self.max_weapon_charge:
+                return False
+            self.Set_Target(self.game.player.pos)
+            self.Attack_Direction_Handler()
+            
+            self.active_weapon.Shoot_Projectiles()
+            self.Reset_Charge()
         
         return True

@@ -58,7 +58,7 @@ class Fire_Spirit(Enemy):
     def Shoot_Fire(self):
         self.Set_Target(self.game.player.pos)
         self.Set_Attack_Direction()
-        self.charge = self.flame_thrower.Particle_Creation(self, self.charge)
+        self.charge = self.flame_thrower.Particle_Creation(self, self.charge, 5)
 
 
     # TODO: IMPLEMENT

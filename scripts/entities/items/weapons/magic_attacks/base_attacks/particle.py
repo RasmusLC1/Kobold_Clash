@@ -4,13 +4,16 @@ from scripts.engine.assets.keys import keys
 
 class Particle(Projectile):
     def __init__(self, game, pos, type, damage, speed, range, max_charge_time, damage_type, shoot_distance):
-        super().__init__(game, pos, type, damage, speed, range, max_charge_time, keys.particle, damage_type, shoot_distance, keys.cut, (4, 4), False)
+        super().__init__(game, pos, type, 0, speed, range, max_charge_time, keys.particle, damage_type, shoot_distance, keys.cut, (4, 4), False)
         self.attack_animation_max = 3
         self.disabled = True
         self.pickup_allowed = False
+        self.damage_type = damage_type
+        self.temp_damage = 0
 
     def Save_Data(self):
         pass
+    
 
     def Update(self, offset=...):
         if self.disabled:
@@ -56,9 +59,12 @@ class Particle(Projectile):
         self.Set_Entity(None)
         self.Set_Speed(0)
         self.game.item_handler.Remove_Item(self)
+        self.Set_Damage(self.damage_type, -1 * self.temp_damage)
+        self.temp_damage = 0
 
 
-    def Set_Enabled(self, pos, speed, special_attack, direction, entity, delete_countdown):
+
+    def Set_Enabled(self, pos, speed, special_attack, direction, entity, delete_countdown, damage):
         self.disabled = False
         self.game.item_handler.Add_Item(self)
         self.delete_countdown = delete_countdown
@@ -67,6 +73,8 @@ class Particle(Projectile):
         self.Set_Direction(direction)
         self.Set_Entity(entity)
         self.Set_special_attack(special_attack)
+        self.Set_Damage(self.damage_type, damage)
+        self.temp_damage = damage
 
 
     def Update_Text_Box(self, hitbox_1, hitbox_2):

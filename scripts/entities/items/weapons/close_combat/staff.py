@@ -45,12 +45,12 @@ class Staff(Weapon):
         #     return
 
         if self.type == keys.vampiric_staff:
-            self.shooter.Spawn_Soul_Reap(self.entity, 20)
+            self.shooter.Spawn_Soul_Reap(self.entity, self.particle_damage)
             self.special_attack = 0
         else:
             if not self.charge_attack:
                 self.charge_attack = 80
-            self.charge_attack = self.shooter.Particle_Creation(self.entity, self.charge_attack)
+            self.charge_attack = self.shooter.Particle_Creation(self.entity, self.charge_attack, self.particle_damage)
         # self.Set_Cooldown()
         # Pays a soul cost for using the staff
         if self.entity.type == keys.player and self.charge_attack <= 0:
@@ -80,6 +80,7 @@ class Staff(Weapon):
         }
         self.sub_type, shooter_class = random.choice(list(types.items()))
         self.shooter = shooter_class(game)
+        self.Set_Particle_Damage()
 
 
     def Set_Type(self, game):
@@ -92,3 +93,13 @@ class Staff(Weapon):
 
         shooter_class = types.get(self.sub_type)
         self.shooter = shooter_class(game)
+        self.Set_Particle_Damage()        
+
+    def Set_Particle_Damage(self):
+        particle_damge = {
+            keys.electric_staff: 15,
+            keys.fire_staff: 5,
+            keys.frozen_staff: 20,
+            keys.vampiric_staff: 20,
+        }
+        self.particle_damage = particle_damge.get(self.sub_type)

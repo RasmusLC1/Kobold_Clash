@@ -197,6 +197,9 @@ class Moving_Entity(PhysicsEntity):
 
         self.update_tile_cooldown = 10
         new_tile_key = str(int(self.pos[0] // self.game.tilemap.tile_size)) + ';' + str(int(self.pos[1] // self.game.tilemap.tile_size))
+        if not self.tile:
+            print("ERROR TILE NOT FOUND")
+            return
         if new_tile_key != self.tile.pos:
             new_tile = self.game.tilemap.Current_Tile(new_tile_key)
             if not new_tile:

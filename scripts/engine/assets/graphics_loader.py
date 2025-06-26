@@ -16,6 +16,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Skeleton_Bell_Toller_List(self)
         Graphics_Loader.Asset_Skeleton_Cleric_List(self)
         Graphics_Loader.Asset_Skeleton_Undertaker_List(self)
+        Graphics_Loader.Asset_Skeleton_Warlock_List(self)
         Graphics_Loader.Wight_King_Spirit_List(self)
         Graphics_Loader.Asset_Spider_List(self)
         Graphics_Loader.Asset_Enemy_Symbols_List(self)
@@ -178,8 +179,8 @@ class Graphics_Loader:
 
     def Asset_Skeleton_Warlock_List(self):
         entities_assets = {
-            keys.skeleton_warlock: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warlock.png', 3, 0, 0, 0, 32, 32),
-            keys.skeleton_warlock_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warlock_attack.png', 4, 0, 0, 0, 32, 32),
+            keys.skeleton_warlock: get_tiles_from_sheet('entities/enemies/undead/skeleton_warlock/skeleton_warlock.png', 3, 0, 0, 0, 32, 32),
+            keys.skeleton_warlock_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_warlock/skeleton_warlock_attack.png', 4, 0, 0, 0, 32, 32),
 
         }
         self.assets.update(entities_assets)

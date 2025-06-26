@@ -11,6 +11,7 @@ class Soul_Reap_Shooter():
     def Spawn_Soul_Reap(self, entity, damage):
         speed = 1.5
         max_range = 240
+        print(damage)
        
 
         # Calculate the base angle using atan2(y, x)

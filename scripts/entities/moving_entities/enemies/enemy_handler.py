@@ -4,6 +4,7 @@ from scripts.entities.moving_entities.enemies.skeleton.skeleton_ranger import Sk
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_bell_toller import Skeleton_Bell_Toller
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_cleric import Skeleton_Cleric
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_undertaker import Skeleton_Undertaker 
+from scripts.entities.moving_entities.enemies.skeleton.skeleton_warlock import Skeleton_Warlock 
 from scripts.entities.moving_entities.enemies.fire_spirit import Fire_Spirit
 from scripts.entities.moving_entities.enemies.ice_spirit import Ice_Spirit
 from scripts.entities.moving_entities.enemies.spider.spider import Spider
@@ -33,7 +34,8 @@ class Enemy_Handler():
             keys.wight_king : self.Spawn_Wight_King,
             keys.skeleton_bell_toller : self.Spawn_Skeleton_Bell_Toller,
             keys.skeleton_cleric : self.Spawn_Skeleton_Cleric,
-            keys.skeleton_undertaker : self.Spawn_Skeleton_Undertaker
+            keys.skeleton_undertaker : self.Spawn_Skeleton_Undertaker,
+            keys.skeleton_warlock : self.Spawn_Skeleton_Warlock,
         }
 
 
@@ -80,6 +82,7 @@ class Enemy_Handler():
                 keys.skeleton_bell_toller: 0.1,
                 keys.skeleton_cleric: 0.05,
                 keys.skeleton_undertaker: 0.05,
+                keys.skeleton_warlock: 1000.05,
                 keys.wight_king: 0.01,
             }
 
@@ -117,7 +120,7 @@ class Enemy_Handler():
     
 
     def Spawn_Skeleton_Warrior(self, pos):
-        health = 50
+        health = 100
         strength = 3
         speed = 2
         agility = 2 
@@ -134,7 +137,7 @@ class Enemy_Handler():
             stamina)
         
     def Spawn_Skeleton_Ranger(self, pos):
-        health = 30
+        health = 60
         strength = 2
         speed = 3
         agility = 2 
@@ -151,7 +154,7 @@ class Enemy_Handler():
             stamina)
     
     def Spawn_Skeleton_Bell_Toller(self, pos):
-        health = 40
+        health = 80
         strength = 3
         speed = 2
         agility = 2 
@@ -168,7 +171,7 @@ class Enemy_Handler():
             stamina)
     
     def Spawn_Skeleton_Cleric(self, pos):
-        health = 30
+        health = 60
         strength = 1
         speed = 2
         agility = 2 
@@ -184,8 +187,25 @@ class Enemy_Handler():
             intelligence,
             stamina)
     
+    def Spawn_Skeleton_Warlock(self, pos):
+        health = 60
+        strength = 1
+        speed = 1
+        agility = 2 
+        intelligence = 5
+        stamina = 2
+        return Skeleton_Warlock(
+            self.game,
+            pos, 
+            health,
+            strength,
+            speed,
+            agility,
+            intelligence,
+            stamina)
+    
     def Spawn_Skeleton_Undertaker(self, pos):
-        health = 70
+        health = 140
         strength = 5
         speed = 2
         agility = 2 
@@ -203,7 +223,7 @@ class Enemy_Handler():
         
         
     def Spawn_Fire_Spirit(self, pos):
-        health = 60
+        health = 120
         strength = 4
         speed = 5
         agility = 4 
@@ -221,7 +241,7 @@ class Enemy_Handler():
         
 
     def Spawn_Ice_Spirit(self, pos):
-        health = 100
+        health = 200
         strength = 7
         speed = 3
         agility = 3
@@ -241,7 +261,7 @@ class Enemy_Handler():
     def Spawn_Spider(self, pos):
         health = 80
         strength = 4
-        speed = 3
+        speed = 6
         agility = 3
         intelligence = 5
         stamina = 2
@@ -256,7 +276,7 @@ class Enemy_Handler():
                     stamina)
     
     def Spawn_Wight_King(self, pos):
-        health = 150
+        health = 300
         strength = 3
         speed = 3
         agility = 6
