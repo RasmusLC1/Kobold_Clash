@@ -51,7 +51,6 @@ class Decoration_Handler():
         }
 
 
-
         self.light_sources = {
             keys.torch : 0.1,
             keys.brazier : 0.3,
@@ -59,9 +58,6 @@ class Decoration_Handler():
         }
 
         self.item_sacrifice = []
-
-
-
 
 
     def Clear_Decorations(self):

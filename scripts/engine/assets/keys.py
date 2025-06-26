@@ -228,6 +228,11 @@ class keys():
     
     skeleton_undertaker_1_attack = "skeleton_undertaker_1_attack"
 
+    # Skeleton Warlock
+    skeleton_warlock = "skeleton_warlock"
+    
+    skeleton_warlock_attack = "skeleton_warlock_attack"
+
     # Fire Spirit
     
     fire_spirit = "fire_spirit"
