@@ -282,8 +282,6 @@ Upgrade weapons
     # Block, block damage, if the player has shield block all damage, if not then it only blocks melee
 
     Teleport to a random destination, has x amount of charges
-    Jump, can jump over 2 blocks with light armour, 1 with medium and 0 with heavy, takes stamina
-    Swim in deep water, can't cross if in heavy armour
     Push certain objects and block
 
 # Effects:
@@ -388,10 +386,11 @@ Upgrade weapons
     # Skeleton Cleric, heals undead in the area but does no damage
     # Skeleton Bell Toller, alerts nearby enemies if it sees the player
     # Skeleton Undertaker, revieves dead enemies
+    # Skeleton warlock, uses magic poison attacks
+    # Wight Lord, boss, armoured skeleton with shield and sword, can dash to close range
+    skeleton standard bearer, Improves strength of nearby enemies, support 
     Skeleton Guard, slow, high health and medium damage
-    Skeleton warlock, uses magic poison attacks
     Necromancer, boss, can resurrect undead and summon 3 skeletons
-    Wight Lord, boss, armoured skeleton with shield and sword, can dash to close range
     Vampire, boss, life steal, flying bat form when travelling, close combat
     Crypt Ghoul, bone club, fast and high damage, but glass cannon
     Crypt Horror, boss, high damage and health, slow
