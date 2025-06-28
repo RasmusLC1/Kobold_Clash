@@ -15,7 +15,7 @@ from scripts.engine.assets.keys import keys
 class Weapon(Item):
     def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_type = 'cut', size = (32, 32), add_to_tile = True):
         super().__init__(game, type, keys.weapon, pos, size, 1, add_to_tile)
-        self.speed = 10 - speed # Speed of the weapon
+        self.speed = max(1, 10 - speed) # Speed of the weapon
         self.range = range # Range of the weapon
         self.damage = damage
         self.entity = None # Entity that holds the weapon

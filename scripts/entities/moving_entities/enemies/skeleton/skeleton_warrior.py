@@ -41,3 +41,9 @@ class Skeleton_Warrior(Skeleton):
 
         # Equip the weapon
         self.Equip_Weapon(weapon)
+
+        self.Set_Max_Charge()
+
+
+    def Set_Max_Charge(self):
+        self.max_weapon_charge = self.active_weapon.speed * 10

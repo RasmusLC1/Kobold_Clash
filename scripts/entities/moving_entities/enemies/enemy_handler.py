@@ -74,7 +74,7 @@ class Enemy_Handler():
             spawner_index = random.randint(0, spawners_length - 1)
             spawner = spawners[spawner_index]
             enemy_types = {
-                keys.skeleton_warrior: 0.4,
+                keys.skeleton_warrior: 1110.4,
                 keys.skeleton_ranger: 0.2,
                 keys.fire_spirit: 0.05,
                 keys.ice_spirit: 0.05,
