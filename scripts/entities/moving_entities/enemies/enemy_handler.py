@@ -6,6 +6,7 @@ from scripts.entities.moving_entities.enemies.skeleton.skeleton_cleric import Sk
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_undertaker import Skeleton_Undertaker 
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_warlock import Skeleton_Warlock 
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_guardian import Skeleton_Guardian 
+from scripts.entities.moving_entities.enemies.skeleton.skeleton_banner_bearer import Skeleton_Banner_Bearer 
 from scripts.entities.moving_entities.enemies.fire_spirit import Fire_Spirit
 from scripts.entities.moving_entities.enemies.ice_spirit import Ice_Spirit
 from scripts.entities.moving_entities.enemies.spider.spider import Spider
@@ -38,6 +39,7 @@ class Enemy_Handler():
             keys.skeleton_undertaker : self.Spawn_Skeleton_Undertaker,
             keys.skeleton_warlock : self.Spawn_Skeleton_Warlock,
             keys.skeleton_guardian : self.Spawn_Skeleton_Guardian,
+            keys.skeleton_banner_bearer : self.Spawn_Skeleton_Banner_Bearer,
         }
 
 
@@ -86,6 +88,7 @@ class Enemy_Handler():
                 keys.skeleton_undertaker: 0.05,
                 keys.skeleton_guardian: 0.2,
                 keys.skeleton_warlock: 0.05,
+                keys.skeleton_banner_bearer: 0.05,
                 keys.wight_king: 0.01,
             }
 
@@ -198,6 +201,23 @@ class Enemy_Handler():
         intelligence = 2
         stamina = 2
         return Skeleton_Cleric(
+            self.game,
+            pos, 
+            health,
+            strength,
+            speed,
+            agility,
+            intelligence,
+            stamina)
+    
+    def Spawn_Skeleton_Banner_Bearer(self, pos):
+        health = 50
+        strength = 1
+        speed = 2
+        agility = 2 
+        intelligence = 2
+        stamina = 2
+        return Skeleton_Banner_Bearer(
             self.game,
             pos, 
             health,

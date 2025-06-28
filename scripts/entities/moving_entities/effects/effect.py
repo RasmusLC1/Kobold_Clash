@@ -80,6 +80,7 @@ class Effect():
             return False
         self.Set_Cooldown()
         self.effect -= 1
+        self.entity.Set_Description()
         
         return True
     

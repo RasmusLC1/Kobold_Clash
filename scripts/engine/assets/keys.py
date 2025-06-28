@@ -77,6 +77,8 @@ class keys():
 
     loot_particle = "loot_particle"
 
+    strength_particle = "strength_particle"
+
     # Effects
     
     heart = "heart"
@@ -227,6 +229,12 @@ class keys():
     
     
     skeleton_undertaker_1_attack = "skeleton_undertaker_1_attack"
+
+    # skeleton_banner_bearer
+
+    skeleton_banner_bearer = "skeleton_banner_bearer"
+
+    skeleton_banner_bearer_attack = "skeleton_banner_bearer_attack"
 
     # Skeleton Warlock
     skeleton_warlock = "skeleton_warlock"

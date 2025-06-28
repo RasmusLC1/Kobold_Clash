@@ -20,6 +20,7 @@ class Particle_Handler:
              keys.bone_particle : Particle_Patterns.Spark_Particle,
              keys.soul_particle : Particle_Patterns.Soul_Particle,
              keys.vampire_particle : Particle_Patterns.Vampire_Particle,
+             keys.strength_particle : Particle_Patterns.Vampire_Particle,
              keys.player_particle : Particle_Patterns.Player_Particle,
          }
          

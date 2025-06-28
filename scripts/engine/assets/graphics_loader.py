@@ -10,7 +10,8 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Effect_List(self)
         Graphics_Loader.Asset_Magic_Attack_List(self)
         Graphics_Loader.Asset_Skeleton_Warrior_List(self)
-        Graphics_Loader.Asset_Skeleton_Guardian_List(self)
+        Graphics_Loader.Asset_Skeleton_Warrior_List(self)
+        Graphics_Loader.Asset_Skeleton_Banner_Bearer_List(self)
         Graphics_Loader.Asset_Skeleton_Ranger_List(self)
         Graphics_Loader.Asset_Fire_Spirit_List(self)
         Graphics_Loader.Asset_Ice_Spirit_List(self)
@@ -87,6 +88,7 @@ class Graphics_Loader:
             keys.soul_particle : get_tiles_from_sheet('particles/general/soul.png', 5, 0, 0, 0, 3, 3),
             keys.player_particle : get_tiles_from_sheet('particles/general/player.png', 5, 0, 0, 0, 3, 3),
             keys.loot_particle : get_tiles_from_sheet('particles/general/loot.png', 5, 0, 0, 0, 3, 3),
+            keys.strength_particle : get_tiles_from_sheet('particles/general/strength.png', 5, 0, 0, 0, 3, 3),
         }
         self.assets.update(effect_assets)
 
@@ -168,6 +170,13 @@ class Graphics_Loader:
         entities_assets = {
             keys.skeleton_guardian: get_tiles_from_sheet('entities/enemies/undead/skeleton_guardian/skeleton_guardian.png', 6, 0, 0, 0, 32, 32),
             keys.skeleton_guardian_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_guardian/skeleton_guardian_attack.png', 6, 0, 0, 0, 32, 32),
+        }
+        self.assets.update(entities_assets)
+
+    def Asset_Skeleton_Banner_Bearer_List(self):
+        entities_assets = {
+            keys.skeleton_banner_bearer: get_tiles_from_sheet('entities/enemies/undead/skeleton_banner_bearer/skeleton_banner_bearer.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_banner_bearer_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_banner_bearer/skeleton_banner_bearer_attack.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
