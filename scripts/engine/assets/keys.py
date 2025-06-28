@@ -233,6 +233,13 @@ class keys():
     
     skeleton_warlock_attack = "skeleton_warlock_attack"
 
+
+    # Skeleton Guardian
+    skeleton_guardian = "skeleton_guardian"
+    
+    
+    skeleton_guardian_attack = "skeleton_guardian_attack"
+
     # Fire Spirit
     
     fire_spirit = "fire_spirit"

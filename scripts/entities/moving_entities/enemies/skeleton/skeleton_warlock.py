@@ -43,6 +43,8 @@ class Skeleton_Warlock(Skeleton):
             return False
 
         if "staff" in self.active_weapon.type:
+            self.game.particle_handler.Activate_Particles(random.randint(5, 10), keys.gold_particle, self.rect().center, frame=random.randint(20, 30))
+
             self.charge += 1
             self.active_weapon.Set_Charging_Enemy()
             if self.charge < self.max_weapon_charge:

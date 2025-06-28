@@ -5,7 +5,7 @@ from scripts.engine.assets.keys import keys
 
 class Battle_Axe(Weapon):
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.battle_axe, 1, 2, 3, 70, 'two_handed_melee')
+        super().__init__(game, pos, keys.battle_axe, 5, 2, 3, 70, 'two_handed_melee')
         self.max_animation = 4
         self.attack_animation_max = 14
         self.special_attack_effect_animation_max = 8

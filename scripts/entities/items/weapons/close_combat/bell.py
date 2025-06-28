@@ -26,3 +26,5 @@ class Bell(Weapon):
     def Ring_Bell(self):
         self.game.clatter.Generate_Clatter(self.pos, 1000) # Generate clatter to alert nearby enemies
         self.special_attack = 0
+        self.game.sound_handler.Play_Sound('bell', 0.3)
+

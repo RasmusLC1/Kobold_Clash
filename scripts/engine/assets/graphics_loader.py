@@ -10,6 +10,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Effect_List(self)
         Graphics_Loader.Asset_Magic_Attack_List(self)
         Graphics_Loader.Asset_Skeleton_Warrior_List(self)
+        Graphics_Loader.Asset_Skeleton_Guardian_List(self)
         Graphics_Loader.Asset_Skeleton_Ranger_List(self)
         Graphics_Loader.Asset_Fire_Spirit_List(self)
         Graphics_Loader.Asset_Ice_Spirit_List(self)
@@ -160,6 +161,13 @@ class Graphics_Loader:
 
             keys.skeleton_warrior_3: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_3.png', 6, 0, 0, 0, 32, 32),
             keys.skeleton_warrior_3_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_3_attack.png', 6, 0, 0, 0, 32, 32),
+        }
+        self.assets.update(entities_assets)
+
+    def Asset_Skeleton_Guardian_List(self):
+        entities_assets = {
+            keys.skeleton_guardian: get_tiles_from_sheet('entities/enemies/undead/skeleton_guardian/skeleton_guardian.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_guardian_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_guardian/skeleton_guardian_attack.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 

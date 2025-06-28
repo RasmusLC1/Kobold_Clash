@@ -54,8 +54,6 @@ class Player_Movement():
         self.back_step = max(0, self.back_step - 1)
         if self.back_step < 15:
             return
-        print(self.back_step_direction)
-        
         if self.back_step_direction[0] and self.back_step_direction[1]:
 
             self.player.friction = 1
@@ -131,7 +129,6 @@ class Player_Movement():
         if not self.dashing:
             self.player.Attack_Direction_Handler()
             self.dashing = 60
-            print(self.player.attack_direction)
             return True
         
         return False
