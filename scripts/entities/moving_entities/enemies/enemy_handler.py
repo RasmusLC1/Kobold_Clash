@@ -11,6 +11,7 @@ from scripts.entities.moving_entities.enemies.fire_spirit import Fire_Spirit
 from scripts.entities.moving_entities.enemies.ice_spirit import Ice_Spirit
 from scripts.entities.moving_entities.enemies.spider.spider import Spider
 from scripts.entities.moving_entities.enemies.void_spawn.shade import Shade
+from scripts.entities.moving_entities.enemies.void_spawn.phantom import Phantom
 from scripts.entities.moving_entities.enemies.skeleton.wight_king.wight_king import Wight_King
 from scripts.engine.assets.keys import keys
 
@@ -42,6 +43,7 @@ class Enemy_Handler():
             keys.skeleton_guardian : self.Spawn_Skeleton_Guardian,
             keys.skeleton_banner_bearer : self.Spawn_Skeleton_Banner_Bearer,
             keys.shade : self.Spawn_Shade,
+            keys.phantom : self.Spawn_Phantom,
         }
 
 
@@ -92,7 +94,8 @@ class Enemy_Handler():
                 keys.skeleton_warlock: 0.05,
                 keys.skeleton_banner_bearer: 0.05,
                 keys.wight_king: 0.01,
-                keys.shade: 99990.01,
+                keys.phantom: 99990.01,
+                keys.shade: 0.5,
             }
 
             type = random.choices(list(enemy_types.keys()), weights=enemy_types.values())[0]
@@ -296,7 +299,23 @@ class Enemy_Handler():
             agility,
             intelligence,
             stamina)
-        
+    
+    def Spawn_Phantom(self, pos):
+        health = 20
+        strength = 5
+        speed = 6
+        agility = 2 
+        intelligence = 2
+        stamina = 2
+        return Phantom(
+            self.game,
+            pos, 
+            health,
+            strength,
+            speed,
+            agility,
+            intelligence,
+            stamina)
         
     def Spawn_Fire_Spirit(self, pos):
         health = 80
