@@ -1,12 +1,14 @@
 from scripts.entities.moving_entities.enemies.enemy import Enemy
+from scripts.entities.items.weapons.enemy_weapons.claw import Claw
 import random
 from scripts.engine.assets.keys import keys
 
-class Skeleton(Enemy):
+class Void_Spawn(Enemy):
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, size = (32, 32)):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.skeleton, size)
-        self.animation_handler.Set_Animation_Num_Max(6)
-        self.animation_handler.Set_Attack_Animation_Num_Max(6)
+        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.void_spawn, size)
+        self.animation_handler.Set_Animation_Num_Max(4)
+        self.animation_handler.Set_Attack_Animation_Num_Max(5)
+        self.Equip_Weapon(Claw(game, self.pos)) 
 
     def Update(self, tilemap, movement=(0, 0)):
         super().Update(tilemap, movement)
@@ -15,10 +17,7 @@ class Skeleton(Enemy):
 
   
     def Set_Action(self,  movement = None):
-        if self.charge:
-            self.animation_handler.Set_Animation('attack')
-        else:
-            self.animation_handler.Set_Animation('running')
+        pass
 
     # Returns true on succesful attack
     def Attack(self):
@@ -58,10 +57,6 @@ class Skeleton(Enemy):
     def Update_Active_Weapon(self, offset=(0, 0)):
         if not self.active_weapon:
             return
-
-        # Set the active and light to match the enemy itself
-        self.active_weapon.Set_Active(self.active)
-        self.active_weapon.Set_Light_Level(self.light_level)
 
         self.active_weapon.Set_Equipped_Position(self.direction_y_holder)
         # self.active_weapon.Update(offset)

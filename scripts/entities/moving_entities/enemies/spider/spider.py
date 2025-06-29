@@ -37,7 +37,10 @@ class Spider(Enemy):
 
 
     # Set new action for animation
-    def Set_Action(self, movement):
+    def Set_Action(self, movement = None):
+        if not movement:
+            return
+        
         if self.intent_manager.jump_attack.attack_length:
             self.animation_handler.Set_Animation('jumping')
             return

@@ -62,5 +62,5 @@ class Ice_Spirit(Enemy):
         self.charge = self.ice_shooter.Particle_Creation(self, self.charge, 10)
 
 
-    def Set_Action(self, movement):
+    def Set_Action(self, movement = None):
         pass

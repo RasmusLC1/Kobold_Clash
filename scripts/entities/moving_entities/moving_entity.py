@@ -489,7 +489,9 @@ class Moving_Entity(PhysicsEntity):
         self.health = min(self.max_health, self.health + value)
         self.Set_Description()
 
-    def Set_Action(self, movement):
+    def Set_Action(self, movement = None):
+        if not movement:
+            return
         if not movement[0] and not movement[1]:
             if self.direction_y_holder < 0:
                 self.animation_handler.Set_Animation('standing_still_up')

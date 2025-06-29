@@ -38,6 +38,7 @@ class Animation_Handler():
 
 
     def Set_Sprite(self):
+        self.entity.Set_Action()
         self.sprite = self.entity.game.assets[self.animation]
 
     # Setting the item image and scaling it

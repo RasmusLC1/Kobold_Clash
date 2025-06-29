@@ -86,7 +86,9 @@ class Fire_Spirit(Enemy):
         return
 
 
-    def Set_Action(self, movement):
+    def Set_Action(self, movement = None):
+        if not movement:
+            return
         if movement[1] or movement[0]:
             self.animation_handler.Set_Animation('running')
             return

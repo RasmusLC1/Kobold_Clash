@@ -10,7 +10,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Effect_List(self)
         Graphics_Loader.Asset_Magic_Attack_List(self)
         Graphics_Loader.Asset_Skeleton_Warrior_List(self)
-        Graphics_Loader.Asset_Skeleton_Warrior_List(self)
+        Graphics_Loader.Asset_Skeleton_Guardian_List(self)
         Graphics_Loader.Asset_Skeleton_Banner_Bearer_List(self)
         Graphics_Loader.Asset_Skeleton_Ranger_List(self)
         Graphics_Loader.Asset_Fire_Spirit_List(self)
@@ -155,40 +155,40 @@ class Graphics_Loader:
 
     def Asset_Skeleton_Warrior_List(self):
         entities_assets = {
-            keys.skeleton_warrior_1: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_1.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_warrior_1_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_1.png', 6, 0, 0, 0, 32, 32),
             keys.skeleton_warrior_1_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_1_attack.png', 6, 0, 0, 0, 32, 32),
 
-            keys.skeleton_warrior_2: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_2.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_warrior_2_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_2.png', 6, 0, 0, 0, 32, 32),
             keys.skeleton_warrior_2_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_2_attack.png', 6, 0, 0, 0, 32, 32),
 
-            keys.skeleton_warrior_3: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_3.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_warrior_3_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_3.png', 6, 0, 0, 0, 32, 32),
             keys.skeleton_warrior_3_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_3_attack.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
     def Asset_Skeleton_Guardian_List(self):
         entities_assets = {
-            keys.skeleton_guardian: get_tiles_from_sheet('entities/enemies/undead/skeleton_guardian/skeleton_guardian.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_guardian_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_guardian/skeleton_guardian.png', 6, 0, 0, 0, 32, 32),
             keys.skeleton_guardian_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_guardian/skeleton_guardian_attack.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
     def Asset_Skeleton_Banner_Bearer_List(self):
         entities_assets = {
-            keys.skeleton_banner_bearer: get_tiles_from_sheet('entities/enemies/undead/skeleton_banner_bearer/skeleton_banner_bearer.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_banner_bearer_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_banner_bearer/skeleton_banner_bearer.png', 6, 0, 0, 0, 32, 32),
             keys.skeleton_banner_bearer_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_banner_bearer/skeleton_banner_bearer_attack.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
     def Asset_Skeleton_Ranger_List(self):
         entities_assets = {
-            keys.skeleton_ranger_1: get_tiles_from_sheet('entities/enemies/undead/skeleton_ranger/skeleton_ranger_1.png', 5, 0, 0, 0, 32, 32),
+            keys.skeleton_ranger_1_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_ranger/skeleton_ranger_1.png', 5, 0, 0, 0, 32, 32),
             keys.skeleton_ranger_1_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_ranger/skeleton_ranger_1_attack.png', 6, 0, 0, 0, 32, 32),
 
-            keys.skeleton_ranger_2: get_tiles_from_sheet('entities/enemies/undead/skeleton_ranger/skeleton_ranger_2.png', 5, 0, 0, 0, 32, 32),
+            keys.skeleton_ranger_2_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_ranger/skeleton_ranger_2.png', 5, 0, 0, 0, 32, 32),
             keys.skeleton_ranger_2_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_ranger/skeleton_ranger_2_attack.png', 6, 0, 0, 0, 32, 32),
 
-            keys.skeleton_ranger_3: get_tiles_from_sheet('entities/enemies/undead/skeleton_ranger/skeleton_ranger_3.png', 5, 0, 0, 0, 32, 32),
+            keys.skeleton_ranger_3_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_ranger/skeleton_ranger_3.png', 5, 0, 0, 0, 32, 32),
             keys.skeleton_ranger_3_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_ranger/skeleton_ranger_3_attack.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
@@ -196,7 +196,7 @@ class Graphics_Loader:
 
     def Asset_Skeleton_Warlock_List(self):
         entities_assets = {
-            keys.skeleton_warlock: get_tiles_from_sheet('entities/enemies/undead/skeleton_warlock/skeleton_warlock.png', 3, 0, 0, 0, 32, 32),
+            keys.skeleton_warlock_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_warlock/skeleton_warlock.png', 3, 0, 0, 0, 32, 32),
             keys.skeleton_warlock_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_warlock/skeleton_warlock_attack.png', 4, 0, 0, 0, 32, 32),
 
         }
@@ -204,21 +204,21 @@ class Graphics_Loader:
 
     def Asset_Skeleton_Cleric_List(self):
         entities_assets = {
-            keys.skeleton_cleric_1: get_tiles_from_sheet('entities/enemies/undead/skeleton_cleric/skeleton_cleric_1.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_cleric_1_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_cleric/skeleton_cleric_1.png', 6, 0, 0, 0, 32, 32),
             keys.skeleton_cleric_1_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_cleric/skeleton_cleric_attack_1.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
     def Asset_Skeleton_Bell_Toller_List(self):
         entities_assets = {
-            keys.skeleton_bell_toller_1: get_tiles_from_sheet('entities/enemies/undead/skeleton_bell/skeleton_bell_1.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_bell_toller_1_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_bell/skeleton_bell_1.png', 6, 0, 0, 0, 32, 32),
             keys.skeleton_bell_toller_1_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_bell/skeleton_bell_attack_1.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
     def Asset_Skeleton_Undertaker_List(self):
         entities_assets = {
-            keys.skeleton_undertaker_1: get_tiles_from_sheet('entities/enemies/undead/skeleton_undertaker/skeleton_undertaker_1.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_undertaker_1_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_undertaker/skeleton_undertaker_1.png', 6, 0, 0, 0, 32, 32),
             keys.skeleton_undertaker_1_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_undertaker/skeleton_undertaker_attack_1.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
@@ -242,7 +242,7 @@ class Graphics_Loader:
 
     def Wight_King_Spirit_List(self):
         entities_assets = {
-            keys.wight_king: get_tiles_from_sheet('entities/enemies/undead/wight_king/wight_king.png', 4, 0, 0, 0, 40, 40),
+            keys.wight_king_running: get_tiles_from_sheet('entities/enemies/undead/wight_king/wight_king.png', 4, 0, 0, 0, 40, 40),
             keys.wight_king_attack: get_tiles_from_sheet('entities/enemies/undead/wight_king/wight_king_attack.png', 6, 0, 0, 0, 40, 40),
         }
         self.assets.update(entities_assets)
