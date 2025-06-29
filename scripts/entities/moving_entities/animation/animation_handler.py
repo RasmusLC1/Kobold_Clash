@@ -63,10 +63,10 @@ class Animation_Handler():
             return
         self.animation_num_cooldown = self.animation_num_cooldown_max
         self.animation_num += 1
-        self.Set_Entity_Image()
         if self.animation_num > self.animation_num_max:
             self.animation_num = 0
 
+        self.Set_Entity_Image()
         self.animation_value = self.animation_num
 
     def Update_Attack_Animation(self) -> None:

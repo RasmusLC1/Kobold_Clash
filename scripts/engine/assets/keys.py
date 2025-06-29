@@ -1204,6 +1204,8 @@ class keys():
 
     electric_resistance = "electric_resistance"
 
+    soul_stealer = "soul_stealer"
+
     # level construction keys
     spawners = "spawners"
 

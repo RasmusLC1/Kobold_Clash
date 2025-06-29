@@ -7,3 +7,6 @@ class Vampiric(Effect):
         description = 'Heals when\ndealing damage'
         super().__init__(entity, keys.vampiric, 0, 0, (200, 250), description)
 
+
+    def Damage_Dealt(self, damage):
+        self.entity.Set_Effect(keys.healing, damage // 4)

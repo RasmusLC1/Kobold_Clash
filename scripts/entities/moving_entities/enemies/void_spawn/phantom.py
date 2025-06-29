@@ -3,6 +3,6 @@ from scripts.engine.assets.keys import keys
 
 class Phantom(Void_Spawn):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.phantom, health, strength, max_speed, agility, intelligence, stamina, 50)
-        self.active_weapon.Set_Damage(keys.slash, 8)
+        super().__init__(game, pos, keys.phantom, health, strength, max_speed, agility, intelligence, stamina, 30)
+        self.active_weapon.Set_Damage(keys.slash, 5)
         
