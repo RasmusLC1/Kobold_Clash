@@ -396,8 +396,9 @@ Upgrade weapons
     Vampire, boss, life steal, flying bat form when travelling, close combat
     Crypt Ghoul, bone club, fast and high damage, but glass cannon
     Crypt Horror, boss, high damage and health, slow
-    Ghost, pathfinds directly to the target, phasing through walls, high damage, medium speed and low health
-    Wraith, pathfinds directly to the target, phasing through walls, low damage but steals soul, medium speed and low health
+    Phantom, red, pathfinds directly to the target, phasing through walls, high damage, medium speed and low health
+    Wraith, blue, pathfinds directly to the target, phasing through walls, low damage but steals soul (player mana), high speed and low health
+    Shade, Black, will always pathfind towards player, medium damage, low speed, medium health
     Lich, casts doom on player, debuffing him and slowly drains health until Lich is killed
 
 ## Crystal Caverns
