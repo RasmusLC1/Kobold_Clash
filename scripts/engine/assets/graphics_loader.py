@@ -15,6 +15,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Skeleton_Ranger_List(self)
         Graphics_Loader.Asset_Fire_Spirit_List(self)
         Graphics_Loader.Asset_Ice_Spirit_List(self)
+        Graphics_Loader.Asset_Void_Spawn_List(self)
         Graphics_Loader.Asset_Skeleton_Bell_Toller_List(self)
         Graphics_Loader.Asset_Skeleton_Cleric_List(self)
         Graphics_Loader.Asset_Skeleton_Undertaker_List(self)
@@ -244,6 +245,19 @@ class Graphics_Loader:
         entities_assets = {
             keys.wight_king_running: get_tiles_from_sheet('entities/enemies/undead/wight_king/wight_king.png', 4, 0, 0, 0, 40, 40),
             keys.wight_king_attack: get_tiles_from_sheet('entities/enemies/undead/wight_king/wight_king_attack.png', 6, 0, 0, 0, 40, 40),
+        }
+        self.assets.update(entities_assets)
+
+    def Asset_Void_Spawn_List(self):
+        entities_assets = {
+            keys.wraith_running: get_tiles_from_sheet('entities/enemies/undead/void_spawn/wraith/wraith.png', 5, 0, 0, 0, 32, 32),
+            keys.wraith_attack: get_tiles_from_sheet('entities/enemies/undead/void_spawn/wraith/wraith_attack.png', 6, 0, 0, 0, 32, 32),
+
+            keys.phantom_running: get_tiles_from_sheet('entities/enemies/undead/void_spawn/phantom/phantom.png', 5, 0, 0, 0, 32, 32),
+            keys.phantom_attack: get_tiles_from_sheet('entities/enemies/undead/void_spawn/phantom/phantom_attack.png', 6, 0, 0, 0, 32, 32),
+
+            keys.shade_running: get_tiles_from_sheet('entities/enemies/undead/void_spawn/shade/shade.png', 5, 0, 0, 0, 32, 32),
+            keys.shade_attack: get_tiles_from_sheet('entities/enemies/undead/void_spawn/shade/shade_attack.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 

@@ -212,8 +212,11 @@ class Item(PhysicsEntity):
 
     # Render legal position
     def Render_Inventory(self, surf, pos, size):
-        item_image = pygame.transform.scale(self.entity_image, size)
-        surf.blit(item_image, pos)
+        try:
+            item_image = pygame.transform.scale(self.entity_image, size)
+            surf.blit(item_image, pos)
+        except Exception as e:
+            print(f"ITEM Render_Inventory failed {e}", self.entity_image, size, pos)
         
 
     def Render_Floor(self, surf, offset=(0, 0)):

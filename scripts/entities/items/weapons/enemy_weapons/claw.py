@@ -13,6 +13,9 @@ class Claw(Weapon):
     def Set_Sprite(self):
         pass
 
+    def Set_Entity_Image(self):
+        pass
+
     def Update_Dark_Surface_Enemy(self, alpha_value):
         pass
 

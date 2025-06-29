@@ -320,7 +320,8 @@ class Moving_Entity(PhysicsEntity):
         if self.damage_cooldown:
             self.damage_cooldown -= 1
             
-
+            
+    # Damage = Total damage, effect = (effect, effect strength) 
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
         if self.Check_Blocking_Direction(direction):
             return False

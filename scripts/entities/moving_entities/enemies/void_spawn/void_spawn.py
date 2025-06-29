@@ -8,6 +8,9 @@ class Void_Spawn(Enemy):
         super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.void_spawn, size)
         self.animation_handler.Set_Animation_Num_Max(4)
         self.animation_handler.Set_Attack_Animation_Num_Max(5)
+        self.path_finding_strategy = keys.void_spawn
+        self.attack_strategy = 'direct'
+        self.intent_manager.Set_Intent(['attack'])
         self.Equip_Weapon(Claw(game, self.pos)) 
 
     def Update(self, tilemap, movement=(0, 0)):
@@ -15,9 +18,24 @@ class Void_Spawn(Enemy):
         self.Update_Active_Weapon()
         self.Weapon_Cooldown()
 
-  
+    
+    def Tile_Map_Collision_Detection(self, tilemap):
+        self.pos[0] += self.frame_movement[0]
+        self.pos[1] += self.frame_movement[1]
+
+
     def Set_Action(self,  movement = None):
-        pass
+        if self.charge:
+            self.animation_handler.Set_Animation('attack')
+        else:
+            self.animation_handler.Set_Animation('running')
+
+    # Void spawn cannot be damaged by material damage
+    def Damage_Taken(self, damage, effect= (keys.slash, 0), direction = (0, 0)):
+        if effect[0] == keys.slash or effect[0] == keys.blunt:
+            damage = 0
+        
+        return super().Damage_Taken(damage, effect, direction)
 
     # Returns true on succesful attack
     def Attack(self):

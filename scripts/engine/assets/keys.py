@@ -163,6 +163,30 @@ class keys():
 
     claw = "claw"
 
+    # Void Spawn
+
+    shade = "shade"
+    
+    shade_running = "shade_running"
+
+    shade_attack = "shade_attack"
+
+
+    phantom = "phantom"
+    
+    phantom_running = "phantom_running"
+
+    phantom_attack = "phantom_attack"
+
+
+    wraith = "wraith"
+    
+    wraith_running = "wraith_running"
+
+    wraith_attack = "wraith_attack"
+
+
+
     # Skeleton Warrior Assets
     
     skeleton_warrior = "skeleton_warrior"

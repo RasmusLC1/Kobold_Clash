@@ -20,6 +20,7 @@ class A_Star:
         # Various maps
         self.standard_map = []
         self.ignore_lava_map = []
+        self.void_spawn_map = []
         self.custom_map = []
         self.map = []  # Will point to whichever map is in use
 
@@ -28,6 +29,7 @@ class A_Star:
     def Clear_Maps(self):
         self.standard_map.clear()
         self.ignore_lava_map.clear()
+        self.void_spawn_map.clear()
         self.custom_map.clear()
 
     # def Setup_Custom_Map(self, custom_map, size_x, size_y):
@@ -78,6 +80,8 @@ class A_Star:
             self.map = self.standard_map
         elif which_map == keys.ignore_lava:
             self.map = self.ignore_lava_map
+        elif which_map == keys.void_spawn:
+            self.map = self.void_spawn_map
         elif which_map == keys.custom:
             self.map = self.custom_map
         else:
@@ -92,6 +96,7 @@ class A_Star:
         self.Extract_Map_Bounds(game)
         self.Build_Standard_Map(game)
         self.Build_IgnoreLava_Map(game)
+        self.Build_Void_Spawn_Map(game)
 
     def Extract_Map_Bounds(self, game):
         """Determine min_x, max_x, min_y, max_y from the tile positions."""
@@ -137,6 +142,21 @@ class A_Star:
                 tile_type = game.tilemap.Current_Tile_Type_Without_Offset((x, y))
                 if tile_type and (tile_type == keys.floor or keys.lava_env in tile_type or keys.fire in tile_type):
                     self.ignore_lava_map[map_x][map_y] = 0
+
+    def Build_Void_Spawn_Map(self, game):
+        """
+        Similar to Build_Standard_Map but ignoring Lava/Fire as blocked.
+        """
+        self.void_spawn_map = [[1 for _ in range(self.height)] for _ in range(self.width)]
+
+        all_positions = game.tilemap.Get_Pos()
+        for (x, y) in all_positions:
+            map_x = x - self.min_x
+            map_y = y - self.min_y
+            if 0 <= map_x < self.width and 0 <= map_y < self.height:
+                tile_type = game.tilemap.Current_Tile_Type_Without_Offset((x, y))
+                if tile_type:
+                    self.void_spawn_map[map_x][map_y] = 0
 
     # ========== UTILITY CHECKS ==========
 
