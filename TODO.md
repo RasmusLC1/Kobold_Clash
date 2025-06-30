@@ -391,14 +391,14 @@ Upgrade weapons
     # Skeleton Guard, slow, high health and medium damage
     # Skeleton warlock, uses magic poison attacks
     # Wight Lord, boss, armoured skeleton with shield and sword, can dash to close range
-    Banner bearer, Increases strength of nearby enemies
+    # Banner bearer, Increases strength of nearby enemies
+    # Phantom, immune to physical attacks, pathfinds directly to the target, phasing through walls, high damage, high speed and low health
+    # Wraith, immune to physical attacks, pathfinds directly to the target, phasing through walls, low damage but steals soul (player mana), high speed and low health
+    # Shade, immune to physical attacks, will always pathfind towards player, medium damage, low speed, low health
     Necromancer, boss, can resurrect undead and summon 3 skeletons
     Vampire, boss, life steal, flying bat form when travelling, close combat
     Crypt Ghoul, bone club, fast and high damage, but glass cannon
     Crypt Horror, boss, high damage and health, slow
-    Phantom, red, can't be damaged by physical attacks, pathfinds directly to the target, phasing through walls, high damage, high speed and low health
-    Wraith, blue, can't be damaged by physical attacks, pathfinds directly to the target, phasing through walls, low damage but steals soul (player mana), high speed and low health
-    Shade, Black, can't be damaged by physical attacks, will always pathfind towards player, medium damage, low speed, low health
     Lich, casts doom on player, debuffing him and slowly drains health until Lich is killed
 
 ## Crystal Caverns

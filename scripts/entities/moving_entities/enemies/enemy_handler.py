@@ -97,7 +97,7 @@ class Enemy_Handler():
                 keys.skeleton_banner_bearer: 0.05,
                 keys.wight_king: 0.01,
                 keys.phantom: 0.1,
-                keys.wraith: 99990.01,
+                keys.wraith: 0.05,
                 keys.shade: 0.05,
             }
 
