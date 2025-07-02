@@ -9,7 +9,7 @@ from scripts.entities.moving_entities.enemies.skeleton.skeleton_guardian import 
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_banner_bearer import Skeleton_Banner_Bearer 
 from scripts.entities.moving_entities.enemies.fire_spirit import Fire_Spirit
 from scripts.entities.moving_entities.enemies.ice_spirit import Ice_Spirit
-from scripts.entities.moving_entities.enemies.spider.spider import Spider
+from scripts.entities.moving_entities.enemies.dwellers.spider.spider import Spider
 from scripts.entities.moving_entities.enemies.void_spawn.shade import Shade
 from scripts.entities.moving_entities.enemies.void_spawn.phantom import Phantom
 from scripts.entities.moving_entities.enemies.void_spawn.wraith import Wraith

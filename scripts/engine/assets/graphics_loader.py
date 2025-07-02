@@ -9,20 +9,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Trap_List(self)
         Graphics_Loader.Asset_Effect_List(self)
         Graphics_Loader.Asset_Magic_Attack_List(self)
-        Graphics_Loader.Asset_Skeleton_Warrior_List(self)
-        Graphics_Loader.Asset_Skeleton_Guardian_List(self)
-        Graphics_Loader.Asset_Skeleton_Banner_Bearer_List(self)
-        Graphics_Loader.Asset_Skeleton_Ranger_List(self)
-        Graphics_Loader.Asset_Fire_Spirit_List(self)
-        Graphics_Loader.Asset_Ice_Spirit_List(self)
-        Graphics_Loader.Asset_Void_Spawn_List(self)
-        Graphics_Loader.Asset_Skeleton_Bell_Toller_List(self)
-        Graphics_Loader.Asset_Skeleton_Cleric_List(self)
-        Graphics_Loader.Asset_Skeleton_Undertaker_List(self)
-        Graphics_Loader.Asset_Skeleton_Warlock_List(self)
-        Graphics_Loader.Wight_King_Spirit_List(self)
-        Graphics_Loader.Asset_Spider_List(self)
-        Graphics_Loader.Asset_Enemy_Symbols_List(self)
+        Graphics_Loader.Enemy_Assets(self)
         Graphics_Loader.Asset_Player_List(self)
         Graphics_Loader.Asset_Interative_Objects_List(self)
         Graphics_Loader.Asset_Environment_List(self)
@@ -43,11 +30,27 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Particles_List(self)
         Graphics_Loader.Asset_Tooltips(self)
 
+
+    def Enemy_Assets(self):
+        Graphics_Loader.Asset_Skeleton_Warrior_List(self)
+        Graphics_Loader.Asset_Skeleton_Guardian_List(self)
+        Graphics_Loader.Asset_Skeleton_Banner_Bearer_List(self)
+        Graphics_Loader.Asset_Skeleton_Ranger_List(self)
+        Graphics_Loader.Asset_Fire_Spirit_List(self)
+        Graphics_Loader.Asset_Ice_Spirit_List(self)
+        Graphics_Loader.Asset_Void_Spawn_List(self)
+        Graphics_Loader.Asset_Skeleton_Bell_Toller_List(self)
+        Graphics_Loader.Asset_Skeleton_Cleric_List(self)
+        Graphics_Loader.Asset_Skeleton_Undertaker_List(self)
+        Graphics_Loader.Asset_Skeleton_Warlock_List(self)
+        Graphics_Loader.Wight_King_Spirit_List(self)
+        Graphics_Loader.Asset_Spider_List(self)
+        Graphics_Loader.Asset_Enemy_Symbols_List(self)
         
     def Asset_Background_List(self):
         background_assets = {'background': load_image('background.png'),}
         self.assets.update(background_assets)
-        
+    
 
     def Asset_Crypt_Tile_List(self):
         tiles_assets = {
@@ -258,6 +261,13 @@ class Graphics_Loader:
 
             keys.shade_running: get_tiles_from_sheet('entities/enemies/undead/void_spawn/shade/shade.png', 4, 0, 0, 0, 32, 32),
             keys.shade_attack: get_tiles_from_sheet('entities/enemies/undead/void_spawn/shade/shade_attack.png', 5, 0, 0, 0, 32, 32),
+        }
+        self.assets.update(entities_assets)
+
+    def Asset_Ghoul_List(self):
+        entities_assets = {
+            keys.ghoul_running: get_tiles_from_sheet('entities/enemies/undead/dwellers/ghoul/ghoul.png', 4, 0, 0, 0, 32, 32),
+            keys.ghoul_attack: get_tiles_from_sheet('entities/enemies/undead/dwellers/ghoul/ghoul_attack.png', 5, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 

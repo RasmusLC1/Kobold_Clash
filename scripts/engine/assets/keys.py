@@ -159,6 +159,8 @@ class keys():
 
     void_spawn = "void_spawn"
 
+    dweller = "dweller"
+
     undead = "undead"
 
     claw = "claw"
@@ -184,6 +186,13 @@ class keys():
     wraith_running = "wraith_running"
 
     wraith_attack = "wraith_attack"
+
+    # Ghoul Assets
+    ghoul = "ghoul"
+    
+    ghoul_running = "ghoul_running"
+
+    ghoul_attack = "ghoul_attack"
 
 
 

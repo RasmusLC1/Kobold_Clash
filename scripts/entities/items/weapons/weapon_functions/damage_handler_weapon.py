@@ -71,6 +71,8 @@ class Damage_Handler_Weapon():
         return sum(self.damage.values())
 
     def Set_Damage(self, damage_type, damage):
+        if damage == 0:
+            return
         if damage_type in self.damage:
             self.damage[damage_type] += damage
         else:

@@ -1,15 +1,14 @@
-from scripts.entities.moving_entities.enemies.enemy import Enemy
-from scripts.entities.moving_entities.enemies.attacks.Shoot_Spiderweb import Shoot_Spiderweb
-from scripts.entities.moving_entities.enemies.spider.spider_intent import Spider_Intent_Manager
+from scripts.entities.moving_entities.enemies.dwellers.dweller import Dweller
+from scripts.entities.moving_entities.enemies.dwellers.spider.spider_intent import Spider_Intent_Manager
 from scripts.engine.assets.keys import keys
 
 # TODO: Implement intent with spider and make attacks into objects
-class Spider(Enemy):
+class Spider(Dweller):
 
     intent_manager_class = Spider_Intent_Manager
 
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 60, 'dweller')
+        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 60)
 
         self.animation = keys.spider + '_' + 'idle'
 
@@ -31,9 +30,8 @@ class Spider(Enemy):
 
         self.attack_cooldown = 0
 
-
         self.attack_symbol_offset = 10
-    
+        self.active_weapon.Set_Damage(keys.poison, 5)
 
 
     # Set new action for animation
@@ -57,32 +55,6 @@ class Spider(Enemy):
 
 
 
-
-    def Update(self, tilemap, movement = (0, 0)):
-        super().Update(tilemap, movement)
-        self.Update_Attack_Cooldown()
-
-    
-    # Bite the player when the player is close
-    def Attack(self):
-        if not super().Attack():
-            return
-        if self.distance_to_player < 40:
-            self.game.player.Damage_Taken(self.strength)
-            self.game.player.Set_Effect(keys.poison, 4)
-            self.Set_Attack_Cooldown(60)
-            return True
-        
-
-
-    def Update_Attack_Cooldown(self):
-        if self.attack_cooldown:
-            self.attack_cooldown = max(0, self.attack_cooldown - 1)
-        return
-
-    
-
-    
     def Update_Jumping_Animation(self) -> None:
         if not self.jumping_animation_num_cooldown:
             self.jumping_animation_num += 1
@@ -92,7 +64,3 @@ class Spider(Enemy):
         else:
             self.jumping_animation_num_cooldown = max(0, self.jumping_animation_num_cooldown - 1)
 
-
-    def Set_Attack_Cooldown(self, amount):
-        self.attack_cooldown = amount
-        return
