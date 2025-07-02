@@ -2,12 +2,15 @@ from scripts.entities.moving_entities.enemies.enemy import Enemy
 from scripts.entities.items.weapons.enemy_weapons.claw import Claw
 import random
 from scripts.engine.assets.keys import keys
+import math
 
 class Dweller(Enemy):
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, size = (32, 32)):
         super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.dweller, size)
         self.animation_handler.Set_Animation_Num_Max(4)
         self.animation_handler.Set_Attack_Animation_Num_Max(5)
+        self.seek_darkness_cooldown = 0
+        self.light_counter = 0
         self.attack_strategy = 'direct'
         self.intent_manager.Set_Intent(['attack'])
         self.Equip_Weapon(Claw(game, self.pos)) 
@@ -16,20 +19,39 @@ class Dweller(Enemy):
         super().Update(tilemap, movement)
         self.Update_Active_Weapon()
         self.Weapon_Cooldown()
+        self.Darkness_Counter_Handler()
 
 
-    def Set_Action(self,  movement = None):
-        if self.charge:
-            self.animation_handler.Set_Animation('attack')
-        else:
-            self.animation_handler.Set_Animation('running')
-
-    # Void spawn cannot be damaged by material damage
-    def Damage_Taken(self, damage, effect= (keys.slash, 0), direction = (0, 0)):
-        if effect[0] == keys.slash or effect[0] == keys.blunt:
-            damage = 0
+    # Dwellers avoid light and prefer to stay in dark
+    def Darkness_Counter_Handler(self):
         
-        return super().Damage_Taken(damage, effect, direction)
+        if self.seek_darkness_cooldown:
+            self.seek_darkness_cooldown -= 1
+            return
+
+        if self.light_level < 2:
+            self.light_counter = 0
+            return
+        
+        if self.light_level >= 2:
+            self.light_counter += 1
+
+            if self.light_counter > 300:
+                fail = 0
+                while fail < 4:
+                    tile = self.game.tilemap.Get_Random_Tile_With_Path_To_Player()
+                    tile_distance = math.sqrt((tile.pos[0] - self.game.player.pos[0]) ** 2 + (tile.pos[1] - self.game.player.pos[1]) ** 2)
+                    if tile_distance > 200:
+                        break
+                    fail += 1
+                
+                self.game.enemy_handler.Add_To_Pathfinding_Queue(self, tile.pos)
+                self.seek_darkness_cooldown = 2000
+                self.Set_Locked_On_Target(self.seek_darkness_cooldown)
+
+        
+
+
 
     # Returns true on succesful attack
     def Attack(self):
@@ -71,7 +93,6 @@ class Dweller(Enemy):
             return
 
         self.active_weapon.Set_Equipped_Position(self.direction_y_holder)
-        # self.active_weapon.Update(offset)
         if not self.active_weapon:
             return
         

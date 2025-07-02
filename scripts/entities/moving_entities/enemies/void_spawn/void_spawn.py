@@ -24,12 +24,6 @@ class Void_Spawn(Enemy):
         self.pos[1] += self.frame_movement[1]
 
 
-    def Set_Action(self,  movement = None):
-        if self.charge:
-            self.animation_handler.Set_Animation('attack')
-        else:
-            self.animation_handler.Set_Animation('running')
-
     # Void spawn cannot be damaged by material damage
     def Damage_Taken(self, damage, effect= (keys.slash, 0), direction = (0, 0)):
         if effect[0] == keys.slash or effect[0] == keys.blunt:

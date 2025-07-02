@@ -208,6 +208,12 @@ class Enemy(Moving_Entity):
         super().Delete()
 
 
+    def Set_Action(self,  movement = None):
+        if self.charge:
+            self.animation_handler.Set_Animation('attack')
+        else:
+            self.animation_handler.Set_Animation('running')
+
 
 
 
