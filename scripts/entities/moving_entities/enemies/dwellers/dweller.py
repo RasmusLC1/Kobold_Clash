@@ -24,6 +24,8 @@ class Dweller(Enemy):
 
     # Dwellers avoid light and prefer to stay in dark
     def Darkness_Counter_Handler(self):
+        if self.distance_to_player > 200:
+            return
         
         if self.seek_darkness_cooldown:
             self.seek_darkness_cooldown -= 1
@@ -44,10 +46,13 @@ class Dweller(Enemy):
                     if tile_distance > 200:
                         break
                     fail += 1
+                    if fail > 3:
+                        return
                 
                 self.game.enemy_handler.Add_To_Pathfinding_Queue(self, tile.pos)
                 self.seek_darkness_cooldown = 2000
-                self.Set_Locked_On_Target(self.seek_darkness_cooldown)
+                self.Set_Action('run_away')
+                print("SEEK DARKNESS", self.distance_to_player, self.target, self.game.player.pos)
 
         
 

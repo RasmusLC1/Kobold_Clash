@@ -19,6 +19,9 @@ class Attack_Stategies():
     def Attack_Strategy(self) -> bool:
         if self.game.player.effects.invisibility.effect:
             return False
+
+        if self.entity.distance_to_player > 300:
+            return
         
         self.Update_Player_Found()
         attack_strategy = self.entity.attack_strategy 
@@ -33,6 +36,8 @@ class Attack_Stategies():
         elif attack_strategy == 'keep_position':
             self.entity.direction = (0, 0)
         elif attack_strategy == 'idle':
+            return False
+        elif attack_strategy == 'run_away':
             return False
         else:
             return self.Direct_Pathing()

@@ -95,7 +95,10 @@ class Enemy(Moving_Entity):
         
     def Set_Attack_Strategy(self, strategy):
         self.attack_strategy = strategy
-    
+
+    def Set_Action(self, action):
+        self.intent_manager.Set_Action(action)
+
     def Set_Direction_Holder(self):
         if self.direction_x or self.direction_y:
             self.direction_x_holder = self.direction_x
@@ -166,6 +169,7 @@ class Enemy(Moving_Entity):
         self.alert_cooldown = amount
 
     def Find_New_Path(self):
+        print("LOOK FOR NEW PATH")
         if not self.path_finding.Find_Shortest_Path():
             self.target = None
             return False

@@ -23,6 +23,7 @@ class Intent_Manager():
             "medium_range": self.intent_cooldown_max,
             "short_range": round(self.intent_cooldown_max * 0.5),
             "keep_position": self.intent_cooldown_max,
+            "run_away" : self.intent_cooldown_max * 5,
         }
         # Lambda stores the function to be called later
         self.actions = {
@@ -64,6 +65,14 @@ class Intent_Manager():
         else:
             print(f"Intent '{self.current_intent}' missing or unrecognized.")
         return
+    
+    def Set_Action(self, action):
+        self.Set_Current_Intent(action)
+        action_function = self.actions.get(action)
+        if action_function:
+            action_function()
+        else:
+            print(f"Intent '{self.current_intent}' missing or unrecognized.")
 
     def Set_Current_Intent(self, intent):
         self.current_intent = intent 

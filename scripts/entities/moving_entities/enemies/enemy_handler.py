@@ -88,7 +88,7 @@ class Enemy_Handler():
                 keys.skeleton_ranger: 0.2,
                 keys.fire_spirit: 0.05,
                 keys.ice_spirit: 0.05,
-                keys.spider: 0.1,
+                keys.spider: 999990.1,
                 keys.skeleton_bell_toller: 0.1,
                 keys.skeleton_cleric: 0.05,
                 keys.skeleton_undertaker: 0.05,
