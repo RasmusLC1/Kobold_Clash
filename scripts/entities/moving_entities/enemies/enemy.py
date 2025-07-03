@@ -18,6 +18,7 @@ class Enemy(Moving_Entity):
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, sub_category, size = (32, 32)):
 
         super().__init__(game, type, keys.enemy, pos, size, health, strength, max_speed, agility, intelligence, stamina, sub_category)
+        self.animation_handler.Set_Animation('running')
         self.random_movement_cooldown = 0
         self.alert_cooldown = 0
         self.active_weapon = None
@@ -46,6 +47,7 @@ class Enemy(Moving_Entity):
         self.intent_manager = self.intent_manager_class(game, self)
 
         self.Set_Description()
+
 
 
 
@@ -96,7 +98,7 @@ class Enemy(Moving_Entity):
     def Set_Attack_Strategy(self, strategy):
         self.attack_strategy = strategy
 
-    def Set_Action(self, action):
+    def Set_Action_Intent(self, action):
         self.intent_manager.Set_Action(action)
 
     def Set_Direction_Holder(self):
@@ -169,7 +171,6 @@ class Enemy(Moving_Entity):
         self.alert_cooldown = amount
 
     def Find_New_Path(self):
-        print("LOOK FOR NEW PATH")
         if not self.path_finding.Find_Shortest_Path():
             self.target = None
             return False

@@ -40,7 +40,6 @@ class Particle_Handler:
 
     def Activate_Particles(self, amount, type, pos, frame):
         for _ in range(amount):
-            # Look for particle
             particle = self.Find_Particle()
 
             # If none are found, spawn 100 new ones and attach one

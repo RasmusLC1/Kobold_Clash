@@ -19,42 +19,6 @@ class Dweller(Enemy):
         super().Update(tilemap, movement)
         self.Update_Active_Weapon()
         self.Weapon_Cooldown()
-        self.Darkness_Counter_Handler()
-
-
-    # Dwellers avoid light and prefer to stay in dark
-    def Darkness_Counter_Handler(self):
-        if self.distance_to_player > 200:
-            return
-        
-        if self.seek_darkness_cooldown:
-            self.seek_darkness_cooldown -= 1
-            return
-
-        if self.light_level < 2:
-            self.light_counter = 0
-            return
-        
-        if self.light_level >= 2:
-            self.light_counter += 1
-
-            if self.light_counter > 300:
-                fail = 0
-                while fail < 4:
-                    tile = self.game.tilemap.Get_Random_Tile_With_Path_To_Player()
-                    tile_distance = math.sqrt((tile.pos[0] - self.game.player.pos[0]) ** 2 + (tile.pos[1] - self.game.player.pos[1]) ** 2)
-                    if tile_distance > 200:
-                        break
-                    fail += 1
-                    if fail > 3:
-                        return
-                
-                self.game.enemy_handler.Add_To_Pathfinding_Queue(self, tile.pos)
-                self.seek_darkness_cooldown = 2000
-                self.Set_Action('run_away')
-                print("SEEK DARKNESS", self.distance_to_player, self.target, self.game.player.pos)
-
-        
 
 
 

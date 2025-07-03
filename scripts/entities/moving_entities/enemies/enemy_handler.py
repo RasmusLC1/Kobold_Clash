@@ -79,6 +79,9 @@ class Enemy_Handler():
     def Initialise(self):
         spawners = self.game.tilemap.extract([(keys.spawners, 1)])
         spawners_length = len(spawners)
+
+        self.Enemy_Spawner(keys.spider, (self.game.player.pos[0], self.game.player.pos[1] + 5))
+        return
         for i in range(50):
             # Spawn enemy at a random location
             spawner_index = random.randint(0, spawners_length - 1)
@@ -86,9 +89,9 @@ class Enemy_Handler():
             enemy_types = {
                 keys.skeleton_warrior: 0.4,
                 keys.skeleton_ranger: 0.2,
-                keys.fire_spirit: 0.05,
-                keys.ice_spirit: 0.05,
-                keys.spider: 999990.1,
+                # keys.fire_spirit: 0.05,
+                # keys.ice_spirit: 0.05,
+                keys.spider: 0.1,
                 keys.skeleton_bell_toller: 0.1,
                 keys.skeleton_cleric: 0.05,
                 keys.skeleton_undertaker: 0.05,

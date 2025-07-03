@@ -191,4 +191,6 @@ class PhysicsEntity:
         light_up_surface = pygame.Surface(self.size, pygame.SRCALPHA).convert_alpha()
         light_up_surface.fill(self.light_up_color)
         # Blit the chest layer on top the dark layer
+        if not light_up_surface or not entity_image:
+            return
         entity_image.blit(light_up_surface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)

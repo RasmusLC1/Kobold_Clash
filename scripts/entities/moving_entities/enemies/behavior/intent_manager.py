@@ -32,6 +32,7 @@ class Intent_Manager():
             "medium_range": lambda: self.Set_Attack_Strategy("medium_range"),
             "short_range":  lambda: self.Set_Attack_Strategy("short_range"),
             "keep_position":lambda: self.Set_Attack_Strategy("keep_position"),
+            "run_away":lambda: self.Set_Attack_Strategy("run_away"),
             "attack": self.Update_Attack_Cooldown,
         }
         # self.Set_Attack_Strategy(entity.attack_strategy)
@@ -69,6 +70,7 @@ class Intent_Manager():
     def Set_Action(self, action):
         self.Set_Current_Intent(action)
         action_function = self.actions.get(action)
+        self.Set_Attack_Strategy(action)
         if action_function:
             action_function()
         else:
@@ -107,6 +109,7 @@ class Intent_Manager():
 
     def Set_Intent_Cooldown(self):
         max_cooldown = self.base_cooldown.get(self.intent[self.intent_index], self.intent_cooldown_max)
+        
         if not max_cooldown:
             return
         try:
@@ -117,6 +120,7 @@ class Intent_Manager():
 
     # Return false on when cooldown is active
     def Update_Intent_Cooldown(self):
+
         if not self.intent_cooldown:
             return True
         self.intent_cooldown = max(0, self.intent_cooldown - 1)
