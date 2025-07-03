@@ -13,7 +13,7 @@ class Spider(Dweller):
         self.animation = keys.spider + '_' + 'idle'
 
         self.path_finding_strategy = 'standard'
-        self.intent_manager.Set_Intent(['medium_range', 'keep_position', 'shoot_spiderweb', 'direct', 'jump_attack', 'long_range'])
+        self.intent_manager.Set_Intent(['medium_range', 'keep_position', 'shoot_spiderweb', 'jump_attack'])
 
         self.animation_num_max = 3 # running and idle animation
         self.animation_num_cooldown_max = 100

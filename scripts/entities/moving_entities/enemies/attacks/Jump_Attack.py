@@ -19,8 +19,9 @@ class Jump_Attack():
         
         entity.Set_Frame_movement((attack_direction[0], attack_direction[1]))
         entity.Tile_Map_Collision_Detection(entity.game.tilemap)
-        if entity.max_speed == entity.max_speed_holder:
-            entity.max_speed *= 15
+        entity.max_speed *= 15
+        entity.friction = 0
+        entity.charge = entity.max_weapon_charge
 
         if entity.Attack():
             return True

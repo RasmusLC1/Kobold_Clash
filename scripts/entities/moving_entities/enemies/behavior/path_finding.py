@@ -111,7 +111,6 @@ class Path_Finding():
         self.Calculate_Position()
         self.Calculate_Destination_Position(self.entity.target)
         self.path = self.game.a_star.a_star_search([self.src_x, self.src_y], [self.des_x, self.des_y], self.entity.path_finding_strategy)
-        print(self.path)
         if not self.path:
             return False
         

@@ -9,8 +9,15 @@ class Dweller(Enemy):
         super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.dweller, size)
         self.animation_handler.Set_Animation_Num_Max(4)
         self.animation_handler.Set_Attack_Animation_Num_Max(5)
-        self.seek_darkness_cooldown = 0
-        self.light_counter = 0
+
+        # Dwellers get increased strength in dark
+        self.light_level_holder = 999
+        self.light_strength = self.strength
+        self.dark_strength = self.strength * 2
+
+        self.light_speed = self.max_speed_holder
+        self.dark_speed = self.max_speed_holder * 2
+
         self.attack_strategy = 'direct'
         self.intent_manager.Set_Intent(['attack'])
         self.Equip_Weapon(Claw(game, self.pos)) 
@@ -19,8 +26,25 @@ class Dweller(Enemy):
         super().Update(tilemap, movement)
         self.Update_Active_Weapon()
         self.Weapon_Cooldown()
+        self.Darkness_Buff()
 
 
+    def Darkness_Buff(self):
+        threshold = 150
+        # Only run if light level crossed the threshold
+        if (self.light_level < threshold) != (self.light_level_holder < threshold):
+            if self.light_level < threshold:
+                self.strength = self.dark_strength
+                self.max_speed = self.dark_speed * 2
+            else:
+                self.strength = self.light_strength
+                self.max_speed_holder = self.light_speed
+
+            self.Set_Description()
+
+        self.light_level_holder = self.light_level
+
+    
 
     # Returns true on succesful attack
     def Attack(self):
@@ -35,10 +59,12 @@ class Dweller(Enemy):
         if self.charge < self.max_weapon_charge:
             return False
         
+        
         self.Set_Target(self.game.player.pos)
         self.active_weapon.Set_Attack()
         self.Reset_Charge()
         return True
+
 
     def Equip_Weapon(self, weapon):
         if not weapon:
@@ -47,7 +73,6 @@ class Dweller(Enemy):
         weapon.Pickup_Reset_Weapon(self)
         weapon.Set_Equip(True, self)
         self.Set_Active_Weapon(weapon)
-        
 
         self.active_weapon.render = False
         del(weapon)

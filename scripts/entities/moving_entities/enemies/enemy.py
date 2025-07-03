@@ -139,7 +139,6 @@ class Enemy(Moving_Entity):
         return None
     
     def Attack(self):
-        
         # Check if the player is invisible
         if self.game.player.effects.invisibility.effect:
             return False

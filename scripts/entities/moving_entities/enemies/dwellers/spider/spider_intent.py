@@ -12,11 +12,9 @@ class Spider_Intent_Manager(Intent_Manager):
         self.base_cooldown['shoot_spiderweb'] = 10
 
         self.actions['jump_attack'] = self.Jump_Attack
-        self.base_cooldown['jump_attack'] = 0
+        self.base_cooldown['jump_attack'] = 80
         self.base_cooldown['keep_position'] = 80
-        self.base_cooldown['long_range'] = 80
 
-        self.actions['long_range'] = self.Long_Range
 
     def Shoot_Spiderweb(self):
         self.shoot_spiderweb.Initialise_Spider_Web(self.entity)
@@ -30,26 +28,5 @@ class Spider_Intent_Manager(Intent_Manager):
             self.Increment_Intent()
         return
     
-    def Long_Range(self):
-        if self.entity.max_speed != self.entity.max_speed_holder:
-                self.entity.max_speed = self.entity.max_speed_holder
-        self.Set_Attack_Strategy("long_range")
 
 
-    def Handle_Attack(self):
-        pass
-
-    def Update_Attack_Cooldown(self):
-        if not super().Update_Attack_Cooldown():
-            return False
-
-        if self.entity.distance_to_player < self.entity.attack_distance:
-            self.entity.Attack()
-            
-            return False
-
-        if self.entity.charge:
-            self.entity.charge = 0
-            self.attack_cooldown = 0
-
-        return True
