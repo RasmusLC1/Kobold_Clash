@@ -45,6 +45,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Skeleton_Warlock_List(self)
         Graphics_Loader.Wight_King_Spirit_List(self)
         Graphics_Loader.Asset_Spider_List(self)
+        Graphics_Loader.Asset_Ghoul_List(self)
         Graphics_Loader.Asset_Enemy_Symbols_List(self)
         
     def Asset_Background_List(self):

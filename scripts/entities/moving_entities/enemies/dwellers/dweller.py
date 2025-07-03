@@ -92,5 +92,7 @@ class Dweller(Enemy):
         
         self.active_weapon.Update_Attack()
 
-
         return
+    
+    def Drop_Weapon(self):
+        pass

@@ -10,6 +10,7 @@ from scripts.entities.moving_entities.enemies.skeleton.skeleton_banner_bearer im
 from scripts.entities.moving_entities.enemies.fire_spirit import Fire_Spirit
 from scripts.entities.moving_entities.enemies.ice_spirit import Ice_Spirit
 from scripts.entities.moving_entities.enemies.dwellers.spider.spider import Spider
+from scripts.entities.moving_entities.enemies.dwellers.ghoul import Ghoul
 from scripts.entities.moving_entities.enemies.void_spawn.shade import Shade
 from scripts.entities.moving_entities.enemies.void_spawn.phantom import Phantom
 from scripts.entities.moving_entities.enemies.void_spawn.wraith import Wraith
@@ -46,6 +47,7 @@ class Enemy_Handler():
             keys.shade : self.Spawn_Shade,
             keys.phantom : self.Spawn_Phantom,
             keys.wraith : self.Spawn_Wraith,
+            keys.ghoul : self.Spawn_Ghoul,
         }
 
 
@@ -80,8 +82,6 @@ class Enemy_Handler():
         spawners = self.game.tilemap.extract([(keys.spawners, 1)])
         spawners_length = len(spawners)
 
-        self.Enemy_Spawner(keys.spider, (self.game.player.pos[0], self.game.player.pos[1] + 5))
-        return
         for i in range(50):
             # Spawn enemy at a random location
             spawner_index = random.randint(0, spawners_length - 1)
@@ -102,6 +102,7 @@ class Enemy_Handler():
                 keys.phantom: 0.1,
                 keys.wraith: 0.05,
                 keys.shade: 0.05,
+                keys.ghoul: 999990.05,
             }
 
             type = random.choices(list(enemy_types.keys()), weights=enemy_types.values())[0]
@@ -339,6 +340,23 @@ class Enemy_Handler():
             agility,
             intelligence,
             stamina)
+    
+    def Spawn_Ghoul(self, pos):
+        health = 80
+        strength = 6
+        speed = 6
+        agility = 2 
+        intelligence = 2
+        stamina = 2
+        return Ghoul(
+            self.game,
+            pos, 
+            health,
+            strength,
+            speed,
+            agility,
+            intelligence,
+            stamina)
         
 
     def Spawn_Fire_Spirit(self, pos):
@@ -386,7 +404,6 @@ class Enemy_Handler():
         stamina = 2
         return Spider(self.game,
                     pos, 
-                    keys.spider,
                     health,
                     strength,
                     speed,

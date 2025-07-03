@@ -76,12 +76,12 @@ class Animation_Handler():
 
         self.attack_animation_num_cooldown = self.attack_animation_num_cooldown_max
         self.attack_animation_num += 1
-        self.Set_Entity_Image()
 
         if self.attack_animation_num > self.attack_animation_num_max:
             self.attack_animation_num = 0
             self.attacking = 0  # Reset attack state
 
+        self.Set_Entity_Image()
         self.animation_value = self.attack_animation_num
 
 
@@ -108,6 +108,7 @@ class Animation_Handler():
             self.animation = self.entity.type + '_' + self.entity.action
             self.animation_num = 0
             self.attack_animation_num = 0
+            self.animation_value = 0
             self.jumping_animation_num = 0
 
 

@@ -324,6 +324,7 @@ class Weapon(Item):
 
     def Set_Damage(self, damage_type, damage):
         self.damage_handler.Set_Damage(damage_type, damage)
+        self.charge_effect_handler.Set_Charge_Effect()
 
     # Reset the attack charge
     def Reset_Charge(self):

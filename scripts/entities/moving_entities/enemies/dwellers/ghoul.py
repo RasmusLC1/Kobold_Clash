@@ -1,25 +1,32 @@
-from scripts.entities.items.weapons.close_combat.scythe import Scythe
-from scripts.entities.moving_entities.enemies.skeleton.skeleton import Skeleton
+from scripts.entities.moving_entities.enemies.dwellers.dweller import Dweller
+from scripts.entities.moving_entities.enemies.dwellers.spider.spider_intent import Spider_Intent_Manager
 from scripts.engine.assets.keys import keys
-
 import random
 
+# TODO: Implement intent with spider and make attacks into objects
+class Ghoul(Dweller):
 
-class Skeleton_Undertaker(Skeleton):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        type = str(random.randint(1, 1))
-        super().__init__(game, pos, keys.skeleton_undertaker + '_' + type, health, strength, max_speed, agility, intelligence, stamina, 50)
-        self.Equip_Weapon(Scythe(self.game, self.pos))
+        super().__init__(game, pos, keys.ghoul, health, strength, max_speed, agility, intelligence, stamina, 60)
+
+        self.intent_manager.Set_Intent(['direct', 'attack', 'attack', 'attack', 'medium_range'])
+
+        self.animation_handler.Set_Animation_Num_Max(4)
+        self.animation_handler.Set_Attack_Animation_Num_Max(5)
         self.bones_search_cooldown = 0
         self.target_bones_collision_cooldown = 0
         self.target_bones = None
-        self.active_weapon.Set_Damage(keys.vampiric, 3)
-        self.intent_manager.Set_Intent(['direct', 'attack', 'attack', 'medium_range', 'medium_range', 'medium_range',])
 
+
+        self.attack_symbol_offset = 10
+        self.active_weapon.Set_Damage(keys.poison, 2)
+        self.active_weapon.Set_Damage(keys.blunt, 3)
+
+    
     def Update(self, tilemap, movement=(0, 0)):
         self.Update_Bones_Search_Cooldown()
         self.Search_For_Bones()
-        self.Resurrect_Enemy()
+        self.Bones_Collision_Check()
         super().Update(tilemap, movement)
         
 
@@ -29,7 +36,7 @@ class Skeleton_Undertaker(Skeleton):
         
         self.bones_search_cooldown = max(0, self.bones_search_cooldown - 1)
 
-    def Resurrect_Enemy(self):
+    def Bones_Collision_Check(self):
         if not self.target_bones:
             return
         if self.target_bones_collision_cooldown:
@@ -37,14 +44,13 @@ class Skeleton_Undertaker(Skeleton):
             return
         else:
             self.target_bones_collision_cooldown = 50
-            self.Revive()
+            self.Heal_From_Bones()
 
-    def Revive(self):
+    def Heal_From_Bones(self):
         if self.target_bones and self.rect().colliderect(self.target_bones.rect()):
             self.game.particle_handler.Activate_Particles(10, keys.vampire_particle, self.rect().center, frame=random.randint(20, 40))
-            self.target_bones.Revive()
-            self.target_bones = None
             self.bones_search_cooldown = random.randint(2500, 3000)
+            self.effects.Set_Effect(keys.healing, self.max_health // 2)
             return
 
     def Search_For_Bones(self):
@@ -60,6 +66,5 @@ class Skeleton_Undertaker(Skeleton):
         self.game.enemy_handler.Add_To_Pathfinding_Queue(self, nearby_bones[0].pos)
         self.Set_Attack_Strategy("medium_range")
         self.target_bones = nearby_bones[0]
-
 
 
