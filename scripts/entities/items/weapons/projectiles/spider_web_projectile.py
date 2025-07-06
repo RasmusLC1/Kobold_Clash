@@ -1,5 +1,5 @@
 from scripts.entities.items.weapons.projectiles.projectile import Projectile
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Spider_Web_Projectile(Projectile):
     def __init__(self, game, pos, type, damage, speed, shoot_distance, weapon_class, special_attack, direction, entity):

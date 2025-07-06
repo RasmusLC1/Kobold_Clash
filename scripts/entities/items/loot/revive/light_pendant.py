@@ -1,6 +1,6 @@
 from scripts.entities.items.loot.loot import Loot
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Light_Pendant(Loot):

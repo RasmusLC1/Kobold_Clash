@@ -1,5 +1,5 @@
 import re
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Mixed_Symbols():
     def __init__(self, game, symbols, font):

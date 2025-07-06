@@ -1,5 +1,5 @@
 from scripts.entities.moving_entities.effects.effect import Effect
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 # Double damage but prevent healing
 class Demonic_Bargain(Effect):

@@ -1,6 +1,6 @@
 from scripts.entities.moving_entities.enemies.behavior.intent_manager import Intent_Manager
 from scripts.entities.moving_entities.enemies.attacks.Dash import Dash
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Vampire_Intent_Manager(Intent_Manager):
     def __init__(self, game, entity):

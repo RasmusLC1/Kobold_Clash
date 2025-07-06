@@ -1,6 +1,6 @@
 from scripts.entities.items.loot.keys.key import Key
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Lockpick(Key):
     def __init__(self, game, pos):

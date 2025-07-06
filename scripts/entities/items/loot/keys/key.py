@@ -1,5 +1,5 @@
 from scripts.entities.items.loot.interactive_loot import Interactive_Loot
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Key(Interactive_Loot):
     def __init__(self, game, type, pos):

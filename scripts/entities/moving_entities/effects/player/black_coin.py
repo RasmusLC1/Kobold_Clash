@@ -1,5 +1,5 @@
 from scripts.entities.moving_entities.effects.effect import Effect
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 # Increases gold, but increases damage taken
 class Black_Coin(Effect):

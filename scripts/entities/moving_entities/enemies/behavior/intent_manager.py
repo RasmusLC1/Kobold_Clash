@@ -1,5 +1,5 @@
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Intent_Manager():
     def __init__(self, game, entity) -> None:

@@ -3,7 +3,7 @@ import pygame
 from scripts.entities.moving_entities.effects.effects_handler import Status_Effect_Handler
 from scripts.entities.moving_entities.animation.animation_handler import Animation_Handler
 from scripts.entities.entities import PhysicsEntity
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Moving_Entity(PhysicsEntity):
 

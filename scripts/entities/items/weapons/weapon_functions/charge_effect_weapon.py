@@ -1,4 +1,4 @@
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 # Responsible for showing the special attack charge of the weapon
 class Charge_Effect_Weapon():

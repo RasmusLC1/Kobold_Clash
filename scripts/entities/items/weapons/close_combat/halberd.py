@@ -1,6 +1,6 @@
 from scripts.entities.items.weapons.weapon import Weapon
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Halberd(Weapon):
     def __init__(self, game, pos, damage_type = 'slash'):

@@ -1,6 +1,6 @@
 from scripts.entities.items.weapons.weapon import Weapon
 from scripts.entities.items.weapons.projectiles.arrow import Arrow
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 # Parent class for ranged weapons

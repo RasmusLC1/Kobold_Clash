@@ -42,7 +42,7 @@ from scripts.entities.items.runes.basic_runes.resistance_rune import Resistance_
 from scripts.entities.items.runes.constant_runes.shield_rune import Shield_Rune
 from scripts.entities.items.runes.constant_runes.arcane_hunger_rune import Arcane_Hunger_Rune
 from scripts.entities.items.runes.constant_runes.manget_rune import Magnet_Rune
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 import math
 

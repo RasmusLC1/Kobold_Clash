@@ -1,6 +1,6 @@
 import math
 import heapq
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class A_Star:
     def __init__(self):

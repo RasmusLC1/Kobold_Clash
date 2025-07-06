@@ -2,7 +2,7 @@ from scripts.entities.items.item import Item
 import pygame
 import math
 from scripts.entities.textbox.rune_textbox import Rune_Textbox
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 

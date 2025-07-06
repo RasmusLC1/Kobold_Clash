@@ -1,6 +1,6 @@
 import pygame
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Attack_Stategies():

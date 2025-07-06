@@ -1,4 +1,4 @@
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.player.player import Player
 from scripts.engine.particles.particle_handler import Particle_Handler
 from scripts.traps.trap_handler import Trap_Handler

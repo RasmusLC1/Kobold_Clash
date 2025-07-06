@@ -1,10 +1,9 @@
 import pygame
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Health_Bar:
     def __init__(self, game):
         self.game = game
-        self.scaled_heart = pygame.transform.scale(self.game.assets[keys.heart], (10, 12))
         self.pos_x = 20
         self.pos_y = self.game.screen_height / self.game.render_scale - 70
         self.animation = 0

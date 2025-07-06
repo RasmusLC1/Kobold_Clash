@@ -2,7 +2,7 @@ from scripts.level_generation.dungeon_enum_keys import *
 from scripts.level_generation.room_generation.circle_room import Circle_Room
 import random
 import math
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Spawn_Boss_Room():
 

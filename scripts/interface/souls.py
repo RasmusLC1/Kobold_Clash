@@ -1,6 +1,6 @@
 import pygame
 import math
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Souls:
     def __init__(self, game):

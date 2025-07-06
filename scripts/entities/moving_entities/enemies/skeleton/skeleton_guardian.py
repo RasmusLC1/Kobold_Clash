@@ -6,7 +6,7 @@ from scripts.entities.items.weapons.close_combat.halberd import Halberd
 from scripts.entities.items.weapons.close_combat.warhammer import Warhammer
 
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Skeleton_Guardian(Skeleton):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):

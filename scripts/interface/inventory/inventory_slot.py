@@ -1,5 +1,5 @@
 import pygame
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Inventory_Slot():
     def __init__(self, game, pos, type, size, item, index, key = None):

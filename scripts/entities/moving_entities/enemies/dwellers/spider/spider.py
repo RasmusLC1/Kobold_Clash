@@ -1,6 +1,6 @@
 from scripts.entities.moving_entities.enemies.dwellers.dweller import Dweller
 from scripts.entities.moving_entities.enemies.dwellers.spider.spider_intent import Spider_Intent_Manager
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 # TODO: Implement intent with spider and make attacks into objects
 class Spider(Dweller):

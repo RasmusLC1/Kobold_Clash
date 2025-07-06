@@ -1,6 +1,6 @@
 import pygame
 from scripts.engine.utility.utils import load_image, load_images, Animation, get_tiles_from_sheet
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Graphics_Loader:
     def Run_All(self):
@@ -43,7 +43,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Skeleton_Cleric_List(self)
         Graphics_Loader.Asset_Skeleton_Undertaker_List(self)
         Graphics_Loader.Asset_Skeleton_Warlock_List(self)
-        Graphics_Loader.Wight_King_Spirit_List(self)
+        Graphics_Loader.Wight_King_List(self)
         Graphics_Loader.Asset_Spider_List(self)
         Graphics_Loader.Asset_Ghoul_List(self)
         Graphics_Loader.Asset_Enemy_Symbols_List(self)
@@ -100,8 +100,6 @@ class Graphics_Loader:
     def Asset_Effect_List(self):
         white = (255,255,255)
         effect_assets = {
-            keys.heart : load_image('heart.png'),
-            keys.coin : get_tiles_from_sheet('coin_.png', 3, 0, 0, 0, 13, 13, white),
             keys.fire : get_tiles_from_sheet('particles/effects/fire/orange/loops/burning_loop_1.png', 7, 0, 0, 0, 32, 32, white),
             keys.poison : get_tiles_from_sheet('particles/effects/poison.png', 2, 0, 0, 0, 32, 32, white),
             keys.frozen : get_tiles_from_sheet('particles/effects/frozen.png', 2, 0, 0, 0, 32, 32, white),
@@ -245,10 +243,17 @@ class Graphics_Loader:
         }
         self.assets.update(entities_assets)
 
-    def Wight_King_Spirit_List(self):
+    def Wight_King_List(self):
         entities_assets = {
             keys.wight_king_running: get_tiles_from_sheet('entities/enemies/skeleton/wight_king/wight_king.png', 4, 0, 0, 0, 40, 40),
             keys.wight_king_attack: get_tiles_from_sheet('entities/enemies/skeleton/wight_king/wight_king_attack.png', 6, 0, 0, 0, 40, 40),
+        }
+        self.assets.update(entities_assets)
+
+    def vampire_List(self):
+        entities_assets = {
+            keys.vampire_running: get_tiles_from_sheet('entities/enemies/dwellers/vampire/vampire.png', 3, 0, 0, 0, 32, 32),
+            keys.vampire_attack: get_tiles_from_sheet('entities/enemies/dwellers/vampire/vampire_attack.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 

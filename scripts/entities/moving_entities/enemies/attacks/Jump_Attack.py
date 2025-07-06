@@ -1,5 +1,5 @@
 import pygame
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Jump_Attack():

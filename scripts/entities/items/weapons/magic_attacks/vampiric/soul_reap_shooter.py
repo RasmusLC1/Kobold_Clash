@@ -1,6 +1,6 @@
 from scripts.entities.items.weapons.magic_attacks.vampiric.soul_reap import Soul_Reap
 import math
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Soul_Reap_Shooter():

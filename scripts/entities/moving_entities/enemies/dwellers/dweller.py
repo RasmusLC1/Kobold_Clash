@@ -1,7 +1,7 @@
 from scripts.entities.moving_entities.enemies.enemy import Enemy
 from scripts.entities.items.weapons.enemy_weapons.claw import Claw
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 import math
 
 class Dweller(Enemy):

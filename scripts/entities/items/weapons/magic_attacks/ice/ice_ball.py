@@ -1,6 +1,6 @@
 from scripts.entities.items.weapons.magic_attacks.base_attacks.elemental_ball import Elemental_Ball
 from scripts.entities.items.weapons.magic_attacks.ice.ice_explosion import Ice_Explosion
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Ice_Ball(Elemental_Ball):

@@ -1,5 +1,5 @@
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Enemy_Weapon_Attack():
     def __init__(self, game, weapon):

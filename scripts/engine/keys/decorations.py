@@ -1,0 +1,90 @@
+class Decorations():
+# Interactive Objects
+    
+    chest = "chest"
+
+    bookshelf = "bookshelf"
+
+    
+    door_basic = "door_basic"
+
+    
+    rune_shrine = "rune_shrine"
+
+    
+    portal_shrine = "portal_shrine"
+
+    hunter_shrine = "hunter_shrine"
+
+    
+    bones = "bones"
+
+
+# Environment Assets
+    
+    lava_env = "lava_env"
+
+    
+    shallow_water_env = "shallow_water_env"
+
+    
+    medium_water_env = "medium_water_env"
+
+    
+    deep_water_env = "deep_water_env"
+
+    ice_env = "ice_env"
+
+    water_env = "water_env"
+    
+    shallow_ice_env = "shallow_ice_env"
+
+    
+    medium_ice_env = "medium_ice_env"
+
+    
+    deep_ice_env = "deep_ice_env"
+
+
+# Decoration Assets (Empty in your case, but if you have any)
+    
+    Decoration_Assets = "decoration_assets"
+
+    weapon_rack = "weapon_rack"
+
+    plinth = "plinth"
+
+    loot_container = "loot_container"
+
+    vase = "vase"
+
+    soul_well = "soul_well"
+
+    teleportation_circle = "teleportation_circle"
+
+    sacrifice_shrine = "sacrifice_shrine"
+
+
+    potion_table = "potion_table"
+
+    effigy_tomb = "effigy_tomb"
+
+    brazier = "brazier"
+
+# Traps
+    spike_trap = "spike_trap"
+    
+    
+    spike_poison_trap = "spike_poison_trap"
+    
+    
+    pit_trap = "pit_trap"
+    
+    
+    fire_trap = "fire_trap"
+    
+    
+    spider_web = "spider_web"
+    
+    
+    poison_plume = "poison_plume"

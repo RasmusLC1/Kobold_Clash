@@ -1,7 +1,7 @@
 from scripts.entities.moving_entities.enemies.enemy import Enemy
 from scripts.entities.items.weapons.enemy_weapons.claw import Claw
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Void_Spawn(Enemy):
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, soul_value, size = (32, 32)):

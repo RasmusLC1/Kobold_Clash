@@ -1,6 +1,6 @@
 from scripts.menu.portal_button import Portal_Button
 from scripts.menu.menu import Menu
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Portal_Shrine_Menu(Menu):

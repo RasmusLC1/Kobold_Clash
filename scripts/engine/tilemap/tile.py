@@ -1,6 +1,6 @@
 import math
 import pygame
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 not_rendered_tiles = [keys.door_basic]
 

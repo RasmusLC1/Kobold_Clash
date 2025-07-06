@@ -15,7 +15,7 @@ from scripts.entities.moving_entities.enemies.void_spawn.shade import Shade
 from scripts.entities.moving_entities.enemies.void_spawn.phantom import Phantom
 from scripts.entities.moving_entities.enemies.void_spawn.wraith.wraith import Wraith
 from scripts.entities.moving_entities.enemies.skeleton.wight_king.wight_king import Wight_King
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 import random
 

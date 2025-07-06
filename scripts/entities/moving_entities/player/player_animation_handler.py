@@ -1,5 +1,5 @@
 from scripts.entities.moving_entities.animation.animation_handler import Animation_Handler
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Player_Animation_Handler(Animation_Handler):
 

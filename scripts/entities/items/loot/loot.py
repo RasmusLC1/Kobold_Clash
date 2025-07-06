@@ -1,6 +1,6 @@
 from scripts.entities.items.item import Item
 from scripts.entities.textbox.loot_textbox import Loot_Textbox
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Loot(Item):
     def __init__(self, game, type, pos, size, value, loot_type, amount = 1):

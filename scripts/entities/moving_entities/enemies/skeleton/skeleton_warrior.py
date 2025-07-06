@@ -5,7 +5,7 @@ from scripts.entities.items.weapons.close_combat.halberd import Halberd
 from scripts.entities.items.weapons.close_combat.warhammer import Warhammer
 from scripts.entities.items.weapons.projectiles.hatchet import Hatchet
 from scripts.entities.items.weapons.projectiles.hammer import Hammer
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 from scripts.entities.moving_entities.enemies.skeleton.skeleton import Skeleton
 

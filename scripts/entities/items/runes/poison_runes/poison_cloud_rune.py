@@ -1,6 +1,6 @@
 from scripts.entities.items.runes.rune import Rune
 from scripts.entities.items.weapons.magic_attacks.poison.poison_cloud import Poison_Cloud
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Poison_Cloud_Rune(Rune):
     def __init__(self, game, pos):

@@ -1,0 +1,16 @@
+class Player():
+    # Player Assets
+    
+    player_idle_down = "player_idle_down"
+  
+    player_idle_up = "player_idle_up"
+
+    player_standing_still_down = "player_standing_still_down"
+  
+    player_standing_still_up = "player_standing_still_up"
+
+    player_running_down = "player_running_down"
+    
+    player_running_up = "player_running_up"
+    
+    player_attack = "player_attack"

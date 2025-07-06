@@ -5,7 +5,7 @@ from scripts.entities.items.loot.curse.black_coin import Black_Coin
 from scripts.entities.items.loot.loot_types_handler import Loot_Types_Handler
 
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Cursed_Loot_Handler(Loot_Types_Handler):

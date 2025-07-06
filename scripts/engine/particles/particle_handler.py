@@ -1,6 +1,6 @@
 from scripts.engine.particles.particle import Particle
 from scripts.engine.particles.particle_patterns import Particle_Patterns
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Particle_Handler:
     def __init__(self, game) -> None:

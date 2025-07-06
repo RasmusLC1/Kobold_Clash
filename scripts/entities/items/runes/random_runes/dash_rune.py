@@ -1,5 +1,5 @@
 from scripts.entities.items.runes.projectile_rune import Projectile_Rune
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Dash_Rune(Projectile_Rune):

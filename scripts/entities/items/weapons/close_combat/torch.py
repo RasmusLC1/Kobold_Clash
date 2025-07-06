@@ -1,7 +1,7 @@
 from scripts.entities.items.weapons.weapon import Weapon
 from scripts.entities.items.weapons.magic_attacks.fire.flame_thrower import Flame_Thrower
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Torch(Weapon):

@@ -1,6 +1,6 @@
 from scripts.entities.items.runes.projectile_rune import Projectile_Rune
 from scripts.entities.items.weapons.magic_attacks.electric.chain_lightning import Chain_Lightning
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Chain_Lightning_Rune(Projectile_Rune):
     def __init__(self, game, pos):

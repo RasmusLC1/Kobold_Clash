@@ -1,6 +1,6 @@
 from scripts.entities.items.weapons.weapon import Weapon
 from scripts.entities.items.weapons.weapon_functions.ranged_damage_handler_weapon import Ranged_Damage_Handler_Weapon
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Projectile(Weapon):

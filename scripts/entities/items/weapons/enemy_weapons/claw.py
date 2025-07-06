@@ -1,5 +1,5 @@
 from scripts.entities.items.weapons.weapon import Weapon
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Claw(Weapon):
     def __init__(self, game, pos, damage_type = keys.slash):

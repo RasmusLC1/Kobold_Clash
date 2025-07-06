@@ -4,7 +4,7 @@ from scripts.menu.rune_shrine_menu import Rune_Shrine_Menu
 from scripts.menu.portal_shrine_menu import Portal_Shrine_Menu
 from scripts.menu.loading_menu import Loading_Menu
 from scripts.menu.game_over_menu import Game_Over_Menu
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Menu_Handler():

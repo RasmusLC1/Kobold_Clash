@@ -6,7 +6,7 @@ from scripts.entities.items.weapons.magic_attacks.poison.poison_explosion import
 from scripts.entities.items.weapons.magic_attacks.vampiric.soul_pit import Soul_Pit
 from scripts.entities.items.weapons.magic_attacks.electric.electric_explosion import Electric_Explosion
 import math
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Bomb(Projectile):
     def __init__(self, game, pos, shoot_distance):

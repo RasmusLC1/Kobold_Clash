@@ -4,7 +4,7 @@ from scripts.entities.items.loot.keys.soul_key import Soul_Key
 from scripts.entities.items.loot.keys.cursed_key import Cursed_Key
 from scripts.entities.items.loot.keys.lockpick import Lockpick
 from scripts.entities.items.loot.loot_types_handler import Loot_Types_Handler
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 

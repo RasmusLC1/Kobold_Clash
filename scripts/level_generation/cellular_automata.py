@@ -1,6 +1,6 @@
 from scripts.level_generation.noise_map import Noise_Map
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Cellular_Automata():
     def __init__(self) -> None:

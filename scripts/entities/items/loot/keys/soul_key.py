@@ -1,5 +1,5 @@
 from scripts.entities.items.loot.keys.key import Key
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Soul_Key(Key):
     def __init__(self, game, pos):

@@ -1,6 +1,6 @@
 from scripts.entities.moving_entities.enemies.enemy import Enemy
 from scripts.entities.items.weapons.magic_attacks.fire.flame_thrower import Flame_Thrower
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Fire_Spirit(Enemy):

@@ -10,7 +10,7 @@ from scripts.entities.textbox.weapon_textbox import Weapon_Textbox
 import pygame
 import math
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Weapon(Item):
     def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_type = 'cut', size = (32, 32), add_to_tile = True):

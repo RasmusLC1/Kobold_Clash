@@ -9,7 +9,7 @@ from scripts.entities.items.loot.curse.cursed_loot_handler import Cursed_Loot_Ha
 
 
 from scripts.entities.items.loot.potions.potion_handler import Potion_Handler
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 

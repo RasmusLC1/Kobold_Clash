@@ -1,5 +1,5 @@
 from scripts.entities.items.weapons.ranged_weapons.ranged_weapon import Ranged_Weapon
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Bow(Ranged_Weapon):

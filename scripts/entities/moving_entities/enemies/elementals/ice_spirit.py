@@ -1,7 +1,7 @@
 from scripts.entities.moving_entities.enemies.enemy import Enemy
 from scripts.entities.items.weapons.magic_attacks.ice.ice_particle import Ice_Particle
 from scripts.entities.items.weapons.magic_attacks.ice.ice_shooter import Ice_Shooter
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Ice_Spirit(Enemy):

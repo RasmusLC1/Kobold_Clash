@@ -2,7 +2,7 @@ import math
 import pygame
 import random
 from scripts.entities.items.weapons.weapon_handler import Weapon_Handler
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Boss_Room():

@@ -1,6 +1,6 @@
 from scripts.entities.items.weapons.weapon import Weapon
 import math
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Battle_Axe(Weapon):

@@ -19,7 +19,7 @@ from scripts.entities.moving_entities.player.inventory_effects.eldritch_mirror i
 from scripts.entities.moving_entities.player.inventory_effects.forsaken_grimoire import Forsaken_Grimoire
 from scripts.entities.moving_entities.player.inventory_effects.cracked_talisman import Cracked_Talisman
 from scripts.entities.moving_entities.player.inventory_effects.echoing_skull import Echoing_Skull
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Inventory_Effects_Handler:

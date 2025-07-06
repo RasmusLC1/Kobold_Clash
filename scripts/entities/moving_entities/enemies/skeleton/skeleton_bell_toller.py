@@ -1,6 +1,6 @@
 from scripts.entities.moving_entities.enemies.skeleton.skeleton import Skeleton
 from scripts.entities.items.weapons.close_combat.bell import Bell
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 import random
 

@@ -4,7 +4,7 @@ from scripts.entities.items.loot.utility.faded_hourglass import Faded_Hourglass
 from scripts.entities.items.loot.utility.ethereal_chains import Ethereal_Chains
 from scripts.entities.items.loot.utility.recall_scroll import Recall_Scroll
 from scripts.entities.items.loot.loot_types_handler import Loot_Types_Handler
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Utility_Loot_Handler(Loot_Types_Handler):

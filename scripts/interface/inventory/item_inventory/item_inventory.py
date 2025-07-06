@@ -1,6 +1,6 @@
 from scripts.interface.inventory.base_inventory import Base_Inventory
 from scripts.interface.inventory.inventory_slot import Inventory_Slot
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Item_Inventory(Base_Inventory):
 

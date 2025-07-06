@@ -1,6 +1,6 @@
 from scripts.engine.utility.helper_functions import Helper_Functions
 from scripts.engine.tilemap.tile import Tile
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 import random
 import json

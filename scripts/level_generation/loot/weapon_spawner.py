@@ -1,6 +1,6 @@
 from scripts.level_generation.dungeon_enum_keys import *
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Weapon_Spawner():
 

@@ -1,6 +1,6 @@
 import pygame
 from scripts.entities.entities import PhysicsEntity
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 import random
 
 

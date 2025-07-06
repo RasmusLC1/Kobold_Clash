@@ -1,6 +1,6 @@
 from scripts.entities.items.runes.projectile_rune import Projectile_Rune
 from scripts.entities.items.weapons.magic_attacks.fire.fire_ball import Fire_Ball
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Fire_Ball_Rune(Projectile_Rune):

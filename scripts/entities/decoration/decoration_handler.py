@@ -17,7 +17,7 @@ from scripts.entities.decoration.interactive.teleportation_circle import Telepor
 from scripts.entities.decoration.loot_container.bookshelf import Bookshelf
 import random
 import math
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Decoration_Handler():
     def __init__(self, game) -> None:

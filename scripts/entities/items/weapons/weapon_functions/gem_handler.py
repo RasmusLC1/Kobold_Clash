@@ -1,5 +1,5 @@
 import pygame
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 # TODO: Remove the entity effects when the weapon is not equipped and enable them when equipped

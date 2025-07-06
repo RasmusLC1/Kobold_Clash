@@ -3,7 +3,7 @@ from scripts.entities.items.loot.potions.potion_handler import Potion_Handler
 from scripts.entities.items.loot.loot_handler import Loot_Handler
 import math
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Item_Handler():

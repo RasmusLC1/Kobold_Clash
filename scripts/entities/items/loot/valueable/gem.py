@@ -1,5 +1,5 @@
 from scripts.entities.items.loot.valueable.valueable import Valuable
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Gem(Valuable):
     def __init__(self, game, pos, amount, effect, value):

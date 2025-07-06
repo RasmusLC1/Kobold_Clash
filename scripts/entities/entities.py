@@ -1,6 +1,6 @@
 import pygame
 from collections import deque
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class PhysicsEntity:
     _id_counter = 0  # Class variable to generate unique IDs

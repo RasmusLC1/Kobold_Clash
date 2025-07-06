@@ -4,7 +4,7 @@ from scripts.entities.moving_entities.enemies.behavior.attack_strategies import 
 from scripts.entities.textbox.enemy_textbox import Enemy_Textbox
 from scripts.entities.decoration.bones.bones import Bones 
 from scripts.entities.moving_entities.enemies.behavior.intent_manager import Intent_Manager
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 import pygame
 import random

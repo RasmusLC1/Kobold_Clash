@@ -1,5 +1,5 @@
 from scripts.entities.decoration.loot_container.loot_container import Loot_Container
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 import random
 
 

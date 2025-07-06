@@ -1,6 +1,6 @@
 from scripts.menu.button import Button
 import math
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Rune_Button(Button):
