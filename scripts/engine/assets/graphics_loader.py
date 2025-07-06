@@ -72,7 +72,7 @@ class Graphics_Loader:
             keys.spike_poison_trap : get_tiles_from_sheet('traps/Spike_Trap_poison.png', 13, 0, 0, 0, 32, 32, white),
             keys.pit_trap : get_tiles_from_sheet('traps/Pit_Trap_Spikes.png', 1, 0, 0, 0, 32, 32, white),
             keys.fire_trap : get_tiles_from_sheet('traps/Fire_Trap.png', 13, 0, 0, 0, 32, 20, white),
-            keys.spider_web : get_tiles_from_sheet('entities/enemies/spider/spider_web.png', 3, 0, 0, 0, 32, 32),
+            keys.spider_web : get_tiles_from_sheet('entities/enemies/dwellers/spider/spider_web.png', 3, 0, 0, 0, 32, 32),
             keys.poison_plume : get_tiles_from_sheet('traps/poison_plume.png', 7, 0, 0, 0, 32, 32),
         }
 
@@ -160,71 +160,71 @@ class Graphics_Loader:
 
     def Asset_Skeleton_Warrior_List(self):
         entities_assets = {
-            keys.skeleton_warrior_1_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_1.png', 6, 0, 0, 0, 32, 32),
-            keys.skeleton_warrior_1_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_1_attack.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_warrior_1_running: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_warrior/skeleton_warrior_1.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_warrior_1_attack: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_warrior/skeleton_warrior_1_attack.png', 6, 0, 0, 0, 32, 32),
 
-            keys.skeleton_warrior_2_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_2.png', 6, 0, 0, 0, 32, 32),
-            keys.skeleton_warrior_2_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_2_attack.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_warrior_2_running: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_warrior/skeleton_warrior_2.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_warrior_2_attack: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_warrior/skeleton_warrior_2_attack.png', 6, 0, 0, 0, 32, 32),
 
-            keys.skeleton_warrior_3_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_3.png', 6, 0, 0, 0, 32, 32),
-            keys.skeleton_warrior_3_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_warrior/skeleton_warrior_3_attack.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_warrior_3_running: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_warrior/skeleton_warrior_3.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_warrior_3_attack: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_warrior/skeleton_warrior_3_attack.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
     def Asset_Skeleton_Guardian_List(self):
         entities_assets = {
-            keys.skeleton_guardian_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_guardian/skeleton_guardian.png', 6, 0, 0, 0, 32, 32),
-            keys.skeleton_guardian_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_guardian/skeleton_guardian_attack.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_guardian_running: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_guardian/skeleton_guardian.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_guardian_attack: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_guardian/skeleton_guardian_attack.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
     def Asset_Skeleton_Banner_Bearer_List(self):
         entities_assets = {
-            keys.skeleton_banner_bearer_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_banner_bearer/skeleton_banner_bearer.png', 6, 0, 0, 0, 32, 32),
-            keys.skeleton_banner_bearer_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_banner_bearer/skeleton_banner_bearer_attack.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_banner_bearer_running: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_banner_bearer/skeleton_banner_bearer.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_banner_bearer_attack: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_banner_bearer/skeleton_banner_bearer_attack.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
     def Asset_Skeleton_Ranger_List(self):
         entities_assets = {
-            keys.skeleton_ranger_1_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_ranger/skeleton_ranger_1.png', 5, 0, 0, 0, 32, 32),
-            keys.skeleton_ranger_1_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_ranger/skeleton_ranger_1_attack.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_ranger_1_running: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_ranger/skeleton_ranger_1.png', 5, 0, 0, 0, 32, 32),
+            keys.skeleton_ranger_1_attack: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_ranger/skeleton_ranger_1_attack.png', 6, 0, 0, 0, 32, 32),
 
-            keys.skeleton_ranger_2_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_ranger/skeleton_ranger_2.png', 5, 0, 0, 0, 32, 32),
-            keys.skeleton_ranger_2_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_ranger/skeleton_ranger_2_attack.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_ranger_2_running: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_ranger/skeleton_ranger_2.png', 5, 0, 0, 0, 32, 32),
+            keys.skeleton_ranger_2_attack: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_ranger/skeleton_ranger_2_attack.png', 6, 0, 0, 0, 32, 32),
 
-            keys.skeleton_ranger_3_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_ranger/skeleton_ranger_3.png', 5, 0, 0, 0, 32, 32),
-            keys.skeleton_ranger_3_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_ranger/skeleton_ranger_3_attack.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_ranger_3_running: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_ranger/skeleton_ranger_3.png', 5, 0, 0, 0, 32, 32),
+            keys.skeleton_ranger_3_attack: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_ranger/skeleton_ranger_3_attack.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
 
     def Asset_Skeleton_Warlock_List(self):
         entities_assets = {
-            keys.skeleton_warlock_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_warlock/skeleton_warlock.png', 3, 0, 0, 0, 32, 32),
-            keys.skeleton_warlock_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_warlock/skeleton_warlock_attack.png', 4, 0, 0, 0, 32, 32),
+            keys.skeleton_warlock_running: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_warlock/skeleton_warlock.png', 3, 0, 0, 0, 32, 32),
+            keys.skeleton_warlock_attack: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_warlock/skeleton_warlock_attack.png', 4, 0, 0, 0, 32, 32),
 
         }
         self.assets.update(entities_assets)
 
     def Asset_Skeleton_Cleric_List(self):
         entities_assets = {
-            keys.skeleton_cleric_1_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_cleric/skeleton_cleric_1.png', 6, 0, 0, 0, 32, 32),
-            keys.skeleton_cleric_1_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_cleric/skeleton_cleric_attack_1.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_cleric_1_running: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_cleric/skeleton_cleric_1.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_cleric_1_attack: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_cleric/skeleton_cleric_attack_1.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
     def Asset_Skeleton_Bell_Toller_List(self):
         entities_assets = {
-            keys.skeleton_bell_toller_1_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_bell/skeleton_bell_1.png', 6, 0, 0, 0, 32, 32),
-            keys.skeleton_bell_toller_1_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_bell/skeleton_bell_attack_1.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_bell_toller_1_running: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_bell/skeleton_bell_1.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_bell_toller_1_attack: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_bell/skeleton_bell_attack_1.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
     def Asset_Skeleton_Undertaker_List(self):
         entities_assets = {
-            keys.skeleton_undertaker_1_running: get_tiles_from_sheet('entities/enemies/undead/skeleton_undertaker/skeleton_undertaker_1.png', 6, 0, 0, 0, 32, 32),
-            keys.skeleton_undertaker_1_attack: get_tiles_from_sheet('entities/enemies/undead/skeleton_undertaker/skeleton_undertaker_attack_1.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_undertaker_1_running: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_undertaker/skeleton_undertaker_1.png', 6, 0, 0, 0, 32, 32),
+            keys.skeleton_undertaker_1_attack: get_tiles_from_sheet('entities/enemies/skeleton/skeleton_undertaker/skeleton_undertaker_attack_1.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
@@ -247,40 +247,40 @@ class Graphics_Loader:
 
     def Wight_King_Spirit_List(self):
         entities_assets = {
-            keys.wight_king_running: get_tiles_from_sheet('entities/enemies/undead/wight_king/wight_king.png', 4, 0, 0, 0, 40, 40),
-            keys.wight_king_attack: get_tiles_from_sheet('entities/enemies/undead/wight_king/wight_king_attack.png', 6, 0, 0, 0, 40, 40),
+            keys.wight_king_running: get_tiles_from_sheet('entities/enemies/skeleton/wight_king/wight_king.png', 4, 0, 0, 0, 40, 40),
+            keys.wight_king_attack: get_tiles_from_sheet('entities/enemies/skeleton/wight_king/wight_king_attack.png', 6, 0, 0, 0, 40, 40),
         }
         self.assets.update(entities_assets)
 
     def Asset_Void_Spawn_List(self):
         entities_assets = {
-            keys.wraith_running: get_tiles_from_sheet('entities/enemies/undead/void_spawn/wraith/wraith.png', 4, 0, 0, 0, 32, 32),
-            keys.wraith_attack: get_tiles_from_sheet('entities/enemies/undead/void_spawn/wraith/wraith_attack.png', 5, 0, 0, 0, 32, 32),
+            keys.wraith_running: get_tiles_from_sheet('entities/enemies/void_spawn/wraith/wraith.png', 4, 0, 0, 0, 32, 32),
+            keys.wraith_attack: get_tiles_from_sheet('entities/enemies/void_spawn/wraith/wraith_attack.png', 5, 0, 0, 0, 32, 32),
 
-            keys.phantom_running: get_tiles_from_sheet('entities/enemies/undead/void_spawn/phantom/phantom.png', 4, 0, 0, 0, 32, 32),
-            keys.phantom_attack: get_tiles_from_sheet('entities/enemies/undead/void_spawn/phantom/phantom_attack.png', 5, 0, 0, 0, 32, 32),
+            keys.phantom_running: get_tiles_from_sheet('entities/enemies/void_spawn/phantom/phantom.png', 4, 0, 0, 0, 32, 32),
+            keys.phantom_attack: get_tiles_from_sheet('entities/enemies/void_spawn/phantom/phantom_attack.png', 5, 0, 0, 0, 32, 32),
 
-            keys.shade_running: get_tiles_from_sheet('entities/enemies/undead/void_spawn/shade/shade.png', 4, 0, 0, 0, 32, 32),
-            keys.shade_attack: get_tiles_from_sheet('entities/enemies/undead/void_spawn/shade/shade_attack.png', 5, 0, 0, 0, 32, 32),
+            keys.shade_running: get_tiles_from_sheet('entities/enemies/void_spawn/shade/shade.png', 4, 0, 0, 0, 32, 32),
+            keys.shade_attack: get_tiles_from_sheet('entities/enemies/void_spawn/shade/shade_attack.png', 5, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
     def Asset_Ghoul_List(self):
         entities_assets = {
-            keys.ghoul_running: get_tiles_from_sheet('entities/enemies/undead/dwellers/ghoul/ghoul.png', 4, 0, 0, 0, 32, 32),
-            keys.ghoul_attack: get_tiles_from_sheet('entities/enemies/undead/dwellers/ghoul/ghoul_attack.png', 5, 0, 0, 0, 32, 32),
+            keys.ghoul_running: get_tiles_from_sheet('entities/enemies/dwellers/ghoul/ghoul.png', 4, 0, 0, 0, 32, 32),
+            keys.ghoul_attack: get_tiles_from_sheet('entities/enemies/dwellers/ghoul/ghoul_attack.png', 5, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
     def Asset_Spider_List(self):
         entities_assets = {
-            keys.spider_idle: get_tiles_from_sheet('entities/enemies/spider/spider_idle.png', 4, 0, 0, 0, 32, 32),
-            keys.spider_running: get_tiles_from_sheet('entities/enemies/spider/spider_running.png', 4, 0, 0, 0, 32, 32),
-            keys.friendly_spider_idle: get_tiles_from_sheet('entities/enemies/spider/friendly_spider_idle.png', 4, 0, 0, 0, 32, 32),
-            keys.friendly_spider_running: get_tiles_from_sheet('entities/enemies/spider/friendly_spider_running.png', 4, 0, 0, 0, 32, 32),
-            keys.spider_attack: get_tiles_from_sheet('entities/enemies/spider/spider_attacking.png', 3, 0, 0, 0, 32, 32),
-            keys.spider_jumping: get_tiles_from_sheet('entities/enemies/spider/spider_jumping.png', 8, 0, 0, 0, 32, 32),
-            keys.spider_on_back: get_tiles_from_sheet('entities/enemies/spider/spider_on_back.png', 8, 0, 0, 0, 32, 32),
+            keys.spider_idle: get_tiles_from_sheet('entities/enemies/dwellers/spider/spider_idle.png', 4, 0, 0, 0, 32, 32),
+            keys.spider_running: get_tiles_from_sheet('entities/enemies/dwellers/spider/spider_running.png', 4, 0, 0, 0, 32, 32),
+            keys.friendly_spider_idle: get_tiles_from_sheet('entities/enemies/dwellers/spider/friendly_spider_idle.png', 4, 0, 0, 0, 32, 32),
+            keys.friendly_spider_running: get_tiles_from_sheet('entities/enemies/dwellers/spider/friendly_spider_running.png', 4, 0, 0, 0, 32, 32),
+            keys.spider_attack: get_tiles_from_sheet('entities/enemies/dwellers/spider/spider_attacking.png', 3, 0, 0, 0, 32, 32),
+            keys.spider_jumping: get_tiles_from_sheet('entities/enemies/dwellers/spider/spider_jumping.png', 8, 0, 0, 0, 32, 32),
+            keys.spider_on_back: get_tiles_from_sheet('entities/enemies/dwellers/spider/spider_on_back.png', 8, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
