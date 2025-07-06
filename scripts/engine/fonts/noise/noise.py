@@ -8,7 +8,7 @@ class Noise():
         self.sprite = game.assets[keys.noise]
 
     def Set_Active(self, pos):
-        self.pos = pos
+        self.pos = list(pos)
         self.timer = random.randint(90, 100)
         # Set a random variant
         variant = random.randint(0, 2)

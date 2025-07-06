@@ -69,4 +69,4 @@ class Ranged_Damage_Handler_Weapon(Damage_Handler_Weapon):
         game.logic_update.Set_Freeze_Frame(damage_freeze)
 
         game.camera_update.Set_Screen_Shake(damage_freeze, damage_freeze // 2)
-        game.sound_handler.Play_Sound('projectile_hit', 0.2)
+        self.game.sound_handler.Play_Sound('projectile_hit', 0.2)

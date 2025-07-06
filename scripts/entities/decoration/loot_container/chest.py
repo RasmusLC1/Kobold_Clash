@@ -23,9 +23,8 @@ class Chest(Loot_Container):
         
         self.game.decoration_handler.Remove_Decoration(self)
 
-        self.Generate_Sound('chest_open', 0.1)
+        self.Generate_Sound('chest_open', 0.1, 500)
 
-        self.game.clatter.Generate_Clatter(self.pos, 500) # Generate clatter to alert nearby enemies
 
     def Set_Loot_Types(self):
         self.loot_weights = {keys.passive : 0.05,

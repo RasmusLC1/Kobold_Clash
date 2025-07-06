@@ -111,7 +111,7 @@ class PhysicsEntity:
         self.tile = None
 
     def Set_Position(self, position):
-        self.pos = position
+        self.pos = list(position)
 
     def Set_Sprite(self):
         pass
@@ -158,9 +158,14 @@ class PhysicsEntity:
         else:
             return None
         
-    def Generate_Sound(self, sound_name, volume):
+    def Generate_Sound(self, sound_name, volume, clatter, pos = None):
+        if not pos:
+            pos = self.pos
         self.game.sound_handler.Play_Sound(sound_name, volume)
-        self.game.noise_handler.Activate(self.pos)
+        self.game.noise_handler.Activate(pos)
+        if clatter:
+            self.game.clatter.Generate_Clatter(pos, clatter) # Generate clatter to alert nearby enemies
+
 
     def Render(self, surf, offset=(0, 0)):
         pass

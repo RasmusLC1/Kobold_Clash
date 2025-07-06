@@ -168,7 +168,7 @@ class Item(PhysicsEntity):
     
     # Update position
     def Move(self, new_pos):
-        self.pos = new_pos
+        self.pos = list(new_pos)
 
     def Update_Tile(self, new_pos):
 

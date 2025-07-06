@@ -33,7 +33,7 @@ class Spider_Web_Projectile(Projectile):
         if entity:
             entity.Set_Effect(keys.snare, 3)
             self.animation = self.attack_animation_max
-            self.pos = entity.pos
+            self.pos = list(entity.pos)
             return True
         
         return False

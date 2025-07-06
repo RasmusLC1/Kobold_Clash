@@ -37,7 +37,7 @@ class Arrow(Projectile):
         if not self.shoot_speed:
             self.Initialise_Shooting(self.speed)
         # Use the stored direction to move the particle
-        self.pos = (
+        self.pos = list(
             self.pos[0] + self.direction[0] * self.shoot_speed,
             self.pos[1] + self.direction[1] * self.shoot_speed
         )
