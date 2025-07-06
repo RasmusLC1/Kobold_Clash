@@ -157,6 +157,10 @@ class PhysicsEntity:
             return self
         else:
             return None
+        
+    def Generate_Sound(self, sound_name, volume):
+        self.game.sound_handler.Play_Sound(sound_name, volume)
+        self.game.noise_handler.Activate(self.pos)
 
     def Render(self, surf, offset=(0, 0)):
         pass

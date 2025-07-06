@@ -57,6 +57,7 @@ class Interface():
 
     player_damage_font = "player_damage_font"
 
+    noise = "noise"
     
     floating_E = "floating_e"
 

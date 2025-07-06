@@ -689,6 +689,7 @@ class Graphics_Loader:
             keys.floating_E: get_tiles_from_sheet('font/floating_e.png', 1, 0, 0, 0, 16, 16),
             keys.symbols: get_tiles_from_sheet('font/symbols.png', 7, 5, 0, 0, 16, 16),
             keys.souls: get_tiles_from_sheet('font/souls.png', 3, 0, 0, 0, 32, 32),
+            keys.noise: get_tiles_from_sheet('font/noise.png', 2, 0, 0, 0, 16, 16),
         }
         self.assets.update(font)
     

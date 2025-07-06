@@ -196,10 +196,13 @@ class Moving_Entity(PhysicsEntity):
             self.update_tile_cooldown -= 1
 
         self.update_tile_cooldown = 10
+
+        # Error handling, if no tile is found teleport
         if not self.tile:
             new_tile = self.game.tilemap.Get_Random_Tile_With_Path_To_Player()
             self.game.tilemap.Add_Entity_To_Tile(new_tile, self)
             self.tile = new_tile
+            self.pos = (self.tile.pos[0] * 32, self.tile.pos[1] * 32)
 
             print("ERROR TILE NOT FOUND", self.type, self.pos, self.tile)
             return

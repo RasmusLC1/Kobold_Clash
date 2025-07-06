@@ -29,8 +29,11 @@ class Logic_Update():
 
           self.game.mouse.Mouse_Update()
           self.game.text_box_handler.Update()
+          self.game.noise_handler.Update()
 
           self.game.health_bar.Update_Health()
+
+
 
 
 

@@ -22,7 +22,8 @@ class Chest(Loot_Container):
             return False
         
         self.game.decoration_handler.Remove_Decoration(self)
-        self.game.sound_handler.Play_Sound('chest_open', 0.1)
+
+        self.Generate_Sound('chest_open', 0.1)
 
         self.game.clatter.Generate_Clatter(self.pos, 500) # Generate clatter to alert nearby enemies
 

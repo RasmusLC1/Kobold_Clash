@@ -43,7 +43,6 @@ class Skeleton_Warlock(Skeleton):
             return False
 
         if "staff" in self.active_weapon.type:
-            self.game.particle_handler.Activate_Particles(random.randint(5, 10), keys.gold_particle, self.rect().center, frame=random.randint(20, 30))
 
             self.charge += 1
             self.active_weapon.Set_Charging_Enemy()
@@ -51,6 +50,7 @@ class Skeleton_Warlock(Skeleton):
                 return False
             self.Set_Target(self.game.player.pos)
             self.Attack_Direction_Handler()
+            self.game.particle_handler.Activate_Particles(random.randint(5, 10), keys.gold_particle, self.rect().center, frame=random.randint(20, 30))
             
             self.active_weapon.Shoot_Projectiles()
             self.Reset_Charge()

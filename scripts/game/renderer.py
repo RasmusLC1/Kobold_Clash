@@ -22,6 +22,8 @@ class Renderer():
         self.game.particle_handler.Particle_Render(surf, render_scroll)
         self.game.entities_render.Render(surf, render_scroll)
         self.game.rune_handler.Render_Animation(surf, render_scroll)
+        self.game.noise_handler.Render(surf, render_scroll)
+
         
 
         self.game.inventory.Render(surf)
