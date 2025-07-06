@@ -386,16 +386,11 @@ Upgrade weapons
     # Skeleton Cleric, heals undead in the area but does no damage
     # Skeleton Bell Toller, alerts nearby enemies if it sees the player
     # Skeleton Undertaker, revieves dead enemies
-    # Skeleton warlock, uses magic poison attacks
-    # Wight Lord, boss, armoured skeleton with shield and sword, can dash to close range
-    skeleton standard bearer, Improves strength of nearby enemies, support 
-    Skeleton Guard, slow, high health and medium damage
+
     Necromancer, boss, can resurrect undead and summon 3 skeletons
     Vampire, boss, life steal, flying bat form when travelling, close combat
     Crypt Ghoul, bone club, fast and high damage, but glass cannon
     Crypt Horror, boss, high damage and health, slow
-    Ghost, pathfinds directly to the target, phasing through walls, high damage, medium speed and low health
-    Wraith, pathfinds directly to the target, phasing through walls, low damage but steals soul, medium speed and low health
     Lich, casts doom on player, debuffing him and slowly drains health until Lich is killed
 
 ## Crystal Caverns

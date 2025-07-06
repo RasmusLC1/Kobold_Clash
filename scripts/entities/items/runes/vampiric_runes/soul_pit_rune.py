@@ -1,6 +1,6 @@
 from scripts.entities.items.runes.projectile_rune import Projectile_Rune
 from scripts.entities.items.weapons.magic_attacks.vampiric.vampiric_ball import Vampiric_Ball
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Soul_Pit_Rune(Projectile_Rune):
     def __init__(self, game, pos):

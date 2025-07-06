@@ -1,5 +1,5 @@
 from scripts.entities.items.loot.utility.utility_loot import Utility_Loot
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Recall_Scroll(Utility_Loot):
     def __init__(self, game, pos):

@@ -1,7 +1,7 @@
 from scripts.entities.items.loot.loot import Loot
 import math
 import pygame
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Interactive_Loot(Loot):
     def __init__(self, game, type, pos, max_distance, size, loot_type, amount):

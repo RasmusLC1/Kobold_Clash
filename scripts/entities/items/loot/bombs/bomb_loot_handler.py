@@ -2,7 +2,7 @@ from scripts.entities.items.loot.bombs.bomb import Bomb
 from scripts.entities.items.loot.loot_types_handler import Loot_Types_Handler
 
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Bomb_Loot_Handler(Loot_Types_Handler):

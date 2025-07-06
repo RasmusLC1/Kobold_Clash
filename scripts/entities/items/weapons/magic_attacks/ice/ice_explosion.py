@@ -1,5 +1,5 @@
 from scripts.entities.items.weapons.magic_attacks.base_attacks.elemental_explosion import Elemental_Explosion
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Ice_Explosion(Elemental_Explosion):

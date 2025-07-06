@@ -1,6 +1,6 @@
 import pygame
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Attack_Stategies():
@@ -19,20 +19,25 @@ class Attack_Stategies():
     def Attack_Strategy(self) -> bool:
         if self.game.player.effects.invisibility.effect:
             return False
+
+        if self.entity.distance_to_player > 300:
+            return
         
         self.Update_Player_Found()
         attack_strategy = self.entity.attack_strategy 
-        if attack_strategy == 'direct': # charge the player
+        if attack_strategy == keys.direct: # charge the player
             return self.Direct_Pathing()
-        elif attack_strategy == 'long_range': # keep long distance
+        elif attack_strategy == keys.long_range: # keep long distance
             return self.Keep_Distance(200, 160)
-        elif attack_strategy == 'medium_range': # keep medium distance
+        elif attack_strategy == keys.medium_range: # keep medium distance
             return self.Keep_Distance(120, 80)
-        elif attack_strategy == 'short_range':
+        elif attack_strategy == keys.short_range:
             return self.Keep_Distance(80, 40)
-        elif attack_strategy == 'keep_position':
+        elif attack_strategy == keys.keep_position:
             self.entity.direction = (0, 0)
-        elif attack_strategy == 'idle':
+        elif attack_strategy == keys.idle:
+            return False
+        elif attack_strategy == keys.run_away:
             return False
         else:
             return self.Direct_Pathing()

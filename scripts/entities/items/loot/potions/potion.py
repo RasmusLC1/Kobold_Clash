@@ -1,6 +1,6 @@
 from scripts.entities.items.loot.loot import Loot
 from scripts.entities.textbox.potion_textbox import Potion_Textbox
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Potion(Loot):
     def __init__(self, game, type, pos, amount, strength):

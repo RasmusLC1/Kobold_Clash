@@ -1,4 +1,4 @@
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 from scripts.entities.items.weapons.weapon_functions.damage_handler_weapon import Damage_Handler_Weapon
 
 class Ranged_Damage_Handler_Weapon(Damage_Handler_Weapon):

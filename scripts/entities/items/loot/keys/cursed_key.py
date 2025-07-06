@@ -1,7 +1,7 @@
 from scripts.entities.items.loot.keys.key import Key
 from  scripts.entities.items.loot.curse.effect_curse import Effect_Curse
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Cursed_Key(Key):
     def __init__(self, game, pos):

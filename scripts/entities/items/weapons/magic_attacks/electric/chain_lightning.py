@@ -1,5 +1,5 @@
 from scripts.entities.items.weapons.magic_attacks.electric.electric_particle import Electric_Particle
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Chain_Lightning(Electric_Particle):
     def __init__(self, game, pos, entity, damage, speed, shoot_distance, special_attack, direction, effect):

@@ -4,7 +4,7 @@ from scripts.entities.moving_entities.player.player_weapon import Player_Weapon_
 from scripts.entities.moving_entities.player.player_movement import Player_Movement
 from scripts.entities.moving_entities.player.player_animation_handler import Player_Animation_Handler
 from scripts.entities.moving_entities.player.inventory_effects_handler import Inventory_Effects_Handler
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 from scripts.entities.items.weapons.projectiles.bombs.bomb_launcher import Bomb_Launcher
 
 import random

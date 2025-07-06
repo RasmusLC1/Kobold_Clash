@@ -1,5 +1,5 @@
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Intent_Manager():
     def __init__(self, game, entity) -> None:
@@ -16,22 +16,24 @@ class Intent_Manager():
         self.attack_cooldown_max = round(self.entity.max_weapon_charge * 1.2)
         # Lookup for 
         self.base_cooldown = {
-            "direct": 0,
-            "attack": 0,
-            "idle": 0,
-            'long_range': self.intent_cooldown_max * 2,
-            "medium_range": self.intent_cooldown_max,
-            "short_range": round(self.intent_cooldown_max * 0.5),
-            "keep_position": self.intent_cooldown_max,
+            keys.direct: 0,
+            keys.attack: 0,
+            keys.idle: 0,
+            keys.long_range: self.intent_cooldown_max * 2,
+            keys.medium_range: self.intent_cooldown_max,
+            keys.short_range: round(self.intent_cooldown_max * 0.5),
+            keys.keep_position: self.intent_cooldown_max,
+            keys.run_away : self.intent_cooldown_max * 5,
         }
         # Lambda stores the function to be called later
         self.actions = {
-            "direct":       lambda: self.Set_Attack_Strategy("direct"),
-            "long_range":   lambda: self.Set_Attack_Strategy("long_range"),
-            "medium_range": lambda: self.Set_Attack_Strategy("medium_range"),
-            "short_range":  lambda: self.Set_Attack_Strategy("short_range"),
-            "keep_position":lambda: self.Set_Attack_Strategy("keep_position"),
-            "attack": self.Update_Attack_Cooldown,
+            keys.direct:       lambda: self.Set_Attack_Strategy(keys.direct),
+            keys.long_range:   lambda: self.Set_Attack_Strategy(keys.long_range),
+            keys.medium_range: lambda: self.Set_Attack_Strategy(keys.medium_range),
+            keys.short_range:  lambda: self.Set_Attack_Strategy(keys.short_range),
+            keys.keep_position:lambda: self.Set_Attack_Strategy(keys.keep_position),
+            keys.run_away:lambda: self.Set_Attack_Strategy(keys.run_away),
+            keys.attack: self.Update_Attack_Cooldown,
         }
         # self.Set_Attack_Strategy(entity.attack_strategy)
 
@@ -64,6 +66,15 @@ class Intent_Manager():
         else:
             print(f"Intent '{self.current_intent}' missing or unrecognized.")
         return
+    
+    def Set_Action(self, action):
+        self.Set_Current_Intent(action)
+        action_function = self.actions.get(action)
+        self.Set_Attack_Strategy(action)
+        if action_function:
+            action_function()
+        else:
+            print(f"Intent '{self.current_intent}' missing or unrecognized.")
 
     def Set_Current_Intent(self, intent):
         self.current_intent = intent 
@@ -75,9 +86,9 @@ class Intent_Manager():
         self.Increment_Intent()
 
     def Set_Idle(self):
-        if self.current_intent == 'idle' and not self.entity.target:
+        if self.current_intent == keys.idle and not self.entity.target:
             return
-        self.Set_Current_Intent('idle')
+        self.Set_Current_Intent(keys.idle)
         self.intent_index = random.randint(0, self.intent_length - 1)
         self.entity.path_finding.Find_Patrol_Path()
 
@@ -98,6 +109,7 @@ class Intent_Manager():
 
     def Set_Intent_Cooldown(self):
         max_cooldown = self.base_cooldown.get(self.intent[self.intent_index], self.intent_cooldown_max)
+        
         if not max_cooldown:
             return
         try:
@@ -108,6 +120,7 @@ class Intent_Manager():
 
     # Return false on when cooldown is active
     def Update_Intent_Cooldown(self):
+
         if not self.intent_cooldown:
             return True
         self.intent_cooldown = max(0, self.intent_cooldown - 1)

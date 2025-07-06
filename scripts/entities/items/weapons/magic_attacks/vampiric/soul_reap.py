@@ -1,5 +1,5 @@
 from scripts.entities.items.weapons.projectiles.projectile import Projectile
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Soul_Reap(Projectile):
     def __init__(self, game, pos, damage, speed, shoot_distance, special_attack, direction, entity):

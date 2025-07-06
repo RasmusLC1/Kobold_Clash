@@ -4,7 +4,7 @@ from scripts.entities.moving_entities.enemies.behavior.attack_strategies import 
 from scripts.entities.textbox.enemy_textbox import Enemy_Textbox
 from scripts.entities.decoration.bones.bones import Bones 
 from scripts.entities.moving_entities.enemies.behavior.intent_manager import Intent_Manager
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 import pygame
 import random
@@ -15,21 +15,23 @@ class Enemy(Moving_Entity):
     # Factory method
     intent_manager_class = Intent_Manager  # Default intent manager
 
-    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, sub_category, size = (32, 32)):
+    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, sub_category, soul_value, size = (32, 32)):
 
         super().__init__(game, type, keys.enemy, pos, size, health, strength, max_speed, agility, intelligence, stamina, sub_category)
+        self.animation_handler.Set_Animation('running')
         self.random_movement_cooldown = 0
         self.alert_cooldown = 0
         self.active_weapon = None
         self.weapon_cooldown = 0
         self.target = self.game.player.pos # Default target is set to player
+        self.soul_value = soul_value
 
         self.path_finding = Path_Finding(game, self) # Pathfinding logic for enemy
         self.attack_strategies = Attack_Stategies(game, self) # Pathfinding logic for enemy
 
         self.distance_to_player = 9999 # Distance to player
         self.charge = 0 # Determines when the enemy attacks
-        self.attack_strategy = 'direct' # Attack strategy that the enemy utalises
+        self.attack_strategy = keys.direct # Attack strategy that the enemy utalises
         self.path_finding_strategy = 'standard' # Maptype that is used for navigation
         
         self.attack_distance  = 90
@@ -46,6 +48,7 @@ class Enemy(Moving_Entity):
         self.intent_manager = self.intent_manager_class(game, self)
 
         self.Set_Description()
+
 
 
 
@@ -95,7 +98,10 @@ class Enemy(Moving_Entity):
         
     def Set_Attack_Strategy(self, strategy):
         self.attack_strategy = strategy
-    
+
+    def Set_Action_Intent(self, action):
+        self.intent_manager.Set_Action(action)
+
     def Set_Direction_Holder(self):
         if self.direction_x or self.direction_y:
             self.direction_x_holder = self.direction_x
@@ -134,7 +140,6 @@ class Enemy(Moving_Entity):
         return None
     
     def Attack(self):
-        
         # Check if the player is invisible
         if self.game.player.effects.invisibility.effect:
             return False
@@ -204,9 +209,15 @@ class Enemy(Moving_Entity):
         self.game.enemy_handler.Delete_Enemy(self)
         self.game.entities_render.Remove_Entity(self)
         if self.distance_to_player < 150:
-            self.game.player.Increase_Souls(5)
+            self.game.player.Increase_Souls(self.soul_value)
         super().Delete()
 
+
+    def Set_Action(self,  movement = None):
+        if self.charge:
+            self.animation_handler.Set_Animation(keys.attack)
+        else:
+            self.animation_handler.Set_Animation('running')
 
 
 

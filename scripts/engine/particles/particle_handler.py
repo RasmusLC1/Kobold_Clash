@@ -1,6 +1,6 @@
 from scripts.engine.particles.particle import Particle
 from scripts.engine.particles.particle_patterns import Particle_Patterns
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Particle_Handler:
     def __init__(self, game) -> None:
@@ -20,6 +20,7 @@ class Particle_Handler:
              keys.bone_particle : Particle_Patterns.Spark_Particle,
              keys.soul_particle : Particle_Patterns.Soul_Particle,
              keys.vampire_particle : Particle_Patterns.Vampire_Particle,
+             keys.strength_particle : Particle_Patterns.Vampire_Particle,
              keys.player_particle : Particle_Patterns.Player_Particle,
          }
          
@@ -39,7 +40,6 @@ class Particle_Handler:
 
     def Activate_Particles(self, amount, type, pos, frame):
         for _ in range(amount):
-            # Look for particle
             particle = self.Find_Particle()
 
             # If none are found, spawn 100 new ones and attach one

@@ -1,6 +1,6 @@
 import pickle
 import os
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Save_Load_Manager():
     def __init__(self, game, file_extension, save_folder):

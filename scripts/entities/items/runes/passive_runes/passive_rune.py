@@ -1,7 +1,7 @@
 from scripts.entities.items.runes.rune import Rune
 
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Passive_Rune(Rune):
     def __init__(self, game, type, pos, strength, timer_length_max, chance_to_trigger):

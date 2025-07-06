@@ -1,11 +1,11 @@
 from scripts.entities.items.weapons.weapon import Weapon
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 # TODO: Add particle effect on hammer
 
 class Warhammer(Weapon):
     def __init__(self, game, pos, damage_type = keys.blunt):
-        super().__init__(game, pos, keys.warhammer, 9, 2, 6, 80, 'two_handed_melee', damage_type)
+        super().__init__(game, pos, keys.warhammer, 6, 2, 6, 80, 'two_handed_melee', damage_type)
         self.max_animation = 5
         self.attack_animation_max = 5
         self.special_attack_effect_animation_max = 5

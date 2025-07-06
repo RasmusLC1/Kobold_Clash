@@ -1,6 +1,6 @@
 from scripts.level_generation.room_generation.rectangle_room import Rectangle_Room
 from scripts.level_generation.loot.loot_spawner import Loot_Spawner
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 import math
 import random
 

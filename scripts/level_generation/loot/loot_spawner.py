@@ -1,5 +1,5 @@
 from scripts.level_generation.dungeon_enum_keys import *
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 import random
 
 class Loot_Spawner():

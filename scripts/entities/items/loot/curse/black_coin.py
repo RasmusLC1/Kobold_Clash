@@ -1,6 +1,6 @@
 from scripts.entities.items.loot.curse.cursed_loot import Cursed_Loot
 import pygame
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Black_Coin(Cursed_Loot):
     def __init__(self, game, pos):

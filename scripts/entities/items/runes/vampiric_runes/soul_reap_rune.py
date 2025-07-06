@@ -1,6 +1,6 @@
 from scripts.entities.items.runes.projectile_rune import Projectile_Rune
 from scripts.entities.items.weapons.magic_attacks.vampiric.soul_reap_shooter import Soul_Reap_Shooter
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Soul_Reap_Rune(Projectile_Rune):
     def __init__(self, game, pos):

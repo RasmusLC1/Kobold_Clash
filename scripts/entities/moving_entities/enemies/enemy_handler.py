@@ -5,11 +5,18 @@ from scripts.entities.moving_entities.enemies.skeleton.skeleton_bell_toller impo
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_cleric import Skeleton_Cleric
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_undertaker import Skeleton_Undertaker 
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_warlock import Skeleton_Warlock 
-from scripts.entities.moving_entities.enemies.fire_spirit import Fire_Spirit
-from scripts.entities.moving_entities.enemies.ice_spirit import Ice_Spirit
-from scripts.entities.moving_entities.enemies.spider.spider import Spider
+from scripts.entities.moving_entities.enemies.skeleton.skeleton_guardian import Skeleton_Guardian 
+from scripts.entities.moving_entities.enemies.skeleton.skeleton_banner_bearer import Skeleton_Banner_Bearer 
+from scripts.entities.moving_entities.enemies.elementals.fire_spirit import Fire_Spirit
+from scripts.entities.moving_entities.enemies.elementals.ice_spirit import Ice_Spirit
+from scripts.entities.moving_entities.enemies.dwellers.spider.spider import Spider
+from scripts.entities.moving_entities.enemies.dwellers.ghoul import Ghoul
+from scripts.entities.moving_entities.enemies.dwellers.vampire.vampire import Vampire
+from scripts.entities.moving_entities.enemies.void_spawn.shade import Shade
+from scripts.entities.moving_entities.enemies.void_spawn.phantom import Phantom
+from scripts.entities.moving_entities.enemies.void_spawn.wraith.wraith import Wraith
 from scripts.entities.moving_entities.enemies.skeleton.wight_king.wight_king import Wight_King
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 import random
 
@@ -32,10 +39,17 @@ class Enemy_Handler():
             keys.ice_spirit : self.Spawn_Ice_Spirit,
             keys.spider : self.Spawn_Spider,
             keys.wight_king : self.Spawn_Wight_King,
+            keys.vampire : self.Spawn_Vampire,
             keys.skeleton_bell_toller : self.Spawn_Skeleton_Bell_Toller,
             keys.skeleton_cleric : self.Spawn_Skeleton_Cleric,
             keys.skeleton_undertaker : self.Spawn_Skeleton_Undertaker,
             keys.skeleton_warlock : self.Spawn_Skeleton_Warlock,
+            keys.skeleton_guardian : self.Spawn_Skeleton_Guardian,
+            keys.skeleton_banner_bearer : self.Spawn_Skeleton_Banner_Bearer,
+            keys.shade : self.Spawn_Shade,
+            keys.phantom : self.Spawn_Phantom,
+            keys.wraith : self.Spawn_Wraith,
+            keys.ghoul : self.Spawn_Ghoul,
         }
 
 
@@ -69,6 +83,7 @@ class Enemy_Handler():
     def Initialise(self):
         spawners = self.game.tilemap.extract([(keys.spawners, 1)])
         spawners_length = len(spawners)
+
         for i in range(50):
             # Spawn enemy at a random location
             spawner_index = random.randint(0, spawners_length - 1)
@@ -76,14 +91,21 @@ class Enemy_Handler():
             enemy_types = {
                 keys.skeleton_warrior: 0.4,
                 keys.skeleton_ranger: 0.2,
-                keys.fire_spirit: 0.05,
-                keys.ice_spirit: 0.05,
-                keys.spider: 0.1,
+                # keys.fire_spirit: 0.05,
+                # keys.ice_spirit: 0.05,
                 keys.skeleton_bell_toller: 0.1,
                 keys.skeleton_cleric: 0.05,
                 keys.skeleton_undertaker: 0.05,
-                keys.skeleton_warlock: 1000.05,
+                keys.skeleton_guardian: 0.2,
+                keys.skeleton_warlock: 0.05,
+                keys.skeleton_banner_bearer: 0.05,
                 keys.wight_king: 0.01,
+                keys.phantom: 0.1,
+                keys.wraith: 0.05,
+                keys.shade: 0.05,
+                keys.spider: 0.1,
+                keys.ghoul: 0.2,
+                keys.vampire: 0.01,
             }
 
             type = random.choices(list(enemy_types.keys()), weights=enemy_types.values())[0]
@@ -120,9 +142,9 @@ class Enemy_Handler():
     
 
     def Spawn_Skeleton_Warrior(self, pos):
-        health = 100
+        health = 70
         strength = 3
-        speed = 2
+        speed = 3
         agility = 2 
         intelligence = 2
         stamina = 2
@@ -135,11 +157,28 @@ class Enemy_Handler():
             agility,
             intelligence,
             stamina)
+    
+    def Spawn_Skeleton_Guardian(self, pos):
+        health = 120
+        strength = 4
+        speed = 1
+        agility = 2 
+        intelligence = 2
+        stamina = 2
+        return Skeleton_Guardian(
+            self.game,
+            pos, 
+            health,
+            strength,
+            speed,
+            agility,
+            intelligence,
+            stamina)
         
     def Spawn_Skeleton_Ranger(self, pos):
-        health = 60
+        health = 40
         strength = 2
-        speed = 3
+        speed = 4
         agility = 2 
         intelligence = 2
         stamina = 2
@@ -154,9 +193,9 @@ class Enemy_Handler():
             stamina)
     
     def Spawn_Skeleton_Bell_Toller(self, pos):
-        health = 80
+        health = 60
         strength = 3
-        speed = 2
+        speed = 3
         agility = 2 
         intelligence = 2
         stamina = 2
@@ -171,7 +210,7 @@ class Enemy_Handler():
             stamina)
     
     def Spawn_Skeleton_Cleric(self, pos):
-        health = 60
+        health = 40
         strength = 1
         speed = 2
         agility = 2 
@@ -187,8 +226,25 @@ class Enemy_Handler():
             intelligence,
             stamina)
     
+    def Spawn_Skeleton_Banner_Bearer(self, pos):
+        health = 50
+        strength = 1
+        speed = 2
+        agility = 2 
+        intelligence = 2
+        stamina = 2
+        return Skeleton_Banner_Bearer(
+            self.game,
+            pos, 
+            health,
+            strength,
+            speed,
+            agility,
+            intelligence,
+            stamina)
+    
     def Spawn_Skeleton_Warlock(self, pos):
-        health = 60
+        health = 40
         strength = 1
         speed = 1
         agility = 2 
@@ -205,7 +261,7 @@ class Enemy_Handler():
             stamina)
     
     def Spawn_Skeleton_Undertaker(self, pos):
-        health = 140
+        health = 110
         strength = 5
         speed = 2
         agility = 2 
@@ -220,10 +276,112 @@ class Enemy_Handler():
             agility,
             intelligence,
             stamina)
+    
+    def Spawn_Wight_King(self, pos):
+        health = 200
+        strength = 6
+        speed = 4
+        agility = 6
+        intelligence = 5
+        stamina = 5
+        return Wight_King(self.game,
+                    pos, 
+                    health,
+                    strength,
+                    speed,
+                    agility,
+                    intelligence,
+                    stamina)
+    
+    def Spawn_Shade(self, pos):
+        health = 50
+        strength = 3
+        speed = 1
+        agility = 2 
+        intelligence = 2
+        stamina = 2
+        return Shade(
+            self.game,
+            pos, 
+            health,
+            strength,
+            speed,
+            agility,
+            intelligence,
+            stamina)
+    
+    def Spawn_Phantom(self, pos):
+        health = 20
+        strength = 5
+        speed = 6
+        agility = 2 
+        intelligence = 2
+        stamina = 2
+        return Phantom(
+            self.game,
+            pos, 
+            health,
+            strength,
+            speed,
+            agility,
+            intelligence,
+            stamina)
+
+    def Spawn_Wraith(self, pos):
+        health = 50
+        strength = 3
+        speed = 4
+        agility = 2 
+        intelligence = 2
+        stamina = 2
+        return Wraith(
+            self.game,
+            pos, 
+            health,
+            strength,
+            speed,
+            agility,
+            intelligence,
+            stamina)
+    
+    def Spawn_Ghoul(self, pos):
+        health = 80
+        strength = 6
+        speed = 6
+        agility = 2 
+        intelligence = 2
+        stamina = 2
+        return Ghoul(
+            self.game,
+            pos, 
+            health,
+            strength,
+            speed,
+            agility,
+            intelligence,
+            stamina)
+    
+    def Spawn_Vampire(self, pos):
+        health = 150
+        strength = 4
+        speed = 3
+        agility = 3
+        intelligence = 2
+        stamina = 2
+        return Vampire(
+            self.game,
+            pos, 
+            health,
+            strength,
+            speed,
+            agility,
+            intelligence,
+            stamina)
         
         
+
     def Spawn_Fire_Spirit(self, pos):
-        health = 120
+        health = 80
         strength = 4
         speed = 5
         agility = 4 
@@ -241,7 +399,7 @@ class Enemy_Handler():
         
 
     def Spawn_Ice_Spirit(self, pos):
-        health = 200
+        health = 100
         strength = 7
         speed = 3
         agility = 3
@@ -259,7 +417,7 @@ class Enemy_Handler():
         
 
     def Spawn_Spider(self, pos):
-        health = 80
+        health = 60
         strength = 4
         speed = 6
         agility = 3
@@ -267,7 +425,6 @@ class Enemy_Handler():
         stamina = 2
         return Spider(self.game,
                     pos, 
-                    keys.spider,
                     health,
                     strength,
                     speed,
@@ -275,21 +432,7 @@ class Enemy_Handler():
                     intelligence,
                     stamina)
     
-    def Spawn_Wight_King(self, pos):
-        health = 300
-        strength = 3
-        speed = 3
-        agility = 6
-        intelligence = 5
-        stamina = 5
-        return Wight_King(self.game,
-                    pos, 
-                    health,
-                    strength,
-                    speed,
-                    agility,
-                    intelligence,
-                    stamina)
+
 
 
     def Delete_Enemy(self, enemy):

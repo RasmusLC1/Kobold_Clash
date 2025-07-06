@@ -1,6 +1,6 @@
 from scripts.entities.moving_entities.enemies.skeleton.skeleton import Skeleton
 from scripts.entities.items.weapons.close_combat.bell import Bell
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 import random
 
@@ -8,10 +8,10 @@ import random
 class Skeleton_Bell_Toller(Skeleton):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
         type = str(random.randint(1, 1))
-        super().__init__(game, pos, keys.skeleton_bell_toller + '_' + type, health, strength, max_speed, agility, intelligence, stamina, 80)
+        super().__init__(game, pos, keys.skeleton_bell_toller + '_' + type, health, strength, max_speed, agility, intelligence, stamina, 80, 15)
         self.Equip_Weapon(Bell(self.game, self.pos))
         self.bell_ringing_cooldown = 0
-        self.intent_manager.Set_Intent(['direct', 'attack', 'attack', 'medium_range'])
+        self.intent_manager.Set_Intent([keys.direct, keys.attack, keys.attack, keys.medium_range])
 
 
     def Update(self, tilemap, movement=(0, 0)):
@@ -28,6 +28,8 @@ class Skeleton_Bell_Toller(Skeleton):
         if self.bell_ringing_cooldown:
             return
         self.game.clatter.Generate_Clatter(self.pos, 1000) # Generate clatter to alert nearby enemies
+        self.game.sound_handler.Play_Sound('bell', 0.3)
+
         self.bell_ringing_cooldown = 3000
 
 

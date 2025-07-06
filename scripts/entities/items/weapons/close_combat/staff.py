@@ -3,7 +3,7 @@ from scripts.entities.items.weapons.magic_attacks.electric.electric_shooter impo
 from scripts.entities.items.weapons.magic_attacks.fire.flame_thrower import Flame_Thrower
 from scripts.entities.items.weapons.magic_attacks.ice.ice_shooter import Ice_Shooter
 from scripts.entities.items.weapons.magic_attacks.vampiric.soul_reap_shooter import Soul_Reap_Shooter 
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 import random
 
 class Staff(Weapon):

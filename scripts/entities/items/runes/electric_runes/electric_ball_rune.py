@@ -1,6 +1,6 @@
 from scripts.entities.items.runes.projectile_rune import Projectile_Rune
 from scripts.entities.items.weapons.magic_attacks.electric.electric_ball import Electric_Ball
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Electric_Ball_Rune(Projectile_Rune):

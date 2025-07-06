@@ -1,7 +1,7 @@
 from scripts.entities.items.weapons.magic_attacks.fire.fire_particle import Fire_Particle
 from scripts.entities.items.weapons.magic_attacks.base_attacks.particle_shooter import Particle_Shooter
 import math
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Flame_Thrower(Particle_Shooter):
     def __init__(self, game):

@@ -1,6 +1,6 @@
 from scripts.entities.items.loot.valueable.valueable import Valuable
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Hunter_Treasure(Valuable):
     def __init__(self, game, pos):

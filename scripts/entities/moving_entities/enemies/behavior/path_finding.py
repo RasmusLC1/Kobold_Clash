@@ -2,7 +2,7 @@ from scripts.engine.utility.helper_functions import Helper_Functions
 import math
 import pygame
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Path_Finding():
@@ -42,7 +42,6 @@ class Path_Finding():
         self.Update_Stuck_Timer()
         if self.Stuck_Check():
             return
-            # print("TESTTESTTEST ", self.entity.ID)
         
         if self.entity.Attack_Strategy():
             self.entity.Trap_Collision_Handler()

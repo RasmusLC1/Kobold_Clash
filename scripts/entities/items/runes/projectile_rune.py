@@ -1,7 +1,7 @@
 from scripts.entities.items.runes.rune import Rune
 import math
 import pygame
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Projectile_Rune(Rune):
     def __init__(self, game, type, pos, power, soul_cost):

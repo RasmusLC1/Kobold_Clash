@@ -1,15 +1,22 @@
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 # Responsible for showing the special attack charge of the weapon
 class Charge_Effect_Weapon():
     def __init__(self, game, weapon):
         self.game = game
         self.weapon = weapon
-        self.charge_effect = weapon.Get_Dominant_Effect()  + '_charge_effect'
+        self.Set_Charge_Effect()
         self.charge_effect_animation = 0
         self.charge_effect_animation_max = 5
         self.charge_effect_cooldown = 0
         self.charge_effect_cooldown_max = (weapon.max_charge_time // self.charge_effect_animation_max) - (weapon.max_charge_time // 20)
+
+    def Set_Charge_Effect(self):
+        dominant_effect = self.weapon.Get_Dominant_Effect()
+        if not dominant_effect:
+            self.charge_effect = ''
+            return
+        self.charge_effect = dominant_effect  + '_charge_effect'
 
 
     def Reset_Charge_Effect(self):

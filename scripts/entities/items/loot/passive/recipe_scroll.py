@@ -1,6 +1,6 @@
 from scripts.entities.items.loot.loot import Loot
 import pygame
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Recipe_Scroll(Loot):
     def __init__(self, game, pos):

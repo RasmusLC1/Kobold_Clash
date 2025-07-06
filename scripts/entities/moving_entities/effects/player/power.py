@@ -1,5 +1,5 @@
 from scripts.entities.moving_entities.effects.effect import Effect
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 # Power effect is added to the rune's power in the rune itself
 class Power(Effect):
@@ -11,7 +11,7 @@ class Power(Effect):
         if not super().Set_Effect(effect_time, permanent):
             return False
         
-        self.entity.game.inventory.rune_inventory.Update_Descriptions()
+        self.entity.game.inventory.rune_inventory.Set_Descriptions()
 
         return True
     
@@ -19,6 +19,6 @@ class Power(Effect):
         if not super().Remove_Effect(reduce_permanent):
             return False
         
-        self.entity.game.inventory.rune_inventory.Update_Descriptions()
+        self.entity.game.inventory.rune_inventory.Set_Descriptions()
         
         return True

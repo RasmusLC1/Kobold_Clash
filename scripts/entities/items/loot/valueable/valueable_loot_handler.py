@@ -2,7 +2,7 @@ from scripts.entities.items.loot.valueable.gold import Gold
 from scripts.entities.items.loot.valueable.gem import Gem
 from scripts.entities.items.loot.valueable.hunter_treasure import Hunter_Treasure 
 from scripts.entities.items.loot.loot_types_handler import Loot_Types_Handler
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 import random
 
 

@@ -1,9 +1,9 @@
 from scripts.entities.items.weapons.projectiles.projectile import Projectile
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Spear(Projectile):
     def __init__(self, game, pos, damage_type = 'slash'):
-        super().__init__(game, pos, keys.spear, 5, 6, 8, 50, 'two_handed_melee', damage_type, 30, keys.stab)
+        super().__init__(game, pos, keys.spear, 3, 6, 8, 50, 'two_handed_melee', damage_type, 30, keys.stab)
         self.max_animation = 3
         self.attack_animation_max = 3
         self.distance_from_player = 0

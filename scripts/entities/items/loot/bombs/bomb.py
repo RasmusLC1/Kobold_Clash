@@ -1,5 +1,5 @@
 from scripts.entities.items.loot.radius_effect_loot import Radius_Effect_Loot
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Bomb(Radius_Effect_Loot):

@@ -1,7 +1,7 @@
 from scripts.entities.items.item import Item
 import pygame
 import math
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Elemental_Explosion(Item):
     def __init__(self, game, type, effect, pos, power, effect_strength, max_animation, animation_cooldown_max, entity = None):

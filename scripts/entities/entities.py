@@ -1,6 +1,6 @@
 import pygame
 from collections import deque
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class PhysicsEntity:
     _id_counter = 0  # Class variable to generate unique IDs
@@ -147,7 +147,7 @@ class PhysicsEntity:
         else:
             return True
     
-    def Update_Description(self):
+    def Set_Description(self):
         pass
 
     def Update_Text_Box(self, hitbox_1, hitbox_2):
@@ -191,4 +191,6 @@ class PhysicsEntity:
         light_up_surface = pygame.Surface(self.size, pygame.SRCALPHA).convert_alpha()
         light_up_surface.fill(self.light_up_color)
         # Blit the chest layer on top the dark layer
+        if not light_up_surface or not entity_image:
+            return
         entity_image.blit(light_up_surface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)

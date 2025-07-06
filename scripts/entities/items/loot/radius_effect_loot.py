@@ -1,6 +1,6 @@
 from scripts.entities.items.loot.interactive_loot import Interactive_Loot
 import pygame
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Radius_Effect_Loot(Interactive_Loot):
     def __init__(self, game, type, pos, max_distance, loot_type, radius, amount):

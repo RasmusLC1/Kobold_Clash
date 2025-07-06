@@ -2,7 +2,7 @@ import random
 import math
 import pygame
 from scripts.entities.entities import PhysicsEntity
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Item(PhysicsEntity):
     def __init__(self, game, type, sub_category, pos, size, amount = 1, add_to_tile = True, value = 100):
@@ -54,7 +54,7 @@ class Item(PhysicsEntity):
         self.inventory_type = data['inventory_type']
         self.amount = data['amount']
         self.inventory_index = data['inventory_index']
-        self.Update_Description()
+        self.Set_Description()
         
     def Update(self):
         self.Update_Activate_Cooldown()
@@ -212,8 +212,11 @@ class Item(PhysicsEntity):
 
     # Render legal position
     def Render_Inventory(self, surf, pos, size):
-        item_image = pygame.transform.scale(self.entity_image, size)
-        surf.blit(item_image, pos)
+        try:
+            item_image = pygame.transform.scale(self.entity_image, size)
+            surf.blit(item_image, pos)
+        except Exception as e:
+            print(f"ITEM Render_Inventory failed {e}", self.entity_image, size, pos)
         
 
     def Render_Floor(self, surf, offset=(0, 0)):

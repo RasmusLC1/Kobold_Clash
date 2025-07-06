@@ -2,7 +2,7 @@ from scripts.entities.items.item import Item
 import pygame
 import math
 from scripts.entities.textbox.rune_textbox import Rune_Textbox
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 
@@ -30,7 +30,7 @@ class Rune(Item):
         self.activate_cooldown = 0
         self.activate_cooldown_max = 200
         self.clicked = False # Used for projectiles
-        self.Update_Description()
+        self.Set_Description()
         self.text_box = Rune_Textbox(self)
 
 
@@ -135,7 +135,7 @@ class Rune(Item):
             return
 
     # Updated in rune inventory when player's power is modified
-    def Update_Description(self):
+    def Set_Description(self):
         self.description = (
                             f"soul {self.current_soul_cost}\n"
                             f"power {self.current_power + self.player.effects.power.effect}\n"

@@ -17,7 +17,7 @@ from scripts.input.keyboard import Keyboard_Handler
 from scripts.input.mouse import Mouse_Handler
 from scripts.engine.a_star import A_Star
 from scripts.menu.menu_handler import Menu_Handler
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 

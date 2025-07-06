@@ -1,6 +1,6 @@
 from scripts.entities.items.runes.projectile_rune import Projectile_Rune
 from scripts.entities.items.weapons.magic_attacks.poison.poison_ball import Poison_Ball
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Poison_Ball_Rune(Projectile_Rune):

@@ -1,6 +1,6 @@
 import pygame
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Player_Movement():
@@ -9,6 +9,8 @@ class Player_Movement():
         self.player = player
         self.dashing = 0
         self.back_step = 0
+        self.back_step_direction = (0, 0)
+        self.roll_direction = (0, 0)
         self.roll_forward = 0
         self.stamina = 0
 
@@ -40,7 +42,7 @@ class Player_Movement():
             return
         self.player.Attack_Direction_Handler()
         # Inverse attack Direction
-        self.player.attack_direction = pygame.math.Vector2(self.player.attack_direction[0] * -1, self.player.attack_direction[1] * -1)
+        self.back_step_direction = pygame.math.Vector2(self.player.attack_direction[0] * -1, self.player.attack_direction[1] * -1)
         self.back_step = 20
         self.Set_Stamina(60)
 
@@ -52,21 +54,21 @@ class Player_Movement():
         self.back_step = max(0, self.back_step - 1)
         if self.back_step < 15:
             return
-        
-        if self.player.attack_direction.length() > 0:
+        if self.back_step_direction[0] and self.back_step_direction[1]:
 
             self.player.friction = 1
             self.player.max_speed = 40  # Adjust max speed speed for dashing distance
 
 
             # Set the velocity directly based on dash without friction interference
-            self.player.velocity[0] = self.player.attack_direction[0] * 20
-            self.player.velocity[1] = self.player.attack_direction[1] * 20
+            self.player.velocity[0] = self.back_step_direction[0] * 20
+            self.player.velocity[1] = self.back_step_direction[1] * 20
 
     def Roll_Forward(self,  offset=(0, 0)):
         if self.roll_forward or self.stamina:
             return
         self.player.Attack_Direction_Handler()
+        self.roll_direction = self.player.attack_direction.copy()
         self.roll_forward = 30
         self.Set_Stamina(120)
 
@@ -79,15 +81,15 @@ class Player_Movement():
         if self.roll_forward < 20:
             return
         
-        if self.player.attack_direction.length() > 0:
+        if self.roll_direction.length() > 0:
 
             self.player.friction = 1
             self.player.max_speed = 40  # Adjust max speed speed for dashing distance
 
 
             # Set the velocity directly based on dash without friction interference
-            self.player.velocity[0] = self.player.attack_direction[0] * 20
-            self.player.velocity[1] = self.player.attack_direction[1] * 20
+            self.player.velocity[0] = self.roll_direction[0] * 20
+            self.player.velocity[1] = self.roll_direction[1] * 20
 
     def Dashing_Update(self, offset=(0, 0)):
         if not self.dashing:
@@ -127,7 +129,6 @@ class Player_Movement():
         if not self.dashing:
             self.player.Attack_Direction_Handler()
             self.dashing = 60
-            print(self.player.attack_direction)
             return True
         
         return False

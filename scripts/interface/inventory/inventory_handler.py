@@ -2,7 +2,7 @@ from scripts.interface.inventory.keyboard_inventory import Keyboard_Inventory
 from scripts.interface.inventory.weapon_inventory.weapon_inventory import Weapon_Inventory
 from scripts.interface.inventory.rune_inventory.rune_inventory import Rune_Inventory
 from scripts.interface.inventory.item_inventory.item_inventory import Item_Inventory
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Inventory_Handler():

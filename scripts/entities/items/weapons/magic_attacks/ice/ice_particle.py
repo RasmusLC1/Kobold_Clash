@@ -1,5 +1,5 @@
 from scripts.entities.items.weapons.magic_attacks.base_attacks.particle import Particle
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Ice_Particle(Particle):

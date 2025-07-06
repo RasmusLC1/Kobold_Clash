@@ -21,7 +21,7 @@ from scripts.entities.moving_entities.effects.damage.thorns import Thorns
 from scripts.entities.moving_entities.effects.electric.eletric import Electric
 from scripts.entities.moving_entities.effects.electric.electric_resistance import Electric_Resistance
 from scripts.entities.moving_entities.effects.general.resistance import Resistance
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 

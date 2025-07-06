@@ -1,6 +1,6 @@
 from scripts.entities.moving_entities.enemies.skeleton.skeleton import Skeleton
 from scripts.entities.items.weapons.close_combat.sceptre import Sceptre
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 import random
 
@@ -8,11 +8,11 @@ import random
 class Skeleton_Cleric(Skeleton):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
         type = str(random.randint(1, 1))
-        super().__init__(game, pos, keys.skeleton_cleric + '_' + type, health, strength, max_speed, agility, intelligence, stamina, 70)
+        super().__init__(game, pos, keys.skeleton_cleric + '_' + type, health, strength, max_speed, agility, intelligence, stamina, 70, 15)
         self.Equip_Weapon(Sceptre(self.game, self.pos))
         self.healing_cooldown = 0
-        self.attack_strategy = 'medium_range'
-        self.intent_manager.Set_Intent(['attack'])
+        self.attack_strategy = keys.medium_range
+        self.intent_manager.Set_Intent([keys.attack])
 
 
 
@@ -31,12 +31,12 @@ class Skeleton_Cleric(Skeleton):
     def Heal_Nearby_Enemies(self):
         if self.healing_cooldown:
             return
-        self.nearby_enemies = self.game.enemy_handler.Find_Nearby_Enemies(self, 5)
+        self.nearby_enemies = self.game.enemy_handler.Find_Nearby_Enemies(self, 200)
         if not self.nearby_enemies:
-            self.healing_cooldown = 500
+            self.healing_cooldown = 200
             return
         self.game.particle_handler.Activate_Particles(10, keys.gold_particle, self.rect().center, frame=random.randint(20, 40))
         for enemy in self.nearby_enemies:
             enemy.effects.Set_Effect(keys.healing, 15)
-        self.healing_cooldown = 1000
+        self.healing_cooldown = 300
 

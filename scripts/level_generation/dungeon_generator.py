@@ -24,7 +24,7 @@ from scripts.level_generation.loot.rune_spawner import Rune_Spawner
 from scripts.level_generation.dungeon_enum_keys import *
 import os
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 # TODO:  shrines, entrance and exit, keys 
 

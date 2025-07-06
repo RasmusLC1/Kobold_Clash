@@ -1,6 +1,6 @@
 from scripts.entities.textbox.textbox import Text_Box
 import re
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Enemy_Textbox(Text_Box):
 

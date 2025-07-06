@@ -7,7 +7,7 @@ from scripts.traps.environment.water import Water
 from scripts.traps.environment.ice import Ice
 from scripts.traps.traps.spider_web import Spider_Web
 import math
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Trap_Handler:

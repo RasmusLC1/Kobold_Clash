@@ -1,5 +1,5 @@
 import pygame
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Jump_Attack():
@@ -19,8 +19,9 @@ class Jump_Attack():
         
         entity.Set_Frame_movement((attack_direction[0], attack_direction[1]))
         entity.Tile_Map_Collision_Detection(entity.game.tilemap)
-        if entity.max_speed == entity.max_speed_holder:
-            entity.max_speed *= 15
+        entity.max_speed *= 15
+        entity.friction = 0
+        entity.charge = entity.max_weapon_charge
 
         if entity.Attack():
             return True
@@ -44,6 +45,9 @@ class Jump_Attack():
     
 
     def Set_Attack_Direction(self, entity):
+            if not entity.target:
+                return (0, 0)
+            
             attack_direction = pygame.math.Vector2(entity.target[0] - entity.pos[0], entity.target[1] - entity.pos[1])
             if not attack_direction:
                 return (0, 0)

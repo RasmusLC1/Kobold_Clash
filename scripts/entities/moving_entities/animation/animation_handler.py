@@ -1,5 +1,5 @@
 import pygame
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Animation_Handler():
 
@@ -38,6 +38,7 @@ class Animation_Handler():
 
 
     def Set_Sprite(self):
+        self.entity.Set_Action()
         self.sprite = self.entity.game.assets[self.animation]
 
     # Setting the item image and scaling it
@@ -62,10 +63,10 @@ class Animation_Handler():
             return
         self.animation_num_cooldown = self.animation_num_cooldown_max
         self.animation_num += 1
-        self.Set_Entity_Image()
         if self.animation_num > self.animation_num_max:
             self.animation_num = 0
 
+        self.Set_Entity_Image()
         self.animation_value = self.animation_num
 
     def Update_Attack_Animation(self) -> None:
@@ -75,12 +76,12 @@ class Animation_Handler():
 
         self.attack_animation_num_cooldown = self.attack_animation_num_cooldown_max
         self.attack_animation_num += 1
-        self.Set_Entity_Image()
 
         if self.attack_animation_num > self.attack_animation_num_max:
             self.attack_animation_num = 0
             self.attacking = 0  # Reset attack state
 
+        self.Set_Entity_Image()
         self.animation_value = self.attack_animation_num
 
 
@@ -107,6 +108,7 @@ class Animation_Handler():
             self.animation = self.entity.type + '_' + self.entity.action
             self.animation_num = 0
             self.attack_animation_num = 0
+            self.animation_value = 0
             self.jumping_animation_num = 0
 
 

@@ -1,6 +1,6 @@
 from scripts.entities.items.weapons.magic_attacks.base_attacks.elemental_ball import Elemental_Ball
 from scripts.entities.items.weapons.magic_attacks.vampiric.soul_pit import Soul_Pit
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Vampiric_Ball(Elemental_Ball):

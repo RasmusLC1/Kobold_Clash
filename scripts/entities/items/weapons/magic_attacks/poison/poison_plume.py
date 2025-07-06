@@ -1,6 +1,6 @@
 from scripts.entities.items.weapons.magic_attacks.poison.poison_cloud import Poison_Cloud
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Poison_Plume():
     def __init__(self, entity):

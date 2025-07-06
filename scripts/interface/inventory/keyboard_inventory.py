@@ -1,4 +1,4 @@
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Keyboard_Inventory():
     def __init__(self, game, shared_inventory):

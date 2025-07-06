@@ -1,6 +1,6 @@
 from scripts.entities.items.weapons.magic_attacks.base_attacks.elemental_ball import Elemental_Ball
 from scripts.entities.items.weapons.magic_attacks.fire.fire_explosion import Fire_Explosion
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Fire_Ball(Elemental_Ball):
     def __init__(self, game, pos, entity, damage, speed, special_attack, direction):

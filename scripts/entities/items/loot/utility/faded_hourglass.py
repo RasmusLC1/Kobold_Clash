@@ -1,6 +1,6 @@
 from scripts.entities.items.loot.radius_effect_loot import Radius_Effect_Loot
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Faded_Hourglass(Radius_Effect_Loot):
     def __init__(self, game, pos):

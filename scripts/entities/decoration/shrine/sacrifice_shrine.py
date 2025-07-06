@@ -1,6 +1,6 @@
 from scripts.entities.decoration.decoration import Decoration
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 from enum import Enum
 
 class RewardType(Enum):

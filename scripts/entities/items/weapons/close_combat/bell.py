@@ -1,5 +1,5 @@
 from scripts.entities.items.weapons.weapon import Weapon
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Bell(Weapon):
     def __init__(self, game, pos, damage_type = 'blunt'):
@@ -26,3 +26,5 @@ class Bell(Weapon):
     def Ring_Bell(self):
         self.game.clatter.Generate_Clatter(self.pos, 1000) # Generate clatter to alert nearby enemies
         self.special_attack = 0
+        self.game.sound_handler.Play_Sound('bell', 0.3)
+

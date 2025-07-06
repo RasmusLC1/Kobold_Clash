@@ -1,6 +1,6 @@
 from scripts.entities.items.runes.rune import Rune
 from scripts.entities.items.weapons.magic_attacks.ice.ice_storm import Ice_Storm
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Freeze_Storm_Rune(Rune):

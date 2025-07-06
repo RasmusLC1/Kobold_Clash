@@ -1,10 +1,10 @@
 from scripts.entities.items.weapons.weapon import Weapon
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Halberd(Weapon):
     def __init__(self, game, pos, damage_type = 'slash'):
-        super().__init__(game, pos, keys.halberd, 3, 2, 8, 50, 'two_handed_melee', damage_type)
+        super().__init__(game, pos, keys.halberd, 5, 2, 8, 50, 'two_handed_melee', damage_type)
         self.max_animation = 3
         self.attack_animation_max = 3 
 

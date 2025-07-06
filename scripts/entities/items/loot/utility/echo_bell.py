@@ -1,6 +1,6 @@
 from scripts.entities.items.loot.utility.utility_loot import Utility_Loot
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Echo_Bell(Utility_Loot):
     def __init__(self, game, pos):

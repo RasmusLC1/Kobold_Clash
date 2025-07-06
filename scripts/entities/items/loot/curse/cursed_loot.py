@@ -1,5 +1,5 @@
 from scripts.entities.items.loot.loot import Loot
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 import pygame
 
 # Generic passive loot that changes depending on the type, simplified to one

@@ -3,7 +3,7 @@ from scripts.entities.items.weapons.magic_attacks.ice.ice_shooter import Ice_Sho
 from scripts.entities.entities import PhysicsEntity
 import math
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Ice_Storm(PhysicsEntity):

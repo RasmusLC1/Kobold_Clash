@@ -2,7 +2,7 @@ import pygame
 import math
 from scripts.menu.rune_button import Rune_Button
 from scripts.menu.menu import Menu
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 
 class Rune_Shrine_Menu(Menu):

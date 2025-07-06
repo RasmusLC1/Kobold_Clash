@@ -1,6 +1,6 @@
 import pygame
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Effect():
     def __init__(self, entity, effect_type, animation_max, animation_cooldown_max, cooldown_range, description):
@@ -80,6 +80,7 @@ class Effect():
             return False
         self.Set_Cooldown()
         self.effect -= 1
+        self.entity.Set_Description()
         
         return True
     

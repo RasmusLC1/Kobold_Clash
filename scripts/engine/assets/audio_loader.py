@@ -1,6 +1,6 @@
 import pygame
 from scripts.engine.utility.utils import load_image, load_images, Animation, get_tiles_from_sheet
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Audio_Loader:
     def Run_All(self):

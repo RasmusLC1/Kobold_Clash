@@ -10,7 +10,7 @@ from scripts.entities.moving_entities.effects.player.power import Power
 from scripts.entities.moving_entities.effects.player.demonic_bargain import Demonic_Bargain
 from scripts.entities.moving_entities.effects.player.temptress_embrace import Temptress_Embrace
 from scripts.entities.moving_entities.effects.souls.increase_souls import Increase_Souls
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.player.effect_icon import Effect_Icon
 
 

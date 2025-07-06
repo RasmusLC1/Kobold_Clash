@@ -3,7 +3,7 @@ import pygame
 from scripts.entities.moving_entities.effects.effects_handler import Status_Effect_Handler
 from scripts.entities.moving_entities.animation.animation_handler import Animation_Handler
 from scripts.entities.entities import PhysicsEntity
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Moving_Entity(PhysicsEntity):
 
@@ -182,7 +182,7 @@ class Moving_Entity(PhysicsEntity):
         else:
             self.idle_count += 1
 
-        if 'attack' in self.animation_handler.animation:
+        if keys.attack in self.animation_handler.animation:
             self.animation_handler.Update_Attack_Animation()
         elif 'jumping' in self.animation_handler.animation:
             self.animation_handler.Update_Jumping_Animation()
@@ -320,7 +320,8 @@ class Moving_Entity(PhysicsEntity):
         if self.damage_cooldown:
             self.damage_cooldown -= 1
             
-
+            
+    # Damage = Total damage, effect = (effect, effect strength) 
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
         if self.Check_Blocking_Direction(direction):
             return False
@@ -394,15 +395,15 @@ class Moving_Entity(PhysicsEntity):
         
         if self.attack_direction[0] < 0:
             self.flip[0] = True
-            self.animation_handler.Set_Animation('attack')
+            self.animation_handler.Set_Animation(keys.attack)
 
         else:
             self.flip[0] = False
-            self.animation_handler.Set_Animation('attack')
+            self.animation_handler.Set_Animation(keys.attack)
 
         if self.attack_direction[1] < -0.5:
             # TODO: UPDATE to attack up when that has been animated
-            self.animation_handler.Set_Animation('attack')
+            self.animation_handler.Set_Animation(keys.attack)
 
 
     def Set_Attack_Direction(self, attack_direction=None):
@@ -485,7 +486,13 @@ class Moving_Entity(PhysicsEntity):
     def Set_Healing_Enabled(self, state):
         self.healing_enabled = state
 
-    def Set_Action(self, movement):
+    def Update_Health(self, value):
+        self.health = min(self.max_health, self.health + value)
+        self.Set_Description()
+
+    def Set_Action(self, movement = None):
+        if not movement:
+            return
         if not movement[0] and not movement[1]:
             if self.direction_y_holder < 0:
                 self.animation_handler.Set_Animation('standing_still_up')

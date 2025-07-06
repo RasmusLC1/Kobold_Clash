@@ -10,12 +10,12 @@ from scripts.entities.textbox.weapon_textbox import Weapon_Textbox
 import pygame
 import math
 import random
-from scripts.engine.assets.keys import keys
+from scripts.engine.keys.keys import keys
 
 class Weapon(Item):
     def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_type = 'cut', size = (32, 32), add_to_tile = True):
         super().__init__(game, type, keys.weapon, pos, size, 1, add_to_tile)
-        self.speed = 10 - speed # Speed of the weapon
+        self.speed = max(1, 10 - speed) # Speed of the weapon
         self.range = range # Range of the weapon
         self.damage = damage
         self.entity = None # Entity that holds the weapon
@@ -324,6 +324,7 @@ class Weapon(Item):
 
     def Set_Damage(self, damage_type, damage):
         self.damage_handler.Set_Damage(damage_type, damage)
+        self.charge_effect_handler.Set_Charge_Effect()
 
     # Reset the attack charge
     def Reset_Charge(self):
