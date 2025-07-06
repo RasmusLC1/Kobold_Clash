@@ -1,15 +1,15 @@
 from scripts.entities.items.weapons.projectiles.spider_web_projectile import Spider_Web_Projectile
+from scripts.entities.moving_entities.enemies.attacks.shooting_functions.shooting_function import Shooting_Function
+
 import pygame
 from scripts.engine.keys.keys import keys
 
-class Shoot_Spiderweb():
+class Shoot_Spiderweb(Shooting_Function):
     def __init__(self, game):
         self.game = game
 
-    def Initialise_Spider_Web(self, entity):
-        entity.Set_Target(self.game.player.pos)
-
-        attack_direction = self.Set_Attack_Direction(entity)
+    def Initialise_Shooting(self, entity):
+        attack_direction =  super().Initialise_Shooting(entity)
 
         if not attack_direction:
             return
@@ -33,9 +33,3 @@ class Shoot_Spiderweb():
         self.game.item_handler.Add_Item(spider_web)
 
 
-    def Set_Attack_Direction(self, entity):
-        attack_direction = pygame.math.Vector2(entity.target[0] - entity.pos[0], entity.target[1] - entity.pos[1])
-        if not attack_direction:
-            return (0,0)
-        attack_direction.normalize_ip()
-        return attack_direction

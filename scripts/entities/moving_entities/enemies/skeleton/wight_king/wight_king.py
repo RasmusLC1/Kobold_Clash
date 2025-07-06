@@ -6,7 +6,7 @@ from scripts.engine.keys.keys import keys
 
 import random
 
-
+# Boss mob
 class Wight_King(Skeleton):
 
     intent_manager_class = Wight_King_Intent_Manager
@@ -22,9 +22,6 @@ class Wight_King(Skeleton):
         self.intent_manager.Set_Intent([keys.keep_position, keys.direct, 'dash', keys.attack, keys.attack, keys.medium_range,])
         self.intent_manager.Set_Intent_Cooldown_Max(120)
 
-    def Update(self, tilemap, movement=(0, 0)):
-        super().Update(tilemap, movement)
-        self.animation_handler.Update_Animation()
 
 
     def Select_Weapon(self):

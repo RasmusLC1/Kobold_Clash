@@ -2,6 +2,7 @@ import pygame
 from scripts.engine.utility.utils import load_image, load_images, Animation, get_tiles_from_sheet
 from scripts.engine.keys.keys import keys
 
+
 class Graphics_Loader:
     def Run_All(self):
         Graphics_Loader.Asset_Background_List(self)
@@ -47,6 +48,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Spider_List(self)
         Graphics_Loader.Asset_Ghoul_List(self)
         Graphics_Loader.Asset_Enemy_Symbols_List(self)
+        Graphics_Loader.Asset_vampire_List(self)
         
     def Asset_Background_List(self):
         background_assets = {'background': load_image('background.png'),}
@@ -250,7 +252,7 @@ class Graphics_Loader:
         }
         self.assets.update(entities_assets)
 
-    def vampire_List(self):
+    def Asset_vampire_List(self):
         entities_assets = {
             keys.vampire_running: get_tiles_from_sheet('entities/enemies/dwellers/vampire/vampire.png', 3, 0, 0, 0, 32, 32),
             keys.vampire_attack: get_tiles_from_sheet('entities/enemies/dwellers/vampire/vampire_attack.png', 6, 0, 0, 0, 32, 32),

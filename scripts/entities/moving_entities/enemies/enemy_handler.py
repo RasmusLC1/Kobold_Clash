@@ -11,6 +11,7 @@ from scripts.entities.moving_entities.enemies.elementals.fire_spirit import Fire
 from scripts.entities.moving_entities.enemies.elementals.ice_spirit import Ice_Spirit
 from scripts.entities.moving_entities.enemies.dwellers.spider.spider import Spider
 from scripts.entities.moving_entities.enemies.dwellers.ghoul import Ghoul
+from scripts.entities.moving_entities.enemies.dwellers.vampire.vampire import Vampire
 from scripts.entities.moving_entities.enemies.void_spawn.shade import Shade
 from scripts.entities.moving_entities.enemies.void_spawn.phantom import Phantom
 from scripts.entities.moving_entities.enemies.void_spawn.wraith.wraith import Wraith
@@ -38,6 +39,7 @@ class Enemy_Handler():
             keys.ice_spirit : self.Spawn_Ice_Spirit,
             keys.spider : self.Spawn_Spider,
             keys.wight_king : self.Spawn_Wight_King,
+            keys.vampire : self.Spawn_Vampire,
             keys.skeleton_bell_toller : self.Spawn_Skeleton_Bell_Toller,
             keys.skeleton_cleric : self.Spawn_Skeleton_Cleric,
             keys.skeleton_undertaker : self.Spawn_Skeleton_Undertaker,
@@ -91,7 +93,6 @@ class Enemy_Handler():
                 keys.skeleton_ranger: 0.2,
                 # keys.fire_spirit: 0.05,
                 # keys.ice_spirit: 0.05,
-                keys.spider: 0.1,
                 keys.skeleton_bell_toller: 0.1,
                 keys.skeleton_cleric: 0.05,
                 keys.skeleton_undertaker: 0.05,
@@ -102,7 +103,9 @@ class Enemy_Handler():
                 keys.phantom: 0.1,
                 keys.wraith: 0.05,
                 keys.shade: 0.05,
+                keys.spider: 0.1,
                 keys.ghoul: 0.2,
+                keys.vampire: 0.01,
             }
 
             type = random.choices(list(enemy_types.keys()), weights=enemy_types.values())[0]
@@ -276,7 +279,7 @@ class Enemy_Handler():
     
     def Spawn_Wight_King(self, pos):
         health = 200
-        strength = 4
+        strength = 6
         speed = 4
         agility = 6
         intelligence = 5
@@ -357,6 +360,24 @@ class Enemy_Handler():
             agility,
             intelligence,
             stamina)
+    
+    def Spawn_Vampire(self, pos):
+        health = 150
+        strength = 4
+        speed = 3
+        agility = 3
+        intelligence = 2
+        stamina = 2
+        return Vampire(
+            self.game,
+            pos, 
+            health,
+            strength,
+            speed,
+            agility,
+            intelligence,
+            stamina)
+        
         
 
     def Spawn_Fire_Spirit(self, pos):

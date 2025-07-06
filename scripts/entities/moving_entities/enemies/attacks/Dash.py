@@ -30,8 +30,8 @@ class Dash():
 
         if self.dashing > self.dash_mid:
             
-            # Temporarily set friction to zero to avoid deceleration during dash
-            self.entity.friction = 0
+            # Temporarily set friction to 1 to avoid deceleration during dash
+            self.entity.friction = 1
             self.entity.max_speed = 40  # Adjust max speed speed for dashing distance
 
 
@@ -53,6 +53,8 @@ class Dash():
         return True
     
     def Set_Dash_Direction(self):
+        self.entity.Set_Target(self.game.player.pos)
+
         self.dash_direction = pygame.math.Vector2(self.entity.target[0] - self.entity.pos[0], self.entity.target[1] - self.entity.pos[1])
         if not self.dash_direction:
             return

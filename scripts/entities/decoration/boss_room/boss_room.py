@@ -82,10 +82,11 @@ class Boss_Room():
     # Spawn boss
     # Close Doors and replace with walls
     def Spawn_Boss(self):
-        # Spawn Temp decrepit bones
-        # TODO: REPLACE WITH BOSS MOB
+        # TODO: NOT TESTED YET
+        boss = random.choice(keys.wight_king, keys.vampire)
+
         self.boss = self.game.enemy_handler.Enemy_Spawner(
-            'wight_king',
+            boss,
             self.pos,
         )
         self.game.sound_handler.Play_Sound('boss_spawning', 0.5)
