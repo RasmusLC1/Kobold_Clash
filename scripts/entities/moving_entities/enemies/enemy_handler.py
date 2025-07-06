@@ -7,13 +7,13 @@ from scripts.entities.moving_entities.enemies.skeleton.skeleton_undertaker impor
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_warlock import Skeleton_Warlock 
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_guardian import Skeleton_Guardian 
 from scripts.entities.moving_entities.enemies.skeleton.skeleton_banner_bearer import Skeleton_Banner_Bearer 
-from scripts.entities.moving_entities.enemies.fire_spirit import Fire_Spirit
-from scripts.entities.moving_entities.enemies.ice_spirit import Ice_Spirit
+from scripts.entities.moving_entities.enemies.elementals.fire_spirit import Fire_Spirit
+from scripts.entities.moving_entities.enemies.elementals.ice_spirit import Ice_Spirit
 from scripts.entities.moving_entities.enemies.dwellers.spider.spider import Spider
 from scripts.entities.moving_entities.enemies.dwellers.ghoul import Ghoul
 from scripts.entities.moving_entities.enemies.void_spawn.shade import Shade
 from scripts.entities.moving_entities.enemies.void_spawn.phantom import Phantom
-from scripts.entities.moving_entities.enemies.void_spawn.wraith import Wraith
+from scripts.entities.moving_entities.enemies.void_spawn.wraith.wraith import Wraith
 from scripts.entities.moving_entities.enemies.skeleton.wight_king.wight_king import Wight_King
 from scripts.engine.assets.keys import keys
 
@@ -102,7 +102,7 @@ class Enemy_Handler():
                 keys.phantom: 0.1,
                 keys.wraith: 0.05,
                 keys.shade: 0.05,
-                keys.ghoul: 999990.05,
+                keys.ghoul: 0.2,
             }
 
             type = random.choices(list(enemy_types.keys()), weights=enemy_types.values())[0]

@@ -5,12 +5,12 @@ from scripts.engine.assets.keys import keys
 
 class Fire_Spirit(Enemy):
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 100, 'elemental')
+        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 100, 'elemental', 20)
         
         self.animation = 'fire_spirit_idle'
         self.path_finding_strategy = 'ignore_lava'
-        self.attack_strategy = 'medium_range'
-        self.intent_manager.Set_Intent(['attack'])
+        self.attack_strategy = keys.medium_range
+        self.intent_manager.Set_Intent([keys.attack])
 
         self.look_for_health_cooldown = 0
         self.fire_cooldown = 0
@@ -93,7 +93,7 @@ class Fire_Spirit(Enemy):
             self.animation_handler.Set_Animation('running')
             return
         
-        self.animation_handler.Set_Animation('idle')
+        self.animation_handler.Set_Animation(keys.idle)
 
     def Set_On_Fire(self, fire_time):
         self.effects.Set_Effect(keys.healing, fire_time)

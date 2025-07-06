@@ -13,7 +13,7 @@ class Spider_Intent_Manager(Intent_Manager):
 
         self.actions['jump_attack'] = self.Jump_Attack
         self.base_cooldown['jump_attack'] = 80
-        self.base_cooldown['keep_position'] = 80
+        self.base_cooldown[keys.keep_position] = 80
 
 
     def Shoot_Spiderweb(self):

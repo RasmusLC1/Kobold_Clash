@@ -8,11 +8,11 @@ class Spider(Dweller):
     intent_manager_class = Spider_Intent_Manager
 
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.spider, health, strength, max_speed, agility, intelligence, stamina, 60)
+        super().__init__(game, pos, keys.spider, health, strength, max_speed, agility, intelligence, stamina, 60, 10)
 
-        self.animation = keys.spider + '_' + 'idle'
+        self.animation = keys.spider + '_' + keys.idle
 
-        self.intent_manager.Set_Intent(['medium_range', 'keep_position', 'shoot_spiderweb', 'jump_attack'])
+        self.intent_manager.Set_Intent([keys.medium_range, keys.keep_position, 'shoot_spiderweb', 'jump_attack'])
 
         self.animation_num_max = 3 # running and idle animation
         self.animation_num_cooldown_max = 100
@@ -45,7 +45,7 @@ class Spider(Dweller):
         if movement[1] or movement[0]:
             self.animation_handler.Set_Animation('running')
             return
-        self.animation_handler.Set_Animation('idle')
+        self.animation_handler.Set_Animation(keys.idle)
 
 
 

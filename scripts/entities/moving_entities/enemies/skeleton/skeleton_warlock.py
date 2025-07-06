@@ -7,15 +7,15 @@ import random
 
 class Skeleton_Warlock(Skeleton):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.skeleton_warlock, health, strength, max_speed, agility, intelligence, stamina, 80)
+        super().__init__(game, pos, keys.skeleton_warlock, health, strength, max_speed, agility, intelligence, stamina, 80, 25)
         self.animation_handler.Set_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Max(4)
         self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(100)
         self.animation_handler.Set_Animation_Num_Cooldown_Max(150)
         self.attack_distance  = 200
         self.min_attack_range = 50
-        self.attack_strategy = 'long_range'
-        self.intent_manager.Set_Intent([ 'attack'])
+        self.attack_strategy = keys.long_range
+        self.intent_manager.Set_Intent([ keys.attack])
 
 
         
@@ -28,7 +28,7 @@ class Skeleton_Warlock(Skeleton):
         if self.active_weapon.sub_type == keys.fire_staff:
             self.attack_distance  = 100
             self.min_attack_range = 30
-            self.attack_strategy = 'medium_range'
+            self.attack_strategy = keys.medium_range
 
     def Attack(self):
         if self.game.player.effects.invisibility.effect:

@@ -165,6 +165,25 @@ class keys():
 
     claw = "claw"
 
+    # Intents
+    direct = "direct"
+
+    attack = "attack"
+
+    idle = "idle"
+    
+    jump = "jump"
+    
+    long_range = "long_range"
+
+    medium_range = "medium_range"
+
+    short_range = "short_range"
+
+    keep_position = "keep_position"
+
+    run_away = "run_away"
+
     # Void Spawn
 
     shade = "shade"
@@ -200,11 +219,7 @@ class keys():
     
     skeleton_warrior = "skeleton_warrior"
 
-    attack = "attack"
 
-    idle = "idle"
-    
-    jump = "jump"
     
     skeleton_warrior_1 = "skeleton_warrior_1"
 

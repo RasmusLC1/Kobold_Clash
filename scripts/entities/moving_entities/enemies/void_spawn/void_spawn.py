@@ -4,13 +4,13 @@ import random
 from scripts.engine.assets.keys import keys
 
 class Void_Spawn(Enemy):
-    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, size = (32, 32)):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.void_spawn, size)
+    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, soul_value, size = (32, 32)):
+        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.void_spawn, soul_value, size)
         self.animation_handler.Set_Animation_Num_Max(4)
         self.animation_handler.Set_Attack_Animation_Num_Max(5)
         self.path_finding_strategy = keys.void_spawn
-        self.attack_strategy = 'direct'
-        self.intent_manager.Set_Intent(['attack'])
+        self.attack_strategy = keys.direct
+        self.intent_manager.Set_Intent([keys.attack])
         self.Equip_Weapon(Claw(game, self.pos)) 
 
     def Update(self, tilemap, movement=(0, 0)):
@@ -65,7 +65,9 @@ class Void_Spawn(Enemy):
     def Spawn_Damaged_Particles(self):
         self.game.particle_handler.Activate_Particles(10, keys.bone_particle, self.rect().center, frame=random.randint(10, 30))
 
-    
+    def Spawn_Bones(self):
+        pass
+
     def Update_Active_Weapon(self, offset=(0, 0)):
         if not self.active_weapon:
             return

@@ -10,9 +10,9 @@ from scripts.engine.assets.keys import keys
 
 class Skeleton_Guardian(Skeleton):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.skeleton_guardian, health, strength, max_speed, agility, intelligence, stamina, 60)
+        super().__init__(game, pos, keys.skeleton_guardian, health, strength, max_speed, agility, intelligence, stamina, 60, 15)
         self.Select_Weapon()
-        self.intent_manager.Set_Intent(['direct', 'attack', 'attack', 'attack', 'attack', 'attack', 'medium_range'])
+        self.intent_manager.Set_Intent([keys.direct, keys.attack, keys.attack, keys.attack, keys.attack, keys.attack, keys.medium_range])
 
     def Select_Weapon(self):
         # List of weapon classes

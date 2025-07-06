@@ -8,11 +8,11 @@ import random
 class Skeleton_Cleric(Skeleton):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
         type = str(random.randint(1, 1))
-        super().__init__(game, pos, keys.skeleton_cleric + '_' + type, health, strength, max_speed, agility, intelligence, stamina, 70)
+        super().__init__(game, pos, keys.skeleton_cleric + '_' + type, health, strength, max_speed, agility, intelligence, stamina, 70, 15)
         self.Equip_Weapon(Sceptre(self.game, self.pos))
         self.healing_cooldown = 0
-        self.attack_strategy = 'medium_range'
-        self.intent_manager.Set_Intent(['attack'])
+        self.attack_strategy = keys.medium_range
+        self.intent_manager.Set_Intent([keys.attack])
 
 
 

@@ -3,7 +3,7 @@ from scripts.engine.assets.keys import keys
 
 class Shade(Void_Spawn):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.shade, health, strength, max_speed, agility, intelligence, stamina, 60)
+        super().__init__(game, pos, keys.shade, health, strength, max_speed, agility, intelligence, stamina, 60, 15)
         self.active_weapon.Set_Damage(keys.slash, 4)
 
 

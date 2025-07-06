@@ -8,14 +8,14 @@ import random
 class Skeleton_Ranger(Skeleton):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
         type = str(random.randint(1, 3))
-        super().__init__(game, pos, keys.skeleton_ranger + '_' + type, health, strength, max_speed, agility, intelligence, stamina, 60)
+        super().__init__(game, pos, keys.skeleton_ranger + '_' + type, health, strength, max_speed, agility, intelligence, stamina, 60, 10)
         self.animation_handler.Set_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(100)
         self.animation_handler.Set_Animation_Num_Cooldown_Max(150)
         self.attack_distance  = 200
-        self.attack_strategy = 'long_range'
-        self.intent_manager.Set_Intent([ 'attack'])
+        self.attack_strategy = keys.long_range
+        self.intent_manager.Set_Intent([ keys.attack])
 
         
         self.shooting_distance = False

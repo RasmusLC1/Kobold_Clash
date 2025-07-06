@@ -182,7 +182,7 @@ class Moving_Entity(PhysicsEntity):
         else:
             self.idle_count += 1
 
-        if 'attack' in self.animation_handler.animation:
+        if keys.attack in self.animation_handler.animation:
             self.animation_handler.Update_Attack_Animation()
         elif 'jumping' in self.animation_handler.animation:
             self.animation_handler.Update_Jumping_Animation()
@@ -395,15 +395,15 @@ class Moving_Entity(PhysicsEntity):
         
         if self.attack_direction[0] < 0:
             self.flip[0] = True
-            self.animation_handler.Set_Animation('attack')
+            self.animation_handler.Set_Animation(keys.attack)
 
         else:
             self.flip[0] = False
-            self.animation_handler.Set_Animation('attack')
+            self.animation_handler.Set_Animation(keys.attack)
 
         if self.attack_direction[1] < -0.5:
             # TODO: UPDATE to attack up when that has been animated
-            self.animation_handler.Set_Animation('attack')
+            self.animation_handler.Set_Animation(keys.attack)
 
 
     def Set_Attack_Direction(self, attack_direction=None):

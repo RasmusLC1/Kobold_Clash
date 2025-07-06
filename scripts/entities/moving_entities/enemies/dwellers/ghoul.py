@@ -7,9 +7,9 @@ import random
 class Ghoul(Dweller):
 
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.ghoul, health, strength, max_speed, agility, intelligence, stamina, 60)
+        super().__init__(game, pos, keys.ghoul, health, strength, max_speed, agility, intelligence, stamina, 60, 15)
 
-        self.intent_manager.Set_Intent(['direct', 'attack', 'attack', 'attack', 'medium_range'])
+        self.intent_manager.Set_Intent([keys.direct, keys.attack, keys.attack, keys.attack, keys.medium_range])
 
         self.animation_handler.Set_Animation_Num_Max(4)
         self.animation_handler.Set_Attack_Animation_Num_Max(5)
@@ -64,7 +64,7 @@ class Ghoul(Dweller):
             
         self.locked_on_target = False
         self.game.enemy_handler.Add_To_Pathfinding_Queue(self, nearby_bones[0].pos)
-        self.Set_Attack_Strategy("medium_range")
+        self.Set_Attack_Strategy(keys.medium_range)
         self.target_bones = nearby_bones[0]
 
 

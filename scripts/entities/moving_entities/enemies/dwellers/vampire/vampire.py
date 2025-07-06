@@ -1,19 +1,19 @@
 from scripts.entities.moving_entities.enemies.skeleton.skeleton import Skeleton
 from scripts.entities.items.weapons.close_combat.sword import Sword
 from scripts.entities.items.weapons.projectiles.spear import Spear
-from scripts.entities.moving_entities.enemies.skeleton.wight_king.wight_king_intent import Wight_King_Intent_Manager
+from scripts.entities.moving_entities.enemies.dwellers.vampire.vampire_intent import Vampire_Intent_Manager
 from scripts.engine.assets.keys import keys
 
 import random
 
 
-class Wight_King(Skeleton):
+class Vampire(Skeleton):
 
-    intent_manager_class = Wight_King_Intent_Manager
+    intent_manager_class = Vampire_Intent_Manager
 
 
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.wight_king, health, strength, max_speed, agility, intelligence, stamina, 40, 40, (40, 40))
+        super().__init__(game, pos, keys.wight_king, health, strength, max_speed, agility, intelligence, stamina, 40, (40, 40))
 
         self.animation_handler.Set_Animation_Num_Max(4)
         self.animation_handler.Set_Attack_Animation_Num_Max(4)

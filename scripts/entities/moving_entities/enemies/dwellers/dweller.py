@@ -18,8 +18,8 @@ class Dweller(Enemy):
         self.light_speed = self.max_speed_holder
         self.dark_speed = self.max_speed_holder * 2
 
-        self.attack_strategy = 'direct'
-        self.intent_manager.Set_Intent(['attack'])
+        self.attack_strategy = keys.direct
+        self.intent_manager.Set_Intent([keys.attack])
         self.Equip_Weapon(Claw(game, self.pos)) 
 
     def Update(self, tilemap, movement=(0, 0)):
