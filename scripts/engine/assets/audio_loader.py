@@ -10,6 +10,7 @@ class Audio_Loader:
         Audio_Loader.Magic_Effects(self)
         Audio_Loader.Loot_Effects(self)
         Audio_Loader.Effect_Effects(self)
+        Audio_Loader.Menu_Effects(self)
 
 
     def Decoration_Effects(self):
@@ -144,5 +145,15 @@ class Audio_Loader:
         self.sfx['generic_effect'].set_volume(0.2)
 
     
+    def Menu_Effects(self):
+        menu_effects ={
+            # keys.slow : pygame.mixer.Sound('data/sounds/effects/slow.wav'),
+            keys.hover : pygame.mixer.Sound('data/sounds/menu/hover.wav'),
+            keys.click : pygame.mixer.Sound('data/sounds/menu/button_click.wav'),
+        }
 
+        self.sfx.update(menu_effects)
+
+        self.sfx[keys.hover].set_volume(0.05)
+        self.sfx[keys.click].set_volume(0.4)
     
