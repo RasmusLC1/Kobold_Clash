@@ -94,5 +94,5 @@ class Dweller(Enemy):
 
         return
     
-    def Drop_Weapon(self):
+    def Drop_Loot(self):
         pass

@@ -45,7 +45,6 @@ class Soul_Well(Decoration):
         self.game.item_handler.Remove_Item(item, True)
         self.game.particle_handler.Activate_Particles(random.randint(8, 12), keys.soul_particle, self.rect().center, frame=random.randint(50, 70))
         
-        self.game.clatter.Generate_Clatter(self.pos, 1000) # Generate clatter to alert nearby enemies
-        self.game.sound_handler.Play_Sound('soul_well', 0.6)
+        self.Generate_Sound('soul_well', 0.6, 1000)
 
         return True

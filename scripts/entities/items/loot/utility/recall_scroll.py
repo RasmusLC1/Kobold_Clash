@@ -16,7 +16,7 @@ class Recall_Scroll(Utility_Loot):
         self.description = 'Teleport back\nto latest shrine'
 
     # Handle reset normally in case item that increases use of other items
-    def Reset_Cloak(self):
+    def Reset_Scroll(self):
         self.amount -= 1
         if self.amount:
             self.clicked = False
@@ -40,7 +40,7 @@ class Recall_Scroll(Utility_Loot):
         if not player.last_shrine_visited:
             return False
         player.Set_Position(player.last_shrine_visited.pos.copy())
-        self.Reset_Cloak()
+        self.Reset_Scroll()
         self.game.sound_handler.Play_Sound(self.type, 1)
         return True
 

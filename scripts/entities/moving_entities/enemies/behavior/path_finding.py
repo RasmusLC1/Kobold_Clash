@@ -61,8 +61,11 @@ class Path_Finding():
     # since they all need to be able to reach each other
     # Makes the pathing easier
     def Find_Patrol_Path(self):
-        enemy = self.game.enemy_handler.Get_Random_Enemy()
-        self.game.enemy_handler.Add_To_Pattrol_Queue(self.entity, enemy.pos.copy())
+        try:
+            enemy = self.game.enemy_handler.Get_Random_Enemy()
+            self.game.enemy_handler.Add_To_Pattrol_Queue(self.entity, enemy.pos)
+        except Exception as e:
+            print(f'ERROR FINDING PATROL PATH{e}', self.entity.pos, enemy.pos)
 
 
     def Navigate_Path(self):

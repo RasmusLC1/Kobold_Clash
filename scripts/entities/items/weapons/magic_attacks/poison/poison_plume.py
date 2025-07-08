@@ -33,7 +33,7 @@ class Poison_Plume():
 
     # Return False once all clouds have been spawned
     def Update(self, power):
-        self.pos = self.entity.pos
+        self.pos = list(self.entity.pos)
         if self.current_cloud >= power * 3:
             self.current_cloud = 0
             return False

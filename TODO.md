@@ -282,6 +282,8 @@ Upgrade weapons
     # Block, block damage, if the player has shield block all damage, if not then it only blocks melee
 
     Teleport to a random destination, has x amount of charges
+    Jump, can jump over 2 blocks with light armour, 1 with medium and 0 with heavy, takes stamina
+    Swim in deep water, can't cross if in heavy armour
     Push certain objects and block
 
 # Effects:
@@ -386,11 +388,15 @@ Upgrade weapons
     # Skeleton Cleric, heals undead in the area but does no damage
     # Skeleton Bell Toller, alerts nearby enemies if it sees the player
     # Skeleton Undertaker, revieves dead enemies
-
-    Necromancer, boss, can resurrect undead and summon 3 skeletons
-    Vampire, boss, life steal, flying bat form when travelling, close combat
-    Crypt Ghoul, bone club, fast and high damage, but glass cannon
-    Crypt Horror, boss, high damage and health, slow
+    # Skeleton Guard, slow, high health and medium damage
+    # Skeleton warlock, uses magic poison attacks
+    # Wight Lord, boss, armoured skeleton with shield and sword, can dash to close range
+    # Banner bearer, Increases strength of nearby enemies
+    # Phantom, immune to physical attacks, pathfinds directly to the target, phasing through walls, high damage, high speed and low health
+    # Wraith, immune to physical attacks, pathfinds directly to the target, phasing through walls, low damage but steals soul (player mana), high speed and low health
+    # Shade, immune to physical attacks, will always pathfind towards player, medium damage, low speed, low health
+    # Vampire, boss, life steal, flying bat form when travelling, close combat
+    # Crypt Ghoul, bone club, fast and high damage, but glass cannon
     Lich, casts doom on player, debuffing him and slowly drains health until Lich is killed
 
 ## Crystal Caverns
@@ -410,6 +416,7 @@ Upgrade weapons
     Aurora Wisp, acts as light source, but might explode when clatter is triggered
     Medusa, shoots electric projetiles and fast but very low health
     Mirror crystal, reflects projectiles back at source by inverting angle
+    Kobold, steals items from player and runs away
 
 ## Mycelium Depths enemies
 ### Specialty

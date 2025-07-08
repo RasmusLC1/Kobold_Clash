@@ -64,8 +64,8 @@ class Decoration(PhysicsEntity):
         if self.health > 0:
             return False
         self.game.decoration_handler.Remove_Decoration(self)
-        self.game.clatter.Generate_Clatter(self.pos, 1000) # Generate clatter to alert nearby enemies
-        self.game.sound_handler.Play_Sound('chest_break', 0.2)
+        
+        self.Generate_Sound('chest_break', 0.2, 1000)
         self.game.particle_handler.Activate_Particles(random.randint(10, 15), keys.loot_particle, self.rect().center, frame=random.randint(20, 30))
         return True
         

@@ -16,6 +16,8 @@ class Button():
         self.button_speed = 4
         self.save_game = save_game
 
+        self.play_hover_sound = True
+
     def Update_Pos(self, pos):
         self.pos = pos
     
@@ -24,6 +26,8 @@ class Button():
         if self.rect().colliderect(self.game.mouse.rect_pos_menu()):
             self.Handle_Button_Color()
 
+            self.Play_Hover_Sound()
+    
             if self.rect().colliderect(self.game.mouse.rect_click()):
                 self.game.mouse.Set_Click_Pos((-999, -999))
                 self.Activate()
@@ -32,6 +36,11 @@ class Button():
         
         self.Reset_Color()
         return False
+    
+    def Play_Hover_Sound(self):
+        if self.play_hover_sound:
+            self.game.sound_handler.Play_Menu_Sound(keys.hover, 0.05)
+            self.play_hover_sound = False
     
     def Handle_Button_Color(self):
         color_0 = min(50, self.background_color[0] + self.button_speed)
@@ -50,11 +59,17 @@ class Button():
         self.background_color = (color_0, color_1, color_2)
         self.rect_surface.fill(self.background_color)
 
+        # Only reset hover here when needed
+        self.play_hover_sound = True
+
+
     def Activate(self):
         if self.save_game:
             self.game.save_load_manager.Save_Data_Structure()
 
+        self.game.sound_handler.Play_Menu_Sound(keys.click, 0.4)
         self.game.state_machine.Set_State(self.game_state)
+        
 
     def rect(self):
         return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])

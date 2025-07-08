@@ -109,11 +109,11 @@ class Light():
         self.tile = tile
 
     def Set_Pos(self, pos):
-        self.pos = pos
+        self.pos = list(pos)
 
 
     def Update_Position(self, pos):
-        self.pos = pos
+        self.pos = list(pos)
 
     # Move the light source and potentially delete if the light source is no longer active
     def Move_Light(self, pos, tile_key):

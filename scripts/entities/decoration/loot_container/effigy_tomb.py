@@ -13,9 +13,8 @@ class Effigy_Tomb(Loot_Container):
         if not super().Open():
             return False
         
-        self.game.sound_handler.Play_Sound('tomb_lid', 0.3)
+        self.Generate_Sound('tomb_lid', 0.3, 500)
 
-        self.game.clatter.Generate_Clatter(self.pos, 500) # Generate clatter to alert nearby enemies
         self.Set_Animation(1)
         return True
 

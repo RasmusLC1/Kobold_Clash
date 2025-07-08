@@ -8,6 +8,7 @@ from scripts.engine.keys.efffects import Effects
 from scripts.engine.keys.items import Items
 from scripts.engine.keys.game_types import Game_Types
 from scripts.engine.keys.tiles import Tiles
+from scripts.engine.keys.sounds import Sounds
 
 class keys(
     Particles,
@@ -19,6 +20,7 @@ class keys(
     Decorations,
     Items,
     Game_Types,
-    Tiles
+    Tiles,
+    Sounds
 ):
     pass

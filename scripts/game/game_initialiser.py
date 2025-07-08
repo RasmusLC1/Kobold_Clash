@@ -3,6 +3,7 @@ from scripts.entities.entity_renderer import Entity_Renderer
 from scripts.engine.fonts.font import Font
 from scripts.engine.fonts.mixed_symbols import Mixed_Symbols
 from scripts.engine.fonts.interactable_object import Interactable_Object
+from scripts.engine.fonts.noise.noise_handler import Noise_Handler
 from scripts.engine.fonts.symbols import Symbols
 from scripts.engine.sound.Clatter import Clatter
 from scripts.entities.textbox.text_box_handler import Text_Box_handler
@@ -17,7 +18,6 @@ from scripts.input.keyboard import Keyboard_Handler
 from scripts.input.mouse import Mouse_Handler
 from scripts.engine.a_star import A_Star
 from scripts.menu.menu_handler import Menu_Handler
-from scripts.engine.keys.keys import keys
 
 
 
@@ -59,6 +59,7 @@ class Game_Initialiser():
         self.game.symbols = Symbols(self.game)
         self.game.mixed_symbols = Mixed_Symbols(self.game, self.game.symbols, self.game.default_font)
         self.game.interactable_object = Interactable_Object(self.game)
+        self.game.noise_handler = Noise_Handler(self.game)
         self.game.clatter = Clatter(self.game)
         self.game.text_box_handler = Text_Box_handler(self.game)
         self.game.sound_handler = Sound_Handler(self.game)

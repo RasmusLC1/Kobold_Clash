@@ -205,7 +205,7 @@ class Enemy(Moving_Entity):
             return
         
         self.Spawn_Bones()
-        self.Drop_Weapon()
+        self.Drop_Loot()
         self.game.enemy_handler.Delete_Enemy(self)
         self.game.entities_render.Remove_Entity(self)
         if self.distance_to_player < 150:
@@ -231,24 +231,22 @@ class Enemy(Moving_Entity):
         self.game.decoration_handler.Add_Decoration(bones)
         return
 
-    def Drop_Weapon(self):
-        if not self.active_weapon:
-            return
-        self.active_weapon.Set_Tile()
-        # Remove weapon from Tile
-        tile = self.game.tilemap.Current_Tile(self.active_weapon.tile)
-        if not tile:
-            return
-
-        tile.Clear_Entity(self.active_weapon.ID)
+    def Drop_Loot(self):
+        loot_weights = {keys.passive : 0.05,
+                        keys.key : 0.2,
+                        keys.bomb : 0.4,
+                        keys.potion : 0.5,
+                        keys.revive : 0.05,
+                        keys.utility : 0.1,
+                        keys.curse : 0.1,
+                        keys.valuable : 2.0}
         
-        self.active_weapon.pos = self.pos.copy()
-        self.active_weapon.Unequip()
-        self.active_weapon.Place_Down()
-        self.game.item_handler.Add_Item(self.active_weapon)
-        self.active_weapon.Set_Tile()
-        self.active_weapon.Set_Delete_Countdown()
-        self.active_weapon = None
+        loot_types = list(loot_weights.keys())
+        weight_values = [loot_weights[loot_type] for loot_type in loot_types]
+        loot_type = random.choices(loot_types, weight_values, k=1)[0]
+        
+        self.game.item_handler.loot_handler.Spawn_Loot_Type(loot_type, self.pos)
+
 
     def Set_Description(self):
         self.description = (
