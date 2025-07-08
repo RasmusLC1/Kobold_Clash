@@ -67,6 +67,31 @@ Upgrade weapons
      dynamic sound elements: distant whispers, creaky floorboards, enemy sounds.
      Particle effects on screen like dust
 
+# Clatter engine
+    Generating clatter has a chance to increase the difficulty of the dungeon layer
+
+    Increasing difficulty can have the following effects
+        - Spawn enemies
+        - Add traps
+        - Give player debuffs
+        - Buff enemies
+        - Replace doors with walls
+        - Replace chests with mimics
+        - Reduce light level of all light sources
+        - Spawn elite enemies
+        - Increase overall clatter level, which increases the consequence of the other effects
+        
+    Clatter always notifies nearby enemies
+
+    Add skull that gradually fills up with clatter level, hover over for clatter level
+
+    When clatter is generated and has a negative effect apply screen shake and particles on the screen to simulate dungeon shaking and a deep rumble sound
+
+    5 clatter levels, each has different probabilities for events, the higher the clatter level the worse the consequences
+
+    Higher clatter levels generate better loot spawns as well
+
+
 # Weapons:
     Weapons have health, forcing players to either repair them with ingots at weapon shrines or to get new weapons 
     Weapons have a pool of damage stats, so for instance a sword might have a dictionary with fire, frozen, sharpness and the damage value of each effect
