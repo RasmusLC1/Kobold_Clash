@@ -54,6 +54,7 @@ class Noise_Handler():
     # Append extra fire particle to the pool in case it runs out
     def Create_Extra_Noise(self):
         noise = Noise(self.game)
+        self.noise_pool.append(noise)
         self.active_noise_symbols.append(noise)
         return noise
 

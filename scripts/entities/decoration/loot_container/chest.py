@@ -34,6 +34,6 @@ class Chest(Loot_Container):
                              keys.revive : 0.05,
                              keys.utility : 0.2,
                              keys.curse : 0.1,
-                             keys.valuable : 100}
+                             keys.valuable : 0.5}
 
 
