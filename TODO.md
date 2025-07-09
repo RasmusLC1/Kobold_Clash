@@ -67,8 +67,8 @@ Upgrade weapons
      dynamic sound elements: distant whispers, creaky floorboards, enemy sounds.
      Particle effects on screen like dust
 
-# Clatter engine
-    Generating clatter has a chance to increase the difficulty of the dungeon layer
+# Ascension engine
+    Generating clatter has a chance to increase the difficulty of the dungeon layer (Ascension)
 
     Increasing difficulty can have the following effects
         - Spawn enemies
@@ -126,6 +126,7 @@ Upgrade weapons
         # Halo, 1/10 chance to cancel damage
         # Echo Sigil, increases the activations of items by 1
         # Recipe scroll, increase potion strength by + 1, works similar to echo sigil
+
         Compass that points towards boss room
         Lucky Charm, Improves chest loot
         Pendant of Faith, Highlights traps, Needs trap rework first
@@ -158,6 +159,8 @@ Upgrade weapons
         # Ethereal Chains – snares nearby enemies for a short duration.
         # Recall Parchment – Teleports the player back to the last shrine visited.
 
+
+        Crystal Skull, reduce clatter level by 1, only 1 use
         Torch of Guidance - Reveal the portal shrine on minimap
         Rope Hook – Can be thrown to pull the player across gaps.
         Alchemy Flask – Randomly turns a minor item into another item upon use.
@@ -169,6 +172,7 @@ Upgrade weapons
         # Frozen Bomb – Frozen Explosion
         # Poison Bomb – Poison Explosion
         # Vampiric Bomb – Vampiric Explosion
+
         Oil Flask – Can be thrown to create a flammable puddle.
         Holy Water – Weapons deals extra damage to undead and ghosts.
         Hexing Charm – Weakens the next enemy hit, cooldown.
@@ -179,6 +183,7 @@ Upgrade weapons
         # Blood tomb, Gain souls when damaged
         # Demonic Bargain – Increases damage output but prevents healing
         # Temptress Embrace - Reduces damage output when health > 50% but increases below 50%
+
         Black Coin – Increases gold earned but increases damage taken
         Vampire’s Locket – Grants lifesteal but slowly reduces max health over time.
         Cursed Dice – Rerolls effects to be random, but weighted for positive effects
