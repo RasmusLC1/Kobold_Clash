@@ -45,7 +45,6 @@ class Enemy_Handler():
     def Initialise(self):
         spawners = self.game.tilemap.extract([(keys.spawners, 1)])
         spawners_length = len(spawners)
-
         
         for i in range(50):
             # Spawn enemy at a random location
@@ -86,8 +85,7 @@ class Enemy_Handler():
                 enemy.Load_Data(data)  # Load saved enemy data if available
             self.enemies.append(enemy)
         return enemy
-
-      
+    
 
     def Delete_Enemy(self, enemy):
         self.game.entities_render.Remove_Entity(enemy)
@@ -96,11 +94,13 @@ class Enemy_Handler():
         if enemy in self.pathfinding_queue:
             self.pathfinding_queue.remove(enemy) 
 
+
     def Update(self):
         self.pathfinding_handler.Update()
         for enemy in self.enemies:
             enemy.Update(self.game.tilemap)      
-                
+
+
     # Split the search, use tiles for short distance as it's faster, but distance for longer
     # as it has constant runtime
     def Find_Nearby_Enemies(self, entity, max_distance):
@@ -108,6 +108,7 @@ class Enemy_Handler():
             return self.game.tilemap.Search_Nearby_Tiles(max_distance, entity.pos, keys.enemy, entity.ID)
         else:
             return self.Find_Nearby_Enemies_Long_Distance(entity, max_distance)
+   
     
     # Long distance enemy search
     def Find_Nearby_Enemies_Long_Distance(self, entity, max_distance):
@@ -119,13 +120,15 @@ class Enemy_Handler():
                 nearby_enemies.append(enemy)
         return nearby_enemies
     
-    # # Add enemies to a pathfinding queue for performance and lock them in and set their destination
+   
+    # Add enemies to a pathfinding queue for performance and lock them in and set their destination
     def Add_To_Pathfinding_Queue(self, enemy, destination):
         self.pathfinding_handler.Add_To_Pathfinding_Queue(enemy, destination)
         # Sort the queue once everything has been added
         self.pathfinding_handler.Sort_Pathfinding_Queue()
 
-    # # Seperate low priority queue for patrol to prevent patrol from clogging the active pathfinding
+   
+    # Seperate low priority queue for patrol to prevent patrol from clogging the active pathfinding
     def Add_To_Patrol_Queue(self, enemy):
         self.pathfinding_handler.Add_To_Patrol_Queue(enemy)
 
