@@ -498,6 +498,9 @@ class Moving_Entity(PhysicsEntity):
         self.health = min(self.max_health, self.health + value)
         self.Set_Description()
 
+    def Increase_Max_Health(self, value):
+        self.max_health += value
+
     def Set_Action(self, movement = None):
         if not movement:
             return

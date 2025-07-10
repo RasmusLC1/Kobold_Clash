@@ -82,6 +82,13 @@ class Decoration_Handler():
             if decoration.type == keys.plinth:
                 decoration.Spawn_Rune()
 
+    def Get_Random_Decoration_Of_Type(self, type):
+        decorations_with_type = []
+        for decoration in self.decorations:
+            if decoration.type in type:
+                decorations_with_type.append(decoration)
+
+        return random.choice(decorations_with_type)
     
     def Find_Decorations_In_Tilemap(self, depth):
         # door initialisation

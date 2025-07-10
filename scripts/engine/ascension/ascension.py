@@ -1,5 +1,7 @@
 from scripts.engine.keys.keys import keys
 from scripts.engine.ascension.Ascension_effects.spawn_enemies import Spawn_Enemies
+from scripts.engine.ascension.Ascension_effects.block_doors import Block_Doors
+from scripts.engine.ascension.Ascension_effects.buff_enemies import Buff_Enemies
 import random
 
 NOTHING = 0
@@ -74,6 +76,8 @@ class Ascension():
         self.ascension_dic = {} # contains the Enum effect and probability adjusted for each ascension level
 
         self.spawn_enemies = Spawn_Enemies(game)
+        self.block_doors = Block_Doors(game)
+        self.buff_enemies = Buff_Enemies(game)
 
         self.ascension_functions = {
             NOTHING : None,
@@ -81,7 +85,7 @@ class Ascension():
             SPAWN_TRAP : None,
             PLAYER_DEBUFF : None,
             BUFF_ENEMIES : None,
-            BLOCK_DOORS : None,
+            BLOCK_DOORS : self.block_doors.Block_Door,
             REPLACE_CHESTS : None,
             REDUCE_LIGHT : None,
             SPAWN_ELITE : None,
@@ -95,6 +99,9 @@ class Ascension():
 
 
     def Adjust_Difficulty(self):
+        
+        self.buff_enemies.Set_Ascension_Level(self.ascension_level)
+
         if self.ascension_level in ASCENSION_TABLE:
             self.ascension_dic = ASCENSION_TABLE.get(self.ascension_level)
         

@@ -6,6 +6,8 @@ class Decorations():
     bookshelf = "bookshelf"
 
     
+    door = "door"
+
     door_basic = "door_basic"
 
     

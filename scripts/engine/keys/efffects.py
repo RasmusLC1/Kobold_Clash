@@ -9,6 +9,8 @@ class Effects():
 
     healing = "healing"
 
+    increase_max_health = "increase_max_health"
+
     regen = "regen"
 
     vampiric = "vampiric"

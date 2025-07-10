@@ -246,7 +246,7 @@ class Enemy(Moving_Entity):
         loot_type = random.choices(loot_types, weight_values, k=1)[0]
         
         self.game.item_handler.loot_handler.Spawn_Loot_Type(loot_type, self.pos)
-
+    
 
     def Set_Description(self):
         self.description = (
@@ -278,6 +278,12 @@ class Enemy(Moving_Entity):
                     self.direction_y *= -1
                     self.direction = (self.direction_x, self.direction_y)
                     break
+
+    def Improve_Weapon(self, effect, amount):
+        if not self.active_weapon:
+            print("FAILED TO IMPROVE WEAPON, ", effect, self.type, vars(self))
+        self.active_weapon.Set_Damage(effect, amount)
+
 
     def Future_Rect(self, direction):
              return pygame.Rect(self.pos[0] + direction[0]*32, self.pos[1] + direction[1]*32, self.size[0], self.size[1])
