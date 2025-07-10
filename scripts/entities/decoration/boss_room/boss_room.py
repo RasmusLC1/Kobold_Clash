@@ -86,8 +86,8 @@ class Boss_Room():
         boss = random.choice(keys.wight_king, keys.vampire)
 
         self.boss = self.game.enemy_handler.Enemy_Spawner(
-            boss,
             self.pos,
+            boss,
         )
         self.game.sound_handler.Play_Sound('boss_spawning', 0.5)
         self.Close_Room()

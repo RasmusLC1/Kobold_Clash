@@ -49,7 +49,7 @@ class Weapon_Handler():
             Hatchet: 1,
             Hammer: 1,
             Warhammer: 0.5,
-            Staff: 0.2,
+            Staff: 100000.2,
             Battle_Axe: 1,
             Spear: 1,
             Sceptre: 0.3,

@@ -22,8 +22,6 @@ class Clatter():
             # Add enemy to pathfinding queue
             self.game.enemy_handler.Add_To_Pathfinding_Queue(enemy, center)
         
-        # Sort the queue once everything has been added
-        self.game.enemy_handler.Sort_Pathfinding_Queue()
 
 
     def Calculate_Silence_Modifier(self, clatter_range):

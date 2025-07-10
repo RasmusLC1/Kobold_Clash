@@ -62,10 +62,9 @@ class Path_Finding():
     # Makes the pathing easier
     def Find_Patrol_Path(self):
         try:
-            enemy = self.game.enemy_handler.Get_Random_Enemy()
-            self.game.enemy_handler.Add_To_Pattrol_Queue(self.entity, enemy.pos)
+            self.game.enemy_handler.Add_To_Patrol_Queue(self.entity)
         except Exception as e:
-            print(f'ERROR FINDING PATROL PATH{e}', self.entity.pos, enemy.pos)
+            print(f'ERROR FINDING PATROL PATH{e}', self.entity.pos)
 
 
     def Navigate_Path(self):

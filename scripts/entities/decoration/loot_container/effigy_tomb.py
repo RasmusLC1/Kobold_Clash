@@ -28,7 +28,7 @@ class Effigy_Tomb(Loot_Container):
                 weights=list(self.enemies.values()),
                 k=1
             )[0]
-            self.game.enemy_handler.Enemy_Spawner(enemy_type, self.Get_Pos())
+            self.game.enemy_handler.Enemy_Spawner(self.Get_Pos(), enemy_type)
             return
         else:
             self.Spawn_Loot(loot_type, self.Get_Pos())
