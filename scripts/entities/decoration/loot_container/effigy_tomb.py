@@ -41,9 +41,10 @@ class Effigy_Tomb(Loot_Container):
                              keys.curse : 0.3}
         
         self.enemies = {
-            keys.wight_king : 0.1,
+            keys.vampire : 0.01,
             keys.skeleton_bell_toller : 0.2,
             keys.skeleton_warrior : 0.5,
+            keys.skeleton_guardian : 0.2,
             keys.skeleton_undertaker : 0.2,
             keys.skeleton_cleric : 0.1,
         }
