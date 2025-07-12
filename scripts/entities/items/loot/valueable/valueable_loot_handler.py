@@ -80,8 +80,8 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
 
         # Handle hunter treasure seperately
         if type == keys.hunter_treasure:
-            self.Spawn_Hunter_Treasure(pos)
-            return
+            hunter_loot = self.Spawn_Hunter_Treasure(pos)
+            return hunter_loot
         
         loot_class = self.loot_map.get(type)
         if not loot_class:

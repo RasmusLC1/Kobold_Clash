@@ -38,7 +38,7 @@ class Enemy_Handler():
         self.enemies.clear()
         self.nearby_enemies.clear()
         self.saved_data.clear()
-        self.pathfinding_queue.clear()  # Ensure pathfinding queue is reset
+        self.pathfinding_handler.pathfinding_queue.clear()  # Ensure pathfinding queue is reset
 
 
     

@@ -6,7 +6,7 @@ class Portal_Shrine_Spawner():
 
     @staticmethod
     def Spawn_Portal_Shrine(map, player_spawn, size_x, size_y, tile_size, A_Star_Search, offgrid_tiles):
-        loot_amount = random.randint(2, 3)
+        loot_amount = random.randint(1, 2)
         loot = 0 
         path = []
         count = 0
