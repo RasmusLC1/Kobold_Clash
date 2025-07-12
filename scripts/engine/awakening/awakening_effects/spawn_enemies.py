@@ -63,19 +63,19 @@ class Spawn_Enemies():
     def __init__(self, game):
         self.game = game
         self.enemies = {}
-        self.Set_Ascension_Level(0)
+        self.Set_Awakening_Level(0)
 
-    def Set_Ascension_Level(self, ascension_level):
-        self.ascension_level = ascension_level
+    def Set_Awakening_Level(self, awakening_level):
+        self.awakening_level = awakening_level
 
-        self.enemies = ASCENSION_TABLE.get(self.ascension_level, {})
+        self.enemies = ASCENSION_TABLE.get(self.awakening_level, {})
 
     def Spawn_Enemy(self):
         if not self.enemies:
             return
         
 
-        enemy_amount = random.randint(1, self.ascension_level)
+        enemy_amount = random.randint(1, max(1, self.awakening_level))
 
         for _ in range(enemy_amount):
             enemy_type = random.choices(

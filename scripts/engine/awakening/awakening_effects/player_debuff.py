@@ -44,13 +44,13 @@ ASCENSION_TABLE = {
 class Player_Debuff():
     def __init__(self, game):
         self.game = game
-        self.ascension_level = 0
+        self.awakening_level = 0
         self.effects = {}
 
-    def Set_Ascension_Level(self, ascension_level):
-        self.ascension_level = ascension_level
+    def Set_Awakening_Level(self, awakening_level):
+        self.awakening_level = awakening_level
 
-        self.effects = ASCENSION_TABLE.get(self.ascension_level, {})
+        self.effects = ASCENSION_TABLE.get(self.awakening_level, {})
 
 
     def Set_Effect(self):
@@ -66,6 +66,6 @@ class Player_Debuff():
         if not effect:
             return
 
-        amount = random.randint(1, self.ascension_level)
+        amount = random.randint(1, max(1, self.awakening_level))
         self.game.player.Set_Effect(effect, amount)
 

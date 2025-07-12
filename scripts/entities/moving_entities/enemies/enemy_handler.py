@@ -46,7 +46,7 @@ class Enemy_Handler():
         spawners = self.game.tilemap.extract([(keys.spawners, 1)])
         spawners_length = len(spawners)
         
-        for i in range(50):
+        for i in range(2):
             # Spawn enemy at a random location
             spawner_index = random.randint(0, spawners_length - 1)
             spawner = spawners[spawner_index]
@@ -67,6 +67,8 @@ class Enemy_Handler():
         if not type:
             type = self.Get_Random_Enemy_Type()
         
+        if len(self.enemies) > 70:
+            return
         # Strip off trailing "_number" if present
         base_type = type
         parts = type.split('_')
@@ -91,8 +93,8 @@ class Enemy_Handler():
         self.game.entities_render.Remove_Entity(enemy)
         if enemy in self.enemies:
             self.enemies.remove(enemy)
-        if enemy in self.pathfinding_queue:
-            self.pathfinding_queue.remove(enemy) 
+        if enemy in self.pathfinding_handler.pathfinding_queue:
+            self.pathfinding_handler.pathfinding_queue.remove(enemy) 
 
 
     def Update(self):

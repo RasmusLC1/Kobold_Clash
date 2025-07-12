@@ -1,8 +1,10 @@
+from scripts.engine.awakening.awakening import Awakening
 
 class Clatter():
     def __init__(self, game) -> None:
         self.game = game
         self.temp_disable_clatter = False # Used to temporarily disable clatter
+        self.awakening = Awakening(game)
 
 
     def Generate_Clatter(self, center, clatter_range):
@@ -11,6 +13,8 @@ class Clatter():
             return
 
         clatter_range = self.Calculate_Silence_Modifier(clatter_range)
+
+        self.awakening.Trigger_Awakening()
         
         # find nearby enemies and prefilter them 
         nearby_enemies = [
@@ -32,3 +36,6 @@ class Clatter():
     
     def Disable_Clatter(self):
         self.temp_disable_clatter = True
+
+    def Render(self, surf):
+        self.awakening.Render(surf)

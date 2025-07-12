@@ -138,8 +138,6 @@ class Weapon(Item):
             return True
         if not self.wall_hit and 'wall' in tile.type:
             self.wall_hit = True
-            target_position = (self.pos[0] - self.game.tilemap.tile_size * self.entity.attack_direction[0], self.pos[1] - self.game.tilemap.tile_size * self.entity.attack_direction[1])
-            self.game.clatter.Generate_Clatter(target_position, 400)
             self.Spawn_Spark()
             return False
         

@@ -67,8 +67,8 @@ Upgrade weapons
      dynamic sound elements: distant whispers, creaky floorboards, enemy sounds.
      Particle effects on screen like dust
 
-# Ascension engine
-    Generating clatter has a chance to increase the difficulty of the dungeon layer (Ascension)
+# Awakening engine
+    Generating clatter has a chance to increase the difficulty of the dungeon layer (Awakening)
 
     Increasing difficulty can have the following effects
         - Spawn enemies

@@ -5,7 +5,7 @@ from scripts.engine.fonts.mixed_symbols import Mixed_Symbols
 from scripts.engine.fonts.interactable_object import Interactable_Object
 from scripts.engine.fonts.noise.noise_handler import Noise_Handler
 from scripts.engine.fonts.symbols import Symbols
-from scripts.engine.sound.Clatter import Clatter
+from scripts.engine.awakening.clatter import Clatter
 from scripts.entities.textbox.text_box_handler import Text_Box_handler
 from scripts.engine.sound.sound_handler import Sound_Handler
 from scripts.level_generation.dungeon_generator import Dungeon_Generator

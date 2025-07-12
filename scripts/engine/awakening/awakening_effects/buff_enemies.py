@@ -59,13 +59,13 @@ ASCENSION_TABLE = {
 class Buff_Enemies():
     def __init__(self, game):
         self.game = game 
-        self.ascension_level = 0
+        self.awakening_level = 0
         self.effects = {}
 
-    def Set_Ascension_Level(self, ascension_level):
-        self.ascension_level = ascension_level
+    def Set_Awakening_Level(self, awakening_level):
+        self.awakening_level = awakening_level
 
-        self.effects = ASCENSION_TABLE.get(self.ascension_level)
+        self.effects = ASCENSION_TABLE.get(self.awakening_level)
 
 
     def Buff_Enemies(self):
@@ -96,7 +96,7 @@ class Buff_Enemies():
 
 
         for enemy in enemies:
-            amount = random.randint(self.ascension_level, self.ascension_level * 2) * effect_modifier
+            amount = random.randint(max(1, self.awakening_level), max(1, self.awakening_level) * 2) * effect_modifier
             enemy.Set_Effect(effect, amount)
         
 
@@ -116,7 +116,7 @@ class Buff_Enemies():
             keys.wet : 0.4,
         }
         for enemy in enemies:
-            amount = random.randint(1, self.ascension_level)
+            amount = random.randint(1, max(1, self.awakening_level))
             effect = random.choices(
                     population=list(effects.keys()),
                     weights=list(effects.values()),

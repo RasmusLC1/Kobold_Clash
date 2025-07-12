@@ -32,6 +32,7 @@ class Renderer():
         self.game.player.effects.Render_Effects_Symbols(surf)
         self.game.souls_interface.Render(surf)
         self.game.health_bar.Health_Bar(surf)
+        self.game.clatter.Render(surf)
 
 
 
