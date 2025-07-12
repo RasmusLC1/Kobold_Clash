@@ -2,6 +2,7 @@ from scripts.engine.keys.keys import keys
 from scripts.engine.ascension.Ascension_effects.spawn_enemies import Spawn_Enemies
 from scripts.engine.ascension.Ascension_effects.block_doors import Block_Doors
 from scripts.engine.ascension.Ascension_effects.buff_enemies import Buff_Enemies
+from scripts.engine.ascension.Ascension_effects.player_debuff import Player_Debuff
 import random
 
 NOTHING = 0
@@ -78,13 +79,14 @@ class Ascension():
         self.spawn_enemies = Spawn_Enemies(game)
         self.block_doors = Block_Doors(game)
         self.buff_enemies = Buff_Enemies(game)
+        self.player_debuff = Player_Debuff(game)
 
         self.ascension_functions = {
             NOTHING : None,
             SPAWN_ENEMY : self.spawn_enemies.Spawn_Enemy,
             SPAWN_TRAP : None,
-            PLAYER_DEBUFF : None,
-            BUFF_ENEMIES : None,
+            PLAYER_DEBUFF : self.player_debuff.Set_Effect,
+            BUFF_ENEMIES : self.buff_enemies.Buff_Enemies,
             BLOCK_DOORS : self.block_doors.Block_Door,
             REPLACE_CHESTS : None,
             REDUCE_LIGHT : None,
@@ -100,7 +102,10 @@ class Ascension():
 
     def Adjust_Difficulty(self):
         
+        self.spawn_enemies.Set_Ascension_Level(self.ascension_level)
         self.buff_enemies.Set_Ascension_Level(self.ascension_level)
+        self.player_debuff.Set_Ascension_Level(self.ascension_level)
+
 
         if self.ascension_level in ASCENSION_TABLE:
             self.ascension_dic = ASCENSION_TABLE.get(self.ascension_level)
