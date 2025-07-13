@@ -7,7 +7,7 @@ class Chest_Spawner():
 
     @staticmethod
     def Spawn_Chest(map, level, size_x, size_y, tile_size, offgrid_tiles, A_Star_Search):
-        loot_amount = random.randint(5 + level * 3, 10 + level * 3)
+        loot_amount = random.randint(level * 2, level * 4)
         loot = 0 
         path = []
         while loot < loot_amount:

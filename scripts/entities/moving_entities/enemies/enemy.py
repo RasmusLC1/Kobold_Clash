@@ -239,11 +239,15 @@ class Enemy(Moving_Entity):
                         keys.revive : 0.05,
                         keys.utility : 0.1,
                         keys.curse : 0.1,
-                        keys.valuable : 2.0}
+                        keys.valuable : 2.0,
+                        keys.nothing : 3.0}
         
         loot_types = list(loot_weights.keys())
         weight_values = [loot_weights[loot_type] for loot_type in loot_types]
         loot_type = random.choices(loot_types, weight_values, k=1)[0]
+
+        if loot_type == keys.nothing:
+            return
         
         self.game.item_handler.loot_handler.Spawn_Loot_Type(loot_type, self.pos)
     

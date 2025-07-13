@@ -13,7 +13,7 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
 
 
         self.loot_map = {
-            # keys.gold: self.Spawn_Gold,
+            keys.gold: self.Spawn_Gold,
             keys.gem: self.Spawn_Gem,
         }
 
@@ -63,7 +63,7 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
     
     def Spawn_Gem(self, pos, amount):
         if not amount:
-            amount = min(10, random.randint(self.game.level, self.game.level + 3))
+            amount = min(10, random.randint(max(1, self.game.level - 1), self.game.level + 1))
         
         effect, value = self.Get_Gem_Effect()
         loot = Gem(self.game, pos, amount, effect, value)

@@ -20,6 +20,7 @@ class Elemental_Explosion(Item):
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
         self.size = ( self.power * self.size[0], self.power * self.size[1])
         self.nearby_entities = []
+        self.is_projectile = False
         
         self.Initialise_Explosion()
 
