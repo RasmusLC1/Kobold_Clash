@@ -136,10 +136,17 @@ class Awakening():
         if not awakening_function:
             return False
         
+        screen_shake = 2
+        screen_shake_duration = 20
         if effects == INCREASE_ASCENSION:
+            screen_shake *= 2
+            screen_shake_duration *= 2
             awakening_function(self.awakening_level + 1)
+            self.game.sound_handler.Play_Sound(keys.awakening_increase, 0.6)
         else:
             awakening_function()
+
+        self.game.camera_update.Set_Screen_Shake(screen_shake_duration, screen_shake)
         return True
     
     def Render(self, surf):

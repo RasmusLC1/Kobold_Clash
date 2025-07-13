@@ -94,6 +94,9 @@ class Buff_Enemies():
         if effect in (keys.increase_max_health, keys.healing):
             effect_modifier = 5
 
+        self.game.sound_handler.Play_Sound(keys.buff, 0.3)
+
+
 
         for enemy in enemies:
             amount = random.randint(max(1, self.awakening_level), max(1, self.awakening_level) * 2) * effect_modifier

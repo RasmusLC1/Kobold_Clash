@@ -1,4 +1,5 @@
 from scripts.engine.keys.keys import keys
+import random
 
 class Block_Doors():
     def __init__(self, game):
@@ -14,3 +15,11 @@ class Block_Doors():
 
         door.Delete()
         self.game.tilemap.Add_Tile(keys.wall_left, 0, (door_pos[0], door_pos[1]), True)
+
+
+        value = random.randint(0, 1)
+
+        if value == 0:
+            self.game.sound_handler.Play_Sound(keys.awakening_1, 0.3)
+        else:
+            self.game.sound_handler.Play_Sound(keys.awakening_2, 0.3)

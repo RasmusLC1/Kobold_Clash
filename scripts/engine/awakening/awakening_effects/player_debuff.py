@@ -68,4 +68,6 @@ class Player_Debuff():
 
         amount = random.randint(1, max(1, self.awakening_level))
         self.game.player.Set_Effect(effect, amount)
+        self.game.sound_handler.Play_Sound(keys.debuff, 0.3)
+
 

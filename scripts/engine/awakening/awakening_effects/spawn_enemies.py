@@ -109,7 +109,7 @@ class Spawn_Enemies():
         if not self.enemies:
             return
         
-
-        self.enemies_to_spawn += random.randint(1, max(1, self.awakening_level))
+        self.game.sound_handler.Play_Sound(keys.enemy_spawning, 0.3)
+        self.enemies_to_spawn += random.randint(max(1, self.awakening_level), self.awakening_level + 1)
 
             
