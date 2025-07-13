@@ -6,6 +6,8 @@ class Clatter():
         self.temp_disable_clatter = False # Used to temporarily disable clatter
         self.awakening = Awakening(game)
 
+    def Update(self):
+        self.awakening.Update()
 
     def Generate_Clatter(self, center, clatter_range):
         if self.temp_disable_clatter:

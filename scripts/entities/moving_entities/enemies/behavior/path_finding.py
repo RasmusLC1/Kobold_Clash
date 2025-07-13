@@ -40,8 +40,6 @@ class Path_Finding():
 
         # Checks if the enemy is stuck
         self.Update_Stuck_Timer()
-        if self.Stuck_Check():
-            return
         
         if self.entity.Attack_Strategy():
             self.entity.Trap_Collision_Handler()
@@ -162,16 +160,6 @@ class Path_Finding():
             else:
                 self.stuck_timer = 0
 
-    
-
-    # Move the entity at random if stuck
-    def Stuck_Check(self):
-        if self.stuck_timer < 20:
-            return False
-        
-        self.Moving_Random()
-        self.entity.random_movement_cooldown = 200
-        return True
     
     def Moving_Random(self):
         self.entity.Reduce_Movement(4)

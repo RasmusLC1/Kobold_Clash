@@ -89,6 +89,9 @@ class Decoration_Handler():
             if decoration.type in type:
                 decorations_with_type.append(decoration)
 
+        if not decorations_with_type:
+            return None
+
         return random.choice(decorations_with_type)
     
     def Find_Decorations_In_Tilemap(self, depth):

@@ -5,10 +5,12 @@ class Block_Doors():
         self.game = game 
 
     def Block_Door(self):
-        door = self.game.decoration_handler.Get_Random_Decoration_Of_Type(keys.door)
+        door = self.game.decoration_handler.Get_Random_Decoration_Of_Type(keys.door_basic)
 
-        door_pos = door.pos.copy()
+        if not door:
+            return
+
+        door_pos = list(door.tile.pos).copy()
 
         door.Delete()
-
         self.game.tilemap.Add_Tile(keys.wall_left, 0, (door_pos[0], door_pos[1]), True)

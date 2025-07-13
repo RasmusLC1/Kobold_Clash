@@ -88,7 +88,7 @@ class Awakening():
 
         self.awakening_functions = {
             NOTHING : None,
-            SPAWN_ENEMY : self.spawn_enemies.Spawn_Enemy,
+            SPAWN_ENEMY : self.spawn_enemies.Add_To_Spawn_Queue,
             SPAWN_TRAP : None, # Waiting for trap rework
             PLAYER_DEBUFF : self.player_debuff.Set_Effect,
             BUFF_ENEMIES : self.buff_enemies.Buff_Enemies,
@@ -98,6 +98,9 @@ class Awakening():
             INCREASE_ASCENSION : self.Set_Awakening_Level,
         }
         print(self.awakening_level)
+
+    def Update(self):
+        self.spawn_enemies.Update_Enemy_Queue()
 
     def Set_Awakening_Level(self, new_awakening_level):
         if self.awakening_cooldown > 0:

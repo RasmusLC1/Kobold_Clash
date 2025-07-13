@@ -59,7 +59,8 @@ class Enemy_Handler():
                 self.Enemy_Spawner(pos, type)
 
     def Get_Random_Enemy_Type(self) :
-        type = random.choices(list(self.crypt_spawn.enemy_types.keys()), weights=self.crypt_spawn.enemy_types.values())[0]
+        type = random.choices(list(self.crypt_spawn.enemy_types.keys()),
+                              weights=list(self.crypt_spawn.enemy_types.values()))[0]
         return type
 
     
@@ -67,8 +68,10 @@ class Enemy_Handler():
         if not type:
             type = self.Get_Random_Enemy_Type()
         
-        if len(self.enemies) > 70:
-            return
+        if len(self.enemies) > 50:
+            return True
+        
+        print(len(self.enemies))
         # Strip off trailing "_number" if present
         base_type = type
         parts = type.split('_')
@@ -86,6 +89,7 @@ class Enemy_Handler():
             if data:
                 enemy.Load_Data(data)  # Load saved enemy data if available
             self.enemies.append(enemy)
+            self.Add_To_Patrol_Queue(enemy)
         return enemy
     
 
