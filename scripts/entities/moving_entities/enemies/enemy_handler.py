@@ -106,6 +106,8 @@ class Enemy_Handler():
         for enemy in self.enemies:
             enemy.Update(self.game.tilemap)      
 
+    def Get_Number_Of_Enemies(self):
+        return len(self.enemies)
 
     # Split the search, use tiles for short distance as it's faster, but distance for longer
     # as it has constant runtime

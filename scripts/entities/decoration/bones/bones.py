@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 class Bones(Decoration):
     def __init__(self, game, pos, entity_type) -> None:
         super().__init__(game, "bones", pos, (32, 32))
-        self.entity_type = entity_type
+        self.entity_type = str(entity_type)
         self.activated = False
         self.empty = True
 

@@ -153,6 +153,7 @@ class Audio_Loader:
             keys.enemy_spawning : pygame.mixer.Sound('data/sounds/awakening/enemy_spawning.wav'),
             keys.awakening_1 : pygame.mixer.Sound('data/sounds/awakening/awakening_1.wav'),
             keys.awakening_2 : pygame.mixer.Sound('data/sounds/awakening/awakening_2.wav'),
+            keys.awakening_3 : pygame.mixer.Sound('data/sounds/awakening/awakening_3.wav'),
         }
 
         self.sfx.update(weapon_effects)
@@ -163,6 +164,7 @@ class Audio_Loader:
         self.sfx[keys.enemy_spawning].set_volume(0.2)
         self.sfx[keys.awakening_1].set_volume(0.2)
         self.sfx[keys.awakening_2].set_volume(0.2)
+        self.sfx[keys.awakening_3].set_volume(0.2)
 
     
     def Menu_Effects(self):

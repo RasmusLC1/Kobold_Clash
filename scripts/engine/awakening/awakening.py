@@ -20,7 +20,7 @@ INCREASE_ASCENSION = 9
 # Probability table for awakening levels
 ASCENSION_TABLE = {
     0: {
-        NOTHING : 2,
+        NOTHING : 1.2,
         SPAWN_ENEMY : 0.5,
         INCREASE_ASCENSION : 1,
     },
@@ -78,6 +78,7 @@ class Awakening():
         self.awakening_cooldown = 0
         self.awakening_level = 0
         self.awakening_dic = ASCENSION_TABLE.get(0)
+        self.max_enemies = 5
 
         self.spawn_enemies = Spawn_Enemies(game)
         self.block_doors = Block_Doors(game)
@@ -110,6 +111,7 @@ class Awakening():
         self.awakening_level = max(0, min(self.max_awakening_level, new_awakening_level))
         self.Adjust_Difficulty()
         self.awakening_cooldown = random.randint(self.awakening_level, self.awakening_level * 3)
+        self.max_enemies = self.awakening_level * 12
 
     def Adjust_Difficulty(self):
         
@@ -123,9 +125,11 @@ class Awakening():
         
 
     def Trigger_Awakening(self):
+        awakening_copy = self.Adjust_Awakening_Dic()
+
         effects = random.choices(
-                    population=list(self.awakening_dic.keys()),
-                    weights=list(self.awakening_dic.values()),
+                    population=list(awakening_copy.keys()),
+                    weights=list(awakening_copy.values()),
                     k=1
                 )[0]
         
@@ -148,6 +152,19 @@ class Awakening():
 
         self.game.camera_update.Set_Screen_Shake(screen_shake_duration, screen_shake)
         return True
+    
+    def Adjust_Awakening_Dic(self):
+        awakening_copy = self.awakening_dic.copy()
+
+        enemy_num = self.game.enemy_handler.Get_Number_Of_Enemies()
+
+        if enemy_num < 5 * self.awakening_level:
+            awakening_copy[SPAWN_ENEMY] *= 2
+        elif self.max_enemies < enemy_num:
+            awakening_copy[SPAWN_ENEMY] = 0
+
+        return awakening_copy
+
     
     def Render(self, surf):
         self.game.default_font.Render_Word(surf, str("AWAKENING LEVEL: " + str(self.awakening_level)), (20, 20))

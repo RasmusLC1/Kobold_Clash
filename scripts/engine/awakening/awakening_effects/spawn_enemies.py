@@ -1,4 +1,5 @@
 from scripts.engine.keys.keys import keys
+from scripts.engine.awakening.awakening_effects.awakening_function import Awakening_Function
 
 import random
 
@@ -59,7 +60,7 @@ ASCENSION_TABLE = {
 }
 
 
-class Spawn_Enemies():
+class Spawn_Enemies(Awakening_Function):
     def __init__(self, game):
         self.game = game
         self.enemies = {}
@@ -94,7 +95,6 @@ class Spawn_Enemies():
 
         if enemy:
             self.enemies_to_spawn = max(0, self.enemies_to_spawn - 1)
-        print(enemy)
         return
 
 
@@ -109,7 +109,10 @@ class Spawn_Enemies():
         if not self.enemies:
             return
         
-        self.game.sound_handler.Play_Sound(keys.enemy_spawning, 0.3)
+        self.Play_Sound()
+
+
+        
         self.enemies_to_spawn += random.randint(max(1, self.awakening_level), self.awakening_level + 1)
 
             

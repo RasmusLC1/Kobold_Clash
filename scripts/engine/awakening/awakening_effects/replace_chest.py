@@ -1,9 +1,8 @@
 from scripts.engine.keys.keys import keys
-import random
+from scripts.engine.awakening.awakening_effects.awakening_function import Awakening_Function
 
-class Replace_Chests():
-    def __init__(self, game):
-        self.game = game
+
+class Replace_Chests(Awakening_Function):
 
     def Replace_Chest(self):
 
@@ -15,9 +14,4 @@ class Replace_Chests():
 
         self.game.decoration_handler.Spawn_Mimic_Chest(chest_pos)
 
-        value = random.randint(0, 1)
-
-        if value == 0:
-            self.game.sound_handler.Play_Sound(keys.awakening_1, 0.3)
-        else:
-            self.game.sound_handler.Play_Sound(keys.awakening_2, 0.3)
+        self.Play_Sound()
