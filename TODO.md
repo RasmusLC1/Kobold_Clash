@@ -354,9 +354,13 @@ Upgrade weapons
     # Lava, sets on fire and slows down entity, heavy damage
     # Water, slows down entities
     # Ice decreases friction and accelaration
+    # Mimic chest, Spawns enemy and snares when opened
+    Loose rubble, generates clatter when stepped on
     Pressure plates that trigger effects
+    Gass vents, spawns gass clouds
     Arrow traps - shoots arrows, triggered by pressure plates
     Loose rocks, generates clatter when stepped on
+
     
 
 
@@ -383,6 +387,9 @@ Upgrade weapons
     - Levers that spawn items, open doors etc when activated
     - Pressure plates, need to be held down to work, can be done with items. Works similar to levers
     - Shops where you can buy different items for gold, maybe a little kobold with a shop. Opens a menu, you can sell loot for gold and use gold to buy random selection of items
+    - Blood shrine, Gives an item that tracks player kills, when 10 are killed reduce awakening level
+    - Campfires, rest locations player can regain 50% hp, one per floor
+    - Fountains that gives random buff when interacted with
 
 
 # Rooms:
