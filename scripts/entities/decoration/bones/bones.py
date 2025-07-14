@@ -22,7 +22,7 @@ class Bones(Decoration):
         if self.activated:
             return
         self.activated = True
-        self.game.enemy_handler.Enemy_Spawner(self.entity_type, self.pos)
+        self.game.enemy_handler.Enemy_Spawner(self.pos, self.entity_type)
         self.game.decoration_handler.Remove_Decoration(self)
 
     

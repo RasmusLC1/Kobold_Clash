@@ -23,6 +23,7 @@ class Bomb(Projectile):
             keys.poison_bomb :  Poison_Explosion,
             keys.vampiric_bomb : Soul_Pit,
         }
+        self.bomb_exploded = False
 
     def Set_Type(self, type):
         self.type = type
@@ -55,9 +56,12 @@ class Bomb(Projectile):
         super().Reset_Shot()
 
     def Spawn_Explosion(self):
+        if self.bomb_exploded:
+            return
         explosion_type = self.explosions.get(self.type)
         explosion = explosion_type(self.game, self.pos, 4)
         self.game.item_handler.Add_Item(explosion)
+        self.bomb_exploded = True
 
     def Set_Direction(self, direction):
         self.attack_direction = direction
@@ -73,7 +77,7 @@ class Bomb(Projectile):
         self.Set_Direction((0,0))
         self.Set_Entity(None)
         self.Set_Speed(0)
-        self.game.item_handler.Remove_Item(self)
+        self.Delete()
 
 
     def Set_Enabled(self, pos, speed, special_attack, direction, target, entity, bomb_type, delete_countdown):
