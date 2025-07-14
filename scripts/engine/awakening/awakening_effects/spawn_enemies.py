@@ -66,6 +66,7 @@ class Spawn_Enemies(Awakening_Function):
         self.enemies = {}
         self.enemies_to_spawn = 0
         self.enemy_spawn_cooldown = 0
+        self.max_enemies = 5
         self.Set_Awakening_Level(0)
 
     def Update_Enemy_Queue(self):
@@ -103,10 +104,15 @@ class Spawn_Enemies(Awakening_Function):
 
         self.enemies = ASCENSION_TABLE.get(self.awakening_level, {})
 
+        self.max_enemies = self.awakening_level * 12
+
         
 
     def Add_To_Spawn_Queue(self):
         if not self.enemies:
+            return
+        
+        if self.game.enemy_handler.Get_Number_Of_Enemies() + self.enemies_to_spawn > self.max_enemies:
             return
         
         self.Play_Sound()

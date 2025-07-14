@@ -39,7 +39,7 @@ class Button():
     
     def Play_Hover_Sound(self):
         if self.play_hover_sound:
-            self.game.sound_handler.Play_Menu_Sound(keys.hover, 0.05)
+            self.game.sound_handler.Play_Menu_Sound(keys.hover, 0.02)
             self.play_hover_sound = False
     
     def Handle_Button_Color(self):

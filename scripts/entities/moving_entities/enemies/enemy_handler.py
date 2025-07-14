@@ -71,7 +71,6 @@ class Enemy_Handler():
         if len(self.enemies) > 50:
             return True
         
-        print(len(self.enemies))
         # Strip off trailing "_number" if present
         base_type = type
         parts = type.split('_')

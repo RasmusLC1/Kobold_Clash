@@ -17,6 +17,9 @@ REPLACE_CHESTS = 6
 SPAWN_ELITE = 8
 INCREASE_ASCENSION = 9
 
+BASE_MAX_ENEMIES = 12
+BASE_MIN_ENEMIES = 5
+
 # Probability table for awakening levels
 ASCENSION_TABLE = {
     0: {
@@ -78,7 +81,7 @@ class Awakening():
         self.awakening_cooldown = 0
         self.awakening_level = 0
         self.awakening_dic = ASCENSION_TABLE.get(0)
-        self.max_enemies = 5
+        self.max_enemies = BASE_MIN_ENEMIES 
 
         self.spawn_enemies = Spawn_Enemies(game)
         self.block_doors = Block_Doors(game)
@@ -106,12 +109,16 @@ class Awakening():
     def Set_Awakening_Level(self, new_awakening_level):
         if self.awakening_cooldown > 0:
             return
+        
         if self.awakening_level == self.max_awakening_level:
             return
+        
         self.awakening_level = max(0, min(self.max_awakening_level, new_awakening_level))
         self.Adjust_Difficulty()
+
         self.awakening_cooldown = random.randint(self.awakening_level, self.awakening_level * 3)
-        self.max_enemies = self.awakening_level * 12
+        self.max_enemies = self.awakening_level * BASE_MIN_ENEMIES
+        self.game.sound_handler.Set_HeartBeat_Sound(self.awakening_level)
 
     def Adjust_Difficulty(self):
         
@@ -145,7 +152,7 @@ class Awakening():
         if effects == INCREASE_ASCENSION:
             screen_shake *= 2
             screen_shake_duration *= 2
-            awakening_function(self.awakening_level + 1)
+            awakening_function(min(self.max_awakening_level, self.awakening_level + 1))
             self.game.sound_handler.Play_Sound(keys.awakening_increase, 0.6)
         else:
             awakening_function()
@@ -158,10 +165,18 @@ class Awakening():
 
         enemy_num = self.game.enemy_handler.Get_Number_Of_Enemies()
 
-        if enemy_num < 5 * self.awakening_level:
+        min_enemy = BASE_MIN_ENEMIES * self.awakening_level
+
+        if enemy_num < min_enemy:
             awakening_copy[SPAWN_ENEMY] *= 2
-        elif self.max_enemies < enemy_num:
+        elif enemy_num > self.max_enemies:
             awakening_copy[SPAWN_ENEMY] = 0
+            awakening_copy[SPAWN_ELITE] = 0
+        elif enemy_num > min_enemy and enemy_num < self.max_enemies and self.awakening_level >= 4:
+            awakening_copy[SPAWN_ELITE] *= 2 # Increase chance to spawn elites when there are many enemies in dungeon
+
+        if self.awakening_cooldown:
+            awakening_copy[INCREASE_ASCENSION] = 0
 
         return awakening_copy
 
