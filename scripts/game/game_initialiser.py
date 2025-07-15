@@ -9,15 +9,15 @@ from scripts.engine.awakening.clatter import Clatter
 from scripts.entities.textbox.text_box_handler import Text_Box_handler
 from scripts.engine.sound.sound_handler import Sound_Handler
 from scripts.level_generation.dungeon_generator import Dungeon_Generator
-from scripts.interface.health_bar import Health_Bar
-from scripts.interface.souls import Souls
+
 from scripts.engine.tilemap.tilemap import Tilemap
 from scripts.engine.assets.graphics_loader import Graphics_Loader
 from scripts.engine.assets.audio_loader import Audio_Loader
 from scripts.input.keyboard import Keyboard_Handler
 from scripts.input.mouse import Mouse_Handler
 from scripts.engine.a_star import A_Star
-from scripts.menu.menu_handler import Menu_Handler
+from scripts.interface.menu.menu_handler import Menu_Handler
+from scripts.interface.ui.ui_handler import UI_Handler
 
 
 
@@ -63,10 +63,9 @@ class Game_Initialiser():
         self.game.clatter = Clatter(self.game)
         self.game.text_box_handler = Text_Box_handler(self.game)
         self.game.sound_handler = Sound_Handler(self.game)
-        self.game.health_bar = Health_Bar(self.game)
-        self.game.souls_interface = Souls(self.game)
         self.game.keyboard_handler = Keyboard_Handler(self.game)
         
+        self.game.ui_handler = UI_Handler(self.game)
         self.game.dungeon_generator = Dungeon_Generator(self.game)
         self.game.tilemap = Tilemap(self.game, tile_size=16)
 

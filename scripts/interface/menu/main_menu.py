@@ -1,4 +1,4 @@
-from scripts.menu.menu import Menu
+from scripts.interface.menu.menu import Menu
 from scripts.engine.keys.keys import keys
 
 

@@ -22,7 +22,6 @@ class Logic_Update():
 
 
           self.game.inventory.Update(self.game.render_scroll)
-          self.game.souls_interface.Update()
           self.game.rune_handler.Update(self.game.render_scroll)
           self.game.player.Update(self.game.tilemap, (self.game.movement[1] - self.game.movement[0], self.game.movement[3] - self.game.movement[2]), self.game.render_scroll)
           self.game.ray_caster.Update()
@@ -32,11 +31,7 @@ class Logic_Update():
           self.game.text_box_handler.Update()
           self.game.noise_handler.Update()
 
-
-          self.game.health_bar.Update_Health()
-
-
-
+          self.game.ui_handler.Update()
 
 
     def Update_Freeze_Frame(self):

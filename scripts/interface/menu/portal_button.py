@@ -1,4 +1,4 @@
-from scripts.menu.button import Button
+from scripts.interface.menu.button import Button
 from scripts.engine.keys.keys import keys
 
 class Portal_Button(Button):

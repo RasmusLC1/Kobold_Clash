@@ -1,9 +1,9 @@
-from scripts.menu.pause_menu import Pause_Menu
-from scripts.menu.main_menu import Main_Menu
-from scripts.menu.rune_shrine_menu import Rune_Shrine_Menu
-from scripts.menu.portal_shrine_menu import Portal_Shrine_Menu
-from scripts.menu.loading_menu import Loading_Menu
-from scripts.menu.game_over_menu import Game_Over_Menu
+from scripts.interface.menu.pause_menu import Pause_Menu
+from scripts.interface.menu.main_menu import Main_Menu
+from scripts.interface.menu.rune_shrine_menu import Rune_Shrine_Menu
+from scripts.interface.menu.portal_shrine_menu import Portal_Shrine_Menu
+from scripts.interface.menu.loading_menu import Loading_Menu
+from scripts.interface.menu.game_over_menu import Game_Over_Menu
 from scripts.engine.keys.keys import keys
 
 

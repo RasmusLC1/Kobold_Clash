@@ -1,4 +1,3 @@
-import pygame
 from scripts.engine.keys.keys import keys
 
 class Health_Bar:
@@ -31,7 +30,7 @@ class Health_Bar:
         self.player_health = '' # Text displayed above healthbar
 
     
-    def Update_Health(self):
+    def Update(self):
         self.Update_Animation()
         if self.current_health == self.game.player.health:
             return
@@ -60,7 +59,7 @@ class Health_Bar:
         self.player_health = f"{self.current_health}/{self.game.player.max_health}"
 
     
-    def Health_Bar(self, surf):
+    def Render(self, surf):
         surf.blit(self.current_health_bar[self.animation], (self.pos_x, self.pos_y))
         self.game.default_font.Render_Word(surf, self.player_health, (self.pos_x - len(self.player_health) * 2, self.pos_y - 20))
         

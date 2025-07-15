@@ -1,7 +1,7 @@
 import pygame
 import math
-from scripts.menu.rune_button import Rune_Button
-from scripts.menu.menu import Menu
+from scripts.interface.menu.rune_button import Rune_Button
+from scripts.interface.menu.menu import Menu
 from scripts.engine.keys.keys import keys
 
 
