@@ -1,15 +1,13 @@
 from scripts.engine.keys.keys import keys
+from scripts.interface.ui.ui_interface import UI_Interface
 
-class Awakening_Skull:
+class Awakening_Skull(UI_Interface):
     def __init__(self, game):
-        self.game = game
-        self.pos_x = 20
-        self.pos_y = self.game.screen_height / self.game.render_scale - 20
-        self.animation = 0
-        self.awakening_level = 0
-        self.animation_max = 4
-        self.animation_cooldown_max = 40
-        self.animation_cooldown = 0
+        pos_x = 20
+        pos_y = game.screen_height / game.render_scale - 150
+        animation_max = 4
+        animation_cooldown_max = 30
+        super().__init__(game, pos_x, pos_y, animation_max, animation_cooldown_max)
 
         # Use dictionary for easy lookup
         self.awakening_symbols = {
@@ -23,28 +21,7 @@ class Awakening_Skull:
 
         self.Set_Awakening(0)
 
-
     
     def Set_Awakening(self, awakening_level):
         self.current_awakening_symbol = self.awakening_symbols.get(awakening_level)
-
-    def Update(self):
-        self.Update_Animation()
-
-    def Update_Animation(self):
-        if self.animation_cooldown < self.animation_cooldown_max:
-            self.animation_cooldown += 1
-            return
-        self.animation_cooldown = 0
-        self.animation += 1
-        if self.animation >= self.animation_max:
-            self.animation = 0
-        return
-
-
-    
-    def Render(self, surf):
-        surf.blit(self.current_awakening_symbol[self.animation], (self.pos_x, self.pos_y))
-        self.game.default_font.Render_Word(surf, self.player_health, (self.pos_x - len(self.player_health) * 2, self.pos_y - 20))
-        
 

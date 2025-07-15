@@ -1,14 +1,13 @@
 from scripts.engine.keys.keys import keys
+from scripts.interface.ui.ui_interface import UI_Interface
 
-class Health_Bar:
+class Health_Bar(UI_Interface):
     def __init__(self, game):
-        self.game = game
-        self.pos_x = 20
-        self.pos_y = self.game.screen_height / self.game.render_scale - 70
-        self.animation = 0
-        self.animation_max = 4
-        self.animation_cooldown_max = 40
-        self.animation_cooldown = 0
+        pos_x = 20
+        pos_y = game.screen_height / game.render_scale - 70
+        animation_max = 4
+        animation_cooldown_max = 30
+        super().__init__(game, pos_x, pos_y, animation_max, animation_cooldown_max)
 
         # Use dictionary for easy lookup
         self.health_bars = {
@@ -38,16 +37,6 @@ class Health_Bar:
         self.current_health = self.game.player.health
         self.Normalise_Health()
         self.current_health_bar = self.health_bars[self.normalised_health]
-
-    def Update_Animation(self):
-        if self.animation_cooldown < self.animation_cooldown_max:
-            self.animation_cooldown += 1
-            return
-        self.animation_cooldown = 0
-        self.animation += 1
-        if self.animation >= self.animation_max:
-            self.animation = 0
-        return
 
     def Normalise_Health(self):
         min_health, max_health = 1, self.game.player.max_health
