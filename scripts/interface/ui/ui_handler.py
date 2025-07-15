@@ -16,6 +16,9 @@ class UI_Handler():
         self.souls_interface.Update()
         self.awakening_skull.Update()
 
+    def Set_Awakening_Level(self, awakening_level):
+        self.awakening_skull.Set_Awakening(awakening_level)
+
 
     def Render(self, surf):
         self.souls_interface.Render(surf)

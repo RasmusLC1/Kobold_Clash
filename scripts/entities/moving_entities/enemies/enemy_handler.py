@@ -2,7 +2,7 @@
 from scripts.entities.moving_entities.enemies.crypt.crypt_spawn import Crypt_Spawn
 from scripts.entities.moving_entities.enemies.enemy_pathfinding_handler import Enemy_Pathfinding_Handler
 from scripts.engine.keys.keys import keys
-
+import math
 import random
 
 class Enemy_Handler():
@@ -121,9 +121,8 @@ class Enemy_Handler():
     def Find_Nearby_Enemies_Long_Distance(self, entity, max_distance):
         nearby_enemies = []
         for enemy in self.enemies:
-            dx = entity.pos[0] - enemy.pos[0]
-            dy = entity.pos[1] - enemy.pos[1]
-            if dx * dx + dy * dy < max_distance * max_distance and enemy.ID != entity.ID:
+            distance = math.sqrt((enemy.pos[0] - entity.pos[0]) ** 2 + (enemy.pos[1] - entity.pos[1]) ** 2)
+            if distance < max_distance and enemy.ID != entity.ID:
                 nearby_enemies.append(enemy)
         return nearby_enemies
     

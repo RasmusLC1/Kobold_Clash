@@ -27,7 +27,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Rune(self)
         Graphics_Loader.Asset_Menu(self)
         
-        Graphics_Loader.Asset_Health_Bar(self)
+        Graphics_Loader.Asset_UI(self)
         Graphics_Loader.Asset_Particles_List(self)
         Graphics_Loader.Asset_Tooltips(self)
 
@@ -693,18 +693,23 @@ class Graphics_Loader:
         }
         self.assets.update(font)
     
-    def Asset_Health_Bar(self):
+    def Asset_UI(self):
         health_bars = {
-            keys.healthbar_1: get_tiles_from_sheet('ui/healthbar_1.png', 5, 0, 0, 0, 64, 64),
-            keys.healthbar_2: get_tiles_from_sheet('ui/healthbar_2.png', 5, 0, 0, 0, 64, 64),
-            keys.healthbar_3: get_tiles_from_sheet('ui/healthbar_3.png', 5, 0, 0, 0, 64, 64),
-            keys.healthbar_4: get_tiles_from_sheet('ui/healthbar_4.png', 5, 0, 0, 0, 64, 64),
-            keys.healthbar_5: get_tiles_from_sheet('ui/healthbar_5.png', 5, 0, 0, 0, 64, 64),
-            keys.healthbar_6: get_tiles_from_sheet('ui/healthbar_6.png', 5, 0, 0, 0, 64, 64),
-            keys.healthbar_7: get_tiles_from_sheet('ui/healthbar_7.png', 5, 0, 0, 0, 64, 64),
-            keys.healthbar_8: get_tiles_from_sheet('ui/healthbar_8.png', 5, 0, 0, 0, 64, 64),
-            keys.healthbar_9: get_tiles_from_sheet('ui/healthbar_9.png', 5, 0, 0, 0, 64, 64),
-            keys.healthbar_10: get_tiles_from_sheet('ui/healthbar_10.png', 5, 0, 0, 0, 64, 64),
+            keys.healthbar_1: get_tiles_from_sheet('ui/healthbar/healthbar_1.png', 5, 0, 0, 0, 64, 64),
+            keys.healthbar_2: get_tiles_from_sheet('ui/healthbar/healthbar_2.png', 5, 0, 0, 0, 64, 64),
+            keys.healthbar_3: get_tiles_from_sheet('ui/healthbar/healthbar_3.png', 5, 0, 0, 0, 64, 64),
+            keys.healthbar_4: get_tiles_from_sheet('ui/healthbar/healthbar_4.png', 5, 0, 0, 0, 64, 64),
+            keys.healthbar_5: get_tiles_from_sheet('ui/healthbar/healthbar_5.png', 5, 0, 0, 0, 64, 64),
+            keys.healthbar_6: get_tiles_from_sheet('ui/healthbar/healthbar_6.png', 5, 0, 0, 0, 64, 64),
+            keys.healthbar_7: get_tiles_from_sheet('ui/healthbar/healthbar_7.png', 5, 0, 0, 0, 64, 64),
+            keys.healthbar_8: get_tiles_from_sheet('ui/healthbar/healthbar_8.png', 5, 0, 0, 0, 64, 64),
+            keys.healthbar_9: get_tiles_from_sheet('ui/healthbar/healthbar_9.png', 5, 0, 0, 0, 64, 64),
+            keys.healthbar_10: get_tiles_from_sheet('ui/healthbar/healthbar_10.png', 5, 0, 0, 0, 64, 64),
+            keys.awakening_skull_1: get_tiles_from_sheet('ui/skull/skull_1.png', 0, 0, 0, 0, 32, 32),
+            keys.awakening_skull_2: get_tiles_from_sheet('ui/skull/skull_2.png', 0, 0, 0, 0, 32, 32),
+            keys.awakening_skull_3: get_tiles_from_sheet('ui/skull/skull_3.png', 0, 0, 0, 0, 32, 32),
+            keys.awakening_skull_4: get_tiles_from_sheet('ui/skull/skull_4.png', 0, 0, 0, 0, 32, 32),
+            keys.awakening_skull_5: get_tiles_from_sheet('ui/skull/skull_5.png', 0, 0, 0, 0, 32, 32),
         }
         self.assets.update(health_bars)
 

@@ -1,7 +1,7 @@
 from scripts.engine.keys.keys import keys
-from scripts.interface.ui.ui_interface import UI_Interface
+from scripts.interface.ui.ui import UI
 
-class Health_Bar(UI_Interface):
+class Health_Bar(UI):
     def __init__(self, game):
         pos_x = 20
         pos_y = game.screen_height / game.render_scale - 70

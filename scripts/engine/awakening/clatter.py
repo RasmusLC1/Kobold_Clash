@@ -39,5 +39,3 @@ class Clatter():
     def Disable_Clatter(self):
         self.temp_disable_clatter = True
 
-    def Render(self, surf):
-        self.awakening.Render(surf)

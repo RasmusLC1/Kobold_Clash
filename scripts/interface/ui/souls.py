@@ -1,9 +1,9 @@
 from scripts.engine.keys.keys import keys
-from scripts.interface.ui.ui_interface import UI_Interface
+from scripts.interface.ui.ui import UI
 import math
 import pygame
 
-class Souls(UI_Interface):
+class Souls(UI):
     def __init__(self, game):
         pos_x = game.screen_width // game.render_scale - 50
         pos_y = 40
@@ -11,6 +11,7 @@ class Souls(UI_Interface):
         animation_cooldown_max = 20
         super().__init__(game, pos_x, pos_y, animation_max, animation_cooldown_max)
         self.stored_souls = -99999
+        self.base_x = pos_x
 
 
     def Update(self):
@@ -22,7 +23,6 @@ class Souls(UI_Interface):
 
         if self.stored_souls == self.game.player.souls:
             return
-
         self.stored_souls = self.game.player.souls
         # Get the number of digits in the soul count
         num_digits = math.floor(math.log10(self.stored_souls)) + 1 if self.stored_souls > 0 else 1
@@ -39,4 +39,4 @@ class Souls(UI_Interface):
 
 
         scaled_soul_image = pygame.transform.scale(self.game.assets[keys.souls][self.animation], (16, 16))
-        surf.blit(scaled_soul_image, (self.pos_x + 30, self.pos_y))
+        surf.blit(scaled_soul_image, (self.base_x + 30, self.pos_y))

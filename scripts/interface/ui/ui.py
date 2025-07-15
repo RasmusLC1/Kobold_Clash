@@ -1,8 +1,5 @@
-import pygame
-import math
-from scripts.engine.keys.keys import keys
 
-class UI_Interface():
+class UI():
     def __init__(self, game, pos_x, pos_y, max_animation, animation_cooldown_max):
         self.game = game
         self.animation = 0
@@ -25,7 +22,3 @@ class UI_Interface():
             self.cooldown = self.animation_cooldown_max
 
         self.cooldown -= 1
-
-
-    def Render(self, surf):
-        surf.blit(self.current_awakening_symbol[self.animation], (self.pos_x, self.pos_y))

@@ -13,7 +13,7 @@ ASCENSION_TABLE = {
         keys.speed: 1,
         keys.increase_strength: 1,
         keys.healing: 0.5,
-        keys.improve_weapon : 0.5
+        keys.improve_weapon : 1.5
     },
     3: {
         keys.fire_resistance: 1,
@@ -25,7 +25,7 @@ ASCENSION_TABLE = {
         keys.healing: 1,
         keys.increase_max_health : 1,
         keys.resistance: 0.5,
-        keys.improve_weapon : 1.5
+        keys.improve_weapon : 2.5
     },
     4: {
         keys.fire_resistance: 0.5,
@@ -39,18 +39,18 @@ ASCENSION_TABLE = {
         keys.vampiric: 1,
         keys.increase_max_health : 2,
         keys.resistance: 2.5,
-        keys.improve_weapon : 2.5
+        keys.improve_weapon : 3.5
     },
     5: {
         keys.speed: 2,
         keys.increase_strength: 3,
         keys.healing: 2,
         keys.vampiric: 2,
-        keys.regen: 3,
+        keys.regen: 2,
         keys.soul_stealer: 1,
         keys.increase_max_health : 3,
         keys.resistance: 3.5,
-        keys.improve_weapon : 3.5
+        keys.improve_weapon : 4.5
     },
 }
 
@@ -72,13 +72,13 @@ class Buff_Enemies():
         if not self.effects:
             return
         
-        enemies = self.game.enemy_handler.Find_Nearby_Enemies(self.game.player, 300)
 
         effect = random.choices(
                     population=list(self.effects.keys()),
                     weights=list(self.effects.values()),
                     k=1
                 )[0]
+        enemies = self.game.enemy_handler.Find_Nearby_Enemies(self.game.player, 500)
         
         if not effect:
             return

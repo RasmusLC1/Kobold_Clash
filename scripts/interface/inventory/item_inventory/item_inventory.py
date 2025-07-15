@@ -12,7 +12,7 @@ class Item_Inventory(Base_Inventory):
             self.Add_Inventory_Slot(inventory_slot)
 
     def Set_Inventory_Slot_Pos(self, index):
-        x = index * self.size[1] + self.game.screen_width / 2 / self.game.render_scale - 130
+        x = index * self.size[1] + self.game.screen_width / 2 / self.game.render_scale - 120
         y = self.game.screen_height / self.game.render_scale - 40
         return (x, y)
     

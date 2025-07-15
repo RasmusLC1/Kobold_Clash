@@ -101,7 +101,6 @@ class Awakening():
             SPAWN_ELITE : self.spawn_elite.Spawn_Enemy,
             INCREASE_ASCENSION : self.Set_Awakening_Level,
         }
-        print(self.awakening_level)
 
     def Update(self):
         self.spawn_enemies.Update_Enemy_Queue()
@@ -119,6 +118,7 @@ class Awakening():
         self.awakening_cooldown = random.randint(self.awakening_level, self.awakening_level * 3)
         self.max_enemies = self.awakening_level * BASE_MIN_ENEMIES
         self.game.sound_handler.Set_HeartBeat_Sound(self.awakening_level)
+        self.game.ui_handler.Set_Awakening_Level(self.awakening_level)
 
     def Adjust_Difficulty(self):
         
@@ -143,7 +143,6 @@ class Awakening():
         awakening_function = self.awakening_functions.get(effects)
         self.awakening_cooldown = max(0, self.awakening_cooldown - 1)
 
-        print("AWAKENING EFFECT", effects, awakening_function, self.awakening_cooldown)
         if not awakening_function:
             return False
         
@@ -179,9 +178,3 @@ class Awakening():
             awakening_copy[INCREASE_ASCENSION] = 0
 
         return awakening_copy
-
-    
-    def Render(self, surf):
-        self.game.default_font.Render_Word(surf, str("AWAKENING LEVEL: " + str(self.awakening_level)), (20, 20))
-        
-
