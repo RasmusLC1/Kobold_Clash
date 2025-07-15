@@ -17,7 +17,7 @@ class Enemy(Moving_Entity):
 
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, sub_category, soul_value, size = (32, 32)):
 
-        super().__init__(game, type, keys.enemy, pos, size, health, strength, max_speed, agility, intelligence, stamina, sub_category)
+        super().__init__(game, str(type), keys.enemy, pos, size, health, strength, max_speed, agility, intelligence, stamina, sub_category)
         self.animation_handler.Set_Animation('running')
         self.random_movement_cooldown = 0
         self.alert_cooldown = 0
@@ -239,14 +239,18 @@ class Enemy(Moving_Entity):
                         keys.revive : 0.05,
                         keys.utility : 0.1,
                         keys.curse : 0.1,
-                        keys.valuable : 2.0}
+                        keys.valuable : 2.0,
+                        keys.nothing : 3.0}
         
         loot_types = list(loot_weights.keys())
         weight_values = [loot_weights[loot_type] for loot_type in loot_types]
         loot_type = random.choices(loot_types, weight_values, k=1)[0]
+
+        if loot_type == keys.nothing:
+            return
         
         self.game.item_handler.loot_handler.Spawn_Loot_Type(loot_type, self.pos)
-
+    
 
     def Set_Description(self):
         self.description = (
@@ -278,6 +282,12 @@ class Enemy(Moving_Entity):
                     self.direction_y *= -1
                     self.direction = (self.direction_x, self.direction_y)
                     break
+
+    def Improve_Weapon(self, effect, amount):
+        if not self.active_weapon:
+            print("FAILED TO IMPROVE WEAPON, ", effect, self.type, vars(self))
+        self.active_weapon.Set_Damage(effect, amount)
+
 
     def Future_Rect(self, direction):
              return pygame.Rect(self.pos[0] + direction[0]*32, self.pos[1] + direction[1]*32, self.size[0], self.size[1])

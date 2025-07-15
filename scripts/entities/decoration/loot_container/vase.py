@@ -19,6 +19,7 @@ class Vase(Loot_Container):
 
         self.loot_weights = {keys.valuable : 0.8,
                              keys.key : 0.3,
-                             keys.revive : 0.02}
+                             keys.revive : 0.02,
+                             keys.nothing : 1}
 
 

@@ -6,7 +6,7 @@ class Weapon_Spawner():
 
     @staticmethod
     def Spawn_Weapons(map, level, tile_size, size_x, size_y, offgrid_tiles):
-        loot_amount = random.randint(50 + level * 2, 100 + level * 2)
+        loot_amount = random.randint(5 + level * 2, 10 + level * 2)
         loot = 0 
         while loot < loot_amount:
             spawner_x = random.randint(1, size_x - 2)

@@ -1,5 +1,6 @@
 from scripts.entities.decoration.bones.bones import Bones
 from scripts.entities.decoration.loot_container.chest import Chest
+from scripts.entities.decoration.loot_container.mimic_chest import Mimic_Chest
 from scripts.entities.decoration.loot_container.weapon_rack import Weapon_rack
 from scripts.entities.decoration.loot_container.plinth import Plinth
 from scripts.entities.decoration.loot_container.vase import Vase
@@ -82,6 +83,16 @@ class Decoration_Handler():
             if decoration.type == keys.plinth:
                 decoration.Spawn_Rune()
 
+    def Get_Random_Decoration_Of_Type(self, type):
+        decorations_with_type = []
+        for decoration in self.decorations:
+            if decoration.type in type:
+                decorations_with_type.append(decoration)
+
+        if not decorations_with_type:
+            return None
+
+        return random.choice(decorations_with_type)
     
     def Find_Decorations_In_Tilemap(self, depth):
         # door initialisation
@@ -155,6 +166,11 @@ class Decoration_Handler():
         self.decorations.append(chest)
         return chest
     
+    def Spawn_Mimic_Chest(self, pos, size=None, version=None, radius=None, level=None):
+        chest = Mimic_Chest(self.game, pos, version)  
+        self.decorations.append(chest)
+        return chest
+    
     def Spawn_Vase(self, pos, size=None, version=None, radius=None, level=None):
         vase = Vase(self.game, pos)  
         self.decorations.append(vase)
@@ -214,6 +230,7 @@ class Decoration_Handler():
         soul_well = Soul_Well(self.game, pos)
         self.decorations.append(soul_well)
         return soul_well
+    
     
     def Spawn_Teleportation_Circle(self, pos, size=None, version=None, radius=None, level=None):
         teleportation_circle = Teleportation_Circle(self.game, pos)

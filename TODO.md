@@ -67,6 +67,31 @@ Upgrade weapons
      dynamic sound elements: distant whispers, creaky floorboards, enemy sounds.
      Particle effects on screen like dust
 
+# Awakening engine
+    Generating clatter has a chance to increase the difficulty of the dungeon layer (Awakening)
+
+    Increasing difficulty can have the following effects
+        - Spawn enemies
+        - Add traps
+        - Give player debuffs
+        - Buff enemies
+        - Replace doors with walls
+        - Replace chests with mimics
+        - Reduce light level of all light sources
+        - Spawn elite enemies
+        - Increase overall clatter level, which increases the consequence of the other effects
+        
+    Clatter always notifies nearby enemies
+
+    Add skull that gradually fills up with clatter level, hover over for clatter level
+
+    When clatter is generated and has a negative effect apply screen shake and particles on the screen to simulate dungeon shaking and a deep rumble sound
+
+    5 clatter levels, each has different probabilities for events, the higher the clatter level the worse the consequences
+
+    Higher clatter levels generate better loot spawns as well
+
+
 # Weapons:
     Weapons have health, forcing players to either repair them with ingots at weapon shrines or to get new weapons 
     Weapons have a pool of damage stats, so for instance a sword might have a dictionary with fire, frozen, sharpness and the damage value of each effect
@@ -101,6 +126,7 @@ Upgrade weapons
         # Halo, 1/10 chance to cancel damage
         # Echo Sigil, increases the activations of items by 1
         # Recipe scroll, increase potion strength by + 1, works similar to echo sigil
+
         Compass that points towards boss room
         Lucky Charm, Improves chest loot
         Pendant of Faith, Highlights traps, Needs trap rework first
@@ -133,6 +159,8 @@ Upgrade weapons
         # Ethereal Chains – snares nearby enemies for a short duration.
         # Recall Parchment – Teleports the player back to the last shrine visited.
 
+
+        Crystal Skull, reduce clatter level by 1, only 1 use
         Torch of Guidance - Reveal the portal shrine on minimap
         Rope Hook – Can be thrown to pull the player across gaps.
         Alchemy Flask – Randomly turns a minor item into another item upon use.
@@ -144,6 +172,7 @@ Upgrade weapons
         # Frozen Bomb – Frozen Explosion
         # Poison Bomb – Poison Explosion
         # Vampiric Bomb – Vampiric Explosion
+
         Oil Flask – Can be thrown to create a flammable puddle.
         Holy Water – Weapons deals extra damage to undead and ghosts.
         Hexing Charm – Weakens the next enemy hit, cooldown.
@@ -154,6 +183,7 @@ Upgrade weapons
         # Blood tomb, Gain souls when damaged
         # Demonic Bargain – Increases damage output but prevents healing
         # Temptress Embrace - Reduces damage output when health > 50% but increases below 50%
+
         Black Coin – Increases gold earned but increases damage taken
         Vampire’s Locket – Grants lifesteal but slowly reduces max health over time.
         Cursed Dice – Rerolls effects to be random, but weighted for positive effects
@@ -324,9 +354,13 @@ Upgrade weapons
     # Lava, sets on fire and slows down entity, heavy damage
     # Water, slows down entities
     # Ice decreases friction and accelaration
+    # Mimic chest, Spawns enemy and snares when opened
+    Loose rubble, generates clatter when stepped on
     Pressure plates that trigger effects
+    Gass vents, spawns gass clouds
     Arrow traps - shoots arrows, triggered by pressure plates
     Loose rocks, generates clatter when stepped on
+
     
 
 
@@ -353,6 +387,9 @@ Upgrade weapons
     - Levers that spawn items, open doors etc when activated
     - Pressure plates, need to be held down to work, can be done with items. Works similar to levers
     - Shops where you can buy different items for gold, maybe a little kobold with a shop. Opens a menu, you can sell loot for gold and use gold to buy random selection of items
+    - Blood shrine, Gives an item that tracks player kills, when 10 are killed reduce awakening level
+    - Campfires, rest locations player can regain 50% hp, one per floor
+    - Fountains that gives random buff when interacted with
 
 
 # Rooms:

@@ -10,7 +10,6 @@ import copy
 
 # Tiles that are checked for physics
 NEIGHBOR_OFFSETS = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 0), (-1, 1), (0, 1), (1, 1)]
-PHYSICS_TILES = {'wall', keys.wall_left, keys.wall_right, keys.wall_middle, keys.wall_top, keys.wall_bottom}
 FLOOR_TTLES = {keys.floor}
 
 class Tilemap:
@@ -18,6 +17,7 @@ class Tilemap:
         self.game = game
         self.tile_size = 32
         self.tilemap = {}
+        self.tiles_not_touching_wall = {}
         self.offgrid_tiles = []
         self.update_timer = 0
         self.saved_data = {}
@@ -54,7 +54,7 @@ class Tilemap:
             tile = Tile(self.game, type, variant, pos, self.tile_size, 0, 0, False, True)
             self.offgrid_tiles.append(tile)
 
-        self.Check_Next_To_Wall()
+        self.Find_Tiles_Not_Touching_Wall()
 
 
     def Generate_Tile(self, tile_key, tilemap):
@@ -76,7 +76,36 @@ class Tilemap:
         self.max_x = max(self.max_x, pos[0])
         self.min_y = min(self.min_y, pos[1])
         self.max_y = max(self.max_y, pos[1])
-        
+
+    # Runs one time when loading, but expensive to compute
+    def Find_Tiles_Not_Touching_Wall(self):
+        self.tiles_not_touching_wall.clear()
+
+        for tile_key, tile in self.tilemap.items():
+            if not tile or tile.type != keys.floor:
+                continue
+
+            x, y = tile.pos
+            touching_wall = False
+
+            for offset in NEIGHBOR_OFFSETS:
+                nx, ny = x + offset[0], y + offset[1] # Get neigbour key
+                neighbor_key = f"{nx};{ny}"
+
+                if neighbor_key not in self.tilemap:
+                    continue
+
+                neighbor_tile = self.tilemap[neighbor_key]
+                if neighbor_tile and neighbor_tile.physics:
+                    touching_wall = True
+                    break
+            
+            if not touching_wall:
+                self.tiles_not_touching_wall[tile_key] = tile
+            else:
+                self.tilemap[tile_key].Set_Next_To_Wall(True)
+
+
 
 
     # Takes an ID an looks for matches in tilemap and offgrid tiles
@@ -107,27 +136,6 @@ class Tilemap:
         
         return decorations
 
-    # Runs one time when loading, but expensive to compute
-    def Check_Next_To_Wall(self):
-        for tile_key in self.tilemap:
-            if 'wall' in self.tilemap[tile_key].type:
-                self.tilemap[tile_key].Set_Next_To_Wall(True)
-                continue
-
-
-            x_key, y_key = map(int, tile_key.split(";"))
-            for x in range(x_key - 1, x_key + 1):
-                for y in range(y_key - 1, y_key + 1):
-                    key = str(x) + ';' + str(y)
-                    if not key in self.tilemap:
-                        continue
-
-                    if 'wall' in self.tilemap[key].type:
-                        self.tilemap[tile_key].Set_Next_To_Wall(True)
-                        break
-
-                if self.tilemap[tile_key].next_to_Wall:
-                    break
 
 
     def Search_Nearby_Tiles(self, max_distance, pos, category, ID = 0):
@@ -343,7 +351,7 @@ class Tilemap:
 
     def Get_Random_Tile_With_Path_To_Player(self):
         tiles = []
-        for tile in self.tilemap.values():
+        for tile in self.tiles_not_touching_wall.values():
             if not tile.type == keys.floor:
                 continue
 

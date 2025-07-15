@@ -18,6 +18,9 @@ class Enemy():
     
     health_bar = "health_bar"
 
+# Modifications
+    improve_weapon = "improve_weapon"
+
 # Intents
     direct = "direct"
 

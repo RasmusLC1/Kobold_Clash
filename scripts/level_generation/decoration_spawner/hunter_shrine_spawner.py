@@ -7,7 +7,7 @@ class Hunter_Shrine_Spawner():
 
     @staticmethod
     def Spawn_Hunter_Shrine(map, size_x, size_y, tile_size, offgrid_tiles, A_Star_Search):
-        loot_amount = random.randint(2, 3)
+        loot_amount = random.randint(2, 4)
         loot = 0 
         path = []
         while loot < loot_amount:

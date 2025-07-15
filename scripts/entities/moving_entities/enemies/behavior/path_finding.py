@@ -40,8 +40,6 @@ class Path_Finding():
 
         # Checks if the enemy is stuck
         self.Update_Stuck_Timer()
-        if self.Stuck_Check():
-            return
         
         if self.entity.Attack_Strategy():
             self.entity.Trap_Collision_Handler()
@@ -62,10 +60,9 @@ class Path_Finding():
     # Makes the pathing easier
     def Find_Patrol_Path(self):
         try:
-            enemy = self.game.enemy_handler.Get_Random_Enemy()
-            self.game.enemy_handler.Add_To_Pattrol_Queue(self.entity, enemy.pos)
+            self.game.enemy_handler.Add_To_Patrol_Queue(self.entity)
         except Exception as e:
-            print(f'ERROR FINDING PATROL PATH{e}', self.entity.pos, enemy.pos)
+            print(f'ERROR FINDING PATROL PATH{e}', self.entity.pos)
 
 
     def Navigate_Path(self):
@@ -163,16 +160,6 @@ class Path_Finding():
             else:
                 self.stuck_timer = 0
 
-    
-
-    # Move the entity at random if stuck
-    def Stuck_Check(self):
-        if self.stuck_timer < 20:
-            return False
-        
-        self.Moving_Random()
-        self.entity.random_movement_cooldown = 200
-        return True
     
     def Moving_Random(self):
         self.entity.Reduce_Movement(4)

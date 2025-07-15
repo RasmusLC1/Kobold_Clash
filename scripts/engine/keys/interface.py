@@ -102,3 +102,11 @@ class Interface():
 
     
     radius_tooltip = "radius"
+
+
+    awakening_skull_0 = "awakening_skull_0"
+    awakening_skull_1 = "awakening_skull_1"
+    awakening_skull_2 = "awakening_skull_2"
+    awakening_skull_3 = "awakening_skull_3"
+    awakening_skull_4 = "awakening_skull_4"
+    awakening_skull_5 = "awakening_skull_5"

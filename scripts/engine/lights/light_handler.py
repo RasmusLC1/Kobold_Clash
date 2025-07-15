@@ -82,3 +82,4 @@ class Light_Handler():
         light_level = max(50, 255 - light_level)
 
         return light_level
+    

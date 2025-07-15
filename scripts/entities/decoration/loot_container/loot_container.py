@@ -39,6 +39,9 @@ class Loot_Container(Decoration):
         loot_types = list(self.loot_weights.keys())
         weight_values = [self.loot_weights[loot_type] for loot_type in loot_types]
         loot_type = random.choices(loot_types, weight_values, k=1)[0]
+
+        if loot_type == keys.nothing:
+            return
         
         self.Spawn_Loot(loot_type, self.Get_Pos())
     

@@ -155,6 +155,8 @@ class Items():
 
     lockpick_gem = "lockpick_gem"
 
+    nothing = "nothing"
+
 
 # Runes
     

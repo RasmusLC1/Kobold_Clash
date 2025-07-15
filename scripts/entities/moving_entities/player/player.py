@@ -100,7 +100,10 @@ class Player(Moving_Entity):
         self.souls += added_soul
 
     def Decrease_Souls(self, subtract_soul):
+        if self.souls_to_remove + subtract_soul > self.souls:
+            return False
         self.souls_to_remove += subtract_soul
+        return True
 
     # Subtract the souls that are to be removed from total souls to get a correct souls count
     def Get_Total_Available_Souls(self):

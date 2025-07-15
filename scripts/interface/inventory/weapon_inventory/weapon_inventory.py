@@ -74,6 +74,6 @@ class Weapon_Inventory(Base_Inventory):
         
 
     def Set_Inventory_Slot_Pos(self, index):
-        x = index * self.size[1] + self.game.screen_width / 2 / self.game.render_scale - 240
+        x = index * self.size[1] + self.game.screen_width / 2 / self.game.render_scale - 220
         y = self.game.screen_height / self.game.render_scale - 40
         return (x, y)
