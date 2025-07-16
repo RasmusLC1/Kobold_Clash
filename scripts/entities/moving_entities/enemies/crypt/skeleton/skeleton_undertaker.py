@@ -41,7 +41,7 @@ class Skeleton_Undertaker(Skeleton):
 
     def Revive(self):
         if self.target_bones and self.rect().colliderect(self.target_bones.rect()):
-            self.game.particle_handler.Activate_Particles(10, keys.vampire_particle, self.rect().center, frame=random.randint(20, 40))
+            self.game.particle_handler.Activate_Particles(10, keys.vampire_particle, self.rect().center, frame=random.uniform(1, 2))
             self.target_bones.Revive()
             self.target_bones = None
             self.bones_search_cooldown = random.randint(2500, 3000)

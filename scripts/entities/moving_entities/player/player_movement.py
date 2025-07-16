@@ -101,7 +101,7 @@ class Player_Movement():
         if abs(self.dashing) in {60, 50}:
             for i in range(30):
                 
-                self.game.particle_handler.Activate_Particles(1, keys.dash_particle, self.player.rect().center, frame=random.randint(5, 30))
+                self.game.particle_handler.Activate_Particles(1, keys.dash_particle, self.player.rect().center, frame=random.uniform(0.5, 1))
 
         if self.dashing > 0:
             self.dashing = max(0, self.dashing - 1)
@@ -122,7 +122,7 @@ class Player_Movement():
                     self.player.velocity[0] *= 0.1
                     self.player.velocity[1] *= 0.1
 
-                self.game.particle_handler.Activate_Particles(1, keys.dash_particle, self.player.rect().center, frame=random.randint(5, 30))
+                self.game.particle_handler.Activate_Particles(1, keys.dash_particle, self.player.rect().center, frame=random.uniform(0.5, 1))
 
 
     def Dash(self, offset=(0, 0)):

@@ -27,7 +27,7 @@ class Teleportation_Circle(Decoration):
         player.Set_Position(self.linked_portal.pos.copy())
         self.linked_portal.Generate_Sound('teleportation', 0.2, 500)
 
-        self.game.particle_handler.Activate_Particles(random.randint(8, 12), keys.soul_particle, self.linked_portal.rect().center, frame=random.randint(50, 70))
+        self.game.particle_handler.Activate_Particles(random.randint(8, 12), keys.soul_particle, self.linked_portal.rect().center, frame=random.uniform(2, 4))
         
     
     def Set_Linked_Portal(self, linked_portal):

@@ -66,5 +66,5 @@ class Brazier(Decoration):
 
 
     def Spawn_Fire_Particle(self):
-        self.game.particle_handler.Activate_Particles(random.randint(1, 2), keys.fire_particle, self.rect().center, frame=random.randint(80, 90))
+        self.game.particle_handler.Activate_Particles(random.randint(1, 2), keys.fire_particle, self.rect().center, frame=random.uniform(3, 4))
         return

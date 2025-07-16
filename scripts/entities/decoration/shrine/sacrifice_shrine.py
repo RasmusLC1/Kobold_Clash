@@ -42,7 +42,7 @@ class Sacrifice_Shrine(Decoration):
             self.Set_Animation(self.animation + 1)
         spawn_particles = random.randint(0, 2)
         if spawn_particles == 0:
-            self.game.particle_handler.Activate_Particles(random.randint(2, 4), keys.soul_particle, self.rect().center, frame=random.randint(50, 70))
+            self.game.particle_handler.Activate_Particles(random.randint(2, 4), keys.soul_particle, self.rect().center, frame=random.uniform(2, 3))
 
     def animation_cooldown_Handler(self):
         if self.animation_cooldown <= 0:

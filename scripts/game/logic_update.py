@@ -6,14 +6,14 @@ class Logic_Update():
         self.freeze_frame = 0 # Used to freeze the game temporarily during attacks
 
 
-    def Update(self):
+    def Update(self, delta_time):
             
           if not self.Update_Freeze_Frame():
                return
           
           self.Check_Keyboard_Input()
           
-          self.game.particle_handler.Particle_Update()
+          self.game.particle_handler.Particle_Update(delta_time)
           self.game.trap_handler.Update()
           self.game.item_handler.Update(self.game.render_scroll)
           self.game.decoration_handler.Update()

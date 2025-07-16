@@ -63,7 +63,7 @@ class Void_Spawn(Enemy):
         return True
     
     def Spawn_Damaged_Particles(self):
-        self.game.particle_handler.Activate_Particles(10, keys.bone_particle, self.rect().center, frame=random.randint(10, 30))
+        self.game.particle_handler.Activate_Particles(10, keys.bone_particle, self.rect().center, frame=random.uniform(1, 1.5))
 
     def Spawn_Bones(self):
         pass

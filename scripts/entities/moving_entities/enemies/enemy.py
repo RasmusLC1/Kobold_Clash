@@ -223,7 +223,7 @@ class Enemy(Moving_Entity):
 
 
     def Spawn_Damaged_Particles(self):
-        self.game.particle_handler.Activate_Particles(10, keys.blood_particle, self.rect().center, frame=random.randint(10, 30))
+        self.game.particle_handler.Activate_Particles(10, keys.blood_particle, self.rect().center, frame=random.uniform(1, 1.5))
 
 
     def Spawn_Bones(self):

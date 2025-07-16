@@ -37,9 +37,18 @@ class State_Machine():
         }
 
 
-    def Game_State(self):
+    # def Game_State(self):
+    #     game_state = self.game_states.get(self.game_state)
+    #     game_state()
+
+    def Game_State(self, delta_time):
         game_state = self.game_states.get(self.game_state)
-        game_state()
+        if game_state:
+            if self.game_state == "run_game":
+                game_state(delta_time)
+            else:
+                game_state()
+
 
     def Initialise_Game(self):
         self.game_state = 'main_menu'
@@ -76,10 +85,10 @@ class State_Machine():
 
         self.Set_State('run_game')
 
-    def Game_Loop(self):
+    def Game_Loop(self, delta_time):
         self.game.camera_update.Camera_Scroll()
         self.game.renderer.Render()
-        self.game.logic_update.Update()
+        self.game.logic_update.Update(delta_time)
 
     def Main_Menu(self, save_game):
         self.game.menu_handler.Select_Menu('main_menu')

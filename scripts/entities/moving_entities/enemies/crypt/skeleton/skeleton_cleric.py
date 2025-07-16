@@ -35,7 +35,7 @@ class Skeleton_Cleric(Skeleton):
         if not self.nearby_enemies:
             self.healing_cooldown = 200
             return
-        self.game.particle_handler.Activate_Particles(10, keys.gold_particle, self.rect().center, frame=random.randint(20, 40))
+        self.game.particle_handler.Activate_Particles(10, keys.gold_particle, self.rect().center, frame=random.uniform(1, 2))
         for enemy in self.nearby_enemies:
             enemy.effects.Set_Effect(keys.healing, 15)
         self.healing_cooldown = 300
