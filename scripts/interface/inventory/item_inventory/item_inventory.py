@@ -53,7 +53,7 @@ class Item_Inventory(Base_Inventory):
             # If the entire item was merged, remove it
             if item.amount == 0:
                 self.game.item_handler.Remove_Item(item)
-                inventory_slot.item.Update()
+                inventory_slot.item.Update(self.game.delta_time)
                 return True
             
         # If there is still remaining amount, try placing it in an empty slot
@@ -132,7 +132,7 @@ class Item_Inventory(Base_Inventory):
             
             self.game.item_handler.Remove_Item(item)
             
-            inventory_slot.item.Update()
+            inventory_slot.item.Update(self.game.delta_time)
             return True
         
         return False  # No available slots

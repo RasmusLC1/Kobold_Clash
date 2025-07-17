@@ -34,8 +34,8 @@ class Soul_Pit(Elemental_Explosion):
             entity.Set_Frame_movement((direction_vector[0] * 2, direction_vector[1] * 2))
             entity.Tile_Map_Collision_Detection(self.game.tilemap)
 
-    def Update_Animation(self):
+    def Update_Animation(self, delta_time):
         self.Pull_Enemies_In()
         for entity in self.nearby_entities:
             self.Compute_Damage(entity)
-        return super().Update_Animation()
+        return super().Update_Animation(delta_time)

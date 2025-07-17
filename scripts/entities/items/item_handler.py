@@ -116,14 +116,14 @@ class Item_Handler():
 
         return nearby_items
 
-    def Update(self, offset = (0,0)):
+    def Update(self, delta_time):
         self.Check_Keyboard_Input()
-        if self.Update_Nearby_Items_Cooldown():
+        if self.Update_Nearby_Items_Cooldown(delta_time):
             self.nearby_items.clear()
             self.nearby_items = self.Find_Nearby_Item(self.game.player.pos, 3)
         
         for item in self.items:
-            item.Update_Delete_Cooldown()
+            item.Update_Delete_Cooldown(delta_time)
             if not item:
                 self.Remove_Item(item, True)
 
@@ -144,7 +144,7 @@ class Item_Handler():
             if not item.entity:
                 return
             if item.shoot_speed and item.entity.category == keys.enemy and not item.delete_countdown:
-                item.Set_Delete_Countdown(10)
+                item.Set_Delete_Countdown(0.2)
                 return
         try:
             if not item in self.items:
@@ -185,13 +185,13 @@ class Item_Handler():
         return True
 
     def Reset_Nearby_Items_Cooldown(self):
-        self.nearby_item_cooldown = 1
+        self.nearby_item_cooldown = 0.001
 
-    def Update_Nearby_Items_Cooldown(self):
+    def Update_Nearby_Items_Cooldown(self, delta_time):
         if self.nearby_item_cooldown:
-            self.nearby_item_cooldown = max(0, self.nearby_item_cooldown - 1)
+            self.nearby_item_cooldown = max(0, self.nearby_item_cooldown - delta_time)
             return False
-        self.nearby_item_cooldown = 30
+        self.nearby_item_cooldown = 0.5
         return True
 
 

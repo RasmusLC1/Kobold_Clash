@@ -22,11 +22,11 @@ class Game:
 
     def run(self):  
         while True:
-            delta_time = self.clock.tick(60) / 1000  # Get delta time in seconds
+            self.delta_time = self.clock.tick(60) / 1000  # Get delta time in seconds
             fps = int(self.clock.get_fps())
             pygame.display.set_caption(f'Dungeon Crawler             FPS: {fps}')
             
-            self.state_machine.Game_State(delta_time)
+            self.state_machine.Game_State(self.delta_time)
             self.input_update.Input_Handler()
             self.Update_Display()
 

@@ -51,7 +51,7 @@ class Rune_Inventory(Base_Inventory):
                 continue
             self.game.item_handler.Remove_Item(item)
             
-            inventory_slot.item.Update()
+            inventory_slot.item.Update(self.game.delta_time)
             item.Remove_Tile()
             return True
         return False  # No available slots

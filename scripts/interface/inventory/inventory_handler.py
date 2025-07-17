@@ -10,7 +10,6 @@ class Inventory_Handler():
         self.game = game
         self.active_item = None
         self.item_clicked = 0
-        self.click_cooldown = 0
         self.Set_Clicked_Inventory_Slot()
         self.clicked_inventory_slot_lock = False
         self.inventory = [] # General shared inventory
@@ -65,14 +64,14 @@ class Inventory_Handler():
         # self.weapon_inventory.Set_Active_Inventory_Slot(self.inventory[0])
 
     # General Update function
-    def Update(self, offset=(0, 0)):
+    def Update(self, delta_time, offset=(0, 0)):
 
         self.Active_Item(offset)
         for inventory_slot in self.inventory:
             if not inventory_slot.item:
                 continue
-            inventory_slot.Update_Item()
-            if not self.Update_Inventory_Slot_Item_Animation(inventory_slot):
+            inventory_slot.Update_Item(delta_time)
+            if not self.Update_Inventory_Slot_Item_Animation(inventory_slot, delta_time):
                 continue
             # Check if the mouse has been clicked, if no we skip that inventory
             # slot if no continue to next inventory slot
@@ -138,9 +137,9 @@ class Inventory_Handler():
         return False
 
     # Update the animation of the item, return False if no item
-    def Update_Inventory_Slot_Item_Animation(self, inventory_slot):
+    def Update_Inventory_Slot_Item_Animation(self, inventory_slot, delta_time):
         if inventory_slot.item:
-            inventory_slot.item.Update_Animation()
+            inventory_slot.item.Update_Animation(delta_time)
             return True
         return False
 
@@ -425,7 +424,7 @@ class Inventory_Handler():
         
         for slot in empty_slots.values():
             if slot.Add_Item(item):
-                slot.item.Update()
+                slot.item.Update(self.game.delta_time)
                 return True
 
         return False

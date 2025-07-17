@@ -47,7 +47,7 @@ class Inventory_Slot():
             self.item = None
         return
     
-    def Update_Item(self):
+    def Update_Item(self, delta_time):
         if not self.item:
             return
         if self.item.sub_category == keys.weapon:
@@ -57,7 +57,7 @@ class Inventory_Slot():
         
         if not self.item:
             return
-        self.item.Update()
+        self.item.Update(delta_time)
 
     def Move_Item(self):
         self.item.Move((self.pos[0] + 5, self.pos[1] + 5))

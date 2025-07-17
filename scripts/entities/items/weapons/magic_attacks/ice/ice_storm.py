@@ -38,7 +38,7 @@ class Ice_Storm(PhysicsEntity):
         self.Update_Animation()
         return True
 
-    def Update_Animation(self):
+    def Update_Animation(self, delta_time = 0):
         if self.animation >= self.animation_max:
             self.animation = 0
         else:

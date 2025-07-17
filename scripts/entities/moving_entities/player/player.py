@@ -78,7 +78,7 @@ class Player(Moving_Entity):
 
         self.View_Direction(offset)
 
-        self.weapon_handler.Update(offset)
+        self.weapon_handler.Update(delta_time, offset)
 
         self.Update_Souls_To_Remove()
 

@@ -7,7 +7,7 @@ class Awakening_Skull(UI):
         pos_x = 100
         pos_y = game.screen_height / game.render_scale - 40
         animation_max = 0
-        animation_cooldown_max = 30
+        animation_cooldown_max = 0.5
         super().__init__(game, pos_x, pos_y, animation_max, animation_cooldown_max)
         self.size = (32, 32)
         self.awakening_level = 0
@@ -25,7 +25,7 @@ class Awakening_Skull(UI):
         self.Set_Awakening(0)
         self.display_text = False
 
-    def Update(self):
+    def Update(self, delta_time):
         self.Check_Mouse_Collision()
     
     def Check_Mouse_Collision(self):
@@ -36,7 +36,7 @@ class Awakening_Skull(UI):
         else:
             self.display_text = False
 
-    def Update_Animation(self):
+    def Update_Animation(self, delta_time = None):
         pass
     
     def Set_Awakening(self, awakening_level):

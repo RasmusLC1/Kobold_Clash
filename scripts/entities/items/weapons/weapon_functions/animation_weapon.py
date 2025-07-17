@@ -20,11 +20,11 @@ class Animation_Weapon():
 
 
 
-    def Update_Animation(self):
+    def Update_Animation(self, delta_time):
         if not self.weapon.equipped:
             return
         if self.animation_cooldown:
-            self.animation_cooldown -= 1
+            self.animation_cooldown -= delta_time
         else:
             self.animation_cooldown = self.animation_cooldown_max
             self.animation = random.randint(0,self.max_animation)

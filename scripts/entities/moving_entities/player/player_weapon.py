@@ -13,8 +13,8 @@ class Player_Weapon_Handler():
 
 
 
-    def Update(self, offset = (0, 0)):
-        self.Update_Weapon(offset)
+    def Update(self, delta_time, offset = (0, 0)):
+        self.Update_Weapon(delta_time, offset)
 
     def Set_Active_Weapon(self, weapon):  
           
@@ -28,7 +28,7 @@ class Player_Weapon_Handler():
     
 
     # Function to update the player's weapons
-    def Update_Weapon(self, offset=(0, 0)):
+    def Update_Weapon(self, delta_time, offset=(0, 0)):
 
         if not self.active_weapon:
             return
@@ -42,7 +42,7 @@ class Player_Weapon_Handler():
         if self.attack_lock:
             return
 
-        self.active_weapon.Update(offset)
+        self.active_weapon.Update(delta_time, offset)
         if not self.active_weapon:
             return
         
@@ -54,13 +54,12 @@ class Player_Weapon_Handler():
 
         
         if self.active_weapon_cooldown:
-            self.active_weapon_cooldown -= 1
+            self.active_weapon_cooldown -= delta_time
             return
 
         if not self.game.mouse.left_click:
             return
         cooldown = self.Weapon_Attack(self.active_weapon)
-        
         self.active_weapon_cooldown = max(self.active_weapon_cooldown, cooldown)
 
         return
