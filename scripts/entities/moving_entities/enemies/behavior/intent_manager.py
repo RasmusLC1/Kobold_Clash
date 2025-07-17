@@ -11,7 +11,7 @@ class Intent_Manager():
         self.intent_index = 0
         self.intent_length = 0
         self.intent_cooldown = 0
-        self.intent_cooldown_max = 100 # Lower value means faster response rate
+        self.intent_cooldown_max = 2 # Lower value means faster response rate
         self.attack_cooldown = 0
         self.attack_cooldown_max = round(self.entity.max_weapon_charge * 1.2)
         # Lookup for 
@@ -49,14 +49,14 @@ class Intent_Manager():
 
     
     # Update the entity's behavior
-    def Update_Behavior(self):
+    def Update_Behavior(self, delta_time):
         if self.entity.distance_to_player > 300:  # skip if out of range
             self.Set_Idle()
             return
 
         self.Handle_Attack()
 
-        if not self.Update_Intent_Cooldown():
+        if not self.Update_Intent_Cooldown(delta_time):
             return
 
         self.Set_Current_Intent(self.intent[self.intent_index])
@@ -119,11 +119,11 @@ class Intent_Manager():
             print(f"WRONG INTENT COOLDOWN: {e}", max_cooldown, offset)
 
     # Return false on when cooldown is active
-    def Update_Intent_Cooldown(self):
+    def Update_Intent_Cooldown(self, delta_time):
 
         if not self.intent_cooldown:
             return True
-        self.intent_cooldown = max(0, self.intent_cooldown - 1)
+        self.intent_cooldown = max(0, self.intent_cooldown - delta_time)
         return False
         
     def Set_Intent_Index(self, index):

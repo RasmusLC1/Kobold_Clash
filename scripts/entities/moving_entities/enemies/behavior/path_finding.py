@@ -22,7 +22,6 @@ class Path_Finding():
         self.des_y = 0
 
         self.pos_holder_timer = 0
-        self.stuck_timer = 0
 
         self.player_found = False
 
@@ -30,16 +29,13 @@ class Path_Finding():
 
 
 
-
-    def Path_Finding(self):
+    def Path_Finding(self, delta_time):
         self.Calculate_Distance_To_Player()
 
-        self.Set_Position_Holder()
+        self.Set_Position_Holder(delta_time)
 
         self.Corner_Handling()
 
-        # Checks if the enemy is stuck
-        self.Update_Stuck_Timer()
         
         if self.entity.Attack_Strategy():
             self.entity.Trap_Collision_Handler()
@@ -52,7 +48,7 @@ class Path_Finding():
                 self.entity.Set_Target(self.game.player.pos)
 
         if not self.Navigate_Path():
-            self.Moving_Random()
+            self.Moving_Random(delta_time)
 
     # Path to a random part of the dungeon
     # Path towards the position of a random enemy
@@ -76,7 +72,6 @@ class Path_Finding():
         target = self.path[1]
 
         # Move the entity away from walls
-        # self.Corner_Handling()
         if self.Path_Segment_Complete(target):
             return
         self.Calculate_Path_Segment(target)
@@ -84,7 +79,6 @@ class Path_Finding():
         
         return True
 
-    
 
     def Calculate_Path_Segment(self, target):
         target_pos = (target[0] * self.game.tilemap.tile_size, target[1] * self.game.tilemap.tile_size)
@@ -145,33 +139,25 @@ class Path_Finding():
 
 
     # Save the entity's position every 200 ticks
-    def Set_Position_Holder(self):
+    def Set_Position_Holder(self, delta_time):
         if self.pos_holder_timer:
-            self.pos_holder_timer -= 1
+            self.pos_holder_timer -= delta_time
         else:
             self.pos_holder = self.entity.pos.copy()
-            self.pos_holder_timer = 200
-
-    def Update_Stuck_Timer(self) -> None:
-        if self.pos_holder_timer < 160:
-            dx, dy = Helper_Functions.Abs_Distance_Tuple(self.entity.pos, self.pos_holder)
-            if dx < 2 and dy < 2:
-                self.stuck_timer += 1
-            else:
-                self.stuck_timer = 0
+            self.pos_holder_timer = 3
 
     
-    def Moving_Random(self):
+    def Moving_Random(self, delta_time):
         self.entity.Reduce_Movement(4)
         self.entity.direction = (self.entity.direction_x, self.entity.direction_y)
         if self.entity.random_movement_cooldown:
-            self.entity.random_movement_cooldown -= 1
+            self.entity.random_movement_cooldown -= delta_time
             return
         self.entity.direction_x = random.randint(-1, 1) 
         self.entity.direction_y = random.randint(-1, 1) 
         
         self.entity.direction = (self.entity.direction_x, self.entity.direction_y)
-        self.entity.random_movement_cooldown = 100
+        self.entity.random_movement_cooldown = 2
 
         self.entity.Trap_Collision_Handler()
 

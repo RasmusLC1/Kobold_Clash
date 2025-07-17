@@ -18,8 +18,8 @@ class Ice_Spirit(Enemy):
         self.attack_animation_num_cooldown_max = 30
         self.ice_shooter = Ice_Shooter(self.game)
 
-    def Update(self, tilemap, movement = (0, 0)):
-        super().Update(tilemap, movement)
+    def Update(self, tilemap, delta_time, movement = (0, 0)):
+        super().Update(tilemap, delta_time, movement)
 
         if self.effects.frozen.effect:
             self.Set_Effect(keys.healing, self.effects.frozen.effect)

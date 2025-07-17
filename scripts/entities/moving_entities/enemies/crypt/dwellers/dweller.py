@@ -22,10 +22,9 @@ class Dweller(Enemy):
         self.intent_manager.Set_Intent([keys.attack])
         self.Equip_Weapon(Claw(game, self.pos)) 
 
-    def Update(self, tilemap, movement=(0, 0)):
-        super().Update(tilemap, movement)
+    def Update(self, tilemap, delta_time, movement=(0, 0)):
+        super().Update(tilemap, delta_time, movement)
         self.Update_Active_Weapon()
-        self.Weapon_Cooldown()
         self.Darkness_Buff()
 
 

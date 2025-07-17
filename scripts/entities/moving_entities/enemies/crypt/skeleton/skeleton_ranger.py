@@ -30,9 +30,6 @@ class Skeleton_Ranger(Skeleton):
         if not self.active_weapon:
             return False
 
-        if self.weapon_cooldown:
-            return False
-        
         # If Player is to close, then archer cannot shoot
         if self.distance_to_player < 50:
             return False
@@ -44,6 +41,5 @@ class Skeleton_Ranger(Skeleton):
             if self.active_weapon.Enemy_Shooting():
                 self.Reset_Charge()
 
-                self.weapon_cooldown = 100
         
         return True

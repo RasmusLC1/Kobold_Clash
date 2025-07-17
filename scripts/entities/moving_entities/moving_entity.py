@@ -363,7 +363,7 @@ class Moving_Entity(PhysicsEntity):
             self.tile.Clear_Entity(self.ID)
         self.game.enemy_handler.Delete_Enemy(self)
         self.effects.Reset_Effects()
-        self.Update_Status_Effects()
+        self.Update_Status_Effects(self.game.delta_time)
         self.text_box = None
         self.render = False
         return True

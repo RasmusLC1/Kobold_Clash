@@ -8,10 +8,9 @@ class Skeleton(Enemy):
         self.animation_handler.Set_Animation_Num_Max(6)
         self.animation_handler.Set_Attack_Animation_Num_Max(6)
 
-    def Update(self, tilemap, movement=(0, 0)):
-        super().Update(tilemap, movement)
+    def Update(self, tilemap, delta_time, movement=(0, 0)):
+        super().Update(tilemap, delta_time, movement)
         self.Update_Active_Weapon()
-        self.Weapon_Cooldown()
 
   
     def Set_Action(self,  movement = None):
@@ -55,7 +54,7 @@ class Skeleton(Enemy):
         self.game.particle_handler.Activate_Particles(10, keys.bone_particle, self.rect().center)
 
     
-    def Update_Active_Weapon(self, offset=(0, 0)):
+    def Update_Active_Weapon(self):
         if not self.active_weapon:
             return
 

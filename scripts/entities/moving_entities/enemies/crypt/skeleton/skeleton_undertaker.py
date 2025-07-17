@@ -16,18 +16,18 @@ class Skeleton_Undertaker(Skeleton):
         self.active_weapon.Set_Damage(keys.vampiric, 3)
         self.intent_manager.Set_Intent([keys.direct, keys.attack, keys.attack, keys.medium_range, keys.medium_range, keys.medium_range,])
 
-    def Update(self, tilemap, movement=(0, 0)):
-        self.Update_Bones_Search_Cooldown()
+    def Update(self, tilemap, delta_time, movement=(0, 0)):
+        self.Update_Bones_Search_Cooldown(delta_time)
         self.Search_For_Bones()
         self.Resurrect_Enemy()
-        super().Update(tilemap, movement)
+        super().Update(tilemap, delta_time, movement)
         
 
-    def Update_Bones_Search_Cooldown(self):
+    def Update_Bones_Search_Cooldown(self, delta_time):
         if not self.bones_search_cooldown:
             return
         
-        self.bones_search_cooldown = max(0, self.bones_search_cooldown - 1)
+        self.bones_search_cooldown = max(0, self.bones_search_cooldown - delta_time)
 
     def Resurrect_Enemy(self):
         if not self.target_bones:
@@ -44,14 +44,13 @@ class Skeleton_Undertaker(Skeleton):
             self.game.particle_handler.Activate_Particles(10, keys.vampire_particle, self.rect().center)
             self.target_bones.Revive()
             self.target_bones = None
-            self.bones_search_cooldown = random.randint(2500, 3000)
+            self.bones_search_cooldown = random.randint(25, 30)
             return
 
     def Search_For_Bones(self):
         if self.bones_search_cooldown:
             return
-        # self.bones_search_cooldown = random.randint(900, 1100)
-        self.bones_search_cooldown = random.randint(100, 200)
+        self.bones_search_cooldown = random.randint(2, 3)
         nearby_bones = self.game.tilemap.Search_Nearby_Tiles_For_Type(5, self.pos, keys.bones, self.ID)
         if not nearby_bones:
             return
