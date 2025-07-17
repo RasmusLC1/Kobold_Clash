@@ -62,7 +62,7 @@ class Projectile(Weapon):
 
 
     # Continously updated shooting effect
-    def Shoot(self):
+    def Shoot(self, delta_time):
         if not self.Update_Shoot_Distance():
             self.Reset_Shot()
             return

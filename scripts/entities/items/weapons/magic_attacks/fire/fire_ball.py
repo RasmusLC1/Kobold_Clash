@@ -20,8 +20,8 @@ class Fire_Ball(Elemental_Ball):
         self.update_light_cooldown += 1
 
 
-    def Shoot(self):
-        super().Shoot()
+    def Shoot(self, delta_time):
+        super().Shoot(delta_time)
         self.Update_Light()
 
     def Reset_Shot(self):

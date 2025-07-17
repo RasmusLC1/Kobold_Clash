@@ -21,7 +21,6 @@ class Projectile_Rune(Rune):
 
         if not self.clicked:
             return 
-        
         self.Handle_Shooting()
         if self.game.mouse.right_click:
             self.clicked = False

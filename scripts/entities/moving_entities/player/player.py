@@ -82,7 +82,7 @@ class Player(Moving_Entity):
 
         self.Update_Souls_To_Remove()
 
-        self.Spawn_Particles()
+        self.Spawn_Particles(delta_time)
 
 
 
@@ -206,13 +206,13 @@ class Player(Moving_Entity):
         self.last_shrine_visited = shrine
 
     # Spawn player particles at random intervals
-    def Spawn_Particles(self):
+    def Spawn_Particles(self, delta_time):
         if not self.player_particle_cooldown:
-            self.player_particle_cooldown = random.randint(20, 30)
+            self.player_particle_cooldown = random.uniform(0.3, 0.5)
             self.game.particle_handler.Activate_Particles(random.randint(1, 3), keys.player_particle, self.rect().center)
 
             return
-        self.player_particle_cooldown -= 1
+        self.player_particle_cooldown -= delta_time
         return
 
     # Render player

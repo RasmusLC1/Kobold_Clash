@@ -131,12 +131,12 @@ class Item_Handler():
                 self.items.remove(item)
                 continue
 
-            self.Throw_Projectile(item)
+            self.Throw_Projectile(item, delta_time)
 
 
     
     # Shoot projectiles
-    def Throw_Projectile(self, item):
+    def Throw_Projectile(self, item, delta_time):
         if not item.is_projectile:
             return
         if not item.special_attack:
@@ -149,7 +149,7 @@ class Item_Handler():
         try:
             if not item in self.items:
                 return
-            item.Shoot()
+            item.Shoot(delta_time)
         except Exception as e:
             print(f"Item is not throwable {e}", item.type, item.entity, item.tile, vars(item))
 

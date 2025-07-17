@@ -22,7 +22,7 @@ class Item(PhysicsEntity):
         self.amount = amount
         self.max_amount = 1
         self.max_animation = 0
-        self.animation_cooldown_max = 50
+        self.animation_cooldown_max = 0.8
 
         self.animation = random.randint(0, self.max_animation)
         self.nearby_entities = []
@@ -68,7 +68,7 @@ class Item(PhysicsEntity):
         if self.activate_cooldown:
             return False
         
-        self.activate_cooldown = 60
+        self.activate_cooldown = 1
         return True
 
     def Update_Activate_Cooldown(self, delta_time):
@@ -171,16 +171,16 @@ class Item(PhysicsEntity):
     def Move(self, new_pos):
         self.pos = list(new_pos)
 
-    # def Update_Tile(self, new_pos):
+    def Update_Tile(self, new_pos):
 
-    #     new_tile_key = str(int(self.pos[0] // self.game.tilemap.tile_size)) + ';' + str(int(self.pos[1] // self.game.tilemap.tile_size))
-    #     new_tile = self.game.tilemap.Current_Tile(new_tile_key)
-    #     if not (new_tile, self.tile):
-    #         return
-    #     if new_tile_key != self.tile.pos:
-    #         self.game.tilemap.Remove_Entity_From_Tile(self.tile, self.ID)
-    #         self.game.tilemap.Add_Entity_To_Tile(new_tile, self)
-    #         self.tile = new_tile
+        new_tile_key = str(int(self.pos[0] // self.game.tilemap.tile_size)) + ';' + str(int(self.pos[1] // self.game.tilemap.tile_size))
+        new_tile = self.game.tilemap.Current_Tile(new_tile_key)
+        if not (new_tile, self.tile):
+            return
+        if new_tile_key != self.tile.pos:
+            self.game.tilemap.Remove_Entity_From_Tile(self.tile, self.ID)
+            self.game.tilemap.Add_Entity_To_Tile(new_tile, self)
+            self.tile = new_tile
 
     
 

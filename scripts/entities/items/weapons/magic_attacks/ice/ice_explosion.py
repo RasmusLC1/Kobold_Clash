@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Ice_Explosion(Elemental_Explosion):
     def __init__(self, game, pos, power, entity = None):
-        super().__init__(game, keys.ice_explosion, keys.frozen, pos, power, 5, 5, 5, entity)
+        super().__init__(game, keys.ice_explosion, keys.frozen, pos, power, 5, 5, 0.1, entity)
 
     def Slow_Entities(self):
         for entity in self.nearby_entities:

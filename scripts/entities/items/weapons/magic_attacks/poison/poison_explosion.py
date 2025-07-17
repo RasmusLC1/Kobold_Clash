@@ -3,7 +3,7 @@ from scripts.engine.keys.keys import keys
 
 class Poison_Explosion(Elemental_Explosion):
     def __init__(self, game, pos, power, entity = None):
-        super().__init__(game, keys.poison_explosion, keys.poison, pos, power, 6, 5, 5, entity)
+        super().__init__(game, keys.poison_explosion, keys.poison, pos, power, 6, 5, 0.1, entity)
         self.poison_cooldown = 0
         self.poison_cooldown_max = 10
 

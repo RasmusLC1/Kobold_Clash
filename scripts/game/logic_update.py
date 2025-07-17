@@ -22,7 +22,7 @@ class Logic_Update():
           self.game.trap_handler.Update()
 
 
-          self.game.rune_handler.Update(self.game.render_scroll)
+          self.game.rune_handler.Update(delta_time)
           self.game.player.Update(self.game.tilemap, delta_time, (self.game.movement[1] - self.game.movement[0], self.game.movement[3] - self.game.movement[2]), self.game.render_scroll)
           self.game.ray_caster.Update()
           self.game.clatter.Update()
