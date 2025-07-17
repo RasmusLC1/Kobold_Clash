@@ -50,7 +50,7 @@ class Skeleton_Warlock(Skeleton):
                 return False
             self.Set_Target(self.game.player.pos)
             self.Attack_Direction_Handler()
-            self.game.particle_handler.Activate_Particles(random.randint(5, 10), keys.gold_particle, self.rect().center, frame=random.uniform(1, 1.5))
+            self.game.particle_handler.Activate_Particles(random.randint(5, 10), keys.gold_particle, self.rect().center)
             
             self.active_weapon.Shoot_Projectiles()
             self.Reset_Charge()

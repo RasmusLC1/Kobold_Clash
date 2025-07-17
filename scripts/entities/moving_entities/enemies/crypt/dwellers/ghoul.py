@@ -48,7 +48,7 @@ class Ghoul(Dweller):
 
     def Heal_From_Bones(self):
         if self.target_bones and self.rect().colliderect(self.target_bones.rect()):
-            self.game.particle_handler.Activate_Particles(10, keys.vampire_particle, self.rect().center, frame=random.uniform(1, 2))
+            self.game.particle_handler.Activate_Particles(10, keys.vampire_particle, self.rect().center)
             self.bones_search_cooldown = random.randint(2500, 3000)
             self.effects.Set_Effect(keys.healing, self.max_health // 2)
             return

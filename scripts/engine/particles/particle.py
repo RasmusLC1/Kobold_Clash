@@ -1,5 +1,6 @@
 import random
-import pygame
+from scripts.engine.keys.keys import keys
+
 
 class Particle:
     def __init__(self, particle_handler):
@@ -9,6 +10,7 @@ class Particle:
         self.velocity = (0, 0) # Handles the movement pattern
         self.image = None # Set the image when particle is activated
         self.lifespan = 0 # How long a particle is active
+        self.initial_lifespan = 0 # Holder for lifespan
         self.animation = 0 # Sparks always have 6 variations
 
     def Set_Type(self, type):
@@ -20,6 +22,7 @@ class Particle:
 
     def Set_Lifespan(self, lifespan_seconds):
         self.lifespan = lifespan_seconds
+        self.initial_lifespan = lifespan_seconds
 
     def Set_Position(self, pos):
         self.pos = pos
@@ -65,5 +68,8 @@ class Particle:
     def Render(self, surf, offset=(0, 0)):
         if not self.lifespan:
             return
-        surf.blit(self.image, (self.pos[0] - offset[0], self.pos[1] - offset[1]))
+        image = self.image.copy()
+        alpha = int(255 * (self.lifespan / self.initial_lifespan))
+        image.set_alpha(alpha)
+        surf.blit(image, (self.pos[0] - offset[0], self.pos[1] - offset[1]))
     

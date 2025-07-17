@@ -81,13 +81,13 @@ class Enemy(Moving_Entity):
 
 
 
-    def Update(self, tilemap, movement=(0, 0)):
+    def Update(self, tilemap, delta_time, movement=(0, 0)):
         self.Reset_Max_Speed()
         self.intent_manager.Update_Behavior()
         self.path_finding.Path_Finding()
         movement = self.direction
         
-        super().Update(tilemap, movement)
+        super().Update(tilemap, delta_time, movement)
 
         self.Set_Direction_Holder()
 
@@ -156,9 +156,6 @@ class Enemy(Moving_Entity):
         return self.attack_strategies.Attack_Strategy()
 
 
-    def Update_Movement(self, movement):
-        return super().Update_Movement(movement)
-
     
     def Set_Active_Weapon(self, weapon):
         self.active_weapon = weapon
@@ -223,7 +220,7 @@ class Enemy(Moving_Entity):
 
 
     def Spawn_Damaged_Particles(self):
-        self.game.particle_handler.Activate_Particles(10, keys.blood_particle, self.rect().center, frame=random.uniform(1, 1.5))
+        self.game.particle_handler.Activate_Particles(10, keys.blood_particle, self.rect().center, random.uniform(0.2, 0.5))
 
 
     def Spawn_Bones(self):

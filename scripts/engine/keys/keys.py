@@ -9,6 +9,7 @@ from scripts.engine.keys.items import Items
 from scripts.engine.keys.game_types import Game_Types
 from scripts.engine.keys.tiles import Tiles
 from scripts.engine.keys.sounds import Sounds
+from scripts.engine.keys.game_variables import Game_Variables
 
 class keys(
     Particles,
@@ -21,6 +22,7 @@ class keys(
     Items,
     Game_Types,
     Tiles,
-    Sounds
+    Sounds,
+    Game_Variables
 ):
     pass

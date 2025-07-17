@@ -34,7 +34,7 @@ class Skeleton_Banner_Bearer(Skeleton):
         if not self.nearby_enemies:
             self.rally_cooldown = 200
             return
-        self.game.particle_handler.Activate_Particles(10, keys.strength_particle, self.rect().center, frame=random.uniform(1, 2))
+        self.game.particle_handler.Activate_Particles(10, keys.strength_particle, self.rect().center)
         for enemy in self.nearby_enemies:
             enemy.effects.Set_Effect(keys.increase_strength, 4)
         self.rally_cooldown = 300

@@ -8,7 +8,7 @@ class Phoenix_Feather(Loot):
         super().__init__(game, keys.phoenix_feather, pos, (16, 16), 10, keys.revive)
 
     def Revive(self):
-        self.game.particle_handler.Activate_Particles(20, keys.gold, self.game.player.pos, frame=random.uniform(2, 2.5))
+        self.game.particle_handler.Activate_Particles(20, keys.gold, self.game.player.pos)
         self.game.player.Set_Health(1)
         self.game.player.damage_cooldown = 500
         self.game.item_handler.Remove_Item(self, True)

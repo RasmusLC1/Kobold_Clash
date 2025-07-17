@@ -61,7 +61,7 @@ class Moving_Entity(PhysicsEntity):
         # Movement variables
         self.friction = 0.8 # Friction, set to the renderscale
         self.friction_holder = self.friction # Holder for friction to reset it
-        self.acceleration = agility / 5 * self.game.render_scale
+        self.acceleration = agility * self.game.render_scale * keys.movement_delta_time_offset
         self.acceleration_holder = self.acceleration # accelarition holder to reset it
         self.max_speed = max_speed * self.game.render_scale + agility # Max speed of the entity
         self.max_speed_holder = self.max_speed # Max speed holder to reset it
@@ -121,10 +121,10 @@ class Moving_Entity(PhysicsEntity):
 
 
     # Update the entity 
-    def Update(self, tilemap, movement=(0, 0)):
+    def Update(self, tilemap, delta_time, movement=(0, 0)):
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False}
 
-        self.Update_Movement(movement)
+        self.Update_Movement(movement, delta_time)
         self.Update_Status_Effects()
 
 
@@ -137,11 +137,10 @@ class Moving_Entity(PhysicsEntity):
         self.Update_Tile()
     
 
-    def Update_Movement(self, movement):
+    def Update_Movement(self, movement, delta_time):
         # Apply acceleration to velocity based on input
-        self.velocity[0] += movement[0] * self.acceleration
-        self.velocity[1] += movement[1] * self.acceleration
-
+        self.velocity[0] += movement[0] * self.acceleration * delta_time
+        self.velocity[1] += movement[1] * self.acceleration * delta_time
         # Clamp the velocity to max speed
         self.velocity[0] = max(-self.max_speed, min(self.velocity[0], self.max_speed))
         self.velocity[1] = max(-self.max_speed, min(self.velocity[1], self.max_speed))

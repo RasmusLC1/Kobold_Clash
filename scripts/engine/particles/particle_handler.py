@@ -1,6 +1,7 @@
 from scripts.engine.particles.particle import Particle
 from scripts.engine.particles.particle_patterns import Particle_Patterns
 from scripts.engine.keys.keys import keys
+import random
 
 class Particle_Handler:
     def __init__(self, game) -> None:
@@ -38,7 +39,7 @@ class Particle_Handler:
         self.active_particles.remove(particle)
 
 
-    def Activate_Particles(self, amount, type, pos, frame):
+    def Activate_Particles(self, amount, type, pos, time = random.uniform(1, 1.5)):
         for _ in range(amount):
             particle = self.Find_Particle()
 
@@ -51,7 +52,7 @@ class Particle_Handler:
             velocity = velocity_function()
 
             # Activate particle and add to active particles
-            particle.Set_Active(type, pos, velocity, frame)
+            particle.Set_Active(type, pos, velocity, time)
             particle.Set_Image(self.game.assets[type][particle.animation])
             self.active_particles.append(particle)
 

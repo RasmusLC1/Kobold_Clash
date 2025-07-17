@@ -100,10 +100,10 @@ class Enemy_Handler():
             self.pathfinding_handler.pathfinding_queue.remove(enemy) 
 
 
-    def Update(self):
+    def Update(self, delta_time):
         self.pathfinding_handler.Update()
         for enemy in self.enemies:
-            enemy.Update(self.game.tilemap)      
+            enemy.Update(self.game.tilemap, delta_time)      
 
     def Get_Number_Of_Enemies(self):
         return len(self.enemies)

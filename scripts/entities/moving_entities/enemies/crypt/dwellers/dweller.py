@@ -79,7 +79,7 @@ class Dweller(Enemy):
         return True
     
     def Spawn_Damaged_Particles(self):
-        self.game.particle_handler.Activate_Particles(10, keys.bone_particle, self.rect().center, frame=random.uniform(1, 1.5))
+        self.game.particle_handler.Activate_Particles(10, keys.bone_particle, self.rect().center)
 
     
     def Update_Active_Weapon(self, offset=(0, 0)):

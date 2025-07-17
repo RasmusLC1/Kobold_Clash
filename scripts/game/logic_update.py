@@ -14,16 +14,16 @@ class Logic_Update():
           self.Check_Keyboard_Input()
           
           self.game.particle_handler.Particle_Update(delta_time)
-          self.game.trap_handler.Update()
           self.game.item_handler.Update(self.game.render_scroll)
+          self.game.enemy_handler.Update(delta_time)
           self.game.decoration_handler.Update()
-          self.game.enemy_handler.Update()
           self.game.entities_render.Update()
+          self.game.trap_handler.Update()
 
 
           self.game.inventory.Update(self.game.render_scroll)
           self.game.rune_handler.Update(self.game.render_scroll)
-          self.game.player.Update(self.game.tilemap, (self.game.movement[1] - self.game.movement[0], self.game.movement[3] - self.game.movement[2]), self.game.render_scroll)
+          self.game.player.Update(self.game.tilemap, delta_time, (self.game.movement[1] - self.game.movement[0], self.game.movement[3] - self.game.movement[2]), self.game.render_scroll)
           self.game.ray_caster.Update()
           self.game.clatter.Update()
 

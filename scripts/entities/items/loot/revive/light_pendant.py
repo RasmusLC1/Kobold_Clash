@@ -16,7 +16,7 @@ class Light_Pendant(Loot):
         revive_cost =  player.max_health * 2
         if player.Get_Total_Available_Souls() < revive_cost:
             return False
-        self.game.particle_handler.Activate_Particles(20, keys.gold_particle, player.rect().center, frame=random.uniform(2, 2.5))
+        self.game.particle_handler.Activate_Particles(20, keys.gold_particle, player.rect().center)
         player.Set_Health(player.max_health // 2)
         player.Decrease_Souls(revive_cost)
 

@@ -62,7 +62,7 @@ class Lava(Trap):
     def Spawn_Fire_Particle(self):
         if not self.fire_particle_cooldown:
             self.fire_particle_cooldown = random.randint(70, 150)
-            self.game.particle_handler.Activate_Particles(random.randint(1, 2), keys.fire_particle, self.rect().center, frame=random.uniform(2, 4))
+            self.game.particle_handler.Activate_Particles(random.randint(1, 2), keys.fire_particle, self.rect().center)
 
             return
         
