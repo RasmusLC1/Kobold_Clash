@@ -17,7 +17,7 @@ class Wight_King(Skeleton):
 
         self.animation_handler.Set_Animation_Num_Max(4)
         self.animation_handler.Set_Attack_Animation_Num_Max(4)
-        self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(8)
+        self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(0.1)
         self.Select_Weapon()
         self.intent_manager.Set_Intent([keys.keep_position, keys.direct, 'dash', keys.attack, keys.attack, keys.medium_range,])
         self.intent_manager.Set_Intent_Cooldown_Max(120)

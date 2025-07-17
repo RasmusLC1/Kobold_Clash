@@ -440,6 +440,7 @@ Upgrade weapons
 ### Specialty
     Crystal Growth, walls occasionally dissapear or spawn changing the structure of the dungeon. Spawned walls can be broken
     Weapon gems spawn more often
+    Crystaline enemies that grow a crystal skin that acts as armor, grows back if not damaged for a while
 ### Enemies
     # Spider, shoots spiderweb that snares you, less damage
     Crystal Elemental, high health and strength, shoots crystal

@@ -6,7 +6,7 @@ class Player_Weapon_Handler():
         self.game = game
         self.player = player
         self.active_weapon = None
-        self.left_weapon_cooldown = 0
+        self.active_weapon_cooldown = 0
         self.right_weapon_cooldown = 0
         self.inventory_interaction = 0
         self.attack_lock = False
@@ -53,15 +53,15 @@ class Player_Weapon_Handler():
         self.player.Attacking(self.active_weapon, offset)
 
         
-        if self.left_weapon_cooldown:
-            self.left_weapon_cooldown -= 1
+        if self.active_weapon_cooldown:
+            self.active_weapon_cooldown -= 1
             return
 
         if not self.game.mouse.left_click:
             return
         cooldown = self.Weapon_Attack(self.active_weapon)
         
-        self.left_weapon_cooldown = max(self.left_weapon_cooldown, cooldown)
+        self.active_weapon_cooldown = max(self.active_weapon_cooldown, cooldown)
 
         return
     
@@ -84,7 +84,7 @@ class Player_Weapon_Handler():
             self.active_weapon.Disable_Gem_Effect()
             self.active_weapon.Unequip()
             self.active_weapon = None
-            self.left_weapon_cooldown = 0
+            self.active_weapon_cooldown = 0
             self.player.attacking = 0
 
     def Check_If_Weapon_Should_Be_Removed(self, weapon):

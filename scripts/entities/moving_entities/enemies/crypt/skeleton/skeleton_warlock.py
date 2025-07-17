@@ -10,8 +10,8 @@ class Skeleton_Warlock(Skeleton):
         super().__init__(game, pos, keys.skeleton_warlock, health, strength, max_speed, agility, intelligence, stamina, 80, 25)
         self.animation_handler.Set_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Max(4)
-        self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(100)
-        self.animation_handler.Set_Animation_Num_Cooldown_Max(150)
+        self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(0.3)
+        self.animation_handler.Set_Animation_Num_Cooldown_Max(1.2)
         self.attack_distance  = 200
         self.min_attack_range = 50
         self.attack_strategy = keys.long_range

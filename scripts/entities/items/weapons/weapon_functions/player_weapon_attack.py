@@ -106,7 +106,7 @@ class Player_Weapon_Attack():
     
         # Return False if player weapon cooldown is not off
     def Check_Entity_Cooldown(self):
-        if self.player.left_weapon_cooldown:
+        if self.player.active_weapon_cooldown:
             return False
         return True
 

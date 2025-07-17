@@ -11,8 +11,8 @@ class Skeleton_Ranger(Skeleton):
         super().__init__(game, pos, keys.skeleton_ranger + '_' + type, health, strength, max_speed, agility, intelligence, stamina, 60, 10)
         self.animation_handler.Set_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Max(3)
-        self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(100)
-        self.animation_handler.Set_Animation_Num_Cooldown_Max(150)
+        self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(0.3)
+        self.animation_handler.Set_Animation_Num_Cooldown_Max(0.7)
         self.attack_distance  = 200
         self.attack_strategy = keys.long_range
         self.intent_manager.Set_Intent([ keys.attack])

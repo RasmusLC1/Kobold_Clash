@@ -47,7 +47,7 @@ class Enemy_Weapon_Attack():
         
     # Return False if entity weapon cooldown is not off
     def Check_Entity_Cooldown(self):
-        if self.weapon.entity.left_weapon_cooldown:
+        if self.weapon.entity.active_weapon_cooldown:
             return False
         return True
     
