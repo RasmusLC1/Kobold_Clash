@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 class Invulnerable(Effect):
     def __init__(self, entity):
         description = 'Prevents all damage\nbut snare'
-        super().__init__(entity, keys.invulnerable, 0, 0, (30, 50), description)
+        super().__init__(entity, keys.invulnerable, 0, 0, (0.5, 0.8), description)
         self.entity_health_holder = entity.health
 
     
@@ -15,11 +15,11 @@ class Invulnerable(Effect):
         self.entity.effects.Set_Effect(keys.snare, self.cooldown)
         return super().Set_Effect(effect_time, permanent)
     
-    def Update_Effect(self):
+    def Update_Effect(self, delta_time):
         if not self.effect:
             return False
         
-        if self.Update_Cooldown():
+        if self.Update_Cooldown(delta_time):
             if self.effect <= 0:
                 self.entity.effects.Set_Effect(keys.snare, -10)
 

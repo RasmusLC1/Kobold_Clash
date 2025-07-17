@@ -6,7 +6,7 @@ class Weakness(Effect):
     def __init__(self, entity):
         description = 'Decreases\nmelee damage'
 
-        super().__init__(entity, keys.weakness, 0, 0, (130, 160), description)
+        super().__init__(entity, keys.weakness, 0, 0, (2, 3), description)
 
     
     #set Fire effect
@@ -17,14 +17,14 @@ class Weakness(Effect):
         return super().Set_Effect(effect_time, permanent)
 
 
-    def Update_Effect(self):
+    def Update_Effect(self, delta_time):
 
         if not self.effect:
             return False
         
         self.entity.strength = min(20, self.entity.strength // 2)
 
-        self.Update_Cooldown()
+        self.Update_Cooldown(delta_time)
 
         return True
     

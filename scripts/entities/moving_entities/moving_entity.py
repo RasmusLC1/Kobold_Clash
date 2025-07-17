@@ -127,7 +127,7 @@ class Moving_Entity(PhysicsEntity):
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False}
 
         self.Update_Movement(movement, delta_time)
-        self.Update_Status_Effects()
+        self.Update_Status_Effects(delta_time)
 
 
         self.Update_Traps(delta_time)
@@ -475,11 +475,11 @@ class Moving_Entity(PhysicsEntity):
         self.acceleration = max(0.3, self.acceleration / effect / 10)
 
     # Handle status effects
-    def Update_Status_Effects(self):
+    def Update_Status_Effects(self, delta_time):
         self.friction = self.friction_holder
         self.max_speed = self.max_speed_holder
         self.Set_Strength(self.strength_holder)
-        self.effects.Update_Status_Effects()
+        self.effects.Update_Status_Effects(delta_time)
 
     def Set_Strength(self, strength):
         self.strength = strength

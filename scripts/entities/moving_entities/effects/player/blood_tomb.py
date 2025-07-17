@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 class Blood_Tomb(Effect):
     def __init__(self, entity):
         description = 'Gain souls\nwhen damaged'
-        super().__init__(entity, keys.blood_tomb, 0, 0, (120, 160), description)
+        super().__init__(entity, keys.blood_tomb, 0, 0, (2, 3), description)
 
 
     def Damage_Taken(self, damage):

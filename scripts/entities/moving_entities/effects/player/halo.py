@@ -6,7 +6,7 @@ from scripts.engine.keys.keys import keys
 class Halo(Effect):
     def __init__(self, entity):
         description = '1/10 chance\nto cancel damage'
-        super().__init__(entity, keys.halo, 0, 0, (120, 160), description)
+        super().__init__(entity, keys.halo, 0, 0, (2, 3), description)
         self.entity_health_holder = entity.health
 
 

@@ -174,8 +174,8 @@ class Status_Effect_Handler:
             self.active_effects.remove(effect)
 
     # Use list comprehension for performance, remove effect if effect has run out
-    def Update_Status_Effects(self):
-        self.active_effects = [effect for effect in self.active_effects if effect.Update_Effect()]
+    def Update_Status_Effects(self, delta_time):
+        self.active_effects = [effect for effect in self.active_effects if effect.Update_Effect(delta_time)]
 
 
     def Get_Effect_Description(self, effect):

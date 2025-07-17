@@ -5,9 +5,9 @@ from scripts.engine.keys.keys import keys
 class Demonic_Bargain(Effect):
     def __init__(self, entity):
         description = 'Doubles strength,\nprevents healing'
-        super().__init__(entity, keys.demonic_bargain, 0, 0, (120, 160), description)
+        super().__init__(entity, keys.demonic_bargain, 0, 0, (2, 3), description)
 
-    def Update_Effect(self):
+    def Update_Effect(self, delta_time):
         if not self.effect:
             return False
         
@@ -16,7 +16,7 @@ class Demonic_Bargain(Effect):
         
         self.entity.strength = min(20, self.entity.strength * 2)
 
-        self.Update_Cooldown()
+        self.Update_Cooldown(delta_time)
         return True
 
 

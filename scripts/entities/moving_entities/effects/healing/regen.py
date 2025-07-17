@@ -6,7 +6,7 @@ from scripts.engine.keys.keys import keys
 class Regen(Effect):
     def __init__(self, entity):
         description = 'Heals over time.\nBlocked by poison'
-        super().__init__(entity, keys.regen, 5, 30, (80, 100), description)
+        super().__init__(entity, keys.regen, 5, 30, (1.4, 1.8), description)
         self.cooldown = 0
     
     #set Fire effect
@@ -16,12 +16,12 @@ class Regen(Effect):
         
         return super().Set_Effect(effect_time, permanent)
 
-    def Update_Regen_Cooldown(self):
-        if self.cooldown:
-            self.cooldown -= 1
+    def Update_Regen_Cooldown(self, delta_time):
+        if self.cooldown > 0:
+            self.cooldown -= delta_time
             return False
         
-        self.cooldown = 200
+        self.cooldown = random.uniform(2.5, 3)
         return True
     
     def Update_Cooldown(self):
@@ -37,14 +37,14 @@ class Regen(Effect):
         self.Effect_Animation_Cooldown()
 
 
-    def Update_Effect(self):
-        if not super().Update_Effect():
+    def Update_Effect(self, delta_time):
+        if not super().Update_Effect(delta_time):
             return False
                   
         if self.entity.effects.poison.effect:
             return False
         
-        if not self.Update_Regen_Cooldown():
+        if not self.Update_Regen_Cooldown(delta_time):
             return False
         
         if random.randint(0, 10) > self.effect:

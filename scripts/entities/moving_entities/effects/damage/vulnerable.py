@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 class Vulnerable(Effect):
     def __init__(self, entity):
         description = 'Increases damage\ntaken'
-        super().__init__(entity, 'vulnerable', 0, 0, (100, 150), description)
+        super().__init__(entity, 'vulnerable', 0, 0, (2, 3), description)
 
     
     def Damage_Taken(self, damage):

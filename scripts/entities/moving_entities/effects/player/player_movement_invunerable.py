@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 # Immune to damage but cannot move
 class Player_Movement_Invunerable(Effect):
     def __init__(self, entity):
-        super().__init__(entity, keys.invulnerable, 0, 0, (30, 50), '')
+        super().__init__(entity, keys.invulnerable, 0, 0, (0.5, 0.8), '')
         self.entity_health_holder = entity.health
 
     
@@ -15,8 +15,8 @@ class Player_Movement_Invunerable(Effect):
         self.entity_health_holder = self.entity.health
         self.effect = effect_time
     
-    def Update_Effect(self):
-        if not super().Update_Effect():
+    def Update_Effect(self, delta_time):
+        if not super().Update_Effect(delta_time):
             return False
 
         

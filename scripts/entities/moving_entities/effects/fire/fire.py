@@ -18,7 +18,7 @@ class Fire(Effect):
             
         return super().Set_Effect(effect_time, permanent)
     
-    def Update_Effect(self):
+    def Update_Effect(self, delta_time):
         if not self.effect:
             return False
         
@@ -30,7 +30,7 @@ class Fire(Effect):
                 self.entity.effects.wet.Decrease_Effect()
             return False
         
-        if self.Update_Cooldown():
+        if self.Update_Cooldown(delta_time):
             damage = random.randint(2, 3)
             self.entity.Damage_Taken(damage, (self.effect_type, 0))
 

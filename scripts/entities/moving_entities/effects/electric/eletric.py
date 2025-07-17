@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 class Electric(Effect):
     def __init__(self, entity):
         description = 'Damage and snare,\nspreads to nearby\nenemy, increased\nby wet'
-        super().__init__(entity, keys.electric, 5, 10, (70, 100), description)
+        super().__init__(entity, keys.electric, 5, 10, (1, 1.5), description)
 
     
     #set Fire effect
@@ -20,7 +20,7 @@ class Electric(Effect):
             
         return super().Set_Effect(effect_time, permanent)
     
-    def Update_Effect(self):
+    def Update_Effect(self, delta_time):
         if not self.effect:
             return False
         
@@ -29,7 +29,7 @@ class Electric(Effect):
             self.Remove_Effect()
             return False
         
-        if self.Update_Cooldown():
+        if self.Update_Cooldown(delta_time):
             effect = max(self.effect - 1, 0)
             if not effect:
                 return False

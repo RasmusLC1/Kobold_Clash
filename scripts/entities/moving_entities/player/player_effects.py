@@ -63,10 +63,10 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
             'player_movement_invunerable': self.player_movement_invunerable
         })
 
-    def Update_Status_Effects(self):
-        super().Update_Status_Effects()
+    def Update_Status_Effects(self, delta_time):
+        super().Update_Status_Effects(delta_time)
 
-        self.Update_Sound_Cooldown()
+        self.Update_Sound_Cooldown(delta_time)
 
         # Disable the effect icon if effect no longer active
         for effect_icon in self.active_effect_symbols:
@@ -74,11 +74,11 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
                 self.Disable_Effect_Icon(effect_icon)
 
     # Prevent spamming of sound effects
-    def Update_Sound_Cooldown(self):
+    def Update_Sound_Cooldown(self, delta_time):
         if not self.sound_cooldown:
             return
         
-        self.sound_cooldown -= 1
+        self.sound_cooldown = max(0, self.sound_cooldown - delta_time)
         return
 
     def Set_Effect(self, effect, duration, permanent = False):
@@ -94,7 +94,7 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
         if self.sound_cooldown:
             return
         
-        self.sound_cooldown = 40
+        self.sound_cooldown = 0.8
         sound = self.entity.game.sound_handler
         if not sound.Check_If_Sound_Exist(effect):
             sound.Play_Sound('generic_effect', 0.3)
