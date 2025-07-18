@@ -10,11 +10,12 @@ class Hatchet(Projectile):
         self.distance_from_player = 0
         
     
-    def Shoot(self):
-        self.Initialise_Shooting(self.entity_strength)
+    def Shoot(self, delta_time):
+        if not self.shoot_speed:
+            self.Initialise_Shooting(self.entity_strength)
         self.rotate += 5
 
-        super().Shoot()
+        super().Shoot(delta_time)
 
     def Special_Attack(self):
         if not self.special_attack or not self.equipped:

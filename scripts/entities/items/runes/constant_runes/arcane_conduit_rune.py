@@ -7,10 +7,10 @@ class Arcane_Conduit_Rune(Rune):
         self.animation_time_max = 30
         self.animation_size_max = 15
 
-    def Update(self):
+    def Update(self, delta_time):
         if not self.game.player.effects.arcane_conduit.effect:
             self.game.player.Set_Effect(self.effect, self.current_power)
-        return super().Update()        
+        return super().Update(delta_time)        
 
     def Remove_Rune_From_Inventory(self):
         self.game.player.effects.Remove_Effect(self.effect)

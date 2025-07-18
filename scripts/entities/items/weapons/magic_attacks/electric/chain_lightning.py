@@ -9,8 +9,8 @@ class Chain_Lightning(Electric_Particle):
         self.Set_Enabled(pos, speed, special_attack, direction, entity, 100)
 
 
-    def Shoot(self):
-        entity = super().Shoot()
+    def Shoot(self, delta_time):
+        entity = super().Shoot(delta_time)
         if entity:
             self.Electrocute_Nearby_Enemies()
             self.Reset_Shot()

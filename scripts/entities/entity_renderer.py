@@ -43,7 +43,7 @@ class Entity_Renderer():
                 continue
 
             if entity.category == keys.item:
-                entity.Update_Animation()
+                entity.Update_Animation(self.game.delta_time)
             entity.Render(surf, offset)
 
             if nearest_interactable_object_found:

@@ -21,10 +21,10 @@ class Ranged_Weapon(Weapon):
     
 
     
-    def Update_Animation(self):
+    def Update_Animation(self, delta_time):
         if self.is_charging:
             return
-        super().Update_Animation()
+        super().Update_Animation(delta_time)
 
 
     # Set the position of the bow when not drawn

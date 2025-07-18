@@ -8,7 +8,7 @@ class Spider_Web_Projectile(Projectile):
         self.entity = entity
         self.attack_direction = direction  # Store the direction vector
         self.target_hit = 0
-        self.delete_countdown = 100
+        self.delete_countdown = 2
         self.pickup_allowed = False
         self.attack_animation_max = 3
         self.attack_animation_time = shoot_distance // self.attack_animation_max
@@ -16,11 +16,11 @@ class Spider_Web_Projectile(Projectile):
     def Update_Text_Box(self, hitbox_1, hitbox_2):
         pass
 
-    def Shoot(self):
+    def Shoot(self, delta_time):
         if not self.shoot_speed:
             self.Initialise_Shooting(self.speed)
         if self.target_hit:
-            self.target_hit -= 1
+            self.target_hit -= delta_time
             if not self.target_hit:
                 self.Set_Special_Attack(0)
             return
@@ -40,6 +40,6 @@ class Spider_Web_Projectile(Projectile):
 
 
     def Reset_Shot(self):
-        self.target_hit = 100
-        self.delete_countdown = 100
+        self.target_hit = 2
+        self.delete_countdown = 2
         

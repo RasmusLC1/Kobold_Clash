@@ -11,6 +11,7 @@ TRAP_COOLDOWN_MAX = 0.2
 ENEMY_COOLDOWN_MAX = 0.4
 TILE_COOLDOWN_MAX = 0.5
 
+
 class Moving_Entity(PhysicsEntity):
 
     _animation_handler = Animation_Handler
@@ -67,7 +68,7 @@ class Moving_Entity(PhysicsEntity):
         # Movement variables
         self.friction = 0.00005 # Friction, set to the renderscale
         self.friction_holder = self.friction # Holder for friction to reset it
-        self.acceleration = agility * self.game.render_scale * keys.movement_delta_time_offset
+        self.acceleration = agility * self.game.render_scale * 10
         self.acceleration_holder = self.acceleration # accelarition holder to reset it
         self.max_speed = max_speed + agility # Max speed of the entity
         self.max_speed_holder = self.max_speed # Max speed holder to reset it
@@ -83,9 +84,6 @@ class Moving_Entity(PhysicsEntity):
         self.animation_handler = self._animation_handler(self)
 
         self.active_weapon_cooldown = 0
-        
-        
-
         self.Set_Sprite()
 
 
@@ -365,7 +363,7 @@ class Moving_Entity(PhysicsEntity):
             self.tile.Clear_Entity(self.ID)
         self.game.enemy_handler.Delete_Enemy(self)
         self.effects.Reset_Effects()
-        self.Update_Status_Effects()
+        self.Update_Status_Effects(self.game.delta_time)
         self.text_box = None
         self.render = False
         return True

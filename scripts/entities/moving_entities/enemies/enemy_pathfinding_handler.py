@@ -23,7 +23,7 @@ class Enemy_Pathfinding_Handler():
 
         self.pathfinding_queue.append(enemy)
         enemy.Set_Target(destination)
-        enemy.Set_Locked_On_Target(2000)
+        enemy.Set_Locked_On_Target(30)
 
     # Gradually let enemies pathfind towards the target destination
     def Update_Pathfinding_Queue(self):
@@ -60,7 +60,7 @@ class Enemy_Pathfinding_Handler():
             return
         self.patrol_queue.append(enemy)
         enemy.Set_Target(destination)
-        enemy.Set_Locked_On_Target(2000)
+        enemy.Set_Locked_On_Target(30)
 
     # Gradually let enemies pathfind towards the target destination
     def Update_Patrol_Queue(self):

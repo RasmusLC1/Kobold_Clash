@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 
 class Soul_Pit(Elemental_Explosion):
     def __init__(self, game, pos, power, entity = None):
-        super().__init__(game, keys.soul_pit, keys.vampiric, pos, power, 5, 5, 5, entity)
+        super().__init__(game, keys.soul_pit, keys.vampiric, pos, power, 5, 5, 0.1, entity)
         # extend duration, lower damage and increase range
         self.delete_countdown *= 3
         self.damage = max(1, self.damage // 10)
@@ -34,8 +34,8 @@ class Soul_Pit(Elemental_Explosion):
             entity.Set_Frame_movement((direction_vector[0] * 2, direction_vector[1] * 2))
             entity.Tile_Map_Collision_Detection(self.game.tilemap)
 
-    def Update_Animation(self):
+    def Update_Animation(self, delta_time):
         self.Pull_Enemies_In()
         for entity in self.nearby_entities:
             self.Compute_Damage(entity)
-        return super().Update_Animation()
+        return super().Update_Animation(delta_time)

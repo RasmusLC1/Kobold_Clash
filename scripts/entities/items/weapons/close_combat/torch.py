@@ -9,7 +9,7 @@ class Torch(Weapon):
         super().__init__(game, pos, keys.torch, 1, 2, 3, 100, 'one_handed_melee', keys.fire)
         self.max_animation = 5
         self.attack_animation_max = 5
-        self.animation_cooldown_max = 40
+        self.animation_cooldown_max = 0.7
         self.light_source = self.game.light_handler.Add_Light(self.pos, 8, self.tile)
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
         self.flame_thrower = Flame_Thrower(self.game)
@@ -33,11 +33,11 @@ class Torch(Weapon):
         return True
 
 
-    def Update_Animation(self):
+    def Update_Animation(self, delta_time):
         if self.animation_cooldown:
-            self.animation_cooldown -= 1
+            self.animation_cooldown -= delta_time
         else:
-            self.animation_cooldown = random.randint(self.animation_cooldown_max - 10, self.animation_cooldown_max)
+            self.animation_cooldown = random.uniform(self.animation_cooldown_max * 0.7, self.animation_cooldown_max)
             self.Spawn_Fire_Particle()
 
             self.animation = random.randint(0,self.max_animation)

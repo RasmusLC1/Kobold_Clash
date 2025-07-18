@@ -11,10 +11,10 @@ class UI_Handler():
         self.awakening_skull = Awakening_Skull(self.game)
 
 
-    def Update(self):
-        self.health_bar.Update()
-        self.souls_interface.Update()
-        self.awakening_skull.Update()
+    def Update(self, delta_time):
+        self.health_bar.Update(delta_time)
+        self.souls_interface.Update(delta_time)
+        self.awakening_skull.Update(delta_time)
 
     def Set_Awakening_Level(self, awakening_level):
         self.awakening_skull.Set_Awakening(awakening_level)

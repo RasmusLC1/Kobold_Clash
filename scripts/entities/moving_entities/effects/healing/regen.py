@@ -24,8 +24,8 @@ class Regen(Effect):
         self.cooldown = random.uniform(2.5, 3)
         return True
     
-    def Update_Cooldown(self):
-        state = super().Update_Cooldown()
+    def Update_Cooldown(self, delta_time):
+        state = super().Update_Cooldown(delta_time)
 
         if state:
             self.Heal_Entity()

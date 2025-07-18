@@ -6,8 +6,8 @@ class Light_Rune(Rune):
     def __init__(self, game, pos):
         super().__init__(game, keys.light_rune, pos, 7, 0)
 
-    def Update(self):
-        super().Update()
+    def Update(self, delta_time):
+        super().Update(delta_time)
 
         if self.game.player.light_source.light_level < self.current_power:
             self.game.player.Update_Light_Source(self.current_power)

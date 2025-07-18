@@ -14,22 +14,22 @@ class Skeleton_Bell_Toller(Skeleton):
         self.intent_manager.Set_Intent([keys.direct, keys.attack, keys.attack, keys.medium_range])
 
 
-    def Update(self, tilemap, movement=(0, 0)):
-        self.Update_Bell_Ringing_Cooldown()
-        super().Update(tilemap, movement)
+    def Update(self, tilemap, delta_time, movement=(0, 0)):
+        self.Update_Bell_Ringing_Cooldown(delta_time)
+        super().Update(tilemap, delta_time, movement)
 
-    def Update_Bell_Ringing_Cooldown(self):
+    def Update_Bell_Ringing_Cooldown(self, delta_time):
         if not self.bell_ringing_cooldown:
             return
         
-        self.bell_ringing_cooldown = max(0, self.bell_ringing_cooldown - 1)
+        self.bell_ringing_cooldown = max(0, self.bell_ringing_cooldown - delta_time)
 
     def Ring_Bell(self):
         if self.bell_ringing_cooldown:
             return
         self.Generate_Sound('bell', 0.3, 1000)
 
-        self.bell_ringing_cooldown = 3000
+        self.bell_ringing_cooldown = 30
 
 
     def Attack(self):

@@ -33,7 +33,7 @@ class Arrow(Projectile):
 
 
     
-    def Shoot(self):
+    def Shoot(self, delta_time):
         if not self.shoot_speed:
             self.Initialise_Shooting(self.speed)
         # Use the stored direction to move the particle
@@ -41,7 +41,7 @@ class Arrow(Projectile):
             self.pos[0] + self.direction[0] * self.shoot_speed,
             self.pos[1] + self.direction[1] * self.shoot_speed
         ))
-        entity = super().Shoot()
+        entity = super().Shoot(delta_time)
         if entity:
             self.Set_Special_Attack(0)
         

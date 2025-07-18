@@ -114,7 +114,7 @@ class Attack_Stategies():
             
             self.entity.direction.normalize_ip()
             if not self.entity.alert_cooldown:
-                self.entity.Set_Alert_Cooldown(400)
+                self.entity.Set_Alert_Cooldown(7)
                 self.game.clatter.Generate_Clatter(self.entity.pos, 400) # Generate clatter to alert nearby enemies
             self.direct_pathing_cooldown = 10
             return True
@@ -144,7 +144,7 @@ class Attack_Stategies():
             # Only update every 1000 ticks since you don't want
             # the enemies to spam the ability and lag the game
             if not self.entity.alert_cooldown:
-                self.entity.Set_Alert_Cooldown(1000)
+                self.entity.Set_Alert_Cooldown(20)
                 self.game.clatter.Generate_Clatter(self.entity.pos, 400) # Generate clatter to alert nearby enemies
             self.direct_pathing_cooldown = 10
             return True

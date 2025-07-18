@@ -11,6 +11,7 @@ import pygame
 import math
 import random
 from scripts.engine.keys.keys import keys
+import inspect
 
 class Weapon(Item):
     def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_type = 'cut', size = (32, 32), add_to_tile = True):
@@ -87,12 +88,12 @@ class Weapon(Item):
         self.rotate = data['rotate']
         self.attacking = data['attacking']
         self.special_attack = data['special_attack']
-
    
     # General Update function, handles setting the attack and general logic
-    def Update(self, offset = (0,0)):
-        super().Update()
-        self.animation_handler.Update_Animation()
+    def Update(self, delta_time, offset = (0,0)):
+        caller = inspect.stack()[1].function
+        super().Update(delta_time)
+        self.animation_handler.Update_Animation(delta_time)
         self.Special_Attack()
         self.Update_Delete_Countdown()
         if not self.entity:

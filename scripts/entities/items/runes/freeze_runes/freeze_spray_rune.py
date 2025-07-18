@@ -8,7 +8,7 @@ class Freeze_Spray_Rune(Projectile_Rune):
         self.animation_time_max = 30
         self.animation_size_max = 15
         self.ice_shooter = Ice_Shooter(self.game)
-        self.activate_cooldown_max = 100
+        self.activate_cooldown_max = 2
 
     def Set_Charge(self):
         self.charge = self.current_power * 100

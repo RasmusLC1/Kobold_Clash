@@ -3,7 +3,7 @@ from scripts.engine.keys.keys import keys
 
 class Poison_Explosion(Elemental_Explosion):
     def __init__(self, game, pos, power, entity = None):
-        super().__init__(game, keys.poison_explosion, keys.poison, pos, power, 6, 5, 5, entity)
+        super().__init__(game, keys.poison_explosion, keys.poison, pos, power, 6, 5, 0.1, entity)
         self.poison_cooldown = 0
         self.poison_cooldown_max = 10
 
@@ -16,7 +16,7 @@ class Poison_Explosion(Elemental_Explosion):
         for entity in self.nearby_entities:
             entity.effects.Set_Effect(self.effect, 1)
 
-    def Update_Animation(self):
+    def Update_Animation(self, delta_time = 0):
         self.Poison_Entities()
 
-        return super().Update_Animation()
+        return super().Update_Animation(delta_time)

@@ -6,7 +6,7 @@ class Health_Bar(UI):
         pos_x = 20
         pos_y = game.screen_height / game.render_scale - 70
         animation_max = 4
-        animation_cooldown_max = 30
+        animation_cooldown_max = 0.4
         super().__init__(game, pos_x, pos_y, animation_max, animation_cooldown_max)
 
         # Use dictionary for easy lookup
@@ -29,8 +29,8 @@ class Health_Bar(UI):
         self.player_health = '' # Text displayed above healthbar
 
     
-    def Update(self):
-        self.Update_Animation()
+    def Update(self, delta_time):
+        self.Update_Animation(delta_time)
         if self.current_health == self.game.player.health:
             return
         

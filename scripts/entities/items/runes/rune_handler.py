@@ -81,9 +81,9 @@ class Rune_Handler():
         return rune
 
     
-    def Update(self, offset = (0,0)):
+    def Update(self, delta_time):
         for rune in self.active_runes:
-            rune.Update()
+            rune.Update(delta_time)
     
     def Initialise_Runes(self):
         self.Add_Runes_To_Inventory_TEST()
