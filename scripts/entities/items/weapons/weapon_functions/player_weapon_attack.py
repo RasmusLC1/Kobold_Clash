@@ -18,7 +18,7 @@ class Player_Weapon_Attack():
         self.enemy_hit_effect_cooldown = 0
 
     # Update the attack logic
-    def Update_Attack(self):
+    def Update_Attack(self, delta_time):
 
         self.Update_Enemy_Hit_Effect_Cooldown()
 
@@ -26,7 +26,7 @@ class Player_Weapon_Attack():
             return False
 
         entity = self.Attack_Collision_Check()
-        self.attacking -= 1
+        self.attacking -= delta_time
         return self.ready_to_delete
 
 
@@ -139,7 +139,7 @@ class Player_Weapon_Attack():
         self.enemy_hit_effect_cooldown -= 1
 
     def Set_Attacking(self):
-        self.attacking = max(int((self.weapon.speed * 20) // self.player.agility), self.weapon.attack_animation_max) 
+        self.attacking = max(0.1, 2 - (self.weapon.speed + self.player.agility) / 10)
 
     def Set_Enemy_Hit_Effect(self):
         if self.enemy_hit_effect_cooldown:

@@ -104,11 +104,11 @@ class Weapon(Item):
 
  
     # Update the attack logic
-    def Update_Attack(self):
+    def Update_Attack(self, delta_time):
         if not self.entity_attack_type:
             return False
         
-        if self.entity_attack_type.Update_Attack():
+        if self.entity_attack_type.Update_Attack(delta_time):
             self.Delete_Item()
             return
         self.animation_handler.Update_Attack_Animation()

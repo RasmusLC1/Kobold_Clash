@@ -6,15 +6,13 @@ class Player_Weapon_Handler():
         self.game = game
         self.player = player
         self.active_weapon = None
-        self.active_weapon_cooldown = 0
-        self.right_weapon_cooldown = 0
         self.inventory_interaction = 0
         self.attack_lock = False
 
 
 
-    def Update(self, offset = (0, 0)):
-        self.Update_Weapon(offset)
+    def Update(self, delta_time, offset = (0, 0)):
+        self.Update_Weapon(delta_time, offset)
 
     def Set_Active_Weapon(self, weapon):  
           
@@ -28,7 +26,7 @@ class Player_Weapon_Handler():
     
 
     # Function to update the player's weapons
-    def Update_Weapon(self, offset=(0, 0)):
+    def Update_Weapon(self, delta_time, offset=(0, 0)):
 
         if not self.active_weapon:
             return
@@ -46,36 +44,14 @@ class Player_Weapon_Handler():
         if not self.active_weapon:
             return
         
-        self.active_weapon.Update_Attack()
+        self.active_weapon.Update_Attack(delta_time)
         
         if not self.active_weapon:
             return
         self.player.Attacking(self.active_weapon, offset)
-
-        
-        if self.active_weapon_cooldown:
-            self.active_weapon_cooldown -= 1
-            return
-
-        if not self.game.mouse.left_click:
-            return
-        cooldown = self.Weapon_Attack(self.active_weapon)
-        
-        self.active_weapon_cooldown = max(self.active_weapon_cooldown, cooldown)
-
         return
     
-    
-    # Activate weapon attack, return cooldown time
-    def Weapon_Attack(self, weapon):
-        # Return if inventory has not been clicked
-        if self.game.mouse.inventory_clicked:
-            return 0
-        if weapon.attacking:
-            cooldown = max(5 + weapon.attacking, 100 / self.player.agility + weapon.attacking)
-            return cooldown
-        return 0
-    
+
     def Set_Inventory_Interaction(self, state):
         self.inventory_interaction = state
 
@@ -84,7 +60,6 @@ class Player_Weapon_Handler():
             self.active_weapon.Disable_Gem_Effect()
             self.active_weapon.Unequip()
             self.active_weapon = None
-            self.active_weapon_cooldown = 0
             self.player.attacking = 0
 
     def Check_If_Weapon_Should_Be_Removed(self, weapon):
