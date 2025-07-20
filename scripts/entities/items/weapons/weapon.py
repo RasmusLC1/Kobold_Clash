@@ -112,8 +112,8 @@ class Weapon(Item):
         if self.entity_attack_type.Update_Attack(delta_time):
             self.Delete_Item()
             return
-        self.animation_handler.Update_Attack_Animation()
-        self.attack_effect_handler.Update_Attack_Effect_Animation()
+        self.animation_handler.Update_Attack_Animation(delta_time)
+        self.attack_effect_handler.Update_Attack_Effect_Animation(delta_time)
         self.Attack_Align_Weapon()
 
     # Initialise the attack and reset attack values

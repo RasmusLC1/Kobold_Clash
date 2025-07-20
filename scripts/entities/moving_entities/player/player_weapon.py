@@ -7,6 +7,7 @@ class Player_Weapon_Handler():
         self.player = player
         self.active_weapon = None
         self.inventory_interaction = 0
+        self.active_weapon_cooldown = 0
         self.attack_lock = False
 
 
@@ -43,23 +44,12 @@ class Player_Weapon_Handler():
         self.active_weapon.Update(delta_time, offset)
         if not self.active_weapon:
             return
-        
         self.active_weapon.Update_Attack(delta_time)
         
         if not self.active_weapon:
             return
         self.player.Attacking(self.active_weapon, offset)
-
-        
-        if self.active_weapon_cooldown:
-            self.active_weapon_cooldown -= 1
-            return
-
-        if not self.game.mouse.left_click:
-            return
-        cooldown = self.Weapon_Attack(self.active_weapon)
-        
-        self.active_weapon_cooldown = max(self.active_weapon_cooldown, cooldown)
+        # self.active_weapon.Set_Attack()
 
         return
     

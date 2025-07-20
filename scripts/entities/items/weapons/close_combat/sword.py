@@ -9,8 +9,8 @@ class Sword(Weapon):
         self.attack_animation_max = 3 
 
         
-    def Update_Attack(self):
-        if not super().Update_Attack():
+    def Update_Attack(self, delta_time):
+        if not super().Update_Attack(delta_time):
             return False
         self.Set_Block_Direction()
         self.Set_Attack_Type()

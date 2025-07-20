@@ -16,12 +16,12 @@ class Attack_Effect_Weapon():
 
 
 
-    def Update_Attack_Effect_Animation(self):
+    def Update_Attack_Effect_Animation(self, delta_time):
         if self.attack_effect_animation_counter >= self.attack_effect_animation_time:
             self.attack_effect_animation_counter = 0
             self.attack_effect_animation = min(self.attack_effect_animation + 1, self.attack_effect_animation_max)
             return
-        self.attack_effect_animation_counter += 1
+        self.attack_effect_animation_counter += delta_time
 
     
      # Used to update special attack animations, not the effect itself

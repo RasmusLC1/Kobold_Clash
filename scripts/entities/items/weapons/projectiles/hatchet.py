@@ -22,7 +22,3 @@ class Hatchet(Projectile):
             return
         self.Drop_Weapon_After_Shot()
 
-    def Update_Attack_Animation(self):
-        super().Update_Attack_Animation()
-
-

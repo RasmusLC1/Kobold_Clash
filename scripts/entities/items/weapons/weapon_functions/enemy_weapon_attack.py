@@ -11,14 +11,14 @@ class Enemy_Weapon_Attack():
 
 
     # Update the attack logic
-    def Update_Attack(self):
+    def Update_Attack(self, delta_time):
 
         self.Update_Player_Hit_Effect_Cooldown()
 
         if not self.attacking:
             return False
 
-        self.attacking -= 1
+        self.attacking -= delta_time
 
 
         self.weapon.entity.Reduce_Movement(4) # Reduce movement to a quarter when attacking
@@ -29,7 +29,9 @@ class Enemy_Weapon_Attack():
         if not self.Check_Entity_Cooldown():
             return
         entity = self.weapon.entity
-        self.attacking = max(int((self.weapon.speed * 30) // entity.agility), self.weapon.attack_animation_max) 
+        # self.attacking = max(int((self.weapon.speed) // entity.agility), self.weapon.attack_animation_max)
+        self.attacking = max(0.1, 2 - (self.weapon.speed + entity.agility) / 10)
+
         self.attack_animation_time = int(self.attacking / self.weapon.attack_animation_max)
         if entity.distance_to_player > self.game.tilemap.tile_size * 1.5:
             return

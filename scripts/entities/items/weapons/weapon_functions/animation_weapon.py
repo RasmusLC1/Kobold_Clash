@@ -29,7 +29,7 @@ class Animation_Weapon():
             self.animation_cooldown = self.animation_cooldown_max
             self.animation = random.randint(0,self.max_animation)
 
-    def Update_Attack_Animation(self):
+    def Update_Attack_Animation(self, delta_time):
         if not self.weapon.entity_attack_type:
             print("ATTACK TYPE MISSING WEAPON ", self.weapon.entity.type)
             return
@@ -38,7 +38,7 @@ class Animation_Weapon():
             return
         self.animation = self.attack_animation
         self.sub_type = self.weapon.type + '_attack_' + self.attack_type
-        self.attack_animation_counter += 1
+        self.attack_animation_counter += delta_time
         if self.attack_animation_counter >= self.attack_animation_time:
             self.attack_animation_counter = 0
             self.attack_animation += 1

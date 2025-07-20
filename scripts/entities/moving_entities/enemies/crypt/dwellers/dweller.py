@@ -24,7 +24,7 @@ class Dweller(Enemy):
 
     def Update(self, tilemap, delta_time, movement=(0, 0)):
         super().Update(tilemap, delta_time, movement)
-        self.Update_Active_Weapon()
+        self.Update_Active_Weapon(delta_time)
         self.Darkness_Buff()
 
 
@@ -81,7 +81,7 @@ class Dweller(Enemy):
         self.game.particle_handler.Activate_Particles(10, keys.bone_particle, self.rect().center)
 
     
-    def Update_Active_Weapon(self, offset=(0, 0)):
+    def Update_Active_Weapon(self, delta_time):
         if not self.active_weapon:
             return
 
@@ -89,7 +89,7 @@ class Dweller(Enemy):
         if not self.active_weapon:
             return
         
-        self.active_weapon.Update_Attack()
+        self.active_weapon.Update_Attack(delta_time)
 
         return
     

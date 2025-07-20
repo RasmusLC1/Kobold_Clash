@@ -50,7 +50,7 @@ class Rune_Shrine_Menu(Menu):
     def Update(self):
         super().Update()
         self.Rune_Interactions()
-        self.game.souls_interface.Update()
+        self.game.ui_handler.souls_interface.Update()
 
         self.Update_Rune_Buttons()
 
@@ -194,7 +194,7 @@ class Rune_Shrine_Menu(Menu):
             self.game.symbols.Render_Symbol(surf, 'soul',  (soul_symbol_x_pos_offset, 42), 1.5)
 
 
-        self.game.souls_interface.Render(self.game.display)
+        self.game.ui_handler.souls_interface.Render(self.game.display)
 
 
         # render active runes

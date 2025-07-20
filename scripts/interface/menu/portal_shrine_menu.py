@@ -19,7 +19,7 @@ class Portal_Shrine_Menu(Menu):
 
     def Update(self):
         super().Update()
-        self.game.souls_interface.Update()
+        self.game.ui_handler.souls_interface.Update()
         if self.unlock_portal_button:
             # If not purchased simply return
             if self.unlock_portal_button.Update():
@@ -50,7 +50,7 @@ class Portal_Shrine_Menu(Menu):
 
     def Render(self, surf):
         super().Render(surf)
-        self.game.souls_interface.Render(self.game.display)
+        self.game.ui_handler.souls_interface.Render(self.game.display)
         self.Render_Buttons(surf)
     
     def Render_Buttons(self, surf):

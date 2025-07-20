@@ -15,7 +15,7 @@ class Void_Spawn(Enemy):
 
     def Update(self, tilemap, delta_time, movement=(0, 0)):
         super().Update(tilemap, delta_time, movement)
-        self.Update_Active_Weapon()
+        self.Update_Active_Weapon(delta_time)
 
     
     def Tile_Map_Collision_Detection(self, tilemap):
@@ -67,7 +67,7 @@ class Void_Spawn(Enemy):
     def Spawn_Bones(self):
         pass
 
-    def Update_Active_Weapon(self):
+    def Update_Active_Weapon(self, delta_time):
         if not self.active_weapon:
             return
 
@@ -76,7 +76,7 @@ class Void_Spawn(Enemy):
         if not self.active_weapon:
             return
         
-        self.active_weapon.Update_Attack()
+        self.active_weapon.Update_Attack(delta_time)
 
 
         return
