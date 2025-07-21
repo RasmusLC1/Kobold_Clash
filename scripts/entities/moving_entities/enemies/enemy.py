@@ -145,7 +145,7 @@ class Enemy(Moving_Entity):
         return True
 
     def Set_Attack_Direction(self):
-        if not self.charge:
+        if not self.charge > 0:
             self.attack_direction = (0, 0)
             return
         
@@ -207,7 +207,7 @@ class Enemy(Moving_Entity):
 
 
     def Set_Action(self,  movement = None):
-        if self.charge:
+        if self.charge > 0:
             self.animation_handler.Set_Animation(keys.attack)
         else:
             self.animation_handler.Set_Animation('running')
@@ -313,7 +313,7 @@ class Enemy(Moving_Entity):
     
 
     def Render_Attacking_Symbol(self, surf, offset = (0,0)):
-        if self.charge < 20:
+        if self.charge < 0:
             return
         exclamation_mark = self.game.assets['exclamation_mark'][0]
 

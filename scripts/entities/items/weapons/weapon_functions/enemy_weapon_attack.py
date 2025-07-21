@@ -30,7 +30,7 @@ class Enemy_Weapon_Attack():
             return
         entity = self.weapon.entity
         # self.attacking = max(int((self.weapon.speed) // entity.agility), self.weapon.attack_animation_max)
-        self.attacking = max(0.1, 2 - (self.weapon.speed + entity.agility) / 10)
+        self.attacking = max(0.1, 4 - (self.weapon.speed + entity.agility) / 10)
 
         self.attack_animation_time = int(self.attacking / self.weapon.attack_animation_max)
         if entity.distance_to_player > self.game.tilemap.tile_size * 1.5:
