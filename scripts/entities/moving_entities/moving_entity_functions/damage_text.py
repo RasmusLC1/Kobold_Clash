@@ -6,8 +6,8 @@ class Damage_Text():
         self.Reset()
         
 
-    def Update(self):
-        if not self.Cooldown_Handler():
+    def Update(self, delta_time):
+        if not self.Cooldown_Handler(delta_time):
             self.Reset()
             return False
 
@@ -42,13 +42,13 @@ class Damage_Text():
         self.font_style = font_styles.get(effect, keys.font)
         return
 
-    def Cooldown_Handler(self):
-        if self.cooldown:
-            self.cooldown -= 1
+    def Cooldown_Handler(self, delta_time):
+        if self.cooldown > 0:
+            self.cooldown -= delta_time
             return True
         
         return False
     
     def Set_Cooldown(self, queue_length):
         self.offset = random.randint(15, 25)
-        self.cooldown = max(5, random.randint(20 - queue_length, 30 - queue_length))
+        self.cooldown = max(0.1, random.uniform((20 - queue_length) / 30, (30 - queue_length) / 30))

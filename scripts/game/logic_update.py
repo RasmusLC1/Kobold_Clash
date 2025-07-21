@@ -28,7 +28,7 @@ class Logic_Update():
           self.game.clatter.Update()
 
           self.game.mouse.Mouse_Update()
-          self.game.text_box_handler.Update()
+          self.game.text_box_handler.Update(delta_time)
           self.game.noise_handler.Update()
 
           self.game.ui_handler.Update(delta_time)

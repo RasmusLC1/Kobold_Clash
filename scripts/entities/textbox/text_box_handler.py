@@ -9,11 +9,11 @@ class Text_Box_handler():
         self.current_item = None
         self.damage_text_handler = Damage_Text_Handler(self.game)
 
-    def Update(self):
+    def Update(self, delta_time):
         self.current_item = None
         self.Check_Items()
         self.Check_Inventory_Slots()
-        self.damage_text_handler.Update()
+        self.damage_text_handler.Update(delta_time)
 
 
     def Check_Items(self):
