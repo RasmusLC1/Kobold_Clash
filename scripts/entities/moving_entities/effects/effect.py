@@ -87,9 +87,9 @@ class Effect():
     def Set_Cooldown(self):
         self.cooldown = random.uniform(self.cooldown_range[0], self.cooldown_range[1])
 
-    def Effect_Animation_Cooldown(self):
-        if self.animation_cooldown:
-            self.animation_cooldown -= 1
+    def Effect_Animation_Cooldown(self, delta_time):
+        if self.animation_cooldown > 0:
+            self.animation_cooldown -= delta_time
             return
         
         self.animation_cooldown = self.animation_cooldown_max

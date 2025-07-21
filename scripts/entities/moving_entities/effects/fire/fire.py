@@ -6,7 +6,7 @@ from scripts.engine.keys.keys import keys
 class Fire(Effect):
     def __init__(self, entity):
         description = 'fire Damage over time.\nStopped by water\nIncreases damage\ntaken'
-        super().__init__(entity, keys.fire, 7, 20, (0.5, 1), description)
+        super().__init__(entity, keys.fire, 7, 0.3, (0.5, 1), description)
 
     
     #set Fire effect
@@ -35,7 +35,7 @@ class Fire(Effect):
             self.entity.Damage_Taken(damage, (self.effect_type, 0))
 
 
-        self.Effect_Animation_Cooldown()
+        self.Effect_Animation_Cooldown(delta_time)
         return True
     
     def Damage_Taken(self, damage):

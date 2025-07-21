@@ -13,7 +13,7 @@ class Enemy_Weapon_Attack():
     # Update the attack logic
     def Update_Attack(self, delta_time):
 
-        self.Update_Player_Hit_Effect_Cooldown()
+        self.Update_Player_Hit_Effect_Cooldown(delta_time)
 
         if not self.attacking:
             return False
@@ -54,13 +54,13 @@ class Enemy_Weapon_Attack():
         return True
     
         # Cooldown function to prevent constant screenshake and freezeframes
-    def Update_Player_Hit_Effect_Cooldown(self):
-        if not self.player_hit_effect_cooldown:
+    def Update_Player_Hit_Effect_Cooldown(self, delta_time):
+        if not self.player_hit_effect_cooldown > 0:
             return
-        self.player_hit_effect_cooldown -= 1
+        self.player_hit_effect_cooldown -= delta_time
 
     def Set_player_Hit_Effect(self):
-        if self.player_hit_effect_cooldown:
+        if self.player_hit_effect_cooldown > 0:
             return
         
 
@@ -69,7 +69,7 @@ class Enemy_Weapon_Attack():
         self.game.logic_update.Set_Freeze_Frame(damage_freeze)
 
         self.game.camera_update.Set_Screen_Shake(damage_freeze, damage_freeze // 2)
-        self.player_hit_effect_cooldown = 20
+        self.player_hit_effect_cooldown = 0.3
         self.game.sound_handler.Play_Sound('player_hit', 0.3)
         self.game.particle_handler.Activate_Particles(random.randint(10, 20), keys.player_particle, self.game.player.rect().center)
 

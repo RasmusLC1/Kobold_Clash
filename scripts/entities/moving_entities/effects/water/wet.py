@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 class Wet(Effect):
     def __init__(self, entity):
         description = 'Increases electric\nand prevents fire'
-        super().__init__(entity, "wet", 2, 20, (3, 4), description)
+        super().__init__(entity, "wet", 2, 0.3, (3, 4), description)
 
     
     def Set_Effect(self, effect_time, permanent = False):
@@ -27,6 +27,6 @@ class Wet(Effect):
             
         self.Update_Cooldown(delta_time)
         
-        self.Effect_Animation_Cooldown()
+        self.Effect_Animation_Cooldown(delta_time)
         return False
     

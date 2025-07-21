@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 class Electric(Effect):
     def __init__(self, entity):
         description = 'Damage and snare,\nspreads to nearby\nenemy, increased\nby wet'
-        super().__init__(entity, keys.electric, 5, 10, (1, 1.5), description)
+        super().__init__(entity, keys.electric, 5, 0.2, (1, 1.5), description)
 
     
     #set Fire effect
@@ -42,7 +42,7 @@ class Electric(Effect):
 
 
         self.entity.frame_movement = (0, 0)
-        self.Effect_Animation_Cooldown()
+        self.Effect_Animation_Cooldown(delta_time)
         return True
    
     
