@@ -17,9 +17,9 @@ class Ice_Storm(PhysicsEntity):
         self.ice_shooter = Ice_Shooter(game)
         self.Set_Duration(duration * 10)
 
-    def Update(self):
+    def Update(self, delta_time):
         self.pos = (self.entity.pos[0], self.entity.pos[1] + 8)
-        if self.Update_Cooldown():
+        if self.Update_Cooldown(delta_time):
             self.Ice_Particle_Creation()
 
     def Set_Duration(self, duration):
@@ -28,14 +28,14 @@ class Ice_Storm(PhysicsEntity):
     def Reset_Duration(self):
         self.duration = 0
 
-    def Update_Cooldown(self):
+    def Update_Cooldown(self, delta_time):
         if self.ice_cooldown:
-            self.ice_cooldown -= 1
+            self.ice_cooldown -= delta_time
             return False
         
         self.duration -= 1
-        self.ice_cooldown = random.randint(20, 30)
-        self.Update_Animation()
+        self.ice_cooldown = random.uniform(0.3, 0.4)
+        self.Update_Animation(delta_time)
         return True
 
     def Update_Animation(self, delta_time = 0):

@@ -21,19 +21,19 @@ class Passive_Rune(Rune):
         super().Load_Data(data)
         self.count_down = data['count_down'] 
 
-    def Update(self):
-        super().Update()
+    def Update(self, delta_time):
+        super().Update(delta_time)
 
-        self.Update_Count_Down()
+        self.Update_Count_Down(delta_time)
         self.Trigger_Effect()
 
-    def Update_Count_Down(self):
+    def Update_Count_Down(self, delta_time):
         if self.count_down >= self.timer_length_max:
             self.activate_effect = True
             self.count_down = 0
             return
         
-        self.count_down += 1
+        self.count_down += delta_time
 
     def Trigger_Effect(self): # Seperate Trigger effect from Activate
         if not self.activate_effect:

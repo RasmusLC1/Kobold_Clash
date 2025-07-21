@@ -26,13 +26,13 @@ class Poison_Cloud_Rune(Rune):
 
 
 
-    def Update(self):
-        super().Update()
+    def Update(self, delta_time):
+        super().Update(delta_time)
         if not self.poison_cloud:
             return
         if self.poison_cloud.delete_countdown:
-            self.poison_cloud.Update()
-            self.poison_cloud.delete_countdown -= 1
+            self.poison_cloud.Update(delta_time)
+            self.poison_cloud.delete_countdown -= delta_time
             if self.poison_cloud.delete_countdown <= 0:
                 self.game.entities_render.Remove_Entity(self.poison_cloud)
 
@@ -42,7 +42,7 @@ class Poison_Cloud_Rune(Rune):
     def Trigger_Effect(self):
         self.Trigger_Rune()
         if self.poison_cloud:
-            self.poison_cloud.Set_Duration(self.current_power * 10)
+            self.poison_cloud.Set_Duration(self.current_power)
         else:
             self.poison_cloud = Poison_Cloud(self.game, self.game.player.pos, self.current_power, self.game.player)
             self.game.entities_render.Add_Entity(self.poison_cloud)

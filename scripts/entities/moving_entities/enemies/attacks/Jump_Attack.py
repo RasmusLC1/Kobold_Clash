@@ -23,7 +23,7 @@ class Jump_Attack():
         entity.friction = 0
         entity.charge = entity.max_weapon_charge
 
-        if entity.Attack():
+        if entity.Attack(entity.game.delta_time):
             return True
         else:
             return False

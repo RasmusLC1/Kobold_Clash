@@ -40,9 +40,6 @@ class Staff(Weapon):
     def Shoot_Projectiles(self):
         if not self.shooter or not self.entity:
             return
-        
-        # if not self.Update_Cooldown():
-        #     return
 
         if self.type == keys.vampiric_staff:
             self.shooter.Spawn_Soul_Reap(self.entity, self.particle_damage)
@@ -59,12 +56,6 @@ class Staff(Weapon):
             self.game.player.Decrease_Souls(3)
 
 
-
-    def Update_Cooldown(self):
-        if not self.cooldown:
-            return True
-        self.cooldown -= 1
-        return False
     
     def Set_Cooldown(self):
         self.cooldown = self.max_cooldown

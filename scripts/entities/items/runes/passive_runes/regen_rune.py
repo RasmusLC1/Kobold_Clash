@@ -4,6 +4,6 @@ from scripts.engine.keys.keys import keys
 
 class Regen_Rune(Passive_Rune):
     def __init__(self, game, pos):
-        super().__init__(game, keys.regen_rune, pos, 2, 1000, 30)
+        super().__init__(game, keys.regen_rune, pos, 2, 18, 30)
 
     

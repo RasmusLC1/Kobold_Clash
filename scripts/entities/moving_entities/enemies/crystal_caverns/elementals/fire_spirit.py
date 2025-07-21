@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 
 class Fire_Spirit(Enemy):
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 100, 'elemental', 20)
+        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 1.8, 'elemental', 20)
         
         self.animation = 'fire_spirit_idle'
         self.path_finding_strategy = 'ignore_lava'
@@ -29,7 +29,7 @@ class Fire_Spirit(Enemy):
         self.Look_For_Health(delta_time)
 
         if self.distance_to_player < 120:
-            self.Attack()
+            self.Attack(delta_time)
 
         if self.distance_to_player > 150 and self.charge:
             self.charge = 0
@@ -37,15 +37,15 @@ class Fire_Spirit(Enemy):
 
         
     
-    def Attack(self):
-        if not super().Attack():
+    def Attack(self, delta_time):
+        if not super().Attack(delta_time):
             return False
         
         # If Player is to close, then archer cannot shoot
         if self.distance_to_player < 30:
             return False
 
-        self.charge += 1
+        self.charge += delta_time
         if self.charge >= self.max_weapon_charge:
             self.spewing_fire = True
 

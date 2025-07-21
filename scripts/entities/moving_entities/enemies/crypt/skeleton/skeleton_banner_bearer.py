@@ -7,7 +7,7 @@ import random
 
 class Skeleton_Banner_Bearer(Skeleton):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.skeleton_banner_bearer, health, strength, max_speed, agility, intelligence, stamina, 60, 15)
+        super().__init__(game, pos, keys.skeleton_banner_bearer, health, strength, max_speed, agility, intelligence, stamina, 1, 15)
         self.Equip_Weapon(Sword(self.game, self.pos))
         self.rally_cooldown = 0
         self.attack_strategy = keys.medium_range

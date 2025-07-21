@@ -20,14 +20,15 @@ class Skeleton(Enemy):
             self.animation_handler.Set_Animation('running')
 
     # Returns true on succesful attack
-    def Attack(self):
-        if not super().Attack():
+    def Attack(self, delta_time):
+        if not super().Attack(delta_time):
             return False
         
         if not self.active_weapon:
             return False
+        
 
-        self.charge = min(self.max_weapon_charge, self.charge + 1)
+        self.charge = min(self.max_weapon_charge, self.charge + delta_time)
 
         if self.charge < self.max_weapon_charge:
             return False

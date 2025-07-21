@@ -138,7 +138,7 @@ class Enemy(Moving_Entity):
 
         return None
     
-    def Attack(self):
+    def Attack(self, delta_time):
         # Check if the player is invisible
         if self.game.player.effects.invisibility.effect:
             return False
@@ -316,8 +316,10 @@ class Enemy(Moving_Entity):
         if self.charge < 0:
             return
         exclamation_mark = self.game.assets['exclamation_mark'][0]
+        
+        normalized_charge = min(self.charge / self.max_weapon_charge, 1)
+        alpha_value = int(50 + (normalized_charge * (255 - 50)))
 
-        alpha_value = max(0, min(255, self.charge * 7))
         exclamation_mark.set_alpha(alpha_value)
         surf.blit(exclamation_mark, (self.rect().left - offset[0], self.rect().top - offset[1] - self.attack_symbol_offset))
 
