@@ -10,23 +10,22 @@ class Player_Weapon_Attack():
         self.attacking = 0
         self.attack_hitbox_size = (10, 10)
         self.attack_hitbox = pygame.Rect(self.weapon.pos[0], self.weapon.pos[1], self.attack_hitbox_size[0], self.attack_hitbox_size[1])
-
         self.entities_hit = [] # Enemies which have been hit by an attack
         self.nearby_enemies = [] # Nearby enemies that the weapon can interact with
         self.nearby_decoration = [] # Nearby decoration that the weapon can interact with
         self.player = self.game.player
         self.enemy_hit_effect_cooldown = 0
+        self.active = False
 
     # Update the attack logic
-    def Update_Attack(self):
-
-        self.Update_Enemy_Hit_Effect_Cooldown()
-
-        if not self.attacking:
+    def Update_Attack(self, delta_time):
+        self.Update_Enemy_Hit_Effect_Cooldown(delta_time)
+        if self.attacking < 0:
             return False
-
         entity = self.Attack_Collision_Check()
-        self.attacking -= 1
+        self.attacking -= delta_time
+        if self.attacking <= 0:
+            self.active = False
         return self.ready_to_delete
 
 
@@ -58,9 +57,6 @@ class Player_Weapon_Attack():
 
     def Enemy_Collision(self):
         for enemy in self.nearby_enemies:
-            # Check if the enemy is on damage cooldown
-            if enemy.damage_cooldown:
-                continue
             # Prevent from hitting enemy multiple times
             if enemy in self.entities_hit:
                 continue
@@ -106,15 +102,16 @@ class Player_Weapon_Attack():
     
         # Return False if player weapon cooldown is not off
     def Check_Entity_Cooldown(self):
-        if self.player.left_weapon_cooldown:
+        if self.player.active_weapon_cooldown:
             return False
         return True
 
     def Reset_Attack(self):
-        if not self.attacking <= 1:
-            return False
         
+        if self.attacking > 0:
+            return False
         self.attacking = 0
+        self.active = False
         self.weapon.Reset_Attack_Animation()
         self.player.Reset_Attack_Direction()
 
@@ -133,16 +130,16 @@ class Player_Weapon_Attack():
 
         
     # Cooldown function to prevent constant screenshake and freezeframes
-    def Update_Enemy_Hit_Effect_Cooldown(self):
+    def Update_Enemy_Hit_Effect_Cooldown(self, delta_time):
         if not self.enemy_hit_effect_cooldown:
             return
-        self.enemy_hit_effect_cooldown -= 1
+        self.enemy_hit_effect_cooldown -= delta_time
 
     def Set_Attacking(self):
-        self.attacking = max(int((self.weapon.speed * 20) // self.player.agility), self.weapon.attack_animation_max) 
+        self.attacking = max(0.1, 2 - (self.weapon.speed + self.player.agility) / 10)
 
     def Set_Enemy_Hit_Effect(self):
-        if self.enemy_hit_effect_cooldown:
+        if self.enemy_hit_effect_cooldown > 0:
             return
         
 
@@ -151,6 +148,6 @@ class Player_Weapon_Attack():
         self.game.logic_update.Set_Freeze_Frame(damage_freeze)
 
         self.game.camera_update.Set_Screen_Shake(damage_freeze, damage_freeze // 2)
-        self.enemy_hit_effect_cooldown = 20
+        self.enemy_hit_effect_cooldown = 1
         self.game.sound_handler.Play_Sound('enemy_hit', 0.3)
 

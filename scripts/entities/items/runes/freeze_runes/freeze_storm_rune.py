@@ -28,12 +28,12 @@ class Freeze_Storm_Rune(Rune):
 
 
 
-    def Update(self):
-        super().Update()
+    def Update(self, delta_time):
+        super().Update(delta_time)
         if not self.ice_storm:
             return
         if self.ice_storm.duration:
-            self.ice_storm.Update()
+            self.ice_storm.Update(delta_time)
             if self.ice_storm.duration <= 0:
                 self.game.entities_render.Remove_Entity(self.ice_storm)
 

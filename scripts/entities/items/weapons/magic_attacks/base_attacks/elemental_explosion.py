@@ -90,7 +90,7 @@ class Elemental_Explosion(Item):
             
         return True
 
-    def Update_Animation(self):
+    def Update_Animation(self, delta_time):
         if self.delete_countdown == 1:
             try:
                 self.game.light_handler.Remove_Light(self.light_source)
@@ -101,7 +101,7 @@ class Elemental_Explosion(Item):
             self.animation_cooldown = 0
             self.animation = min(self.animation + 1, self.max_animation)
             return
-        self.animation_cooldown += 1
+        self.animation_cooldown += delta_time
 
     # Own render function since we don't need to compute light
     def Render(self, surf, offset=(0, 0)):

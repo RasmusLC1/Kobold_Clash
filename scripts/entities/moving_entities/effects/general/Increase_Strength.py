@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 class Increase_Strength(Effect):
     def __init__(self, entity):
         description = 'Increases\nmelee damage'
-        super().__init__(entity, "increase_strength", 0, 0, (130, 160), description)
+        super().__init__(entity, "increase_strength", 0, 0, (2, 3), description)
     
     #set Fire effect
     def Set_Effect(self, effect_time, permanent = False):
@@ -14,12 +14,12 @@ class Increase_Strength(Effect):
         return super().Set_Effect(effect_time, permanent)
 
 
-    def Update_Effect(self):
+    def Update_Effect(self, delta_time):
         if not self.effect or self.entity.effects.poison.effect:
             return False
         self.entity.strength = min(20, self.entity.strength + self.effect)
 
-        self.Update_Cooldown()
+        self.Update_Cooldown(delta_time)
 
         return True
 

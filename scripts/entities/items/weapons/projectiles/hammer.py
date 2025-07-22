@@ -9,11 +9,11 @@ class Hammer(Projectile):
         self.distance_from_player = 0
         
     
-    def Shoot(self):
+    def Shoot(self, delta_time):
         self.Initialise_Shooting(self.entity_strength)
         self.rotate += 5
 
-        super().Shoot()
+        super().Shoot(delta_time)
 
     def Special_Attack(self):
         if not self.special_attack or not self.equipped:

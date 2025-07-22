@@ -7,11 +7,6 @@ class Recall_Scroll(Utility_Loot):
         self.max_amount = 3
         self.Set_Description()
 
-
- 
-    def Update(self):
-        super().Update()
-
     def Set_Description(self):
         self.description = 'Teleport back\nto latest shrine'
 

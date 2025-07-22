@@ -1,6 +1,7 @@
 from scripts.engine.particles.particle import Particle
 from scripts.engine.particles.particle_patterns import Particle_Patterns
 from scripts.engine.keys.keys import keys
+import random
 
 class Particle_Handler:
     def __init__(self, game) -> None:
@@ -26,9 +27,9 @@ class Particle_Handler:
          
 
     # Update the particles
-    def Particle_Update(self):
+    def Particle_Update(self, delta_time):
         for particle in self.active_particles:
-                particle.Update()
+                particle.Update(delta_time)
 
     def Particle_Render(self, surf, offset = (0,0)):
         for particle in self.active_particles:
@@ -38,7 +39,7 @@ class Particle_Handler:
         self.active_particles.remove(particle)
 
 
-    def Activate_Particles(self, amount, type, pos, frame):
+    def Activate_Particles(self, amount, type, pos, time = random.uniform(1, 1.5)):
         for _ in range(amount):
             particle = self.Find_Particle()
 
@@ -51,7 +52,7 @@ class Particle_Handler:
             velocity = velocity_function()
 
             # Activate particle and add to active particles
-            particle.Set_Active(type, pos, velocity, frame)
+            particle.Set_Active(type, pos, velocity, time)
             particle.Set_Image(self.game.assets[type][particle.animation])
             self.active_particles.append(particle)
 
@@ -63,7 +64,7 @@ class Particle_Handler:
             return None
         
         # Check if the initial index is available, in which case loop the index back to 0
-        if not self.particle_pool[0].frame_count:
+        if not self.particle_pool[0].lifespan:
             self.index = 0
         
         # Overflow prevent
@@ -75,7 +76,7 @@ class Particle_Handler:
         self.index += 1
 
         # If there are no free fire particle return None to spawn a new one
-        if particle.frame_count:
+        if particle.lifespan:
             return None
         
         return particle
@@ -90,6 +91,3 @@ class Particle_Handler:
     def Spawn_Particles(self, amount):
         for _ in range(amount):
              self.particle_pool.append(Particle(self))
-
-
-    

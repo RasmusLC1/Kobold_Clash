@@ -21,6 +21,6 @@ class keys(
     Items,
     Game_Types,
     Tiles,
-    Sounds
+    Sounds,
 ):
     pass

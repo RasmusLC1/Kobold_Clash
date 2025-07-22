@@ -58,7 +58,7 @@ class Boss_Room():
 
 
 
-    def Update(self):
+    def Update(self, delta_time = 0):
 
         if self.boss_defeated:
             return

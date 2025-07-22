@@ -9,7 +9,7 @@ class Spider(Dweller):
     intent_manager_class = Spider_Intent_Manager
 
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.spider, health, strength, max_speed, agility, intelligence, stamina, 60, 10)
+        super().__init__(game, pos, keys.spider, health, strength, max_speed, agility, intelligence, stamina, 0.8, 10)
 
         self.animation = keys.spider + '_' + keys.idle
 

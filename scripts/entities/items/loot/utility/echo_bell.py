@@ -8,11 +8,6 @@ class Echo_Bell(Utility_Loot):
         super().__init__(game, keys.echo_bell, pos, 320, amount)
         self.Set_Description()
         self.max_amount = 5
-    
-    
-
-    def Update(self):
-        super().Update()
 
     def Set_Description(self):
         self.description = 'Lure enemies\nto a location'

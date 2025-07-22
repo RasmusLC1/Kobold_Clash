@@ -26,10 +26,10 @@ class Ice(Trap):
                 continue
 
             if self.type == keys.shallow_ice_env:
-                entity.On_Ice(20)
+                entity.On_Ice(200)
             elif self.type == keys.medium_ice_env:
-                entity.On_Ice(20)
+                entity.On_Ice(500)
             elif self.type == keys.deep_ice_env:
-                entity.On_Ice(20)
+                entity.On_Ice(1000)
 
 

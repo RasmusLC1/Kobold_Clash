@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 
 class Fire_Spirit(Enemy):
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 100, 'elemental', 20)
+        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 1.8, 'elemental', 20)
         
         self.animation = 'fire_spirit_idle'
         self.path_finding_strategy = 'ignore_lava'
@@ -22,14 +22,14 @@ class Fire_Spirit(Enemy):
         self.animation_num_cooldown_max = 100
         self.flame_thrower = Flame_Thrower(self.game)
 
-    def Update(self, tilemap, movement = (0, 0)):
+    def Update(self, tilemap, delta_time, movement = (0, 0)):
         
-        super().Update(tilemap, movement)
+        super().Update(tilemap, delta_time, movement)
 
-        self.Look_For_Health()
+        self.Look_For_Health(delta_time)
 
         if self.distance_to_player < 120:
-            self.Attack()
+            self.Attack(delta_time)
 
         if self.distance_to_player > 150 and self.charge:
             self.charge = 0
@@ -37,15 +37,15 @@ class Fire_Spirit(Enemy):
 
         
     
-    def Attack(self):
-        if not super().Attack():
+    def Attack(self, delta_time):
+        if not super().Attack(delta_time):
             return False
         
         # If Player is to close, then archer cannot shoot
         if self.distance_to_player < 30:
             return False
 
-        self.charge += 1
+        self.charge += delta_time
         if self.charge >= self.max_weapon_charge:
             self.spewing_fire = True
 
@@ -62,16 +62,16 @@ class Fire_Spirit(Enemy):
 
 
     # TODO: IMPLEMENT
-    def Look_For_Health(self):
+    def Look_For_Health(self, delta_time):
         if self.look_for_health_cooldown:
-            self.look_for_health_cooldown = max(0, self.look_for_health_cooldown - 1)
+            self.look_for_health_cooldown = max(0, self.look_for_health_cooldown - delta_time)
             return
         
 
         if self.health < self.max_health / 2:
             self.Set_Locked_On_Target(0)
 
-            self.look_for_health_cooldown = 2000
+            self.look_for_health_cooldown = 30
 
             nearby_traps = self.game.trap_handler.Find_Nearby_Traps(self, 200)
             for trap in nearby_traps:
@@ -81,7 +81,7 @@ class Fire_Spirit(Enemy):
                     self.locked_on_target = True
                     break
 
-            self.Set_Locked_On_Target(4000)
+            self.Set_Locked_On_Target(50)
         
         return
 

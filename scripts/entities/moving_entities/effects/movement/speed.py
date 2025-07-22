@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 class Speed(Effect):
     def __init__(self, entity):
         description = 'Increases speed'
-        super().__init__(entity, keys.speed, 0, 0, (130, 160), description)
+        super().__init__(entity, keys.speed, 0, 0, (2, 3), description)
 
     
     #set Fire effect
@@ -14,13 +14,13 @@ class Speed(Effect):
             return False
         return super().Set_Effect(effect_time, permanent)
 
-    def Update_Effect(self):
+    def Update_Effect(self, delta_time):
 
         if not self.effect or self.entity.effects.frozen.effect:
             return False
 
         self.entity.max_speed = min(14, self.entity.max_speed * 2)
         
-        self.Update_Cooldown()
+        self.Update_Cooldown(delta_time)
 
         return True

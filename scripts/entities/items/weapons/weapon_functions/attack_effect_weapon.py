@@ -16,12 +16,12 @@ class Attack_Effect_Weapon():
 
 
 
-    def Update_Attack_Effect_Animation(self):
+    def Update_Attack_Effect_Animation(self, delta_time):
         if self.attack_effect_animation_counter >= self.attack_effect_animation_time:
             self.attack_effect_animation_counter = 0
             self.attack_effect_animation = min(self.attack_effect_animation + 1, self.attack_effect_animation_max)
             return
-        self.attack_effect_animation_counter += 1
+        self.attack_effect_animation_counter += delta_time
 
     
      # Used to update special attack animations, not the effect itself
@@ -37,6 +37,7 @@ class Attack_Effect_Weapon():
     def Init_Attack_Effect_Animation(self):
         self.effect_type = self.weapon.Get_Dominant_Effect() + '_' + self.weapon.attack_type + '_' + keys.effect
         self.attack_effect_animation_time = self.weapon.entity_attack_type.attacking / self.attack_effect_animation_max
+        print(self.weapon.entity_attack_type.attacking, self.attack_effect_animation_max, self.attack_effect_animation_time)
 
     def Set_Special_Attack_Effect_Animation_Time(self):
         self.attack_effect_animation_time = self.weapon.special_attack / self.special_attack_effect_animation_max

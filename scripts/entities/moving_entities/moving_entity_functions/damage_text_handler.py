@@ -6,10 +6,10 @@ class Damage_Text_Handler():
         self.active_damage_texts = []
         self.index = 0
 
-    def Update(self):
+    def Update(self, delta_time):
 
         for damage_text in self.active_damage_texts:
-            if not damage_text.Update():
+            if not damage_text.Update(delta_time):
                 self.active_damage_texts.remove(damage_text)
 
             
@@ -39,7 +39,7 @@ class Damage_Text_Handler():
             return None
         
         # Check if the initial index is available, in which case loop the index back to 0
-        if not self.damage_text_pool[0].cooldown:
+        if self.damage_text_pool[0].cooldown <= 0:
             self.index = 0
         
         # Overflow prevent
@@ -51,7 +51,7 @@ class Damage_Text_Handler():
         self.index += 1
 
         # If there are no free fire particle return None to spawn a new one
-        if damage_text.cooldown:
+        if damage_text.cooldown <= 0:
             return None
         
         return damage_text
@@ -61,6 +61,6 @@ class Damage_Text_Handler():
             if not damage_text.text:
                 self.active_damage_texts.remove(damage_text)
                 continue
-            scroll_up_effect = damage_text.offset - damage_text.cooldown // 2
+            scroll_up_effect = damage_text.offset - damage_text.cooldown * 10
             self.game.default_font.Render_Word(surf, damage_text.text, (damage_text.pos[0] - offset[0], damage_text.pos[1] - scroll_up_effect - offset[1]), damage_text.font_style)
             

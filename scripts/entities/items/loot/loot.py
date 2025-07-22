@@ -20,7 +20,7 @@ class Loot(Item):
         self.loot_type = data[keys.loot_type]
         super().Load_Data(data)
 
-    def Update_Animation(self):
+    def Update_Animation(self, delta_time = 0):
         pass
 
     

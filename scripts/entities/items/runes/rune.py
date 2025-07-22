@@ -28,7 +28,7 @@ class Rune(Item):
         # self.picked_up = True
         self.cost_to_buy = soul_cost // 2 * power // 2
         self.activate_cooldown = 0
-        self.activate_cooldown_max = 200
+        self.activate_cooldown_max = 5
         self.clicked = False # Used for projectiles
         self.Set_Description()
         self.text_box = Rune_Textbox(self)
@@ -59,9 +59,9 @@ class Rune(Item):
         self.menu_pos = data['menu_pos']
 
     
-    def Update(self):
-        self.Update_Activate_Cooldown()
-        return super().Update()
+    def Update(self, delta_time):
+        self.Update_Activate_Cooldown(delta_time)
+        return super().Update(delta_time)
     
     # Calls when the rune is activated, starts by checking for cooldown, then
     # Checks defauls activation is valid, then checks if the player can pay the souls
@@ -124,9 +124,9 @@ class Rune(Item):
         self.current_power += change
         return True
     
-    def Update_Activate_Cooldown(self):
+    def Update_Activate_Cooldown(self, delta_time):
         if self.activate_cooldown:
-            self.activate_cooldown -= 1
+            self.activate_cooldown = max(0, self.activate_cooldown - delta_time)
             if self.activate_cooldown > 0:
                 self.player.weapon_handler.Set_Attack_Lock(True)
             else:
@@ -155,9 +155,9 @@ class Rune(Item):
         self.animation_size = min(self.animation_size + 1, self.animation_size_max)
 
 
-    def Update_Animation(self):
+    def Update_Animation(self, delta_time):
         if self.animation_time:
-            self.animation_time = max(0, self.animation_time - 1)
+            self.animation_time = max(0, self.animation_time - delta_time)
             self.Increase_Animation_Size()
     
     # Defualt the Render function to render in inventory

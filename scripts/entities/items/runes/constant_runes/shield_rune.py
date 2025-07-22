@@ -14,8 +14,8 @@ class Shield_Rune(Rune):
             return    
         self.clicked = True
     
-    def Update(self):
-        super().Update()
+    def Update(self, delta_time):
+        super().Update(delta_time)
         if not self.clicked:
             return
         if self.game.mouse.left_click:

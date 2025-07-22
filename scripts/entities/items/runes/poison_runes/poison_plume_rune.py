@@ -10,8 +10,8 @@ class Poison_Plume_Rune(Rune):
 
 
 
-    def Update(self):
-        super().Update()
+    def Update(self, delta_time):
+        super().Update(delta_time)
 
         self.poison_plume.Update_Clouds()
 

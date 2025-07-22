@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 class Vampiric(Effect):
     def __init__(self, entity):
         description = 'Heals when\ndealing damage'
-        super().__init__(entity, keys.vampiric, 0, 0, (200, 250), description)
+        super().__init__(entity, keys.vampiric, 0, 0, (3, 4), description)
 
 
     def Damage_Dealt(self, damage):

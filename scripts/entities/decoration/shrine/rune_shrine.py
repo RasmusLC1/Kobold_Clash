@@ -37,15 +37,15 @@ class Rune_Shrine(Decoration):
 
 
 
-    def Update(self):
-        self.Update_Animation()
-        return super().Update()
+    def Update(self, delta_time):
+        self.Update_Animation(delta_time)
+        return super().Update(delta_time)
 
-    def Update_Animation(self):
-        if self.animation_cooldown:
-            self.animation_cooldown -= 1
+    def Update_Animation(self, delta_time):
+        if self.animation_cooldown > 0:
+            self.animation_cooldown -= delta_time
         else:
-            self.animation_cooldown = 20
+            self.animation_cooldown = 0.3
             self.Set_Animation(random.randint(0,self.max_animation))
 
     def Remove_Available_Rune(self):

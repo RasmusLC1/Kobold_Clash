@@ -14,7 +14,7 @@ class Soul_Reap(Projectile):
     def Save_Data(self):
         pass
 
-    def Shoot(self):
+    def Shoot(self, delta_time):
         if not self.shoot_speed:
             self.Initialise_Shooting(self.speed)
 
@@ -24,7 +24,7 @@ class Soul_Reap(Projectile):
             self.pos[1] + self.direction[1] * self.shoot_speed
         ))
 
-        entity = super().Shoot()
+        entity = super().Shoot(delta_time)
         if entity:
             self.Set_Special_Attack(0)
             self.delete_countdown = 1

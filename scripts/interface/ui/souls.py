@@ -8,14 +8,14 @@ class Souls(UI):
         pos_x = game.screen_width // game.render_scale - 50
         pos_y = 40
         animation_max = 3
-        animation_cooldown_max = 20
+        animation_cooldown_max = 0.3
         super().__init__(game, pos_x, pos_y, animation_max, animation_cooldown_max)
         self.stored_souls = -99999
         self.base_x = pos_x
 
 
-    def Update(self):
-        super().Update()
+    def Update(self, delta_time):
+        super().Update(delta_time)
         self.move_text_based_on_soul()
 
 

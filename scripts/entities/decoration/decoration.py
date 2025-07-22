@@ -27,7 +27,7 @@ class Decoration(PhysicsEntity):
         self.empty = data['empty']
         return super().Load_Data(data)
 
-    def Update_Animation(self):
+    def Update_Animation(self, delta_time):
         pass
 
     def Open(self, generate_clatter = False):
@@ -54,7 +54,7 @@ class Decoration(PhysicsEntity):
         # Double damage for blunt weapons
         if effect == 'blunt':
             damage *= 2
-        self.game.particle_handler.Activate_Particles(random.randint(2, 4), keys.loot_particle, self.rect().center, frame=random.randint(10, 20))
+        self.game.particle_handler.Activate_Particles(random.randint(2, 4), keys.loot_particle, self.rect().center)
 
         self.health = max(0, self.health - damage)
         if self.health <= 0:
@@ -66,7 +66,7 @@ class Decoration(PhysicsEntity):
         self.game.decoration_handler.Remove_Decoration(self)
         
         self.Generate_Sound('chest_break', 0.2, 1000)
-        self.game.particle_handler.Activate_Particles(random.randint(10, 15), keys.loot_particle, self.rect().center, frame=random.randint(20, 30))
+        self.game.particle_handler.Activate_Particles(random.randint(10, 15), keys.loot_particle, self.rect().center)
         return True
         
     def Spawn_Reward(self, item):

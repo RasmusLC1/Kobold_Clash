@@ -47,11 +47,11 @@ class Effect():
         self.Set_Cooldown()
         return True
     
-    def Update_Effect(self):
+    def Update_Effect(self, delta_time):
         if not self.effect:
             return False
         
-        self.Update_Cooldown()
+        self.Update_Cooldown(delta_time)
         
         return True
 
@@ -72,11 +72,11 @@ class Effect():
     def Decrease_Effect(self):
         self.effect = max(self.effect - 1, 0)
 
-    def Update_Cooldown(self) -> bool:
+    def Update_Cooldown(self, delta_time) -> bool:
         if self.permanent >= self.effect:
             return False
-        if self.cooldown:
-            self.cooldown -= 1
+        if self.cooldown > 0:
+            self.cooldown -= delta_time
             return False
         self.Set_Cooldown()
         self.effect -= 1
@@ -85,11 +85,11 @@ class Effect():
         return True
     
     def Set_Cooldown(self):
-        self.cooldown = random.randint(self.cooldown_range[0], self.cooldown_range[1])
+        self.cooldown = random.uniform(self.cooldown_range[0], self.cooldown_range[1])
 
-    def Effect_Animation_Cooldown(self):
-        if self.animation_cooldown:
-            self.animation_cooldown -= 1
+    def Effect_Animation_Cooldown(self, delta_time):
+        if self.animation_cooldown > 0:
+            self.animation_cooldown -= delta_time
             return
         
         self.animation_cooldown = self.animation_cooldown_max

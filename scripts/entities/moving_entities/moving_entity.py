@@ -5,10 +5,18 @@ from scripts.entities.moving_entities.animation.animation_handler import Animati
 from scripts.entities.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 
+# Cooldown in seconds
+DAMAGE_COOLDOWN_MAX = 0.2
+TRAP_COOLDOWN_MAX = 0.2
+ENEMY_COOLDOWN_MAX = 0.4
+TILE_COOLDOWN_MAX = 0.5
+
+
 class Moving_Entity(PhysicsEntity):
 
     _animation_handler = Animation_Handler
     _effect_handler = Status_Effect_Handler
+
 
 
     
@@ -35,7 +43,6 @@ class Moving_Entity(PhysicsEntity):
         
 
         self.damage_cooldown = 0
-        self.damage_cooldown_max = 40
         
         self.nearby_traps = []
         self.nearby_traps_cooldown = 0
@@ -59,18 +66,12 @@ class Moving_Entity(PhysicsEntity):
         self.max_health = self.health
         
         # Movement variables
-        self.friction = 0.8 # Friction, set to the renderscale
+        self.friction = 0.00005 # Friction, set to the renderscale
         self.friction_holder = self.friction # Holder for friction to reset it
-        self.acceleration = agility / 5 * self.game.render_scale
+        self.acceleration = agility * self.game.render_scale * 10
         self.acceleration_holder = self.acceleration # accelarition holder to reset it
-        self.max_speed = max_speed * self.game.render_scale + agility # Max speed of the entity
+        self.max_speed = max_speed + agility # Max speed of the entity
         self.max_speed_holder = self.max_speed # Max speed holder to reset it
-
-
-        # Determined by the entities agility
-        self.left_weapon_cooldown = 0 
-        self.right_weapon_cooldown = 0
-
 
         # Handle attack animations
         self.attacking = 0
@@ -81,9 +82,8 @@ class Moving_Entity(PhysicsEntity):
         # Status Effects
         self.effects = self._effect_handler(self)
         self.animation_handler = self._animation_handler(self)
-        
-        
 
+        self.active_weapon_cooldown = 0
         self.Set_Sprite()
 
 
@@ -121,41 +121,40 @@ class Moving_Entity(PhysicsEntity):
 
 
     # Update the entity 
-    def Update(self, tilemap, movement=(0, 0)):
+    def Update(self, tilemap, delta_time, movement=(0, 0)):
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False}
 
-        self.Update_Movement(movement)
-        self.Update_Status_Effects()
+        self.Update_Movement(movement, delta_time)
+        self.Update_Status_Effects(delta_time)
 
 
-        self.Update_Traps()
-        self.Nearby_Enemies(2)
-        self.Update_Damage_Cooldown()
-        self.Charge_Update()
+        self.Update_Traps(delta_time)
+        self.Nearby_Enemies(2, delta_time)
+        self.Update_Damage_Cooldown(delta_time)
+        self.Charge_Update(delta_time)
 
-        self.Movement(movement, tilemap)
-        self.Update_Tile()
+        self.Movement(movement, tilemap, delta_time)
+        self.Update_Tile(delta_time)
     
 
-    def Update_Movement(self, movement):
+    def Update_Movement(self, movement, delta_time):
         # Apply acceleration to velocity based on input
-        self.velocity[0] += movement[0] * self.acceleration
-        self.velocity[1] += movement[1] * self.acceleration
-
+        self.velocity[0] += movement[0] * self.acceleration * delta_time
+        self.velocity[1] += movement[1] * self.acceleration * delta_time
         # Clamp the velocity to max speed
         self.velocity[0] = max(-self.max_speed, min(self.velocity[0], self.max_speed))
         self.velocity[1] = max(-self.max_speed, min(self.velocity[1], self.max_speed))
         
         # Apply friction and elimnates fricting
         if abs(self.velocity[0]) > 0.1:
-            self.velocity[0] *= self.friction
+            self.velocity[0] *= self.friction ** delta_time 
         else:
             self.velocity[0] = 0
         if abs(self.velocity[1]) > 0.1:
-            self.velocity[1] *= self.friction
+            self.velocity[1] *= self.friction ** delta_time
         else:
             self.velocity[1] = 0
-
+        
         self.direction_x = movement[0]
         self.direction_y = movement[1]
 
@@ -167,7 +166,7 @@ class Moving_Entity(PhysicsEntity):
 
 
     # Movement handling
-    def Movement(self, movement, tilemap):
+    def Movement(self, movement, tilemap, delta_time):
         if self.Entity_Collision_Detection(tilemap):
             return
 
@@ -183,19 +182,20 @@ class Moving_Entity(PhysicsEntity):
             self.idle_count += 1
 
         if keys.attack in self.animation_handler.animation:
-            self.animation_handler.Update_Attack_Animation()
+            self.animation_handler.Update_Attack_Animation(delta_time)
         elif 'jumping' in self.animation_handler.animation:
-            self.animation_handler.Update_Jumping_Animation()
+            self.animation_handler.Update_Jumping_Animation(delta_time)
         else:
-            self.animation_handler.Update_Animation()
+            self.animation_handler.Update_Animation(delta_time)
 
         self.last_frame_movement = self.frame_movement
     
-    def Update_Tile(self):
-        if self.update_tile_cooldown:
-            self.update_tile_cooldown -= 1
+    def Update_Tile(self, delta_time):
+        if self.update_tile_cooldown > 0:
+            self.update_tile_cooldown -= delta_time
+            return
 
-        self.update_tile_cooldown = 10
+        self.update_tile_cooldown = TILE_COOLDOWN_MAX
 
         # Error handling, if no tile is found teleport
         if not self.tile:
@@ -296,46 +296,50 @@ class Moving_Entity(PhysicsEntity):
     
 
     # Update only the nearby traps
-    def Update_Traps(self):
-        if not self.nearby_traps_cooldown:
-            self.Find_Nearby_Traps(3)
-            self.nearby_traps_cooldown = 10
-        else:
-            self.nearby_traps_cooldown -= 1
+    def Update_Traps(self, delta_time):
+        if not self.Find_Nearby_Traps(3, delta_time):
+            return
+
         for trap in self.nearby_traps:
             trap.Add_Entity_To_Trap(self)
 
-    def Find_Nearby_Traps(self, distance) -> None:
-        if self.nearby_traps_cooldown:
-            self.nearby_traps_cooldown = max(0, self.nearby_traps_cooldown - 1)
-            return
+    def Find_Nearby_Traps(self, distance, delta_time) -> bool:
+        if self.nearby_traps_cooldown > 0:
+            self.nearby_traps_cooldown -= delta_time
+            return False
+        self.nearby_traps.clear()
         self.nearby_traps = self.game.trap_handler.Find_Nearby_Traps(self, distance)
-        self.nearby_traps_cooldown = 20
-        return
+        self.nearby_traps_cooldown = TRAP_COOLDOWN_MAX
+        return True
     
 
-    def Nearby_Enemies(self, max_distance) -> None:
-        if self.nearby_enemies_cooldown:
-            self.nearby_enemies_cooldown = max(0, self.nearby_enemies_cooldown - 1)
+    def Nearby_Enemies(self, max_distance, delta_time) -> None:
+        if self.nearby_enemies_cooldown > 0:
+            self.nearby_enemies_cooldown -= delta_time
             return
+        
         self.nearby_enemies.clear()
         self.nearby_enemies = self.game.enemy_handler.Find_Nearby_Enemies(self, max_distance)
-        self.nearby_enemies_cooldown = 20
+        self.nearby_enemies_cooldown = ENEMY_COOLDOWN_MAX
         return
     
 
-    def Update_Damage_Cooldown(self):
-        if self.damage_cooldown:
-            self.damage_cooldown -= 1
+    def Update_Damage_Cooldown(self, delta_time):
+        if self.damage_cooldown > 0:
+            self.damage_cooldown -= delta_time
+
+            if self.damage_cooldown <= 0:
+                self.damage_cooldown = 0
+        
             
             
     # Damage = Total damage, effect = (effect, effect strength) 
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
-        if self.Check_Blocking_Direction(direction):
+        if self.Check_Blocking_Direction(direction) or self.damage_cooldown > 0:
             return False
         self.game.text_box_handler.Spawn_Damage_Text(self.pos.copy(), effect[0], str(damage))
 
-        self.damage_cooldown = self.damage_cooldown_max
+        self.damage_cooldown = DAMAGE_COOLDOWN_MAX
         self.Set_Health(self.health - damage)
 
         # Update the entitty description
@@ -363,7 +367,7 @@ class Moving_Entity(PhysicsEntity):
             self.tile.Clear_Entity(self.ID)
         self.game.enemy_handler.Delete_Enemy(self)
         self.effects.Reset_Effects()
-        self.Update_Status_Effects()
+        self.Update_Status_Effects(self.game.delta_time)
         self.text_box = None
         self.render = False
         return True
@@ -434,11 +438,11 @@ class Moving_Entity(PhysicsEntity):
 
 
     # Handle Charging Updates
-    def Charge_Update(self):
+    def Charge_Update(self, delta_time):
         if self.charging <= 0:
             return
         self.max_speed = 40  # Adjust max speed speed for dashing distance
-        self.charging = max(0, self.charging - 1)
+        self.charging = max(0, self.charging - delta_time)
         
 
         self.velocity[0] = self.attack_direction[0] * 100
@@ -469,15 +473,15 @@ class Moving_Entity(PhysicsEntity):
 
     # Ice mechanic, lower friction and acceleration to simulate ice
     def On_Ice(self, effect):
-        self.friction = max(0.1, self.friction / effect)
-        self.acceleration = max(0.3, self.acceleration / effect)
+        self.friction = max(0.1, self.friction * effect)
+        self.acceleration = max(0.3, self.acceleration / effect / 10)
 
     # Handle status effects
-    def Update_Status_Effects(self):
+    def Update_Status_Effects(self, delta_time):
         self.friction = self.friction_holder
         self.max_speed = self.max_speed_holder
         self.Set_Strength(self.strength_holder)
-        self.effects.Update_Status_Effects()
+        self.effects.Update_Status_Effects(delta_time)
 
     def Set_Strength(self, strength):
         self.strength = strength
@@ -556,7 +560,7 @@ class Moving_Entity(PhysicsEntity):
 
 
     def Lightup(self, entity_image):
-        if self.damage_cooldown < self.damage_cooldown_max - 10:
+        if self.damage_cooldown < DAMAGE_COOLDOWN_MAX / 10:
             return
         return super().Lightup(entity_image)
 

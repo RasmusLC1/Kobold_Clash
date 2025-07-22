@@ -1,6 +1,7 @@
 import pygame
 from scripts.engine.keys.keys import keys
 
+
 class Animation_Handler():
 
     def __init__(self, entity):
@@ -20,21 +21,21 @@ class Animation_Handler():
         self.animation_num = 0
         self.animation_num_max = 0
         self.animation_num_cooldown = 0
-        self.animation_num_cooldown_max = 50
+        self.animation_num_cooldown_max = 0.8
 
         # Handle attack animations
         self.attacking = 0
         self.attack_animation_num = 0
         self.attack_animation_num_max = 0
         self.attack_animation_num_cooldown = 0
-        self.attack_animation_num_cooldown_max = 10
+        self.attack_animation_num_cooldown_max = 0.2
 
 
          # Jumping attack
         self.jumping_animation_num = 0
         self.jumping_animation_num_max = 0
         self.jumping_animation_num_cooldown = 0
-        self.jumping_animation_num_cooldown_max = 50
+        self.jumping_animation_num_cooldown_max = 0.8
 
 
     def Set_Sprite(self):
@@ -57,9 +58,9 @@ class Animation_Handler():
         return
        
 
-    def Update_Animation(self) -> None:
-        if self.animation_num_cooldown:
-            self.animation_num_cooldown = max(0, self.animation_num_cooldown - 1)
+    def Update_Animation(self, delta_time) -> None:
+        if self.animation_num_cooldown > 0:
+            self.animation_num_cooldown = max(0, self.animation_num_cooldown - delta_time)
             return
         self.animation_num_cooldown = self.animation_num_cooldown_max
         self.animation_num += 1
@@ -69,9 +70,9 @@ class Animation_Handler():
         self.Set_Entity_Image()
         self.animation_value = self.animation_num
 
-    def Update_Attack_Animation(self) -> None:
-        if self.attack_animation_num_cooldown:
-            self.attack_animation_num_cooldown = max(0, self.attack_animation_num_cooldown - 1)
+    def Update_Attack_Animation(self, delta_time) -> None:
+        if self.attack_animation_num_cooldown > 0:
+            self.attack_animation_num_cooldown = max(0, self.attack_animation_num_cooldown - delta_time)
             return
 
         self.attack_animation_num_cooldown = self.attack_animation_num_cooldown_max
@@ -85,9 +86,9 @@ class Animation_Handler():
         self.animation_value = self.attack_animation_num
 
 
-    def Update_Jumping_Animation(self) -> None:
-        if self.jumping_animation_num_cooldown:
-            self.jumping_animation_num_cooldown = max(0, self.jumping_animation_num_cooldown - 1)
+    def Update_Jumping_Animation(self, delta_time) -> None:
+        if self.jumping_animation_num_cooldown > 0:
+            self.jumping_animation_num_cooldown = max(0, self.jumping_animation_num_cooldown - delta_time)
             return
 
         self.jumping_animation_num_cooldown = self.jumping_animation_num_cooldown_max

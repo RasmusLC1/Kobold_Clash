@@ -6,7 +6,6 @@ class Light_Handler():
     def __init__(self, game) -> None:
         self.game = game
         self.lights = []
-        self.nearby_light_cooldown = 0
 
     def Clear_Lights(self):
         self.lights.clear()

@@ -6,7 +6,7 @@ from scripts.engine.keys.keys import keys
 class Frozen(Effect):
     def __init__(self, entity):
         description = 'Slows and damages\nover time'
-        super().__init__(entity, keys.frozen, 2, 30, (160, 200), description)
+        super().__init__(entity, keys.frozen, 2, 0.3, (2, 3), description)
 
     
     def Set_Effect(self, effect_time, permanent = False):
@@ -20,7 +20,7 @@ class Frozen(Effect):
 
         return super().Set_Effect(effect_time, permanent)
     
-    def Update_Effect(self):
+    def Update_Effect(self, delta_time):
         if not self.effect:
             return False
         
@@ -31,7 +31,7 @@ class Frozen(Effect):
 
             return False
         
-        if self.Update_Cooldown():
+        if self.Update_Cooldown(delta_time):
             damage = random.randint(1, 2)
             self.entity.Damage_Taken(damage, (self.effect_type, 0))
         
@@ -41,7 +41,7 @@ class Frozen(Effect):
             print(f"SLOWDOWN: {e}", self.entity.max_speed, self.effect)
         
 
-        self.Effect_Animation_Cooldown()
+        self.Effect_Animation_Cooldown(delta_time)
 
         return True
     

@@ -7,7 +7,7 @@ class Particle_Patterns():
     @staticmethod
     def Dash_Particle():
         angle = random.random() * math.pi * 2
-        speed = random.random() * 0.5 + 0.5
+        speed = random.random() * 40
         velocity = [
                     math.cos(angle) * speed,
                     math.sin(angle) * speed
@@ -23,7 +23,7 @@ class Particle_Patterns():
         angle = base_angle + random.uniform(-angle_variation, angle_variation)
         
         # Fire tends to have faster initial speeds that taper off
-        speed = - (random.random() * 0.4 + 0.1)
+        speed = - (random.random() * 30)
         velocity = [
             math.cos(angle) * speed,  
             math.sin(angle) * speed   
@@ -34,7 +34,8 @@ class Particle_Patterns():
     # Shoot the particles out straight
     @staticmethod
     def Spark_Particle():
-        velocity = np.array([random.uniform(-1, 1), random.uniform(-1, 1)])
+        velocity = np.array([random.uniform(-10, 10), random.uniform(-10, 10)])
+        velocity *= 10
         norm = np.linalg.norm(velocity)
         if norm == 0:  # Avoid division by zero
             return (0,0)
@@ -48,7 +49,7 @@ class Particle_Patterns():
         if norm == 0:  # Avoid division by zero
             return (0,0)
         
-        return ((velocity / norm) * 0.5).tolist()  # Normalize and convert to a list half speed of normal sparks
+        return ((velocity / norm) * 15).tolist()  # Normalize and convert to a list half speed of normal sparks
 
     @staticmethod
     def Vampire_Particle():
@@ -58,7 +59,7 @@ class Particle_Patterns():
         angle = base_angle + random.uniform(-angle_variation, angle_variation)
         
         # Fire tends to have faster initial speeds that taper off
-        speed = - (random.random() * 0.4 + 0.1)
+        speed = - (random.random() * 30)
         velocity = [
             math.cos(angle) * speed,
             math.sin(angle) * speed  
@@ -73,7 +74,7 @@ class Particle_Patterns():
         angle = base_angle + random.uniform(-angle_variation, angle_variation)
         
         # Fire tends to have faster initial speeds that taper off
-        speed = - (random.random() * 0.4 + 0.1)
+        speed = - (random.random() * 30)
         velocity = [
             math.cos(angle) * speed,  
             math.sin(angle) * speed   

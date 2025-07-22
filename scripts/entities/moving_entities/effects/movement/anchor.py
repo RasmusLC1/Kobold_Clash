@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 class Anchor(Effect):
     def __init__(self, entity):
         description = 'Prevents pushing'
-        super().__init__(entity, 'anchor', 0, 0, (200, 250), description)
+        super().__init__(entity, 'anchor', 0, 0, (3, 4), description)
 
     
     def Push(self, direction):

@@ -10,7 +10,7 @@ class Vampire(Dweller):
 
 
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.vampire, health, strength, max_speed, agility, intelligence, stamina, 25, 50)
+        super().__init__(game, pos, keys.vampire, health, strength, max_speed, agility, intelligence, stamina, 0.5, 50)
 
         self.animation_handler.Set_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Max(6)

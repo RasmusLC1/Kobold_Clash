@@ -3,7 +3,7 @@ from scripts.engine.keys.keys import keys
 
 class Poison_Cloud(Elemental_Explosion):
     def __init__(self, game, pos, power, entity):
-        super().__init__(game, keys.poison_cloud, keys.poison, pos, power, 4, 3, 30, entity)
+        super().__init__(game, keys.poison_cloud, keys.poison, pos, power, 4, 3, 0.4, entity)
         self.poison_cooldown = 0
         self.poison_cooldown_max = 10
         self.delete_countdown = self.max_animation * self.animation_cooldown_max * max(self.power // 2, 1)
@@ -22,14 +22,5 @@ class Poison_Cloud(Elemental_Explosion):
     def Update(self, update_pos = True):
         if update_pos:
             self.pos = list(self.entity.rect().center)
-        return super().Update()
-
-    def Update_Animation(self):
         self.Poison_Entities()
-        return super().Update_Animation()
-    
-    def Update_Animation(self):
-        super().Update_Animation()
-
-        if self.animation >= self.max_animation:
-            self.animation = 0
+        return super().Update()

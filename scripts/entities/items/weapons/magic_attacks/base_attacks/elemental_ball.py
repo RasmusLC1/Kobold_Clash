@@ -18,12 +18,12 @@ class Elemental_Ball(Projectile):
         pass
 
 
-    def Shoot(self):
+    def Shoot(self, delta_time):
         if not self.shoot_speed:
             self.Initialise_Shooting(self.speed)       
 
         self.rotate += 5
-        super().Shoot()
+        super().Shoot(delta_time)
 
     def Reset_Shot(self):
         self.delete_countdown = 1

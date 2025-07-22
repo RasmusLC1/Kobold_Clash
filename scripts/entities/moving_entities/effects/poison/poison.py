@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 class Poison(Effect):
     def __init__(self, entity):
         description = 'poison Damage over time,\nreduces increase_strength'
-        super().__init__(entity, keys.poison, 2, 30, (50, 70), description)
+        super().__init__(entity, keys.poison, 2, 0.4, (1, 1.2), description)
         self.strength_holder = self.entity.strength
 
     
@@ -28,7 +28,7 @@ class Poison(Effect):
         return True
         
 
-    def Update_Effect(self):
+    def Update_Effect(self, delta_time):
         # Enable healing when poison expires
         if not self.effect:
             self.entity.Set_Healing_Enabled(True)
@@ -42,10 +42,10 @@ class Poison(Effect):
             return False
         
 
-        if self.Update_Cooldown():
+        if self.Update_Cooldown(delta_time):
             self.entity.Damage_Taken(self.effect, (self.effect_type, 0))
 
-        self.Effect_Animation_Cooldown()
+        self.Effect_Animation_Cooldown(delta_time)
         return True
     
     

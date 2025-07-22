@@ -10,15 +10,15 @@ class Echo_Sigil(Loot):
         self.description = 'Grants\nextra use\nto items\n'
 
 
-    def Update(self):
+    def Update(self, delta_time):
         if self.update_cooldown:
-            self.update_cooldown -= 1
+            self.update_cooldown -= delta_time
         else:
-            self.update_cooldown = 500
+            self.update_cooldown = 8
             self.Check_Loot_In_Inventory()
             
             
-        return super().Update()
+        return super().Update(delta_time)
     
     def Check_Loot_In_Inventory(self):
         inventory_loot = self.game.inventory.item_inventory.Find_Loot()

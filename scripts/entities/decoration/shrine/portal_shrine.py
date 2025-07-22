@@ -24,18 +24,18 @@ class Portal_Shrine(Decoration):
         super().Load_Data(data)
         self.is_open = data['is_open']
 
-    def Update(self):
-        self.Update_Animation()
-        return super().Update()
+    def Update(self, delta_time):
+        self.Update_Animation(delta_time)
+        return super().Update(delta_time)
 
-    def Update_Animation(self):
+    def Update_Animation(self, delta_time):
         # Don't Set_Animation unless open
         if not self.is_open:
             return
-        if self.animation_cooldown:
-            self.animation_cooldown -= 1
+        if self.animation_cooldown > 0:
+            self.animation_cooldown -= delta_time
         else:
-            self.animation_cooldown = 20
+            self.animation_cooldown = 0.3
             self.Set_Animation(random.randint(self.min_animation,self.max_animation))
 
     def Remove_Available_Rune(self):

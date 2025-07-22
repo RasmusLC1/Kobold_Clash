@@ -5,14 +5,14 @@ from scripts.engine.keys.keys import keys
 class Slow(Effect):
     def __init__(self, entity):
         description = 'Reduces speed'
-        super().__init__(entity, keys.slow, 0, 0, (5,10), description)
+        super().__init__(entity, keys.slow, 0, 0, (1,1.2), description)
 
     
     #set Fire effect
     def Set_Effect(self, effect_time, permanent = True):
         return super().Set_Effect(effect_time, True)
 
-    def Update_Effect(self):
+    def Update_Effect(self, delta_time):
 
         if not self.effect:
             return False
@@ -22,7 +22,7 @@ class Slow(Effect):
         except ZeroDivisionError as e:
             print(f"SLOWDOWN: {e}", self.entity.max_speed, self.effect)
         
-        self.Update_Cooldown()
+        self.Update_Cooldown(delta_time)
 
         return True
     

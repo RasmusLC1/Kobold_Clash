@@ -10,10 +10,10 @@ class UI():
         self.pos_y = pos_y
         self.animation_cooldown_max = animation_cooldown_max
 
-    def Update(self):
-        self.Update_Animation()
+    def Update(self, delta_time):
+        self.Update_Animation(delta_time)
 
-    def Update_Animation(self):
+    def Update_Animation(self, delta_time):
         if not self.cooldown:
             if self.animation >= self.max_animation:
                 self.animation = 0
@@ -21,4 +21,4 @@ class UI():
                 self.animation += 1
             self.cooldown = self.animation_cooldown_max
 
-        self.cooldown -= 1
+        self.cooldown -= delta_time

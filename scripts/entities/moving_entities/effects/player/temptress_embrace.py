@@ -6,9 +6,9 @@ from scripts.engine.keys.keys import keys
 class Temptress_Embrace(Effect):
     def __init__(self, entity):
         description = 'Damage scales\nwith health lost'
-        super().__init__(entity, keys.temptress_embrace, 0, 0, (120, 160), description)
+        super().__init__(entity, keys.temptress_embrace, 0, 0, (2, 3), description)
 
-    def Update_Effect(self):
+    def Update_Effect(self, delta_time):
         if not self.effect:
             return False
         
@@ -16,7 +16,7 @@ class Temptress_Embrace(Effect):
             return True
         
         self.Calculate_Strength()
-        self.Update_Cooldown()
+        self.Update_Cooldown(delta_time)
         return True
 
 

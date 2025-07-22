@@ -10,10 +10,11 @@ class Spear(Projectile):
         
     
     # TODO: ITEM IS NOT REMOVED FROM INVENTORY SLOT
-    def Shoot(self):
-        self.Initialise_Shooting(self.entity_strength)
+    def Shoot(self, delta_time):
+        if not self.shoot_speed:
+            self.Initialise_Shooting(self.entity_strength)
 
-        super().Shoot()
+        super().Shoot(delta_time)
 
     def Special_Attack(self):
         if not self.special_attack or not self.equipped:

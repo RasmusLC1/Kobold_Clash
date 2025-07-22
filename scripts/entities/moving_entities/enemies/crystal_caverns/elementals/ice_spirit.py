@@ -6,7 +6,7 @@ from scripts.engine.keys.keys import keys
 
 class Ice_Spirit(Enemy):
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 100, 'elemental', 20)
+        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 1.8, 'elemental', 20)
         self.animation = 'ice_spirit'
         self.animation_num_max = 3
         self.path_finding_strategy = 'standard'
@@ -18,8 +18,8 @@ class Ice_Spirit(Enemy):
         self.attack_animation_num_cooldown_max = 30
         self.ice_shooter = Ice_Shooter(self.game)
 
-    def Update(self, tilemap, movement = (0, 0)):
-        super().Update(tilemap, movement)
+    def Update(self, tilemap, delta_time, movement = (0, 0)):
+        super().Update(tilemap, delta_time, movement)
 
         if self.effects.frozen.effect:
             self.Set_Effect(keys.healing, self.effects.frozen.effect)
@@ -27,7 +27,7 @@ class Ice_Spirit(Enemy):
         
 
         if self.distance_to_player <= 200:
-            self.Attack()
+            self.Attack(delta_time)
 
         if self.distance_to_player > 250 and self.charge:
             self.charge = 0
@@ -36,15 +36,15 @@ class Ice_Spirit(Enemy):
 
         
     
-    def Attack(self):
-        if not super().Attack():
+    def Attack(self, delta_time):
+        if not super().Attack(delta_time):
             return
         
         # If Player is to close, then ice spirit cannot shoot
         if self.distance_to_player < 50:
             return False
         
-        self.charge += 1
+        self.charge += delta_time
 
         if self.charge >= self.max_weapon_charge:
             self.shooting_ice = True

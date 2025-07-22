@@ -51,7 +51,8 @@ class Trap(PhysicsEntity):
 
         self.entities.append(entity)
         return True
-    
+
+
     def Update_Cooldown(self):
         if self.entity_check_cooldown:
             self.entity_check_cooldown -= 1

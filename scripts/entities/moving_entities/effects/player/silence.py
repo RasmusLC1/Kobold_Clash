@@ -6,5 +6,5 @@ class Silence(Effect):
     def __init__(self, entity):
         description = 'Reduces noise'
 
-        super().__init__(entity, keys.silence, 0, 0, (120, 160), description)
+        super().__init__(entity, keys.silence, 0, 0, (2, 3), description)
 

@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 class Arcane_Conduit(Effect):
     def __init__(self, entity):
         description = 'Reduces Rune cost'
-        super().__init__(entity, keys.arcane_conduit, 0, 0, (200, 250), description)
+        super().__init__(entity, keys.arcane_conduit, 0, 0, (3, 4), description)
 
     
     #set Fire effect

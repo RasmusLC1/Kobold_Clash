@@ -11,17 +11,17 @@ class Intent_Manager():
         self.intent_index = 0
         self.intent_length = 0
         self.intent_cooldown = 0
-        self.intent_cooldown_max = 100 # Lower value means faster response rate
+        self.intent_cooldown_max = 2 # Lower value means faster response rate
         self.attack_cooldown = 0
-        self.attack_cooldown_max = round(self.entity.max_weapon_charge * 1.2)
+        self.attack_cooldown_max = self.entity.max_weapon_charge * 1.2
         # Lookup for 
         self.base_cooldown = {
-            keys.direct: 0,
-            keys.attack: 0,
+            keys.direct: self.intent_cooldown_max,
+            keys.attack: self.intent_cooldown_max * 0.5,
             keys.idle: 0,
             keys.long_range: self.intent_cooldown_max * 2,
             keys.medium_range: self.intent_cooldown_max,
-            keys.short_range: round(self.intent_cooldown_max * 0.5),
+            keys.short_range: self.intent_cooldown_max * 0.8,
             keys.keep_position: self.intent_cooldown_max,
             keys.run_away : self.intent_cooldown_max * 5,
         }
@@ -49,14 +49,14 @@ class Intent_Manager():
 
     
     # Update the entity's behavior
-    def Update_Behavior(self):
+    def Update_Behavior(self, delta_time):
         if self.entity.distance_to_player > 300:  # skip if out of range
             self.Set_Idle()
             return
 
-        self.Handle_Attack()
+        self.Handle_Attack(delta_time)
 
-        if not self.Update_Intent_Cooldown():
+        if not self.Update_Intent_Cooldown(delta_time):
             return
 
         self.Set_Current_Intent(self.intent[self.intent_index])
@@ -113,17 +113,17 @@ class Intent_Manager():
         if not max_cooldown:
             return
         try:
-            offset = round(max_cooldown // 3)
-            self.intent_cooldown = random.randint(max_cooldown - offset, max_cooldown +  offset)
+            offset = round(max_cooldown / 3)
+            self.intent_cooldown = random.uniform(max_cooldown - offset, max_cooldown +  offset)
         except Exception as e:
             print(f"WRONG INTENT COOLDOWN: {e}", max_cooldown, offset)
 
     # Return false on when cooldown is active
-    def Update_Intent_Cooldown(self):
+    def Update_Intent_Cooldown(self, delta_time):
 
         if not self.intent_cooldown:
             return True
-        self.intent_cooldown = max(0, self.intent_cooldown - 1)
+        self.intent_cooldown = max(0, self.intent_cooldown - delta_time)
         return False
         
     def Set_Intent_Index(self, index):
@@ -134,11 +134,11 @@ class Intent_Manager():
 
 
     # Handle the enemy attack logic
-    def Handle_Attack(self):
+    def Handle_Attack(self, delta_time):
         # self.Update_Attack_Cooldown()
         # increment the intent when enemy attacks
         if self.entity.distance_to_player < self.entity.attack_distance:
-            self.entity.Attack()
+            self.entity.Attack(delta_time)
             
             return False
 

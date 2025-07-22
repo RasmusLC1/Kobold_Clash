@@ -13,12 +13,12 @@ class Soul_Well(Decoration):
 
 
 
-    def Update(self):
-        self.Update_Animation()
-        return super().Update()
+    def Update(self, delta_time):
+        self.Update_Animation(delta_time)
+        return super().Update(delta_time)
 
-    def Update_Animation(self):
-        if not self.animation_cooldown_Handler():
+    def Update_Animation(self, delta_time):
+        if not self.animation_cooldown_Handler(delta_time):
             return
         
         if self.animation >= self.max_animation:
@@ -27,15 +27,15 @@ class Soul_Well(Decoration):
             self.Set_Animation(self.animation + 1)
         spawn_particles = random.randint(0, 4)
         if spawn_particles == 0:
-            self.game.particle_handler.Activate_Particles(random.randint(2, 4), keys.soul_particle, self.rect().center, frame=random.randint(50, 70))
+            self.game.particle_handler.Activate_Particles(random.randint(2, 4), keys.soul_particle, self.rect().center, time = random.uniform(1.5, 2))
 
 
-    def animation_cooldown_Handler(self):
+    def animation_cooldown_Handler(self, delta_time):
         if self.animation_cooldown <= 0:
-            self.animation_cooldown = random.randint(40, 60)
+            self.animation_cooldown = random.uniform(0.7, 1)
             return True
         
-        self.animation_cooldown -= 1
+        self.animation_cooldown -= delta_time
         return False
 
 
@@ -43,7 +43,7 @@ class Soul_Well(Decoration):
         self.game.player.Set_Last_Shrine(self)
         self.game.player.Increase_Souls(item.amount * item.value * 2)
         self.game.item_handler.Remove_Item(item, True)
-        self.game.particle_handler.Activate_Particles(random.randint(8, 12), keys.soul_particle, self.rect().center, frame=random.randint(50, 70))
+        self.game.particle_handler.Activate_Particles(random.randint(8, 12), keys.soul_particle, self.rect().center, time = random.uniform(1.5, 2))
         
         self.Generate_Sound('soul_well', 0.6, 1000)
 

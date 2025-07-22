@@ -67,9 +67,9 @@ class Player(Moving_Entity):
 
 
 
-    def Update(self, tilemap, movement=(0, 0), offset=(0, 0)):
+    def Update(self, tilemap, delta_time, movement=(0, 0), offset=(0, 0)):
 
-        super().Update(tilemap, movement=movement)
+        super().Update(tilemap, delta_time, movement=movement)
         self.Mouse_Handler()
         self.movement_handler.Update()
 
@@ -78,11 +78,11 @@ class Player(Moving_Entity):
 
         self.View_Direction(offset)
 
-        self.weapon_handler.Update(offset)
+        self.weapon_handler.Update(delta_time, offset)
 
         self.Update_Souls_To_Remove()
 
-        self.Spawn_Particles()
+        self.Spawn_Particles(delta_time)
 
 
 
@@ -115,7 +115,7 @@ class Player(Moving_Entity):
         
         self.souls_to_remove = max(0, self.souls_to_remove - 1)
         self.souls = max(0, self.souls - 1)
-        self.game.particle_handler.Activate_Particles(1, keys.soul_particle, self.rect().center, frame=random.randint(20, 30))
+        self.game.particle_handler.Activate_Particles(1, keys.soul_particle, self.rect().center, time = random.uniform(1.5, 2))
 
 
     def Entity_Collision_Detection(self, tilemap):
@@ -206,13 +206,13 @@ class Player(Moving_Entity):
         self.last_shrine_visited = shrine
 
     # Spawn player particles at random intervals
-    def Spawn_Particles(self):
+    def Spawn_Particles(self, delta_time):
         if not self.player_particle_cooldown:
-            self.player_particle_cooldown = random.randint(20, 30)
-            self.game.particle_handler.Activate_Particles(random.randint(1, 3), keys.player_particle, self.rect().center, frame=random.randint(50, 70))
+            self.player_particle_cooldown = random.uniform(0.3, 0.5)
+            self.game.particle_handler.Activate_Particles(random.randint(1, 3), keys.player_particle, self.rect().center)
 
             return
-        self.player_particle_cooldown -= 1
+        self.player_particle_cooldown -= delta_time
         return
 
     # Render player

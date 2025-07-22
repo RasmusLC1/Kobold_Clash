@@ -5,5 +5,5 @@ from scripts.engine.keys.keys import keys
 class Fire_Resistance(Effect):
     def __init__(self, entity):
         description = 'Prevents fire damage'
-        super().__init__(entity, keys.fire_resistance, 0, 0, (200, 250), description)
+        super().__init__(entity, keys.fire_resistance, 0, 0, (3, 4), description)
 

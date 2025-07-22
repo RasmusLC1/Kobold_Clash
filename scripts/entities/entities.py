@@ -82,7 +82,7 @@ class PhysicsEntity:
         self.active -= 1
 
         
-    def Update(self):
+    def Update(self, delta_time):
         pass
 
     def Damage_Taken(self, damage):

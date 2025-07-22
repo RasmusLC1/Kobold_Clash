@@ -22,7 +22,6 @@ class Enemy(Moving_Entity):
         self.random_movement_cooldown = 0
         self.alert_cooldown = 0
         self.active_weapon = None
-        self.weapon_cooldown = 0
         self.target = self.game.player.pos # Default target is set to player
         self.soul_value = soul_value
 
@@ -81,18 +80,18 @@ class Enemy(Moving_Entity):
 
 
 
-    def Update(self, tilemap, movement=(0, 0)):
+    def Update(self, tilemap, delta_time, movement=(0, 0)):
         self.Reset_Max_Speed()
-        self.intent_manager.Update_Behavior()
-        self.path_finding.Path_Finding()
+        self.intent_manager.Update_Behavior(delta_time)
+        self.path_finding.Path_Finding(delta_time)
         movement = self.direction
         
-        super().Update(tilemap, movement)
+        super().Update(tilemap, delta_time, movement)
 
         self.Set_Direction_Holder()
 
-        self.Update_Alert_Cooldown()
-        self.Update_Locked_On_Target()
+        self.Update_Alert_Cooldown(delta_time)
+        self.Update_Locked_On_Target(delta_time)
 
 
         
@@ -139,14 +138,14 @@ class Enemy(Moving_Entity):
 
         return None
     
-    def Attack(self):
+    def Attack(self, delta_time):
         # Check if the player is invisible
         if self.game.player.effects.invisibility.effect:
             return False
         return True
 
     def Set_Attack_Direction(self):
-        if not self.charge:
+        if not self.charge > 0:
             self.attack_direction = (0, 0)
             return
         
@@ -156,16 +155,13 @@ class Enemy(Moving_Entity):
         return self.attack_strategies.Attack_Strategy()
 
 
-    def Update_Movement(self, movement):
-        return super().Update_Movement(movement)
-
     
     def Set_Active_Weapon(self, weapon):
         self.active_weapon = weapon
 
-    def Update_Alert_Cooldown(self):
+    def Update_Alert_Cooldown(self, delta_time):
         if self.alert_cooldown:
-            self.alert_cooldown = max(0, self.alert_cooldown - 1)
+            self.alert_cooldown = max(0, self.alert_cooldown - delta_time)
 
     def Set_Alert_Cooldown(self, amount):
         self.alert_cooldown = amount
@@ -177,21 +173,18 @@ class Enemy(Moving_Entity):
         
         return True
 
-    def Weapon_Cooldown(self):
-        if self.weapon_cooldown:
-            self.weapon_cooldown = max(0, self.weapon_cooldown - 1)
 
 
-    def Update_Locked_On_Target(self):
+
+    def Update_Locked_On_Target(self, delta_time):
         if not self.locked_on_target:
             return
-        self.locked_on_target = max(0, self.locked_on_target - 1)
+        self.locked_on_target = max(0, self.locked_on_target - delta_time)
     
     def Set_Locked_On_Target(self, value):
         self.locked_on_target = value
         
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
-        # No damage done simply return
         self.Spawn_Damaged_Particles()
         if not super().Damage_Taken(damage, effect, direction):
             return
@@ -214,7 +207,7 @@ class Enemy(Moving_Entity):
 
 
     def Set_Action(self,  movement = None):
-        if self.charge:
+        if self.charge > 0:
             self.animation_handler.Set_Animation(keys.attack)
         else:
             self.animation_handler.Set_Animation('running')
@@ -223,7 +216,7 @@ class Enemy(Moving_Entity):
 
 
     def Spawn_Damaged_Particles(self):
-        self.game.particle_handler.Activate_Particles(10, keys.blood_particle, self.rect().center, frame=random.randint(10, 30))
+        self.game.particle_handler.Activate_Particles(10, keys.blood_particle, self.rect().center, random.uniform(0.2, 0.5))
 
 
     def Spawn_Bones(self):
@@ -320,11 +313,13 @@ class Enemy(Moving_Entity):
     
 
     def Render_Attacking_Symbol(self, surf, offset = (0,0)):
-        if self.charge < 20:
+        if self.charge < 0:
             return
         exclamation_mark = self.game.assets['exclamation_mark'][0]
+        
+        normalized_charge = min(self.charge / self.max_weapon_charge, 1)
+        alpha_value = int(50 + (normalized_charge * (255 - 50)))
 
-        alpha_value = max(0, min(255, self.charge * 7))
         exclamation_mark.set_alpha(alpha_value)
         surf.blit(exclamation_mark, (self.rect().left - offset[0], self.rect().top - offset[1] - self.attack_symbol_offset))
 

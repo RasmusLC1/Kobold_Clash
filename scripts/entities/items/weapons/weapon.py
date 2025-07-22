@@ -11,6 +11,7 @@ import pygame
 import math
 import random
 from scripts.engine.keys.keys import keys
+import inspect
 
 class Weapon(Item):
     def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_type = 'cut', size = (32, 32), add_to_tile = True):
@@ -87,12 +88,12 @@ class Weapon(Item):
         self.rotate = data['rotate']
         self.attacking = data['attacking']
         self.special_attack = data['special_attack']
-
    
     # General Update function, handles setting the attack and general logic
-    def Update(self, offset = (0,0)):
-        super().Update()
-        self.animation_handler.Update_Animation()
+    def Update(self, delta_time, offset = (0,0)):
+        caller = inspect.stack()[1].function
+        super().Update(delta_time)
+        self.animation_handler.Update_Animation(delta_time)
         self.Special_Attack()
         self.Update_Delete_Countdown()
         if not self.entity:
@@ -104,15 +105,15 @@ class Weapon(Item):
 
  
     # Update the attack logic
-    def Update_Attack(self):
+    def Update_Attack(self, delta_time):
         if not self.entity_attack_type:
             return False
         
-        if self.entity_attack_type.Update_Attack():
+        if self.entity_attack_type.Update_Attack(delta_time):
             self.Delete_Item()
             return
-        self.animation_handler.Update_Attack_Animation()
-        self.attack_effect_handler.Update_Attack_Effect_Animation()
+        self.animation_handler.Update_Attack_Animation(delta_time)
+        self.attack_effect_handler.Update_Attack_Effect_Animation(delta_time)
         self.Attack_Align_Weapon()
 
     # Initialise the attack and reset attack values
@@ -471,7 +472,7 @@ class Weapon(Item):
 
 
     def Spawn_Spark(self):
-        self.game.particle_handler.Activate_Particles(random.randint(2, 5), keys.spark_particle, self.rect().center, random.randint(20, 30))
+        self.game.particle_handler.Activate_Particles(random.randint(2, 5), keys.spark_particle, self.rect().center, random.uniform(1, 1.5))
 
     def Add_Gem(self, gem):
         return self.gem_handler.Add_Gem(gem)

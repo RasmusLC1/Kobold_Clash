@@ -7,11 +7,11 @@ import random
 
 class Skeleton_Warlock(Skeleton):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.skeleton_warlock, health, strength, max_speed, agility, intelligence, stamina, 80, 25)
+        super().__init__(game, pos, keys.skeleton_warlock, health, strength, max_speed, agility, intelligence, stamina, 1, 25)
         self.animation_handler.Set_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Max(4)
-        self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(100)
-        self.animation_handler.Set_Animation_Num_Cooldown_Max(150)
+        self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(0.3)
+        self.animation_handler.Set_Animation_Num_Cooldown_Max(1.2)
         self.attack_distance  = 200
         self.min_attack_range = 50
         self.attack_strategy = keys.long_range
@@ -30,7 +30,7 @@ class Skeleton_Warlock(Skeleton):
             self.min_attack_range = 30
             self.attack_strategy = keys.medium_range
 
-    def Attack(self):
+    def Attack(self, delta_time):
         if self.game.player.effects.invisibility.effect:
             return False
         
@@ -44,13 +44,13 @@ class Skeleton_Warlock(Skeleton):
 
         if "staff" in self.active_weapon.type:
 
-            self.charge += 1
+            self.charge += delta_time
             self.active_weapon.Set_Charging_Enemy()
             if self.charge < self.max_weapon_charge:
                 return False
             self.Set_Target(self.game.player.pos)
             self.Attack_Direction_Handler()
-            self.game.particle_handler.Activate_Particles(random.randint(5, 10), keys.gold_particle, self.rect().center, frame=random.randint(20, 30))
+            self.game.particle_handler.Activate_Particles(random.randint(5, 10), keys.gold_particle, self.rect().center)
             
             self.active_weapon.Shoot_Projectiles()
             self.Reset_Charge()

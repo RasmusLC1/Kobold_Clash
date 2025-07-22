@@ -19,10 +19,11 @@ class Item(PhysicsEntity):
         self.inventory_size = (32,32) # Used to upscale item for inventory
         self.activate_cooldown = 0
         self.animation_cooldown = 0
-        self.animation_cooldown_max = 50
         self.amount = amount
         self.max_amount = 1
         self.max_animation = 0
+        self.animation_cooldown_max = 0.8
+
         self.animation = random.randint(0, self.max_animation)
         self.nearby_entities = []
         self.delete_countdown = 0
@@ -56,8 +57,8 @@ class Item(PhysicsEntity):
         self.inventory_index = data['inventory_index']
         self.Set_Description()
         
-    def Update(self):
-        self.Update_Activate_Cooldown()
+    def Update(self, delta_time):
+        self.Update_Activate_Cooldown(delta_time)
 
     def Update_In_Inventory(self):
         pass
@@ -67,13 +68,13 @@ class Item(PhysicsEntity):
         if self.activate_cooldown:
             return False
         
-        self.activate_cooldown = 60
+        self.activate_cooldown = 1
         return True
 
-    def Update_Activate_Cooldown(self):
+    def Update_Activate_Cooldown(self, delta_time):
         if self.activate_cooldown <= 0:
             return
-        self.activate_cooldown = max(0, self.activate_cooldown - 1)
+        self.activate_cooldown = max(0, self.activate_cooldown - delta_time)
 
     def Set_Inventory_Index(self, index):
         self.inventory_index = index
@@ -112,9 +113,9 @@ class Item(PhysicsEntity):
         self.game.sound_handler.Play_Sound('item_placedown', 0.2)
         return True
 
-    def Update_Animation(self):
-        if self.animation_cooldown:
-            self.animation_cooldown -= 1
+    def Update_Animation(self, delta_time):
+        if self.animation_cooldown > 0:
+            self.animation_cooldown = max(0, self.animation_cooldown - delta_time)
         else:
             self.animation_cooldown = self.animation_cooldown_max
             self.animation = random.randint(0,self.max_animation)
@@ -183,10 +184,10 @@ class Item(PhysicsEntity):
 
     
 
-    def Update_Delete_Cooldown(self):
+    def Update_Delete_Cooldown(self, delta_time):
         if not self.delete_countdown:
             return False
-        self.delete_countdown = max(0, self.delete_countdown - 1)
+        self.delete_countdown = max(0, self.delete_countdown - delta_time)
 
         if self.delete_countdown <= 0:
             self.Delete_Item()
@@ -230,7 +231,7 @@ class Item(PhysicsEntity):
         if not self.rendered_image:
             self.Set_Sprite()
             if not self.rendered_image:
-                print(self.type, vars(self))
+                # print(self.type, vars(self))
                 self.broken_rendering_counter += 1
                 if self.broken_rendering_counter >= 10:
                       self.Delete_Item()
