@@ -9,11 +9,11 @@ class Interactive_Loot(Loot):
         self.distance_to_player = 0
         self.max_distance = max_distance
 
-    def Update(self):
+    def Update(self, delta_time):
         if self.game.mouse.right_click:
             self.clicked = False
 
-        return super().Update()
+        return super().Update(delta_time)
 
     def Calculate_Distance_To_Player(self):
         player_pos = self.game.player.pos

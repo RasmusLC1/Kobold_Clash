@@ -24,14 +24,14 @@ class Door(Decoration):
         if self.is_open:
             self.Open(False)
 
-    def Update(self):
+    def Update(self, delta_time):
         if not self.high_light_cooldown:
             return
-        self.high_light_cooldown -= 1
+        self.high_light_cooldown -= delta_time
 
 
     def Set_Highlight(self):
-        self.high_light_cooldown = 5
+        self.high_light_cooldown = 0.5
 
 
     # TODO: IMPLEMENT walls that can be walked through, I.E walls without physics in tilemap

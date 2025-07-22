@@ -52,7 +52,6 @@ class Dweller(Enemy):
         
         if not self.active_weapon:
             return False
-        print(self.charge, self.max_weapon_charge, delta_time)
         self.charge = min(self.max_weapon_charge, self.charge + delta_time)
 
         if self.charge < self.max_weapon_charge:

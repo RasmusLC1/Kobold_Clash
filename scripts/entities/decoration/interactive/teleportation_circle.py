@@ -12,8 +12,8 @@ class Teleportation_Circle(Decoration):
 
 
 
-    def Update(self):
-        return super().Update()
+    def Update(self, delta_time):
+        return super().Update(delta_time)
 
 
     def Open(self, generate_clatter=False):

@@ -41,7 +41,7 @@ class Ranged_Damage_Handler_Weapon(Damage_Handler_Weapon):
     def Attack_Collision_Check_Projectile(self):
         for entity in self.nearby_enemies:
             # Check if the enemy is on damage cooldown
-            if entity.damage_cooldown:
+            if entity.damage_cooldown > 0:
                 continue
 
             # Check for collision with enemy

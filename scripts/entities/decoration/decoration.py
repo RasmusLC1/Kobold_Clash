@@ -27,7 +27,7 @@ class Decoration(PhysicsEntity):
         self.empty = data['empty']
         return super().Load_Data(data)
 
-    def Update_Animation(self):
+    def Update_Animation(self, delta_time):
         pass
 
     def Open(self, generate_clatter = False):

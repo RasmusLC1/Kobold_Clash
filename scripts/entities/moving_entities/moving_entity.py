@@ -327,12 +327,14 @@ class Moving_Entity(PhysicsEntity):
     def Update_Damage_Cooldown(self, delta_time):
         if self.damage_cooldown > 0:
             self.damage_cooldown -= delta_time
+
+            if self.damage_cooldown <= 0:
+                self.damage_cooldown = 0
+        
             
             
     # Damage = Total damage, effect = (effect, effect strength) 
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
-        if self.category == keys.enemy:
-            print("DAMAGE TEST", self.damage_cooldown, direction, effect)
         if self.Check_Blocking_Direction(direction) or self.damage_cooldown > 0:
             return False
         self.game.text_box_handler.Spawn_Damage_Text(self.pos.copy(), effect[0], str(damage))

@@ -15,8 +15,6 @@ class Ethereal_Chains(Radius_Effect_Loot):
     def Set_Description(self):
         self.description = 'Snares nearby\n enemies'
 
-    def Update(self):
-        return super().Update()
 
     # If out of amount, reset the hourglass
     def Reset_Chains(self):

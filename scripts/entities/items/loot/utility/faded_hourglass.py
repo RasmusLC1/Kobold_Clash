@@ -17,17 +17,17 @@ class Faded_Hourglass(Radius_Effect_Loot):
     def Set_Description(self):
         self.description = 'Slow nearby\n enemies'
 
-    def Update(self):
-        self.Handle_Slowdown()
-        return super().Update()
+    def Update(self, delta_time):
+        self.Handle_Slowdown(delta_time)
+        return super().Update(delta_time)
 
-    def Handle_Slowdown(self):
-        if not self.slowdown_triggered:
+    def Handle_Slowdown(self, delta_time):
+        if self.slowdown_triggered <= 0:
             return
         
-        self.slowdown_triggered -= 1
+        self.slowdown_triggered -= delta_time
 
-        if self.slowdown_triggered:
+        if self.slowdown_triggered <= 0:
             return
         
         for enemy in self.nearby_entities:
@@ -67,7 +67,7 @@ class Faded_Hourglass(Radius_Effect_Loot):
     # Effect of opening door on key
     def Slow_Enemies(self):
         self.Find_Nearby_Entities_Mouse()
-        self.slowdown_triggered = 200
+        self.slowdown_triggered = 3
         for enemy in self.nearby_entities:
             enemy.Set_Effect(keys.slow, self.slowdown_amount)
         self.Reset_Hourglass()

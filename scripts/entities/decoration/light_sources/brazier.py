@@ -9,7 +9,7 @@ class Brazier(Decoration):
         self.animation = 1
         self.max_animation = 5
         self.animation_cooldown = 0
-        self.animation_cooldown_max = 50
+        self.animation_cooldown_max = 0.8
         self.Add_Light()
 
     def Save_Data(self):
@@ -25,12 +25,12 @@ class Brazier(Decoration):
         self.Set_Sprite()
     
 
-    def Update(self):
+    def Update(self, delta_time):
         if self.animation > 0: # animation 0 is off
-            self.Update_Animation()
+            self.Update_Animation(delta_time)
         self.Update_Light_Level()
         
-        return super().Update()
+        return super().Update(delta_time)
 
     def Add_Light(self):
         self.light_source = self.game.light_handler.Add_Light(self.pos, 10, self.tile)
@@ -52,16 +52,16 @@ class Brazier(Decoration):
         return True
 
         
-    def Update_Animation(self):
-        if self.animation_cooldown:
-            self.animation_cooldown -= 1
+    def Update_Animation(self, delta_time):
+        if self.animation_cooldown > 0:
+            self.animation_cooldown -= delta_time
         else:
             self.Animate()
 
     def Animate(self):
         self.Spawn_Fire_Particle()
 
-        self.animation_cooldown = random.randint(self.animation_cooldown_max - 10, self.animation_cooldown_max)
+        self.animation_cooldown = random.uniform(self.animation_cooldown_max - 0.2, self.animation_cooldown_max)
         self.Set_Animation(random.randint(1,self.max_animation))
 
 

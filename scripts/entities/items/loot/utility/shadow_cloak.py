@@ -9,10 +9,6 @@ class Shadow_Cloak(Utility_Loot):
         self.max_amount = 3
         self.Set_Description()
 
- 
-    def Update(self):
-        super().Update()
-
     def Set_Description(self):
         self.description = 'Become\ninvisibile'
 

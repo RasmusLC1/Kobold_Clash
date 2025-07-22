@@ -23,17 +23,17 @@ class Sacrifice_Shrine(Decoration):
 
         
 
-    def Update(self):
-        self.Update_Animation()
-        return super().Update()
+    def Update(self, delta_time):
+        self.Update_Animation(delta_time)
+        return super().Update(delta_time)
     
     def Add_Light(self):
         self.light_source = self.game.light_handler.Add_Light(self.pos, 10, self.tile)
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
 
     # TODO: Add sprite for shrine with animation
-    def Update_Animation(self):
-        if not self.animation_cooldown_Handler():
+    def Update_Animation(self, delta_time):
+        if not self.animation_cooldown_Handler(delta_time):
             return
         
         if self.animation >= self.max_animation:
@@ -44,12 +44,12 @@ class Sacrifice_Shrine(Decoration):
         if spawn_particles == 0:
             self.game.particle_handler.Activate_Particles(random.randint(2, 4), keys.soul_particle, self.rect().center, time = random.uniform(1.5, 2))
 
-    def animation_cooldown_Handler(self):
+    def animation_cooldown_Handler(self, delta_time):
         if self.animation_cooldown <= 0:
-            self.animation_cooldown = random.randint(30, 45)
+            self.animation_cooldown = random.uniform(0.5, 0.7)
             return True
         
-        self.animation_cooldown -= 1
+        self.animation_cooldown -= delta_time
         return False
 
 

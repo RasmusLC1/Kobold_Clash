@@ -110,7 +110,6 @@ class Player_Weapon_Attack():
         
         if self.attacking > 0:
             return False
-        # print("RESET ATTACK", self.active)
         self.attacking = 0
         self.active = False
         self.weapon.Reset_Attack_Animation()
@@ -137,7 +136,6 @@ class Player_Weapon_Attack():
         self.enemy_hit_effect_cooldown -= delta_time
 
     def Set_Attacking(self):
-        print("SET ATTACK")
         self.attacking = max(0.1, 2 - (self.weapon.speed + self.player.agility) / 10)
 
     def Set_Enemy_Hit_Effect(self):

@@ -17,7 +17,7 @@ class Intent_Manager():
         # Lookup for 
         self.base_cooldown = {
             keys.direct: self.intent_cooldown_max,
-            keys.attack: 0,
+            keys.attack: self.intent_cooldown_max * 0.5,
             keys.idle: 0,
             keys.long_range: self.intent_cooldown_max * 2,
             keys.medium_range: self.intent_cooldown_max,

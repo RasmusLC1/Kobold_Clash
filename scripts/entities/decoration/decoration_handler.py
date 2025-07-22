@@ -273,10 +273,10 @@ class Decoration_Handler():
         return brazier
 
 
-    def Update(self):
+    def Update(self, delta_time):
         self.Check_Keyboard_Input()
         for decoration in self.decorations:
-            decoration.Update()
+            decoration.Update(delta_time)
 
     def Check_Keyboard_Input(self):
         if self.game.keyboard_handler.e_pressed:
