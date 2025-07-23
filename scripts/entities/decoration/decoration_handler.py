@@ -16,13 +16,16 @@ from scripts.entities.decoration.boss_room.boss_room import Boss_Room
 from scripts.entities.decoration.light_sources.brazier import Brazier
 from scripts.entities.decoration.interactive.teleportation_circle import Teleportation_Circle
 from scripts.entities.decoration.loot_container.bookshelf import Bookshelf
+from scripts.entities.decoration.decoration_initialiser import Decoration_Initialiser
+
 import random
 import math
 from scripts.engine.keys.keys import keys
 
 class Decoration_Handler():
     def __init__(self, game) -> None:
-        self.game = game       
+        self.game = game
+        self.decoration_initialiser = Decoration_Initialiser(game)
         self.decorations = []
         self.teleportation_circles = []
         self.bones = []
@@ -31,7 +34,6 @@ class Decoration_Handler():
 
         self.spawn_methods = {
             keys.door_basic: self.Spawn_Door,
-            keys.chest: self.Spawn_Chest,
             keys.vase: self.Spawn_Vase,
             keys.effigy_tomb: self.Spawn_Effigy_Tomb,
             keys.potion_table: self.Spawn_Potion_Table,
@@ -47,9 +49,11 @@ class Decoration_Handler():
             keys.bookshelf: self.Spawn_Bookshelf,
             keys.teleportation_circle: self.Spawn_Teleportation_Circle,
             keys.brazier: self.Spawn_Brazer,
-            keys.light_source : self.Select_Light_Source,
+            keys.light_source : self.Spawn_Lightsource,
             'boss_room': self.Spawn_Boss_Room
         }
+
+
 
 
         self.light_sources = {
@@ -66,8 +70,9 @@ class Decoration_Handler():
         self.saved_data.clear()
 
     def Initialise(self, depth=0):
-        
-        self.Find_Decorations_In_Tilemap(depth)
+        self.Spawn_Chest()
+        self.Spawn_Vase()
+        self.Spawn_Lightsource()
         self.Link_Teleportation_Circles()
         self.Set_Item_Sacrifice_Decorations()
 
@@ -94,15 +99,7 @@ class Decoration_Handler():
 
         return random.choice(decorations_with_type)
     
-    def Find_Decorations_In_Tilemap(self, depth):
-        # door initialisation
-        for door in self.game.tilemap.extract([(keys.door_basic, 0)].copy(), True):
-            size = (self.game.assets[door.type][0].get_width(), self.game.assets[door.type][0].get_height())
-            self.Decoration_Spawner(keys.door_basic, door.pos, size=size)
 
-        keys_array = list(self.spawn_methods.keys())
-        for decoration in self.game.tilemap.Extract_Decorations(keys_array):
-            self.Decoration_Spawner(decoration.type, decoration.pos)
 
 
     def Set_Item_Sacrifice_Decorations(self):
@@ -161,20 +158,37 @@ class Decoration_Handler():
         self.decorations.append(door)
         return door
 
-    def Spawn_Chest(self, pos, size=None, version=None, radius=None, level=None):
-        chest = Chest(self.game, pos, version)  
-        self.decorations.append(chest)
-        return chest
+    def Spawn_Chest(self):
+        for chest_pos in self.decoration_initialiser.decorations[keys.chest]:
+            chest = Chest(self.game, chest_pos, 1)  
+            self.decorations.append(chest)
+            
+    def Spawn_Vase(self):
+        for pos in self.decoration_initialiser.decorations[keys.vase]:
+            vase = Vase(self.game, pos)  
+            self.decorations.append(vase)
+
+    def Spawn_Lightsource(self):
+        for pos in self.decoration_initialiser.decorations[keys.light_source]:
+
+            # Type needs to be reset
+            type = random.choices(
+                population=list(self.light_sources.keys()),
+                weights=list(self.light_sources.values()),
+                k=1
+            )[0]
+
+            if type == keys.torch:
+                self.game.item_handler.weapon_handler.Weapon_Spawner(keys.torch, pos[0], pos[1])
+            else:
+                light_source = Brazier(self.game, pos)
+                self.decorations.append(light_source)
     
     def Spawn_Mimic_Chest(self, pos, size=None, version=None, radius=None, level=None):
         chest = Mimic_Chest(self.game, pos, version)  
         self.decorations.append(chest)
         return chest
     
-    def Spawn_Vase(self, pos, size=None, version=None, radius=None, level=None):
-        vase = Vase(self.game, pos)  
-        self.decorations.append(vase)
-        return vase
     
     def Spawn_Effigy_Tomb(self, pos, size=None, version=None, radius=None, level=None):
         effigy_tomb = Effigy_Tomb(self.game, pos)  
@@ -248,24 +262,7 @@ class Decoration_Handler():
         self.decorations.append(boss_room)
         return boss_room
     
-    def Select_Light_Source(self, pos, size=None, version=None, radius=None, level=None):
-            # Type needs to be reset
-            type = random.choices(
-                population=list(self.light_sources.keys()),
-                weights=list(self.light_sources.values()),
-                k=1
-            )[0]
 
-            if type == keys.torch:
-                self.game.item_handler.weapon_handler.Weapon_Spawner(keys.torch, pos[0], pos[1])
-            else:
-                spawn_function = self.spawn_methods.get(type)
-                if not spawn_function:
-                    print(f"Warning: Decoration type '{type}' not recognized. Decoration_Handler Decoration_Spawner")
-                    return None
-
-                decoration = spawn_function(pos)
-                return decoration
     
     def Spawn_Brazer(self, pos, size=None, version=None, radius=None, level=None):
         brazier = Brazier(self.game, pos) 
