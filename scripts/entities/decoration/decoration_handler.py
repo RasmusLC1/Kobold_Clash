@@ -73,6 +73,7 @@ class Decoration_Handler():
         self.Spawn_Chest()
         self.Spawn_Vase()
         self.Spawn_Lightsource()
+        self.Spawn_Effigy_Tomb()
         self.Link_Teleportation_Circles()
         self.Set_Item_Sacrifice_Decorations()
 
@@ -190,10 +191,10 @@ class Decoration_Handler():
         return chest
     
     
-    def Spawn_Effigy_Tomb(self, pos, size=None, version=None, radius=None, level=None):
-        effigy_tomb = Effigy_Tomb(self.game, pos)  
-        self.decorations.append(effigy_tomb)
-        return effigy_tomb
+    def Spawn_Effigy_Tomb(self):
+        for pos in self.decoration_initialiser.decorations[keys.effigy_tomb]:
+            effigy_tomb = Effigy_Tomb(self.game, pos)  
+            self.decorations.append(effigy_tomb)
 
     def Spawn_Potion_Table(self, pos, size=None, version=None, radius=None, level=None):
         potion_table = Potion_Table(self.game, pos)  

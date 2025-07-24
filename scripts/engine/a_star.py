@@ -32,24 +32,7 @@ class A_Star:
         self.void_spawn_map.clear()
         self.custom_map.clear()
 
-    # def Setup_Custom_Map(self, custom_map, size_x, size_y):
-    #     """
-    #     custom_map is a 2D array in the form custom_map[x][y].
-    #     size_x, size_y are its dimensions (width, height).
-    #     We'll store it exactly the same way: self.custom_map[x][y].
-    #     """
-    #     map_conversion = {
-    #         0: 0,
-    #         1: 1,
-    #         2: 0,
-    #         3: 0,
-    #         4: 0,
-    #         5: 0,
-    #     }
-    #     # Copy it so we don't mutate the original
-    #     self.custom_map = [col[:] for col in custom_map]
-    #     self.width = size_x
-    #     self.height = size_y
+
 
     def Setup_Custom_Map(self, custom_map, size_x, size_y):
         """

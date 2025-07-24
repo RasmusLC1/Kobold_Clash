@@ -23,6 +23,7 @@ class Tile():
         self.sprite = None
         self.needs_redraw = True  # ✅ Add flag to track if we need to redraw
         self.rendered_surface = None  # ✅ Cached surface
+        self.contains_decoration = False # Flag to prevent spawning multiple decorations
         # Dictionary to hold each light's contribution
         # Key: light_id, Value: contributed_light_level
         self.light_contributions = {}
@@ -146,6 +147,9 @@ class Tile():
 
         self.needs_redraw = False  # Reset flag
     
+    def Set_Contains_Decoration(self, state):
+        self.contains_decoration = state
+
     # Only render active tiles from raycaster
     def Render(self, surf, offset = (0,0)):
         if not self.sprite:
