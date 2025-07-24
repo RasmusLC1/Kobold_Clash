@@ -10,7 +10,6 @@ class Portal_Shrine_Spawner():
         loot = 0 
         path = []
         count = 0
-        print("SPAWN PORTAL")
         while loot < loot_amount:
 
             spawner_x = random.randint(1, size_x - 2)

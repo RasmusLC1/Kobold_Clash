@@ -30,20 +30,31 @@ class Decoration_Initialiser():
 
 
     def Spawn_Large_Objects(self):
+        self.Spawn_Portal_Shrine()
         self.Spawn_Effigy_Tomb()
         self.Spawn_Hunter_Shrine()
+        self.Spawn_Sacrifice_Shrine()
+        self.Spawn_Soul_Well()
 
     def Spawn_Small_Objects(self):
         self.Spawn_Chests()
         self.Spawn_Vase()
+        self.Spawn_Teleport()
 
     def Spawn_Chests(self):
         amount = random.randint(5, 10)
-        self.Find_Floor_Tiles(keys.chest, amount, True)
+        self.Find_Floor_Tiles(keys.chest, amount)
 
     def Spawn_Vase(self):
         amount = random.randint(20, 30)
         self.Find_Floor_Tiles(keys.vase, amount)
+
+    def Spawn_Teleport(self):
+        amount = random.randint(20, 30)
+        if amount % 2:
+            amount += 1
+        print(amount)
+        self.Find_Floor_Tiles(keys.teleportation_circle, amount)
 
     def Spawn_Effigy_Tomb(self):
         amount = random.randint(10, 15)
@@ -52,6 +63,16 @@ class Decoration_Initialiser():
     def Spawn_Hunter_Shrine(self):
         amount = random.randint(2, 4)
         self.Find_Floor_Tiles_Large_Object(keys.hunter_shrine, amount)
+
+    def Spawn_Sacrifice_Shrine(self):
+        self.Find_Floor_Tiles_Large_Object(keys.sacrifice_shrine, 2)
+
+    
+    def Spawn_Portal_Shrine(self):
+        self.Find_Floor_Tiles_Large_Object(keys.portal_shrine, 1, True)
+
+    def Spawn_Soul_Well(self):
+        self.Find_Floor_Tiles_Large_Object(keys.soul_well, 2, True)
 
 
 
@@ -97,14 +118,13 @@ class Decoration_Initialiser():
         spawns = 0
         fail = 0
         tilemap_dic = self.game.tilemap.tilemap
-        if check_for_path_to_player:
-            player_pos = self.game.player.pos
+        player_pos = self.game.player.pos
         keys = []
         self.decorations[key] = []
 
         while spawns < amount:
             
-            if fail > amount:
+            if fail > amount and fail > 20:
                 return
 
             tile_key, floor_tile = random.choice(list(self.floor_tiles.items()))
@@ -115,18 +135,9 @@ class Decoration_Initialiser():
                 continue
             
 
-            if check_for_path_to_player:
-                dest_x = round(player_pos[0] // self.game.tilemap.tile_size) - self.game.a_star.min_x 
-                dest_y = round(player_pos[1] // self.game.tilemap.tile_size) - self.game.a_star.min_y 
-
-                src_x = floor_tile.pos[0] - self.game.a_star.min_x 
-                src_y = floor_tile.pos[1] - self.game.a_star.min_y
-                
-                path = self.game.a_star.a_star_search([src_x, src_y], [dest_x, dest_y])
-                if not path:
-                    fail += 1
-                    continue
-
+            if not self.Check_Path_Finding_To_Player(check_for_path_to_player, player_pos, floor_tile):
+                fail += 1
+                continue
             
 
             tilemap_dic[tile_key].Set_Contains_Decoration(True)
@@ -140,21 +151,27 @@ class Decoration_Initialiser():
         return keys
 
 
-    def Find_Floor_Tiles_Large_Object(self, key, amount):
+    def Find_Floor_Tiles_Large_Object(self, key, amount, check_for_path_to_player = False):
         spawns = 0
         fail = 0
 
         keys = []
+        player_pos = self.game.player.pos
 
 
         while spawns < amount:
             
-            if fail > amount:
+            if fail > amount and fail > 20:
                 return
 
             tile_key, floor_tile = random.choice(list(self.floor_tiles.items()))
             del self.floor_tiles[tile_key]
             
+            if not self.Check_Path_Finding_To_Player(check_for_path_to_player, player_pos, floor_tile):
+                fail += 1
+                continue
+
+
             x, y = map(int, tile_key.split(";"))
 
             neigbour_tile_contains_decoration = self.Check_Neighbours(x, y)
@@ -175,6 +192,23 @@ class Decoration_Initialiser():
 
         return keys
     
+
+    def Check_Path_Finding_To_Player(self, check_for_path_to_player, player_pos, floor_tile):
+        if not check_for_path_to_player:
+            return True
+        
+        dest_x = round(player_pos[0] // self.game.tilemap.tile_size) - self.game.a_star.min_x 
+        dest_y = round(player_pos[1] // self.game.tilemap.tile_size) - self.game.a_star.min_y 
+
+        src_x = floor_tile.pos[0] - self.game.a_star.min_x 
+        src_y = floor_tile.pos[1] - self.game.a_star.min_y
+        
+        path = self.game.a_star.a_star_search([src_x, src_y], [dest_x, dest_y])
+        if not path:
+            return False
+        return True
+        
+
 
     def Check_Neighbours(self, x, y):
         tilemap = self.game.tilemap.tilemap

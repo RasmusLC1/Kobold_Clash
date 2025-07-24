@@ -88,13 +88,7 @@ class Dungeon_Generator():
             return
         
         self.Update_Load_Menu(5)
-        
-        if not self.Spawn_Decoration(map_id, size_x, size_y):
-            self.Generate_Map(map_id)
-            return
-
-        self.Update_A_Star_Map()
-
+  
 
         Weapon_Spawner.Spawn_Weapons(self.cellular_automata.map, map_id, self.tile_size, size_x, size_y, self.tilemap.offgrid_tiles)
 
@@ -104,28 +98,6 @@ class Dungeon_Generator():
 
         self.Update_Load_Menu(6)
         self.tilemap.save(f'data/maps/{map_id}.json')
-
-    def Spawn_Decoration(self, map_id, size_x, size_y):
-        # Chest_Spawner.Spawn_Chest(self.cellular_automata.map, map_id, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-        
-        # Vase_Spawner.Spawn_Vase(self.cellular_automata.map, map_id, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-        
-        if not Portal_Shrine_Spawner.Spawn_Portal_Shrine(self.cellular_automata.map, self.player_spawn, size_x, size_y, self.tile_size, self.A_Star_Search, self.tilemap.offgrid_tiles):
-            return False
-        
-        Hunter_Shrine_Spawner.Spawn_Hunter_Shrine(self.cellular_automata.map, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-        
-        Sacrifice_Shrine_Spawner.Spawn_Sacrifice_Shrine(self.cellular_automata.map, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-
-        Soul_Well_Spawner.Spawn_Soul_Well(self.cellular_automata.map, map_id, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-
-        Teleportation_Circle_Spawner.Spawn_Teleport_Circle(self.cellular_automata.map, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-        
-        Effigy_Tomb_Spawner.Spawn_Effigy_Tomb(self.cellular_automata.map, map_id, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-
-        Effigy_Tomb_Spawner.Spawn_Effigy_Tomb(self.cellular_automata.map, map_id, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-
-        return True
 
 
     def Update_Load_Menu(self, value):

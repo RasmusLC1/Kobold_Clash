@@ -74,8 +74,12 @@ class Decoration_Handler():
         self.Spawn_Vase()
         self.Spawn_Lightsource()
         self.Spawn_Effigy_Tomb()
-        self.Link_Teleportation_Circles()
         self.Set_Item_Sacrifice_Decorations()
+        self.Spawn_Portal_Shrine()
+        self.Spawn_Sacrifice_Shrine()
+        self.Spawn_Soul_Well()
+        self.Spawn_Hunter_Shrine()
+        self.Spawn_Teleportation_Circle()
 
         self.Spawn_Items()
 
@@ -196,6 +200,54 @@ class Decoration_Handler():
             effigy_tomb = Effigy_Tomb(self.game, pos)  
             self.decorations.append(effigy_tomb)
 
+    def Spawn_Portal_Shrine(self):
+        for pos in self.decoration_initialiser.decorations[keys.portal_shrine]:
+            shrine = Portal_Shrine(self.game, pos)
+            self.decorations.append(shrine)
+
+        
+    
+    def Spawn_Sacrifice_Shrine(self):
+        for pos in self.decoration_initialiser.decorations[keys.sacrifice_shrine]:
+            shrine = Sacrifice_Shrine(self.game, pos)
+            self.decorations.append(shrine)
+
+        
+    def Spawn_Soul_Well(self):
+        for pos in self.decoration_initialiser.decorations[keys.soul_well]:
+            soul_well = Soul_Well(self.game, pos)
+            self.decorations.append(soul_well)
+
+    def Spawn_Hunter_Shrine(self):
+        for pos in self.decoration_initialiser.decorations[keys.hunter_shrine]:
+            shrine = Hunter_Shrine(self.game, pos)
+            self.decorations.append(shrine)
+    
+        
+    def Spawn_Teleportation_Circle(self):
+        for pos in self.decoration_initialiser.decorations[keys.teleportation_circle]:
+            teleportation_circle = Teleportation_Circle(self.game, pos)
+            self.decorations.append(teleportation_circle)
+            self.teleportation_circles.append(teleportation_circle)
+        
+        self.Link_Teleportation_Circles()
+
+    
+    def Link_Teleportation_Circles(self):
+        teleport_circles = self.teleportation_circles.copy()
+        random.shuffle(teleport_circles)  # Randomly pair circles
+
+        for i in range(0, len(teleport_circles) - 1, 2):
+            a = teleport_circles[i]
+            b = teleport_circles[i + 1]
+            a.Set_Linked_Portal(b)
+            b.Set_Linked_Portal(a)
+
+        for teleport_circle in teleport_circles:
+            if not teleport_circle.linked_portal:
+                self.Remove_Decoration(teleport_circle)
+                teleport_circles.remove(teleport_circle)
+
     def Spawn_Potion_Table(self, pos, size=None, version=None, radius=None, level=None):
         potion_table = Potion_Table(self.game, pos)  
         self.decorations.append(potion_table)
@@ -221,37 +273,17 @@ class Decoration_Handler():
         self.decorations.append(shrine)
         return shrine
     
-    def Spawn_Hunter_Shrine(self, pos, size=None, version=None, radius=None, level=None):
-        shrine = Hunter_Shrine(self.game, pos)
-        self.decorations.append(shrine)
-        return shrine
-    
-    def Spawn_Sacrifice_Shrine(self, pos, size=None, version=None, radius=None, level=None):
-        shrine = Sacrifice_Shrine(self.game, pos)
-        self.decorations.append(shrine)
-        return shrine
+ 
+
 
     def Spawn_Rune_Shrine(self, pos, size=None, version=None, radius=None, level=None):
         shrine = Rune_Shrine(self.game, pos)
         self.decorations.append(shrine)
         return shrine
     
-    def Spawn_Portal_Shrine(self, pos, size=None, version=None, radius=None, level=None):
-        shrine = Portal_Shrine(self.game, pos)
-        self.decorations.append(shrine)
-        return shrine
-    
-    def Spawn_Soul_Well(self, pos, size=None, version=None, radius=None, level=None):
-        soul_well = Soul_Well(self.game, pos)
-        self.decorations.append(soul_well)
-        return soul_well
-    
-    
-    def Spawn_Teleportation_Circle(self, pos, size=None, version=None, radius=None, level=None):
-        teleportation_circle = Teleportation_Circle(self.game, pos)
-        self.decorations.append(teleportation_circle)
-        self.teleportation_circles.append(teleportation_circle)
-        return teleportation_circle
+
+
+
 
     def Spawn_Bones(self, pos, size=None, version=None, radius=None, level=None):
         bones = Bones(self.game, pos, None)  
@@ -341,20 +373,7 @@ class Decoration_Handler():
         return
     
 
-    def Link_Teleportation_Circles(self):
-        teleport_circles = self.teleportation_circles.copy()
-        random.shuffle(teleport_circles)  # Randomly pair circles
-
-        for i in range(0, len(teleport_circles) - 1, 2):
-            a = teleport_circles[i]
-            b = teleport_circles[i + 1]
-            a.Set_Linked_Portal(b)
-            b.Set_Linked_Portal(a)
-
-        for teleport_circle in teleport_circles:
-            if not teleport_circle.linked_portal:
-                self.Remove_Decoration(teleport_circle)
-                teleport_circles.remove(teleport_circle)
+  
 
     
     def Check_Item_Collision(self, item):
