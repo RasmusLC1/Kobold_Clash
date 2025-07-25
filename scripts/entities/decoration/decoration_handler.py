@@ -297,24 +297,22 @@ class Decoration_Handler():
 
 # TODO: Might need a seperate class for handling rooms
     def Spawn_Rooms(self):
-        rooms = self.game.tilemap.extract([(keys.spawners)])
-        variants = {
-            keys.library : self.Spawn_Library,
-            keys.loot_room : self.Spawn_Loot_Room,
-            keys.library : self.Spawn_Boss_Room,
+        self.Spawn_Library()
+        self.Spawn_Loot_Room()
+        self.Spawn_Boss_Room()
 
-        }
-        for room in rooms:
-            room_function = variants.get(room.variant)
-    
+
     def Spawn_Library(self, pos, size):
-        pass
+        libraries = self.game.tilemap.extract([(keys.room, keys.library)])
+
 
     def Spawn_Loot_Room(self, pos, size):
-        pass
+        libraries = self.game.tilemap.extract([(keys.room, keys.loot_room)])
+
 
     def Spawn_Boss_Room(self, pos, size):
-        pass
+        libraries = self.game.tilemap.extract([(keys.room, keys.boss_room)])
+
 
 
 

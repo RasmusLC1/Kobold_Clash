@@ -35,6 +35,7 @@ class Spawn_Library():
 
             offgrid_tiles.append({keys.type: keys.room, keys.variant: keys.library, keys.pos: (start_x * tile_size, start_y * tile_size), keys.size : (room_size_x, room_size_y)})
             success += 1
+            print("SPAWN LIBRARY")
         
         
         return True
