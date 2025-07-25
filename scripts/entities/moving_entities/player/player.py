@@ -63,9 +63,7 @@ class Player(Moving_Entity):
         self.max_speed = data['max_speed']
         self.last_shrine_visited = data['last_shrine_visited']
 
-        
-
-
+    
 
     def Update(self, tilemap, delta_time, movement=(0, 0), offset=(0, 0)):
 

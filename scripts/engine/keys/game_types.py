@@ -54,6 +54,8 @@ class Game_Types():
 
     pos = "pos"
 
+    size = "size"
+
 
 # Astar levels
     
@@ -64,3 +66,14 @@ class Game_Types():
     custom = "custom"
     
     standard = "standard"
+
+
+# Room types
+
+    room = "room"
+    
+    library = "library"
+
+    loot_room = "loot_room"
+
+    boss_room = "boss_room"

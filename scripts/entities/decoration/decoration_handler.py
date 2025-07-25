@@ -34,6 +34,7 @@ class Decoration_Handler():
 
         self.spawn_methods = {
             keys.door_basic: Door,
+            keys.chest: Chest,
             keys.vase: Vase,
             keys.effigy_tomb: Effigy_Tomb,
             keys.potion_table: Potion_Table,
@@ -49,7 +50,6 @@ class Decoration_Handler():
             keys.teleportation_circle: Teleportation_Circle,
             keys.brazier: Brazier,
             keys.torch : None,
-            'boss_room': Boss_Room
         }
 
 
@@ -77,8 +77,10 @@ class Decoration_Handler():
         self.Spawn_Soul_Well()
         self.Spawn_Hunter_Shrine()
         self.Spawn_Teleportation_Circle()
-
+        
         self.Spawn_Items()
+
+        self.Spawn_Rooms()
 
 
     def Spawn_Items(self):
@@ -101,8 +103,6 @@ class Decoration_Handler():
 
         return random.choice(decorations_with_type)
     
-
-
 
     def Set_Item_Sacrifice_Decorations(self):
         item_sacrifice_decorations = [
@@ -289,11 +289,34 @@ class Decoration_Handler():
         return boss_room
     
 
-    
     def Spawn_Brazer(self, pos, size=None, version=None, radius=None, level=None):
         brazier = Brazier(self.game, pos) 
         self.decorations.append(brazier)
         return brazier
+
+
+# TODO: Might need a seperate class for handling rooms
+    def Spawn_Rooms(self):
+        rooms = self.game.tilemap.extract([(keys.spawners)])
+        variants = {
+            keys.library : self.Spawn_Library,
+            keys.loot_room : self.Spawn_Loot_Room,
+            keys.library : self.Spawn_Boss_Room,
+
+        }
+        for room in rooms:
+            room_function = variants.get(room.variant)
+    
+    def Spawn_Library(self, pos, size):
+        pass
+
+    def Spawn_Loot_Room(self, pos, size):
+        pass
+
+    def Spawn_Boss_Room(self, pos, size):
+        pass
+
+
 
 
     def Update(self, delta_time):

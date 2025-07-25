@@ -46,7 +46,7 @@ class Enemy_Handler():
         spawners = self.game.tilemap.extract([(keys.spawners, 1)])
         spawners_length = len(spawners)
         
-        for i in range(2):
+        for i in range(10):
             # Spawn enemy at a random location
             spawner_index = random.randint(0, spawners_length - 1)
             spawner = spawners[spawner_index]

@@ -33,8 +33,7 @@ class Spawn_Library():
                     return False
                 continue
 
-
-            Spawn_Library.Spawn_Loot_In_Loot_Room(start_x, start_y, room_size_x, room_size_y, offgrid_tiles, door_location)
+            offgrid_tiles.append({keys.type: keys.room, keys.variant: keys.library, keys.pos: (start_x * tile_size, start_y * tile_size), keys.size : (room_size_x, room_size_y)})
             success += 1
         
         

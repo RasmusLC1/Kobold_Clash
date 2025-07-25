@@ -34,8 +34,8 @@ class Spawn_Loot_Room():
                     return False
                 continue
 
+            offgrid_tiles.append({keys.type: keys.room, keys.variant: keys.loot_room, keys.pos: (start_x * tile_size, start_y * tile_size), keys.size : (room_size_x, room_size_y)})
 
-            Spawn_Loot_Room.Spawn_Loot_In_Loot_Room(start_x, start_y, room_size_x, room_size_y, offgrid_tiles)
             success += 1
         
         

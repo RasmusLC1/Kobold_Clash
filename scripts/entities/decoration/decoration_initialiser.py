@@ -49,6 +49,10 @@ class Decoration_Initialiser():
         amount = random.randint(20, 30)
         self.Find_Floor_Tiles(keys.vase, amount)
 
+    def Spawn_Weapon_Rack(self):
+        amount = random.randint(20, 30)
+        self.Find_Floor_Tiles(keys.vase, amount)
+
     def Spawn_Teleport(self):
         amount = random.randint(20, 30)
         if amount % 2:
