@@ -33,27 +33,24 @@ class Decoration_Handler():
         self.saved_data = {}
 
         self.spawn_methods = {
-            keys.door_basic: self.Spawn_Door,
-            keys.vase: self.Spawn_Vase,
-            keys.effigy_tomb: self.Spawn_Effigy_Tomb,
-            keys.potion_table: self.Spawn_Potion_Table,
-            keys.rune_shrine: self.Spawn_Rune_Shrine,
-            keys.portal_shrine: self.Spawn_Portal_Shrine,
-            keys.hunter_shrine: self.Spawn_Hunter_Shrine,
-            keys.sacrifice_shrine: self.Spawn_Sacrifice_Shrine,
-            keys.soul_well: self.Spawn_Soul_Well,
-            keys.door_basic: self.Spawn_Door,
-            keys.bones: self.Spawn_Bones,
-            keys.weapon_rack: self.Spawn_Weapon_Rack,
-            keys.plinth: self.Spawn_Plinth,
-            keys.bookshelf: self.Spawn_Bookshelf,
-            keys.teleportation_circle: self.Spawn_Teleportation_Circle,
-            keys.brazier: self.Spawn_Brazer,
-            keys.light_source : self.Spawn_Lightsource,
-            'boss_room': self.Spawn_Boss_Room
+            keys.door_basic: Door,
+            keys.vase: Vase,
+            keys.effigy_tomb: Effigy_Tomb,
+            keys.potion_table: Potion_Table,
+            keys.rune_shrine: Rune_Shrine,
+            keys.portal_shrine: Portal_Shrine,
+            keys.hunter_shrine: Hunter_Shrine,
+            keys.sacrifice_shrine: Sacrifice_Shrine,
+            keys.soul_well: Soul_Well,
+            keys.bones: Bones,
+            keys.weapon_rack: Weapon_rack,
+            keys.plinth: Plinth,
+            keys.bookshelf: Bookshelf,
+            keys.teleportation_circle: Teleportation_Circle,
+            keys.brazier: Brazier,
+            keys.torch : None,
+            'boss_room': Boss_Room
         }
-
-
 
 
         self.light_sources = {
@@ -152,10 +149,11 @@ class Decoration_Handler():
         if not spawn_function:
             print(f"Warning: Decoration type '{type}' not recognized. Decoration_Handler Decoration_Spawner")
             return None
-        decoration = spawn_function(pos, size, version, radius, level)
+        decoration = spawn_function(self.game, pos)
         if decoration:
             if data:
                 decoration.Load_Data(data)
+        self.decorations.append(decoration)
         return decoration
 
     def Spawn_Door(self, pos, size, version=None, radius=None, level=None):
@@ -165,7 +163,7 @@ class Decoration_Handler():
 
     def Spawn_Chest(self):
         for chest_pos in self.decoration_initialiser.decorations[keys.chest]:
-            chest = Chest(self.game, chest_pos, 1)  
+            chest = Chest(self.game, chest_pos)  
             self.decorations.append(chest)
             
     def Spawn_Vase(self):
@@ -272,8 +270,6 @@ class Decoration_Handler():
         shrine = Rune_Shrine(self.game, pos)
         self.decorations.append(shrine)
         return shrine
-    
- 
 
 
     def Spawn_Rune_Shrine(self, pos, size=None, version=None, radius=None, level=None):
@@ -281,9 +277,6 @@ class Decoration_Handler():
         self.decorations.append(shrine)
         return shrine
     
-
-
-
 
     def Spawn_Bones(self, pos, size=None, version=None, radius=None, level=None):
         bones = Bones(self.game, pos, None)  
@@ -371,11 +364,7 @@ class Decoration_Handler():
     def Remove_Bones(self, bones):
         self.bones.remove(bones)
         return
-    
-
-  
-
-    
+ 
     def Check_Item_Collision(self, item):
         for decoration in self.item_sacrifice:
             if decoration.rect().colliderect(item.rect()):
