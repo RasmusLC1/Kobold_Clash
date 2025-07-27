@@ -54,8 +54,9 @@ class Enemy_Handler():
             type = self.Get_Random_Enemy_Type()
 
             if type:
+                spawner_pos = spawner[keys.pos]
                 # Small random varience in spawning to prevent clumping together
-                pos = (spawner.pos[0] + random.randint(-10, 10), spawner.pos[1] + random.randint(-10, 10))
+                pos = (spawner_pos[0] + random.randint(-10, 10), spawner_pos[1] + random.randint(-10, 10))
                 self.Enemy_Spawner(pos, type)
 
     def Get_Random_Enemy_Type(self) :

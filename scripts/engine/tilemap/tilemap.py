@@ -47,12 +47,7 @@ class Tilemap:
         offgrid_tiles = map_data['offgrid']
 
         for tile_values in offgrid_tiles:
-            type = tile_values[keys.type]
-            variant = tile_values[keys.variant]
-            pos = (tile_values[keys.pos][0], tile_values[keys.pos][1])
-            
-            tile = Tile(self.game, type, variant, pos, self.tile_size, 0, 0, False, True)
-            self.offgrid_tiles.append(tile)
+            self.offgrid_tiles.append(tile_values)
 
         self.Find_Tiles_Not_Touching_Wall()
 
@@ -111,32 +106,21 @@ class Tilemap:
     # Takes an ID an looks for matches in tilemap and offgrid tiles
     def extract(self, id_pairs, keep=False):
         matches = []
-        for tile in self.offgrid_tiles:
-            if (tile.type, tile.variant) in id_pairs:
-                matches.append(copy.copy(tile))
+        for offgrid_tile in self.offgrid_tiles:
+            if (offgrid_tile[keys.type], offgrid_tile[keys.variant]) in id_pairs:
+                matches.append(copy.copy(offgrid_tile))
                 if not keep:
-                    self.offgrid_tiles.remove(tile)
+                    self.offgrid_tiles.remove(offgrid_tile)
         for loc in self.tilemap:
             tile = self.tilemap[loc]
             if (tile.type, tile.variant) in id_pairs:
                 matches.append(copy.copy(tile))
                 matches[-1].pos = (matches[-1].pos[0] * self.tile_size, matches[-1].pos[1] * self.tile_size)
-
                 if not keep:
                     del self.tilemap[loc]
         
         return matches
     
-    # Gets list of decorations and extracts them
-    def Extract_Decorations(self, decoration_types):
-        decorations = []
-        for tile in self.offgrid_tiles:
-            if (tile.type) in decoration_types:
-                decorations.append(copy.copy(tile))
-        
-        return decorations
-
-
 
     def Search_Nearby_Tiles(self, max_distance, pos, category, ID = 0):
         pos = (pos[0] // self.tile_size, pos[1] // self.tile_size)
@@ -263,7 +247,7 @@ class Tilemap:
     def Current_Tile(self, tile_key):
         if not tile_key in self.tilemap:
             return None
-        tile = self.tilemap[tile_key]
+        tile = self.tilemap.get(tile_key)
         if not tile:
             return None
         

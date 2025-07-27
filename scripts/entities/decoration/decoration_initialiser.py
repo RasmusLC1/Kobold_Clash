@@ -25,9 +25,9 @@ class Decoration_Initialiser():
     # find space for them if there's a lot of small objects scattered around
     def Spawn_Decorations(self):
         self.Spawn_Lightsource()
+        self.Spawn_Rooms()
         self.Spawn_Large_Objects()
         self.Spawn_Small_Objects()
-        self.Spawn_Rooms()
 
 
     def Spawn_Large_Objects(self):
@@ -82,6 +82,7 @@ class Decoration_Initialiser():
 
     # TODO: Might need a seperate class for handling rooms
     def Spawn_Rooms(self):
+        return
         self.Spawn_Library()
         self.Spawn_Loot_Room()
         self.Spawn_Boss_Room()
@@ -89,6 +90,50 @@ class Decoration_Initialiser():
 
     def Spawn_Library(self):
         libraries = self.game.tilemap.extract([(keys.room, keys.library)])
+        for library in libraries:
+            self.Spawn_Library_Decoration(library)
+        return
+    
+    def Spawn_Library_Decoration(self, library):
+        print(library)
+        return
+        start_y = library.start_y
+        size_y = library.size_y
+        start_x = library.size_x
+        size_x = library.size_x
+        door_location = library.door_location
+        tilemap = self.game.tilemap
+        loot_count = 0
+        table_spawned = False
+        self.decorations[keys.bookshelf] = []
+        self.decorations[keys.potion_table] = []
+
+        for y in range(start_y + 1, start_y + size_y - 1):
+            # Prevent bookhelfs from spawning on same x and y axis as the door
+            if y == door_location[1]:
+                continue
+            for x in range(start_x + 1, start_x + size_x -1):
+                if x == door_location[0]:
+                    continue
+                tile_key = (x, y)
+                tile = tilemap.Current_Tile(tile_key)
+
+                if tile.contains_decoration:
+                    continue
+
+                spawn_loot = random.randint(0, loot_count)
+                if spawn_loot == 0: # guranteed to spawn at least one bookshelf since count starts at 0
+                    loot_count += 1
+                    self.decorations[keys.bookshelf].append(tile_key)
+
+                    continue
+                
+                # Spawn a single table
+                if not table_spawned:
+                    table_spawned = True
+                    loot_count += 1
+                    self.decorations[keys.potion_table].append(tile_key)
+                    continue
 
 
     def Spawn_Loot_Room(self):
@@ -179,6 +224,7 @@ class Decoration_Initialiser():
 
         keys = []
         player_pos = self.game.player.pos
+
 
 
         while spawns < amount:
