@@ -29,6 +29,7 @@ class PhysicsEntity:
 
 
     def Save_Data(self):
+        self.saved_data['ID'] = self.ID
         self.saved_data['category'] = self.category
         self.saved_data[keys.type] = self.type
         self.saved_data[keys.pos] = self.pos
@@ -39,6 +40,7 @@ class PhysicsEntity:
 
     
     def Load_Data(self, data):
+        self.ID = data['ID']
         self.category = data['category']
         self.type = data[keys.type]
         self.pos = data[keys.pos]
@@ -47,6 +49,7 @@ class PhysicsEntity:
         self.light_level = data['light_level']
         self.render = data['render']
         self.Set_Tile()
+        PhysicsEntity._id_counter += 1
 
 
     # Should only be called during initalisation

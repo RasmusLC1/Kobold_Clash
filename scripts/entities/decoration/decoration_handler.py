@@ -80,9 +80,6 @@ class Decoration_Handler():
         
         self.Spawn_Items()
 
-        self.Spawn_Rooms()
-
-
     def Spawn_Items(self):
         for decoration in self.decorations:
             if decoration.type == keys.weapon_rack:
@@ -143,6 +140,14 @@ class Decoration_Handler():
                 self.Decoration_Spawner(type, pos, size=size, version=version, radius=radius, level=level, data=item_data)
             except Exception as e:
                 print("DATA WRONG DECORATION HANDLER", item_data, e)
+
+        for decoration in self.decorations:
+            if decoration.type == keys.teleportation_circle:
+                linked_portal = self.Get_Decoration_By_ID(decoration.linked_portal_ID)
+                decoration.Set_Linked_Portal(linked_portal)
+            
+
+
 
     def Decoration_Spawner(self, type, pos, size=None, version=None, radius=None, level=None, data=None):
         spawn_function = self.spawn_methods.get(type)
@@ -295,23 +300,7 @@ class Decoration_Handler():
         return brazier
 
 
-# TODO: Might need a seperate class for handling rooms
-    def Spawn_Rooms(self):
-        self.Spawn_Library()
-        self.Spawn_Loot_Room()
-        self.Spawn_Boss_Room()
 
-
-    def Spawn_Library(self, pos, size):
-        libraries = self.game.tilemap.extract([(keys.room, keys.library)])
-
-
-    def Spawn_Loot_Room(self, pos, size):
-        libraries = self.game.tilemap.extract([(keys.room, keys.loot_room)])
-
-
-    def Spawn_Boss_Room(self, pos, size):
-        libraries = self.game.tilemap.extract([(keys.room, keys.boss_room)])
 
 
 
@@ -385,6 +374,13 @@ class Decoration_Handler():
     def Remove_Bones(self, bones):
         self.bones.remove(bones)
         return
+    
+    def Get_Decoration_By_ID(self, ID):
+        for decoration in self.decorations:
+            if decoration.ID == ID:
+                return decoration
+            
+        return None
  
     def Check_Item_Collision(self, item):
         for decoration in self.item_sacrifice:

@@ -9,12 +9,16 @@ class Teleportation_Circle(Decoration):
         super().__init__(game, keys.teleportation_circle, pos, (32, 32))
         self.description = "Teleport to\nlinked portal\ncosts 10 souls"
         self.linked_portal = None
+        self.linked_portal_ID = None
 
 
-
-    def Update(self, delta_time):
-        return super().Update(delta_time)
-
+    def Save_Data(self):
+        self.saved_data['linked_portal'] = self.linked_portal_ID
+        return super().Save_Data()
+    
+    def Load_Data(self, data):
+        self.linked_portal_ID = data['linked_portal']
+        return super().Load_Data(data)
 
     def Open(self, generate_clatter=False):
         if not self.linked_portal:
@@ -31,4 +35,8 @@ class Teleportation_Circle(Decoration):
         
     
     def Set_Linked_Portal(self, linked_portal):
+        if not linked_portal:
+            print("FAILED TO LINK PORTALS")
+            return
         self.linked_portal = linked_portal
+        self.linked_portal_ID = linked_portal.ID

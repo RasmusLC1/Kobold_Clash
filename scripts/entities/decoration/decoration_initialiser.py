@@ -27,6 +27,7 @@ class Decoration_Initialiser():
         self.Spawn_Lightsource()
         self.Spawn_Large_Objects()
         self.Spawn_Small_Objects()
+        self.Spawn_Rooms()
 
 
     def Spawn_Large_Objects(self):
@@ -79,6 +80,23 @@ class Decoration_Initialiser():
         self.Find_Floor_Tiles_Large_Object(keys.soul_well, 2, True)
 
 
+    # TODO: Might need a seperate class for handling rooms
+    def Spawn_Rooms(self):
+        self.Spawn_Library()
+        self.Spawn_Loot_Room()
+        self.Spawn_Boss_Room()
+
+
+    def Spawn_Library(self):
+        libraries = self.game.tilemap.extract([(keys.room, keys.library)])
+
+
+    def Spawn_Loot_Room(self):
+        libraries = self.game.tilemap.extract([(keys.room, keys.loot_room)])
+
+
+    def Spawn_Boss_Room(self):
+        libraries = self.game.tilemap.extract([(keys.room, keys.boss_room)])
 
 
     def Spawn_Lightsource(self):
