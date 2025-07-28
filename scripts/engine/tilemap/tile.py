@@ -24,6 +24,7 @@ class Tile():
         self.needs_redraw = True  # ✅ Add flag to track if we need to redraw
         self.rendered_surface = None  # ✅ Cached surface
         self.contains_decoration = False # Flag to prevent spawning multiple decorations
+        self.room = False # Flag to check if tile is part of room
         # Dictionary to hold each light's contribution
         # Key: light_id, Value: contributed_light_level
         self.light_contributions = {}
@@ -96,6 +97,9 @@ class Tile():
     
     def Set_Translucent(self, state):
         self.translucent = state
+
+    def Set_Room(self, state):
+        self.room = state
 
     def Add_Light_Contribution(self, light_id, contribution):
         # Add/update light contribution

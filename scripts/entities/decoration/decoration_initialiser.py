@@ -132,13 +132,13 @@ class Decoration_Initialiser():
 
         while spawns < amount:
             
-            if fail > amount and fail > 20:
+            if fail > amount * 2 and fail > 30:
                 return
 
             tile_key, floor_tile = random.choice(list(self.floor_tiles.items()))
             del self.floor_tiles[tile_key]
             
-            if floor_tile.contains_decoration:
+            if floor_tile.contains_decoration or floor_tile.room:
                 fail += 1
                 continue
             
@@ -170,7 +170,7 @@ class Decoration_Initialiser():
 
         while spawns < amount:
             
-            if fail > amount and fail > 20:
+            if fail > amount * 2 and fail > 30:
                 return
 
             tile_key, floor_tile = random.choice(list(self.floor_tiles.items()))
@@ -231,7 +231,7 @@ class Decoration_Initialiser():
 
             neighbor_tile = tilemap[neighbor_key]
 
-            if neighbor_tile.contains_decoration or neighbor_tile.physics:
+            if neighbor_tile.contains_decoration or neighbor_tile.physics or neighbor_tile.room:
                 return False
             
         return True

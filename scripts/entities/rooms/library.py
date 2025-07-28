@@ -34,6 +34,8 @@ class Library():
                 tile_key = (x, y)
                 tile = tilemap.Current_Tile(tile_key)
 
+                tile.Set_Room(True)
+
                 
                 if tile.contains_decoration:
                     continue
