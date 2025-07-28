@@ -38,7 +38,6 @@ class Spawn_Boss_Room():
         if not path:
             map = map_copy
             Spawn_Boss_Room.Spawn_Boss_Room(map, tile_size, size_x, size_y, player_pos, A_Star_Search, offgrid_tiles)
-            
             return
 
         # self.tilemap.offgrid_tiles.append({"type": 'Shrine', "variant": 0, "pos": [start_x * self.tile_size, start_y * self.tile_size]})
