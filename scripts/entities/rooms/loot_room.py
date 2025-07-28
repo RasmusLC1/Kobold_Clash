@@ -3,7 +3,7 @@ from scripts.engine.keys.keys import keys
 
 
 class Loot_Room():
-    def Spawn_Loot_Room(self, game):
+    def Spawn_Loot_Room(game):
         loot_rooms = game.tilemap.extract([(keys.room, keys.loot_room)])
         decorations = {}
 
@@ -18,39 +18,40 @@ class Loot_Room():
         
 
         for library in loot_rooms:
-            decorations.update(self.Spawn_Loot_Room_Decoration(game.tilemap, decorations, library))
+            decorations.update(Loot_Room.Spawn_Loot_Room_Decoration(game.tilemap, decorations, library))
         return decorations
     
-    def Spawn_Loot_Room_Decoration(self, tilemap, decorations, library):
-        start_y = library['start_y']
-        size_y = library['size_y']
-        start_x = library['start_x']
-        size_x = library['size_x']
-        door_location = library['door_location']
+    def Spawn_Loot_Room_Decoration(tilemap, decorations, loot_room):
+        start_x, start_y = loot_room[keys.pos]
+        size_x, size_y = loot_room[keys.size]
+
+        adjusted_x = start_x // 32
+        adjusted_y = start_y // 32
 
         drop_table = {
             keys.weapon_rack : 0.5,
             keys.chest : 0.7,
             keys.vase : 1,
             keys.plinth : 0.1,
-            None : 3
+            None : 1
         }
 
-        for y in range(start_y + 1, start_y + size_y - 1):
-            # Prevent bookhelfs from spawning on same x and y axis as the door
-            if y == door_location[1]:
-                continue
-            for x in range(start_x + 1, start_x + size_x -1):
-                if x == door_location[0]:
-                    continue
-                tile_key = (x, y)
+        for y in range(adjusted_y + 1, adjusted_y + size_y - 1):
+
+            for x in range(adjusted_x + 1, adjusted_x + size_x -1):
+  
+                tile_key = str(int(x)) + ';' + str(int(y))
+
                 tile = tilemap.Current_Tile(tile_key)
+
+                if not tile:
+                    continue
                 tile.Set_Room(True)
 
                 
                 if tile.contains_decoration:
                     continue
-
+                
                 decoration = random.choices(
                     population=list(drop_table.keys()),
                     weights=list(drop_table.values()),
@@ -59,8 +60,8 @@ class Loot_Room():
 
                 if not decoration:
                     continue
-
-                decorations[decoration].append(tile.pos)
+                
+                decorations[decoration].append((tile.pos[0] * 32, tile.pos[1] * 32))
 
         return decorations
                 

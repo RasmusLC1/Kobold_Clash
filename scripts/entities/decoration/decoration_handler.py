@@ -77,6 +77,10 @@ class Decoration_Handler():
         self.Spawn_Soul_Well()
         self.Spawn_Hunter_Shrine()
         self.Spawn_Teleportation_Circle()
+        self.Spawn_Plinth()
+        self.Spawn_Weapon_Rack()
+        self.Spawn_Bookshelf()
+        self.Spawn_Boss_Room()
         
         self.Spawn_Items()
 
@@ -167,6 +171,7 @@ class Decoration_Handler():
         return door
 
     def Spawn_Chest(self):
+
         for chest_pos in self.decoration_initialiser.decorations[keys.chest]:
             chest = Chest(self.game, chest_pos)  
             self.decorations.append(chest)
@@ -175,6 +180,22 @@ class Decoration_Handler():
         for pos in self.decoration_initialiser.decorations[keys.vase]:
             vase = Vase(self.game, pos)  
             self.decorations.append(vase)
+
+    def Spawn_Weapon_Rack(self):
+        for pos in self.decoration_initialiser.decorations[keys.weapon_rack]:
+            vase = Weapon_rack(self.game, pos)  
+            self.decorations.append(vase)
+
+    def Spawn_Plinth(self):
+        for pos in self.decoration_initialiser.decorations[keys.plinth]:
+            plinth = Plinth(self.game, pos)  
+            self.decorations.append(plinth)
+
+    def Spawn_Bookshelf(self):
+        for pos in self.decoration_initialiser.decorations[keys.bookshelf]:
+            bookshelf = Bookshelf(self.game, pos)  
+            self.decorations.append(bookshelf)
+
 
     def Spawn_Lightsource(self):
         for pos in self.decoration_initialiser.decorations[keys.light_source]:
@@ -225,6 +246,18 @@ class Decoration_Handler():
         for pos in self.decoration_initialiser.decorations[keys.hunter_shrine]:
             shrine = Hunter_Shrine(self.game, pos)
             self.decorations.append(shrine)
+
+    def Spawn_Potion_Table(self):
+        for pos in self.decoration_initialiser.decorations[keys.potion_table]:
+            potion_table = Potion_Table(self.game, pos)  
+            self.decorations.append(potion_table)
+
+    # Needs to be fixed so that it spawns correct radius and level
+    def Spawn_Boss_Room(self):
+        for pos in self.decoration_initialiser.decorations[keys.potion_table]:
+            boss_room = Boss_Room(self.game, pos, 3)
+            self.decorations.append(boss_room)
+            return boss_room
     
         
     def Spawn_Teleportation_Circle(self):
@@ -251,25 +284,8 @@ class Decoration_Handler():
                 self.Remove_Decoration(teleport_circle)
                 teleport_circles.remove(teleport_circle)
 
-    def Spawn_Potion_Table(self, pos, size=None, version=None, radius=None, level=None):
-        potion_table = Potion_Table(self.game, pos)  
-        self.decorations.append(potion_table)
-        return potion_table
+
     
-    def Spawn_Bookshelf(self, pos, size=None, version=None, radius=None, level=None):
-        bookshelf = Bookshelf(self.game, pos)  
-        self.decorations.append(bookshelf)
-        return bookshelf
-    
-    def Spawn_Weapon_Rack(self, pos, size=None, version=None, radius=None, level=None):
-        weapon_rack = Weapon_rack(self.game, pos)  
-        self.decorations.append(weapon_rack)
-        return weapon_rack
-    
-    def Spawn_Plinth(self, pos, size=None, version=None, radius=None, level=None):
-        plinth = Plinth(self.game, pos)  
-        self.decorations.append(plinth)
-        return plinth
 
     def Spawn_Rune_Shrine(self, pos, size=None, version=None, radius=None, level=None):
         shrine = Rune_Shrine(self.game, pos)
@@ -288,10 +304,7 @@ class Decoration_Handler():
         self.bones.append(bones)
         return bones
 
-    def Spawn_Boss_Room(self, pos, size=None, version=None, radius=None, level=None):
-        boss_room = Boss_Room(self.game, pos, radius, level)
-        self.decorations.append(boss_room)
-        return boss_room
+
     
 
     def Spawn_Brazer(self, pos, size=None, version=None, radius=None, level=None):

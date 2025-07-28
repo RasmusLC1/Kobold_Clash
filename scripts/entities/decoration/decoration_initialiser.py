@@ -30,6 +30,7 @@ class Decoration_Initialiser():
         self.Spawn_Small_Objects()
 
 
+
     def Spawn_Large_Objects(self):
         self.Spawn_Portal_Shrine()
         self.Spawn_Effigy_Tomb()
@@ -58,7 +59,6 @@ class Decoration_Initialiser():
         amount = random.randint(20, 30)
         if amount % 2:
             amount += 1
-        print(amount)
         self.Find_Floor_Tiles(keys.teleportation_circle, amount)
 
     def Spawn_Effigy_Tomb(self):
@@ -82,7 +82,7 @@ class Decoration_Initialiser():
 
     # TODO: Might need a seperate class for handling rooms
     def Spawn_Rooms(self):
-        self.decorations.update(Room_Initialiser.Spawn_Rooms())
+        self.decorations.update(Room_Initialiser.Spawn_Rooms(self.game))
 
 
     def Spawn_Lightsource(self):
