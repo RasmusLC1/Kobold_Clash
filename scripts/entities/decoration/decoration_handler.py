@@ -166,38 +166,51 @@ class Decoration_Handler():
         return decoration
 
     def Spawn_Door(self, pos, size, version=None, radius=None, level=None):
+
         door = Door(self.game, keys.door_basic, pos, size)
         self.decorations.append(door)
         return door
 
     def Spawn_Chest(self):
+        if not keys.chest in self.decoration_initialiser.decorations:
+            return
 
         for chest_pos in self.decoration_initialiser.decorations[keys.chest]:
             chest = Chest(self.game, chest_pos)  
             self.decorations.append(chest)
             
     def Spawn_Vase(self):
+        if not keys.vase in self.decoration_initialiser.decorations:
+            return
         for pos in self.decoration_initialiser.decorations[keys.vase]:
             vase = Vase(self.game, pos)  
             self.decorations.append(vase)
 
     def Spawn_Weapon_Rack(self):
+        if not keys.weapon_rack in self.decoration_initialiser.decorations:
+            return
         for pos in self.decoration_initialiser.decorations[keys.weapon_rack]:
             vase = Weapon_rack(self.game, pos)  
             self.decorations.append(vase)
 
     def Spawn_Plinth(self):
+        if not keys.plinth in self.decoration_initialiser.decorations:
+            return
         for pos in self.decoration_initialiser.decorations[keys.plinth]:
             plinth = Plinth(self.game, pos)  
             self.decorations.append(plinth)
 
     def Spawn_Bookshelf(self):
+        if not keys.bookshelf in self.decoration_initialiser.decorations:
+            return
         for pos in self.decoration_initialiser.decorations[keys.bookshelf]:
             bookshelf = Bookshelf(self.game, pos)  
             self.decorations.append(bookshelf)
 
 
     def Spawn_Lightsource(self):
+        if not keys.light_source in self.decoration_initialiser.decorations:
+            return
         for pos in self.decoration_initialiser.decorations[keys.light_source]:
 
             # Type needs to be reset
@@ -220,11 +233,15 @@ class Decoration_Handler():
     
     
     def Spawn_Effigy_Tomb(self):
+        if not keys.effigy_tomb in self.decoration_initialiser.decorations:
+            return
         for pos in self.decoration_initialiser.decorations[keys.effigy_tomb]:
             effigy_tomb = Effigy_Tomb(self.game, pos)  
             self.decorations.append(effigy_tomb)
 
     def Spawn_Portal_Shrine(self):
+        if not keys.portal_shrine in self.decoration_initialiser.decorations:
+            return
         for pos in self.decoration_initialiser.decorations[keys.portal_shrine]:
             shrine = Portal_Shrine(self.game, pos)
             self.decorations.append(shrine)
@@ -232,35 +249,47 @@ class Decoration_Handler():
         
     
     def Spawn_Sacrifice_Shrine(self):
+        if not keys.sacrifice_shrine in self.decoration_initialiser.decorations:
+            return
         for pos in self.decoration_initialiser.decorations[keys.sacrifice_shrine]:
             shrine = Sacrifice_Shrine(self.game, pos)
             self.decorations.append(shrine)
 
         
     def Spawn_Soul_Well(self):
+        if not keys.soul_well in self.decoration_initialiser.decorations:
+            return
         for pos in self.decoration_initialiser.decorations[keys.soul_well]:
             soul_well = Soul_Well(self.game, pos)
             self.decorations.append(soul_well)
 
     def Spawn_Hunter_Shrine(self):
+        if not keys.hunter_shrine in self.decoration_initialiser.decorations:
+            return
         for pos in self.decoration_initialiser.decorations[keys.hunter_shrine]:
             shrine = Hunter_Shrine(self.game, pos)
             self.decorations.append(shrine)
 
     def Spawn_Potion_Table(self):
+        if not keys.potion_table in self.decoration_initialiser.decorations:
+            return
         for pos in self.decoration_initialiser.decorations[keys.potion_table]:
             potion_table = Potion_Table(self.game, pos)  
             self.decorations.append(potion_table)
 
     # Needs to be fixed so that it spawns correct radius and level
     def Spawn_Boss_Room(self):
-        for pos in self.decoration_initialiser.decorations[keys.potion_table]:
+        if not keys.boss_room in self.decoration_initialiser.decorations:
+            return
+        for pos in self.decoration_initialiser.decorations[keys.boss_room]:
             boss_room = Boss_Room(self.game, pos, 3)
             self.decorations.append(boss_room)
             return boss_room
     
         
     def Spawn_Teleportation_Circle(self):
+        if not keys.teleportation_circle in self.decoration_initialiser.decorations:
+            return
         for pos in self.decoration_initialiser.decorations[keys.teleportation_circle]:
             teleportation_circle = Teleportation_Circle(self.game, pos)
             self.decorations.append(teleportation_circle)

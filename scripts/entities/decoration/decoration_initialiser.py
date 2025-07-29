@@ -82,7 +82,7 @@ class Decoration_Initialiser():
 
     # TODO: Might need a seperate class for handling rooms
     def Spawn_Rooms(self):
-        self.decorations.update(Room_Initialiser.Spawn_Rooms(self.game))
+        self.decorations.update(Room_Initialiser.Spawn_Rooms(self.game, self.decorations))
 
 
     def Spawn_Lightsource(self):
@@ -128,7 +128,8 @@ class Decoration_Initialiser():
         tilemap_dic = self.game.tilemap.tilemap
         player_pos = self.game.player.pos
         keys = []
-        self.decorations[key] = []
+        if key not in self.decorations:
+            self.decorations[key] = []
 
         while spawns < amount:
             
@@ -166,6 +167,8 @@ class Decoration_Initialiser():
         keys = []
         player_pos = self.game.player.pos
 
+        if key not in self.decorations:
+            self.decorations[key] = []
 
 
         while spawns < amount:
@@ -191,8 +194,7 @@ class Decoration_Initialiser():
             
             self.Set_Decoration_Neighbours(x, y)
 
-            if key not in self.decorations:
-                self.decorations[key] = []
+
 
             self.decorations[key].append((floor_tile.pos[0] * TILESIZE, floor_tile.pos[1] * TILESIZE))
 

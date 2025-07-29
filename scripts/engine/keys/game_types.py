@@ -74,6 +74,8 @@ class Game_Types():
     
     library = "library"
 
+    treasure_room = "treasure_room"
+
     loot_room = "loot_room"
 
     boss_room = "boss_room"

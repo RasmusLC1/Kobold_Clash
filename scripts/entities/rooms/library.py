@@ -3,13 +3,12 @@ from scripts.engine.keys.keys import keys
 
 
 class Library():
-    def Spawn_Library(game):
+    def Spawn_Library(game, decorations):
         libraries = game.tilemap.extract([(keys.room, keys.library)])
-        decorations = {}
         if keys.bookshelf not in decorations:
             decorations[keys.bookshelf] = []
-        if keys.potion_table not in decorations:
-            decorations[keys.potion_table] = []
+        if keys.plinth not in decorations:
+            decorations[keys.plinth] = []
 
         for library in libraries:
             decorations.update(Library.Spawn_Library_Decoration(game.tilemap, decorations, library))
@@ -24,7 +23,7 @@ class Library():
         adjusted_y = start_y // 32
 
         drop_table = {
-            keys.potion_table : 0.5,
+            keys.plinth : 0.2,
             keys.bookshelf : 1,
             None : 3
         }
@@ -42,6 +41,10 @@ class Library():
                 if not tile:
                     continue
 
+                if tile.physics:
+                    continue
+
+
                 tile.Set_Room(True)
 
                 
@@ -56,9 +59,6 @@ class Library():
 
                 if not decoration:
                     continue
-
-                if decoration == keys.potion_table:
-                    drop_table[decoration] /= 10
 
                 decorations[decoration].append((tile.pos[0] * 32, tile.pos[1] * 32))
 

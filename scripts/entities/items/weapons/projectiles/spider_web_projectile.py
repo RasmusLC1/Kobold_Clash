@@ -25,7 +25,7 @@ class Spider_Web_Projectile(Projectile):
                 self.Set_Special_Attack(0)
             return
 
-        entity = super().Shoot()
+        entity = super().Shoot(delta_time)
         self.Entity_Collision_Detection(entity)
 
     def Entity_Collision_Detection(self, entity):

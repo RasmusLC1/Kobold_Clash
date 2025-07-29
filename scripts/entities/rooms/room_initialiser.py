@@ -4,10 +4,10 @@ from scripts.entities.rooms.boss_room import Boss_Room
 
 
 class Room_Initialiser():
-    def Spawn_Rooms(game):
+    def Spawn_Rooms(game, decorations):
         decorations = {}
-        decorations.update(Library.Spawn_Library(game))
-        decorations.update(Loot_Room.Spawn_Loot_Room(game))
+        decorations.update(Library.Spawn_Library(game, decorations))
+        decorations.update(Loot_Room.Spawn_Loot_Room(game, decorations))
         decorations.update(Boss_Room.Spawn_Boss_Rooms(game))
 
         return decorations

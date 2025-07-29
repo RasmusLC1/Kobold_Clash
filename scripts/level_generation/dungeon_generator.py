@@ -49,7 +49,7 @@ class Dungeon_Generator():
     def Generate_Map(self, map_id):
         self.Update_Load_Menu(1)
 
-        self.tilemap.Clear_Tilemap()
+        self.tilemap.Clear_Tilemap() # Clears tiles and offgrid
         self.cellular_automata.Create_Map()
         self.Update_Load_Menu(2)
 

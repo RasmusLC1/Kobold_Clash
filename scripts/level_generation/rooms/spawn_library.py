@@ -32,7 +32,6 @@ class Spawn_Library():
                 if fail >= 10 + level:
                     return False
                 continue
-
             offgrid_tiles.append({keys.type: keys.room, keys.variant: keys.library, keys.pos: (start_x * tile_size, start_y * tile_size), keys.size : (room_size_x, room_size_y), keys.door : door_location})
             success += 1
         

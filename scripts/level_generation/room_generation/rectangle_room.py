@@ -8,9 +8,12 @@ class Rectangle_Room():
     # Flatten the loot room and add walls to outside
     # 1 = Wall, 0 = Floor
     def Room_Structure_Rectangle(map, start_x, start_y, size_x, size_y, a_star):
+        original_layout = [[0 for _ in range(len(map[0]))] for _ in range(len(map))]
         for y in range(start_y, start_y + size_y):
             for x in range(start_x, start_x + size_x):
+                original_layout[x][y] = map[x][y]
                 if y == start_y:
+                    
                     map[x][y] = WALL
                 elif y == start_y + size_y - 1:
                     map[x][y] = WALL
@@ -21,7 +24,14 @@ class Rectangle_Room():
                 else:
                     map[x][y] = FLOOR
 
-        return Rectangle_Room.Generate_Doors_Room_Rectangle(map, start_x, start_y, size_x, size_y, a_star)
+        door_location = Rectangle_Room.Generate_Doors_Room_Rectangle(map, start_x, start_y, size_x, size_y, a_star)
+        if not door_location:
+            for y in range(start_y, start_y + size_y):
+                for x in range(start_x, start_x + size_x):
+                    map[x][y] = original_layout[x][y]
+            return None
+        
+        return door_location
     
     @staticmethod
     def Generate_Doors_Room_Rectangle(map, start_x, start_y, size_x, size_y, a_star):

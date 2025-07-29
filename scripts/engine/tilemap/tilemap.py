@@ -106,21 +106,26 @@ class Tilemap:
     # Takes an ID an looks for matches in tilemap and offgrid tiles
     def extract(self, id_pairs, keep=False):
         matches = []
+        to_remove = []
+
         for offgrid_tile in self.offgrid_tiles:
             if (offgrid_tile[keys.type], offgrid_tile[keys.variant]) in id_pairs:
                 matches.append(copy.copy(offgrid_tile))
                 if not keep:
-                    self.offgrid_tiles.remove(offgrid_tile)
-        for loc in self.tilemap:
+                    to_remove.append(offgrid_tile)
+
+        for tile in to_remove:
+            self.offgrid_tiles.remove(tile)
+
+        for loc in list(self.tilemap):
             tile = self.tilemap[loc]
             if (tile.type, tile.variant) in id_pairs:
                 matches.append(copy.copy(tile))
                 matches[-1].pos = (matches[-1].pos[0] * self.tile_size, matches[-1].pos[1] * self.tile_size)
                 if not keep:
                     del self.tilemap[loc]
-        
+
         return matches
-    
 
     def Search_Nearby_Tiles(self, max_distance, pos, category, ID = 0):
         pos = (pos[0] // self.tile_size, pos[1] // self.tile_size)

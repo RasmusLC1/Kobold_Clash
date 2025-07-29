@@ -3,10 +3,8 @@ from scripts.engine.keys.keys import keys
 
 
 class Loot_Room():
-    def Spawn_Loot_Room(game):
+    def Spawn_Loot_Room(game, decorations):
         loot_rooms = game.tilemap.extract([(keys.room, keys.loot_room)])
-        decorations = {}
-
         if keys.weapon_rack not in decorations:
             decorations[keys.weapon_rack] = []
         if keys.chest not in decorations:
@@ -16,12 +14,13 @@ class Loot_Room():
         if keys.vase not in decorations:
             decorations[keys.vase] = []
         
-
-        for library in loot_rooms:
-            decorations.update(Loot_Room.Spawn_Loot_Room_Decoration(game.tilemap, decorations, library))
+        print("LOOT ROOM LENGTH", len(loot_rooms))
+        for loot_room in loot_rooms:
+            decorations.update(Loot_Room.Spawn_Loot_Room_Decoration(game.tilemap, decorations, loot_room))
         return decorations
     
     def Spawn_Loot_Room_Decoration(tilemap, decorations, loot_room):
+        loot_count = 0
         start_x, start_y = loot_room[keys.pos]
         size_x, size_y = loot_room[keys.size]
 
@@ -32,8 +31,7 @@ class Loot_Room():
             keys.weapon_rack : 0.5,
             keys.chest : 0.7,
             keys.vase : 1,
-            keys.plinth : 0.1,
-            None : 1
+            None : 2
         }
 
         for y in range(adjusted_y + 1, adjusted_y + size_y - 1):
@@ -46,6 +44,10 @@ class Loot_Room():
 
                 if not tile:
                     continue
+                
+                if tile.physics:
+                    continue
+
                 tile.Set_Room(True)
 
                 
@@ -61,7 +63,8 @@ class Loot_Room():
                 if not decoration:
                     continue
                 
+                loot_count += 1
                 decorations[decoration].append((tile.pos[0] * 32, tile.pos[1] * 32))
-
+        print(loot_count)
         return decorations
                 
