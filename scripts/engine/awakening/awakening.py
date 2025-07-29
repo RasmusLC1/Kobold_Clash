@@ -79,7 +79,7 @@ class Awakening():
 
         self.max_awakening_level = 5
         self.awakening_cooldown = 0
-        self.awakening_level = 5
+        self.awakening_level = 0
         self.awakening_dic = ASCENSION_TABLE.get(self.awakening_level)
         self.max_enemies = BASE_MIN_ENEMIES 
 

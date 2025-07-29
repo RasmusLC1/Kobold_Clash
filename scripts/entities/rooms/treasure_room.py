@@ -14,7 +14,6 @@ class Treasure_Room():
         if keys.vase not in decorations:
             decorations[keys.vase] = []
         
-        print("LOOT ROOM LENGTH", len(loot_rooms))
         for loot_room in loot_rooms:
             decorations.update(Treasure_Room.Spawn_Loot_Room_Decoration(game.tilemap, decorations, loot_room))
         return decorations
@@ -65,6 +64,6 @@ class Treasure_Room():
                 
                 loot_count += 1
                 decorations[decoration].append((tile.pos[0] * 32, tile.pos[1] * 32))
-        print(loot_count)
+
         return decorations
                 
