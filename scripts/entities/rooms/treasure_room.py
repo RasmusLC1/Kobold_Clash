@@ -2,9 +2,9 @@ import random
 from scripts.engine.keys.keys import keys
 
 
-class Loot_Room():
-    def Spawn_Loot_Room(game, decorations):
-        loot_rooms = game.tilemap.extract([(keys.room, keys.loot_room)])
+class Treasure_Room():
+    def Spawn_Treasure_Room(game, decorations):
+        loot_rooms = game.tilemap.extract([(keys.room, keys.treasure_room)])
         if keys.weapon_rack not in decorations:
             decorations[keys.weapon_rack] = []
         if keys.chest not in decorations:
@@ -16,7 +16,7 @@ class Loot_Room():
         
         print("LOOT ROOM LENGTH", len(loot_rooms))
         for loot_room in loot_rooms:
-            decorations.update(Loot_Room.Spawn_Loot_Room_Decoration(game.tilemap, decorations, loot_room))
+            decorations.update(Treasure_Room.Spawn_Loot_Room_Decoration(game.tilemap, decorations, loot_room))
         return decorations
     
     def Spawn_Loot_Room_Decoration(tilemap, decorations, loot_room):

@@ -70,10 +70,6 @@ class Dungeon_Generator():
             self.Generate_Map(map_id)
             return
         
-        if not Spawn_Library.Spawn_Library(self.cellular_automata.map, size_x, size_y, map_id, self.player_spawn, self.A_Star_Search, self.tilemap.offgrid_tiles):
-            self.Generate_Map(map_id)
-            return
-
         self.Update_A_Star_Map()
 
         self.Update_Load_Menu(4)

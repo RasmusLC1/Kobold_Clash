@@ -32,8 +32,14 @@ class Spawn_Loot_Room():
         }
 
         while success <= rooms:
-            room_size_x = random.randint(4, 6)
-            room_size_y = random.randint(4, 6)
+            room_type = random.choices(
+                    population=list(room_types.keys()),
+                    weights=list(room_types.values()),
+                    k=1
+                )[0]
+            
+            room_size_x, room_size_y = room_sizes.get(room_type)
+
             start_x = random.randint(room_size_x + 4, size_x - room_size_x - 1)
             start_y = random.randint(room_size_y + 4, size_y - room_size_y - 1)
 
@@ -50,11 +56,12 @@ class Spawn_Loot_Room():
                     break
             if overlap:
                 continue
-
+            
+            door_location = Rectangle_Room.Room_Structure_Rectangle(map, start_x, start_y, room_size_x, room_size_y, A_Star_Search)
             # Try to place the room
-            if not Rectangle_Room.Room_Structure_Rectangle(map, start_x, start_y, room_size_x, room_size_y, A_Star_Search):
+            if not door_location:
                 fail += 1
-                if fail >= 10 + level:
+                if fail >= rooms * 2:
                     return False
                 continue
 
@@ -62,13 +69,13 @@ class Spawn_Loot_Room():
             existing_rooms.append((start_x, start_y, room_size_x, room_size_y))
             offgrid_tiles.append({
                 keys.type: keys.room,
-                keys.variant: keys.loot_room,
+                keys.variant: room_type,
                 keys.pos: (start_x * tile_size, start_y * tile_size),
                 keys.size: (room_size_x, room_size_y),
+                keys.door: door_location,
                 "ID": success,
             })
             success += 1
-            print(success)
 
         return True
 
