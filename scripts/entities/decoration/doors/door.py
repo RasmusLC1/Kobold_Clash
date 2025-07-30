@@ -9,7 +9,6 @@ class Door(Decoration):
         self.high_light_cooldown = 0
         self.tile.Set_Physics(True)
         self.tile.Set_Translucent(False)
-        # self.game.tilemap.Update_Tile_Type(self.tile, keys.floor)
 
     def Save_Data(self):
         super().Save_Data()

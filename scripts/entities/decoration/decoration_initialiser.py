@@ -37,6 +37,7 @@ class Decoration_Initialiser():
         self.Spawn_Hunter_Shrine()
         self.Spawn_Sacrifice_Shrine()
         self.Spawn_Soul_Well()
+        self.Spawn_Doors()
 
     def Spawn_Small_Objects(self):
         self.Spawn_Chests()
@@ -60,6 +61,17 @@ class Decoration_Initialiser():
         if amount % 2:
             amount += 1
         self.Find_Floor_Tiles(keys.teleportation_circle, amount)
+
+    def Spawn_Doors(self):
+        doors = self.game.tilemap.extract([(keys.door, 0)])
+        if not keys.door in self.decorations:
+            self.decorations[keys.door] = []
+        for door in doors:
+            pos = door[keys.pos]
+            self.decorations[keys.door].append(pos)
+
+
+
 
     def Spawn_Effigy_Tomb(self):
         amount = random.randint(10, 15)
