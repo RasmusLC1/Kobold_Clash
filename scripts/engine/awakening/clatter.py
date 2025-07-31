@@ -17,7 +17,6 @@ class Clatter():
         clatter_range = self.Calculate_Silence_Modifier(clatter_range)
 
         self.awakening.Trigger_Awakening()
-        
         # find nearby enemies and prefilter them 
         nearby_enemies = [
             enemy for enemy in self.game.enemy_handler.Find_Nearby_Enemies(self.game.player, clatter_range)

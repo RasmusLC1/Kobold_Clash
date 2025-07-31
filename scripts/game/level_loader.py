@@ -1,3 +1,5 @@
+import random
+
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.player.player import Player
 from scripts.engine.particles.particle_handler import Particle_Handler
@@ -63,13 +65,14 @@ class Level_Loader():
         self.Clear_Level(clear_inventory)
 
         self.game.tilemap.Load('data/maps/' + str(map_id) + '.json')
+        self.game.a_star.Setup_Map_From_Game(self.game) # Initialise Astar early since other functions needs it
         if not self.initialised:
             self.Initial_Setup()
         else:
             self.Spawn_Player()
+            
 
 
-        self.game.a_star.Setup_Map_From_Game(self.game)
 
 
     def Initial_Setup(self):
@@ -93,7 +96,10 @@ class Level_Loader():
         self.initialised = True
 
     def Spawn_Player(self):
+        # print("TESTTEST", self.game.tilemap.extract([(keys.spawners, 0)]))
         for spawner in self.game.tilemap.extract([(keys.spawners, 0)]):
-            if spawner.variant == 0:
-                self.game.player = Player(self.game, spawner.pos, (28, 28), 100, 5, 5, 5, 5, 5)
-                return
+            print(spawner)
+            spawn_tile = random.choice(list(self.game.tilemap.tiles_not_touching_wall.values()))
+
+            self.game.player = Player(self.game, spawner[keys.pos], (28, 28), 100, 5, 5, 5, 5, 5)
+            return

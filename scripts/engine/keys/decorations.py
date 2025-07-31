@@ -73,6 +73,7 @@ class Decorations():
 
     brazier = "brazier"
 
+
 # Traps
     spike_trap = "spike_trap"
     

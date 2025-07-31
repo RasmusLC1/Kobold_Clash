@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 class Key_Rune(Rune):
     def __init__(self, game, pos):
         super().__init__(game, keys.key_rune, pos, 0, 50)
-        self.animation_time_max = 5
+        self.animation_time_max = 0.5
         self.animation_size_max = 10
 
 

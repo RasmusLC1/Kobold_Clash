@@ -83,7 +83,7 @@ class Boss_Room():
     # Close Doors and replace with walls
     def Spawn_Boss(self):
         # TODO: NOT TESTED YET
-        boss = random.choice(keys.wight_king, keys.vampire)
+        boss = random.choice((keys.wight_king, keys.vampire))
 
         self.boss = self.game.enemy_handler.Enemy_Spawner(
             self.pos,

@@ -19,19 +19,22 @@ class Level_Structure():
 
 
                 elif map[i][j] == FLOOR: # Floor
-                    Level_Structure.Floor_Checker(i, j, tile_size, tilemap, torches)
+                    random_variant = random.randint(0, 10)
+                    tilemap.tilemap[str(i) + ';' + str(j)] = {keys.type: keys.floor, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+
                 elif map[i][j] == LAVA:
                     tilemap.tilemap[str(i) + ';' + str(j)] = {keys.type: keys.lava_env, keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
                 elif map[i][j] == DOOR:
-                    tilemap.tilemap[str(i) + ';' + str(j)] = {keys.type: keys.door_basic, keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
+                    tilemap.tilemap[str(i) + ';' + str(j)] = {keys.type: keys.floor, keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
+                    tilemap.offgrid_tiles.append({
+                                    keys.type: keys.door,
+                                    keys.variant: 0,
+                                    keys.pos: (i * tile_size, j * tile_size)
+                                })
                 elif map[i][j] == TRAP:
                     trap_type = random.randint(0, 2)
                     tilemap.tilemap[str(i) + ';' + str(j)] = {keys.type: traps[trap_type], keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
     
-    def Floor_Checker(i, j, tile_size, tilemap, torches):
-        random_variant = random.randint(0, 10)
-        tilemap.tilemap[str(i) + ';' + str(j)] = {keys.type: keys.floor, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
-        Torch_Spawner.Torch_Spawner(i, j, tile_size, 20, torches, tilemap.offgrid_tiles)
 
 
     def Wall_Checker(map, i, j, size_x, size_y, tilemap):

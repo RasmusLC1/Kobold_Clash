@@ -46,7 +46,7 @@ class Enemy_Handler():
         spawners = self.game.tilemap.extract([(keys.spawners, 1)])
         spawners_length = len(spawners)
         
-        for i in range(2):
+        for i in range(10):
             # Spawn enemy at a random location
             spawner_index = random.randint(0, spawners_length - 1)
             spawner = spawners[spawner_index]
@@ -54,8 +54,9 @@ class Enemy_Handler():
             type = self.Get_Random_Enemy_Type()
 
             if type:
+                spawner_pos = spawner[keys.pos]
                 # Small random varience in spawning to prevent clumping together
-                pos = (spawner.pos[0] + random.randint(-10, 10), spawner.pos[1] + random.randint(-10, 10))
+                pos = (spawner_pos[0] + random.randint(-10, 10), spawner_pos[1] + random.randint(-10, 10))
                 self.Enemy_Spawner(pos, type)
 
     def Get_Random_Enemy_Type(self) :

@@ -38,12 +38,11 @@ class Spawn_Boss_Room():
         if not path:
             map = map_copy
             Spawn_Boss_Room.Spawn_Boss_Room(map, tile_size, size_x, size_y, player_pos, A_Star_Search, offgrid_tiles)
-            
             return
 
         # self.tilemap.offgrid_tiles.append({"type": 'Shrine', "variant": 0, "pos": [start_x * self.tile_size, start_y * self.tile_size]})
-        offgrid_tiles.append({"type": 'Boss_Room', "variant": 0, "pos": [start_x * tile_size, start_y * tile_size], "radius": radius})
-        Spawn_Boss_Room.Spawn_Traps_In_Boss_Room(map, start_x, start_y, radius)
+        offgrid_tiles.append({keys.type: keys.room, keys.variant: keys.boss_room, keys.pos: (start_x * tile_size, start_y * tile_size), keys.size : radius})
+
         
     @staticmethod
     def Spawn_Traps_In_Boss_Room(map, start_x, start_y, radius):

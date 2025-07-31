@@ -19,7 +19,7 @@ class Portal_Shrine_Menu(Menu):
 
     def Update(self):
         super().Update()
-        self.game.ui_handler.souls_interface.Update()
+        self.game.ui_handler.souls_interface.Update(self.game.delta_time)
         if self.unlock_portal_button:
             # If not purchased simply return
             if self.unlock_portal_button.Update():

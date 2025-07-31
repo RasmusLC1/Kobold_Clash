@@ -5,7 +5,6 @@ from scripts.engine.a_star import A_Star
 from scripts.level_generation.room_generation.level_structure import Level_Structure
 from scripts.level_generation.rooms.spawn_boss_room import Spawn_Boss_Room
 from scripts.level_generation.rooms.spawn_loot_room import Spawn_Loot_Room
-from scripts.level_generation.rooms.spawn_library import Spawn_Library
 from scripts.level_generation.rooms.spawn_lakes import Spawn_Lakes
 from scripts.level_generation.decoration_spawner.portal_shrine_spawner import Portal_Shrine_Spawner
 from scripts.level_generation.decoration_spawner.hunter_shrine_spawner import Hunter_Shrine_Spawner
@@ -49,7 +48,7 @@ class Dungeon_Generator():
     def Generate_Map(self, map_id):
         self.Update_Load_Menu(1)
 
-        self.tilemap.Clear_Tilemap()
+        self.tilemap.Clear_Tilemap() # Clears tiles and offgrid
         self.cellular_automata.Create_Map()
         self.Update_Load_Menu(2)
 
@@ -70,10 +69,6 @@ class Dungeon_Generator():
             self.Generate_Map(map_id)
             return
         
-        if not Spawn_Library.Spawn_Library(self.cellular_automata.map, size_x, size_y, map_id, self.player_spawn, self.A_Star_Search, self.tilemap.offgrid_tiles):
-            self.Generate_Map(map_id)
-            return
-
         self.Update_A_Star_Map()
 
         self.Update_Load_Menu(4)
@@ -88,13 +83,7 @@ class Dungeon_Generator():
             return
         
         self.Update_Load_Menu(5)
-        
-        if not self.Spawn_Decoration(map_id, size_x, size_y):
-            self.Generate_Map(map_id)
-            return
-
-        self.Update_A_Star_Map()
-
+  
 
         Weapon_Spawner.Spawn_Weapons(self.cellular_automata.map, map_id, self.tile_size, size_x, size_y, self.tilemap.offgrid_tiles)
 
@@ -104,28 +93,6 @@ class Dungeon_Generator():
 
         self.Update_Load_Menu(6)
         self.tilemap.save(f'data/maps/{map_id}.json')
-
-    def Spawn_Decoration(self, map_id, size_x, size_y):
-        Chest_Spawner.Spawn_Chest(self.cellular_automata.map, map_id, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-        
-        Vase_Spawner.Spawn_Vase(self.cellular_automata.map, map_id, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-        
-        if not Portal_Shrine_Spawner.Spawn_Portal_Shrine(self.cellular_automata.map, self.player_spawn, size_x, size_y, self.tile_size, self.A_Star_Search, self.tilemap.offgrid_tiles):
-            return False
-        
-        Hunter_Shrine_Spawner.Spawn_Hunter_Shrine(self.cellular_automata.map, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-        
-        Sacrifice_Shrine_Spawner.Spawn_Sacrifice_Shrine(self.cellular_automata.map, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-
-        Soul_Well_Spawner.Spawn_Soul_Well(self.cellular_automata.map, map_id, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-
-        Teleportation_Circle_Spawner.Spawn_Teleport_Circle(self.cellular_automata.map, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-        
-        Effigy_Tomb_Spawner.Spawn_Effigy_Tomb(self.cellular_automata.map, map_id, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-
-        Effigy_Tomb_Spawner.Spawn_Effigy_Tomb(self.cellular_automata.map, map_id, size_x, size_y, self.tile_size, self.tilemap.offgrid_tiles, self.A_Star_Search)
-
-        return True
 
 
     def Update_Load_Menu(self, value):
