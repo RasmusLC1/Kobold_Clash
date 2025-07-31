@@ -18,7 +18,7 @@ class Rune(Item):
         self.original_soul_cost = soul_cost
         self.current_soul_cost = soul_cost
         self.min_soul_cost = math.ceil(self.original_soul_cost / 10)
-        self.animation_time_max = 1
+        self.animation_time_max = 0.4
         self.animation_time = 0
         self.animation_size = 0
         self.animation_size_max = 0
@@ -146,13 +146,14 @@ class Rune(Item):
         self.activate_cooldown = value
 
     def Set_Animation_Time(self):
+        print("SET ANIMATION TIME")
         self.animation_time = self.animation_time_max
 
     def Reset_Animation_Size(self):
         self.animation_size = 0
 
     def Increase_Animation_Size(self):
-        self.animation_size = min(self.animation_size + 1, self.animation_size_max)
+        self.animation_size = min(self.animation_size + 0.1, self.animation_size_max)
 
 
     def Update_Animation(self, delta_time):

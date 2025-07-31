@@ -66,6 +66,7 @@ class Decoration_Initialiser():
         doors = self.game.tilemap.extract([(keys.door, 0)])
         if not keys.door in self.decorations:
             self.decorations[keys.door] = []
+
         for door in doors:
             pos = door[keys.pos]
             self.decorations[keys.door].append(pos)

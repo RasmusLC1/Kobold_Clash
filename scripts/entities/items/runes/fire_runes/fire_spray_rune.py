@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 class Fire_Spray_Rune(Projectile_Rune):
     def __init__(self, game, pos):
         super().__init__(game, keys.fire_spray_rune, pos, 1, 20)
-        self.animation_time_max = 30
+        self.animation_time_max = 0.5
         self.animation_size_max = 15
         self.fire_shooter = Flame_Thrower(self.game)
         self.activate_cooldown_max = 2

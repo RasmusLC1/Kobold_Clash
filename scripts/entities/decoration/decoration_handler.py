@@ -81,6 +81,7 @@ class Decoration_Handler():
         self.Spawn_Weapon_Rack()
         self.Spawn_Bookshelf()
         self.Spawn_Boss_Room()
+        self.Spawn_Doors()
         
         self.Spawn_Items()
 
@@ -284,8 +285,13 @@ class Decoration_Handler():
         for pos in self.decoration_initialiser.decorations[keys.boss_room]:
             boss_room = Boss_Room(self.game, pos, 3)
             self.decorations.append(boss_room)
-            return boss_room
-    
+        
+    def Spawn_Doors(self):
+        if not keys.door in self.decoration_initialiser.decorations:
+            return
+        for pos in self.decoration_initialiser.decorations[keys.door]:
+            door = Door(self.game, keys.door_basic, pos)
+            self.decorations.append(door)
         
     def Spawn_Teleportation_Circle(self):
         if not keys.teleportation_circle in self.decoration_initialiser.decorations:

@@ -3,7 +3,7 @@ from scripts.engine.keys.keys import keys
 
 
 class Door(Decoration):
-    def __init__(self, game, type, pos, size) -> None:
+    def __init__(self, game, type, pos, size = (32, 32)) -> None:
         super().__init__(game, type, pos, size)
         self.is_open = False
         self.high_light_cooldown = 0
