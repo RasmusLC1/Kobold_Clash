@@ -32,7 +32,7 @@ class Trap(PhysicsEntity):
         self.animation_cooldown = data['animation_cooldown']
         self.animation_max = data['animation_max']
 
-    def Update(self):
+    def Update(self, delta_time):
         if not self.entities:
             return False
         
@@ -53,15 +53,15 @@ class Trap(PhysicsEntity):
         return True
 
 
-    def Update_Cooldown(self):
-        if self.entity_check_cooldown:
-            self.entity_check_cooldown -= 1
+    def Update_Cooldown(self, delta_time):
+        if self.entity_check_cooldown > 0:
+            self.entity_check_cooldown -= delta_time
             return False
 
-        self.entity_check_cooldown = 20
+        self.entity_check_cooldown = 1
         return True
 
-    def Animation_Update(self):
+    def Animation_Update(self, delta_time):
         pass
 
     def Set_Active(self, duration):

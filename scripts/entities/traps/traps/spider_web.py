@@ -1,4 +1,4 @@
-from scripts.traps.trap import Trap
+from scripts.entities.traps.trap import Trap
 from scripts.engine.keys.keys import keys
 
 class Spider_Web(Trap):
@@ -20,7 +20,7 @@ class Spider_Web(Trap):
         
 
 
-    def Update(self, entity):
+    def Update(self, entity, delta_time):
         if self.Cooldown > 0:
             self.Cooldown -= 1
             return

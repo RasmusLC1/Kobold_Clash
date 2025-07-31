@@ -1,4 +1,4 @@
-from scripts.traps.trap import Trap
+from scripts.entities.traps.trap import Trap
 
 import random
 from scripts.engine.keys.keys import keys
@@ -9,11 +9,11 @@ class Ice(Trap):
         super().__init__(game, pos, size, type)
         self.animation = random.randint(0, 1)
 
-    def Update(self):
-        if not super().Update():
+    def Update(self, delta_time):
+        if not super().Update(delta_time):
             return False
         
-        if not self.Update_Cooldown():
+        if not self.Update_Cooldown(delta_time):
             return
         self.Update_Trapped_Entities()
         return True

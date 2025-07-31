@@ -1,4 +1,4 @@
-from scripts.traps.trap import Trap
+from scripts.entities.traps.trap import Trap
 from scripts.engine.keys.keys import keys
 
 import pygame
@@ -9,11 +9,11 @@ class Spike_Pit(Trap):
         self.slow_amount = 4
 
 
-    def Update(self):
-        if not super().Update():
+    def Update(self, delta_time):
+        if not super().Update(delta_time):
             return False
         
-        if not self.Update_Cooldown():
+        if not self.Update_Cooldown(delta_time):
             return
         self.Update_Trapped_Entities()
         return True

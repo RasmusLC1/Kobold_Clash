@@ -3,7 +3,7 @@ import random
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.player.player import Player
 from scripts.engine.particles.particle_handler import Particle_Handler
-from scripts.traps.trap_handler import Trap_Handler
+from scripts.entities.traps.trap_handler import Trap_Handler
 from scripts.entities.items.item_handler import Item_Handler
 
 from scripts.entities.decoration.decoration_handler import Decoration_Handler

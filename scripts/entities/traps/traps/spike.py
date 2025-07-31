@@ -1,4 +1,4 @@
-from scripts.traps.trap import Trap
+from scripts.entities.traps.trap import Trap
 from scripts.engine.keys.keys import keys
 
 import random
@@ -10,11 +10,11 @@ class Spike(Trap):
         self.slow_amount = 2
 
 
-    def Update(self):
-        if not super().Update():
+    def Update(self, delta_time):
+        if not super().Update(delta_time):
             return False
         
-        if not self.Update_Cooldown():
+        if not self.Update_Cooldown(delta_time):
             return
         self.Update_Trapped_Entities()
         return True
@@ -39,14 +39,14 @@ class Spike(Trap):
             entity.Damage_Taken(2)            
             
 
-    def Animation_Update(self):
+    def Animation_Update(self, delta_time):
         if self.animation_cooldown > 0:
-            self.animation_cooldown -= 1
-
-        if self.animation_cooldown == 0:
-            if self.animation >= 5:
-                self.animation = 0
-            else:
-                self.animation += 1
-            
-            self.animation_cooldown = random.randint(20, 30)
+            self.animation_cooldown -= delta_time
+            return
+        
+        if self.animation >= 5:
+            self.animation = 0
+        else:
+            self.animation += 1
+        
+        self.animation_cooldown = random.uniform(0.3, 0.4)

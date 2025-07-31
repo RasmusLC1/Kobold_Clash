@@ -146,7 +146,6 @@ class Rune(Item):
         self.activate_cooldown = value
 
     def Set_Animation_Time(self):
-        print("SET ANIMATION TIME")
         self.animation_time = self.animation_time_max
 
     def Reset_Animation_Size(self):

@@ -1,11 +1,11 @@
-from scripts.traps.traps.spike import Spike
-from scripts.traps.traps.spike_poisoned import Spike_Poisoned
-from scripts.traps.traps.spike_pit import Spike_Pit
-from scripts.traps.traps.fire_trap import Fire_Trap
-from scripts.traps.environment.lava import Lava
-from scripts.traps.environment.water import Water
-from scripts.traps.environment.ice import Ice
-from scripts.traps.traps.spider_web import Spider_Web
+from scripts.entities.traps.traps.spike import Spike
+from scripts.entities.traps.traps.spike_poisoned import Spike_Poisoned
+from scripts.entities.traps.traps.spike_pit import Spike_Pit
+from scripts.entities.traps.traps.fire_trap import Fire_Trap
+from scripts.entities.traps.environment.lava import Lava
+from scripts.entities.traps.environment.water import Water
+from scripts.entities.traps.environment.ice import Ice
+from scripts.entities.traps.traps.spider_web import Spider_Web
 import math
 from scripts.engine.keys.keys import keys
 
@@ -38,6 +38,30 @@ class Trap_Handler:
                 self.Trap_Spawner(pos, size, type, item_data)
             except Exception as e:
                 print("DATA WRONG", item_data, e)
+
+    def Update(self, delta_time):
+        if self.Update_Nearby_Traps_Cooldown(delta_time):
+            self.nearby_traps.clear()
+            self.nearby_traps = self.Find_Traps_Near_Player()
+
+        self.Update_Nearby_Trap_Animation(delta_time)
+        self.Update_Nearby_Traps_Logic(delta_time)
+
+    def Update_Nearby_Trap_Animation(self, delta_time):
+        if not self.nearby_traps:
+            return
+        for trap in self.nearby_traps:
+            if not trap:
+                continue
+            trap.Animation_Update(delta_time)
+
+    def Update_Nearby_Traps_Logic(self, delta_time):
+        if not self.nearby_traps:
+            return
+        for trap in self.nearby_traps:
+            trap.Update(delta_time)
+    
+
 
     def Clear_Traps(self):
         self.traps.clear()
@@ -194,36 +218,15 @@ class Trap_Handler:
         
         return nearby_traps
 
-    def Update(self):
-        if self.Update_Nearby_Traps_Cooldown():
-            self.nearby_traps.clear()
-            self.nearby_traps = self.Find_Traps_Near_Player()
 
-        self.Update_Nearby_Trap_Animation()
-        self.Update_Nearby_Traps_Logic()
-
-    def Update_Nearby_Trap_Animation(self):
-        if not self.nearby_traps:
-            return
-        for trap in self.nearby_traps:
-            if not trap:
-                continue
-            trap.Animation_Update()
-
-    def Update_Nearby_Traps_Logic(self):
-        if not self.nearby_traps:
-            return
-        for trap in self.nearby_traps:
-            trap.Update()
-    
     def Reset_Nearby_Traps_Cooldown(self):
         self.nearby_traps_cooldown = 1
 
-    def Update_Nearby_Traps_Cooldown(self):
+    def Update_Nearby_Traps_Cooldown(self, delta_time):
         if self.nearby_traps_cooldown:
-            self.nearby_traps_cooldown = max(0, self.nearby_traps_cooldown - 1)
+            self.nearby_traps_cooldown = max(0, self.nearby_traps_cooldown - delta_time)
             return False
-        self.nearby_traps_cooldown = 50
+        self.nearby_traps_cooldown = 1 # Update nearby traps every second
         return True
 
     def Remove_Trap(self, trap):

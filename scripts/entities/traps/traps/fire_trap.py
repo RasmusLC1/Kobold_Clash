@@ -1,4 +1,4 @@
-from scripts.traps.trap import Trap
+from scripts.entities.traps.trap import Trap
 
 import random
 from scripts.engine.keys.keys import keys
@@ -23,14 +23,14 @@ class Fire_Trap(Trap):
             entity.Set_Effect(keys.fire, 3)
             self.Cooldown = 100
                 
-    def Animation_Update(self):
+    def Animation_Update(self, delta_time):
         if self.animation_cooldown > 0:
-            self.animation_cooldown -= 1
+            self.animation_cooldown -= delta_time
+            return
 
-        if self.animation_cooldown == 0:
-            if self.animation >= 13:
-                self.animation = 0
-            else:
-                self.animation += 1
-            
-            self.animation_cooldown = random.randint(10, 20)
+        if self.animation >= 13:
+            self.animation = 0
+        else:
+            self.animation += 1
+        
+        self.animation_cooldown = random.randint(0.1, 0.2)

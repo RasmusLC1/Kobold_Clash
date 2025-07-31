@@ -1,4 +1,4 @@
-from scripts.traps.trap import Trap
+from scripts.entities.traps.trap import Trap
 from scripts.engine.keys.keys import keys
 
 import random
@@ -8,7 +8,7 @@ class Poison_Plume(Trap):
         super().__init__(game, pos, size, type)
         self.animation = 0
 
-    def Update(self, entity):
+    def Update(self, delta_time, entity = None):
 
         if entity.category == keys.item:
             return
@@ -20,9 +20,9 @@ class Poison_Plume(Trap):
             # entity.Set_Effect('slow_down', 4)
             
 
-    def Animation_Update(self):
+    def Animation_Update(self, delta_time):
         if self.animation_cooldown > 0:
-            self.animation_cooldown -= 1
+            self.animation_cooldown -= delta_time
 
         if self.animation_cooldown == 0:
             if self.animation >= 5:
@@ -30,4 +30,4 @@ class Poison_Plume(Trap):
             else:
                 self.animation += 1
             
-            self.animation_cooldown = random.randint(20, 30)
+            self.animation_cooldown = random.randint(0.3, 0.4)

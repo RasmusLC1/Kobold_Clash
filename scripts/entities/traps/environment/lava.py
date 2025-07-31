@@ -1,4 +1,4 @@
-from scripts.traps.trap import Trap
+from scripts.entities.traps.trap import Trap
 from scripts.engine.keys.keys import keys
 
 import random
@@ -15,11 +15,11 @@ class Lava(Trap):
         
         
 
-    def Update(self):
-        if not super().Update():
+    def Update(self, delta_time):
+        if not super().Update(delta_time):
             return False
 
-        if not self.Update_Cooldown():
+        if not self.Update_Cooldown(delta_time):
             return
         self.Update_Trapped_Entities()
         return True
@@ -45,26 +45,27 @@ class Lava(Trap):
         return True
 
 
-    def Animation_Update(self):
-        self.Spawn_Fire_Particle()
+    def Animation_Update(self, delta_time):
+        self.Spawn_Fire_Particle(delta_time)
 
         if self.animation_cooldown > 0:
-            self.animation_cooldown -= 1
+            self.animation_cooldown -= delta_time
+            return
 
-        if self.animation_cooldown == 0:
-            if self.animation >= 2:
-                self.animation = 0
-            else:
-                self.animation += 1
-            
-            self.animation_cooldown = random.randint(20, 30)
+        
+        if self.animation >= 2:
+            self.animation = 0
+        else:
+            self.animation += 1
+        
+        self.animation_cooldown = random.uniform(0.4, 0.5)
 
-    def Spawn_Fire_Particle(self):
+    def Spawn_Fire_Particle(self, delta_time):
         if not self.fire_particle_cooldown:
-            self.fire_particle_cooldown = random.randint(70, 150)
+            self.fire_particle_cooldown = random.uniform(1, 2)
             self.game.particle_handler.Activate_Particles(random.randint(1, 2), keys.fire_particle, self.rect().center)
 
             return
         
-        self.fire_particle_cooldown -= 1
+        self.fire_particle_cooldown -= delta_time
         return
