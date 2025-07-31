@@ -199,9 +199,9 @@ class Decoration_Initialiser():
 
             x, y = map(int, tile_key.split(";"))
 
-            neigbour_tile_contains_decoration = self.Check_Neighbours(x, y)
+            neigbour_tiles_valid = self.Check_Neighbours(x, y)
             
-            if not neigbour_tile_contains_decoration:
+            if not neigbour_tiles_valid:
                 fail += 1
                 continue
             
