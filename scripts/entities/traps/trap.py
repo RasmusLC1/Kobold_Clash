@@ -14,7 +14,7 @@ class Trap(PhysicsEntity):
         self.animation_max = 0
         self.ID = random.randint(1, 1000000)
         self.entity_check_cooldown = 0
-        self.entities = []
+        self.entities = self.tile.entities # pointer to the traps entities
 
 
     def Save_Data(self):
@@ -36,6 +36,9 @@ class Trap(PhysicsEntity):
         if not self.entities:
             return False
         
+        if not self.Update_Cooldown(delta_time):
+            return False
+        self.Update_Trapped_Entities()
         return True
 
     def Add_Entity_To_Trap(self, entity):
@@ -58,8 +61,19 @@ class Trap(PhysicsEntity):
             self.entity_check_cooldown -= delta_time
             return False
 
-        self.entity_check_cooldown = 1
+        self.entity_check_cooldown = 0.4
         return True
+    
+    def Update_Trapped_Entities(self):
+        for entity in self.entities.values():
+            if entity.ID == self.ID:
+                continue
+            if not self.rect().colliderect(entity.rect()):
+                continue
+            self.Apply_Entity_Effect(entity)
+    
+    def Apply_Entity_Effect(self, entity):
+        pass
 
     def Animation_Update(self, delta_time):
         pass

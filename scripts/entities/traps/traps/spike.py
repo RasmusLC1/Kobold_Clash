@@ -7,36 +7,11 @@ class Spike(Trap):
     def __init__(self, game, pos, size, type):
         super().__init__(game, pos, size, type)
         self.animation = random.randint(0, 5)
-        self.slow_amount = 2
+        self.slow_amount = 1
 
 
-    def Update(self, delta_time):
-        if not super().Update(delta_time):
-            return False
-        
-        if not self.Update_Cooldown(delta_time):
-            return
-        self.Update_Trapped_Entities()
-        return True
-    
-    def Add_Entity_To_Trap(self, entity):
-        if not super().Add_Entity_To_Trap(entity):
-            return False
-        entity.Set_Effect(keys.slow, self.slow_amount)
-        return True
-
-        
-    def Update_Trapped_Entities(self):
-        for entity in self.entities:
-            if not self.rect().colliderect(entity.rect()):
-                self.entities.remove(entity)
-                entity.Remove_Effect(keys.slow, self.slow_amount)
-
-                continue
-
-            if entity.effects.invulnerable.effect:
-                return
-            entity.Damage_Taken(2)            
+    def Apply_Entity_Effect(self, entity):
+        entity.Damage_Taken(2, (keys.slow, self.slow_amount))
             
 
     def Animation_Update(self, delta_time):

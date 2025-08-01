@@ -9,25 +9,11 @@ class Water(Trap):
 
         self.Set_Slowdown_Amount()
 
+        
 
-    def Update(self, delta_time):
-        if not super().Update(delta_time):
-            return False
-        
-        if not self.Update_Cooldown(delta_time):
-            return
-        self.Update_Trapped_Entities()
-        return True
-        
-        
-    def Update_Trapped_Entities(self):
-        for entity in self.entities:
-            if not self.rect().colliderect(entity.rect()):
-                self.entities.remove(entity)
-                continue
-
-            entity.Set_Effect(keys.slow, self.slow_amount)
-            entity.Set_Effect(keys.wet, 2)
+    def Apply_Entity_Effect(self, entity):
+        entity.Set_Effect(keys.slow, self.slow_amount)
+        entity.Set_Effect(keys.wet, 2)
 
     
     def Set_Slowdown_Amount(self):

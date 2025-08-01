@@ -128,7 +128,7 @@ class Moving_Entity(PhysicsEntity):
         self.Update_Status_Effects(delta_time)
 
 
-        self.Update_Traps(delta_time)
+        # self.Update_Traps(delta_time)
         self.Nearby_Enemies(2, delta_time)
         self.Update_Damage_Cooldown(delta_time)
         self.Charge_Update(delta_time)

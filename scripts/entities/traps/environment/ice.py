@@ -8,28 +8,22 @@ class Ice(Trap):
     def __init__(self, game, pos, size, type):
         super().__init__(game, pos, size, type)
         self.animation = random.randint(0, 1)
+        self.Set_On_Ice_Amount()
 
-    def Update(self, delta_time):
-        if not super().Update(delta_time):
-            return False
-        
-        if not self.Update_Cooldown(delta_time):
-            return
-        self.Update_Trapped_Entities()
-        return True
-        
-        
-    def Update_Trapped_Entities(self):
-        for entity in self.entities:
-            if not self.rect().colliderect(entity.rect()):
-                self.entities.remove(entity)
-                continue
 
-            if self.type == keys.shallow_ice_env:
-                entity.On_Ice(200)
-            elif self.type == keys.medium_ice_env:
-                entity.On_Ice(500)
-            elif self.type == keys.deep_ice_env:
-                entity.On_Ice(1000)
+    def Apply_Entity_Effect(self, entity):
+        entity.On_Ice(self.on_ice_amount)
+        
+
+    def Set_On_Ice_Amount(self):
+        if self.type == keys.shallow_ice_env:
+            self.on_ice_amount = 200
+        elif self.type == keys.medium_ice_env:
+            self.on_ice_amount = 500
+        elif self.type == keys.deep_ice_env:
+            self.on_ice_amount = 1000
+
+        else:
+            self.on_ice_amount = 200
 
 

@@ -15,34 +15,11 @@ class Lava(Trap):
         
         
 
-    def Update(self, delta_time):
-        if not super().Update(delta_time):
-            return False
-
-        if not self.Update_Cooldown(delta_time):
+    def Apply_Entity_Effect(self, entity):
+        if entity.effects.wet.effect:
+            entity.effects.wet.Decrease_Effect()
             return
-        self.Update_Trapped_Entities()
-        return True
-
-
-    def Update_Trapped_Entities(self):
-        for entity in self.entities:
-            if not self.rect().colliderect(entity.rect()):
-                self.entities.remove(entity)
-                entity.Remove_Effect(keys.slow, self.slow_amount)
-                continue
-            
-            if entity.effects.invulnerable.effect:
-                return
-            if entity.effects.wet.effect:
-                entity.effects.wet.Decrease_Effect()
-            entity.Damage_Taken(5, (keys.fire, 3))
-
-    def Add_Entity_To_Trap(self, entity):
-        if not super().Add_Entity_To_Trap(entity):
-            return False
-        entity.Set_Effect(keys.slow, self.slow_amount)
-        return True
+        entity.Damage_Taken(5, (keys.fire, 3))
 
 
     def Animation_Update(self, delta_time):

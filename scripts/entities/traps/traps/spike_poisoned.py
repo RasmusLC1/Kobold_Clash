@@ -9,25 +9,9 @@ class Spike_Poisoned(Trap):
         super().__init__(game, pos, size, type)
         self.animation = random.randint(0, 13)
 
-
-    def Update(self, delta_time):
-        if not super().Update(delta_time):
-            return False
-        if not self.Update_Cooldown(delta_time):
-            return
         
-        self.Update_Trapped_Entities()
-        
-        
-    def Update_Trapped_Entities(self):
-        for entity in self.entities:
-            if not self.rect().colliderect(entity.rect()):
-                self.entities.remove(entity)
-                continue
-
-            if entity.effects.invulnerable.effect:
-                return
-            entity.Damage_Taken(2, (keys.poison, random.randint(3,5)))
+    def Apply_Entity_Effect(self, entity):
+        entity.Damage_Taken(2, (keys.poison, random.randint(3,5)))
 
 
     def Animation_Update(self, delta_time):
