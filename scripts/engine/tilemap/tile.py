@@ -63,7 +63,7 @@ class Tile():
     
     def Search_Entities(self, category, ID=0):
         return [entity for entity in self.entities.values()
-            if entity.category == category and entity.ID != ID]
+            if entity.category in (category) and entity.ID != ID]
 
     
     def Search_Type(self, type, ID = 0):

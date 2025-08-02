@@ -13,7 +13,7 @@ class Poison_Plume(Trap):
         if entity.category == keys.item:
             return
 
-        if self.rect().colliderect(entity.rect()) and self.Cooldown == 0 and self.animation > 3:
+        if self.rect().colliderect(entity.rect()) and self.cooldown == 0 and self.animation > 3:
             if entity.effects.invulnerable.effect:
                 return
             entity.Damage_Taken(2, (keys.poison, 0))

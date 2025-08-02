@@ -17,11 +17,11 @@ class Spike_Poisoned(Trap):
     def Animation_Update(self, delta_time):
         if self.animation_cooldown > 0:
             self.animation_cooldown -= delta_time
-
-        if self.animation_cooldown == 0:
-            if self.animation >= 13:
-                self.animation = 0
-            else:
-                self.animation += 1
-            
-            self.animation_cooldown = random.uniform(0.13, 0.15)
+            return
+        
+        if self.animation >= 13:
+            self.animation = 0
+        else:
+            self.animation += 1
+        
+        self.animation_cooldown = random.uniform(0.13, 0.15)
