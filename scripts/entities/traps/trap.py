@@ -68,6 +68,8 @@ class Trap(PhysicsEntity):
         self.entity_check_cooldown = COOLDOWN_MAX
         return True
     
+    # Handle cooldown of entities in the trap seperately to ensure fast trigger on trap
+    # but controlled damage
     def Update_Damage_Cooldown(self, delta_time):
         to_remove = []
         for entity_id  in self.damaged_entities:

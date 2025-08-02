@@ -166,11 +166,6 @@ class Decoration_Handler():
         self.decorations.append(decoration)
         return decoration
 
-    def Spawn_Door(self, pos, size, version=None, radius=None, level=None):
-
-        door = Door(self.game, keys.door_basic, pos, size)
-        self.decorations.append(door)
-        return door
 
     def Spawn_Chest(self):
         if not keys.chest in self.decoration_initialiser.decorations:
@@ -290,7 +285,7 @@ class Decoration_Handler():
         if not keys.door in self.decoration_initialiser.decorations:
             return
         for pos in self.decoration_initialiser.decorations[keys.door]:
-            door = Door(self.game, keys.door_basic, pos)
+            door = Door(self.game, pos)
             self.decorations.append(door)
         
     def Spawn_Teleportation_Circle(self):

@@ -6,18 +6,8 @@ from scripts.level_generation.room_generation.level_structure import Level_Struc
 from scripts.level_generation.rooms.spawn_boss_room import Spawn_Boss_Room
 from scripts.level_generation.rooms.spawn_loot_room import Spawn_Loot_Room
 from scripts.level_generation.rooms.spawn_lakes import Spawn_Lakes
-from scripts.level_generation.decoration_spawner.portal_shrine_spawner import Portal_Shrine_Spawner
-from scripts.level_generation.decoration_spawner.hunter_shrine_spawner import Hunter_Shrine_Spawner
-from scripts.level_generation.decoration_spawner.sacrifice_shrine_spawner import Sacrifice_Shrine_Spawner
 from scripts.level_generation.entities.spawn_player import Spawn_Player
 from scripts.level_generation.entities.spawn_enemy import Spawn_Enemy
-from scripts.level_generation.decoration_spawner.trap_spawner import Trap_Spawner
-from scripts.level_generation.decoration_spawner.chest_spawner import Chest_Spawner
-from scripts.level_generation.decoration_spawner.vase_spawner import Vase_Spawner
-from scripts.level_generation.decoration_spawner.potion_table import Potion_Table_Spawner
-from scripts.level_generation.decoration_spawner.soul_well_spawner import Soul_Well_Spawner
-from scripts.level_generation.decoration_spawner.teleport_circle import Teleportation_Circle_Spawner
-from scripts.level_generation.decoration_spawner.effigy_tomb_spawner import Effigy_Tomb_Spawner
 from scripts.level_generation.loot.weapon_spawner import Weapon_Spawner
 from scripts.level_generation.loot.rune_spawner import Rune_Spawner
 from scripts.level_generation.dungeon_enum_keys import *
@@ -60,7 +50,6 @@ class Dungeon_Generator():
 
         self.player_spawn = Spawn_Player.Player_Spawn(self.tile_size, self.tilemap)
         self.a_star.Set_Map('custom')
-        Trap_Spawner.Spawn_Traps(self.cellular_automata.map, 1, size_x, size_y)
         self.Update_Load_Menu(3)
 
         # Spawn more loot rooms in lower levels of dungeon

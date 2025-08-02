@@ -75,7 +75,11 @@ class Decorations():
 
 
 # Traps
+    trap = "trap"
+
     spike_trap = "spike_trap"
+
+    rubble = "rubble"
     
     
     spike_poison_trap = "spike_poison_trap"

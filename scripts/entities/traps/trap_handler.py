@@ -6,9 +6,19 @@ from scripts.entities.traps.environment.lava import Lava
 from scripts.entities.traps.environment.water import Water
 from scripts.entities.traps.environment.ice import Ice
 from scripts.entities.traps.traps.spider_web import Spider_Web
-import math
 from scripts.engine.keys.keys import keys
+import math
+import random
 
+TILESIZE = 32
+
+
+TRAP_TABLE = { # Expand with new traps as needed
+    # keys.rubble : 2,
+    keys.pit_trap : 1110.4,
+    keys.spike_poison_trap : 0.4,
+    keys.spike_trap : 0.6,
+}
 
 class Trap_Handler:
     def __init__(self, game):
@@ -16,8 +26,8 @@ class Trap_Handler:
         self.traps = []
         self.nearby_traps = []
         self.saved_data = {}
-
-
+        self.floor_tiles = {}
+        self.traps_to_spawn = {}
         self.nearby_traps_cooldown = 0
         
     
@@ -35,7 +45,7 @@ class Trap_Handler:
             pos = item_data[keys.pos]
             size = item_data['size']
             try: 
-                self.Trap_Spawner(pos, size, type, item_data)
+                self.Trap_Spawner(pos, type, size, item_data)
             except Exception as e:
                 print("DATA WRONG", item_data, e)
 
@@ -71,71 +81,47 @@ class Trap_Handler:
 
 
     def Initialise(self):
-        # Spike initialisation
-        for trap in self.game.tilemap.extract([(keys.spike_trap, 0)].copy(), True):
-            size = (self.game.assets[trap.type][0].get_width(), self.game.assets[trap.type][0].get_height())
-            self.Trap_Spawner(trap.pos, size, trap.type)
-            
-        # Spike initialisation
-        for trap in self.game.tilemap.extract([(keys.spike_poison_trap, 0)].copy(), True):
-            size = (self.game.assets[trap.type][0].get_width(), self.game.assets[trap.type][0].get_height())
-            self.Trap_Spawner(trap.pos, size, trap.type)
+        self.Initialise_Traps()
+        for trap_type, trap_positions in self.traps_to_spawn.items():
+            for trap_pos in trap_positions:
+                self.Trap_Spawner(trap_pos, trap_type)
+        
+        self.Spawn_Trap_Tiles()
 
-
-        # top pusher initialisation
-        for trap in self.game.tilemap.extract([('TopPush_trap', 0)].copy()):
-            size = (self.game.assets[trap.type][0].get_width(), self.game.assets[trap.type][0].get_height())
-            self.Trap_Spawner(trap.pos, size, trap.type)
-
-
-        # Bear Trap initialisation
-        for trap in self.game.tilemap.extract([('Bear_trap', 0)].copy()):
-            self.Trap_Spawner(trap.pos, (16, 16), trap.type)
-
-        # Spike pit initialisation
-        for trap in self.game.tilemap.extract([(keys.pit_trap, 0)].copy(), True):
-            size = (self.game.assets[trap.type][0].get_width(), self.game.assets[trap.type][0].get_height())
-            self.Trap_Spawner(trap.pos, size, trap.type)
-
+    def Spawn_Trap_Tiles(self):
         for trap in self.game.tilemap.extract([(keys.lava_env, 0)].copy(), True):
             size = (self.game.assets[trap.type][0].get_width(), self.game.assets[trap.type][0].get_height())
-            self.Trap_Spawner(trap.pos, size, trap.type)
+            self.Trap_Spawner(trap.pos, trap.type)
 
         for trap in self.game.tilemap.extract([(keys.shallow_water_env, 0)].copy(), True):
             size = (self.game.assets[trap.type][0].get_width(), self.game.assets[trap.type][0].get_height())
-            self.Trap_Spawner(trap.pos, size, trap.type)
+            self.Trap_Spawner(trap.pos, trap.type)
 
 
         for trap in self.game.tilemap.extract([(keys.medium_water_env, 0)].copy(), True):
             size = (self.game.assets[trap.type][0].get_width(), self.game.assets[trap.type][0].get_height())
-            self.Trap_Spawner(trap.pos, size, trap.type)
+            self.Trap_Spawner(trap.pos, trap.type)
 
         for trap in self.game.tilemap.extract([(keys.deep_water_env, 0)].copy(), True):
             size = (self.game.assets[trap.type][0].get_width(), self.game.assets[trap.type][0].get_height())
-            self.Trap_Spawner(trap.pos, size, trap.type)
+            self.Trap_Spawner(trap.pos, trap.type)
 
 
         for trap in self.game.tilemap.extract([(keys.shallow_ice_env, 0)].copy(), True):
             size = (self.game.assets[trap.type][0].get_width(), self.game.assets[trap.type][0].get_height())
-            self.Trap_Spawner(trap.pos, size, trap.type)
-
+            self.Trap_Spawner(trap.pos, trap.type)
 
 
         for trap in self.game.tilemap.extract([(keys.medium_ice_env, 0)].copy(), True):
             size = (self.game.assets[trap.type][0].get_width(), self.game.assets[trap.type][0].get_height())
-            self.Trap_Spawner(trap.pos, size, trap.type)
+            self.Trap_Spawner(trap.pos, trap.type)
 
         for trap in self.game.tilemap.extract([(keys.deep_ice_env, 0)].copy(), True):
             size = (self.game.assets[trap.type][0].get_width(), self.game.assets[trap.type][0].get_height())
-            self.Trap_Spawner(trap.pos, size, trap.type)
+            self.Trap_Spawner(trap.pos, trap.type)
 
-        for trap in self.game.tilemap.extract([(keys.fire_trap, 0)].copy()):
-            self.Trap_Spawner(trap.pos, (16, 16), trap.type)
 
-        for trap in self.game.tilemap.extract([(keys.spider_web, 3)].copy()):
-            self.Trap_Spawner(trap.pos, (16, 16), trap.type)
-
-    def Trap_Spawner(self, pos, size, type, data = None):
+    def Trap_Spawner(self, pos, type, size = (32, 32), data = None):
         trap = None
         if keys.spike_trap == type:
             trap = self.Spawn_Spike_Trap(pos, size, type)
@@ -167,7 +153,7 @@ class Trap_Handler:
         elif type == keys.spider_web:
             trap = self.Spawn_Spider_Web(pos, size, type)
         else:
-            print(type)
+            print("FAILED TO FIND TRAPTYPE", type)
         if not trap:
             return False
         
@@ -241,3 +227,52 @@ class Trap_Handler:
     def Add_Trap(self, trap):
         self.traps.append(trap)
 
+
+    def Get_Floor_Tiles(self):
+        for tile_key, tile in self.game.tilemap.tilemap.items():
+            if keys.floor in tile.type:
+                self.floor_tiles[tile_key] = tile 
+
+    def Initialise_Traps(self):
+        self.Get_Floor_Tiles()
+        trap_tiles = []  # Keeps track of already placed trap positions (in tile coordinates)
+        density = 40      # Controls how sparse the torch placement is (lower = more traps)
+        tilemap = self.game.tilemap.tilemap
+
+
+        # Convert floor_tiles to a list to avoid runtime errors from modifying the dict during iteration
+        for tile_key, tile in list(self.floor_tiles.items()):
+            # Skip tiles that already have entities on them
+            if tile.contains_decoration:
+                del self.floor_tiles[tile_key]
+                continue
+
+            i, j = tile.pos 
+
+            # Random chance to try placing a torch at this tile
+            if random.randint(0, density) == 1:
+                too_close = False
+
+                # Check distance to all previously placed torches
+                for torch_pos in trap_tiles:
+                    if math.hypot(i - torch_pos[0], j - torch_pos[1]) < 8:
+                        too_close = True
+                        break  # Too close to an existing torch, skip placement
+
+                # If no nearby torch found, place one here
+                if too_close:
+                    continue
+
+                trap_tiles.append((i, j))  # Track this torch position
+                trap = random.choices(
+                    population=list(TRAP_TABLE.keys()),
+                    weights=list(TRAP_TABLE.values()),
+                    k=1
+                )[0]
+
+                if trap not in self.traps_to_spawn:
+                    self.traps_to_spawn[trap] = []
+
+                self.traps_to_spawn[trap].append((i * TILESIZE, j * TILESIZE))
+                tilemap[tile_key].Set_Contains_Decoration(True)
+                del self.floor_tiles[tile_key]

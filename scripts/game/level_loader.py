@@ -96,9 +96,7 @@ class Level_Loader():
         self.initialised = True
 
     def Spawn_Player(self):
-        # print("TESTTEST", self.game.tilemap.extract([(keys.spawners, 0)]))
         for spawner in self.game.tilemap.extract([(keys.spawners, 0)]):
-            print(spawner)
             spawn_tile = random.choice(list(self.game.tilemap.tiles_not_touching_wall.values()))
 
             self.game.player = Player(self.game, spawner[keys.pos], (28, 28), 100, 5, 5, 5, 5, 5)

@@ -18,14 +18,10 @@ def load_images(path):
     return images
 
 # Get a single tile from a sheet
-def get_tile_image_from_sheet(sheet, pos_x, pos_y, width, height, color=None):
+def get_tile_image_from_sheet(sheet, pos_x, pos_y, width, height):
     # Create a new surface for the specific tile
     tile_image = pygame.Surface((width, height), pygame.SRCALPHA).convert_alpha()
     tile_image.blit(sheet, (0, 0), (pos_x, pos_y, width, height))
-    
-    # Apply color key if provided
-    if color:
-        tile_image.set_colorkey(color)
     
     return tile_image
 
@@ -35,7 +31,7 @@ def get_tile_image_from_sheet(sheet, pos_x, pos_y, width, height, color=None):
 # Starting y and x represent the starting position on the sheet
 # Size x and y is the total size of each tile
 # Color is the colorkey that needs to be filtered out
-def get_tiles_from_sheet(path, versions_x, versions_y, starting_x, starting_y, size_x, size_y, color=None):
+def get_tiles_from_sheet(path, versions_x, versions_y, starting_x, starting_y, size_x, size_y):
     sheet = pygame.image.load(BASE_IMG_PATH + path).convert_alpha()
     images = []
     
@@ -47,8 +43,8 @@ def get_tiles_from_sheet(path, versions_x, versions_y, starting_x, starting_y, s
         current_iteration_x = 0
         
         while current_iteration_x <= versions_x:
-            # Go through the tiles from the sheet on the y and x location, with a given size, filter out white color
-            images.append(get_tile_image_from_sheet(sheet, starting_x, starting_y, size_x, size_y, color))
+            # Go through the tiles from the sheet on the y and x location, with a given size
+            images.append(get_tile_image_from_sheet(sheet, starting_x, starting_y, size_x, size_y))
             starting_x += size_x  # Move to the next tile on the x-axis
             current_iteration_x += 1
         
