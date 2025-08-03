@@ -5,8 +5,8 @@ from scripts.engine.keys.keys import keys
 
 
 class Ice(Trap):
-    def __init__(self, game, pos, size, type):
-        super().__init__(game, pos, size, type)
+    def __init__(self, game, pos, type):
+        super().__init__(game, pos, type)
         self.animation = random.randint(0, 1)
         self.Set_On_Ice_Amount()
 

@@ -1,4 +1,5 @@
 from scripts.entities.traps.traps.spike import Spike
+from scripts.entities.traps.traps.rubble import Rubble
 from scripts.entities.traps.traps.spike_poisoned import Spike_Poisoned
 from scripts.entities.traps.traps.spike_pit import Spike_Pit
 from scripts.entities.traps.traps.fire_trap import Fire_Trap
@@ -14,10 +15,10 @@ TILESIZE = 32
 
 
 TRAP_TABLE = { # Expand with new traps as needed
-    # keys.rubble : 2,
-    keys.pit_trap : 1110.4,
+    keys.pit_trap : 0.4,
     keys.spike_poison_trap : 0.4,
     keys.spike_trap : 0.6,
+    keys.rubble : 2,
 }
 
 class Trap_Handler:
@@ -121,37 +122,34 @@ class Trap_Handler:
             self.Trap_Spawner(trap.pos, trap.type)
 
 
-    def Trap_Spawner(self, pos, type, size = (32, 32), data = None):
+    def Trap_Spawner(self, pos, type, data = None):
         trap = None
         if keys.spike_trap == type:
-            trap = self.Spawn_Spike_Trap(pos, size, type)
+            trap = self.Spawn_Spike_Trap(pos)
 
         elif type == keys.spike_poison_trap:
-            trap = self.Spawn_Spike_Poisoned(pos, size, type)
-
-        elif type == 'TopPush_trap':
-            trap = self.Spawn_Top_Push_Trap(pos, size, type)
-
-        elif 'Bear_trap' == type:
-            trap = self.Spawn_Bear_Trap(pos, size, type)
+            trap = self.Spawn_Spike_Poisoned(pos)
 
         elif keys.pit_trap == type:
-            trap = self.Spawn_Spike_Pit(pos, size, type)
+            trap = self.Spawn_Spike_Pit(pos)
+
+        elif keys.rubble == type:
+            trap = self.Spawn_Rubble(pos)
 
         elif keys.lava_env == type:
-            trap = self.Spawn_Lava(pos, size, type)
+            trap = self.Spawn_Lava(pos)
 
         elif 'ice' in type:
-            trap = self.Spawn_Ice(pos, size, type)
+            trap = self.Spawn_Ice(pos, type)
 
         elif 'water' in type:
-            trap = self.Spawn_Water(pos, size, type)
+            trap = self.Spawn_Water(pos, type)
 
         elif type == keys.fire_trap:
-            trap = self.Spawn_Fire_Trap(pos, size, type)
+            trap = self.Spawn_Fire_Trap(pos)
 
         elif type == keys.spider_web:
-            trap = self.Spawn_Spider_Web(pos, size, type)
+            trap = self.Spawn_Spider_Web(pos)
         else:
             print("FAILED TO FIND TRAPTYPE", type)
         if not trap:
@@ -165,30 +163,33 @@ class Trap_Handler:
 
 
 
-    def Spawn_Fire_Trap(self, pos, size, type):
-        return Fire_Trap(self.game, pos, size, type)
     
-    def Spawn_Ice(self, pos, size, type):
-        return Ice(self.game, pos, size, type)
+    def Spawn_Ice(self, pos, type):
+        return Ice(self.game, pos, type)
     
-    def Spawn_Water(self, pos, size, type):
-        return Water(self.game, pos, size, type)
+    def Spawn_Water(self, pos, type):
+        return Water(self.game, pos, type)
     
-    def Spawn_Lava(self, pos, size, type):
-        return Lava(self.game, pos, size, type)
+    def Spawn_Lava(self, pos):
+        return Lava(self.game, pos)
     
-    def Spawn_Spike_Pit(self, pos, size, type):
-        return Spike_Pit(self.game, pos, size, type)
+    def Spawn_Fire_Trap(self, pos):
+        return Fire_Trap(self.game, pos)
     
+    def Spawn_Spike_Pit(self, pos):
+        return Spike_Pit(self.game, pos)
     
-    def Spawn_Spike_Poisoned(self, pos, size, type):
-        return Spike_Poisoned(self.game, pos, size, type)
+    def Spawn_Spike_Poisoned(self, pos):
+        return Spike_Poisoned(self.game, pos)
     
-    def Spawn_Spike_Trap(self, pos, size, type):
-        return Spike(self.game, pos, size, type)
+    def Spawn_Spike_Trap(self, pos):
+        return Spike(self.game, pos)
     
-    def Spawn_Spider_Web(self, pos, size, type):
-        return Spider_Web(self.game, pos, size, type)
+    def Spawn_Rubble(self, pos):
+        return Rubble(self.game, pos)
+    
+    def Spawn_Spider_Web(self, pos):
+        return Spider_Web(self.game, pos)
     
 
     def Find_Nearby_Traps(self, entity, max_distance):

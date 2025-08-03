@@ -4,8 +4,8 @@ from scripts.engine.keys.keys import keys
 import random
 
 class Spike(Trap):
-    def __init__(self, game, pos, size, type):
-        super().__init__(game, pos, size, type)
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.spike_trap)
         self.animation = random.randint(0, 5)
         self.slow_amount = 1
 

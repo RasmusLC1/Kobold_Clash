@@ -2,8 +2,8 @@ from scripts.entities.traps.trap import Trap
 from scripts.engine.keys.keys import keys
 
 class Spider_Web(Trap):
-    def __init__(self, game, pos, size, type, speed = 0, direction = (0, 0), duration = 0, entity = None):
-        super().__init__(game, pos, size, type)
+    def __init__(self, game, pos, speed = 0, direction = (0, 0), duration = 0, entity = None):
+        super().__init__(game, pos, keys.spider_web)
         self.duration = duration
         self.active = False
         self.animation_max = 3

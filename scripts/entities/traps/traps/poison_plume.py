@@ -4,8 +4,8 @@ from scripts.engine.keys.keys import keys
 import random
 
 class Poison_Plume(Trap):
-    def __init__(self, game, pos, size, type):
-        super().__init__(game, pos, size, type)
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.poison_plume)
         self.animation = 0
 
     def Update(self, delta_time, entity = None):

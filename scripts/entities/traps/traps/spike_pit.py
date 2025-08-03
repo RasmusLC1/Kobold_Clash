@@ -4,8 +4,8 @@ from scripts.engine.keys.keys import keys
 import pygame
 
 class Spike_Pit(Trap):
-    def __init__(self, game, pos, size, type):
-        super().__init__(game, pos, size, type)
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.pit_trap)
         self.slow_amount = 1
         
 

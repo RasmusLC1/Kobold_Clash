@@ -5,8 +5,8 @@ from scripts.engine.keys.keys import keys
 
 
 class Fire_Trap(Trap):
-    def __init__(self, game, pos, size, type):
-        super().__init__(game, pos, size, type)
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.fire_trap)
         self.animation = random.randint(0, 13)
 
     def Update(self, entity):

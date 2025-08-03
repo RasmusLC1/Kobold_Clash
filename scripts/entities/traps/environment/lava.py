@@ -5,8 +5,8 @@ import random
 
 # TODO: General rewrite for the update logic
 class Lava(Trap):
-    def __init__(self, game, pos, size, type):
-        super().__init__(game, pos, size, type)
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.lava_env)
         self.animation = random.randint(0, 2)
         self.light_level = 10
         self.light_source = self.game.light_handler.Add_Light(self.pos, self.light_level, self.tile)

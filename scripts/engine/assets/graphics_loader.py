@@ -75,6 +75,7 @@ class Graphics_Loader:
             keys.fire_trap : get_tiles_from_sheet('traps/Fire_Trap.png', 13, 0, 0, 0, 32, 20),
             keys.spider_web : get_tiles_from_sheet('entities/enemies/dwellers/spider/spider_web.png', 3, 0, 0, 0, 32, 32),
             keys.poison_plume : get_tiles_from_sheet('traps/poison_plume.png', 7, 0, 0, 0, 32, 32),
+            keys.rubble : get_tiles_from_sheet('traps/rubble.png', 3, 0, 0, 0, 32, 32),
         }
 
         self.assets.update(trap_assets)

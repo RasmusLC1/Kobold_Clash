@@ -5,11 +5,11 @@ import math
 import pygame
 import random
 
-COOLDOWN_MAX = 0.1
+COOLDOWN_MAX = 0.05
 DAMAGE_COOLDOWN = 1
 
 class Trap(PhysicsEntity):
-    def __init__(self, game, pos, size, type):
+    def __init__(self, game, pos, type, size = (32, 32)):
         super().__init__(game, type, 'trap', pos, size)
         self.cooldown = 0
         self.animation = 0

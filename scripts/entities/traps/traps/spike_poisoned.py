@@ -5,8 +5,8 @@ import random
 
 
 class Spike_Poisoned(Trap):
-    def __init__(self, game, pos, size, type):
-        super().__init__(game, pos, size, type)
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.spike_poison_trap)
         self.animation = random.randint(0, 13)
 
         

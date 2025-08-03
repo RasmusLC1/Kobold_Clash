@@ -3,8 +3,8 @@ from scripts.engine.keys.keys import keys
 import random
 
 class Water(Trap):
-    def __init__(self, game, pos, size, type):
-        super().__init__(game, pos, size, type)
+    def __init__(self, game, pos, type):
+        super().__init__(game, pos, type)
         self.animation = random.randint(0, 2)
 
         self.Set_Slowdown_Amount()
