@@ -314,7 +314,7 @@ class Tilemap:
                 print(tile, pos)
                 continue
             if tile.physics:
-                rects.append(pygame.Rect(tile.pos[0] * self.tile_size, tile.pos[1] * self.tile_size, self.tile_size, self.tile_size))
+                rects.append(pygame.Rect(tile.scaled_pos[0], tile.scaled_pos[1], self.tile_size, self.tile_size))
         return rects
     
     # Check for physics tiles
@@ -325,7 +325,7 @@ class Tilemap:
                 print(tile, pos)
                 continue
             if tile.type in FLOOR_TTLES:
-                rects.append(pygame.Rect(tile.pos[0] * self.tile_size, tile.pos[1] * self.tile_size, self.tile_size, self.tile_size))
+                rects.append(pygame.Rect(tile.scaled_pos[0], tile.scaled_pos[1], self.tile_size, self.tile_size))
         return rects
     
     def Render_All_Tiles(self):
@@ -366,7 +366,7 @@ class Tilemap:
     # Not really used
     def Render(self, surf, offset=(0, 0)):
         for tile in self.tilemap.values():
-            surf.blit(self.game.assets[tile.type][tile.variant], (tile.pos[0] * self.tile_size - offset[0], tile.pos[1] * self.tile_size - offset[1]))
+            surf.blit(self.game.assets[tile.type][tile.variant], (tile.scaled_pos[0] - offset[0], tile.scaled_pos[1] - offset[1]))
 
         for tile in self.offgrid_tiles:
             if 'Room' in tile.type:

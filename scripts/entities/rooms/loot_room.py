@@ -47,7 +47,7 @@ class Loot_Room():
                 if not decoration:
                     continue
 
-                decorations[decoration].append((tile.pos[0] * 32, tile.pos[1] * 32))
+                decorations[decoration].append(tile.scaled_pos)
 
 
         return decorations

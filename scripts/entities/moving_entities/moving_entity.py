@@ -202,7 +202,7 @@ class Moving_Entity(PhysicsEntity):
             new_tile = self.game.tilemap.Get_Random_Tile_With_Path_To_Player()
             self.game.tilemap.Add_Entity_To_Tile(new_tile, self)
             self.tile = new_tile
-            self.pos = list((self.tile.pos[0] * 32, self.tile.pos[1] * 32))
+            self.pos = list(self.tile.scaled_pos)
 
             print("ERROR TILE NOT FOUND", self.type, self.pos, self.tile)
             return

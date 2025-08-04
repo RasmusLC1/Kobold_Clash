@@ -3,6 +3,7 @@ import pygame
 from scripts.engine.keys.keys import keys
 
 not_rendered_tiles = [keys.door_basic]
+TILE_SIZE = 32
 
 # Use dictionary keyed to pos in tilemap
 class Tile():
@@ -11,6 +12,7 @@ class Tile():
         self.type = type
         self.variant = variant
         self.pos = pos
+        self.scaled_pos = (pos[0] * TILE_SIZE, pos[1] * TILE_SIZE)
         self.size = size
         self.active = active
         self.light_level = light_level

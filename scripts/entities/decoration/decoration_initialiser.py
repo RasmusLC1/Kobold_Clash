@@ -164,8 +164,8 @@ class Decoration_Initialiser():
 
             tilemap_dic[tile_key].Set_Contains_Decoration(True)
 
-            tile_pos = (floor_tile.pos[0] * TILESIZE, floor_tile.pos[1] * TILESIZE)
-            self.decorations[key].append(tile_pos)
+
+            self.decorations[key].append(floor_tile.scaled_pos)
 
             spawns += 1
             keys.append(floor_tile.pos)
@@ -209,7 +209,7 @@ class Decoration_Initialiser():
 
 
 
-            self.decorations[key].append((floor_tile.pos[0] * TILESIZE, floor_tile.pos[1] * TILESIZE))
+            self.decorations[key].append(floor_tile.scaled_pos)
 
             spawns += 1
             keys.append(floor_tile.pos)
