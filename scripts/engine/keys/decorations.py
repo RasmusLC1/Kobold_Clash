@@ -95,3 +95,5 @@ class Decorations():
     
     
     poison_plume = "poison_plume"
+
+    pressure_plate = "pressure_plate"

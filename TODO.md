@@ -455,6 +455,10 @@ Upgrade weapons
     - Soul bind, disables player healing and spawns item (Player soul) that needs to be found to enable healing again
     - Pressure plate that opens nearby tombs and spawns enemies
     - Bell trap from pressure plate, that alerts nearby enemies
+    - Spike pits, fall into and slows you down
+    - Spike traps, that move up and harm you when they're extended
+    - Loose rubble, generates clatter when stepped on
+
 
 ## Crystal Caverns
 ### Specialty
@@ -476,9 +480,13 @@ Upgrade weapons
     Mirror crystal, reflects projectiles back at source by inverting angle
     Kobold, steals items from player and runs away
 ### Traps
-    Crystal shards, shoots crystal spikes
-    Shifting walls, changes the layout of the dungeon
-    Shard explosion, unstable crystals explode when damaged
+    - Crystal shards, shoots crystal spikes
+    - Shifting walls, changes the layout of the dungeon
+    - Shard explosion, unstable crystals explode when damaged
+    - Swinging blade, swing from central tile, all affected tiles are marked as traps, rotate the sprite as it swings
+    - Spike pits, fall into and slows you down
+    - Loose rubble, generates clatter when stepped on
+
 
 ## Mycelium Depths enemies
 ### Specialty
@@ -500,6 +508,11 @@ Upgrade weapons
     - Vines, snare the player if stepped in
     - Glowing mushrooms, explodes when player to close
     - Burrows, enemies spawns if player gets to close
+    - Spike traps poison, that move up and harm you when they're extended, 
+    - Toxic clouds, weakens player if in radius
+    - Fungal pathch, generates clatter when stepped on
+
+
 
 ## Serpents Lair
 ### Specialty
@@ -521,6 +534,12 @@ Upgrade weapons
     - Vines, snare the player if stepped in
     - Poison darts, shoots darts at player
     - Cursed totem, weakens player if in radius
+    - Gass vents, spawns gass clouds
+    - Swinging blade, swing from central tile, all affected tiles are marked as traps, rotate the sprite as it swings
+    - Spike traps poison, that move up and harm you when they're extended, 
+    - Loose rubble, generates clatter when stepped on
+
+
 
 
 ## Titan Forge
@@ -544,6 +563,12 @@ Upgrade weapons
     - Explosive barrels, explodes when destroyed
     - Molten floor, gradually spawn lava tiles when pressure plate is triggered
     - Flamethrower trap triggered by pressure plate
+    - Fire traps, sets you on fire
+    - Spike traps, that move up and harm you when they're extended
+    - Arrow traps - shoots arrows, triggered by pressure plates
+    - Loose rubble, generates clatter when stepped on
+
+
 
 # Glacial Caverns
 ### Specialty
@@ -564,4 +589,5 @@ Upgrade weapons
     - Freezing pools, water tiles that slows and damages player
     - Icicle drops, when clatter is generated, chance to drop icicle with short warning 
     - Thin ice, causes the player to fall through into iceicle pit trap
+    - Freeze vents, spawns frozen storm
     - Cracking ice, generates clatter

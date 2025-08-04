@@ -154,7 +154,7 @@ class Decoration_Handler():
 
 
 
-    def Decoration_Spawner(self, type, pos, size=None, version=None, radius=None, level=None, data=None):
+    def Decoration_Spawner(self, type, pos, data=None):
         spawn_function = self.spawn_methods.get(type)
         if not spawn_function:
             print(f"Warning: Decoration type '{type}' not recognized. Decoration_Handler Decoration_Spawner")
