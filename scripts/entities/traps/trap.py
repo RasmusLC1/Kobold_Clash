@@ -15,9 +15,9 @@ class Trap(PhysicsEntity):
         self.animation = 0
         self.animation_cooldown = 0
         self.animation_max = 0
-        self.ID = random.randint(1, 1000000)
         self.entity_check_cooldown = 0
         self.entities = []
+        self.tile.Set_Trap(True)
         self.damaged_entities = {}
 
 

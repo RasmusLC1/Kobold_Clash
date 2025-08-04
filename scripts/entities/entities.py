@@ -2,6 +2,9 @@ import pygame
 from collections import deque
 from scripts.engine.keys.keys import keys
 
+MIN_LIGHT_LEVEL = 40
+LIGHT_ALPHA_SCALE = 30
+
 class PhysicsEntity:
     _id_counter = 0  # Class variable to generate unique IDs
     _available_IDs = deque() # List of ID's made available on deletion, deque for performance
@@ -22,6 +25,13 @@ class PhysicsEntity:
         self.light_level = 0
         self.render = True
         self.Set_Tile()
+
+        # Delete the entity if Tile was not found
+        if not self.tile:
+            print("FAILED TO FIND TILE: ", self.type, self.pos, vars(self))
+            self.Delete()
+            return
+        
         self.saved_data = {}
         self.text_box = None
         self.description = ''
@@ -83,7 +93,6 @@ class PhysicsEntity:
 
     def Reduce_Active(self):
         self.active -= 1
-
         
     def Update(self, delta_time):
         pass
@@ -124,7 +133,8 @@ class PhysicsEntity:
         pass
 
     def Set_Light_Level(self, value):
-        self.light_level = value
+        # Normalize light level: 255 = full light, 40 = minimum visible
+        self.light_level = max(MIN_LIGHT_LEVEL, 255 - abs(value - 255))
 
     def Update_Light_Level(self):
         # Set the light level based on the tile that the entity is placed on
@@ -133,22 +143,19 @@ class PhysicsEntity:
             return True
         if not self.light_level:
             self.light_level = 0
+
         if tile.light_level == self.light_level:
             return True
-        new_light_level = min(255, tile.light_level * 30)
+        
+        new_light_level = min(255, tile.light_level * LIGHT_ALPHA_SCALE)
+
+        # Responsible for gradual fade in/out to prevent sudden light changes
         if self.light_level < new_light_level:
             self.Set_Light_Level(self.light_level + 5)
         elif self.light_level > new_light_level:
             self.Set_Light_Level(self.light_level - 5)
-        self.light_level = abs(self.light_level - 255)
-        # 75 is the darkest level we want
-        self.light_level = max(40, 255 - self.light_level)
         
-
-        if self.light_level <= 40:
-            return False
-        else:
-            return True
+        return self.light_level > MIN_LIGHT_LEVEL
     
     def Set_Description(self):
         pass

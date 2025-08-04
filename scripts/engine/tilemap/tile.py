@@ -25,6 +25,7 @@ class Tile():
         self.rendered_surface = None  # ✅ Cached surface
         self.contains_decoration = False # Flag to prevent spawning multiple decorations
         self.room = False # Flag to check if tile is part of room
+        self.trap = False # Flag to check if tile contains trap
         # Dictionary to hold each light's contribution
         # Key: light_id, Value: contributed_light_level
         self.light_contributions = {}
@@ -100,6 +101,9 @@ class Tile():
 
     def Set_Room(self, state):
         self.room = state
+
+    def Set_Trap(self, state):
+        self.trap = state
 
     def Add_Light_Contribution(self, light_id, contribution):
         # Add/update light contribution

@@ -1,6 +1,13 @@
 import math
 import heapq
 from scripts.engine.keys.keys import keys
+FLOOR = 0
+WALL = 1
+LAVA = 2
+DOOR = 3
+TRAP = 4
+BOSS_ROOM = 5
+
 
 class A_Star:
     def __init__(self):
@@ -41,12 +48,12 @@ class A_Star:
         We'll store converted values through map_conversion: self.custom_map[x][y].
         """
         map_conversion = {
-            0: 0,
-            1: 1,
-            2: 0,
-            3: 0,
-            4: 0,
-            5: 0,
+            FLOOR: 0,
+            WALL: 1,
+            LAVA: 0,
+            DOOR: 0,
+            TRAP: 0,
+            BOSS_ROOM: 0,
         }
         # Convert and copy the map using the conversion dictionary
         self.custom_map = [[map_conversion[val] for val in col] for col in custom_map]
@@ -105,10 +112,13 @@ class A_Star:
             map_x = x - self.min_x
             map_y = y - self.min_y
             if 0 <= map_x < self.width and 0 <= map_y < self.height:
-                tile_type = game.tilemap.Current_Tile_Type_Without_Offset((x, y))
+                tile = game.tilemap.Current_Tile((x, y))
+                if not tile:
+                    continue
 
-                # Just an example condition for passable
-                if tile_type and (tile_type == keys.floor or keys.ice_env in tile_type or keys.water_env in tile_type):
+                tile_type = tile.type
+
+                if tile_type == keys.floor and not tile.trap:
                     self.standard_map[map_x][map_y] = 0
 
     def Build_IgnoreLava_Map(self, game):
