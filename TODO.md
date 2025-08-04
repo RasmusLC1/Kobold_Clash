@@ -347,22 +347,39 @@ Upgrade weapons
     # Arcane_Hunger - Gain souls from entity kills
 
 # Traps:
-    # Spike pits, fall into and slows you down
-    # Spike traps, that move up and harm you when they're extended
-    # Spike traps poison, that move up and harm you when they're extended, poision effect
-    # Fire traps, sets you on fire
-    # Lava, sets on fire and slows down entity, heavy damage
-    # Water, slows down entities
-    # Ice decreases friction and accelaration
-    # Mimic chest, Spawns enemy and snares when opened
-    Loose rubble, generates clatter when stepped on
-    Pressure plates that trigger effects
-    Gass vents, spawns gass clouds
-    Arrow traps - shoots arrows, triggered by pressure plates
-    Loose rocks, generates clatter when stepped on
+    - # Spike pits, fall into and slows you down
+    - # Spike traps, that move up and harm you when they're extended
+    - # Spike traps poison, that move up and harm you when they're extended, poision effect
+    - # Lava, sets on fire and slows down entity, heavy damage
+    - # Water, slows down entities
+    - # Ice decreases friction and accelaration
+    - # Mimic chest, Spawns enemy and snares when opened
+    - # Loose rubble, generates clatter when stepped on
+    - Pressure plates that trigger effects
+    - Gass vents, spawns gass clouds
+    - Arrow traps - shoots arrows, triggered by pressure plates
+    - Fire traps, sets you on fire
+    - Swinging blade, swing from central tile, all affected tiles are marked as traps, rotate the sprite as it swings
+    - Soul bind, disables player healing and spawns item (Player soul) that needs to be found to enable healing again
+    - Pressure plate that opens nearby tombs and spawns enemies
+    - Bell trap from pressure plate, that alerts nearby enemies
+    - Crystal shards, shoots crystal spikes
+    - Shifting walls, changes the layout of the dungeon
+    - Shard explosion, unstable crystals explode when damaged
+    - Glowing mushrooms, explodes when player to close
+    - Burrows, enemies spawns if player gets to close
+    - Vines, snare the player if stepped in
+    - Poison darts, shoots darts at player
+    - Cursed totem, weakens player if in radius
+    - Explosive barrels, explodes when destroyed
+    - Molten floor, gradually spawn lava tiles when pressure plate is triggered
+    - Flamethrower trap triggered by pressure plate
+    - Freezing pools, water tiles that slows and damages player
+    - Icicle drops, when clatter is generated, chance to drop icicle with short warning 
+    - Thin ice, causes the player to fall through into iceicle pit trap
+    - Cracking ice, generates clatter
 
     
-
 
 # Decorations
     - # Braziers with fire, lights up area, can be extinguished/ignited
@@ -400,7 +417,6 @@ Upgrade weapons
     Lakes, can be any kind of elements
 
 
-
 # Enemies:
     Enemies start out basic but can upgrade to elite as dungeon effects trigger
     Spawn enemies using dungeon director when effects trigger
@@ -435,6 +451,10 @@ Upgrade weapons
     # Vampire, boss, life steal, flying bat form when travelling, close combat
     # Crypt Ghoul, bone club, fast and high damage, but glass cannon
     Lich, casts doom on player, debuffing him and slowly drains health until Lich is killed
+### Traps
+    - Soul bind, disables player healing and spawns item (Player soul) that needs to be found to enable healing again
+    - Pressure plate that opens nearby tombs and spawns enemies
+    - Bell trap from pressure plate, that alerts nearby enemies
 
 ## Crystal Caverns
 ### Specialty
@@ -455,6 +475,10 @@ Upgrade weapons
     Medusa, shoots electric projetiles and fast but very low health
     Mirror crystal, reflects projectiles back at source by inverting angle
     Kobold, steals items from player and runs away
+### Traps
+    Crystal shards, shoots crystal spikes
+    Shifting walls, changes the layout of the dungeon
+    Shard explosion, unstable crystals explode when damaged
 
 ## Mycelium Depths enemies
 ### Specialty
@@ -472,6 +496,10 @@ Upgrade weapons
     Vitalcap, heals nearby enemies
     Gravebloom, hiding somewhere on the map. Needs to be killed to prevent enemies respawning
     Rot king, can snare player and spawns sporelings
+### Traps
+    - Vines, snare the player if stepped in
+    - Glowing mushrooms, explodes when player to close
+    - Burrows, enemies spawns if player gets to close
 
 ## Serpents Lair
 ### Specialty
@@ -489,6 +517,11 @@ Upgrade weapons
     Embermaw, boss shoots fire from the front and has ball tail in back that can attack player, high defence and damage, but low movement 
     Great Python, constricts the player for a time allowing other enemies to attack
     Venomscale Lurker, posioned attack that jumps at player
+### Traps
+    - Vines, snare the player if stepped in
+    - Poison darts, shoots darts at player
+    - Cursed totem, weakens player if in radius
+
 
 ## Titan Forge
 ### Specialty
@@ -507,6 +540,10 @@ Upgrade weapons
     Lava Lurker, hides in lava pools and jumps on the player, high damage and speed, but low health
     Ashen Tyrant , shoots burning chains out to attack player. Chains deal damage and pulls the player into lava traps.
     Forgeheart Titan, boss, shoots fireballs, high health and low speed. Area of effect attacks
+### Traps
+    - Explosive barrels, explodes when destroyed
+    - Molten floor, gradually spawn lava tiles when pressure plate is triggered
+    - Flamethrower trap triggered by pressure plate
 
 # Glacial Caverns
 ### Specialty
@@ -523,22 +560,8 @@ Upgrade weapons
     Shaman, summons blizzards
     Ice demon, boss, lowers temperature in area and causes player to freeze faster. High health and damage, but slow
     Leshy, boss, snares player with roots and shoots projectiles. Can teleport away when damage threshold is reached
-
-
-
-# Biomes:
-    Desert Biome, Water does not exist, enemies are vulnerable to fire, high gold in urns, 
-
-    Mushroom Biom, poison effects are common, enemies here are immune to poision, more potion, exploding mushrooms, Mushroom Queen boss
-
-    Crystal Caverns, High armour enemies, crystals that emit light, Rare gems
-
-    Aztec Temple, dinosaurs worship, dinosaur skull masks for some enemies, 
-
-    Lava forge, lots of lava, enemies are immune to fire and deal fire damage, rare weapons
-
-    Ice Cave, Lots of ice, enemies are immune to freeze and deal freeze damage, breakable walls are more common
-
-    Ancient ruins, undead enemies, rare runes
-
-    Water caves, need to traverse lots of water, Deep water contains enemies, look for shallow water. More Treasure chests
+### Traps
+    - Freezing pools, water tiles that slows and damages player
+    - Icicle drops, when clatter is generated, chance to drop icicle with short warning 
+    - Thin ice, causes the player to fall through into iceicle pit trap
+    - Cracking ice, generates clatter
