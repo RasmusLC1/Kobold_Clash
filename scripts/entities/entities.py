@@ -26,12 +26,6 @@ class PhysicsEntity:
         self.render = True
         self.Set_Tile()
 
-        # Delete the entity if Tile was not found
-        if not self.tile:
-            print("FAILED TO FIND TILE: ", self.type, self.pos, vars(self))
-            self.Delete()
-            return
-        
         self.saved_data = {}
         self.text_box = None
         self.description = ''

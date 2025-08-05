@@ -7,6 +7,7 @@ from scripts.entities.traps.environment.lava import Lava
 from scripts.entities.traps.environment.water import Water
 from scripts.entities.traps.environment.ice import Ice
 from scripts.entities.traps.traps.spider_web import Spider_Web
+from scripts.entities.traps.traps.tomb_pressure_plate import Tomb_Pressure_Plate
 from scripts.engine.keys.keys import keys
 import math
 import random
@@ -19,6 +20,7 @@ TRAP_TABLE = { # Expand with new traps as needed
     keys.spike_poison_trap : 0.4,
     keys.spike_trap : 0.6,
     keys.rubble : 2,
+    keys.tomb_pressure_plate : 2,
 }
 
 class Trap_Handler:
@@ -136,6 +138,9 @@ class Trap_Handler:
         elif keys.rubble == type:
             trap = self.Spawn_Rubble(pos)
 
+        elif keys.tomb_pressure_plate == type:
+            trap = self.Spawn_Tomb_Pressure_Plate(pos)
+
         elif keys.lava_env == type:
             trap = self.Spawn_Lava(pos)
 
@@ -187,6 +192,9 @@ class Trap_Handler:
     
     def Spawn_Rubble(self, pos):
         return Rubble(self.game, pos)
+    
+    def Spawn_Tomb_Pressure_Plate(self, pos):
+        return Tomb_Pressure_Plate(self.game, pos)
     
     def Spawn_Spider_Web(self, pos):
         return Spider_Web(self.game, pos)

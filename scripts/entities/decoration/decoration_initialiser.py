@@ -242,7 +242,7 @@ class Decoration_Initialiser():
             neighbor_key = f"{nx};{ny}"
 
             if neighbor_key not in tilemap:
-                continue
+                return False
 
             neighbor_tile = tilemap[neighbor_key]
 
@@ -259,7 +259,7 @@ class Decoration_Initialiser():
             neighbor_key = f"{nx};{ny}"
 
             if neighbor_key not in tilemap:
-                continue
+                return False
 
             tilemap[neighbor_key].Set_Contains_Decoration(True)
 

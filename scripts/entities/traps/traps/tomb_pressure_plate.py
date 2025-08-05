@@ -3,7 +3,7 @@ from scripts.engine.keys.keys import keys
 
 import random
 
-RADIUS = 20
+RADIUS = 10
 TOMB_AMOUNT = random.randint(1, 3)
 TILESIZE = 32
 NEIGHBOR_OFFSETS = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 0), (-1, 1), (0, 1), (1, 1)]
@@ -13,9 +13,11 @@ class Tomb_Pressure_Plate(Trap):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.pressure_plate)
         self.linked_tombs = []
+        self.Spawn_Tombs()
+        self.activated = False
 
     def Spawn_Tombs(self):
-        pos_scaled = list(self.pos[0] // TILESIZE, self.pos[1] // TILESIZE)
+        pos_scaled = list((self.pos[0] // TILESIZE, self.pos[1] // TILESIZE))
         tomb_spawned = 0
         fail = 0
         while tomb_spawned < TOMB_AMOUNT:
@@ -23,7 +25,7 @@ class Tomb_Pressure_Plate(Trap):
             tile_pos_y = random.randint(pos_scaled[1] - RADIUS, pos_scaled[1] + RADIUS)
 
             if self.Check_Neighbours(tile_pos_x, tile_pos_y):
-                tomb = self.game.decoration_handler.spawn_methods(keys.effigy_tomb, (tile_pos_x * TILESIZE, tile_pos_y * TILESIZE))
+                tomb = self.game.decoration_handler.Decoration_Spawner(keys.effigy_tomb, (tile_pos_x * TILESIZE, tile_pos_y * TILESIZE))
                 if not tomb:
                     print("SPAWNING TOMB FAILED")
                     continue
@@ -37,12 +39,16 @@ class Tomb_Pressure_Plate(Trap):
 
 
     def Apply_Entity_Effect(self, entity):
-        if entity.type != keys.player:
+        if self.activated or entity.type != keys.player:
             return
         
         for tomb in self.linked_tombs:
             tomb.Set_Loot_To_Always_Spawn_Enemy()
             tomb.Open()
+
+        self.activated = True
+        self.game.sound_handler.Play_Sound(keys.pressure_plate, 0.7)
+        self.linked_tombs.clear()
 
 
             
@@ -55,7 +61,7 @@ class Tomb_Pressure_Plate(Trap):
             neighbor_key = f"{nx};{ny}"
 
             if neighbor_key not in tilemap:
-                continue
+                return False
 
             neighbor_tile = tilemap[neighbor_key]
 

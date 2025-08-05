@@ -170,11 +170,13 @@ class Audio_Loader:
     def Trap_Effects(self):
         trap_effects ={
             keys.rubble : pygame.mixer.Sound('data/sounds/traps/rubble.wav'),
+            keys.pressure_plate : pygame.mixer.Sound('data/sounds/traps/pressure_plate.wav'),
         }
 
         self.sfx.update(trap_effects)
 
         self.sfx[keys.rubble].set_volume(0.4)
+        self.sfx[keys.pressure_plate].set_volume(1)
     
     
     def Menu_Effects(self):
