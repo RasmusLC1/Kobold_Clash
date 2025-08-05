@@ -3,7 +3,6 @@ from scripts.engine.keys.keys import keys
 
 import random
 
-CLATTER_RANGE = 500
 RADIUS = 20
 TOMB_AMOUNT = random.randint(1, 3)
 TILESIZE = 32
@@ -41,7 +40,10 @@ class Tomb_Pressure_Plate(Trap):
         if entity.type != keys.player:
             return
         
-        self.game.clatter.Generate_Clatter(self.pos, CLATTER_RANGE) # Generate clatter to alert nearby enemies
+        for tomb in self.linked_tombs:
+            tomb.Set_Loot_To_Always_Spawn_Enemy()
+            tomb.Open()
+
 
             
 
