@@ -99,3 +99,5 @@ class Decorations():
     pressure_plate = "pressure_plate"
 
     tomb_pressure_plate = "tomb_pressure_plate"
+
+    bell_pressure_plate = "bell_pressure_plate"

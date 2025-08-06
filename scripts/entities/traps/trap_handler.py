@@ -1,5 +1,6 @@
 from scripts.entities.traps.traps.spike import Spike
 from scripts.entities.traps.traps.rubble import Rubble
+from scripts.entities.traps.traps.bell_pressure_plate import Bell_Pressure_plate
 from scripts.entities.traps.traps.spike_poisoned import Spike_Poisoned
 from scripts.entities.traps.traps.spike_pit import Spike_Pit
 from scripts.entities.traps.traps.fire_trap import Fire_Trap
@@ -13,6 +14,7 @@ import math
 import random
 
 TILESIZE = 32
+TRAP_DENSITY = 30 # Lower = more traps
 
 
 TRAP_TABLE = { # Expand with new traps as needed
@@ -20,7 +22,8 @@ TRAP_TABLE = { # Expand with new traps as needed
     keys.spike_poison_trap : 0.4,
     keys.spike_trap : 0.6,
     keys.rubble : 2,
-    keys.tomb_pressure_plate : 2,
+    keys.tomb_pressure_plate : 0.2,
+    keys.bell_pressure_plate : 0.3,
 }
 
 class Trap_Handler:
@@ -141,6 +144,9 @@ class Trap_Handler:
         elif keys.tomb_pressure_plate == type:
             trap = self.Spawn_Tomb_Pressure_Plate(pos)
 
+        elif keys.bell_pressure_plate == type:
+            trap = self.Spawn_Bell_Pressure_Plate(pos)
+
         elif keys.lava_env == type:
             trap = self.Spawn_Lava(pos)
 
@@ -196,6 +202,9 @@ class Trap_Handler:
     def Spawn_Tomb_Pressure_Plate(self, pos):
         return Tomb_Pressure_Plate(self.game, pos)
     
+    def Spawn_Bell_Pressure_Plate(self, pos):
+        return Bell_Pressure_plate(self.game, pos)
+    
     def Spawn_Spider_Web(self, pos):
         return Spider_Web(self.game, pos)
     
@@ -245,7 +254,6 @@ class Trap_Handler:
     def Initialise_Traps(self):
         self.Get_Floor_Tiles()
         trap_tiles = []  # Keeps track of already placed trap positions (in tile coordinates)
-        density = 40      # Controls how sparse the torch placement is (lower = more traps)
         tilemap = self.game.tilemap.tilemap
 
 
@@ -258,21 +266,21 @@ class Trap_Handler:
 
             i, j = tile.pos 
 
-            # Random chance to try placing a torch at this tile
-            if random.randint(0, density) == 1:
+            # Random chance to try placing a trap at this tile
+            if random.randint(0, TRAP_DENSITY) == 1:
                 too_close = False
 
-                # Check distance to all previously placed torches
-                for torch_pos in trap_tiles:
-                    if math.hypot(i - torch_pos[0], j - torch_pos[1]) < 8:
+                # Check distance to all previously placed trapes
+                for trap_pos in trap_tiles:
+                    if math.hypot(i - trap_pos[0], j - trap_pos[1]) < 8:
                         too_close = True
-                        break  # Too close to an existing torch, skip placement
+                        break  # Too close to an existing trap, skip placement
 
-                # If no nearby torch found, place one here
+                # If no nearby trap found, place one here
                 if too_close:
                     continue
 
-                trap_tiles.append((i, j))  # Track this torch position
+                trap_tiles.append((i, j))  # Track this trap position
                 trap = random.choices(
                     population=list(TRAP_TABLE.keys()),
                     weights=list(TRAP_TABLE.values()),
