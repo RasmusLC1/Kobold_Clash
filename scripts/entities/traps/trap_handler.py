@@ -2,6 +2,7 @@ from scripts.entities.traps.traps.spike import Spike
 from scripts.entities.traps.traps.rubble import Rubble
 from scripts.entities.traps.traps.bell_pressure_plate import Bell_Pressure_plate
 from scripts.entities.traps.traps.spike_poisoned import Spike_Poisoned
+from scripts.entities.traps.traps.soul_trap import Soul_Trap
 from scripts.entities.traps.traps.spike_pit import Spike_Pit
 from scripts.entities.traps.traps.fire_trap import Fire_Trap
 from scripts.entities.traps.environment.lava import Lava
@@ -24,6 +25,7 @@ TRAP_TABLE = { # Expand with new traps as needed
     keys.rubble : 2,
     keys.tomb_pressure_plate : 0.2,
     keys.bell_pressure_plate : 0.3,
+    keys.soul_trap : 0.3,
 }
 
 class Trap_Handler:
@@ -147,6 +149,9 @@ class Trap_Handler:
         elif keys.bell_pressure_plate == type:
             trap = self.Spawn_Bell_Pressure_Plate(pos)
 
+        elif keys.soul_trap == type:
+            trap = self.Spawn_Soul_Trap(pos)
+
         elif keys.lava_env == type:
             trap = self.Spawn_Lava(pos)
 
@@ -201,6 +206,9 @@ class Trap_Handler:
     
     def Spawn_Tomb_Pressure_Plate(self, pos):
         return Tomb_Pressure_Plate(self.game, pos)
+        
+    def Spawn_Soul_Trap(self, pos):
+        return Soul_Trap(self.game, pos)
     
     def Spawn_Bell_Pressure_Plate(self, pos):
         return Bell_Pressure_plate(self.game, pos)

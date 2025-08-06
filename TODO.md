@@ -452,9 +452,9 @@ Upgrade weapons
     # Crypt Ghoul, bone club, fast and high damage, but glass cannon
     Lich, casts doom on player, debuffing him and slowly drains health until Lich is killed
 ### Traps
-    - Soul bind, disables player healing and spawns item (Player soul) that needs to be found to enable healing again
-    - Pressure plate that opens nearby tombs and spawns enemies
-    - Bell trap from pressure plate, that alerts nearby enemies
+    - Soul bind, disables player healing and spawns item (soul shard) that needs to be found to enable healing again
+    - # Pressure plate that opens nearby tombs and spawns enemies
+    - # Bell trap from pressure plate, that alerts nearby enemies
     - # Spike pits, fall into and slows you down
     - # Spike traps, that move up and harm you when they're extended
     - # Loose rubble, generates clatter when stepped on

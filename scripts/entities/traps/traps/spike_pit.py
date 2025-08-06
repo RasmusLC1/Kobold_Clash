@@ -15,9 +15,3 @@ class Spike_Pit(Trap):
             entity.Damage_Taken(10, (keys.snare, 2))
         else:
             entity.Damage_Taken(5, (keys.slow, self.slow_amount))
-
-
-
-    def rect(self):
-        return pygame.Rect(self.pos[0], self.pos[1], self.size[0]-5, self.size[1]-5)
-                    
