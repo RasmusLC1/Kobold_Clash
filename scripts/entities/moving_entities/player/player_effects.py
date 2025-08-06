@@ -1,5 +1,6 @@
 from scripts.entities.moving_entities.effects.effects_handler import Status_Effect_Handler
 from scripts.entities.moving_entities.effects.player.silence import Silence
+from scripts.entities.moving_entities.effects.player.soul_drained import Soul_Drained
 from scripts.entities.moving_entities.effects.souls.arcane_conduit import Arcane_Conduit
 from scripts.entities.moving_entities.effects.souls.arcane_hunger import Arcane_Hunger
 from scripts.entities.moving_entities.effects.player.magnet import Magnet
@@ -48,6 +49,7 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
         self.demonic_bargain = Demonic_Bargain(self.entity)
         self.temptress_embrace = Temptress_Embrace(self.entity)
         self.increase_souls = Increase_Souls(self.entity)
+        self.soul_drained = Soul_Drained(self.entity)
 
         self.effects.update({
             self.silence.effect_type: self.silence,
@@ -60,6 +62,7 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
             self.demonic_bargain.effect_type: self.demonic_bargain,
             self.temptress_embrace.effect_type: self.temptress_embrace,
             self.increase_souls.effect_type: self.increase_souls,
+            self.soul_drained.effect_type: self.soul_drained,
             'player_movement_invunerable': self.player_movement_invunerable
         })
 

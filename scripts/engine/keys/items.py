@@ -109,6 +109,8 @@ class Items():
     
     vampiric_bomb = "vampiric_bomb"
 
+    soul_shard = "soul_shard"
+
 # Gems
 
     gem = "gem"
