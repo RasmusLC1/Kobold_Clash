@@ -10,10 +10,10 @@ COOLDOWN_MAX = 2
 class Arrow_Trap(Trap):
     def __init__(self, game, pos, type, size = (32, 32)):
         super().__init__(game, pos, keys.rubble)
-        self.arrows = []
-        self.Spawn_Arrows()
         self.direction = (0, 0)
         self.Find_Direction()
+        self.arrows = []
+        self.Spawn_Arrows()
         self.next_available_arrow = 0
 
     def Save_Data(self):
@@ -76,11 +76,11 @@ class Arrow_Trap(Trap):
 
             directions[(dir_x, dir_y)] = distance
             if distance > 20:
-                return (dir_x, dir_y)
+                self.direction = (dir_x, dir_y)
+                return
 
         # Get the direction with the longest visible path
-        best_direction = max(directions, key=directions.get)
-        return best_direction
+        self.direction = max(directions, key=directions.get)
 
                 
 
