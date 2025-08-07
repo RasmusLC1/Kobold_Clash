@@ -534,13 +534,11 @@ class Graphics_Loader:
 
         self.assets.update(potion_assets)
 
-
-
-
     def Asset_Loot(self):
         loot = {
             keys.gold: get_tiles_from_sheet('items/valuables/gold_coins.png', 3, 0, 0, 0, 16, 16),
             keys.hunter_treasure: get_tiles_from_sheet('items/valuables/hunter_treasure.png', 0, 0, 0, 0, 32, 32),
+            keys.soul_shard: get_tiles_from_sheet('font/souls.png', 3, 0, 0, 0, 32, 32),
             keys.echo_bell: get_tiles_from_sheet('items/utility/echo_bell.png', 0, 0, 0, 0, 32, 32),
             keys.shadow_cloak: get_tiles_from_sheet('items/utility/shadow_cloak.png', 0, 0, 0, 0, 32, 32),
             keys.lantern: get_tiles_from_sheet('items/passive/lantern.png', 0, 0, 0, 0, 32, 32),

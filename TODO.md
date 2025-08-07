@@ -458,6 +458,8 @@ Upgrade weapons
     - # Spike pits, fall into and slows you down
     - # Spike traps, that move up and harm you when they're extended
     - # Loose rubble, generates clatter when stepped on
+    - Arrow traps - shoots arrows, triggered by pressure plates
+    
 
 
 ## Crystal Caverns
@@ -484,8 +486,8 @@ Upgrade weapons
     - Shifting walls, changes the layout of the dungeon
     - Shard explosion, unstable crystals explode when damaged
     - Swinging blade, swing from central tile, all affected tiles are marked as traps, rotate the sprite as it swings
-    - Spike pits, fall into and slows you down
-    - Loose rubble, generates clatter when stepped on
+    - # Spike pits, fall into and slows you down
+    - # Loose rubble, generates clatter when stepped on
 
 
 ## Mycelium Depths enemies
@@ -536,8 +538,8 @@ Upgrade weapons
     - Cursed totem, weakens player if in radius
     - Gass vents, spawns gass clouds
     - Swinging blade, swing from central tile, all affected tiles are marked as traps, rotate the sprite as it swings
-    - Spike traps poison, that move up and harm you when they're extended, 
-    - Loose rubble, generates clatter when stepped on
+    - # Spike traps poison, that move up and harm you when they're extended, 
+    - # Loose rubble, generates clatter when stepped on
 
 
 
@@ -564,7 +566,7 @@ Upgrade weapons
     - Molten floor, gradually spawn lava tiles when pressure plate is triggered
     - Flamethrower trap triggered by pressure plate
     - Fire traps, sets you on fire
-    - Spike traps, that move up and harm you when they're extended
+    - # Spike traps, that move up and harm you when they're extended
     - Arrow traps - shoots arrows, triggered by pressure plates
     - Loose rubble, generates clatter when stepped on
 

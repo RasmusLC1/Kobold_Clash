@@ -3,7 +3,7 @@ from scripts.entities.traps.trap import Trap
 import random
 from scripts.engine.keys.keys import keys
 
-
+# TODO: ADD sprite
 class Soul_Trap(Trap):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.soul_trap)

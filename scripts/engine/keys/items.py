@@ -25,6 +25,7 @@ class Items():
     gold = "gold"
 
     hunter_treasure = "hunter_treasure"
+
     
     echo_bell = "echo_bell"
 
