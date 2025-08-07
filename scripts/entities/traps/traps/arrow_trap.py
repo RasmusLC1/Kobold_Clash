@@ -8,8 +8,8 @@ COOLDOWN_MAX = 2
 
 # TODO: NEEDS TO BE TESTED
 class Arrow_Trap(Trap):
-    def __init__(self, game, pos, type, size = (32, 32)):
-        super().__init__(game, pos, keys.rubble)
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.spike_poison_trap)
         self.direction = (0, 0)
         self.Find_Direction()
         self.arrows = []
@@ -42,9 +42,9 @@ class Arrow_Trap(Trap):
 
         for _ in range(3):
             arrow = item_handler.Spawn_Weapon((-999,-999), keys.arrow, 1)
-            arrow.Shooting_Setup(self, self.direction)
-
+            arrow.pickup_allowed = False
             self.arrows.append(arrow)
+
 
 
 
@@ -90,13 +90,21 @@ class Arrow_Trap(Trap):
         if not self.Update_Cooldown(delta_time):
             return False
         
-        self.Shoot_Arrows()
+        self.Shoot_Arrow()
         return True
 
 
     def Shoot_Arrow(self):
         arrow_speed = 3
-        self.arrows[self.next_available_arrow].Initialise_Shooting(arrow_speed)
+        arrow = self.arrows[self.next_available_arrow]
+
+        if not arrow:
+            print(arrow, self.arrows)
+            return
+        arrow.Set_Position(self.pos.copy())
+        arrow.Set_Tile()
+        arrow.Shooting_Setup(self, self.direction)
+        arrow.Initialise_Shooting(arrow_speed)
         self.next_available_arrow += 1
         if self.next_available_arrow >= len(self.arrows):
             self.next_available_arrow = 0
@@ -105,8 +113,7 @@ class Arrow_Trap(Trap):
         for arrow in self.arrows:
             if arrow.shoot_distance:
                 continue
-
-            arrow.Set_Pos((-999, -999))
+            arrow.Set_Position((-999, -999))
 
     def Update_Cooldown(self, delta_time):
         if self.entity_check_cooldown > 0:

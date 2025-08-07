@@ -103,3 +103,5 @@ class Decorations():
     bell_pressure_plate = "bell_pressure_plate"
 
     soul_trap = "soul_trap"
+
+    arrow_trap = "arrow_trap"

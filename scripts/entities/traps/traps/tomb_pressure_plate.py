@@ -16,6 +16,16 @@ class Tomb_Pressure_Plate(Trap):
         self.Spawn_Tombs()
         self.activated = False
 
+    
+    def Save_Data(self):
+        super().Save_Data()
+        self.saved_data['activated'] = self.activated
+
+    
+    def Load_Data(self, data):
+        super().Load_Data(data)
+        self.activated = data['activated']
+
     def Spawn_Tombs(self):
         pos_scaled = list((self.pos[0] // TILESIZE, self.pos[1] // TILESIZE))
         tomb_spawned = 0
