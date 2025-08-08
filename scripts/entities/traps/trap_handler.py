@@ -11,6 +11,7 @@ from scripts.entities.traps.environment.ice import Ice
 from scripts.entities.traps.traps.spider_web import Spider_Web
 from scripts.entities.traps.traps.tomb_pressure_plate import Tomb_Pressure_Plate
 from scripts.entities.traps.traps.arrow_trap import Arrow_Trap
+from scripts.entities.traps.traps.soul_trap import Soul_Trap
 from scripts.engine.keys.keys import keys
 import math
 import random
@@ -26,7 +27,7 @@ TRAP_TABLE = { # Expand with new traps as needed
     keys.rubble : 2,
     keys.tomb_pressure_plate : 0.2,
     keys.bell_pressure_plate : 0.3,
-    # keys.soul_trap : 0.3,
+    keys.soul_trap : 4.3,
     keys.arrow_trap : 0.3,
 }
 

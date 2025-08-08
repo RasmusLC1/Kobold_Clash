@@ -78,6 +78,7 @@ class Graphics_Loader:
             keys.rubble : get_tiles_from_sheet('traps/rubble.png', 3, 0, 0, 0, 32, 32),
             keys.pressure_plate : get_tiles_from_sheet('traps/pressure_plate.png', 0, 0, 0, 0, 32, 32),
             keys.arrow_trap : get_tiles_from_sheet('traps/arrow_trap.png', 0, 0, 0, 0, 32, 32),
+            keys.soul_trap : get_tiles_from_sheet('traps/soul_trap.png', 0, 0, 0, 0, 32, 32),
         }
 
         self.assets.update(trap_assets)
