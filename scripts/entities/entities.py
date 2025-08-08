@@ -102,8 +102,8 @@ class PhysicsEntity:
         self.Set_Sprite() # Image needs to be resized
     
     def Set_Tile(self):
-        tile_key = str(int(self.pos[0]) // self.game.tilemap.tile_size) + ';' + str(int(self.pos[1]) // self.game.tilemap.tile_size)
-        self.tile = self.game.tilemap.Current_Tile(tile_key)
+        pos = (int(self.pos[0]) // self.game.tilemap.tile_size, int(self.pos[1]) // self.game.tilemap.tile_size) 
+        self.tile = self.game.tilemap.Current_Tile(pos)
         if not self.tile:
             return
         self.game.tilemap.Add_Entity_To_Tile(self.tile, self)

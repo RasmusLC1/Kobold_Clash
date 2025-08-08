@@ -68,7 +68,7 @@ class Tomb_Pressure_Plate(Trap):
 
         for offset in NEIGHBOR_OFFSETS:
             nx, ny = x + offset[0], y + offset[1] # Get neigbour key
-            neighbor_key = f"{nx};{ny}"
+            neighbor_key = (nx, ny)
 
             if neighbor_key not in tilemap:
                 return False

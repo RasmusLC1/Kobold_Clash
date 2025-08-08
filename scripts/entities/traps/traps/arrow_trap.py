@@ -66,8 +66,7 @@ class Arrow_Trap(Trap):
                 pos_x += dir_x
                 pos_y += dir_y
 
-                tile_key = f"{int(pos_x)};{int(pos_y)}"
-                tile = self.game.tilemap.Current_Tile(tile_key)
+                tile = self.game.tilemap.Current_Tile((pos_x, pos_y))
 
                 if not tile:  # Still a valid tile
                     break

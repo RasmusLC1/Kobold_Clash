@@ -112,9 +112,8 @@ class A_Star:
             map_x = x - self.min_x
             map_y = y - self.min_y
             if 0 <= map_x < self.width and 0 <= map_y < self.height:
-                tile_key = str(x) + ';' + str(y)
 
-                tile = game.tilemap.Current_Tile(tile_key)
+                tile = game.tilemap.Current_Tile((x, y))
                 if not tile:
                     continue
 
@@ -150,8 +149,8 @@ class A_Star:
             map_x = x - self.min_x
             map_y = y - self.min_y
             if 0 <= map_x < self.width and 0 <= map_y < self.height:
-                tile_type = game.tilemap.Current_Tile_Type_Without_Offset((x, y))
-                if tile_type:
+                tile = game.tilemap.Current_Tile((x, y))
+                if tile:
                     self.void_spawn_map[map_x][map_y] = 0
 
     # ========== UTILITY CHECKS ==========

@@ -14,17 +14,17 @@ class Level_Structure():
             for i in range(size_x):
                 if map[i][j] == WALL: 
                     if not Level_Structure.Wall_Checker(map, i, j, size_x, size_y, tilemap.tilemap):
-                        tilemap.tilemap[str(i) + ';' + str(j)] = {keys.type: keys.wall_bottom, keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
+                        tilemap.tilemap[(i, j)] = {keys.type: keys.wall_bottom, keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
 
 
                 elif map[i][j] == FLOOR: # Floor
                     random_variant = random.randint(0, 10)
-                    tilemap.tilemap[str(i) + ';' + str(j)] = {keys.type: keys.floor, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+                    tilemap.tilemap[(i, j)] = {keys.type: keys.floor, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
 
                 elif map[i][j] == LAVA:
-                    tilemap.tilemap[str(i) + ';' + str(j)] = {keys.type: keys.lava_env, keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
+                    tilemap.tilemap[(i, j)] = {keys.type: keys.lava_env, keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
                 elif map[i][j] == DOOR:
-                    tilemap.tilemap[str(i) + ';' + str(j)] = {keys.type: keys.floor, keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
+                    tilemap.tilemap[(i, j)] = {keys.type: keys.floor, keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
                     tilemap.offgrid_tiles.append({
                                     keys.type: keys.door,
                                     keys.variant: 0,
@@ -32,7 +32,7 @@ class Level_Structure():
                                 })
                 elif map[i][j] == TRAP:
                     trap_type = random.randint(0, 2)
-                    tilemap.tilemap[str(i) + ';' + str(j)] = {keys.type: traps[trap_type], keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
+                    tilemap.tilemap[(i, j)] = {keys.type: traps[trap_type], keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
     
 
 
@@ -40,25 +40,25 @@ class Level_Structure():
         random_variant = random.randint(0, 3)
         # Handle Edge cases first to prevent crashes
         if i <= 1:
-            tilemap[str(i) + ';' + str(j)] = {keys.type: keys.wall_left, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: keys.wall_left, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
             return True
 
         elif i >= size_x - 2:
-            tilemap[str(i) + ';' + str(j)] = {keys.type: keys.wall_right, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: keys.wall_right, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
             return True
         
         elif j <= 1:
-            tilemap[str(i) + ';' + str(j)] = {keys.type: keys.wall_top, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: keys.wall_top, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
             return True
         
         elif j >= size_y - 2:
-            tilemap[str(i) + ';' + str(j)] = {keys.type: keys.wall_top, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: keys.wall_top, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
             return True
         
 
 
         if map[i][j + 1] != WALL:
-            tilemap[str(i) + ';' + str(j)] = {keys.type: keys.wall_top, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: keys.wall_top, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
             return True
 
 
@@ -68,16 +68,16 @@ class Level_Structure():
         
 
         if map[i + 1][j] != WALL and map[i - 1][j] != WALL:
-            tilemap[str(i) + ';' + str(j)] = {keys.type: keys.wall_middle, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: keys.wall_middle, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
             return True
 
         if map[i + 1][j] != WALL:
-            tilemap[str(i) + ';' + str(j)] = {keys.type: keys.wall_left, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: keys.wall_left, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
             return True
 
 
         if map[i - 1][j] != WALL:
-            tilemap[str(i) + ';' + str(j)] = {keys.type: keys.wall_right, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: keys.wall_right, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
             return True
 
         return False
@@ -90,14 +90,14 @@ class Level_Structure():
         right_side = 1
         both_sides = 2
         if map[i + 1][j] != WALL and map[i - 1][j] != WALL:
-            tilemap[str(i) + ';' + str(j)] = {keys.type: keys.wall_bottom_corner, keys.variant: both_sides, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: keys.wall_bottom_corner, keys.variant: both_sides, keys.pos: (i, j), 'active': 0, 'light': 0}
 
         elif map[i + 1][j] != WALL:
-            tilemap[str(i) + ';' + str(j)] = {keys.type: keys.wall_bottom_corner, keys.variant: right_side, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: keys.wall_bottom_corner, keys.variant: right_side, keys.pos: (i, j), 'active': 0, 'light': 0}
 
         elif map[i - 1][j] != WALL:
-            tilemap[str(i) + ';' + str(j)] = {keys.type: keys.wall_bottom_corner, keys.variant: left_side, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: keys.wall_bottom_corner, keys.variant: left_side, keys.pos: (i, j), 'active': 0, 'light': 0}
 
         else:
-            tilemap[str(i) + ';' + str(j)] = {keys.type: keys.wall_bottom, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: keys.wall_bottom, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
         return True

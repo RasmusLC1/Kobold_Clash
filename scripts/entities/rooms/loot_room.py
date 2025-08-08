@@ -22,8 +22,7 @@ class Loot_Room():
             for x in range(adjusted_x + 1, adjusted_x + size_x -1):
                 if x == door_location[0] and size_x > 3: # Prevent small rooms from having no content
                     continue
-                tile_key = str(int(x)) + ';' + str(int(y))
-                tile = tilemap.Current_Tile(tile_key)
+                tile = tilemap.Current_Tile((x, y))
                 
                 if not tile:
                     continue

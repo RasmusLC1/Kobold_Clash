@@ -197,15 +197,15 @@ class Decoration_Initialiser():
                 continue
 
 
-            x, y = map(int, tile_key.split(";"))
 
-            neigbour_tiles_valid = self.Check_Neighbours(x, y)
+
+            neigbour_tiles_valid = self.Check_Neighbours(tile_key[0], tile_key[1])
             
             if not neigbour_tiles_valid:
                 fail += 1
                 continue
             
-            self.Set_Decoration_Neighbours(x, y)
+            self.Set_Decoration_Neighbours(tile_key[0], tile_key[1])
 
 
 
@@ -239,7 +239,7 @@ class Decoration_Initialiser():
 
         for offset in NEIGHBOR_OFFSETS:
             nx, ny = x + offset[0], y + offset[1] # Get neigbour key
-            neighbor_key = f"{nx};{ny}"
+            neighbor_key = (nx, ny)
 
             if neighbor_key not in tilemap:
                 return False
@@ -256,7 +256,8 @@ class Decoration_Initialiser():
 
         for offset in NEIGHBOR_OFFSETS:
             nx, ny = x + offset[0], y + offset[1] # Get neigbour key
-            neighbor_key = f"{nx};{ny}"
+            neighbor_key = (nx, ny)
+
 
             if neighbor_key not in tilemap:
                 return False

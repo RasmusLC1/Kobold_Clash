@@ -133,8 +133,8 @@ class Weapon(Item):
 
     # Check tile logic for wall collision
     def Check_Tile(self, new_pos):
-        tile_key = str(int(new_pos[0] // self.game.tilemap.tile_size)) + ';' + str(int(new_pos[1] // self.game.tilemap.tile_size))
-        tile = self.game.tilemap.Current_Tile(tile_key)
+        pos = (int(new_pos[0]) // self.game.tilemap.tile_size, int(new_pos[1]) // self.game.tilemap.tile_size) 
+        tile = self.game.tilemap.Current_Tile(pos)
         if not tile:
             return True
         if not self.wall_hit and 'wall' in tile.type:
