@@ -112,14 +112,17 @@ class A_Star:
             map_x = x - self.min_x
             map_y = y - self.min_y
             if 0 <= map_x < self.width and 0 <= map_y < self.height:
-                tile = game.tilemap.Current_Tile((x, y))
+                tile_key = str(x) + ';' + str(y)
+
+                tile = game.tilemap.Current_Tile(tile_key)
                 if not tile:
                     continue
 
                 tile_type = tile.type
-
                 if tile_type == keys.floor and not tile.trap:
                     self.standard_map[map_x][map_y] = 0
+
+        
 
     def Build_IgnoreLava_Map(self, game):
         """
@@ -206,11 +209,13 @@ class A_Star:
         # Basic checks
         if not self.is_valid(sx, sy) or not self.is_valid(gx, gy):
             return []
+        # print("VALID")
         if not self.is_unblocked(sx, sy) or not self.is_unblocked(gx, gy):
             return []
+        # print("UNBLOCKED")
         if self.is_destination(sx, sy, goal):
             return [start]
-
+        # print("DESTINATION")
         # Initialize "closed list" to mark visited
         closed_list = [[False]*self.height for _ in range(self.width)]
 

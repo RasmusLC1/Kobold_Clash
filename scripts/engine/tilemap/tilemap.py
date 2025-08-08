@@ -348,15 +348,48 @@ class Tilemap:
         tile_found = False
         random_tile = None
         player = self.game.player
+        fail = 0
         while not tile_found:
             random_tile = random.choice(tiles)
             tile_pos = (random_tile.pos[0] - self.game.a_star.min_x, random_tile.pos[1] - self.game.a_star.min_y)
-            player_pos = (round(player.pos[0] // self.game.tilemap.tile_size) - self.game.a_star.min_x, round(player.pos[1] // self.game.tilemap.tile_size) - self.game.a_star.min_y)
-            path = self.game.a_star.a_star_search(tile_pos, player_pos)
+            player_pos = (round(player.tile.pos[0]) - self.game.a_star.min_x, round(player.tile.pos[1]) - self.game.a_star.min_y)
+            path = self.game.a_star.a_star_search([tile_pos[0], tile_pos[1]], [player_pos[0], player_pos[1]])
             if path:
                 tile_found = True
+                break
 
+            fail += 1
+
+            if fail > 40:
+                return None
         return random_tile
+
+    def Get_Random_Tile_With_Path_Tile(self, target_tile):
+        tiles = []
+        for tile in self.tiles_not_touching_wall.values():
+            if not tile.type == keys.floor:
+                continue
+
+            tiles.append(tile)
+        tile_found = False
+        random_tile = None
+        fail = 0
+        while not tile_found:
+            random_tile = random.choice(tiles)
+            tile_pos = (random_tile.pos[0] - self.game.a_star.min_x, random_tile.pos[1] - self.game.a_star.min_y)
+            target_tile_pos = (target_tile.pos[0] - self.game.a_star.min_x, target_tile.pos[1] - self.game.a_star.min_y)
+            path = self.game.a_star.a_star_search([tile_pos[0], tile_pos[1]], [target_tile_pos[0], target_tile_pos[1]])
+            print(target_tile_pos, tile_pos, target_tile.trap, random_tile.trap)
+            if path:
+                tile_found = True
+                break
+
+            fail += 1
+
+            if fail > 40:
+                return None
+        return random_tile
+
 
     def Clear_Tilemap(self):
         self.tilemap.clear()
