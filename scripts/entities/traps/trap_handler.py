@@ -27,7 +27,7 @@ TRAP_TABLE = { # Expand with new traps as needed
     keys.tomb_pressure_plate : 0.2,
     keys.bell_pressure_plate : 0.3,
     # keys.soul_trap : 0.3,
-    keys.arrow_trap : 2.3,
+    keys.arrow_trap : 0.3,
 }
 
 class Trap_Handler:

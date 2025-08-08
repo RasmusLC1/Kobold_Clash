@@ -9,7 +9,7 @@ COOLDOWN_MAX = 2
 # TODO: NEEDS TO BE TESTED
 class Arrow_Trap(Trap):
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.spike_poison_trap)
+        super().__init__(game, pos, keys.arrow_trap)
         self.attack_direction = (0, 0)
         self.Find_Direction()
         self.arrows = []
