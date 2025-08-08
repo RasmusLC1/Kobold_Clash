@@ -10,7 +10,7 @@ COOLDOWN_MAX = 2
 class Arrow_Trap(Trap):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.spike_poison_trap)
-        self.direction = (0, 0)
+        self.attack_direction = (0, 0)
         self.Find_Direction()
         self.arrows = []
         self.Spawn_Arrows()
@@ -60,27 +60,30 @@ class Arrow_Trap(Trap):
 
         for dir_x, dir_y in directions:
             distance = 0
-            pos_x, pos_y = self.pos[0], self.pos[1]
+            pos_x, pos_y = self.pos[0] // tile_size, self.pos[1] // tile_size
 
             while True:
-                pos_x += dir_x * tile_size
-                pos_y += dir_y * tile_size
+                pos_x += dir_x
+                pos_y += dir_y
 
                 tile_key = f"{int(pos_x)};{int(pos_y)}"
                 tile = self.game.tilemap.Current_Tile(tile_key)
 
-                if tile:  # Still a valid tile
-                    distance += 1
-                else:
+                if not tile:  # Still a valid tile
                     break
+
+                if tile.physics:
+                    break
+
+                distance += 1
 
             directions[(dir_x, dir_y)] = distance
             if distance > 20:
-                self.direction = (dir_x, dir_y)
+                self.attack_direction = (dir_x, dir_y)
                 return
 
         # Get the direction with the longest visible path
-        self.direction = max(directions, key=directions.get)
+        self.attack_direction = max(directions, key=directions.get)
 
                 
 
@@ -91,6 +94,7 @@ class Arrow_Trap(Trap):
             return False
         
         self.Shoot_Arrow()
+        self.Check_If_Arrows_Need_Reset()
         return True
 
 
@@ -103,7 +107,7 @@ class Arrow_Trap(Trap):
             return
         arrow.Set_Position(self.pos.copy())
         arrow.Set_Tile()
-        arrow.Shooting_Setup(self, self.direction)
+        arrow.Shooting_Setup(self, self.attack_direction)
         arrow.Initialise_Shooting(arrow_speed)
         self.next_available_arrow += 1
         if self.next_available_arrow >= len(self.arrows):
@@ -111,7 +115,7 @@ class Arrow_Trap(Trap):
 
     def Check_If_Arrows_Need_Reset(self):
         for arrow in self.arrows:
-            if arrow.shoot_distance:
+            if arrow.shoot_distance or arrow.shoot_speed:
                 continue
             arrow.Set_Position((-999, -999))
 

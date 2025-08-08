@@ -33,7 +33,7 @@ class Ranged_Damage_Handler_Weapon(Damage_Handler_Weapon):
         game = self.weapon.game
 
         self.nearby_enemies = game.enemy_handler.Find_Nearby_Enemies(weapon_entity, self.weapon.shoot_distance * self.weapon.shoot_speed)
-        if weapon_entity.category == keys.enemy:
+        if weapon_entity.category != keys.player:
             self.nearby_enemies.append(game.player)
 
 
