@@ -7,7 +7,7 @@ from scripts.engine.keys.keys import keys
 class Soul_Trap(Trap):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.soul_trap)
-        self.animation = random.randint(0, 1)
+        self.animation = 0
 
 
     def Apply_Entity_Effect(self, entity):
@@ -16,10 +16,18 @@ class Soul_Trap(Trap):
         if self.animation:
             return False
         
-        self.animation = 1
+        target_tile_key = str(self.tile.pos[0]) + ';' + str(self.tile.pos[1] + 1)
 
-        tile = self.game.tilemap.Get_Random_Tile_With_Path_To_Player()
+        target_tile = self.game.tilemap.Current_Tile(target_tile_key)
+
+        if not target_tile:
+            print("TARGET TILE NOT FOUND", target_tile, (self.tile.pos[0], self.tile.pos[1] + 1))
+            return False
+        tile = self.game.tilemap.Get_Random_Tile_With_Path_Tile(target_tile)
+        if not tile:
+            return False
+
+        self.animation = 1
         treasure = self.game.item_handler.loot_handler.Spawn_Loot_Type(keys.valuable, tile.scaled_pos, None, keys.soul_shard)
         self.game.player.Set_Effect(keys.soul_drained, 1, True)
-
         return True

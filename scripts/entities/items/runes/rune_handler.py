@@ -66,6 +66,7 @@ class Rune_Handler():
         if not data:
             return None
         
+        self.Rune_Spawner()
         type = data.get(keys.type)
 
         if not type:
@@ -89,6 +90,8 @@ class Rune_Handler():
         self.Add_Runes_To_Inventory_TEST()
 
     def Rune_Spawner(self):
+        if self.runes:
+            return
         self.runes = {
             keys.dash_rune : Dash_Rune,
             keys.key_rune : Key_Rune,
@@ -195,7 +198,7 @@ class Rune_Handler():
     def Add_Rune_To_Rune_Inventory(self, rune_type):
         rune_class = self.runes.get(rune_type)
         if not rune_class:
-            print(rune_type)
+            print(rune_type, self.runes)
             return None
         
         rune = rune_class(self.game, (999, 999))

@@ -15,6 +15,8 @@ class Arrow_Trap(Trap):
         self.arrows = []
         self.Spawn_Arrows()
         self.next_available_arrow = 0
+        if self.tile:
+            self.tile.Set_Physics(True)
 
     def Save_Data(self):
         super().Save_Data()

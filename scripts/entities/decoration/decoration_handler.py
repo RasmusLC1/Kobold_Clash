@@ -138,11 +138,8 @@ class Decoration_Handler():
             try:
                 type = item_data[keys.type]
                 pos = item_data[keys.pos]
-                size = item_data.get('size')
-                version = item_data.get('version')
-                radius = item_data.get('radius')
-                level = item_data.get('level')
-                self.Decoration_Spawner(type, pos, size=size, version=version, radius=radius, level=level, data=item_data)
+                # size = item_data.get('size')
+                self.Decoration_Spawner(type, pos, data=item_data)
             except Exception as e:
                 print("DATA WRONG DECORATION HANDLER", item_data, e)
 

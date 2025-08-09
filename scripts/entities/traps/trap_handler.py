@@ -54,11 +54,10 @@ class Trap_Handler:
 
             type = item_data[keys.type]
             pos = item_data[keys.pos]
-            size = item_data['size']
             try: 
-                self.Trap_Spawner(pos, type, size, item_data)
+                self.Trap_Spawner(pos, type, item_data)
             except Exception as e:
-                print("DATA WRONG", item_data, e)
+                print("DATA WRONG TRAPHANDLER", item_data, e)
 
     # Only update traps that are close t the player
     def Update(self, delta_time):
