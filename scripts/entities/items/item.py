@@ -171,13 +171,14 @@ class Item(PhysicsEntity):
     def Move(self, new_pos):
         self.pos = list(new_pos)
 
+    # TODO: OPTIMISE
     def Update_Tile(self, new_pos):
 
-        new_tile_key = str(int(self.pos[0] // self.game.tilemap.tile_size)) + ';' + str(int(self.pos[1] // self.game.tilemap.tile_size))
-        new_tile = self.game.tilemap.Current_Tile(new_tile_key)
+        pos = (int(new_pos[0]) // self.game.tilemap.tile_size, int(new_pos[1]) // self.game.tilemap.tile_size) 
+        new_tile = self.game.tilemap.Current_Tile(pos)
         if not (new_tile, self.tile):
             return
-        if new_tile_key != self.tile.pos:
+        if pos != self.tile.pos:
             self.game.tilemap.Remove_Entity_From_Tile(self.tile, self.ID)
             self.game.tilemap.Add_Entity_To_Tile(new_tile, self)
             self.tile = new_tile

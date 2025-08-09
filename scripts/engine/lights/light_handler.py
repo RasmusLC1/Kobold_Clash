@@ -70,7 +70,6 @@ class Light_Handler():
 
     # Set the lightlevel of an object based on the tile it is on
     def Initialise_Light_Level(self, tile):
-
         # Set the light level based on the tile that the entity is placed on
         tile = self.game.tilemap.Current_Tile(tile)
         if not tile:

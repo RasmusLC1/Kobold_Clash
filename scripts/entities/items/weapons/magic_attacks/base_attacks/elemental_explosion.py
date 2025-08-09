@@ -70,16 +70,16 @@ class Elemental_Explosion(Item):
         for i in range(steps):
             pos_x = start_pos[0] + math.cos(angle) * step_size * i
             pos_y = start_pos[1] + math.sin(angle) * step_size * i
-            tile_key = str(int(pos_x) // self.game.tilemap.tile_size) + ';' + str(int(pos_y) // self.game.tilemap.tile_size)
+            pos = (int(pos_x) // self.game.tilemap.tile_size, int(pos_y) // self.game.tilemap.tile_size) 
 
             # If Check_Tile returns False, it means a tile blocked the ray
-            if not self.Check_Tile(tile_key):
+            if not self.Check_Tile(pos):
                 return False  # Ray is blocked
 
         return True  # Reached the entity without tile blockage
 
-    def Check_Tile(self, tile):
-        tile = self.game.tilemap.Current_Tile(tile)
+    def Check_Tile(self, tile_pos):
+        tile = self.game.tilemap.Current_Tile(tile_pos)
         if tile:
             if not tile.type:
                 print(tile)

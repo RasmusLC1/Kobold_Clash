@@ -79,8 +79,7 @@ class Light():
                 pos_y = scaled_pos_y + sin_angle * i
                 
                 # Update the tile the ray is touching
-                tile_key = str(int(pos_x)) + ';' + str(int(pos_y))
-                tile = self.game.tilemap.Current_Tile(tile_key)
+                tile = self.game.tilemap.Current_Tile((pos_x, pos_y))
                 if not self.Check_Base_Tile(tile):
                     break
 

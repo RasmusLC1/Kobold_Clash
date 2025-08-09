@@ -7,7 +7,7 @@ DEFAULT_ACTIVITY = 700
 NUM_LINES = 80 # Define the number of lines and the spread angle (in degrees)
 SPREAD_ANGLE = 360  # Total spread of the fan (in degrees)
 ANGLE_INCREMENT = SPREAD_ANGLE / (NUM_LINES - 1) # Calculate the angle increment between each line
-
+TILE_SIZE = 32
 
 class Ray_Caster():
     def __init__(self, game):
@@ -84,8 +84,7 @@ class Ray_Caster():
         (center_x, center_y) = tuple(map(int, self.game.player.tile.pos))
         for y in range(center_y - radius, center_y + radius + 1):
             for x in range(center_x - radius, center_x + radius + 1):
-                tile_key = str(x) + ';' + str(y)
-                if not self.Check_Tile(tile_key):
+                if not self.Check_Tile((x, y)):
                     break
 
 
@@ -98,17 +97,15 @@ class Ray_Caster():
         # Calculate the starting angle
         base_angle = math.atan2(player.view_direction[1], player.view_direction[0])
         start_angle = base_angle - math.radians(SPREAD_ANGLE / 2)
-        self.Check_Tile(player.tile)
+        self.Check_Tile(player.tile.pos)
         
         # Look for tiles that hit the rays
         for j in range(NUM_LINES):
             angle = start_angle + j * math.radians(ANGLE_INCREMENT)
             for i in range(1, round(6 * self.game.render_scale)):
-                pos_x = player.pos[0] + math.cos(angle) * tile_size * i
-                pos_y = player.pos[1] + math.sin(angle) * tile_size * i
-                tile_key = str(int(pos_x) // self.game.tilemap.tile_size) + ';' + str(int(pos_y) // self.game.tilemap.tile_size)
-
-                if not self.Check_Tile(tile_key):
+                pos_x = player.tile.pos[0] + math.cos(angle) * i
+                pos_y = player.tile.pos[1] + math.sin(angle) * i
+                if not self.Check_Tile((pos_x, pos_y)):
                     break
     
 

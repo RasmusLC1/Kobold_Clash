@@ -167,7 +167,7 @@ class Attack_Stategies():
 
         # Check each tile. If any tile is not see-through, return False
         for (tx, ty) in line_tiles:
-            tile_key = f"{tx};{ty}"
+            tile_key = (tx, ty)
             # If your ray_caster.Check_Tile(tile_key) means "can see through" is True
             # or "walkable" is True, adapt accordingly.
             if not self.game.ray_caster.Check_Tile(tile_key):
