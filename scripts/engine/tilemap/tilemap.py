@@ -26,51 +26,60 @@ class Tilemap:
         self.min_y = 99999
         self.max_y = -99999
      
-
     def save(self, path):
-        f = open(path, 'w')
-        json.dump({'tilemap': self.tilemap, 'tile_size': self.tile_size, 'offgrid': self.offgrid_tiles}, f)
-        f.close()
-    
-    
-    # Load in tilemap and offgrid and instantiate tiles
+        serializable_tilemap = {
+            f"{x};{y}": {
+                keys.type: tile[keys.type],
+                keys.variant: tile[keys.variant],
+                "active": tile["active"],
+                "light": tile["light"]
+            }
+            for (x, y), tile in self.tilemap.items()
+        }
+
+        with open(path, 'w') as f:
+            json.dump({
+                'tilemap': serializable_tilemap,
+                'tile_size': self.tile_size,
+                'offgrid': self.offgrid_tiles
+            }, f)
+
+
     def Load(self, path):
-        f = open(path, 'r')
-        map_data = json.load(f)
-        f.close()
+        with open(path, 'r') as f:
+            map_data = json.load(f)
+
         self.tile_size = map_data['tile_size']
-        
-        tilemap = map_data['tilemap']
-        for tile_key in tilemap:
-            self.Generate_Tile(tile_key, tilemap)
+        tilemap_data = map_data['tilemap']
 
-        offgrid_tiles = map_data['offgrid']
+        for tile_key_str, tile_values in tilemap_data.items():
+            x, y = map(int, tile_key_str.split(';'))
+            tile_key = (x, y)
+            self.Generate_Tile(tile_key, tile_values)
 
-        for tile_values in offgrid_tiles:
-            self.offgrid_tiles.append(tile_values)
-
+        self.offgrid_tiles = map_data['offgrid']
         self.Find_Tiles_Not_Touching_Wall()
 
-
-    def Generate_Tile(self, tile_key, tilemap):
-        tile_values = tilemap[tile_key]
+    def Generate_Tile(self, tile_pos, tile_values):
         type = tile_values[keys.type]
         variant = tile_values[keys.variant]
-        pos = tuple(map(int, tile_key.split(';')))
         active = tile_values['active']
         light_level = tile_values['light']
         physics = False
         translucent = True
+
         if 'wall' in type:
             physics = True
             translucent = False
 
-        tile = Tile(self.game, type, variant, pos, self.tile_size, active, light_level, physics, translucent)
-        self.tilemap[tile_key] = tile
-        self.min_x = min(self.min_x, pos[0])
-        self.max_x = max(self.max_x, pos[0])
-        self.min_y = min(self.min_y, pos[1])
-        self.max_y = max(self.max_y, pos[1])
+        tile = Tile(self.game, type, variant, tile_pos, self.tile_size, active, light_level, physics, translucent)
+        self.tilemap[tile_pos] = tile
+
+        self.min_x = min(self.min_x, tile_pos[0])
+        self.max_x = max(self.max_x, tile_pos[0])
+        self.min_y = min(self.min_y, tile_pos[1])
+        self.max_y = max(self.max_y, tile_pos[1])
+
 
     # Runs one time when loading, but expensive to compute
     def Find_Tiles_Not_Touching_Wall(self):
@@ -85,7 +94,7 @@ class Tilemap:
 
             for offset in NEIGHBOR_OFFSETS:
                 nx, ny = x + offset[0], y + offset[1] # Get neigbour key
-                neighbor_key = f"{nx};{ny}"
+                neighbor_key = (nx, ny)
 
                 if neighbor_key not in self.tilemap:
                     continue
@@ -140,7 +149,7 @@ class Tilemap:
                 if x >= self.max_x or y >= self.max_y:
                     continue
 
-                tile_key = str(x) + ';' + str(y)
+                tile_key = (x, y)
                 tile = self.tilemap[tile_key]
                 if not tile:
                     continue
@@ -170,7 +179,7 @@ class Tilemap:
                 if x >= self.max_x or y >= self.max_y:
                     continue
 
-                tile_key = str(x) + ';' + str(y)
+                tile_key = (x, y)
                 tile = self.tilemap[tile_key]
                 if not tile:
                     continue
@@ -227,7 +236,7 @@ class Tilemap:
         tiles = []
         tile_loc = (int(pos[0] // self.tile_size), int(pos[1] // self.tile_size))
         for offset in NEIGHBOR_OFFSETS:
-            check_loc = str(tile_loc[0] + offset[0]) + ';' + str(tile_loc[1] + offset[1])
+            check_loc = (tile_loc[0] + offset[0], tile_loc[1] + offset[1])
             if check_loc in self.tilemap:
                 tiles.append(self.tilemap[check_loc])
         return tiles
@@ -235,23 +244,24 @@ class Tilemap:
         
     # Check what tile type is in a given position
     def Current_Tile_Type_Without_Offset(self, pos):
-        check_loc = str(pos[0]) + ';' + str(pos[1])
-        if check_loc in self.tilemap:
-            return self.tilemap[check_loc].type
+        if pos in self.tilemap:
+            return self.tilemap[pos].type
         else:
             return None
     
     def Add_Tile(self, type, variant, pos, physics, active = 0, light_level = 0, translucent = True):
         tile = Tile(self.game, type, variant, pos, self.tile_size, active, light_level, physics, translucent)
-        tile_key = ';'.join(map(str, pos))
-        self.game.ray_caster.Remove_Tile(self.tilemap[tile_key]) # Remove old tile from renderer 
-        self.tilemap[tile_key] = None
-        self.tilemap[tile_key] = tile
+        self.game.ray_caster.Remove_Tile(self.tilemap[pos]) # Remove old tile from renderer 
+        self.tilemap[pos] = None
+        self.tilemap[pos] = tile
         
     # Check what tile is in a given position and return the full tile
-    def Current_Tile(self, tile_key):
-        if not tile_key in self.tilemap:
-            return None
+    def Current_Tile(self, tile_pos):
+        try:
+            tile_key = (round(tile_pos[0]), round(tile_pos[1]))
+        except Exception as e:
+            print("CAN'T FIND TILEKEY", e, tile_pos)
+            return
         tile = self.tilemap.get(tile_key)
         if not tile:
             return None
@@ -293,7 +303,7 @@ class Tilemap:
     # Check for collision with solid tiles
     # Returns tile if there is collision
     def solid_check(self, pos):
-        tile_loc = str(int(pos[0] // self.tile_size)) + ';' + str(int(pos[1] // self.tile_size))
+        tile_loc = (pos[0] // self.tile_size, pos[1] // self.tile_size)
         if not tile_loc in self.tilemap:
             return None
         if self.tilemap[tile_loc].physics:
@@ -379,7 +389,6 @@ class Tilemap:
             tile_pos = (random_tile.pos[0] - self.game.a_star.min_x, random_tile.pos[1] - self.game.a_star.min_y)
             target_tile_pos = (target_tile.pos[0] - self.game.a_star.min_x, target_tile.pos[1] - self.game.a_star.min_y)
             path = self.game.a_star.a_star_search([tile_pos[0], tile_pos[1]], [target_tile_pos[0], target_tile_pos[1]])
-            print(target_tile_pos, tile_pos, target_tile.trap, random_tile.trap)
             if path:
                 tile_found = True
                 break

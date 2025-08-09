@@ -16,9 +16,7 @@ class Soul_Trap(Trap):
         if self.animation:
             return False
         
-        target_tile_key = str(self.tile.pos[0]) + ';' + str(self.tile.pos[1] + 1)
-
-        target_tile = self.game.tilemap.Current_Tile(target_tile_key)
+        target_tile = self.game.tilemap.Current_Tile((self.tile.pos[0], self.tile.pos[1] + 1))
 
         if not target_tile:
             print("TARGET TILE NOT FOUND", target_tile, (self.tile.pos[0], self.tile.pos[1] + 1))
