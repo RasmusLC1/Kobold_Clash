@@ -68,14 +68,17 @@ class Graphics_Loader:
         self.assets.update(tiles_assets)
 
     def Asset_Trap_List(self):
-        white = (255,255,255)
         trap_assets = {
-            keys.spike_trap : get_tiles_from_sheet('traps/spike_trap.png', 6, 0, 0, 0, 32, 32, white),
-            keys.spike_poison_trap : get_tiles_from_sheet('traps/Spike_Trap_poison.png', 13, 0, 0, 0, 32, 32, white),
-            keys.pit_trap : get_tiles_from_sheet('traps/Pit_Trap_Spikes.png', 1, 0, 0, 0, 32, 32, white),
-            keys.fire_trap : get_tiles_from_sheet('traps/Fire_Trap.png', 13, 0, 0, 0, 32, 20, white),
+            keys.spike_trap : get_tiles_from_sheet('traps/spike_trap.png', 6, 0, 0, 0, 32, 32),
+            keys.spike_poison_trap : get_tiles_from_sheet('traps/Spike_Trap_poison.png', 13, 0, 0, 0, 32, 32),
+            keys.pit_trap : get_tiles_from_sheet('traps/Pit_Trap_Spikes.png', 1, 0, 0, 0, 32, 32),
+            keys.fire_trap : get_tiles_from_sheet('traps/Fire_Trap.png', 13, 0, 0, 0, 32, 20),
             keys.spider_web : get_tiles_from_sheet('entities/enemies/dwellers/spider/spider_web.png', 3, 0, 0, 0, 32, 32),
             keys.poison_plume : get_tiles_from_sheet('traps/poison_plume.png', 7, 0, 0, 0, 32, 32),
+            keys.rubble : get_tiles_from_sheet('traps/rubble.png', 3, 0, 0, 0, 32, 32),
+            keys.pressure_plate : get_tiles_from_sheet('traps/pressure_plate.png', 0, 0, 0, 0, 32, 32),
+            keys.arrow_trap : get_tiles_from_sheet('traps/arrow_trap.png', 0, 0, 0, 0, 32, 32),
+            keys.soul_trap : get_tiles_from_sheet('traps/soul_trap.png', 1, 0, 0, 0, 32, 32),
         }
 
         self.assets.update(trap_assets)
@@ -100,11 +103,10 @@ class Graphics_Loader:
         self.assets.update(effect_assets)
 
     def Asset_Effect_List(self):
-        white = (255,255,255)
         effect_assets = {
-            keys.fire : get_tiles_from_sheet('particles/effects/fire/orange/loops/burning_loop_1.png', 7, 0, 0, 0, 32, 32, white),
-            keys.poison : get_tiles_from_sheet('particles/effects/poison.png', 2, 0, 0, 0, 32, 32, white),
-            keys.frozen : get_tiles_from_sheet('particles/effects/frozen.png', 2, 0, 0, 0, 32, 32, white),
+            keys.fire : get_tiles_from_sheet('particles/effects/fire/orange/loops/burning_loop_1.png', 7, 0, 0, 0, 32, 32),
+            keys.poison : get_tiles_from_sheet('particles/effects/poison.png', 2, 0, 0, 0, 32, 32),
+            keys.frozen : get_tiles_from_sheet('particles/effects/frozen.png', 2, 0, 0, 0, 32, 32),
             keys.wet : get_tiles_from_sheet('particles/effects/wet.png', 2, 0, 0, 0, 32, 32),
             keys.regen : get_tiles_from_sheet('particles/effects/regen.png', 2, 1, 0, 0, 32, 32),
             keys.electric : get_tiles_from_sheet('particles/effects/electric.png', 5, 0, 0, 0, 32, 32),
@@ -428,9 +430,8 @@ class Graphics_Loader:
         self.assets.update(Weapon_Inventory_assets)
 
     def Asset_Interative_Objects_List(self):
-        white = (255,255,255)
         Objects_assets = {
-            keys.chest: get_tiles_from_sheet('decoration/chest.png', 8, 0, 0, 0, 32, 32, white),
+            keys.chest: get_tiles_from_sheet('decoration/chest.png', 8, 0, 0, 0, 32, 32),
             keys.vase: get_tiles_from_sheet('decoration/loot_containers/vase/vase.png', 4, 0, 0, 0, 32, 32),
             keys.bookshelf: get_tiles_from_sheet('decoration/loot_containers/bookshelf.png', 3, 0, 0, 0, 32, 32),
             keys.soul_well: get_tiles_from_sheet('decoration/Shrine/soul_well.png', 3, 0, 0, 0, 64, 64),
@@ -535,13 +536,11 @@ class Graphics_Loader:
 
         self.assets.update(potion_assets)
 
-
-
-
     def Asset_Loot(self):
         loot = {
             keys.gold: get_tiles_from_sheet('items/valuables/gold_coins.png', 3, 0, 0, 0, 16, 16),
             keys.hunter_treasure: get_tiles_from_sheet('items/valuables/hunter_treasure.png', 0, 0, 0, 0, 32, 32),
+            keys.soul_shard: get_tiles_from_sheet('font/souls.png', 3, 0, 0, 0, 32, 32),
             keys.echo_bell: get_tiles_from_sheet('items/utility/echo_bell.png', 0, 0, 0, 0, 32, 32),
             keys.shadow_cloak: get_tiles_from_sheet('items/utility/shadow_cloak.png', 0, 0, 0, 0, 32, 32),
             keys.lantern: get_tiles_from_sheet('items/passive/lantern.png', 0, 0, 0, 0, 32, 32),

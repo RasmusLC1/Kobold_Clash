@@ -148,7 +148,7 @@ class Ranged_Weapon(Weapon):
         if self.is_charging > self.max_charge_time:
             self.is_charging = 120
             self.Spawn_Arrow()
-            self.arrow.Set_Delete_Countdown(50)
+            self.arrow.Set_Delete_Countdown(0.2)
             self.arrow.pickup_allowed = False
             self.Shoot_Arrow()
             self.Reset_Bow()

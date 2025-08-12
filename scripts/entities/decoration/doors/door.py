@@ -3,10 +3,13 @@ from scripts.engine.keys.keys import keys
 
 
 class Door(Decoration):
-    def __init__(self, game, type, pos, size = (32, 32)) -> None:
-        super().__init__(game, type, pos, size)
+    def __init__(self, game, pos, size = (32, 32)) -> None:
+        super().__init__(game, keys.door_basic, pos, size)
         self.is_open = False
         self.high_light_cooldown = 0
+        if not self.tile:
+            self.Delete()
+            return
         self.tile.Set_Physics(True)
         self.tile.Set_Translucent(False)
 
@@ -52,7 +55,6 @@ class Door(Decoration):
 
     def Render(self, surf, offset = (0,0)):
         super().Render(surf, offset)
-        # print(self.rendered_image)
         if not self.high_light_cooldown:
             return
         self.Lightup(self.rendered_image)

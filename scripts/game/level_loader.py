@@ -3,7 +3,7 @@ import random
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.player.player import Player
 from scripts.engine.particles.particle_handler import Particle_Handler
-from scripts.traps.trap_handler import Trap_Handler
+from scripts.entities.traps.trap_handler import Trap_Handler
 from scripts.entities.items.item_handler import Item_Handler
 
 from scripts.entities.decoration.decoration_handler import Decoration_Handler
@@ -96,9 +96,7 @@ class Level_Loader():
         self.initialised = True
 
     def Spawn_Player(self):
-        # print("TESTTEST", self.game.tilemap.extract([(keys.spawners, 0)]))
         for spawner in self.game.tilemap.extract([(keys.spawners, 0)]):
-            print(spawner)
             spawn_tile = random.choice(list(self.game.tilemap.tiles_not_touching_wall.values()))
 
             self.game.player = Player(self.game, spawner[keys.pos], (28, 28), 100, 5, 5, 5, 5, 5)

@@ -75,7 +75,11 @@ class Decorations():
 
 
 # Traps
+    trap = "trap"
+
     spike_trap = "spike_trap"
+
+    rubble = "rubble"
     
     
     spike_poison_trap = "spike_poison_trap"
@@ -91,3 +95,13 @@ class Decorations():
     
     
     poison_plume = "poison_plume"
+
+    pressure_plate = "pressure_plate"
+
+    tomb_pressure_plate = "tomb_pressure_plate"
+
+    bell_pressure_plate = "bell_pressure_plate"
+
+    soul_trap = "soul_trap"
+
+    arrow_trap = "arrow_trap"

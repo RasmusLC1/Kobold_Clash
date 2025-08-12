@@ -24,7 +24,7 @@ class Symbols():
                 keys.weakness, 'vulnerable', 'luck',
                 'anchor', keys.blood_tomb, keys.halo,
                 keys.demonic_bargain, keys.temptress_embrace,
-                keys.slow,
+                keys.slow, keys.soul_drained,
             ])
         }
 

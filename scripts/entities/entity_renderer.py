@@ -29,10 +29,11 @@ class Entity_Renderer():
     def Remove_Entity(self, entity):
         if not entity in self.entities:
             return
+        tile = entity.tile
+        if not tile:
+            return
         
-        tile = self.game.tilemap.Current_Tile(entity.tile)
-        if tile:
-            tile.Clear_Entity(entity.ID)
+        tile.Clear_Entity(entity.ID)
         self.entities.remove(entity)
 
 

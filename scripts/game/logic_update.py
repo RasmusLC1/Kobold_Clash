@@ -19,7 +19,7 @@ class Logic_Update():
           self.game.inventory.Update(delta_time, self.game.render_scroll)
           self.game.decoration_handler.Update(delta_time)
           self.game.entities_render.Update()
-          self.game.trap_handler.Update()
+          self.game.trap_handler.Update(delta_time)
 
 
           self.game.rune_handler.Update(delta_time)

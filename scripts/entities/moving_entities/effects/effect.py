@@ -58,7 +58,7 @@ class Effect():
     def Remove_Effect(self, reduce_permanent = 0):
          self.Set_Permanent(-reduce_permanent)
          if self.permanent > 0:
-             self.effect -= reduce_permanent
+             self.effect = max(0, self.effect - reduce_permanent)
              return False
          self.effect = 0
          self.animation = 0

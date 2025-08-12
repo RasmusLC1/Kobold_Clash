@@ -25,6 +25,7 @@ class Items():
     gold = "gold"
 
     hunter_treasure = "hunter_treasure"
+
     
     echo_bell = "echo_bell"
 
@@ -108,6 +109,8 @@ class Items():
 
     
     vampiric_bomb = "vampiric_bomb"
+
+    soul_shard = "soul_shard"
 
 # Gems
 
