@@ -15,6 +15,7 @@ class Damage_Handler_Weapon():
         
         damage_sum = 0
         for damage_type in self.damage:
+
             damage = self.Calculate_Damage(damage_type)
             damage_sum += damage
             effect = self.Check_Effects(damage_type)
@@ -24,7 +25,7 @@ class Damage_Handler_Weapon():
             if entity.effects.thorns.effect:
                 weapon_entity.Damage_Taken(entity.effects.thorns.effect)
 
-                
+        entity.Set_Damage_Cooldown()
         self.weapon.entity.effects.Damage_Dealt(damage_sum)
 
 

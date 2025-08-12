@@ -330,6 +330,9 @@ class Moving_Entity(PhysicsEntity):
 
             if self.damage_cooldown <= 0:
                 self.damage_cooldown = 0
+    
+    def Set_Damage_Cooldown(self):
+        self.damage_cooldown = DAMAGE_COOLDOWN_MAX
         
             
             
@@ -339,7 +342,6 @@ class Moving_Entity(PhysicsEntity):
             return False
         self.game.text_box_handler.Spawn_Damage_Text(self.pos.copy(), effect[0], str(damage))
 
-        self.damage_cooldown = DAMAGE_COOLDOWN_MAX
         self.Set_Health(self.health - damage)
 
         # Update the entitty description
