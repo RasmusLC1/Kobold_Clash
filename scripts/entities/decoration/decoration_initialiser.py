@@ -164,8 +164,8 @@ class Decoration_Initialiser():
 
             tilemap_dic[tile_key].Set_Contains_Decoration(True)
 
-            tile_pos = (floor_tile.pos[0] * TILESIZE, floor_tile.pos[1] * TILESIZE)
-            self.decorations[key].append(tile_pos)
+
+            self.decorations[key].append(floor_tile.scaled_pos)
 
             spawns += 1
             keys.append(floor_tile.pos)
@@ -197,19 +197,19 @@ class Decoration_Initialiser():
                 continue
 
 
-            x, y = map(int, tile_key.split(";"))
 
-            neigbour_tiles_valid = self.Check_Neighbours(x, y)
+
+            neigbour_tiles_valid = self.Check_Neighbours(tile_key[0], tile_key[1])
             
             if not neigbour_tiles_valid:
                 fail += 1
                 continue
             
-            self.Set_Decoration_Neighbours(x, y)
+            self.Set_Decoration_Neighbours(tile_key[0], tile_key[1])
 
 
 
-            self.decorations[key].append((floor_tile.pos[0] * TILESIZE, floor_tile.pos[1] * TILESIZE))
+            self.decorations[key].append(floor_tile.scaled_pos)
 
             spawns += 1
             keys.append(floor_tile.pos)
@@ -239,10 +239,10 @@ class Decoration_Initialiser():
 
         for offset in NEIGHBOR_OFFSETS:
             nx, ny = x + offset[0], y + offset[1] # Get neigbour key
-            neighbor_key = f"{nx};{ny}"
+            neighbor_key = (nx, ny)
 
             if neighbor_key not in tilemap:
-                continue
+                return False
 
             neighbor_tile = tilemap[neighbor_key]
 
@@ -256,10 +256,11 @@ class Decoration_Initialiser():
 
         for offset in NEIGHBOR_OFFSETS:
             nx, ny = x + offset[0], y + offset[1] # Get neigbour key
-            neighbor_key = f"{nx};{ny}"
+            neighbor_key = (nx, ny)
+
 
             if neighbor_key not in tilemap:
-                continue
+                return False
 
             tilemap[neighbor_key].Set_Contains_Decoration(True)
 

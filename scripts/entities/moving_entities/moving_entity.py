@@ -128,7 +128,7 @@ class Moving_Entity(PhysicsEntity):
         self.Update_Status_Effects(delta_time)
 
 
-        self.Update_Traps(delta_time)
+        # self.Update_Traps(delta_time)
         self.Nearby_Enemies(2, delta_time)
         self.Update_Damage_Cooldown(delta_time)
         self.Charge_Update(delta_time)
@@ -202,14 +202,14 @@ class Moving_Entity(PhysicsEntity):
             new_tile = self.game.tilemap.Get_Random_Tile_With_Path_To_Player()
             self.game.tilemap.Add_Entity_To_Tile(new_tile, self)
             self.tile = new_tile
-            self.pos = list((self.tile.pos[0] * 32, self.tile.pos[1] * 32))
+            self.pos = list(self.tile.scaled_pos)
 
             print("ERROR TILE NOT FOUND", self.type, self.pos, self.tile)
             return
         
-        new_tile_key = str(int(self.pos[0] // self.game.tilemap.tile_size)) + ';' + str(int(self.pos[1] // self.game.tilemap.tile_size))
-        if new_tile_key != self.tile.pos:
-            new_tile = self.game.tilemap.Current_Tile(new_tile_key)
+        pos = (int(self.pos[0]) // self.game.tilemap.tile_size, int(self.pos[1]) // self.game.tilemap.tile_size) 
+        if pos != self.tile.pos:
+            new_tile = self.game.tilemap.Current_Tile(pos)
             if not new_tile:
                 return
             self.game.tilemap.Remove_Entity_From_Tile(self.tile, self.ID)

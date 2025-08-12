@@ -2,6 +2,13 @@ import math
 import pygame
 from scripts.engine.keys.keys import keys
 
+# Basic raycasting attributes
+DEFAULT_ACTIVITY = 700
+NUM_LINES = 80 # Define the number of lines and the spread angle (in degrees)
+SPREAD_ANGLE = 360  # Total spread of the fan (in degrees)
+ANGLE_INCREMENT = SPREAD_ANGLE / (NUM_LINES - 1) # Calculate the angle increment between each line
+TILE_SIZE = 32
+
 class Ray_Caster():
     def __init__(self, game):
         self.tiles = []
@@ -10,14 +17,9 @@ class Ray_Caster():
         self.inactive_distance = 800
         
         self.game = game
-        self.default_activity = 700
 
         self.disable_distance_debugger = False
 
-        # Basic raycasting attributes
-        self.num_lines = 80 # Define the number of lines and the spread angle (in degrees)
-        self.spread_angle = 360  # Total spread of the fan (in degrees)
-        self.angle_increment = self.spread_angle / (self.num_lines - 1) # Calculate the angle increment between each line
         self.angles = []
 
     def Update(self):
@@ -39,7 +41,7 @@ class Ray_Caster():
             if tile.active:
                 tile.active -= 1
             # Find distance from player and if it's greater than 300, delete it
-            distance = math.sqrt((self.game.player.pos[0] - tile.pos[0] * self.game.tilemap.tile_size) ** 2 + (self.game.player.pos[1] - tile.pos[1] * self.game.tilemap.tile_size) ** 2)
+            distance = math.sqrt((self.game.player.pos[0] - tile.scaled_pos[0]) ** 2 + (self.game.player.pos[1] - tile.scaled_pos[1]) ** 2)
             
             
             if abs(distance) > self.inactive_distance:
@@ -56,12 +58,12 @@ class Ray_Caster():
         tile = self.game.tilemap.Current_Tile(tile)
         if tile:
             if not tile.active:
-                tile.Set_Active(self.default_activity)
+                tile.Set_Active(DEFAULT_ACTIVITY)
                 self.tiles.append(tile)
             else:
-                tile.Set_Active(self.default_activity)
+                tile.Set_Active(DEFAULT_ACTIVITY)
             if not tile.type:
-                print(tile)
+                print("TILE DOES NOT HAVE TYPE", tile)
                 return False
             
             if not tile.translucent:
@@ -82,30 +84,28 @@ class Ray_Caster():
         (center_x, center_y) = tuple(map(int, self.game.player.tile.pos))
         for y in range(center_y - radius, center_y + radius + 1):
             for x in range(center_x - radius, center_x + radius + 1):
-                tile_key = str(x) + ';' + str(y)
-                if not self.Check_Tile(tile_key):
+                if not self.Check_Tile((x, y)):
                     break
 
 
     def Ray_Caster(self):
         
         self.Add_Tile_Around_Player()
+        player = self.game.player
+        tile_size = self.game.tilemap.tile_size
 
         # Calculate the starting angle
-        base_angle = math.atan2(self.game.player.view_direction[1], self.game.player.view_direction[0])
-        start_angle = base_angle - math.radians(self.spread_angle / 2)
-        self.Check_Tile(self.game.player.tile)
+        base_angle = math.atan2(player.view_direction[1], player.view_direction[0])
+        start_angle = base_angle - math.radians(SPREAD_ANGLE / 2)
+        self.Check_Tile(player.tile.pos)
         
-
         # Look for tiles that hit the rays
-        for j in range(self.num_lines):
-            angle = start_angle + j * math.radians(self.angle_increment)
+        for j in range(NUM_LINES):
+            angle = start_angle + j * math.radians(ANGLE_INCREMENT)
             for i in range(1, round(6 * self.game.render_scale)):
-                pos_x = self.game.player.pos[0] + math.cos(angle) * self.game.tilemap.tile_size * i
-                pos_y = self.game.player.pos[1] + math.sin(angle) * self.game.tilemap.tile_size * i
-                tile_key = str(int(pos_x) // self.game.tilemap.tile_size) + ';' + str(int(pos_y) // self.game.tilemap.tile_size)
-
-                if not self.Check_Tile(tile_key):
+                pos_x = player.tile.pos[0] + math.cos(angle) * i
+                pos_y = player.tile.pos[1] + math.sin(angle) * i
+                if not self.Check_Tile((pos_x, pos_y)):
                     break
     
 

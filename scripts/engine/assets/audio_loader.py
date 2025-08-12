@@ -12,6 +12,7 @@ class Audio_Loader:
         Audio_Loader.Effect_Effects(self)
         Audio_Loader.Menu_Effects(self)
         Audio_Loader.Awakening_Effects(self)
+        Audio_Loader.Trap_Effects(self)
 
 
     def Decoration_Effects(self):
@@ -166,10 +167,20 @@ class Audio_Loader:
         self.sfx[keys.awakening_2].set_volume(0.2)
         self.sfx[keys.awakening_3].set_volume(0.2)
 
+    def Trap_Effects(self):
+        trap_effects ={
+            keys.rubble : pygame.mixer.Sound('data/sounds/traps/rubble.wav'),
+            keys.pressure_plate : pygame.mixer.Sound('data/sounds/traps/pressure_plate.wav'),
+        }
+
+        self.sfx.update(trap_effects)
+
+        self.sfx[keys.rubble].set_volume(0.4)
+        self.sfx[keys.pressure_plate].set_volume(1)
+    
     
     def Menu_Effects(self):
         menu_effects ={
-            # keys.slow : pygame.mixer.Sound('data/sounds/effects/slow.wav'),
             keys.hover : pygame.mixer.Sound('data/sounds/menu/hover.wav'),
             keys.click : pygame.mixer.Sound('data/sounds/menu/button_click.wav'),
         }

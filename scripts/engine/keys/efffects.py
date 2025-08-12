@@ -74,3 +74,5 @@ class Effects():
     electric_resistance = "electric_resistance"
 
     soul_stealer = "soul_stealer"
+
+    soul_drained = "soul_drained"

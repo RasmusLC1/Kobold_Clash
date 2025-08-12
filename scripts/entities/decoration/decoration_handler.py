@@ -138,11 +138,8 @@ class Decoration_Handler():
             try:
                 type = item_data[keys.type]
                 pos = item_data[keys.pos]
-                size = item_data.get('size')
-                version = item_data.get('version')
-                radius = item_data.get('radius')
-                level = item_data.get('level')
-                self.Decoration_Spawner(type, pos, size=size, version=version, radius=radius, level=level, data=item_data)
+                # size = item_data.get('size')
+                self.Decoration_Spawner(type, pos, data=item_data)
             except Exception as e:
                 print("DATA WRONG DECORATION HANDLER", item_data, e)
 
@@ -154,7 +151,7 @@ class Decoration_Handler():
 
 
 
-    def Decoration_Spawner(self, type, pos, size=None, version=None, radius=None, level=None, data=None):
+    def Decoration_Spawner(self, type, pos, data=None):
         spawn_function = self.spawn_methods.get(type)
         if not spawn_function:
             print(f"Warning: Decoration type '{type}' not recognized. Decoration_Handler Decoration_Spawner")
@@ -166,11 +163,6 @@ class Decoration_Handler():
         self.decorations.append(decoration)
         return decoration
 
-    def Spawn_Door(self, pos, size, version=None, radius=None, level=None):
-
-        door = Door(self.game, keys.door_basic, pos, size)
-        self.decorations.append(door)
-        return door
 
     def Spawn_Chest(self):
         if not keys.chest in self.decoration_initialiser.decorations:
@@ -290,7 +282,7 @@ class Decoration_Handler():
         if not keys.door in self.decoration_initialiser.decorations:
             return
         for pos in self.decoration_initialiser.decorations[keys.door]:
-            door = Door(self.game, keys.door_basic, pos)
+            door = Door(self.game, pos)
             self.decorations.append(door)
         
     def Spawn_Teleportation_Circle(self):

@@ -88,6 +88,7 @@ class Projectile(Weapon):
     def Reset_Shot(self):
         self.entity = None
         self.shoot_speed = 0
+        self.shoot_distance = 0
         self.special_attack = 0
         self.shoot_speed = 0
         self.picked_up = False
@@ -121,6 +122,6 @@ class Projectile(Weapon):
         self.picked_up = False
 
     def Pick_Up(self):
-        if self.delete_countdown and not self.pickup_allowed:
-            return
+        if self.delete_countdown or not self.pickup_allowed:
+            return False
         return super().Pick_Up()

@@ -48,3 +48,6 @@ class Effigy_Tomb(Loot_Container):
             keys.skeleton_undertaker : 0.2,
             keys.skeleton_cleric : 0.1,
         }
+
+    def Set_Loot_To_Always_Spawn_Enemy(self):
+        self.loot_weights = {keys.enemy : 100}

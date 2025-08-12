@@ -345,52 +345,7 @@ Upgrade weapons
     # Snare – Stops movement for a short period.
     # Arcane conduit - Reduce the cost runes
     # Arcane_Hunger - Gain souls from entity kills
-
-# Traps:
-    # Spike pits, fall into and slows you down
-    # Spike traps, that move up and harm you when they're extended
-    # Spike traps poison, that move up and harm you when they're extended, poision effect
-    # Fire traps, sets you on fire
-    # Lava, sets on fire and slows down entity, heavy damage
-    # Water, slows down entities
-    # Ice decreases friction and accelaration
-    # Mimic chest, Spawns enemy and snares when opened
-    Loose rubble, generates clatter when stepped on
-    Pressure plates that trigger effects
-    Gass vents, spawns gass clouds
-    Arrow traps - shoots arrows, triggered by pressure plates
-    Loose rocks, generates clatter when stepped on
-
     
-
-
-# Decorations
-    - # Braziers with fire, lights up area, can be extinguished/ignited
-    - # Pots and urns that can be smashed to get loot, generates clatter
-    - Small rocks strewn around
-    - Dust particles on the screen
-    - # effogy tombs that can be opened for loot, but chance to spawn enemy
-    - # Sacrifice shrine, sacrifice items of x value for bonus
-    - # Hunter shrine, find specific item and sacrifice it for bonus. Opening the shrine spawns that item somewhere on the map and checks pathfinding to player
-    - # Chest, standard loot, safe but multiple tiers that can determine the loot table
-    - # Weapon racks, contains weapons
-    - # Plinths, contains runes
-    - # Libraries, with bookshelfs, sometimes contain runes and scrolls
-    - # Laboratory, contains potions
-    - # Soul well, harvest souls but can summon/attract enemies
-    - False walls, can be destroyed to reveal treasure rooms
-    - # Teleportation Circles, linked to each other, can be used to traverse the dungeon
-    - # Teleport shrine, pay souls to teleport to a lower dungeon
-    - # Rune shrine, pay souls to aquire new runes
-    - Weapon shrine, pay souls to bind gems to weapons for bonuses increased bonuses
-    - Fragile walls, can be broken by hitting with blunt weapons, acts as doors
-    - Levers that spawn items, open doors etc when activated
-    - Pressure plates, need to be held down to work, can be done with items. Works similar to levers
-    - Shops where you can buy different items for gold, maybe a little kobold with a shop. Opens a menu, you can sell loot for gold and use gold to buy random selection of items
-    - Blood shrine, Gives an item that tracks player kills, when 10 are killed reduce awakening level
-    - Campfires, rest locations player can regain 50% hp, one per floor
-    - Fountains that gives random buff when interacted with
-
 
 # Rooms:
     # Treasure room, contains loot
@@ -398,7 +353,6 @@ Upgrade weapons
     Trapped room, contains traps but more valuable loot
     # Boss room, spawns a boss that then spawns a weapon or rune shrine when killed
     Lakes, can be any kind of elements
-
 
 
 # Enemies:
@@ -415,7 +369,20 @@ Upgrade weapons
     - Ranged, shoots the player from range 
     - Melee, attacks the player up close
 
+### Shared decorations
+    - # Braziers with fire, lights up area, can be extinguished/ignited
+    - # Pots and urns that can be smashed to get loot, generates clatter
+    - # Chest, standard loot, safe but multiple tiers that can determine the loot table
+    - # Weapon racks, contains weapons
+    - # Soul gem, harvest souls but can summon/attract enemies
+    - # Teleportation Circles, linked to each other, can be used to traverse the dungeon
+    - # Teleport shrine, pay souls to teleport to a lower dungeon
+    - Weapon shrine, pay souls to bind gems to weapons for bonuses increased bonuses
+    - Shops where you can buy different items for gold, maybe a little kobold with a shop. Opens a menu, you can sell loot for gold and use gold to buy random selection of items
+    - Campfires, rest locations player can regain 50% hp, one per floor
 
+
+# Dugeon types
 ## Ancient Tomb Enemies
 ### Specialty
     Basic dungeon, used as introduction
@@ -435,6 +402,27 @@ Upgrade weapons
     # Vampire, boss, life steal, flying bat form when travelling, close combat
     # Crypt Ghoul, bone club, fast and high damage, but glass cannon
     Lich, casts doom on player, debuffing him and slowly drains health until Lich is killed
+### Traps
+    - Soul bind, disables player healing and spawns item (soul shard) that needs to be found to enable healing again
+    - # Pressure plate that opens nearby tombs and spawns enemies
+    - # Bell trap from pressure plate, that alerts nearby enemies
+    - # Spike pits, fall into and slows you down
+    - # Spike traps, that move up and harm you when they're extended
+    - # Loose rubble, generates clatter when stepped on
+    - Arrow traps - shoots arrows, triggered by pressure plates
+### Decorations
+    - # Braziers with fire, lights up area, can be extinguished/ignited
+    - Small rocks strewn around
+    - # Plinths, contains runes
+    - # Soul well, harvest souls but can summon/attract enemies
+    - # Teleportation Circles, linked to each other, can be used to traverse the dungeon
+    - # Teleport shrine, pay souls to teleport to a lower dungeon
+    - # Rune shrine, pay souls to aquire new runes
+    - False walls, can be destroyed to reveal treasure rooms
+    - Levers that spawn items, open doors etc when activated
+    - Blood Fountains that gives random buff when interacted with
+    
+
 
 ## Crystal Caverns
 ### Specialty
@@ -455,6 +443,28 @@ Upgrade weapons
     Medusa, shoots electric projetiles and fast but very low health
     Mirror crystal, reflects projectiles back at source by inverting angle
     Kobold, steals items from player and runs away
+### Traps
+    - Crystal shards, shoots crystal spikes
+    - Shifting walls, changes the layout of the dungeon
+    - Shard explosion, unstable crystals explode when damaged
+    - Swinging blade, swing from central tile, all affected tiles are marked as traps, rotate the sprite as it swings
+    - # Spike pits, fall into and slows you down
+    - # Loose rubble, generates clatter when stepped on
+### Decorations
+    - Glowing crystals, lights up area, can be shattered to remove light
+    - Small rocks strewn around
+    - Crystalisation shrine, give a gem and return a random one in return with -1 effectiveness
+    - Gem shrine, Spawns a high level gem somewhere in the dungeon
+    - Crystal plinths, contains gems
+    - Weapon shrine, pay souls to bind gems to weapons for bonuses increased bonuses
+    - Fragile walls, can be broken by hitting with blunt weapons, acts as doors
+    - Blood shrine, Gives an item that tracks player kills, when 10 are killed reduce awakening level
+    - Crystal Fountains gives player damage resistance when interacted with
+    - Prism pedestal, activate to unlock a random room (Remove blocking wall)
+    - Harmonic crystal, activate to generate souls, but generate clatter
+    - Amplifying node, runes are more effective when in range
+    
+    
 
 ## Mycelium Depths enemies
 ### Specialty
@@ -472,6 +482,23 @@ Upgrade weapons
     Vitalcap, heals nearby enemies
     Gravebloom, hiding somewhere on the map. Needs to be killed to prevent enemies respawning
     Rot king, can snare player and spawns sporelings
+### Traps
+    - Vines, snare the player if stepped in
+    - Glowing mushrooms, explodes when player to close
+    - Burrows, enemies spawns if player gets to close
+    - Spike traps poison, that move up and harm you when they're extended, 
+    - Toxic clouds, weakens player if in radius
+    - Fungal pathch, generates clatter when stepped on
+### Decorations
+    - Glowing mushrooms, lights up area, can be shattered for random effect, sometimes explode, heal etc
+    - Blood shrine, activate with blood sacrifice, spawns mushrooms when killing enemies
+    - Small mushrooms and roots strewn around
+    - Fungal growth, can be plucked for mushrooms, regrows if enemy is killed nearby
+    - Shroom shrine, Spawns a rare mushroom that can be consumed for high level permanent effect
+    - Root walls, can be destroyed to reveal treasure rooms
+    - Spore bloom, activating heals player, but generates clatter
+    - Overgrown cache, destroy to reval potions / mushrooms
+
 
 ## Serpents Lair
 ### Specialty
@@ -489,12 +516,32 @@ Upgrade weapons
     Embermaw, boss shoots fire from the front and has ball tail in back that can attack player, high defence and damage, but low movement 
     Great Python, constricts the player for a time allowing other enemies to attack
     Venomscale Lurker, posioned attack that jumps at player
+### Traps
+    - Vines, snare the player if stepped in
+    - Poison darts, shoots darts at player
+    - Cursed totem, weakens player if in radius
+    - Gass vents, spawns gass clouds
+    - Swinging blade, swing from central tile, all affected tiles are marked as traps, rotate the sprite as it swings
+    - # Spike traps poison, that move up and harm you when they're extended, 
+    - # Loose rubble, generates clatter when stepped on
+### Decorations
+    - # Braziers with fire, lights up area, can be extinguished/ignited
+    - Spawning pool, enter to clear yourself of curses
+    - Venemous idol, pay gold to gain poison resistance
+    - Camouflaged cache, hidden treasure rooms behind vines
+    - Shedding altar, activate to lose max health, but remove all curses
+    - Offering altar, place cursed item to remove negative effect, pay with souls
+    - Hunter Trial shrine, kill X enemies and gain immunity from Quatlz curse
+    - Offering stone, sacrifice cursed item for a blessing
+
+
 
 ## Titan Forge
 ### Specialty
     Ash storms, lowers visibility for a period of time at random
     Utility items spawn more often
     Better opportunity to upgrade weapons
+    Overheat, player will slowly become slower and start taking damage unless cooled
 ### Enemies
     Magma warden, Molthen armor, high health and damage, but low speeds, sets player on fire if contact
     # Fire spirit, high speeds shoot flamethrower at close range and retreats
@@ -507,11 +554,28 @@ Upgrade weapons
     Lava Lurker, hides in lava pools and jumps on the player, high damage and speed, but low health
     Ashen Tyrant , shoots burning chains out to attack player. Chains deal damage and pulls the player into lava traps.
     Forgeheart Titan, boss, shoots fireballs, high health and low speed. Area of effect attacks
+### Traps
+    - Explosive barrels, explodes when destroyed
+    - Molten floor, gradually spawn lava tiles when pressure plate is triggered
+    - Flamethrower trap triggered by pressure plate
+    - Fire traps, sets you on fire
+    - # Spike traps, that move up and harm you when they're extended
+    - Arrow traps - shoots arrows, triggered by pressure plates
+    - Loose rubble, generates clatter when stepped on
+### Decorations
+    - Forge anvil, when adding ingots to weapon, improved efficiency
+    - Cooling basin, resets heat meter
+    - Grindstone, increases weapon damage, but decreases durability
+    - Shrine of war, sacrifice items for legendary weapons
+    - Scrap heap, search for utility items and ingots
+    - Smelter, smelt weapons for ingots
+    - 
 
 # Glacial Caverns
 ### Specialty
-    Player needs to seek out heat sources to prevent freezing to death
+    Player needs to seek out heat sources (fire) to prevent freezing to death
     Runes spawn more often
+    Lots of ice lakes changing movement
 ### Enemies
     Ice spirit, shoots freeze projectiles
     Shard golemn, explodes when killed, slow and high health, but low damage
@@ -523,22 +587,17 @@ Upgrade weapons
     Shaman, summons blizzards
     Ice demon, boss, lowers temperature in area and causes player to freeze faster. High health and damage, but slow
     Leshy, boss, snares player with roots and shoots projectiles. Can teleport away when damage threshold is reached
+### Traps
+    - Freezing pools, water tiles that slows and damages player
+    - Icicle drops, when clatter is generated, chance to drop icicle with short warning 
+    - Thin ice, causes the player to fall through into iceicle pit trap
+    - Freeze vents, spawns frozen storm
+    - Cracking ice, generates clatter
 
-
-
-# Biomes:
-    Desert Biome, Water does not exist, enemies are vulnerable to fire, high gold in urns, 
-
-    Mushroom Biom, poison effects are common, enemies here are immune to poision, more potion, exploding mushrooms, Mushroom Queen boss
-
-    Crystal Caverns, High armour enemies, crystals that emit light, Rare gems
-
-    Aztec Temple, dinosaurs worship, dinosaur skull masks for some enemies, 
-
-    Lava forge, lots of lava, enemies are immune to fire and deal fire damage, rare weapons
-
-    Ice Cave, Lots of ice, enemies are immune to freeze and deal freeze damage, breakable walls are more common
-
-    Ancient ruins, undead enemies, rare runes
-
-    Water caves, need to traverse lots of water, Deep water contains enemies, look for shallow water. More Treasure chests
+### Decorations
+    - Ice walls, use torches / fire to melt
+    - Frost shrine, sacrifice souls to gain freeze resistance
+    - Ice lanterns, glows but does not heat
+    - Frozen statues, thaw with fire, can spawn loot of enemies
+    - Rune smith, use gem and ingot to create random rune (determined by their value)
+    - Icicles growing out of the ground, can be shot for explosion effect

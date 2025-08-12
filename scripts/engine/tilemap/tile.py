@@ -3,6 +3,7 @@ import pygame
 from scripts.engine.keys.keys import keys
 
 not_rendered_tiles = [keys.door_basic]
+TILE_SIZE = 32
 
 # Use dictionary keyed to pos in tilemap
 class Tile():
@@ -11,6 +12,7 @@ class Tile():
         self.type = type
         self.variant = variant
         self.pos = pos
+        self.scaled_pos = (pos[0] * TILE_SIZE, pos[1] * TILE_SIZE)
         self.size = size
         self.active = active
         self.light_level = light_level
@@ -25,6 +27,7 @@ class Tile():
         self.rendered_surface = None  # ✅ Cached surface
         self.contains_decoration = False # Flag to prevent spawning multiple decorations
         self.room = False # Flag to check if tile is part of room
+        self.trap = False # Flag to check if tile contains trap
         # Dictionary to hold each light's contribution
         # Key: light_id, Value: contributed_light_level
         self.light_contributions = {}
@@ -63,7 +66,7 @@ class Tile():
     
     def Search_Entities(self, category, ID=0):
         return [entity for entity in self.entities.values()
-            if entity.category == category and entity.ID != ID]
+            if entity.category in (category) and entity.ID != ID]
 
     
     def Search_Type(self, type, ID = 0):
@@ -100,6 +103,9 @@ class Tile():
 
     def Set_Room(self, state):
         self.room = state
+
+    def Set_Trap(self, state):
+        self.trap = state
 
     def Add_Light_Contribution(self, light_id, contribution):
         # Add/update light contribution
