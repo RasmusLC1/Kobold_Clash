@@ -28,6 +28,8 @@ class Clatter():
             self.game.enemy_handler.Add_To_Pathfinding_Queue(enemy, center)
         
 
+    def Increase_Awakening(self):
+        self.awakening.Set_Awakening_Level(self.awakening.awakening_level + 1)
 
     def Calculate_Silence_Modifier(self, clatter_range):
         if self.game.player.effects.silence.effect:

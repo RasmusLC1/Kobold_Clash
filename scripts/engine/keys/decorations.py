@@ -66,6 +66,8 @@ class Decorations():
 
     teleportation_circle = "teleportation_circle"
 
+    campfire = "campfire"
+
     sacrifice_shrine = "sacrifice_shrine"
 
 
