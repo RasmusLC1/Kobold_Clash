@@ -26,7 +26,7 @@ class Crossbow(Ranged_Weapon):
         self.is_charging = self.game.mouse.hold_down_left
         
         if self.is_charging == 10:
-            self.game.sound_handler.Play_Sound('bow_draw', 1)
+            self.game.sound_handler.Play_Sound(keys.bow_draw, 1)
 
         if not self.is_charging or self.is_charging > self.max_charge_time:
             return

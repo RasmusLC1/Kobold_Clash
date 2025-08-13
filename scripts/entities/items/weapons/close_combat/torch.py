@@ -29,7 +29,7 @@ class Torch(Weapon):
     def Set_Attack(self):
         if not super().Set_Attack():
             return False
-        self.game.sound_handler.Play_Sound('torch_attack', 0.5)
+        self.game.sound_handler.Play_Sound(keys.torch_attack, 0.5)
         return True
 
 

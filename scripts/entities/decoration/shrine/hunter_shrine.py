@@ -42,7 +42,7 @@ class Hunter_Shrine(Decoration):
 
     
     def Spawn_Treasure(self):
-        self.game.sound_handler.Play_Sound('hunter_shrine_activation', 0.4)
+        self.game.sound_handler.Play_Sound(keys.hunter_shrine_activation, 0.4)
         fail = 0
         for i in range(3):
             tile = self.game.tilemap.Get_Random_Tile_With_Path_To_Player()
@@ -73,7 +73,7 @@ class Hunter_Shrine(Decoration):
         reward, amount = random.choice(list(self.rewards.items()))
         
         self.game.player.Set_Effect(reward, amount, True)
-        self.game.sound_handler.Play_Sound('collapse', 0.4)
+        self.game.sound_handler.Play_Sound(keys.collapse, 0.4)
         self.game.clatter.Generate_Clatter(self.pos, 1000) # Generate clatter to alert nearby enemies
 
         for treasure in list(self.treasures):

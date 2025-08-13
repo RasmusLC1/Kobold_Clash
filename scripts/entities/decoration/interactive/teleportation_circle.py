@@ -29,7 +29,7 @@ class Teleportation_Circle(Decoration):
         if not player.Decrease_Souls(10):
             return
         player.Set_Position(self.linked_portal.pos.copy())
-        self.linked_portal.Generate_Sound('teleportation', 0.2, 500)
+        self.linked_portal.Generate_Sound(keys.teleportation, 0.2, 500)
 
         self.game.particle_handler.Activate_Particles(random.randint(8, 12), keys.soul_particle, self.linked_portal.rect().center)
         

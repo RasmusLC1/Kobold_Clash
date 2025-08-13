@@ -100,7 +100,7 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
         self.sound_cooldown = 0.8
         sound = self.entity.game.sound_handler
         if not sound.Check_If_Sound_Exist(effect):
-            sound.Play_Sound('generic_effect', 0.3)
+            sound.Play_Sound(keys.generic_effect, 0.3)
 
             return
         sound.Play_Sound(effect, 0.2)

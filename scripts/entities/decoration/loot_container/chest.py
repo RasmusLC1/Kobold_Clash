@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 
 class Chest(Loot_Container):
     def __init__(self, game, pos) -> None:
-        super().__init__(game, keys.chest, pos, (32, 32), True, 20, 'chest_break', 500)
+        super().__init__(game, keys.chest, pos, (32, 32), True, 20, keys.chest_break, 500)
         self.version = 1
 
     def Save_Data(self):
@@ -23,7 +23,7 @@ class Chest(Loot_Container):
         
         self.game.decoration_handler.Remove_Decoration(self)
 
-        self.Generate_Sound('chest_open', 0.1, 500)
+        self.Generate_Sound(keys.chest_open, 0.1, 500)
 
 
     def Set_Loot_Types(self):

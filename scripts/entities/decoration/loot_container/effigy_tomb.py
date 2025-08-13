@@ -13,7 +13,7 @@ class Effigy_Tomb(Loot_Container):
         if not super().Open():
             return False
         
-        self.Generate_Sound('tomb_lid', 0.3, 500)
+        self.Generate_Sound(keys.tomb_lid, 0.3, 500)
 
         self.Set_Animation(1)
         return True

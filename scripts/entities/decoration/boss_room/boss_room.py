@@ -89,7 +89,7 @@ class Boss_Room():
             self.pos,
             boss,
         )
-        self.game.sound_handler.Play_Sound('boss_spawning', 0.5)
+        self.game.sound_handler.Play_Sound(keys.boss_spawning, 0.5)
         self.Close_Room()
         self.Spawn_Torches()
     

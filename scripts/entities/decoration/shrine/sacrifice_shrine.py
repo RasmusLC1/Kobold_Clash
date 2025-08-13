@@ -121,7 +121,7 @@ class Sacrifice_Shrine(Decoration):
             keys.weakness : 5,
         }
 
-        self.game.sound_handler.Play_Sound('bad_reward', 0.4)
+        self.game.sound_handler.Play_Sound(keys.bad_reward, 0.4)
 
         reward, amount = random.choice(list(self.rewards.items()))
         self.game.player.Set_Effect(reward, amount)
@@ -140,7 +140,7 @@ class Sacrifice_Shrine(Decoration):
             keys.resistance: 4,
         }
 
-        self.game.sound_handler.Play_Sound('mid_reward', 0.4)
+        self.game.sound_handler.Play_Sound(keys.mid_reward, 0.4)
         
         reward, amount = random.choice(list(self.rewards.items()))
         self.game.player.Set_Effect(reward, amount)
@@ -164,7 +164,7 @@ class Sacrifice_Shrine(Decoration):
             keys.poison_resistance: 3,
         }
 
-        self.game.sound_handler.Play_Sound('good_reward', 0.4)
+        self.game.sound_handler.Play_Sound(keys.good_reward, 0.4)
         
         reward, amount = random.choice(list(self.rewards.items()))
         self.game.player.Set_Effect(reward, amount, True)

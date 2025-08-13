@@ -14,4 +14,4 @@ class Bell_Pressure_plate(Trap):
         if entity.type != keys.player:
             return
         
-        self.Generate_Sound('bell', 0.3, CLATTER_RANGE)
+        self.Generate_Sound(keys.bell, 0.3, CLATTER_RANGE)

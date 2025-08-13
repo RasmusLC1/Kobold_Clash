@@ -70,7 +70,7 @@ class Enemy_Weapon_Attack():
 
         self.game.camera_update.Set_Screen_Shake(damage_freeze, damage_freeze // 2)
         self.player_hit_effect_cooldown = 0.3
-        self.game.sound_handler.Play_Sound('player_hit', 0.3)
+        self.game.sound_handler.Play_Sound(keys.player_hit, 0.3)
         self.game.particle_handler.Activate_Particles(random.randint(10, 20), keys.player_particle, self.game.player.rect().center)
 
 

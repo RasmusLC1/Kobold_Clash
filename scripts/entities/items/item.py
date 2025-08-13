@@ -93,7 +93,7 @@ class Item(PhysicsEntity):
 
         self.game.entities_render.Remove_Entity(self)
 
-        self.game.sound_handler.Play_Sound('item_pickup', 0.4)
+        self.game.sound_handler.Play_Sound(keys.item_pickup, 0.4)
 
         self.Set_Size(self.inventory_size) # Standard loot size in inventory
 
@@ -110,7 +110,7 @@ class Item(PhysicsEntity):
             return False
         self.Set_Tile()
         self.Set_Size(self.floor_size) # Standard loot size on floor
-        self.game.sound_handler.Play_Sound('item_placedown', 0.2)
+        self.game.sound_handler.Play_Sound(keys.item_placedown, 0.2)
         return True
 
     def Update_Animation(self, delta_time):

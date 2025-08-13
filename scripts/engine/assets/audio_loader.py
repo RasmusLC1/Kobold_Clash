@@ -17,67 +17,67 @@ class Audio_Loader:
 
     def Decoration_Effects(self):
         chest_effects ={
-            'chest_open' : pygame.mixer.Sound('data/sounds/decorations/chest/chest_open.wav'),
-            'chest_break' : pygame.mixer.Sound('data/sounds/decorations/chest/chest_break.wav'),
-            'vase_break' : pygame.mixer.Sound('data/sounds/decorations/chest/vase_break.wav'),
-            'door_open' : pygame.mixer.Sound('data/sounds/decorations/door_open.wav'),
-            'soul_well' : pygame.mixer.Sound('data/sounds/decorations/soul_well.wav'),
-            'teleportation' : pygame.mixer.Sound('data/sounds/decorations/teleportation.wav'),
-            'boss_spawning' : pygame.mixer.Sound('data/sounds/decorations/shrine/boss_spawning.wav'),
-            'tomb_lid' : pygame.mixer.Sound('data/sounds/decorations/chest/tomb_lid.wav'),
-            'collapse' : pygame.mixer.Sound('data/sounds/decorations/collapse.wav'),
-            'hunter_shrine_activation' : pygame.mixer.Sound('data/sounds/decorations/shrine/hunter_shrine_activation.wav'),
-            'good_reward' : pygame.mixer.Sound('data/sounds/decorations/shrine/good_reward.wav'),
-            'mid_reward' : pygame.mixer.Sound('data/sounds/decorations/shrine/mid_reward.wav'),
-            'bad_reward' : pygame.mixer.Sound('data/sounds/decorations/shrine/bad_reward.wav'),
+            keys.chest_open : pygame.mixer.Sound('data/sounds/decorations/chest/chest_open.wav'),
+            keys.chest_break : pygame.mixer.Sound('data/sounds/decorations/chest/chest_break.wav'),
+            keys.vase_break : pygame.mixer.Sound('data/sounds/decorations/chest/vase_break.wav'),
+            keys.door_open : pygame.mixer.Sound('data/sounds/decorations/door_open.wav'),
+            keys.soul_well_sound : pygame.mixer.Sound('data/sounds/decorations/soul_well.wav'),
+            keys.teleportation : pygame.mixer.Sound('data/sounds/decorations/teleportation.wav'),
+            keys.boss_spawning : pygame.mixer.Sound('data/sounds/decorations/shrine/boss_spawning.wav'),
+            keys.tomb_lid : pygame.mixer.Sound('data/sounds/decorations/chest/tomb_lid.wav'),
+            keys.collapse : pygame.mixer.Sound('data/sounds/decorations/collapse.wav'),
+            keys.hunter_shrine_activation : pygame.mixer.Sound('data/sounds/decorations/shrine/hunter_shrine_activation.wav'),
+            keys.good_reward : pygame.mixer.Sound('data/sounds/decorations/shrine/good_reward.wav'),
+            keys.mid_reward : pygame.mixer.Sound('data/sounds/decorations/shrine/mid_reward.wav'),
+            keys.bad_reward : pygame.mixer.Sound('data/sounds/decorations/shrine/bad_reward.wav'),
         }
         self.sfx.update(chest_effects)
-        self.sfx['chest_open'].set_volume(0.1)
-        self.sfx['chest_break'].set_volume(0.2)
-        self.sfx['vase_break'].set_volume(0.2)
-        self.sfx['door_open'].set_volume(0.4)
-        self.sfx['teleportation'].set_volume(0.4)
-        self.sfx['soul_well'].set_volume(0.6)
-        self.sfx['boss_spawning'].set_volume(0.4)
-        self.sfx['tomb_lid'].set_volume(0.4)
-        self.sfx['collapse'].set_volume(0.4)
-        self.sfx['hunter_shrine_activation'].set_volume(0.4)
-        self.sfx['good_reward'].set_volume(0.4)
-        self.sfx['mid_reward'].set_volume(0.4)
-        self.sfx['bad_reward'].set_volume(0.4)
+        self.sfx[keys.chest_open].set_volume(0.1)
+        self.sfx[keys.chest_break].set_volume(0.2)
+        self.sfx[keys.vase_break].set_volume(0.2)
+        self.sfx[keys.door_open].set_volume(0.4)
+        self.sfx[keys.teleportation].set_volume(0.4)
+        self.sfx[keys.soul_well_sound].set_volume(0.6)
+        self.sfx[keys.boss_spawning].set_volume(0.4)
+        self.sfx[keys.tomb_lid].set_volume(0.4)
+        self.sfx[keys.collapse].set_volume(0.4)
+        self.sfx[keys.hunter_shrine_activation].set_volume(0.4)
+        self.sfx[keys.good_reward].set_volume(0.4)
+        self.sfx[keys.mid_reward].set_volume(0.4)
+        self.sfx[keys.bad_reward].set_volume(0.4)
 
     def Weapons_Effects(self):
         weapon_effects ={
-            'sword_impact_wall' : pygame.mixer.Sound('data/sounds/weapons/sword_impact_wall.wav'),
-            'bow_draw' : pygame.mixer.Sound('data/sounds/weapons/bow_draw.wav'),
-            'arrow_shot' : pygame.mixer.Sound('data/sounds/weapons/arrow_shot.wav'),
-            'torch_fire_ball' : pygame.mixer.Sound('data/sounds/weapons/torch_fire_ball.wav'),
-            'projectile_impact' : pygame.mixer.Sound('data/sounds/weapons/projectile_impact.wav'),
-            'stab_attack_impact' : pygame.mixer.Sound('data/sounds/weapons/stab_attack_impact.wav'),
-            'torch_attack' : pygame.mixer.Sound('data/sounds/weapons/torch_attack.wav'),
-            'torch_equipped' : pygame.mixer.Sound('data/sounds/weapons/torch_equipped.wav'),
-            'sword_swing' : pygame.mixer.Sound('data/sounds/weapons/sword_swing.wav'),
-            'weapon_break' : pygame.mixer.Sound('data/sounds/weapons/weapon_break.wav'),
-            'enemy_hit' : pygame.mixer.Sound('data/sounds/weapons/enemy_hit.wav'),
-            'player_hit' : pygame.mixer.Sound('data/sounds/weapons/player_hit.wav'),
-            'projectile_hit' : pygame.mixer.Sound('data/sounds/weapons/projectile_hit.wav'),
+            keys.sword_impact_wall : pygame.mixer.Sound('data/sounds/weapons/sword_impact_wall.wav'),
+            keys.bow_draw : pygame.mixer.Sound('data/sounds/weapons/bow_draw.wav'),
+            keys.arrow_shot : pygame.mixer.Sound('data/sounds/weapons/arrow_shot.wav'),
+            keys.torch_fire_ball : pygame.mixer.Sound('data/sounds/weapons/torch_fire_ball.wav'),
+            keys.projectile_impact : pygame.mixer.Sound('data/sounds/weapons/projectile_impact.wav'),
+            keys.stab_attack_impact : pygame.mixer.Sound('data/sounds/weapons/stab_attack_impact.wav'),
+            keys.torch_attack : pygame.mixer.Sound('data/sounds/weapons/torch_attack.wav'),
+            keys.torch_equipped : pygame.mixer.Sound('data/sounds/weapons/torch_equipped.wav'),
+            keys.sword_swing : pygame.mixer.Sound('data/sounds/weapons/sword_swing.wav'),
+            keys.weapon_break : pygame.mixer.Sound('data/sounds/weapons/weapon_break.wav'),
+            keys.enemy_hit : pygame.mixer.Sound('data/sounds/weapons/enemy_hit.wav'),
+            keys.player_hit : pygame.mixer.Sound('data/sounds/weapons/player_hit.wav'),
+            keys.projectile_hit : pygame.mixer.Sound('data/sounds/weapons/projectile_hit.wav'),
         }
 
         self.sfx.update(weapon_effects)
 
-        self.sfx['sword_impact_wall'].set_volume(0.2)
-        self.sfx['bow_draw'].set_volume(0.3)
-        self.sfx['arrow_shot'].set_volume(0.4)
-        self.sfx['torch_fire_ball'].set_volume(0.2)
-        self.sfx['projectile_impact'].set_volume(0.3)
-        self.sfx['stab_attack_impact'].set_volume(0.2)
-        self.sfx['torch_attack'].set_volume(0.2)
-        self.sfx['torch_equipped'].set_volume(0.2)
-        self.sfx['sword_swing'].set_volume(0.2)
-        self.sfx['weapon_break'].set_volume(0.2)
-        self.sfx['enemy_hit'].set_volume(0.2)
-        self.sfx['player_hit'].set_volume(0.2)
-        self.sfx['projectile_hit'].set_volume(0.2)
+        self.sfx[keys.sword_impact_wall].set_volume(0.2)
+        self.sfx[keys.bow_draw].set_volume(0.3)
+        self.sfx[keys.arrow_shot].set_volume(0.4)
+        self.sfx[keys.torch_fire_ball].set_volume(0.2)
+        self.sfx[keys.projectile_impact].set_volume(0.3)
+        self.sfx[keys.stab_attack_impact].set_volume(0.2)
+        self.sfx[keys.torch_attack].set_volume(0.2)
+        self.sfx[keys.torch_equipped].set_volume(0.2)
+        self.sfx[keys.sword_swing].set_volume(0.2)
+        self.sfx[keys.weapon_break].set_volume(0.2)
+        self.sfx[keys.enemy_hit].set_volume(0.2)
+        self.sfx[keys.player_hit].set_volume(0.2)
+        self.sfx[keys.projectile_hit].set_volume(0.2)
 
     def Magic_Effects(self):
         weapon_effects ={
@@ -86,13 +86,13 @@ class Audio_Loader:
             keys.fire_ball : pygame.mixer.Sound('data/sounds/magic/fire/fire_ball.wav'),
             keys.fire_explosion : pygame.mixer.Sound('data/sounds/magic/fire/fire_explosion.wav'),
             keys.fire_particle : pygame.mixer.Sound('data/sounds/magic/fire/fire_particle.wav'),
-            'frozen_explosion' : pygame.mixer.Sound('data/sounds/magic/frozen/frozen_explosion.wav'),
-            'frozen_projectile' : pygame.mixer.Sound('data/sounds/magic/frozen/frozen_projectile.wav'),
+            keys.frozen_explosion : pygame.mixer.Sound('data/sounds/magic/frozen/frozen_explosion.wav'),
+            keys.frozen_projectile : pygame.mixer.Sound('data/sounds/magic/frozen/frozen_projectile.wav'),
             keys.poison_cloud : pygame.mixer.Sound('data/sounds/magic/poison/poison_cloud.wav'),
-            'poison_plume' : pygame.mixer.Sound('data/sounds/magic/poison/poison_plume.wav'),
+            keys.poison_plume : pygame.mixer.Sound('data/sounds/magic/poison/poison_plume.wav'),
             keys.vampiric_ball : pygame.mixer.Sound('data/sounds/magic/vampiric/vampiric_ball.wav'),
-            'vampiric_explosion' : pygame.mixer.Sound('data/sounds/magic/vampiric/vampiric_explosion.wav'),
-            'vampiric_projectile' : pygame.mixer.Sound('data/sounds/magic/vampiric/vampiric_projectile.wav'),
+            keys.vampiric_explosion : pygame.mixer.Sound('data/sounds/magic/vampiric/vampiric_explosion.wav'),
+            keys.vampiric_projectile : pygame.mixer.Sound('data/sounds/magic/vampiric/vampiric_projectile.wav'),
         }
 
         self.sfx.update(weapon_effects)
@@ -102,33 +102,33 @@ class Audio_Loader:
         self.sfx[keys.fire_ball].set_volume(0.4)
         self.sfx[keys.fire_explosion].set_volume(0.2)
         self.sfx[keys.fire_particle].set_volume(0.3)
-        self.sfx['frozen_explosion'].set_volume(0.2)
-        self.sfx['frozen_projectile'].set_volume(0.2)
+        self.sfx[keys.frozen_explosion].set_volume(0.2)
+        self.sfx[keys.frozen_projectile].set_volume(0.2)
         self.sfx[keys.poison_cloud].set_volume(0.2)
-        self.sfx['poison_plume'].set_volume(0.2)
+        self.sfx[keys.poison_plume].set_volume(0.2)
         self.sfx[keys.vampiric_ball].set_volume(0.2)
-        self.sfx['vampiric_explosion'].set_volume(0.2)
-        self.sfx['vampiric_projectile'].set_volume(0.2)
+        self.sfx[keys.vampiric_explosion].set_volume(0.2)
+        self.sfx[keys.vampiric_projectile].set_volume(0.2)
 
 
     def Loot_Effects(self):
         weapon_effects ={
-            'bell' : pygame.mixer.Sound('data/sounds/loot/items/bell.wav'),
-            'recall_scroll' : pygame.mixer.Sound('data/sounds/loot/items/recall_scroll.wav'),
-            'faded_hourglass' : pygame.mixer.Sound('data/sounds/loot/items/faded_hourglass.wav'),
-            'ethereal_chains' : pygame.mixer.Sound('data/sounds/loot/items/ethereal_chains.wav'),
-            'item_pickup' : pygame.mixer.Sound('data/sounds/loot/general/item_pickup.wav'),
-            'item_placedown' : pygame.mixer.Sound('data/sounds/loot/general/item_placedown.wav'),
+            keys.bell : pygame.mixer.Sound('data/sounds/loot/items/bell.wav'),
+            keys.recall_scroll : pygame.mixer.Sound('data/sounds/loot/items/recall_scroll.wav'),
+            keys.faded_hourglass : pygame.mixer.Sound('data/sounds/loot/items/faded_hourglass.wav'),
+            keys.ethereal_chains : pygame.mixer.Sound('data/sounds/loot/items/ethereal_chains.wav'),
+            keys.item_pickup : pygame.mixer.Sound('data/sounds/loot/general/item_pickup.wav'),
+            keys.item_placedown : pygame.mixer.Sound('data/sounds/loot/general/item_placedown.wav'),
         }
 
         self.sfx.update(weapon_effects)
 
-        self.sfx['bell'].set_volume(0.2)
-        self.sfx['recall_scroll'].set_volume(0.3)
-        self.sfx['faded_hourglass'].set_volume(0.3)
-        self.sfx['ethereal_chains'].set_volume(0.3)
-        self.sfx['item_pickup'].set_volume(0.5)
-        self.sfx['item_placedown'].set_volume(0.3)
+        self.sfx[keys.bell].set_volume(0.2)
+        self.sfx[keys.recall_scroll].set_volume(0.3)
+        self.sfx[keys.faded_hourglass].set_volume(0.3)
+        self.sfx[keys.ethereal_chains].set_volume(0.3)
+        self.sfx[keys.item_pickup].set_volume(0.5)
+        self.sfx[keys.item_placedown].set_volume(0.3)
 
     
     def Effect_Effects(self):
@@ -136,7 +136,7 @@ class Audio_Loader:
             keys.healing : pygame.mixer.Sound('data/sounds/effects/healing.wav'),
             # keys.slow : pygame.mixer.Sound('data/sounds/effects/slow.wav'),
             keys.speed : pygame.mixer.Sound('data/sounds/effects/speed.wav'),
-            'generic_effect' : pygame.mixer.Sound('data/sounds/effects/general_effect.wav'),
+            keys.generic_effect : pygame.mixer.Sound('data/sounds/effects/general_effect.wav'),
         }
 
         self.sfx.update(weapon_effects)
@@ -144,7 +144,7 @@ class Audio_Loader:
         self.sfx[keys.healing].set_volume(0.2)
         # self.sfx[keys.slow].set_volume(0.1)
         self.sfx[keys.speed].set_volume(0.3)
-        self.sfx['generic_effect'].set_volume(0.2)
+        self.sfx[keys.generic_effect].set_volume(0.2)
 
     def Awakening_Effects(self):
         weapon_effects ={

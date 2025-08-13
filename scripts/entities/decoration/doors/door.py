@@ -43,7 +43,7 @@ class Door(Decoration):
         self.render = False
         self.game.decoration_handler.Remove_Decoration(self)
         if generate_clatter:
-            self.Generate_Sound('door_open', 1, 700) # Generate clatter to alert nearby enemies
+            self.Generate_Sound(keys.door_open, 1, 700) # Generate clatter to alert nearby enemies
 
 
     def Destroyed(self):

@@ -67,7 +67,7 @@ class Ranged_Weapon(Weapon):
             return
         if not self.Find_Arrow():
             return
-        self.game.sound_handler.Play_Sound('arrow_shot', 1)
+        self.game.sound_handler.Play_Sound(keys.arrow_shot, 1)
         self.ready_to_shoot = False
         self.Shoot_Arrow()
         self.Reset_Bow()

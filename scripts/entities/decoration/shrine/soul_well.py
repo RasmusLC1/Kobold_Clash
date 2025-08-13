@@ -45,6 +45,6 @@ class Soul_Well(Decoration):
         self.game.item_handler.Remove_Item(item, True)
         self.game.particle_handler.Activate_Particles(random.randint(8, 12), keys.soul_particle, self.rect().center, time = random.uniform(1.5, 2))
         
-        self.Generate_Sound('soul_well', 0.6, 1000)
+        self.Generate_Sound(keys.soul_well_sound, 0.6, 1000)
 
         return True
