@@ -7,7 +7,7 @@ key_empty = 'empty'
 class Bookshelf(Loot_Container):
     def __init__(self, game, pos) -> None:
         self.enemies = {}
-        super().__init__(game, keys.bookshelf, pos, False, 99, (32, 32))
+        super().__init__(game, keys.bookshelf, pos, (32, 32))
         self.tile.Set_Physics(True) # Bookshelf is impassible
 
 

@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Door(Decoration):
     def __init__(self, game, pos, size = (32, 32)) -> None:
-        super().__init__(game, keys.door_basic, pos, size)
+        super().__init__(game, keys.door_basic, pos, size, True, 50, 'door_destroyed', 700)
         self.is_open = False
         self.high_light_cooldown = 0
         if not self.tile:
@@ -15,8 +15,6 @@ class Door(Decoration):
 
     def Save_Data(self):
         super().Save_Data()
-        self.tile.Set_Physics(True)
-        self.game.tilemap.Update_Tile_Type(self.tile, keys.door_basic)
         self.saved_data['is_open'] = self.is_open
 
 
@@ -40,18 +38,23 @@ class Door(Decoration):
     def Open(self, generate_clatter = True):
         self.is_open = True
         self.tile.Set_Physics(False)
+        self.tile.Set_Translucent(True)
 
         self.render = False
         self.game.decoration_handler.Remove_Decoration(self)
         if generate_clatter:
             self.Generate_Sound('door_open', 1, 700) # Generate clatter to alert nearby enemies
-        else:
-            self.game.sound_handler.Play_Sound('door_open', 1)
 
 
+    def Destroyed(self):
+        destroyed = super().Destroyed()
 
-    
-
+        if not destroyed:
+            return False
+        
+        self.Open(False)
+        return True
+        
 
     def Render(self, surf, offset = (0,0)):
         super().Render(surf, offset)
@@ -65,14 +68,14 @@ class Door(Decoration):
         return super().Update_Dark_Surface()
 
 
-    def Update_Light_Level(self):
-        nearby_tile = self.game.tilemap.tiles_around(self.pos)
-        # Set the light level based on the tile that the entity is placed on
-        tile = self.tile
+    # def Update_Light_Level(self):
+    #     nearby_tile = self.game.tilemap.tiles_around(self.pos)
+    #     # Set the light level based on the tile that the entity is placed on
+    #     tile = self.tile
 
-        nearby_tile.remove(tile)
-        max_light = max(tile.light_level for tile in nearby_tile)
+    #     nearby_tile.remove(tile)
+    #     max_light = max(tile.light_level for tile in nearby_tile)
 
-        tile.Set_Light_Level(max_light)
+    #     tile.Set_Light_Level(max_light)
 
-        return super().Update_Light_Level()
+    #     return super().Update_Light_Level()

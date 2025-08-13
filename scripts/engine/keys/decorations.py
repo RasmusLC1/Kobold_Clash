@@ -10,6 +10,8 @@ class Decorations():
 
     door_basic = "door_basic"
 
+    fragile_wall = "fragile_wall"
+
     
     rune_shrine = "rune_shrine"
 

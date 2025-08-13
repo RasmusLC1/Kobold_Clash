@@ -5,8 +5,8 @@ from scripts.engine.keys.keys import keys
 
 
 class Loot_Container(Decoration):
-    def __init__(self, game, type, pos, destructable, health, size = (32, 32)) -> None:
-        super().__init__(game, type, pos, size, destructable, health)
+    def __init__(self, game, type, pos, size = (32, 32), destructable = False, health = 100, destruction_sound = None, destruction_clatter = 500) -> None:
+        super().__init__(game, type, pos, size, destructable, health, destruction_sound, destruction_clatter)
         self.loot_type = 0
         self.empty = False
         self.loot_amount = 0

@@ -5,7 +5,7 @@ import random
 
 
 class Decoration(PhysicsEntity):
-    def __init__(self, game, type, pos, size, destructable = False, health = 0) -> None:
+    def __init__(self, game, type, pos, size, destructable = False, health = 0, destruction_sound = None, destruction_clatter = 500) -> None:
         super().__init__(game, type, keys.decoration, pos, size)
         self.game.tilemap.Add_Entity_To_Tile(self.tile, self)
         self.light_level = 10
@@ -13,6 +13,8 @@ class Decoration(PhysicsEntity):
         self.destructable = destructable
         self.health = health
         self.empty = False
+        self.destruction_sound = destruction_sound
+        self.destruction_clatter_range = destruction_clatter
         # self.destroyed = False # Flag to prevent 
         self.Set_Sprite()
 
@@ -65,7 +67,7 @@ class Decoration(PhysicsEntity):
             return False
         self.game.decoration_handler.Remove_Decoration(self)
         
-        self.Generate_Sound('chest_break', 0.2, 1000)
+        self.Generate_Sound(self.destruction_sound, 0.2, self.destruction_clatter_range)
         self.game.particle_handler.Activate_Particles(random.randint(10, 15), keys.loot_particle, self.rect().center)
         return True
         

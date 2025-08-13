@@ -3,7 +3,7 @@ from scripts.engine.keys.keys import keys
 
 class Weapon_rack(Decoration):
     def __init__(self, game, pos):
-        super().__init__(game, keys.weapon_rack, pos, (32, 32), True, 20)
+        super().__init__(game, keys.weapon_rack, pos, (32, 32), True, 20, 'weapon_rack_break', 400)
 
 
     def Spawn_Weapons(self):

@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 
 class Chest(Loot_Container):
     def __init__(self, game, pos) -> None:
-        super().__init__(game, keys.chest, pos, True, 5)
+        super().__init__(game, keys.chest, pos, (32, 32), True, 20, 'chest_break', 500)
         self.version = 1
 
     def Save_Data(self):

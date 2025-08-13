@@ -7,7 +7,7 @@ from scripts.engine.keys.keys import keys
 
 class Potion_Table(Loot_Container):
     def __init__(self, game, pos) -> None:
-        super().__init__(game, keys.potion_table, pos, True, 50, (64, 64))
+        super().__init__(game, keys.potion_table, pos, (64, 64), True, 50, 'table_break', 500)
 
 
     def Set_Loot_Types(self):
