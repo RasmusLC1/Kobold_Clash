@@ -1,36 +1,17 @@
-Game Ideas
-
-LOADING PAGE:
-Menu screen that renders parts of a loading bar every time a step in dungeon generator generates a new chunk
-Save it in a seperate class that accepts an increment from dungeon generator
-
-
-# Dungeon Crawler Gameplay Ideas
-    Can find weapons, magic items and runes
-    There are layers to the dungeon, each layer have one exit and different staircases down to a new random dungeon. You cannot go up through the original entrance again
-    Clatter system that spawns enemies using a director similar to left4dead
-    Each dungeon layer get's progressively harder, but main challenge is to conserve resources to proceed further down
-    Each section has at least 1 random combat from a pool of possible mobs based on enviorement, freeze section as freeze enemies
-    Each layer draws a random theme, fire for example, then it draws from the tech theme for example
-    Noice attracts enemies
-
 # Gameplay Loop
-    Choose between 2 modes, descend or endless. Decent takes you through 7 layers of the dungeon to a final boss
-    Collect gold and artifcats in dungeon to buy items, upgrades, healing etc
-    Lower levels have better rewards
-    To get to lower levels you need to pay a soul cost on each floor
-    Each time you complete a floor the next one becomes more difficult
-    There are shrines in the dungeon where you can pay with souls of slain enemies to buy upgrades
-        Shrines are found in boss rooms, risk damage to upgrade
-        Different Shrines do different things:
-            Rune shrine, Upgrade and Buy runes
-            Character shrine, upgrade character
-            Artifact Shrine, buy and upgrade weapons and artifacts
-        Boss Room initialised as an object with a radius, closes doors and locks player in.
-            Spawns boss mob when player is x from center
-            Spawns Shrine when boss mob is defeated
-        
-    Game ends when you die, you can find resurrection items in the dungeon, but they are rare or high risk
+    - Choose between 2 modes, descend or endless. Decent takes you through 7 layers of the dungeon to a final boss
+    - Collect gold and artifcats in dungeon to buy items, upgrades, healing etc
+    - Lower levels have better rewards
+    - To get to lower levels you need to pay a soul cost on each floor
+    - Each layer has different themes, with unique enemies, mechanics, decoration and traps
+    - Each time you complete a floor the next one becomes more difficult
+    - There are shrines in the dungeon where you can pay with souls of slain enemies to buy upgrades
+    -  Shrines are found in boss rooms and around the dungeon, risk damage to upgrade
+    - Different Shrines do different things and are tied to the dungeon theme
+    - Game ends when you die, you can find resurrection items in the dungeon, but they are rare or high risk
+    - Noice attracts enemies and generates Clatter
+    - Clatter system that spawns enemies using a director similar to left4dead
+    - Score based on dungeon depth reached, loot and souls collected
         
 
 # Engine Features:
@@ -46,26 +27,18 @@ Save it in a seperate class that accepts an increment from dungeon generator
     # Chunk system to prevent slowdown with larger maps
     # Save Load System
     # Particle Engine
-    Sound engine
+    # Sound engine
+    # Threat metre, a skull that fills up or something. If player generates clatter it has a chance to increase. It will also have a chance to decrease if player is quiet for longer periods of time
     Minimap, adjust rendering scale for minimap and only display tiles that has been in raycaster
-    Threat metre, a skull that fills up or something. If player generates clatter it has a chance to increase. It will also have a chance to decrease if player is quiet for longer periods of time
 
-# Gameplay
-    # Player can hold weapons
-    # Attack
-    # Defend
-    X chance to get a shop each floor, spawns similar to boss room
-    In shop you can upgrade weapons, buy items, heal, etc
-    Get points upon death based on level depth, gold and relics
+
+# LOADING PAGE:
+    # Menu screen that renders parts of a loading bar every time a step in dungeon generator generates a new chunk
+    # Save it in a seperate class that accepts an increment from dungeon generator
 
 # Shop
 Buy and sell items to help complete levels
 Upgrade weapons
-
-
-# Atmosphere
-     dynamic sound elements: distant whispers, creaky floorboards, enemy sounds.
-     Particle effects on screen like dust
 
 # Awakening engine
     Generating clatter has a chance to increase the difficulty of the dungeon layer (Awakening)
@@ -109,7 +82,7 @@ Upgrade weapons
     # Scythe, swing attack, soul reap magic attack
     # Crossbow, Same as bow, but takes longer to load, but can be preloaded
     # Bomb, one time use, splash damage, can break enviorement, knockback from blast
-    magic Staff, improved runes but poor melee damage, different staffs for different lores of magic, costs souls per cast. Special attack for each lores
+    # magic Staff, improved runes but poor melee damage, different staffs for different lores of magic, costs souls per cast. Special attack for each lores
 
 # Items
     Items are held in inventory, not worth a lot of money, but helps navigate dungeon
@@ -312,8 +285,6 @@ Upgrade weapons
     # Block, block damage, if the player has shield block all damage, if not then it only blocks melee
 
     Teleport to a random destination, has x amount of charges
-    Jump, can jump over 2 blocks with light armour, 1 with medium and 0 with heavy, takes stamina
-    Swim in deep water, can't cross if in heavy armour
     Push certain objects and block
 
 # Effects:
@@ -348,6 +319,7 @@ Upgrade weapons
     
 
 # Rooms:
+    Walls generated in dungeon generator and loot determined by the room type in decoration handler
     # Treasure room, contains loot
     # Library, contains bookshelves and potion tables
     Trapped room, contains traps but more valuable loot
@@ -543,7 +515,7 @@ Upgrade weapons
     Better opportunity to upgrade weapons
     Overheat, player will slowly become slower and start taking damage unless cooled
 ### Enemies
-    Magma warden, Molthen armor, high health and damage, but low speeds, sets player on fire if contact
+    Magma warden, Molten armor, high health and damage, but low speeds, sets player on fire if contact
     # Fire spirit, high speeds shoot flamethrower at close range and retreats
     Ash wraith, invisible until close then ignites and attacks player. High speed and damage, very fragile
     Ironbound demon, wraps player in chains to temporarily snare, low speed and damage, but high health
