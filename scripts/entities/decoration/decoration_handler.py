@@ -89,6 +89,18 @@ class Decoration_Handler():
         self.Link_Teleportation_Circles()
         self.Spawn_Items()
 
+    
+    def Generic_Spawn(self, types):
+        for t in types:
+            if t not in self.decoration_initialiser.decorations:
+                continue
+            cls = self.spawn_methods.get(t)
+            if cls is None:
+                continue
+            for pos in self.decoration_initialiser.decorations[t]:
+                decoration = cls(self.game, pos)
+                self.decorations.append(decoration)
+
     def Spawn_Items(self):
         for decoration in self.decorations:
             if decoration.type == keys.weapon_rack:
@@ -151,20 +163,6 @@ class Decoration_Handler():
                 linked_portal = self.Get_Decoration_By_ID(decoration.linked_portal_ID)
                 decoration.Set_Linked_Portal(linked_portal)
         
-
-
-
-    def Generic_Spawn(self, types):
-        for t in types:
-            if t not in self.decoration_initialiser.decorations:
-                continue
-            cls = self.spawn_methods.get(t)
-            if cls is None:
-                continue
-            for pos in self.decoration_initialiser.decorations[t]:
-                decoration = cls(self.game, pos)
-                self.decorations.append(decoration)
-
 
     def Decoration_Spawner(self, type, pos, data=None):
         spawn_function = self.spawn_methods.get(type)
