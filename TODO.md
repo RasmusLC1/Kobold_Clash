@@ -349,7 +349,6 @@ Upgrade weapons
     - # Soul gem, harvest souls but can summon/attract enemies
     - # Teleportation Circles, linked to each other, can be used to traverse the dungeon
     - # Teleport shrine, pay souls to teleport to a lower dungeon
-    - Weapon shrine, pay souls to bind gems to weapons for bonuses increased bonuses
     - Shops where you can buy different items for gold, maybe a little kobold with a shop. Opens a menu, you can sell loot for gold and use gold to buy random selection of items
     - Campfires, rest locations player can regain 50% hp, one per floor, one per floor, using it increases awakening by 1
 

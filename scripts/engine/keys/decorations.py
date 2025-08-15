@@ -77,6 +77,8 @@ class Decorations():
 
     brazier = "brazier"
 
+    lever = "lever"
+
 
 # Traps
     trap = "trap"

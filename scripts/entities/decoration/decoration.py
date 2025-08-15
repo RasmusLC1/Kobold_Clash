@@ -15,7 +15,6 @@ class Decoration(PhysicsEntity):
         self.empty = False
         self.destruction_sound = destruction_sound
         self.destruction_clatter_range = destruction_clatter
-        # self.destroyed = False # Flag to prevent 
         self.Set_Sprite()
 
 
