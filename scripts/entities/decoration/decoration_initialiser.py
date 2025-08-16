@@ -43,6 +43,7 @@ class Decoration_Initialiser():
         self.Spawn_Chests()
         self.Spawn_Vase()
         self.Spawn_Teleport()
+        self.Spawn_Lever()
 
     def Spawn_Chests(self):
         amount = random.randint(5, 10)
@@ -56,6 +57,10 @@ class Decoration_Initialiser():
         amount = random.randint(20, 30)
         self.Find_Floor_Tiles(keys.vase, amount)
 
+    def Spawn_Lever(self):
+        amount = random.randint(4, 7)
+        self.Find_Floor_Tiles(keys.lever, amount)
+
     def Spawn_Teleport(self):
         amount = random.randint(20, 30)
         if amount % 2:
@@ -63,13 +68,30 @@ class Decoration_Initialiser():
         self.Find_Floor_Tiles(keys.teleportation_circle, amount)
 
     def Spawn_Doors(self):
-        doors = self.game.tilemap.extract([(keys.door, 0)])
-        if not keys.door in self.decorations:
-            self.decorations[keys.door] = []
+        doors = self.game.tilemap.extract([(keys.door_basic, 0)])
+        if not keys.door_basic in self.decorations:
+            self.decorations[keys.door_basic] = []
+
+        if not keys.fragile_wall in self.decorations:
+            self.decorations[keys.fragile_wall] = []
+        
+        door_wall_table = {
+            keys.door_basic : 1,
+            keys.fragile_wall : 0.5
+        }
 
         for door in doors:
             pos = door[keys.pos]
-            self.decorations[keys.door].append(pos)
+            
+            door_or_wall = random.choices(
+                    population=list(door_wall_table.keys()),
+                    weights=list(door_wall_table.values()),
+                    k=1
+                )[0]
+            if door_or_wall == keys.door_basic:
+                self.decorations[keys.door_basic].append(pos)
+            else:
+                self.decorations[keys.fragile_wall].append(pos)
 
 
 

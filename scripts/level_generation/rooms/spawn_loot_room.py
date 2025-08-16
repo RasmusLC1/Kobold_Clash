@@ -72,7 +72,7 @@ class Spawn_Loot_Room():
                 keys.variant: room_type,
                 keys.pos: (start_x * tile_size, start_y * tile_size),
                 keys.size: (room_size_x, room_size_y),
-                keys.door: door_location,
+                keys.door_basic: door_location,
                 "ID": success,
             })
             success += 1

@@ -12,9 +12,11 @@ class Lever(Decoration):
             door = self.game.decoration_handler.Get_Random_Door()
             self.Set_Animation(1)
             self.empty = True
+            print("OPEN LEVER", door)
             if not door:
                 return
             
+            door.is_open = True
             door.Open(False)
             return True
             

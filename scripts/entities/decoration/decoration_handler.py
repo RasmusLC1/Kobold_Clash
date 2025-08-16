@@ -7,6 +7,7 @@ from scripts.entities.decoration.loot_container.vase import Vase
 from scripts.entities.decoration.loot_container.effigy_tomb import Effigy_Tomb
 from scripts.entities.decoration.loot_container.potion_table import Potion_Table
 from scripts.entities.decoration.doors.door import Door
+from scripts.entities.decoration.doors.fragile_wall import Fragile_Wall
 from scripts.entities.decoration.shrine.rune_shrine import Rune_Shrine
 from scripts.entities.decoration.shrine.portal_shrine import Portal_Shrine
 from scripts.entities.decoration.shrine.soul_well import Soul_Well
@@ -14,6 +15,7 @@ from scripts.entities.decoration.shrine.hunter_shrine import Hunter_Shrine
 from scripts.entities.decoration.shrine.sacrifice_shrine import Sacrifice_Shrine
 from scripts.entities.decoration.boss_room.boss_room import Boss_Room
 from scripts.entities.decoration.light_sources.brazier import Brazier
+from scripts.entities.decoration.interactive.lever import Lever
 from scripts.entities.decoration.interactive.teleportation_circle import Teleportation_Circle
 from scripts.entities.decoration.loot_container.bookshelf import Bookshelf
 from scripts.entities.decoration.decoration_initialiser import Decoration_Initialiser
@@ -27,13 +29,13 @@ class Decoration_Handler():
         self.game = game
         self.decoration_initialiser = Decoration_Initialiser(game)
         self.decorations = []
-        self.teleportation_circles = []
         self.bones = []
         self.nearby_decoration_cooldown = 0
         self.saved_data = {}
 
         self.spawn_methods = {
             keys.door_basic: Door,
+            keys.fragile_wall: Fragile_Wall,
             keys.chest: Chest,
             keys.vase: Vase,
             keys.effigy_tomb: Effigy_Tomb,
@@ -47,6 +49,7 @@ class Decoration_Handler():
             keys.weapon_rack: Weapon_rack,
             keys.plinth: Plinth,
             keys.bookshelf: Bookshelf,
+            keys.lever: Lever,
             keys.teleportation_circle: Teleportation_Circle,
             keys.brazier: Brazier,
             keys.torch : None,
@@ -67,23 +70,7 @@ class Decoration_Handler():
         self.saved_data.clear()
 
     def Initialise(self, depth=0):
-        decorations = [
-            keys.chest,
-            keys.vase,
-            keys.weapon_rack,
-            keys.plinth,
-            keys.bookshelf,
-            keys.effigy_tomb,
-            keys.portal_shrine,
-            keys.sacrifice_shrine,
-            keys.soul_well,
-            keys.hunter_shrine,
-            keys.potion_table,
-            keys.boss_room,
-            keys.door_basic,
-            keys.teleportation_circle
-        ]
-        self.Generic_Spawn(decorations)
+        self.Generic_Spawn(self.spawn_methods.keys())
         self.Spawn_Lightsource()
         self.Set_Item_Sacrifice_Decorations()
         self.Link_Teleportation_Circles()
@@ -203,19 +190,25 @@ class Decoration_Handler():
 
     
     def Link_Teleportation_Circles(self):
-        teleport_circles = self.teleportation_circles.copy()
-        random.shuffle(teleport_circles)  # Randomly pair circles
+        teleportation_circles = []
+        for decoration in self.decorations:
+            if not decoration.type == keys.teleportation_circle:
+                continue
 
-        for i in range(0, len(teleport_circles) - 1, 2):
-            a = teleport_circles[i]
-            b = teleport_circles[i + 1]
+            teleportation_circles.append(decoration)
+
+        random.shuffle(teleportation_circles)  # Randomly pair circles
+
+        for i in range(0, len(teleportation_circles) - 1, 2):
+            a = teleportation_circles[i]
+            b = teleportation_circles[i + 1]
             a.Set_Linked_Portal(b)
             b.Set_Linked_Portal(a)
 
-        for teleport_circle in teleport_circles:
+        for teleport_circle in teleportation_circles:
             if not teleport_circle.linked_portal:
                 self.Remove_Decoration(teleport_circle)
-                teleport_circles.remove(teleport_circle)
+                teleportation_circles.remove(teleport_circle)
 
 
     def Update(self, delta_time):
@@ -269,7 +262,7 @@ class Decoration_Handler():
         doors = []
 
         for decoration in self.decorations:
-            if not "door" in decoration.type or not keys.fragile_wall in decoration.type:
+            if not "door" in decoration.type and not keys.fragile_wall in decoration.type:
                 continue
 
             doors.append(decoration)

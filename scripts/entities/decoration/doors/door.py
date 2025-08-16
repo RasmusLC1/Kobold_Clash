@@ -11,7 +11,6 @@ class Door(Decoration):
             self.Delete()
             return
         self.tile.Set_Physics(True)
-        self.tile.Set_Translucent(False)
 
     def Save_Data(self):
         super().Save_Data()
@@ -67,15 +66,3 @@ class Door(Decoration):
             return
         return super().Update_Dark_Surface()
 
-
-    # def Update_Light_Level(self):
-    #     nearby_tile = self.game.tilemap.tiles_around(self.pos)
-    #     # Set the light level based on the tile that the entity is placed on
-    #     tile = self.tile
-
-    #     nearby_tile.remove(tile)
-    #     max_light = max(tile.light_level for tile in nearby_tile)
-
-    #     tile.Set_Light_Level(max_light)
-
-    #     return super().Update_Light_Level()

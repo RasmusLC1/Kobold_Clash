@@ -9,15 +9,18 @@ class Fragile_Wall(Decoration):
             self.Delete()
             return
         self.tile.Set_Physics(True)
-        self.tile.Set_Translucent(False)
+        self.is_open = False
 
        # TODO: IMPLEMENT walls that can be walked through, I.E walls without physics in tilemap
     def Open(self, generate_clatter = True):
+        if not self.is_open:
+            return False
         self.tile.Set_Physics(False)
         self.tile.Set_Translucent(True)
 
         self.render = False
         self.game.decoration_handler.Remove_Decoration(self)
+        return False
 
 
     # Open the wall if it is destroyed
@@ -26,7 +29,8 @@ class Fragile_Wall(Decoration):
 
         if not destroyed:
             return False
-        
+        self.is_open = True
         self.Open()
         return True
+    
         

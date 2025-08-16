@@ -9,7 +9,7 @@ class Loot_Room():
     def Spawn_Room_Decoration(tilemap, decorations, room, drop_table):
         start_x, start_y = room[keys.pos]
         size_x, size_y = room[keys.size]
-        door_location = room[keys.door]
+        door_location = room[keys.door_basic]
 
         adjusted_x = start_x // 32
         adjusted_y = start_y // 32
