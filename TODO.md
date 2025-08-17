@@ -389,9 +389,9 @@ Upgrade weapons
     - # Teleportation Circles, linked to each other, can be used to traverse the dungeon
     - # Teleport shrine, pay souls to teleport to a lower dungeon
     - # Rune shrine, pay souls to aquire new runes
-    - False walls, can be destroyed to reveal treasure rooms
-    - Levers that spawn items, open doors etc when activated
-    - Blood Fountains that gives random buff when interacted with
+    - # False walls, can be destroyed to reveal treasure rooms
+    - # Levers that spawn items, open doors etc when activated
+    - Blood Fountains player loses half current health, gets permanent vampiric 1
     
 
 

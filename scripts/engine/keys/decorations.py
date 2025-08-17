@@ -70,6 +70,7 @@ class Decorations():
 
     sacrifice_shrine = "sacrifice_shrine"
 
+    blood_shrine = "blood_shrine"
 
     potion_table = "potion_table"
 

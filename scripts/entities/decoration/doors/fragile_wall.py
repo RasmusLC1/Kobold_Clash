@@ -10,6 +10,7 @@ class Fragile_Wall(Decoration):
             return
         self.tile.Set_Physics(True)
         self.is_open = False
+        self.empty = True
 
        # TODO: IMPLEMENT walls that can be walked through, I.E walls without physics in tilemap
     def Open(self, generate_clatter = True):
