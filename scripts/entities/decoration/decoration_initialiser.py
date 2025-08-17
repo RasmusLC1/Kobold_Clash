@@ -106,17 +106,17 @@ class Decoration_Initialiser():
         self.Find_Floor_Tiles_Large_Object(keys.hunter_shrine, amount)
 
     def Spawn_Sacrifice_Shrine(self):
-        self.Find_Floor_Tiles_Large_Object(keys.sacrifice_shrine, 2)
+        self.Find_Floor_Tiles_Large_Object(keys.sacrifice_shrine, 1)
 
     
     def Spawn_Portal_Shrine(self):
         self.Find_Floor_Tiles_Large_Object(keys.portal_shrine, 1, True)
 
     def Spawn_Soul_Well(self):
-        self.Find_Floor_Tiles_Large_Object(keys.soul_well, 2, True)
+        self.Find_Floor_Tiles_Large_Object(keys.soul_well, 1, True)
 
     def Spawn_Blood_Shrine(self):
-        self.Find_Floor_Tiles_Large_Object(keys.blood_shrine, 10, True)
+        self.Find_Floor_Tiles_Large_Object(keys.blood_shrine, 1, True)
 
 
 
