@@ -11,6 +11,7 @@ from scripts.entities.decoration.doors.fragile_wall import Fragile_Wall
 from scripts.entities.decoration.shrine.rune_shrine import Rune_Shrine
 from scripts.entities.decoration.shrine.portal_shrine import Portal_Shrine
 from scripts.entities.decoration.shrine.soul_well import Soul_Well
+from scripts.entities.decoration.shrine.blood_shrine import Blood_Shrine
 from scripts.entities.decoration.shrine.hunter_shrine import Hunter_Shrine
 from scripts.entities.decoration.shrine.sacrifice_shrine import Sacrifice_Shrine
 from scripts.entities.decoration.boss_room.boss_room import Boss_Room
@@ -41,6 +42,7 @@ class Decoration_Handler():
             keys.effigy_tomb: Effigy_Tomb,
             keys.potion_table: Potion_Table,
             keys.rune_shrine: Rune_Shrine,
+            keys.blood_shrine: Blood_Shrine,
             keys.portal_shrine: Portal_Shrine,
             keys.hunter_shrine: Hunter_Shrine,
             keys.sacrifice_shrine: Sacrifice_Shrine,

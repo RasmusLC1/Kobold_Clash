@@ -26,6 +26,7 @@ class Decoration_Initialiser():
     def Spawn_Decorations(self):
         self.Spawn_Lightsource()
         self.Spawn_Rooms()
+        self.Spawn_Doors()
         self.Spawn_Large_Objects()
         self.Spawn_Small_Objects()
 
@@ -37,7 +38,7 @@ class Decoration_Initialiser():
         self.Spawn_Hunter_Shrine()
         self.Spawn_Sacrifice_Shrine()
         self.Spawn_Soul_Well()
-        self.Spawn_Doors()
+        self.Spawn_Blood_Shrine()
 
     def Spawn_Small_Objects(self):
         self.Spawn_Chests()
@@ -113,6 +114,10 @@ class Decoration_Initialiser():
 
     def Spawn_Soul_Well(self):
         self.Find_Floor_Tiles_Large_Object(keys.soul_well, 2, True)
+
+    def Spawn_Blood_Shrine(self):
+        self.Find_Floor_Tiles_Large_Object(keys.blood_shrine, 10, True)
+
 
 
     # TODO: Might need a seperate class for handling rooms
