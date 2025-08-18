@@ -350,7 +350,7 @@ Upgrade weapons
     - # Teleportation Circles, linked to each other, can be used to traverse the dungeon
     - # Teleport shrine, pay souls to teleport to a lower dungeon
     - Shops where you can buy different items for gold, maybe a little kobold with a shop. Opens a menu, you can sell loot for gold and use gold to buy random selection of items
-    - Campfires, rest locations player can regain 50% hp, one per floor, one per floor, using it increases awakening by 1
+    - # Campfires, rest locations player can regain 50% hp, one per floor, one per floor, using it increases awakening by 1
 
 
 # Dugeon types
@@ -383,7 +383,6 @@ Upgrade weapons
     - # Arrow traps - shoots arrows, triggered by pressure plates
 ### Decorations
     - # Braziers with fire, lights up area, can be extinguished/ignited
-    - Small rocks strewn around
     - # Plinths, contains runes
     - # Soul well, harvest souls but can summon/attract enemies
     - # Teleportation Circles, linked to each other, can be used to traverse the dungeon
