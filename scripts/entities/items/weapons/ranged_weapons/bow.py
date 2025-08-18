@@ -30,7 +30,7 @@ class Bow(Ranged_Weapon):
 
         
         if self.is_charging == 10:
-            self.game.sound_handler.Play_Sound('bow_draw', 1)
+            self.game.sound_handler.Play_Sound(keys.bow_draw, 1)
 
         if not self.is_charging:
             return

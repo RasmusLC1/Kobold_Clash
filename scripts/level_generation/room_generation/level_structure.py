@@ -26,7 +26,7 @@ class Level_Structure():
                 elif map[i][j] == DOOR:
                     tilemap.tilemap[(i, j)] = {keys.type: keys.floor, keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
                     tilemap.offgrid_tiles.append({
-                                    keys.type: keys.door,
+                                    keys.type: keys.door_basic,
                                     keys.variant: 0,
                                     keys.pos: (i * tile_size, j * tile_size)
                                 })

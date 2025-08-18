@@ -25,5 +25,5 @@ class Bell(Weapon):
     # Initialise the charge logic
     def Ring_Bell(self):
         self.special_attack = 0
-        self.Generate_Sound('bell', 0.3, 1000)
+        self.Generate_Sound(keys.bell, 0.3, 1000)
 

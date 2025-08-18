@@ -27,7 +27,7 @@ class Skeleton_Bell_Toller(Skeleton):
     def Ring_Bell(self):
         if self.bell_ringing_cooldown:
             return
-        self.Generate_Sound('bell', 0.3, 1000)
+        self.Generate_Sound(keys.bell, 0.3, 1000)
 
         self.bell_ringing_cooldown = 30
 

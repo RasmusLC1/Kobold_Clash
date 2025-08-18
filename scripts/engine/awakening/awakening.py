@@ -116,9 +116,20 @@ class Awakening():
         self.Adjust_Difficulty()
 
         self.awakening_cooldown = random.randint(self.awakening_level, self.awakening_level * 3)
-        self.max_enemies = self.awakening_level * BASE_MIN_ENEMIES
+        self.Set_Max_Enemies()
         self.game.sound_handler.Set_HeartBeat_Sound(self.awakening_level)
         self.game.ui_handler.Set_Awakening_Level(self.awakening_level)
+
+
+    def Set_Max_Enemies(self):
+        # Max enemies by Awakening Level:
+        # Level 0: 5
+        # Level 1: 7
+        # Level 2: 12
+        # Level 3: 18
+        # Level 4: 28
+        # Level 5: 44
+        self.max_enemies = int(BASE_MIN_ENEMIES * (1.55 ** self.awakening_level))
 
     def Adjust_Difficulty(self):
         

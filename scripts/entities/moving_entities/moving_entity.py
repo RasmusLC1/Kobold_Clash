@@ -66,11 +66,11 @@ class Moving_Entity(PhysicsEntity):
         self.max_health = self.health
         
         # Movement variables
-        self.friction = 0.00005 # Friction, set to the renderscale
+        self.friction = 0.0001 # Friction, set to the renderscale
         self.friction_holder = self.friction # Holder for friction to reset it
-        self.acceleration = agility * self.game.render_scale * 10
+        self.acceleration = agility * 1000
         self.acceleration_holder = self.acceleration # accelarition holder to reset it
-        self.max_speed = max_speed + agility # Max speed of the entity
+        self.max_speed = max_speed  * 100  # Max speed of the entity
         self.max_speed_holder = self.max_speed # Max speed holder to reset it
 
         # Handle attack animations
@@ -138,31 +138,32 @@ class Moving_Entity(PhysicsEntity):
     
 
     def Update_Movement(self, movement, delta_time):
-        # Apply acceleration to velocity based on input
+        # Apply acceleration (units/sec^2 → velocity in units/sec)
         self.velocity[0] += movement[0] * self.acceleration * delta_time
         self.velocity[1] += movement[1] * self.acceleration * delta_time
-        # Clamp the velocity to max speed
+
+        # Clamp velocity (velocity is units/sec, so max_speed must also be units/sec)
         self.velocity[0] = max(-self.max_speed, min(self.velocity[0], self.max_speed))
         self.velocity[1] = max(-self.max_speed, min(self.velocity[1], self.max_speed))
-        
-        # Apply friction and elimnates fricting
+
+        # Apply friction (frame-rate independent)
         if abs(self.velocity[0]) > 0.1:
-            self.velocity[0] *= self.friction ** delta_time 
+            self.velocity[0] *= self.friction ** delta_time
         else:
             self.velocity[0] = 0
         if abs(self.velocity[1]) > 0.1:
             self.velocity[1] *= self.friction ** delta_time
         else:
             self.velocity[1] = 0
-        
+
         self.direction_x = movement[0]
         self.direction_y = movement[1]
-
-        # Calculate frame movement based on updated velocity
+        # Apply velocity to movement (distance = velocity * time)
         self.Set_Frame_movement((
-            self.velocity[0] / self.game.render_scale,
-            self.velocity[1] / self.game.render_scale
+            (self.velocity[0] * delta_time) / self.game.render_scale,
+            (self.velocity[1] * delta_time) / self.game.render_scale
         ))
+
 
 
     # Movement handling

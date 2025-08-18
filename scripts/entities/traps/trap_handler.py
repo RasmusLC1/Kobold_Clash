@@ -1,17 +1,17 @@
-from scripts.entities.traps.traps.spike import Spike
-from scripts.entities.traps.traps.rubble import Rubble
-from scripts.entities.traps.traps.bell_pressure_plate import Bell_Pressure_plate
-from scripts.entities.traps.traps.spike_poisoned import Spike_Poisoned
-from scripts.entities.traps.traps.soul_trap import Soul_Trap
-from scripts.entities.traps.traps.spike_pit import Spike_Pit
-from scripts.entities.traps.traps.fire_trap import Fire_Trap
+from scripts.entities.traps.traps.shared.spike import Spike
+from scripts.entities.traps.traps.shared.rubble import Rubble
+from scripts.entities.traps.traps.ancient_tomb.bell_pressure_plate import Bell_Pressure_plate
+from scripts.entities.traps.traps.shared.spike_poisoned import Spike_Poisoned
+from scripts.entities.traps.traps.ancient_tomb.soul_trap import Soul_Trap
+from scripts.entities.traps.traps.shared.spike_pit import Spike_Pit
+from scripts.entities.traps.traps.shared.fire_trap import Fire_Trap
 from scripts.entities.traps.environment.lava import Lava
 from scripts.entities.traps.environment.water import Water
 from scripts.entities.traps.environment.ice import Ice
-from scripts.entities.traps.traps.spider_web import Spider_Web
-from scripts.entities.traps.traps.tomb_pressure_plate import Tomb_Pressure_Plate
-from scripts.entities.traps.traps.arrow_trap import Arrow_Trap
-from scripts.entities.traps.traps.soul_trap import Soul_Trap
+from scripts.entities.traps.traps.shared.spider_web import Spider_Web
+from scripts.entities.traps.traps.ancient_tomb.tomb_pressure_plate import Tomb_Pressure_Plate
+from scripts.entities.traps.traps.ancient_tomb.arrow_trap import Arrow_Trap
+from scripts.entities.traps.traps.ancient_tomb.soul_trap import Soul_Trap
 from scripts.engine.keys.keys import keys
 import math
 import random
@@ -27,7 +27,7 @@ TRAP_TABLE = { # Expand with new traps as needed
     keys.rubble : 2,
     keys.tomb_pressure_plate : 0.2,
     keys.bell_pressure_plate : 0.3,
-    keys.soul_trap : 4.3,
+    keys.soul_trap : 0.1,
     keys.arrow_trap : 0.3,
 }
 
@@ -39,6 +39,25 @@ class Trap_Handler:
         self.saved_data = {}
         self.floor_tiles = {}
         self.traps_to_spawn = {}
+        self.trap_classes = {
+            keys.spike_trap: Spike,
+            keys.spike_poison_trap: Spike_Poisoned,
+            keys.pit_trap: Spike_Pit,
+            keys.rubble: Rubble,
+            keys.tomb_pressure_plate: Tomb_Pressure_Plate,
+            keys.bell_pressure_plate: Bell_Pressure_plate,
+            keys.soul_trap: Soul_Trap,
+            keys.arrow_trap: Arrow_Trap,
+            keys.lava_env: Lava,
+            keys.fire_trap: Fire_Trap,
+            keys.spider_web: Spider_Web,
+            keys.shallow_ice_env: Ice,
+            keys.medium_ice_env: Ice,
+            keys.deep_ice_env: Ice,
+            keys.shallow_water_env: Water,
+            keys.medium_water_env: Water,
+            keys.deep_water_env: Water,
+        }
         self.nearby_traps_cooldown = 0
         
     
@@ -131,98 +150,23 @@ class Trap_Handler:
             self.Trap_Spawner(trap.pos, trap.type)
 
 
-    def Trap_Spawner(self, pos, type, data = None):
-        trap = None
-        if keys.spike_trap == type:
-            trap = self.Spawn_Spike_Trap(pos)
-
-        elif type == keys.spike_poison_trap:
-            trap = self.Spawn_Spike_Poisoned(pos)
-
-        elif keys.pit_trap == type:
-            trap = self.Spawn_Spike_Pit(pos)
-
-        elif keys.rubble == type:
-            trap = self.Spawn_Rubble(pos)
-
-        elif keys.tomb_pressure_plate == type:
-            trap = self.Spawn_Tomb_Pressure_Plate(pos)
-
-        elif keys.bell_pressure_plate == type:
-            trap = self.Spawn_Bell_Pressure_Plate(pos)
-
-        elif keys.soul_trap == type:
-            trap = self.Spawn_Soul_Trap(pos)
-
-        elif keys.arrow_trap == type:
-            trap = self.Spawn_Arrow_Trap(pos)
-
-        elif keys.lava_env == type:
-            trap = self.Spawn_Lava(pos)
-
-        elif 'ice' in type:
-            trap = self.Spawn_Ice(pos, type)
-
-        elif 'water' in type:
-            trap = self.Spawn_Water(pos, type)
-
-        elif type == keys.fire_trap:
-            trap = self.Spawn_Fire_Trap(pos)
-
-        elif type == keys.spider_web:
-            trap = self.Spawn_Spider_Web(pos)
-        else:
-            print("FAILED TO FIND TRAPTYPE", type)
-        if not trap:
+    def Trap_Spawner(self, pos, trap_type, data=None):
+        cls = self.trap_classes.get(trap_type)
+        if cls is None:
+            print("FAILED TO FIND TRAPTYPE", trap_type)
             return False
-        
+
+        if 'ice' in trap_type or 'water' in trap_type:
+            trap = cls(self.game, pos, trap_type) 
+        else:
+            trap = cls(self.game, pos)
+
         if data:
             trap.Load_Data(data)
 
         self.traps.append(trap)
         return True
 
-
-
-    
-    def Spawn_Ice(self, pos, type):
-        return Ice(self.game, pos, type)
-    
-    def Spawn_Water(self, pos, type):
-        return Water(self.game, pos, type)
-    
-    def Spawn_Lava(self, pos):
-        return Lava(self.game, pos)
-    
-    def Spawn_Fire_Trap(self, pos):
-        return Fire_Trap(self.game, pos)
-    
-    def Spawn_Spike_Pit(self, pos):
-        return Spike_Pit(self.game, pos)
-    
-    def Spawn_Spike_Poisoned(self, pos):
-        return Spike_Poisoned(self.game, pos)
-    
-    def Spawn_Spike_Trap(self, pos):
-        return Spike(self.game, pos)
-    
-    def Spawn_Rubble(self, pos):
-        return Rubble(self.game, pos)
-    
-    def Spawn_Tomb_Pressure_Plate(self, pos):
-        return Tomb_Pressure_Plate(self.game, pos)
-    
-    def Spawn_Arrow_Trap(self, pos):
-        return Arrow_Trap(self.game, pos)
-
-    def Spawn_Soul_Trap(self, pos):
-        return Soul_Trap(self.game, pos)
-    
-    def Spawn_Bell_Pressure_Plate(self, pos):
-        return Bell_Pressure_plate(self.game, pos)
-    
-    def Spawn_Spider_Web(self, pos):
-        return Spider_Web(self.game, pos)
     
 
     def Find_Nearby_Traps(self, entity, max_distance):

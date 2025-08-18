@@ -6,9 +6,11 @@ class Decorations():
     bookshelf = "bookshelf"
 
     
-    door = "door"
+    door_basic = "door"
 
     door_basic = "door_basic"
+
+    fragile_wall = "fragile_wall"
 
     
     rune_shrine = "rune_shrine"
@@ -64,14 +66,19 @@ class Decorations():
 
     teleportation_circle = "teleportation_circle"
 
+    campfire = "campfire"
+
     sacrifice_shrine = "sacrifice_shrine"
 
+    blood_shrine = "blood_shrine"
 
     potion_table = "potion_table"
 
     effigy_tomb = "effigy_tomb"
 
     brazier = "brazier"
+
+    lever = "lever"
 
 
 # Traps

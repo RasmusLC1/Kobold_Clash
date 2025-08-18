@@ -56,13 +56,12 @@ class Player_Movement():
             return
         if self.back_step_direction[0] and self.back_step_direction[1]:
 
-            self.player.friction = 1
-            self.player.max_speed = 40  # Adjust max speed speed for dashing distance
+            self.player.max_speed =  self.player.max_speed * 2  # Adjust max speed speed for dashing distance
 
 
             # Set the velocity directly based on dash without friction interference
-            self.player.velocity[0] = self.back_step_direction[0] * 20
-            self.player.velocity[1] = self.back_step_direction[1] * 20
+            self.player.velocity[0] = self.back_step_direction[0] * 2000
+            self.player.velocity[1] = self.back_step_direction[1] * 2000
 
     def Roll_Forward(self,  offset=(0, 0)):
         if self.roll_forward or self.stamina:
@@ -83,13 +82,12 @@ class Player_Movement():
         
         if self.roll_direction.length() > 0:
 
-            self.player.friction = 1
-            self.player.max_speed = 40  # Adjust max speed speed for dashing distance
+            self.player.max_speed =  self.player.max_speed * 2  # Adjust max speed speed for dashing distance
 
 
             # Set the velocity directly based on dash without friction interference
-            self.player.velocity[0] = self.roll_direction[0] * 20
-            self.player.velocity[1] = self.roll_direction[1] * 20
+            self.player.velocity[0] = self.roll_direction[0] * 2000
+            self.player.velocity[1] = self.roll_direction[1] * 2000
 
     def Dashing_Update(self, offset=(0, 0)):
         if not self.dashing:
@@ -111,14 +109,15 @@ class Player_Movement():
             if self.player.attack_direction.length() > 0:
                 # Temporarily set friction to zero to avoid deceleration during dash
                 self.player.friction = 1
-                self.player.max_speed = 40  # Adjust max speed speed for dashing distance
+                self.player.max_speed =  self.player.max_speed * 4  # Adjust max speed speed for dashing distance
 
 
                 # Set the velocity directly based on dash without friction interference
-                self.player.velocity[0] = self.player.attack_direction[0] * self.dashing
-                self.player.velocity[1] = self.player.attack_direction[1] * self.dashing
+                self.player.velocity[0] = self.player.attack_direction[0] * self.dashing * 10000
+                self.player.velocity[1] = self.player.attack_direction[1] * self.dashing * 10000
 
                 if abs(self.dashing) == 51:
+                    
                     self.player.velocity[0] *= 0.1
                     self.player.velocity[1] *= 0.1
 

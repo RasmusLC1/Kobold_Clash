@@ -349,13 +349,12 @@ Upgrade weapons
     - # Soul gem, harvest souls but can summon/attract enemies
     - # Teleportation Circles, linked to each other, can be used to traverse the dungeon
     - # Teleport shrine, pay souls to teleport to a lower dungeon
-    - Weapon shrine, pay souls to bind gems to weapons for bonuses increased bonuses
     - Shops where you can buy different items for gold, maybe a little kobold with a shop. Opens a menu, you can sell loot for gold and use gold to buy random selection of items
-    - Campfires, rest locations player can regain 50% hp, one per floor
+    - # Campfires, rest locations player can regain 50% hp, one per floor, one per floor, using it increases awakening by 1
 
 
 # Dugeon types
-## Ancient Tomb Enemies
+## Ancient Tomb
 ### Specialty
     Basic dungeon, used as introduction
 ### Enemies
@@ -375,24 +374,23 @@ Upgrade weapons
     # Crypt Ghoul, bone club, fast and high damage, but glass cannon
     Lich, casts doom on player, debuffing him and slowly drains health until Lich is killed
 ### Traps
-    - Soul bind, disables player healing and spawns item (soul shard) that needs to be found to enable healing again
+    - # Soul bind, disables player healing and spawns item (soul shard) that needs to be found to enable healing again
     - # Pressure plate that opens nearby tombs and spawns enemies
     - # Bell trap from pressure plate, that alerts nearby enemies
     - # Spike pits, fall into and slows you down
     - # Spike traps, that move up and harm you when they're extended
     - # Loose rubble, generates clatter when stepped on
-    - Arrow traps - shoots arrows, triggered by pressure plates
+    - # Arrow traps - shoots arrows, triggered by pressure plates
 ### Decorations
     - # Braziers with fire, lights up area, can be extinguished/ignited
-    - Small rocks strewn around
     - # Plinths, contains runes
     - # Soul well, harvest souls but can summon/attract enemies
     - # Teleportation Circles, linked to each other, can be used to traverse the dungeon
     - # Teleport shrine, pay souls to teleport to a lower dungeon
     - # Rune shrine, pay souls to aquire new runes
-    - False walls, can be destroyed to reveal treasure rooms
-    - Levers that spawn items, open doors etc when activated
-    - Blood Fountains that gives random buff when interacted with
+    - # False walls, can be destroyed to reveal treasure rooms
+    - # Levers that spawn items, open doors etc when activated
+    - Blood Fountains player loses half current health, gets permanent vampiric 1
     
 
 

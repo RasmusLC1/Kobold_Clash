@@ -43,17 +43,11 @@ class Player(Moving_Entity):
 
         self.bomb_launcher = Bomb_Launcher(game)
 
-
-
-
     def Save_Data(self):
         super().Save_Data()
         self.saved_data[keys.souls] = self.souls
         self.saved_data['max_speed'] = self.max_speed
         self.saved_data['last_shrine_visited'] = self.last_shrine_visited 
-
-
-    
 
 
     def Load_Data(self, data):

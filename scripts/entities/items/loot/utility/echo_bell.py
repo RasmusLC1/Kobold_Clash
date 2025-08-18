@@ -38,5 +38,5 @@ class Echo_Bell(Utility_Loot):
         self.game.clatter.Generate_Clatter(self.game.mouse.mpos, 1000) # Generate clatter to alert enemies
         self.Reset_Bell()
 
-        self.game.sound_handler.Play_Sound('bell', 0.5, self.game.mouse.mpos)
+        self.game.sound_handler.Play_Sound(keys.bell, 0.5, self.game.mouse.mpos)
 

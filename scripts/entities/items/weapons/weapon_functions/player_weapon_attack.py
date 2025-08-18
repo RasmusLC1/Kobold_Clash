@@ -78,7 +78,7 @@ class Player_Weapon_Attack():
         self.weapon.Decrease_Durability(damage)
 
         if self.weapon.durability <= 0:
-            self.game.sound_handler.Play_Sound('weapon_break', 0.5)
+            self.game.sound_handler.Play_Sound(keys.weapon_break, 0.5)
             self.ready_to_delete = True
 
         return
@@ -149,5 +149,5 @@ class Player_Weapon_Attack():
 
         self.game.camera_update.Set_Screen_Shake(damage_freeze, damage_freeze // 2)
         self.enemy_hit_effect_cooldown = 1
-        self.game.sound_handler.Play_Sound('enemy_hit', 0.3)
+        self.game.sound_handler.Play_Sound(keys.enemy_hit, 0.3)
 

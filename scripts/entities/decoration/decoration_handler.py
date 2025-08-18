@@ -1,21 +1,27 @@
-from scripts.entities.decoration.bones.bones import Bones
-from scripts.entities.decoration.loot_container.chest import Chest
-from scripts.entities.decoration.loot_container.mimic_chest import Mimic_Chest
-from scripts.entities.decoration.loot_container.weapon_rack import Weapon_rack
-from scripts.entities.decoration.loot_container.plinth import Plinth
-from scripts.entities.decoration.loot_container.vase import Vase
-from scripts.entities.decoration.loot_container.effigy_tomb import Effigy_Tomb
-from scripts.entities.decoration.loot_container.potion_table import Potion_Table
-from scripts.entities.decoration.doors.door import Door
-from scripts.entities.decoration.shrine.rune_shrine import Rune_Shrine
-from scripts.entities.decoration.shrine.portal_shrine import Portal_Shrine
-from scripts.entities.decoration.shrine.soul_well import Soul_Well
-from scripts.entities.decoration.shrine.hunter_shrine import Hunter_Shrine
-from scripts.entities.decoration.shrine.sacrifice_shrine import Sacrifice_Shrine
-from scripts.entities.decoration.boss_room.boss_room import Boss_Room
-from scripts.entities.decoration.light_sources.brazier import Brazier
-from scripts.entities.decoration.interactive.teleportation_circle import Teleportation_Circle
-from scripts.entities.decoration.loot_container.bookshelf import Bookshelf
+from scripts.entities.decoration.ancient_tomb.loot_container.vase import Vase
+from scripts.entities.decoration.ancient_tomb.loot_container.effigy_tomb import Effigy_Tomb
+from scripts.entities.decoration.ancient_tomb.shrine.rune_shrine import Rune_Shrine
+from scripts.entities.decoration.ancient_tomb.loot_container.bookshelf import Bookshelf
+from scripts.entities.decoration.ancient_tomb.light_sources.brazier import Brazier
+from scripts.entities.decoration.ancient_tomb.shrine.blood_shrine import Blood_Shrine
+from scripts.entities.decoration.ancient_tomb.shrine.sacrifice_shrine import Sacrifice_Shrine
+
+
+from scripts.entities.decoration.shared.shrine.portal_shrine import Portal_Shrine
+from scripts.entities.decoration.shared.shrine.soul_well import Soul_Well
+from scripts.entities.decoration.shared.shrine.hunter_shrine import Hunter_Shrine
+from scripts.entities.decoration.shared.bones.bones import Bones
+from scripts.entities.decoration.shared.loot_container.chest import Chest
+from scripts.entities.decoration.shared.loot_container.mimic_chest import Mimic_Chest
+from scripts.entities.decoration.shared.loot_container.weapon_rack import Weapon_rack
+from scripts.entities.decoration.shared.loot_container.plinth import Plinth
+from scripts.entities.decoration.shared.loot_container.potion_table import Potion_Table
+from scripts.entities.decoration.shared.doors.door import Door
+from scripts.entities.decoration.shared.doors.fragile_wall import Fragile_Wall
+from scripts.entities.decoration.shared.boss_room.boss_room import Boss_Room
+from scripts.entities.decoration.shared.interactive.lever import Lever
+from scripts.entities.decoration.shared.interactive.teleportation_circle import Teleportation_Circle
+from scripts.entities.decoration.shared.interactive.campfire import Campfire
 from scripts.entities.decoration.decoration_initialiser import Decoration_Initialiser
 
 import random
@@ -27,18 +33,19 @@ class Decoration_Handler():
         self.game = game
         self.decoration_initialiser = Decoration_Initialiser(game)
         self.decorations = []
-        self.teleportation_circles = []
         self.bones = []
         self.nearby_decoration_cooldown = 0
         self.saved_data = {}
 
         self.spawn_methods = {
             keys.door_basic: Door,
+            keys.fragile_wall: Fragile_Wall,
             keys.chest: Chest,
             keys.vase: Vase,
             keys.effigy_tomb: Effigy_Tomb,
             keys.potion_table: Potion_Table,
             keys.rune_shrine: Rune_Shrine,
+            keys.blood_shrine: Blood_Shrine,
             keys.portal_shrine: Portal_Shrine,
             keys.hunter_shrine: Hunter_Shrine,
             keys.sacrifice_shrine: Sacrifice_Shrine,
@@ -47,7 +54,9 @@ class Decoration_Handler():
             keys.weapon_rack: Weapon_rack,
             keys.plinth: Plinth,
             keys.bookshelf: Bookshelf,
+            keys.lever: Lever,
             keys.teleportation_circle: Teleportation_Circle,
+            keys.campfire: Campfire,
             keys.brazier: Brazier,
             keys.torch : None,
         }
@@ -67,23 +76,23 @@ class Decoration_Handler():
         self.saved_data.clear()
 
     def Initialise(self, depth=0):
-        self.Spawn_Chest()
-        self.Spawn_Vase()
+        self.Generic_Spawn(self.spawn_methods.keys())
         self.Spawn_Lightsource()
-        self.Spawn_Effigy_Tomb()
         self.Set_Item_Sacrifice_Decorations()
-        self.Spawn_Portal_Shrine()
-        self.Spawn_Sacrifice_Shrine()
-        self.Spawn_Soul_Well()
-        self.Spawn_Hunter_Shrine()
-        self.Spawn_Teleportation_Circle()
-        self.Spawn_Plinth()
-        self.Spawn_Weapon_Rack()
-        self.Spawn_Bookshelf()
-        self.Spawn_Boss_Room()
-        self.Spawn_Doors()
-        
+        self.Link_Teleportation_Circles()
         self.Spawn_Items()
+
+    
+    def Generic_Spawn(self, types):
+        for t in types:
+            if t not in self.decoration_initialiser.decorations:
+                continue
+            cls = self.spawn_methods.get(t)
+            if cls is None:
+                continue
+            for pos in self.decoration_initialiser.decorations[t]:
+                decoration = cls(self.game, pos)
+                self.decorations.append(decoration)
 
     def Spawn_Items(self):
         for decoration in self.decorations:
@@ -146,9 +155,7 @@ class Decoration_Handler():
             if decoration.type == keys.teleportation_circle:
                 linked_portal = self.Get_Decoration_By_ID(decoration.linked_portal_ID)
                 decoration.Set_Linked_Portal(linked_portal)
-            
-
-
+        
 
     def Decoration_Spawner(self, type, pos, data=None):
         spawn_function = self.spawn_methods.get(type)
@@ -161,43 +168,6 @@ class Decoration_Handler():
                 decoration.Load_Data(data)
         self.decorations.append(decoration)
         return decoration
-
-
-    def Spawn_Chest(self):
-        if not keys.chest in self.decoration_initialiser.decorations:
-            return
-
-        for chest_pos in self.decoration_initialiser.decorations[keys.chest]:
-            chest = Chest(self.game, chest_pos)  
-            self.decorations.append(chest)
-            
-    def Spawn_Vase(self):
-        if not keys.vase in self.decoration_initialiser.decorations:
-            return
-        for pos in self.decoration_initialiser.decorations[keys.vase]:
-            vase = Vase(self.game, pos)  
-            self.decorations.append(vase)
-
-    def Spawn_Weapon_Rack(self):
-        if not keys.weapon_rack in self.decoration_initialiser.decorations:
-            return
-        for pos in self.decoration_initialiser.decorations[keys.weapon_rack]:
-            vase = Weapon_rack(self.game, pos)  
-            self.decorations.append(vase)
-
-    def Spawn_Plinth(self):
-        if not keys.plinth in self.decoration_initialiser.decorations:
-            return
-        for pos in self.decoration_initialiser.decorations[keys.plinth]:
-            plinth = Plinth(self.game, pos)  
-            self.decorations.append(plinth)
-
-    def Spawn_Bookshelf(self):
-        if not keys.bookshelf in self.decoration_initialiser.decorations:
-            return
-        for pos in self.decoration_initialiser.decorations[keys.bookshelf]:
-            bookshelf = Bookshelf(self.game, pos)  
-            self.decorations.append(bookshelf)
 
 
     def Spawn_Lightsource(self):
@@ -222,127 +192,29 @@ class Decoration_Handler():
         chest = Mimic_Chest(self.game, pos, version)  
         self.decorations.append(chest)
         return chest
-    
-    
-    def Spawn_Effigy_Tomb(self):
-        if not keys.effigy_tomb in self.decoration_initialiser.decorations:
-            return
-        for pos in self.decoration_initialiser.decorations[keys.effigy_tomb]:
-            effigy_tomb = Effigy_Tomb(self.game, pos)  
-            self.decorations.append(effigy_tomb)
-
-    def Spawn_Portal_Shrine(self):
-        if not keys.portal_shrine in self.decoration_initialiser.decorations:
-            return
-        for pos in self.decoration_initialiser.decorations[keys.portal_shrine]:
-            shrine = Portal_Shrine(self.game, pos)
-            self.decorations.append(shrine)
-
-        
-    
-    def Spawn_Sacrifice_Shrine(self):
-        if not keys.sacrifice_shrine in self.decoration_initialiser.decorations:
-            return
-        for pos in self.decoration_initialiser.decorations[keys.sacrifice_shrine]:
-            shrine = Sacrifice_Shrine(self.game, pos)
-            self.decorations.append(shrine)
-
-        
-    def Spawn_Soul_Well(self):
-        if not keys.soul_well in self.decoration_initialiser.decorations:
-            return
-        for pos in self.decoration_initialiser.decorations[keys.soul_well]:
-            soul_well = Soul_Well(self.game, pos)
-            self.decorations.append(soul_well)
-
-    def Spawn_Hunter_Shrine(self):
-        if not keys.hunter_shrine in self.decoration_initialiser.decorations:
-            return
-        for pos in self.decoration_initialiser.decorations[keys.hunter_shrine]:
-            shrine = Hunter_Shrine(self.game, pos)
-            self.decorations.append(shrine)
-
-    def Spawn_Potion_Table(self):
-        if not keys.potion_table in self.decoration_initialiser.decorations:
-            return
-        for pos in self.decoration_initialiser.decorations[keys.potion_table]:
-            potion_table = Potion_Table(self.game, pos)  
-            self.decorations.append(potion_table)
-
-    # Needs to be fixed so that it spawns correct radius and level
-    def Spawn_Boss_Room(self):
-        if not keys.boss_room in self.decoration_initialiser.decorations:
-            return
-        for pos in self.decoration_initialiser.decorations[keys.boss_room]:
-            boss_room = Boss_Room(self.game, pos, 3)
-            self.decorations.append(boss_room)
-        
-    def Spawn_Doors(self):
-        if not keys.door in self.decoration_initialiser.decorations:
-            return
-        for pos in self.decoration_initialiser.decorations[keys.door]:
-            door = Door(self.game, pos)
-            self.decorations.append(door)
-        
-    def Spawn_Teleportation_Circle(self):
-        if not keys.teleportation_circle in self.decoration_initialiser.decorations:
-            return
-        for pos in self.decoration_initialiser.decorations[keys.teleportation_circle]:
-            teleportation_circle = Teleportation_Circle(self.game, pos)
-            self.decorations.append(teleportation_circle)
-            self.teleportation_circles.append(teleportation_circle)
-        
-        self.Link_Teleportation_Circles()
+   
 
     
     def Link_Teleportation_Circles(self):
-        teleport_circles = self.teleportation_circles.copy()
-        random.shuffle(teleport_circles)  # Randomly pair circles
+        teleportation_circles = []
+        for decoration in self.decorations:
+            if not decoration.type == keys.teleportation_circle:
+                continue
 
-        for i in range(0, len(teleport_circles) - 1, 2):
-            a = teleport_circles[i]
-            b = teleport_circles[i + 1]
+            teleportation_circles.append(decoration)
+
+        random.shuffle(teleportation_circles)  # Randomly pair circles
+
+        for i in range(0, len(teleportation_circles) - 1, 2):
+            a = teleportation_circles[i]
+            b = teleportation_circles[i + 1]
             a.Set_Linked_Portal(b)
             b.Set_Linked_Portal(a)
 
-        for teleport_circle in teleport_circles:
+        for teleport_circle in teleportation_circles:
             if not teleport_circle.linked_portal:
                 self.Remove_Decoration(teleport_circle)
-                teleport_circles.remove(teleport_circle)
-
-
-    
-
-    def Spawn_Rune_Shrine(self, pos, size=None, version=None, radius=None, level=None):
-        shrine = Rune_Shrine(self.game, pos)
-        self.decorations.append(shrine)
-        return shrine
-
-
-    def Spawn_Rune_Shrine(self, pos, size=None, version=None, radius=None, level=None):
-        shrine = Rune_Shrine(self.game, pos)
-        self.decorations.append(shrine)
-        return shrine
-    
-
-    def Spawn_Bones(self, pos, size=None, version=None, radius=None, level=None):
-        bones = Bones(self.game, pos, None)  
-        self.bones.append(bones)
-        return bones
-
-
-    
-
-    def Spawn_Brazer(self, pos, size=None, version=None, radius=None, level=None):
-        brazier = Brazier(self.game, pos) 
-        self.decorations.append(brazier)
-        return brazier
-
-
-
-
-
-
+                teleportation_circles.remove(teleport_circle)
 
 
     def Update(self, delta_time):
@@ -391,6 +263,22 @@ class Decoration_Handler():
         decoration = decorations[0]
         decoration.Open()
 
+    # Look for fragile walls and doors and pick a random one
+    def Get_Random_Door(self):
+        doors = []
+
+        for decoration in self.decorations:
+            if not "door" in decoration.type and not keys.fragile_wall in decoration.type:
+                continue
+
+            doors.append(decoration)
+
+        if not doors:
+            return None
+
+        door = random.choice(doors)
+        return door
+    
 
     def Sort_Decorations(self, decorations):
         player_pos = self.game.player.pos
