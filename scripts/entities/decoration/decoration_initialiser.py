@@ -41,6 +41,7 @@ class Decoration_Initialiser():
         self.Spawn_Blood_Shrine()
 
     def Spawn_Small_Objects(self):
+        self.Spawn_Campfire()
         self.Spawn_Chests()
         self.Spawn_Vase()
         self.Spawn_Teleport()
@@ -61,6 +62,9 @@ class Decoration_Initialiser():
     def Spawn_Lever(self):
         amount = random.randint(4, 7)
         self.Find_Floor_Tiles(keys.lever, amount)
+
+    def Spawn_Campfire(self):
+        self.Find_Floor_Tiles(keys.campfire, 1)
 
     def Spawn_Teleport(self):
         amount = random.randint(20, 30)

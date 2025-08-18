@@ -18,6 +18,7 @@ from scripts.entities.decoration.boss_room.boss_room import Boss_Room
 from scripts.entities.decoration.light_sources.brazier import Brazier
 from scripts.entities.decoration.interactive.lever import Lever
 from scripts.entities.decoration.interactive.teleportation_circle import Teleportation_Circle
+from scripts.entities.decoration.interactive.campfire import Campfire
 from scripts.entities.decoration.loot_container.bookshelf import Bookshelf
 from scripts.entities.decoration.decoration_initialiser import Decoration_Initialiser
 
@@ -53,6 +54,7 @@ class Decoration_Handler():
             keys.bookshelf: Bookshelf,
             keys.lever: Lever,
             keys.teleportation_circle: Teleportation_Circle,
+            keys.campfire: Campfire,
             keys.brazier: Brazier,
             keys.torch : None,
         }

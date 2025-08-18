@@ -10,6 +10,9 @@ class Campfire(Decoration):
         self.animation_cooldown = 0
         self.animation_cooldown_max = 0.8
 
+    def Update(self, delta_time):
+        self.Update_Animation()
+        return super().Update(delta_time)
 
     def Open(self, generate_clatter=False):
         if not self.empty:
@@ -19,6 +22,7 @@ class Campfire(Decoration):
             
             player.Set_Effect(keys.healing, player.max_health // 2) # Heal player for half health
             self.game.clatter.Increase_Awakening() # Increase awakening when lighting fire
+            self.Set_Animation(1)
             return True
             
         return False
@@ -28,6 +32,8 @@ class Campfire(Decoration):
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
 
     def Update_Animation(self, delta_time):
+        if self.animation == 0:
+            return
         if self.animation_cooldown > 0:
             self.animation_cooldown -= delta_time
         else:

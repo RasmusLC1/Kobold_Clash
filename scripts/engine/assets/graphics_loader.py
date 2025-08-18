@@ -444,6 +444,7 @@ class Graphics_Loader:
             keys.blood_shrine: get_tiles_from_sheet('decoration/shrine/blood_shrine.png', 3, 0, 0, 0, 64, 64),
             keys.sacrifice_shrine: get_tiles_from_sheet('decoration/shrine/sacrifice_shrine.png', 3, 0, 0, 0, 64, 64),
             keys.teleportation_circle: get_tiles_from_sheet('decoration/interactive/teleportation_circle.png', 0, 0, 0, 0, 32, 32),
+            keys.campfire: get_tiles_from_sheet('decoration/interactive/campfire.png', 4, 0, 0, 0, 32, 32),
             keys.lever: get_tiles_from_sheet('decoration/interactive/lever.png', 1, 0, 0, 0, 32, 32),
             keys.bones: get_tiles_from_sheet('decoration/environment/bones.png', 0, 0, 0, 0, 32, 32),
             keys.weapon_rack: get_tiles_from_sheet('decoration/loot_containers/weapon_rack.png', 0, 0, 0, 0, 32, 32),
