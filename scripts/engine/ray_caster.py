@@ -37,19 +37,24 @@ class Ray_Caster():
 
     # Handle tile activity degradation
     def Check_Tile_Active(self):
+        player_pos = self.game.player.pos
         for tile in self.tiles:
             if tile.active:
                 tile.active -= 1
             # Find distance from player and if it's greater than 300, delete it
             # distance = math.sqrt((self.game.player.pos[0] - tile.scaled_pos[0]) ** 2 + (self.game.player.pos[1] - tile.scaled_pos[1]) ** 2)
-            dx = self.game.player.pos[0] - tile.scaled_pos[0]
-            dy = self.game.player.pos[1] - tile.scaled_pos[1]
-            distance = dx * dx + dy * dy
+            distance = self.Calculate_Distance(player_pos, tile)
             
             if distance > self.inactive_distance:
                 tile.active = 0
                 self.tiles.remove(tile)
     
+    def Calculate_Distance(self, player_pos, tile):
+        dx = player_pos[0] - tile.scaled_pos[0]
+        dy = player_pos[1] - tile.scaled_pos[1]
+        distance = dx * dx + dy * dy
+        return distance
+
     def Remove_Tile(self, tile):
         if tile not in self.tiles:
             return
