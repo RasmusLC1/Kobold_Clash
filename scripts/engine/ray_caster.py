@@ -69,6 +69,7 @@ class Ray_Caster():
                 self.tiles.append(tile)
             else:
                 tile.Set_Active(DEFAULT_ACTIVITY)
+                
             if not tile.type:
                 print("TILE DOES NOT HAVE TYPE", tile)
                 return False
@@ -93,19 +94,17 @@ class Ray_Caster():
             for x in range(center_x - radius, center_x + radius + 1):
                 if not self.Check_Tile((x, y)):
                     break
-
+                
 
     def Ray_Caster(self):
         
         self.Add_Tile_Around_Player()
         player = self.game.player
-        tile_size = self.game.tilemap.tile_size
 
         # Calculate the starting angle
-        base_angle = math.atan2(player.view_direction[1], player.view_direction[0])
+        base_angle = math.atan2(0, 0)
         start_angle = base_angle - math.radians(SPREAD_ANGLE / 2)
         self.Check_Tile(player.tile.pos)
-        
         # Look for tiles that hit the rays
         for j in range(NUM_LINES):
             angle = start_angle + j * math.radians(ANGLE_INCREMENT)
