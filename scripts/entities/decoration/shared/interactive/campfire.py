@@ -11,7 +11,7 @@ class Campfire(Decoration):
         self.animation_cooldown_max = 0.8
 
     def Update(self, delta_time):
-        self.Update_Animation()
+        self.Update_Animation(delta_time)
         return super().Update(delta_time)
 
     def Open(self, generate_clatter=False):

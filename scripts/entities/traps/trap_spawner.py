@@ -154,7 +154,8 @@ class Trap_Spawner():
 
                 self.traps_to_spawn[trap].append((i * TILESIZE, j * TILESIZE))
                 tilemap[tile_key].Set_Contains_Decoration(True)
-                del self.floor_tiles[tile_key]
+                keys_to_delete.append(tile_key)
+
 
         # Delete keys after
         for key in keys_to_delete:

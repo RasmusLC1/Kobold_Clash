@@ -111,7 +111,8 @@ class Decoration_Spawner():
         }
 
         self.spawn_methods = dungeon_types.get(self.game.dungeon_type)
-        self.decoration_initialiser = decoration_initialisers.get(self.game.dungeon_type)
+        initaliser_type = decoration_initialisers.get(self.game.dungeon_type)
+        self.decoration_initialiser = initaliser_type(self.game)
 
 
     def Generic_Spawn(self, types):
