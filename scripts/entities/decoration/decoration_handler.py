@@ -1,29 +1,4 @@
-from scripts.entities.decoration.ancient_tomb.loot_container.vase import Vase
-from scripts.entities.decoration.ancient_tomb.loot_container.effigy_tomb import Effigy_Tomb
-from scripts.entities.decoration.ancient_tomb.shrine.rune_shrine import Rune_Shrine
-from scripts.entities.decoration.ancient_tomb.loot_container.bookshelf import Bookshelf
-from scripts.entities.decoration.ancient_tomb.light_sources.brazier import Brazier
-from scripts.entities.decoration.ancient_tomb.shrine.blood_shrine import Blood_Shrine
-from scripts.entities.decoration.ancient_tomb.shrine.sacrifice_shrine import Sacrifice_Shrine
-
-
-from scripts.entities.decoration.shared.shrine.portal_shrine import Portal_Shrine
-from scripts.entities.decoration.shared.shrine.soul_well import Soul_Well
-from scripts.entities.decoration.shared.shrine.hunter_shrine import Hunter_Shrine
-from scripts.entities.decoration.shared.bones.bones import Bones
-from scripts.entities.decoration.shared.loot_container.chest import Chest
-from scripts.entities.decoration.shared.loot_container.mimic_chest import Mimic_Chest
-from scripts.entities.decoration.shared.loot_container.weapon_rack import Weapon_rack
-from scripts.entities.decoration.shared.loot_container.plinth import Plinth
-from scripts.entities.decoration.shared.loot_container.potion_table import Potion_Table
-from scripts.entities.decoration.shared.doors.door import Door
-from scripts.entities.decoration.shared.doors.fragile_wall import Fragile_Wall
-from scripts.entities.decoration.shared.boss_room.boss_room import Boss_Room
-from scripts.entities.decoration.shared.interactive.lever import Lever
-from scripts.entities.decoration.shared.interactive.teleportation_circle import Teleportation_Circle
-from scripts.entities.decoration.shared.interactive.campfire import Campfire
-from scripts.entities.decoration.crypt_decoration_initialiser import Crypt_Decoration_Initialiser
-
+from scripts.entities.decoration.decoration_spawner import Decoration_Spawner
 import random
 import math
 from scripts.engine.keys.keys import keys
@@ -31,41 +6,19 @@ from scripts.engine.keys.keys import keys
 class Decoration_Handler():
     def __init__(self, game) -> None:
         self.game = game
-        self.decoration_initialiser = Crypt_Decoration_Initialiser(game)
+        self.decoration_initialiser = None
         self.decorations = []
         self.bones = []
         self.nearby_decoration_cooldown = 0
         self.saved_data = {}
+        self.decoration_spawner = Decoration_Spawner(game)
 
-        self.spawn_methods = {
-            keys.door_basic: Door,
-            keys.fragile_wall: Fragile_Wall,
-            keys.chest: Chest,
-            keys.vase: Vase,
-            keys.effigy_tomb: Effigy_Tomb,
-            keys.potion_table: Potion_Table,
-            keys.rune_shrine: Rune_Shrine,
-            keys.blood_shrine: Blood_Shrine,
-            keys.portal_shrine: Portal_Shrine,
-            keys.hunter_shrine: Hunter_Shrine,
-            keys.sacrifice_shrine: Sacrifice_Shrine,
-            keys.soul_well: Soul_Well,
-            keys.bones: Bones,
-            keys.weapon_rack: Weapon_rack,
-            keys.plinth: Plinth,
-            keys.bookshelf: Bookshelf,
-            keys.lever: Lever,
-            keys.teleportation_circle: Teleportation_Circle,
-            keys.campfire: Campfire,
-            keys.brazier: Brazier,
-            keys.torch : None,
-        }
+        self.spawn_methods = None
 
 
         self.light_sources = {
             keys.torch : 0.1,
             keys.brazier : 0.3,
-
         }
 
         self.item_sacrifice = []
@@ -76,32 +29,8 @@ class Decoration_Handler():
         self.saved_data.clear()
 
     def Initialise(self, depth=0):
-        self.Generic_Spawn(self.spawn_methods.keys())
-        self.Spawn_Lightsource()
-        self.Set_Item_Sacrifice_Decorations()
-        self.Link_Teleportation_Circles()
-        self.Spawn_Items()
+        self.decorations, self.item_sacrifice, self.spawn_methods = self.decoration_spawner.Initialise()
 
-    
-    def Generic_Spawn(self, types):
-        for t in types:
-            if t not in self.decoration_initialiser.decorations:
-                continue
-            cls = self.spawn_methods.get(t)
-            if cls is None:
-                continue
-            for pos in self.decoration_initialiser.decorations[t]:
-                decoration = cls(self.game, pos)
-                self.decorations.append(decoration)
-
-    def Spawn_Items(self):
-        for decoration in self.decorations:
-            if decoration.type == keys.weapon_rack:
-                decoration.Spawn_Weapons()
-                continue
-
-            if decoration.type == keys.plinth:
-                decoration.Spawn_Rune()
 
     def Get_Random_Decoration_Of_Type(self, type):
         decorations_with_type = []
@@ -115,32 +44,13 @@ class Decoration_Handler():
         return random.choice(decorations_with_type)
     
 
-    def Set_Item_Sacrifice_Decorations(self):
-        item_sacrifice_decorations = [
-            keys.soul_well,
-            keys.hunter_shrine,
-            keys.sacrifice_shrine,
-        ]
-
-        for decoration in self.decorations:
-            if decoration.type in item_sacrifice_decorations:
-                self.item_sacrifice.append(decoration)
-
-    def Set_Chest_Version(self, depth = 1):
-        i = 0
-        while i < 9:
-            version = i
-            if random.randint(depth, max(depth + 5, 10)) < max(depth + 2, 5):
-                break
-            i += 1
-        return version  
-
     def Save_Decoration_Data(self):
         for decoration in self.decorations:
             decoration.Save_Data()
             self.saved_data[decoration.ID] = decoration.saved_data
 
     def Load_Data(self, data):
+        self.decoration_spawner.Get_Dungeon_Type()
         for ID, item_data in data.items():
             if not item_data:
                 continue
@@ -169,52 +79,6 @@ class Decoration_Handler():
         self.decorations.append(decoration)
         return decoration
 
-
-    def Spawn_Lightsource(self):
-        if not keys.light_source in self.decoration_initialiser.decorations:
-            return
-        for pos in self.decoration_initialiser.decorations[keys.light_source]:
-
-            # Type needs to be reset
-            type = random.choices(
-                population=list(self.light_sources.keys()),
-                weights=list(self.light_sources.values()),
-                k=1
-            )[0]
-
-            if type == keys.torch:
-                self.game.item_handler.weapon_handler.Weapon_Spawner(keys.torch, pos[0], pos[1])
-            else:
-                light_source = Brazier(self.game, pos)
-                self.decorations.append(light_source)
-    
-    def Spawn_Mimic_Chest(self, pos, size=None, version=None, radius=None, level=None):
-        chest = Mimic_Chest(self.game, pos, version)  
-        self.decorations.append(chest)
-        return chest
-   
-
-    
-    def Link_Teleportation_Circles(self):
-        teleportation_circles = []
-        for decoration in self.decorations:
-            if not decoration.type == keys.teleportation_circle:
-                continue
-
-            teleportation_circles.append(decoration)
-
-        random.shuffle(teleportation_circles)  # Randomly pair circles
-
-        for i in range(0, len(teleportation_circles) - 1, 2):
-            a = teleportation_circles[i]
-            b = teleportation_circles[i + 1]
-            a.Set_Linked_Portal(b)
-            b.Set_Linked_Portal(a)
-
-        for teleport_circle in teleportation_circles:
-            if not teleport_circle.linked_portal:
-                self.Remove_Decoration(teleport_circle)
-                teleportation_circles.remove(teleport_circle)
 
 
     def Update(self, delta_time):
@@ -247,20 +111,22 @@ class Decoration_Handler():
     def Find_Nearby_Decorations_Long_Distance(self, player_pos, max_distance):
         nearby_decorations = []
         for decoration in self.decorations:
-            distance = math.sqrt((player_pos[0] - decoration.pos[0]) ** 2 + (player_pos[1] - decoration.pos[1]) ** 2)
+            distance = self.Calculate_Distance(decoration)
             if distance < max_distance:
                 nearby_decorations.append(decoration)
         return nearby_decorations
 
-    def Open_Decoration(self, decorations):      
+    def Open_Decoration(self, decorations):
+        open_decorations = []      
         for decoration in decorations:
             if decoration.type == keys.bones:
-                decorations.remove(decoration)
-        if not decorations:
+                continue
+            open_decorations.append(decoration)
+        if not open_decorations:
             return False
         player_pos = self.game.player.pos
-        decorations.sort(key=lambda decoration: math.sqrt((player_pos[0] - decoration.pos[0]) ** 2 + (player_pos[1] - decoration.pos[1]) ** 2))
-        decoration = decorations[0]
+        open_decorations.sort(key=lambda decoration: self.Calculate_Distance(decoration))
+        decoration = open_decorations[0]
         decoration.Open()
 
     # Look for fragile walls and doors and pick a random one
@@ -282,7 +148,7 @@ class Decoration_Handler():
 
     def Sort_Decorations(self, decorations):
         player_pos = self.game.player.pos
-        decorations.sort(key=lambda decoration: math.sqrt((player_pos[0] - decoration.pos[0]) ** 2 + (player_pos[1] - decoration.pos[1]) ** 2))
+        decorations.sort(key=lambda decoration: self.Calculate_Distance(decoration))
         return decorations
 
 
@@ -298,8 +164,11 @@ class Decoration_Handler():
             self.game.tilemap.Remove_Entity_From_Tile(decoration.tile, decoration.ID)
             decoration.Delete()
 
-    def Remove_Bones(self, bones):
-        self.bones.remove(bones)
+    def Remove_Bones(self, bone):
+        if not bone in self.bones:
+            return 
+
+        self.bones.remove(bone)
         return
     
     def Get_Decoration_By_ID(self, ID):
@@ -316,3 +185,10 @@ class Decoration_Handler():
                  
             
         return False
+    
+
+    def Calculate_Distance(self, decoration):
+        player_pos = self.game.player.pos
+        dx = player_pos[0] - decoration.pos[0]
+        dy = player_pos[1] - decoration.pos[1]
+        return dx * dx + dy * dy

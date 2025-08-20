@@ -19,6 +19,7 @@ class Level_Loader():
     def __init__(self, game) -> None:
         self.game = game
         self.initialised = False
+        self.game.dungeon_type = None
 
     def load_level_From_Save(self, map_id):
         # Initialise the engine again upon load to prevent memory leaks
@@ -36,11 +37,19 @@ class Level_Loader():
         self.game.trap_handler.Initialise()
 
     def Load_Level_New_Map(self, map_id, clear_inventory = True):
+        self.Select_Dungeon_Type()
         self.game.game_initialiser.initialise_Engine()
         self.game.dungeon_generator.Generate_Map(map_id)
         self.load_level(map_id, clear_inventory)
         self.Initialise_Level()
 
+
+    def Select_Dungeon_Type(self):
+        dungeon_types = [
+            keys.ancient_crypt,
+            keys.crystal_caverns,
+        ]
+        self.game.dungeon_type = random.choice(dungeon_types)
 
     # Responsible for clearing the level data, clear inventory optional clear
     def Clear_Level(self, clear_inventory = True):
