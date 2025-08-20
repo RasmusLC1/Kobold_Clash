@@ -354,7 +354,7 @@ Upgrade weapons
 
 
 # Dugeon types
-## Ancient Tomb
+## Ancient Tomb - COMPLETE
 ### Specialty
     Basic dungeon, used as introduction
 ### Enemies

@@ -22,7 +22,7 @@ from scripts.entities.decoration.shared.boss_room.boss_room import Boss_Room
 from scripts.entities.decoration.shared.interactive.lever import Lever
 from scripts.entities.decoration.shared.interactive.teleportation_circle import Teleportation_Circle
 from scripts.entities.decoration.shared.interactive.campfire import Campfire
-from scripts.entities.decoration.decoration_initialiser import Decoration_Initialiser
+from scripts.entities.decoration.crypt_decoration_initialiser import Crypt_Decoration_Initialiser
 
 import random
 import math
@@ -31,7 +31,7 @@ from scripts.engine.keys.keys import keys
 class Decoration_Handler():
     def __init__(self, game) -> None:
         self.game = game
-        self.decoration_initialiser = Decoration_Initialiser(game)
+        self.decoration_initialiser = Crypt_Decoration_Initialiser(game)
         self.decorations = []
         self.bones = []
         self.nearby_decoration_cooldown = 0

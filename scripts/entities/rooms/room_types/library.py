@@ -1,5 +1,5 @@
 from scripts.engine.keys.keys import keys
-from scripts.entities.rooms.loot_room import Loot_Room
+from scripts.entities.rooms.room_types.loot_room import Loot_Room
 
 class Library(Loot_Room):
     def Spawn_Room(game, decorations):
