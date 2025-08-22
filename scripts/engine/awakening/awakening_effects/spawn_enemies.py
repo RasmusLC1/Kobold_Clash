@@ -90,7 +90,13 @@ class Spawn_Enemies(Awakening_Function):
         if not enemy_type:
             return
 
-        tile = self.game.tilemap.Get_Random_Tile_With_Path_To_Player()
+        tile = None
+        fail = 0
+        while not tile:
+            tile = self.game.tilemap.Get_Random_Tile_With_Path_To_Player()
+            fail += 1
+            if fail >= 10:
+                return
         enemy = self.game.enemy_handler.Enemy_Spawner(tile.scaled_pos, enemy_type)
 
         if enemy:

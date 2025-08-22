@@ -1,6 +1,7 @@
 
 from scripts.engine.keys.keys import keys
-from scripts.entities.traps.trap_spawner import Trap_Spawner
+from scripts.entities.traps.trap_spawners.ancient_crypt_trap_spawner import Ancient_Crypt_Trap_Spawner
+from scripts.entities.traps.trap_spawners.crystal_cavern_trap_spawner import Crystal_Cavern_Trap_Spawner
 import math
 import random
 
@@ -16,9 +17,15 @@ class Trap_Handler:
         self.nearby_traps = []
         self.saved_data = {}
         self.nearby_traps_cooldown = 0
-        self.trap_spawner = Trap_Spawner(game)
+        self.trap_spawner = None
 
     def Initialise(self):
+        trap_spawners = {
+            keys.ancient_crypt : Ancient_Crypt_Trap_Spawner,
+            keys.crystal_caverns : Crystal_Cavern_Trap_Spawner,
+        }
+        trap_spawner = trap_spawners.get(self.game.dungeon_type)
+        self.trap_spawner = trap_spawner(self.game)
         self.traps = self.trap_spawner.Initialise()
         
     def Save_Trap_Data(self):
@@ -76,10 +83,14 @@ class Trap_Handler:
     def Find_Traps_Near_Player(self):
         nearby_traps = []
         player = self.game.player
+        min_trap_distance = 200*200
+        player_pos = player.pos
         for trap in self.traps:
             # Calculate the Euclidean distance
-            distance = math.sqrt((player.pos[0] - trap.pos[0]) ** 2 + (player.pos[1] - trap.pos[1]) ** 2)
-            if distance < 200:
+
+            dx = player_pos[0] - trap.pos[0]
+            dy = player_pos[1] - trap.pos[1]
+            if dx*dx + dy*dy < min_trap_distance:
                 nearby_traps.append(trap)
         
         return nearby_traps

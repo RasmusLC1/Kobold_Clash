@@ -186,6 +186,12 @@ class Decoration_Handler():
             
         return False
     
+    def Spawn_Mimic_Chest(self, pos, size=None, version=None, radius=None, level=None):
+        chest = self.decoration_spawner.Spawn_Mimic_Chest(pos, version=version)
+        self.decorations.append(chest)
+        return chest
+   
+    
 
     def Calculate_Distance(self, decoration):
         player_pos = self.game.player.pos

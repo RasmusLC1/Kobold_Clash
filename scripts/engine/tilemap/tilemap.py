@@ -199,7 +199,17 @@ class Tilemap:
 
     # return the entities on a tile           
     def Get_Tile_Entities(self, tile_key):
-        return self.tilemap[tile_key].entities
+        tile = self.tilemap.get(tile_key)
+        
+        if not tile:
+            return None
+        
+        return tile.entities
+    
+    def Get_Tile(self, tile_key):
+        tile = self.tilemap.get(tile_key)
+        return tile
+
 
 
     # Add an remove entities from tiles dynamically as needed
@@ -371,7 +381,7 @@ class Tilemap:
             fail += 1
 
             if fail > 40:
-                return None
+                return random.choice(tiles)
         return random_tile
 
     def Get_Random_Tile_With_Path_Tile(self, target_tile):

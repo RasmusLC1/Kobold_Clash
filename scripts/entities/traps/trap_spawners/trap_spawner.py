@@ -1,38 +1,35 @@
 from scripts.entities.traps.traps.shared.spike import Spike
 from scripts.entities.traps.traps.shared.rubble import Rubble
-from scripts.entities.traps.traps.ancient_tomb.bell_pressure_plate import Bell_Pressure_plate
 from scripts.entities.traps.traps.shared.spike_poisoned import Spike_Poisoned
-from scripts.entities.traps.traps.ancient_tomb.soul_trap import Soul_Trap
 from scripts.entities.traps.traps.shared.spike_pit import Spike_Pit
 from scripts.entities.traps.traps.shared.fire_trap import Fire_Trap
 from scripts.entities.traps.environment.lava import Lava
 from scripts.entities.traps.environment.water import Water
 from scripts.entities.traps.environment.ice import Ice
 from scripts.entities.traps.traps.shared.spider_web import Spider_Web
-from scripts.entities.traps.traps.ancient_tomb.tomb_pressure_plate import Tomb_Pressure_Plate
 from scripts.entities.traps.traps.ancient_tomb.arrow_trap import Arrow_Trap
 from scripts.engine.keys.keys import keys
-import math
 import random
 
 
-TRAP_TABLE = { # Expand with new traps as needed
-    keys.pit_trap : 0.4,
-    keys.spike_poison_trap : 0.4,
-    keys.spike_trap : 0.6,
-    keys.rubble : 2,
-    keys.tomb_pressure_plate : 0.2,
-    keys.bell_pressure_plate : 0.3,
-    keys.soul_trap : 0.1,
-    keys.arrow_trap : 0.3,
-}
+
 
 TILESIZE = 32
 TRAP_DENSITY = 30 # Lower = more traps
 
 class Trap_Spawner():
-    def __init__(self, game):
+
+    TRAP_TABLE = { # Expand with new traps as needed
+        keys.pit_trap : 0.4,
+        keys.spike_poison_trap : 0.4,
+        keys.spike_trap : 0.6,
+        keys.rubble : 2,
+        keys.arrow_trap : 0.3,
+    }
+
+    def __init__(self, game, extra_traps=None, extra_trap_classes=None, trap_density = (8 * 8)):
         self.game = game
+        self.trap_density = trap_density # squared distance
         self.traps = []
         self.floor_tiles = {}
         self.traps_to_spawn = {}
@@ -41,9 +38,6 @@ class Trap_Spawner():
             keys.spike_poison_trap: Spike_Poisoned,
             keys.pit_trap: Spike_Pit,
             keys.rubble: Rubble,
-            keys.tomb_pressure_plate: Tomb_Pressure_Plate,
-            keys.bell_pressure_plate: Bell_Pressure_plate,
-            keys.soul_trap: Soul_Trap,
             keys.arrow_trap: Arrow_Trap,
             keys.lava_env: Lava,
             keys.fire_trap: Fire_Trap,
@@ -55,6 +49,8 @@ class Trap_Spawner():
             keys.medium_water_env: Water,
             keys.deep_water_env: Water,
         }
+        self.TRAP_TABLE = {**self.TRAP_TABLE, **(extra_traps or {})}
+        self.trap_classes = {**self.trap_classes, **(extra_trap_classes or {})}
 
 
     def Spawn_Traps(self, pos, trap_type, data=None):
@@ -113,9 +109,9 @@ class Trap_Spawner():
     def Initialise_Traps(self):
         self.Get_Floor_Tiles()
         trap_tiles = []  # Keeps track of already placed trap positions (in tile coordinates)
-        tilemap = self.game.tilemap.tilemap
+        tilemap = self.game.tilemap
         keys_to_delete = []
-        distance_between_traps = 8 * 8
+        distance_between_traps = self.trap_density
 
 
         # Convert floor_tiles to a list to avoid runtime errors from modifying the dict during iteration
@@ -144,8 +140,8 @@ class Trap_Spawner():
 
                 trap_tiles.append((i, j))  # Track this trap position
                 trap = random.choices(
-                    population=list(TRAP_TABLE.keys()),
-                    weights=list(TRAP_TABLE.values()),
+                    population=list(self.TRAP_TABLE.keys()),
+                    weights=list(self.TRAP_TABLE.values()),
                     k=1
                 )[0]
 
@@ -153,7 +149,11 @@ class Trap_Spawner():
                     self.traps_to_spawn[trap] = []
 
                 self.traps_to_spawn[trap].append((i * TILESIZE, j * TILESIZE))
-                tilemap[tile_key].Set_Contains_Decoration(True)
+                tile = tilemap.Get_Tile(tile_key)
+                
+                if not tile:
+                    return
+                tile.Set_Contains_Decoration(True)
                 keys_to_delete.append(tile_key)
 
 
