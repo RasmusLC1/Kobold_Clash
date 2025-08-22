@@ -121,9 +121,10 @@ class Enemy_Handler():
     # Long distance enemy search
     def Find_Nearby_Enemies_Long_Distance(self, entity, max_distance):
         nearby_enemies = []
+        max_distance_squared = max_distance * max_distance
         for enemy in self.enemies:
-            distance = math.sqrt((enemy.pos[0] - entity.pos[0]) ** 2 + (enemy.pos[1] - entity.pos[1]) ** 2)
-            if distance < max_distance and enemy.ID != entity.ID:
+            distance = (enemy.pos[0] - entity.pos[0]) ** 2 + (enemy.pos[1] - entity.pos[1]) ** 2
+            if distance < max_distance_squared and enemy.ID != entity.ID:
                 nearby_enemies.append(enemy)
         return nearby_enemies
     

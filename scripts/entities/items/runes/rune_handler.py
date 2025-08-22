@@ -231,10 +231,11 @@ class Rune_Handler():
     def Find_Nearby_Runes(self, entity_pos, max_distance):
         entity_pos = (entity_pos[0] - self.game.render_scroll[0], entity_pos[1] - self.game.render_scroll[1])
         nearby_runes = []
+        max_distance_squared = max_distance * max_distance
         for rune in self.active_runes:
             # Calculate the Euclidean distance
-            distance = math.sqrt((entity_pos[0] - rune.pos[0]) ** 2 + (entity_pos[1] - rune.pos[1]) ** 2)
-            if distance < max_distance:
+            distance = (entity_pos[0] - rune.pos[0]) ** 2 + (entity_pos[1] - rune.pos[1]) ** 2
+            if distance < max_distance_squared:
                 nearby_runes.append(rune)
 
         return nearby_runes

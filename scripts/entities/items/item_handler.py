@@ -105,10 +105,13 @@ class Item_Handler():
 
     def Search_For_Nearby_Items(self, entity_pos, max_distance):
         nearby_items = []
+        max_distance_squared = max_distance * max_distance
         for item in self.items:
             # Calculate the Euclidean distance
-            distance = math.sqrt((entity_pos[0] - item.pos[0]) ** 2 + (entity_pos[1] - item.pos[1]) ** 2)
-            if distance < max_distance:
+            dx = entity_pos[0] - item.pos[0]
+            dy = entity_pos[1] - item.pos[1]
+            distance = dx*dx + dy*dy
+            if distance < max_distance_squared:
                 nearby_items.append(item)
 
         return nearby_items
@@ -166,7 +169,7 @@ class Item_Handler():
         if not nearby_items:
             return None
         player_pos = self.game.player.pos
-        nearby_items.sort(key=lambda decoration: math.sqrt((player_pos[0] - decoration.pos[0]) ** 2 + (player_pos[1] - decoration.pos[1]) ** 2))
+        nearby_items.sort(key=lambda decoration: (player_pos[0] - decoration.pos[0]) ** 2 + (player_pos[1] - decoration.pos[1]) ** 2)
         return nearby_items[0].Pick_Up()
         
     
