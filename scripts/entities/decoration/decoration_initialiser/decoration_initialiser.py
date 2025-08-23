@@ -16,9 +16,7 @@ class Decoration_Initialiser():
         self.Spawn_Decorations()
     
     def Get_Floor_Tiles(self):
-        for tile_key, tile in self.game.tilemap.tilemap.items():
-            if keys.floor in tile.type:
-                self.floor_tiles[tile_key] = tile 
+        self.floor_tiles = self.game.tilemap.Get_Floor_Tiles()
 
 
     # Spawn large objects first as they need more space, therefore it's harder to

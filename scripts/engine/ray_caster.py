@@ -70,9 +70,9 @@ class Ray_Caster():
             else:
                 tile.Set_Active(DEFAULT_ACTIVITY)
                 
-            if not tile.type:
-                print("TILE DOES NOT HAVE TYPE", tile)
-                return False
+            # if not tile.type:
+            #     print("TILE DOES NOT HAVE TYPE", tile)
+            #     return False
             
             if not tile.translucent:
                 return False

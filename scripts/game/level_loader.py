@@ -49,7 +49,8 @@ class Level_Loader():
             keys.ancient_crypt,
             keys.crystal_caverns,
         ]
-        self.game.dungeon_type = random.choice(dungeon_types)
+        self.game.dungeon_type = keys.ancient_crypt
+        # self.game.dungeon_type = random.choice(dungeon_types)
 
     # Responsible for clearing the level data, clear inventory optional clear
     def Clear_Level(self, clear_inventory = True):
@@ -105,8 +106,7 @@ class Level_Loader():
         self.initialised = True
 
     def Spawn_Player(self):
+        print(self.game.dungeon_type)
         for spawner in self.game.tilemap.extract([(keys.spawners, 0)]):
-            spawn_tile = random.choice(list(self.game.tilemap.tiles_not_touching_wall.values()))
-
             self.game.player = Player(self.game, spawner[keys.pos], (28, 28), 100, 5, 5, 5, 5, 5)
             return

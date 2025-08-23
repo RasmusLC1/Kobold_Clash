@@ -2,21 +2,12 @@ class Tiles():
 
         
     floor = "floor"
+    wall = "wall"
     
-    
-    wall_top = "wall_top"
-    
-    
-    wall_left = "wall_left"
-    
-    
-    wall_right = "wall_right"
-    
-    
-    wall_middle = "wall_middle"
-    
-    
-    wall_bottom = "wall_bottom"
-    
-    
-    wall_bottom_corner = "wall_bottom_corner"
+    crypt_floor = "crypt_floor"
+    crypt_wall_top = "wall_top"
+    crypt_wall_left = "crypt_wall_left"
+    crypt_wall_right = "crypt_wall_right"
+    crypt_wall_middle = "crypt_wall_middle"
+    crypt_wall_bottom = "crypt_wall_bottom"
+    crypt_wall_bottom_corner = "crypt_wall_bottom_corner"

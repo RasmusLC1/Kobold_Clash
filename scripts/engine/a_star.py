@@ -116,7 +116,7 @@ class A_Star:
                 if not tile:
                     continue
 
-                tile_type = tile.type
+                tile_type = tile.sub_type
                 if tile_type == keys.floor and not tile.trap:
                     self.standard_map[map_x][map_y] = 0
 

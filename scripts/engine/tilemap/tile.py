@@ -10,6 +10,7 @@ class Tile():
     def __init__(self, game, type, variant, pos, size, active, light_level, physics, translucent) -> None:
         self.game = game
         self.type = type
+        self.Set_Sub_Type()
         self.variant = variant
         self.pos = pos
         self.scaled_pos = (pos[0] * TILE_SIZE, pos[1] * TILE_SIZE)
@@ -39,7 +40,14 @@ class Tile():
             self.sprite = self.game.assets[self.type][self.variant].copy()
         except Exception as e:
             return
-        
+    
+    def Set_Sub_Type(self):
+        if "floor" in self.type:
+            self.sub_type = keys.floor
+        if "wall" in self.type:
+            self.sub_type = keys.wall
+        else:
+            self.sub_type = self.type
 
     def Set_Type(self, new_type):
         self.type = new_type

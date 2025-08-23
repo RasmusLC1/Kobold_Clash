@@ -6,7 +6,7 @@ class Campfire(Decoration):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.campfire, pos, (32, 32))
         self.description = "Light a fire\nRest and recover"
-        self.max_animation = 5
+        self.max_animation = 4
         self.animation_cooldown = 0
         self.animation_cooldown_max = 0.8
 
