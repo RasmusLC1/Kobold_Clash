@@ -2,7 +2,7 @@ from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.fire_sp
 from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.ice_spirit import Ice_Spirit
 from scripts.engine.keys.keys import keys
 
-class Crypt_Spawn():
+class Crystal_Cavern_Spawn():
     def __init__(self, game):
         self.game = game
         self.spawn_methods = {
