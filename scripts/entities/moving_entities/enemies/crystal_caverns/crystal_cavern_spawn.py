@@ -1,19 +1,20 @@
 from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.fire_spirit import Fire_Spirit
 from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.ice_spirit import Ice_Spirit
+from scripts.entities.moving_entities.enemies.enemy_spawner import Enemy_Spawner
 from scripts.engine.keys.keys import keys
 
-class Crystal_Cavern_Spawn():
+class Crystal_Cavern_Spawn(Enemy_Spawner):
     def __init__(self, game):
-        self.game = game
-        self.spawn_methods = {
+        spawn_methods = {
             keys.fire_spirit : self.Spawn_Fire_Spirit,
             keys.ice_spirit: self.Spawn_Ice_Spirit,
         }
 
-        self.enemy_types = {
+        enemy_types = {
             keys.fire_spirit: 0.2,
             keys.ice_spirit: 0.2,
         }
+        super().__init__(game, spawn_methods, enemy_types)
     
     def Spawn_Fire_Spirit(self, pos):
         health = 80

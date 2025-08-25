@@ -95,7 +95,7 @@ class Enemy_Handler():
             # Rebuild everything except the last part
             base_type = '_'.join(parts[:-1])
 
-        spawn_function = self.enemy_spawner.spawn_methods.get(base_type)
+        spawn_function = self.enemy_spawner.Get_Spawn_Function()
         if not spawn_function:
             print(f"Warning: Enemy type '{type}' not recognized. Enemyhandler Enemy_Spawner")
             return None
