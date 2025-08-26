@@ -54,7 +54,6 @@ class Light():
         tile = self.tile
         if not self.Check_Base_Tile(tile):
             return
-
         # If current tile is dimmer than this light, add/update this light’s contribution
         if self.light_level > tile.light_level:
             tile.Add_Light_Contribution(self.id, self.light_level)

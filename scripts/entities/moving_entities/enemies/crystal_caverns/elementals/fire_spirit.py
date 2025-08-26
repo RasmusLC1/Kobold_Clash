@@ -28,10 +28,10 @@ class Fire_Spirit(Enemy):
 
         self.Look_For_Health(delta_time)
 
-        if self.distance_to_player < 120:
+        if self.distance_to_player < 200:
             self.Attack(delta_time)
 
-        if self.distance_to_player > 150 and self.charge:
+        if self.distance_to_player > 300 and self.charge:
             self.charge = 0
 
 

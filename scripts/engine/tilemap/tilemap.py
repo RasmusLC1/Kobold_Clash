@@ -64,7 +64,6 @@ class Tilemap:
 
     def Generate_Tile(self, tile_pos, tile_values):
         type = self.Set_Type(tile_values[keys.type])
-        print(type)
         variant = tile_values[keys.variant]
         
         active = tile_values['active']
