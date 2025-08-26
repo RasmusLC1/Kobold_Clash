@@ -257,6 +257,7 @@ class Graphics_Loader:
         entities_assets = {
             keys.ice_spirit: get_tiles_from_sheet('entities/enemies/ice_spirit/ice_spirit_idle.png', 3, 0, 0, 0, 32, 32),
             keys.ice_spirit_attack: get_tiles_from_sheet('entities/enemies/ice_spirit/ice_spirit_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.ice_spirit_running: get_tiles_from_sheet('entities/enemies/ice_spirit/ice_spirit_idle.png', 3, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 

@@ -46,11 +46,10 @@ class Level_Loader():
 
     def Select_Dungeon_Type(self):
         dungeon_types = [
-            keys.ancient_crypt,
+            # keys.ancient_crypt,
             keys.crystal_caverns,
         ]
-        self.game.dungeon_type = keys.ancient_crypt
-        # self.game.dungeon_type = random.choice(dungeon_types)
+        self.game.dungeon_type = random.choice(dungeon_types)
 
     # Responsible for clearing the level data, clear inventory optional clear
     def Clear_Level(self, clear_inventory = True):

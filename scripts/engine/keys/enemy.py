@@ -210,6 +210,8 @@ class Enemy():
     
     ice_spirit_attack = "ice_spirit_attack"
 
+    ice_spirit_running = "ice_spirit_running"
+
 # Wight King
     
     wight_king = "wight_king"

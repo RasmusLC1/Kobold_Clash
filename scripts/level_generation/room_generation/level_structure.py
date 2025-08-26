@@ -107,18 +107,18 @@ class Level_Structure():
 
     def Set_Dungeon_Type(self):
         if self.game.dungeon_type == keys.ancient_crypt:
-            self.floor = keys.crypt_floor
-            self.wall_left = keys.crypt_wall_left
-            self.wall_right = keys.crypt_wall_right
-            self.wall_bottom = keys.crypt_wall_bottom
-            self.wall_bottom_corner = keys.crypt_wall_bottom_corner
-            self.wall_middle = keys.crypt_wall_middle
-            self.wall_top = keys.crypt_wall_top
+            self.floor = keys.floor
+            self.wall_left = keys.wall_left
+            self.wall_right = keys.wall_right
+            self.wall_bottom = keys.wall_bottom
+            self.wall_bottom_corner = keys.wall_bottom_corner
+            self.wall_middle = keys.wall_middle
+            self.wall_top = keys.wall_top
         else:
-            self.floor = keys.crypt_floor
-            self.wall_left = keys.crypt_wall_left
-            self.wall_right = keys.crypt_wall_right
-            self.wall_bottom = keys.crypt_wall_bottom
-            self.wall_bottom_corner = keys.crypt_wall_bottom_corner
-            self.wall_middle = keys.crypt_wall_middle
-            self.wall_top = keys.crypt_wall_top
+            self.floor = keys.floor
+            self.wall_left = keys.wall_left
+            self.wall_right = keys.wall_right
+            self.wall_bottom = keys.wall_bottom
+            self.wall_bottom_corner = keys.wall_bottom_corner
+            self.wall_middle = keys.wall_middle
+            self.wall_top = keys.wall_top

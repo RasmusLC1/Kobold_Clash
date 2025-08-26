@@ -25,6 +25,7 @@ class Tilemap:
         self.max_x = -99999
         self.min_y = 99999
         self.max_y = -99999
+        self.dungeon_type = None
      
     def save(self, path):
         serializable_tilemap = {
@@ -51,6 +52,7 @@ class Tilemap:
 
         self.tile_size = map_data['tile_size']
         tilemap_data = map_data['tilemap']
+        self.Set_Dungeon_Type()
 
         for tile_key_str, tile_values in tilemap_data.items():
             x, y = map(int, tile_key_str.split(';'))
@@ -61,8 +63,10 @@ class Tilemap:
         self.Find_Tiles_Not_Touching_Wall()
 
     def Generate_Tile(self, tile_pos, tile_values):
-        type = tile_values[keys.type]
+        type = self.Set_Type(tile_values[keys.type])
+        print(type)
         variant = tile_values[keys.variant]
+        
         active = tile_values['active']
         light_level = tile_values['light']
         physics = False
@@ -80,6 +84,17 @@ class Tilemap:
         self.min_y = min(self.min_y, tile_pos[1])
         self.max_y = max(self.max_y, tile_pos[1])
 
+    def Set_Dungeon_Type(self):
+        dungeon_types = {
+            keys.ancient_crypt : "crypt_",
+            keys.crystal_caverns : "crystal_cavern_",
+        }
+        self.dungeon_type = dungeon_types.get(self.game.dungeon_type)
+
+
+
+    def Set_Type(self, type):
+        return self.dungeon_type + type
 
     # Runs one time when loading, but expensive to compute
     def Find_Tiles_Not_Touching_Wall(self):
