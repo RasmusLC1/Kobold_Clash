@@ -354,7 +354,7 @@ Upgrade weapons
 
 
 # Dugeon types
-## Ancient Tomb
+## Ancient Tomb - COMPLETE
 ### Specialty
     Basic dungeon, used as introduction
 ### Enemies
@@ -391,6 +391,7 @@ Upgrade weapons
     - # False walls, can be destroyed to reveal treasure rooms
     - # Levers that spawn items, open doors etc when activated
     - Blood Fountains player loses half current health, gets permanent vampiric 1
+    
     
 
 

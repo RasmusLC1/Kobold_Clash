@@ -1,12 +1,12 @@
 import random
 from scripts.engine.keys.keys import keys
-from scripts.entities.rooms.room_initialiser import Room_Initialiser
 import math
 
 TILESIZE = 32
 NEIGHBOR_OFFSETS = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 0), (-1, 1), (0, 1), (1, 1)]
 
 class Decoration_Initialiser():
+    room_type = None
     def __init__(self, game):
         self.game = game
         self.tiles_not_touching_walls = self.game.tilemap.tiles_not_touching_wall
@@ -16,9 +16,7 @@ class Decoration_Initialiser():
         self.Spawn_Decorations()
     
     def Get_Floor_Tiles(self):
-        for tile_key, tile in self.game.tilemap.tilemap.items():
-            if keys.floor in tile.type:
-                self.floor_tiles[tile_key] = tile 
+        self.floor_tiles = self.game.tilemap.Get_Floor_Tiles()
 
 
     # Spawn large objects first as they need more space, therefore it's harder to
@@ -30,15 +28,10 @@ class Decoration_Initialiser():
         self.Spawn_Large_Objects()
         self.Spawn_Small_Objects()
 
-
-
     def Spawn_Large_Objects(self):
         self.Spawn_Portal_Shrine()
-        self.Spawn_Effigy_Tomb()
         self.Spawn_Hunter_Shrine()
-        self.Spawn_Sacrifice_Shrine()
         self.Spawn_Soul_Well()
-        self.Spawn_Blood_Shrine()
 
     def Spawn_Small_Objects(self):
         self.Spawn_Campfire()
@@ -100,33 +93,20 @@ class Decoration_Initialiser():
 
 
 
-
-    def Spawn_Effigy_Tomb(self):
-        amount = random.randint(10, 15)
-        self.Find_Floor_Tiles_Large_Object(keys.effigy_tomb, amount)
-
     def Spawn_Hunter_Shrine(self):
         amount = random.randint(2, 4)
         self.Find_Floor_Tiles_Large_Object(keys.hunter_shrine, amount)
 
-    def Spawn_Sacrifice_Shrine(self):
-        self.Find_Floor_Tiles_Large_Object(keys.sacrifice_shrine, 1)
-
-    
     def Spawn_Portal_Shrine(self):
         self.Find_Floor_Tiles_Large_Object(keys.portal_shrine, 1, True)
 
     def Spawn_Soul_Well(self):
         self.Find_Floor_Tiles_Large_Object(keys.soul_well, 1, True)
 
-    def Spawn_Blood_Shrine(self):
-        self.Find_Floor_Tiles_Large_Object(keys.blood_shrine, 1, True)
-
-
-
-    # TODO: Might need a seperate class for handling rooms
     def Spawn_Rooms(self):
-        self.decorations.update(Room_Initialiser.Spawn_Rooms(self.game, self.decorations))
+        if not self.room_type:
+            return
+        self.decorations.update(self.room_type.Spawn_Rooms(self.game, self.decorations))
 
 
     def Spawn_Lightsource(self):

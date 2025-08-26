@@ -79,3 +79,10 @@ class Game_Types():
     loot_room = "loot_room"
 
     boss_room = "boss_room"
+
+
+# Dungeon Types
+
+    ancient_crypt = "ancient_crypt"
+
+    crystal_caverns = "crystal_caverns"

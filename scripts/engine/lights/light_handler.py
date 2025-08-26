@@ -18,11 +18,6 @@ class Light_Handler():
     
     def Add_Light_Source(self, light_source):
         self.lights.append(light_source)
-
-    def distance_from_center(light, center_pos):
-        pos = light.pos
-        return math.sqrt((pos[0] - center_pos[0]) ** 2 + (pos[1] - center_pos[1]) ** 2)
-
         
     def Find_Nearby_Lights(self, pos, max_distance):
         nearby_lights = []

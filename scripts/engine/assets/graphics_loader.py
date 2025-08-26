@@ -7,6 +7,7 @@ class Graphics_Loader:
     def Run_All(self):
         Graphics_Loader.Asset_Background_List(self)
         Graphics_Loader.Asset_Crypt_Tile_List(self)
+        Graphics_Loader.Asset_Crystal_Cavern_Tile_List(self)
         Graphics_Loader.Asset_Trap_List(self)
         Graphics_Loader.Asset_Effect_List(self)
         Graphics_Loader.Asset_Magic_Attack_List(self)
@@ -57,13 +58,25 @@ class Graphics_Loader:
 
     def Asset_Crypt_Tile_List(self):
         tiles_assets = {
-            keys.floor : get_tiles_from_sheet('crypt_assets/crypt_floor.png', 5, 1, 0, 0, 32, 32),
-            keys.wall_top : get_tiles_from_sheet('crypt_assets/wall_top.png', 3, 0, 0, 0, 32, 32),
-            keys.wall_left : get_tiles_from_sheet('crypt_assets/wall_left.png', 0, 3, 0, 0, 32, 32),
-            keys.wall_right : get_tiles_from_sheet('crypt_assets/wall_right.png', 0, 3, 0, 0, 32, 32),
-            keys.wall_middle : get_tiles_from_sheet('crypt_assets/wall_middle.png', 0, 3, 0, 0, 32, 32),
-            keys.wall_bottom : get_tiles_from_sheet('crypt_assets/wall_bottom.png', 3, 0, 0, 0, 32, 32),
-            keys.wall_bottom_corner : get_tiles_from_sheet('crypt_assets/wall_bottom_corner.png', 2, 0, 0, 0, 32, 32),
+            keys.crypt_floor : get_tiles_from_sheet('tile_set/crypt/floor.png', 5, 1, 0, 0, 32, 32),
+            keys.crypt_wall_top : get_tiles_from_sheet('tile_set/crypt/wall_top.png', 3, 0, 0, 0, 32, 32),
+            keys.crypt_wall_left : get_tiles_from_sheet('tile_set/crypt/wall_left.png', 0, 3, 0, 0, 32, 32),
+            keys.crypt_wall_right : get_tiles_from_sheet('tile_set/crypt/wall_right.png', 0, 3, 0, 0, 32, 32),
+            keys.crypt_wall_middle : get_tiles_from_sheet('tile_set/crypt/wall_middle.png', 0, 3, 0, 0, 32, 32),
+            keys.crypt_wall_bottom : get_tiles_from_sheet('tile_set/crypt/wall_bottom.png', 3, 0, 0, 0, 32, 32),
+            keys.crypt_wall_bottom_corner : get_tiles_from_sheet('tile_set/crypt/wall_bottom_corner.png', 2, 0, 0, 0, 32, 32),
+        }
+        self.assets.update(tiles_assets)
+
+    def Asset_Crystal_Cavern_Tile_List(self):
+        tiles_assets = {
+            keys.crystal_cavern_floor : get_tiles_from_sheet('tile_set/crystal_cavern/floor.png', 5, 1, 0, 0, 32, 32),
+            keys.crystal_cavern_wall_top : get_tiles_from_sheet('tile_set/crystal_cavern/wall_top.png', 3, 0, 0, 0, 32, 32),
+            keys.crystal_cavern_wall_left : get_tiles_from_sheet('tile_set/crystal_cavern/wall_left.png', 0, 3, 0, 0, 32, 32),
+            keys.crystal_cavern_wall_right : get_tiles_from_sheet('tile_set/crystal_cavern/wall_right.png', 0, 3, 0, 0, 32, 32),
+            keys.crystal_cavern_wall_middle : get_tiles_from_sheet('tile_set/crystal_cavern/wall_middle.png', 0, 3, 0, 0, 32, 32),
+            keys.crystal_cavern_wall_bottom : get_tiles_from_sheet('tile_set/crystal_cavern/wall_bottom.png', 3, 0, 0, 0, 32, 32),
+            keys.crystal_cavern_wall_bottom_corner : get_tiles_from_sheet('tile_set/crystal_cavern/wall_bottom_corner.png', 2, 0, 0, 0, 32, 32),
         }
         self.assets.update(tiles_assets)
 
@@ -244,6 +257,7 @@ class Graphics_Loader:
         entities_assets = {
             keys.ice_spirit: get_tiles_from_sheet('entities/enemies/ice_spirit/ice_spirit_idle.png', 3, 0, 0, 0, 32, 32),
             keys.ice_spirit_attack: get_tiles_from_sheet('entities/enemies/ice_spirit/ice_spirit_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.ice_spirit_running: get_tiles_from_sheet('entities/enemies/ice_spirit/ice_spirit_idle.png', 3, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 

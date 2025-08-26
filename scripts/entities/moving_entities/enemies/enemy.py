@@ -2,7 +2,7 @@ from scripts.entities.moving_entities.moving_entity import Moving_Entity
 from scripts.entities.moving_entities.enemies.behavior.path_finding import Path_Finding
 from scripts.entities.moving_entities.enemies.behavior.attack_strategies import Attack_Stategies
 from scripts.entities.textbox.enemy_textbox import Enemy_Textbox
-from scripts.entities.decoration.bones.bones import Bones 
+from scripts.entities.decoration.shared.bones.bones import Bones 
 from scripts.entities.moving_entities.enemies.behavior.intent_manager import Intent_Manager
 from scripts.engine.keys.keys import keys
 

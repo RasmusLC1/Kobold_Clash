@@ -137,7 +137,7 @@ class Weapon(Item):
         tile = self.game.tilemap.Current_Tile(pos)
         if not tile:
             return True
-        if not self.wall_hit and 'wall' in tile.type:
+        if not self.wall_hit and 'wall' in tile.sub_type:
             self.wall_hit = True
             self.Spawn_Spark()
             return False

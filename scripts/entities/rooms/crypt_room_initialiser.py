@@ -1,9 +1,9 @@
-from scripts.entities.rooms.library import Library
-from scripts.entities.rooms.treasure_room import Treasure_Room
-from scripts.entities.rooms.boss_room import Boss_Room
+from scripts.entities.rooms.room_types.library import Library
+from scripts.entities.rooms.room_types.treasure_room import Treasure_Room
+from scripts.entities.rooms.room_types.boss_room import Boss_Room
 
 
-class Room_Initialiser():
+class Crypt_Room_Initialiser():
     def Spawn_Rooms(game, decorations):
         decorations = {}
         decorations.update(Library.Spawn_Room(game, decorations))

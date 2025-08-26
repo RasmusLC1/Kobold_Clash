@@ -29,6 +29,7 @@ class Dungeon_Generator():
         self.a_star = A_Star()
         # TODO: IMPLEMENT MORE TRAPS AND ADD THEM HERE
         self.noise_map = Noise_Map()
+        self.level_structure = Level_Structure(game)
         
         self.torches = []
 
@@ -78,7 +79,7 @@ class Dungeon_Generator():
 
         Rune_Spawner.Spawn_Runes(self.cellular_automata.map, map_id, self.tile_size, size_x, size_y, self.tilemap.offgrid_tiles)
 
-        Level_Structure.Level_Structure(self.cellular_automata.map, self.tile_size, size_x, size_y, self.tilemap)
+        self.level_structure.Level_Structure(self.cellular_automata.map, self.tile_size, size_x, size_y, self.tilemap)
 
         self.Update_Load_Menu(6)
         self.tilemap.save(f'data/maps/{map_id}.json')

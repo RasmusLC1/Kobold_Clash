@@ -1,5 +1,5 @@
 from scripts.engine.keys.keys import keys
-from scripts.entities.rooms.loot_room import Loot_Room
+from scripts.entities.rooms.room_types.loot_room import Loot_Room
 
 
 class Treasure_Room(Loot_Room):
