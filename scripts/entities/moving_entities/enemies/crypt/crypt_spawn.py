@@ -14,12 +14,12 @@ from scripts.entities.moving_entities.enemies.crypt.void_spawn.shade import Shad
 from scripts.entities.moving_entities.enemies.crypt.void_spawn.phantom import Phantom
 from scripts.entities.moving_entities.enemies.crypt.void_spawn.wraith.wraith import Wraith
 from scripts.entities.moving_entities.enemies.crypt.skeleton.wight_king.wight_king import Wight_King
+from scripts.entities.moving_entities.enemies.enemy_spawner import Enemy_Spawner
 from scripts.engine.keys.keys import keys
 
-class Crypt_Spawn():
+class Crypt_Spawn(Enemy_Spawner):
     def __init__(self, game):
-        self.game = game
-        self.spawn_methods = {
+        spawn_methods = {
             keys.skeleton_warrior: self.Spawn_Skeleton_Warrior,
             keys.skeleton_ranger : self.Spawn_Skeleton_Ranger,
             keys.spider : self.Spawn_Spider,
@@ -37,7 +37,7 @@ class Crypt_Spawn():
             keys.ghoul : self.Spawn_Ghoul,
         }
 
-        self.enemy_types = {
+        enemy_types = {
             keys.skeleton_warrior: 0.4,
             keys.skeleton_ranger: 0.2,
             keys.skeleton_bell_toller: 0.1,
@@ -54,6 +54,7 @@ class Crypt_Spawn():
             keys.wight_king: 0.01,
             keys.vampire: 0.01,
         }
+        super().__init__(game, spawn_methods, enemy_types)
         
     def Spawn_Skeleton_Warrior(self, pos):
         health = 70

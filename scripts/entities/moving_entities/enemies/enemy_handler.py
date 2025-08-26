@@ -1,5 +1,6 @@
 
 from scripts.entities.moving_entities.enemies.crypt.crypt_spawn import Crypt_Spawn
+from scripts.entities.moving_entities.enemies.crystal_caverns.crystal_cavern_spawn import Crystal_Cavern_Spawn
 from scripts.entities.moving_entities.enemies.enemy_pathfinding_handler import Enemy_Pathfinding_Handler
 from scripts.engine.keys.keys import keys
 import math
@@ -8,7 +9,7 @@ import random
 class Enemy_Handler():
     def __init__(self, game):
         self.game = game
-        self.crypt_spawn = Crypt_Spawn(game)
+        self.enemy_spawner = None
         self.enemies = []
         self.pathfinding_handler = Enemy_Pathfinding_Handler(game)
         self.nearby_enemies = []
@@ -45,6 +46,10 @@ class Enemy_Handler():
     def Initialise(self):
         spawners = self.game.tilemap.extract([(keys.spawners, 1)])
         spawners_length = len(spawners)
+
+        self.Set_Spawner_Type()
+
+
         
         for i in range(10):
             # Spawn enemy at a random location
@@ -59,9 +64,20 @@ class Enemy_Handler():
                 pos = (spawner_pos[0] + random.randint(-10, 10), spawner_pos[1] + random.randint(-10, 10))
                 self.Enemy_Spawner(pos, type)
 
+
+    def Set_Spawner_Type(self):
+        spawner_types = {
+            keys.ancient_crypt : Crypt_Spawn,
+            keys.crystal_caverns : Crystal_Cavern_Spawn
+        }
+
+        spawner_type = spawner_types.get(self.game.dungeon_type)
+
+        self.enemy_spawner = spawner_type(self.game)
+
     def Get_Random_Enemy_Type(self) :
-        type = random.choices(list(self.crypt_spawn.enemy_types.keys()),
-                              weights=list(self.crypt_spawn.enemy_types.values()))[0]
+        type = random.choices(list(self.enemy_spawner.enemy_types.keys()),
+                              weights=list(self.enemy_spawner.enemy_types.values()))[0]
         return type
 
     
@@ -79,7 +95,7 @@ class Enemy_Handler():
             # Rebuild everything except the last part
             base_type = '_'.join(parts[:-1])
 
-        spawn_function = self.crypt_spawn.spawn_methods.get(base_type)
+        spawn_function = self.enemy_spawner.Get_Spawn_Function()
         if not spawn_function:
             print(f"Warning: Enemy type '{type}' not recognized. Enemyhandler Enemy_Spawner")
             return None
