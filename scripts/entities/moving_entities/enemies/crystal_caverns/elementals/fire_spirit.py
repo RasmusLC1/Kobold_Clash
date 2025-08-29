@@ -1,12 +1,12 @@
-from scripts.entities.moving_entities.enemies.enemy import Enemy
+from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.elemental import Elemental
 from scripts.entities.items.weapons.magic_attacks.fire.flame_thrower import Flame_Thrower
 from scripts.engine.keys.keys import keys
 
 FIRE_PROJECTILE_NUM = 2 * 20
 
-class Fire_Spirit(Enemy):
+class Fire_Spirit(Elemental):
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 0.8, 'elemental', 20)
+        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 1.2, 20)
         self.animation_handler.Set_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(0.3)
@@ -25,7 +25,8 @@ class Fire_Spirit(Enemy):
         self.active_weapon = Flame_Thrower(self.game)
 
     def Update(self, tilemap, delta_time, movement = (0, 0)):
-        super().Update(tilemap, delta_time, movement)
+        if not super().Update(tilemap, delta_time, movement):
+            return False
         if self.effects.fire.effect:
             self.Set_Effect(keys.healing, self.effects.frozen.effect)
             self.Set_Effect(keys.fire_resistance, 2)

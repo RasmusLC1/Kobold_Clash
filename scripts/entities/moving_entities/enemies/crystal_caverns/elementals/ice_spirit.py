@@ -1,12 +1,12 @@
-from scripts.entities.moving_entities.enemies.enemy import Enemy
+from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.elemental import Elemental
 from scripts.entities.items.weapons.magic_attacks.ice.ice_shooter import Ice_Shooter
 from scripts.engine.keys.keys import keys
 
 ICE_PROJECTILE_NUM = 3 * 20
 
-class Ice_Spirit(Enemy):
+class Ice_Spirit(Elemental):
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 1.4, 'elemental', 20)
+        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 1.6,  20)
         self.animation_handler.Set_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(0.3)
@@ -21,7 +21,8 @@ class Ice_Spirit(Enemy):
         self.active_weapon = Ice_Shooter(self.game)
 
     def Update(self, tilemap, delta_time, movement = (0, 0)):
-        super().Update(tilemap, delta_time, movement)
+        if not super().Update(tilemap, delta_time, movement):
+            return False
         if self.effects.frozen.effect:
             self.Set_Effect(keys.healing, self.effects.frozen.effect)
             self.Set_Effect(keys.frozen_resistance, 2)

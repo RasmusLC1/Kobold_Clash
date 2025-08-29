@@ -187,9 +187,10 @@ class Enemy(Moving_Entity):
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
         self.Spawn_Damaged_Particles()
         if not super().Damage_Taken(damage, effect, direction):
-            return
+            return False
         
         self.Delete()
+        return True
 
     
 

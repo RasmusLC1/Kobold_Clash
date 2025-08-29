@@ -17,7 +17,7 @@ class Crystal_Cavern_Spawn(Enemy_Spawner):
         super().__init__(game, spawn_methods, enemy_types)
     
     def Spawn_Fire_Spirit(self, pos):
-        health = 80
+        health = 40
         strength = 4
         speed = 5
         agility = 4 
@@ -35,7 +35,7 @@ class Crystal_Cavern_Spawn(Enemy_Spawner):
         
 
     def Spawn_Ice_Spirit(self, pos):
-        health = 100
+        health = 60
         strength = 7
         speed = 3
         agility = 3

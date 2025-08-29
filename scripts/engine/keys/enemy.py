@@ -9,6 +9,9 @@ class Enemy():
 
     undead = "undead"
 
+    elemental = "elemental"
+
+
     claw = "claw"
 
 # Enemy Symbols
