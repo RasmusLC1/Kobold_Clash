@@ -2,6 +2,7 @@ from scripts.entities.moving_entities.enemies.enemy import Enemy
 from scripts.entities.items.weapons.magic_attacks.fire.flame_thrower import Flame_Thrower
 from scripts.engine.keys.keys import keys
 
+FIRE_PROJECTILE_NUM = 1 * 20
 
 class Fire_Spirit(Enemy):
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina):
@@ -14,7 +15,8 @@ class Fire_Spirit(Enemy):
 
         self.look_for_health_cooldown = 0
         self.fire_cooldown = 0
-        self.spewing_fire = False
+        self.shooting_fire = 0
+        self.attack_distance  = 100
 
         self.animation_num_max = 3
         self.attack_animation_num_max = 3
@@ -23,42 +25,42 @@ class Fire_Spirit(Enemy):
         self.flame_thrower = Flame_Thrower(self.game)
 
     def Update(self, tilemap, delta_time, movement = (0, 0)):
-        
         super().Update(tilemap, delta_time, movement)
+        if self.effects.fire.effect:
+            self.Set_Effect(keys.healing, self.effects.frozen.effect)
+            self.Set_Effect(keys.fire_resistance, 2)
 
-        self.Look_For_Health(delta_time)
-
-        if self.distance_to_player < 120:
-            self.Attack(delta_time)
-
-        if self.distance_to_player > 150 and self.charge:
-            self.charge = 0
 
 
         
     
     def Attack(self, delta_time):
         if not super().Attack(delta_time):
+            return
+        
+        if self.game.player.effects.invisibility.effect:
             return False
         
-        # If Player is to close, then archer cannot shoot
-        if self.distance_to_player < 30:
+        # If Player is to close, then ice spirit cannot shoot
+        if self.distance_to_player < 50:
             return False
-
+        
         self.charge += delta_time
-        if self.charge >= self.max_weapon_charge:
-            self.spewing_fire = True
 
-        if self.spewing_fire:
-            self.Shoot_Fire()
+        if self.charge >= self.max_weapon_charge and not self.shooting_fire:
+            self.shooting_fire = FIRE_PROJECTILE_NUM
 
-        if self.charge <= 0:
-            self.spewing_fire = False
+        if self.shooting_fire:
+            self.Shoot_Fire_Particle()
+
     
-    def Shoot_Fire(self):
+    
+    def Shoot_Fire_Particle(self):
         self.Set_Target(self.game.player.pos)
         self.Set_Attack_Direction()
-        self.charge = self.flame_thrower.Particle_Creation(self, self.charge, 5)
+        self.shooting_fire = self.active_weapon.Particle_Creation(self, self.shooting_fire, 10)
+        if not self.shooting_fire:
+            self.charge = 0
 
 
     # TODO: IMPLEMENT
@@ -85,16 +87,3 @@ class Fire_Spirit(Enemy):
         
         return
 
-
-    def Set_Action(self, movement = None):
-        if not movement:
-            return
-        if movement[1] or movement[0]:
-            self.animation_handler.Set_Animation('running')
-            return
-        
-        self.animation_handler.Set_Animation(keys.idle)
-
-    def Set_On_Fire(self, fire_time):
-        self.effects.Set_Effect(keys.healing, fire_time)
-        return False

@@ -10,7 +10,6 @@ import copy
 
 # Tiles that are checked for physics
 NEIGHBOR_OFFSETS = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 0), (-1, 1), (0, 1), (1, 1)]
-FLOOR_TTLES = {keys.floor}
 
 class Tilemap:
     def __init__(self, game, tile_size=32) -> None:
@@ -63,8 +62,8 @@ class Tilemap:
         self.Find_Tiles_Not_Touching_Wall()
 
     def Generate_Tile(self, tile_pos, tile_values):
-        type = self.Set_Type(tile_values[keys.type])
-        print(type)
+        type = tile_values[keys.type]
+        sub_type = self.Set_Sub_Type(type)
         variant = tile_values[keys.variant]
         
         active = tile_values['active']
@@ -76,7 +75,7 @@ class Tilemap:
             physics = True
             translucent = False
 
-        tile = Tile(self.game, type, variant, tile_pos, self.tile_size, active, light_level, physics, translucent)
+        tile = Tile(self.game, type, sub_type, variant, tile_pos, self.tile_size, active, light_level, physics, translucent)
         self.tilemap[tile_pos] = tile
 
         self.min_x = min(self.min_x, tile_pos[0])
@@ -93,16 +92,15 @@ class Tilemap:
 
 
 
-    def Set_Type(self, type):
+    def Set_Sub_Type(self, type):
         return self.dungeon_type + type
 
     # Runs one time when loading, but expensive to compute
     def Find_Tiles_Not_Touching_Wall(self):
         self.tiles_not_touching_wall.clear()
         for tile_key, tile in self.tilemap.items():
-            if not tile or tile.sub_type != keys.floor:
+            if not tile or tile.type != keys.floor:
                 continue
-
             x, y = tile.pos
             touching_wall = False
 
@@ -112,7 +110,7 @@ class Tilemap:
 
                 if neighbor_key not in self.tilemap:
                     continue
-
+                
                 neighbor_tile = self.tilemap[neighbor_key]
                 if neighbor_tile and neighbor_tile.physics:
                     touching_wall = True
@@ -142,7 +140,7 @@ class Tilemap:
 
         for loc in list(self.tilemap):
             tile = self.tilemap[loc]
-            if (tile.sub_type, tile.variant) in id_pairs:
+            if (tile.type, tile.variant) in id_pairs:
                 matches.append(copy.copy(tile))
                 matches[-1].pos = (matches[-1].pos[0] * self.tile_size, matches[-1].pos[1] * self.tile_size)
                 if not keep:
@@ -316,12 +314,7 @@ class Tilemap:
         tile = self.Current_Tile_Type(pos)
         if not tile:
             return False
-        if tile.sub_type == keys.floor:
-            return True
-        else:
-            return False
-
-    
+        return not tile.physics
 
     
     # Check for collision with solid tiles
@@ -354,7 +347,7 @@ class Tilemap:
     def Get_Floor_Tiles(self):
         floor_tiles = {}
         for tile_key, tile in self.tilemap.items():
-            if keys.floor in tile.sub_type:
+            if tile.type == keys.floor:
                 floor_tiles[tile_key] = tile 
 
         return floor_tiles
@@ -366,7 +359,7 @@ class Tilemap:
             if not tile:
                 print(tile, pos)
                 continue
-            if tile.sub_type in FLOOR_TTLES:
+            if tile.type == keys.floor:
                 rects.append(pygame.Rect(tile.scaled_pos[0], tile.scaled_pos[1], self.tile_size, self.tile_size))
         return rects
     
@@ -383,14 +376,20 @@ class Tilemap:
     def Get_Random_Tile_With_Path_To_Player(self):
         tiles = []
         for tile in self.tiles_not_touching_wall.values():
-            if not tile.sub_type == keys.floor:
+            if tile.type != keys.floor:
                 continue
 
             tiles.append(tile)
+        if not tiles:
+            print("TILES NOT FOUND", self.tiles_not_touching_wall)
+            for tile in self.tiles_not_touching_wall.values():
+                print(tile.sub_type, tile.type)
+            return
         tile_found = False
         random_tile = None
         player = self.game.player
         fail = 0
+
         while not tile_found:
             random_tile = random.choice(tiles)
             tile_pos = (random_tile.pos[0] - self.game.a_star.min_x, random_tile.pos[1] - self.game.a_star.min_y)
@@ -409,7 +408,7 @@ class Tilemap:
     def Get_Random_Tile_With_Path_Tile(self, target_tile):
         tiles = []
         for tile in self.tiles_not_touching_wall.values():
-            if not tile.sub_type == keys.floor:
+            if tile.type != keys.floor:
                 continue
 
             tiles.append(tile)
