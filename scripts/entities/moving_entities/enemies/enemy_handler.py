@@ -51,7 +51,7 @@ class Enemy_Handler():
 
 
         
-        for i in range(10):
+        for i in range(40):
             # Spawn enemy at a random location
             spawner_index = random.randint(0, spawners_length - 1)
             spawner = spawners[spawner_index]
