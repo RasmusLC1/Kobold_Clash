@@ -5,8 +5,8 @@ ICE_PROJECTILE_NUM = 3 * 20
 CRYSTAL_SCALE_HEALTH_COOLDOWN_MAX = 1 # heals 1 health every second
 
 class Elemental(Enemy):
-    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, soul_value):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.elemental, soul_value)
+    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, soul_value, size = (32, 32)):
+        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.elemental, soul_value, size)
         self.crystal_scale_max = self.max_health // 2
         self.crystal_scale = self.crystal_scale_max
         self.crystal_scale_heal_cooldown = CRYSTAL_SCALE_HEALTH_COOLDOWN_MAX

@@ -264,9 +264,9 @@ class Graphics_Loader:
 
     def Asset_Earth_Elemental_List(self):
         entities_assets = {
-            keys.earth_elemental: get_tiles_from_sheet('entities/enemies/elementals/earth_elemental/earth_elemental_idle.png', 3, 0, 0, 0, 32, 32),
-            keys.earth_elemental_attack: get_tiles_from_sheet('entities/enemies/elementals/earth_elemental/earth_elemental_running.png', 3, 0, 0, 0, 32, 32),
-            keys.earth_elemental_running: get_tiles_from_sheet('entities/enemies/elementals/earth_elemental/earth_elemental_attack.png', 3, 0, 0, 0, 32, 32),
+            keys.earth_elemental: get_tiles_from_sheet('entities/enemies/elementals/earth_elemental/earth_elemental_idle.png', 3, 0, 0, 0, 48, 48),
+            keys.earth_elemental_attack: get_tiles_from_sheet('entities/enemies/elementals/earth_elemental/earth_elemental_running.png', 3, 0, 0, 0, 48, 48),
+            keys.earth_elemental_running: get_tiles_from_sheet('entities/enemies/elementals/earth_elemental/earth_elemental_attack.png', 3, 0, 0, 0, 48, 48),
         }
         self.assets.update(entities_assets)
 

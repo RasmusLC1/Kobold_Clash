@@ -6,13 +6,14 @@ import random
 
 class Earth_Elemental(Elemental):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.earth_elemental, health, strength, max_speed, agility, intelligence, stamina, 1.4, 20)
+        super().__init__(game, pos, keys.earth_elemental, health, strength, max_speed, agility, intelligence, stamina, 1.5, 20, (48, 48))
         self.intent_manager.Set_Intent([keys.direct, keys.attack, keys.attack, keys.attack, keys.attack, keys.short_range])
 
 
         # Equip the weapon
         self.Equip_Weapon(Claw(game, self.pos)) 
         self.active_weapon.Set_Damage(keys.blunt, 10)
+        self.active_weapon.Increase_Range(round(self.active_weapon.range * 1.5))
 
 
 
