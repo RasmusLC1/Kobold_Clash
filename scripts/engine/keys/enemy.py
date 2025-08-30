@@ -21,6 +21,8 @@ class Enemy():
     
     health_bar = "health_bar"
 
+    crystal_scale_bar = "crystal_scale_bar"
+
 # Modifications
     improve_weapon = "improve_weapon"
 

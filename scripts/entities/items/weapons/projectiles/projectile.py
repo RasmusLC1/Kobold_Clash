@@ -66,7 +66,10 @@ class Projectile(Weapon):
         if not self.Update_Shoot_Distance():
             self.Reset_Shot()
             return
-       
+
+        if not self.entity:
+            print("ENTIY NOT FOUND", self.type)
+            return
 
         dir_x = self.pos[0] + self.attack_direction[0] * self.shoot_speed
         dir_y = self.pos[1] + self.attack_direction[1] * self.shoot_speed

@@ -309,8 +309,9 @@ class Graphics_Loader:
 
     def Asset_Enemy_Symbols_List(self):
         symbols_assets = {
-            keys.exclamation_mark: get_tiles_from_sheet('entities/enemies/symbols/exclamation.png', 0, 0, 0, 0, 32, 32),
-            keys.health_bar: get_tiles_from_sheet('entities/enemies/symbols/health_bar.png', 9, 0, 0, 0, 32, 32),
+            keys.exclamation_mark: get_tiles_from_sheet('entities/enemies/symbols/exclamation.png', 0, 0, 0, 0, 16, 16),
+            keys.health_bar: get_tiles_from_sheet('entities/enemies/symbols/health_bar.png', 9, 0, 0, 0, 32, 16),
+            keys.crystal_scale_bar: get_tiles_from_sheet('entities/enemies/symbols/crystal_scale_bar.png', 9, 0, 0, 0, 32, 16),
         }
         self.assets.update(symbols_assets)
 
