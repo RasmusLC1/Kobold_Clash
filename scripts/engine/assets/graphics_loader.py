@@ -40,6 +40,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Skeleton_Ranger_List(self)
         Graphics_Loader.Asset_Fire_Spirit_List(self)
         Graphics_Loader.Asset_Ice_Spirit_List(self)
+        Graphics_Loader.Asset_Earth_Elemental_List(self)
         Graphics_Loader.Asset_Void_Spawn_List(self)
         Graphics_Loader.Asset_Skeleton_Bell_Toller_List(self)
         Graphics_Loader.Asset_Skeleton_Cleric_List(self)
@@ -247,17 +248,25 @@ class Graphics_Loader:
 
     def Asset_Fire_Spirit_List(self):
         entities_assets = {
-            keys.fire_spirit_idle: get_tiles_from_sheet('entities/enemies/fire_spirit/fire_spirit_idle.png', 3, 0, 0, 0, 32, 32),
-            keys.fire_spirit_running: get_tiles_from_sheet('entities/enemies/fire_spirit/fire_spirit_moving.png', 3, 0, 0, 0, 32, 32),
-            keys.fire_spirit_attack: get_tiles_from_sheet('entities/enemies/fire_spirit/fire_spirit_attacking.png', 3, 0, 0, 0, 32, 32),
+            keys.fire_spirit_idle: get_tiles_from_sheet('entities/enemies/elementals/fire_spirit/fire_spirit_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.fire_spirit_running: get_tiles_from_sheet('entities/enemies/elementals/fire_spirit/fire_spirit_moving.png', 3, 0, 0, 0, 32, 32),
+            keys.fire_spirit_attack: get_tiles_from_sheet('entities/enemies/elementals/fire_spirit/fire_spirit_attacking.png', 3, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
     def Asset_Ice_Spirit_List(self):
         entities_assets = {
-            keys.ice_spirit: get_tiles_from_sheet('entities/enemies/ice_spirit/ice_spirit_idle.png', 3, 0, 0, 0, 32, 32),
-            keys.ice_spirit_attack: get_tiles_from_sheet('entities/enemies/ice_spirit/ice_spirit_moving.png', 3, 0, 0, 0, 32, 32),
-            keys.ice_spirit_running: get_tiles_from_sheet('entities/enemies/ice_spirit/ice_spirit_attacking.png', 3, 0, 0, 0, 32, 32),
+            keys.ice_spirit: get_tiles_from_sheet('entities/enemies/elementals/ice_spirit/ice_spirit_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.ice_spirit_attack: get_tiles_from_sheet('entities/enemies/elementals/ice_spirit/ice_spirit_moving.png', 3, 0, 0, 0, 32, 32),
+            keys.ice_spirit_running: get_tiles_from_sheet('entities/enemies/elementals/ice_spirit/ice_spirit_attacking.png', 3, 0, 0, 0, 32, 32),
+        }
+        self.assets.update(entities_assets)
+
+    def Asset_Earth_Elemental_List(self):
+        entities_assets = {
+            keys.earth_elemental: get_tiles_from_sheet('entities/enemies/elementals/earth_elemental/earth_elemental_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.earth_elemental_attack: get_tiles_from_sheet('entities/enemies/elementals/earth_elemental/earth_elemental_running.png', 3, 0, 0, 0, 32, 32),
+            keys.earth_elemental_running: get_tiles_from_sheet('entities/enemies/elementals/earth_elemental/earth_elemental_attack.png', 3, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 

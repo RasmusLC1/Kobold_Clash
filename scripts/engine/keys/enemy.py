@@ -217,6 +217,15 @@ class Enemy():
 
     ice_spirit_running = "ice_spirit_running"
 
+
+# Earth Eleemntal
+    
+    earth_elemental = "earth_elemental"
+    
+    earth_elemental_attack = "earth_elemental_attack"
+
+    earth_elemental_running = "earth_elemental_running"
+
 # Wight King
     
     wight_king = "wight_king"

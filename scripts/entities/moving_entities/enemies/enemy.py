@@ -49,10 +49,6 @@ class Enemy(Moving_Entity):
 
         self.Set_Description()
 
-
-
-
-        
     
     def Save_Data(self):
         super().Save_Data()

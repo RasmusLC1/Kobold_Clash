@@ -5,8 +5,8 @@ from scripts.engine.keys.keys import keys
 ICE_PROJECTILE_NUM = 3 * 20
 
 class Ice_Spirit(Elemental):
-    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 1.6,  20)
+    def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
+        super().__init__(game, pos, keys.ice_spirit, health, strength, max_speed, agility, intelligence, stamina, 1.6,  20)
         self.animation_handler.Set_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(0.3)

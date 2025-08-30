@@ -12,6 +12,17 @@ class Elemental(Enemy):
         self.crystal_scale_heal_cooldown = CRYSTAL_SCALE_HEALTH_COOLDOWN_MAX
         self.crystal_scale_bar = self.game.assets[keys.crystal_scale_bar]
 
+
+    def Save_Data(self):
+        self.saved_data['crystal_scale'] = self.crystal_scale
+        self.saved_data['crystal_scale_max'] = self.crystal_scale_max
+        return super().Save_Data()
+    
+    def Load_Data(self, data):
+        self.crystal_scale = data['crystal_scale']
+        self.crystal_scale_max = data['crystal_scale_max']
+        return super().Load_Data(data)
+
     def Update(self, tilemap, delta_time, movement = (0, 0)):
         if not super().Update(tilemap, delta_time, movement):
             return False
