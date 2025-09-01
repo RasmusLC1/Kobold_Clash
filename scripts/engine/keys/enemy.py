@@ -226,6 +226,15 @@ class Enemy():
 
     earth_elemental_running = "earth_elemental_running"
 
+
+# Electric Eleemntal
+    
+    electric_elemental = "electric_elemental"
+    
+    electric_elemental_attack = "electric_elemental_attack"
+
+    electric_elemental_running = "electric_elemental_running"
+
 # Wight King
     
     wight_king = "wight_king"

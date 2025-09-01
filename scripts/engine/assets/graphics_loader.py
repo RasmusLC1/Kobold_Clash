@@ -41,6 +41,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Fire_Spirit_List(self)
         Graphics_Loader.Asset_Ice_Spirit_List(self)
         Graphics_Loader.Asset_Earth_Elemental_List(self)
+        Graphics_Loader.Asset_Electric_Elemental_List(self)
         Graphics_Loader.Asset_Void_Spawn_List(self)
         Graphics_Loader.Asset_Skeleton_Bell_Toller_List(self)
         Graphics_Loader.Asset_Skeleton_Cleric_List(self)
@@ -270,6 +271,13 @@ class Graphics_Loader:
         }
         self.assets.update(entities_assets)
 
+    def Asset_Electric_Elemental_List(self):
+        entities_assets = {
+            keys.electric_elemental: get_tiles_from_sheet('entities/enemies/elementals/electric_elemental/electric_elemental_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.electric_elemental_attack: get_tiles_from_sheet('entities/enemies/elementals/electric_elemental/electric_elemental_running.png', 3, 0, 0, 0, 32, 32),
+            keys.electric_elemental_running: get_tiles_from_sheet('entities/enemies/elementals/electric_elemental/electric_elemental_attack.png', 3, 0, 0, 0, 32, 32),
+        }
+        self.assets.update(entities_assets)
     def Wight_King_List(self):
         entities_assets = {
             keys.wight_king_running: get_tiles_from_sheet('entities/enemies/skeleton/wight_king/wight_king.png', 4, 0, 0, 0, 40, 40),
