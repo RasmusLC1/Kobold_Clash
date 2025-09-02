@@ -456,7 +456,18 @@ class Moving_Entity(PhysicsEntity):
         self.effects.Push(direction)
         self.Tile_Map_Collision_Detection(tilemap)
 
+    def Attack_Direction_Handler(self):
+        self.Set_Attack_Direction()
+        if self.attack_direction[0] < 0:
+            self.flip[0] = True
+            self.animation_handler.Set_Animation(keys.attack)
+        else:
+            self.flip[0] = False
+            self.animation_handler.Set_Animation(keys.attack)
 
+        # if self.attack_direction[1] < -0.5:
+        #     # TODO: UPDATE to attack up when that has been animated
+        #     self.animation_handler.Set_Animation(keys.attack)
 
     # Ice mechanic, lower friction and acceleration to simulate ice
     def On_Ice(self, effect):

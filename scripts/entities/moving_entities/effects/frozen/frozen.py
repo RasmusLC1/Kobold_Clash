@@ -36,7 +36,7 @@ class Frozen(Effect):
         try:
             self.entity.max_speed = max(0.1, self.entity.max_speed / max( 1.1, self.effect // 2))
         except ZeroDivisionError as e:
-            print(f"SLOWDOWN: {e}", self.entity.max_speed, self.effect)
+            print(f"SLOWDOWN FAILED: {e}", self.entity.max_speed, self.effect)
         
 
         self.Effect_Animation_Cooldown(delta_time)
