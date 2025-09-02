@@ -182,12 +182,7 @@ class Moving_Entity(PhysicsEntity):
         else:
             self.idle_count += 1
 
-        if keys.attack in self.animation_handler.animation:
-            self.animation_handler.Update_Attack_Animation(delta_time)
-        elif 'jumping' in self.animation_handler.animation:
-            self.animation_handler.Update_Jumping_Animation(delta_time)
-        else:
-            self.animation_handler.Update_Animation(delta_time)
+        self.animation_handler.Handle_Animation_Update(delta_time)
 
         self.last_frame_movement = self.frame_movement
     
@@ -405,20 +400,7 @@ class Moving_Entity(PhysicsEntity):
         return False
 
 
-    def Attack_Direction_Handler(self):
-        self.Set_Attack_Direction()
-        
-        if self.attack_direction[0] < 0:
-            self.flip[0] = True
-            self.animation_handler.Set_Animation(keys.attack)
 
-        else:
-            self.flip[0] = False
-            self.animation_handler.Set_Animation(keys.attack)
-
-        if self.attack_direction[1] < -0.5:
-            # TODO: UPDATE to attack up when that has been animated
-            self.animation_handler.Set_Animation(keys.attack)
 
 
     def Set_Attack_Direction(self, attack_direction=None):
@@ -585,7 +567,6 @@ class Moving_Entity(PhysicsEntity):
          # Create a darkening surface that is affected by darkness
         dark_surface = pygame.Surface(self.rendered_image.get_size(), pygame.SRCALPHA).convert_alpha()
         dark_surface.fill((self.light_level, self.light_level, self.light_level, 255))  
-
 
         # Apply darkening effect using BLEND_RGBA_MULT
         self.rendered_image.blit(dark_surface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)

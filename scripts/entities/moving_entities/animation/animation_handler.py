@@ -1,6 +1,6 @@
 import pygame
 from scripts.engine.keys.keys import keys
-
+import traceback
 
 class Animation_Handler():
 
@@ -12,7 +12,7 @@ class Animation_Handler():
         self.animation_value = 0
         self.flip = [False, False]
         self.action = ''
-        self.animation = self.entity.type
+        self.animation = self.entity.type + '_running'
         self.animation_value = 0
 
 
@@ -39,13 +39,10 @@ class Animation_Handler():
 
 
     def Set_Sprite(self):
-        self.entity.Set_Action()
         self.sprite = self.entity.game.assets[self.animation]
 
     # Setting the item image and scaling it
     def Set_Entity_Image(self):
-        self.Set_Sprite()
-
         try:
             entity_image = self.sprite[self.animation_value]
             self.entity_image = pygame.transform.scale(entity_image, self.entity.size)
@@ -53,10 +50,29 @@ class Animation_Handler():
             print(f'ANIMATION WENT WRONG {e}', self.sprite, self.animation_value, self.animation)
         
 
+    # Set new action for animation
+    def Set_Animation(self, action):
+        if action != self.entity.action:
+            self.entity.action = action
+            self.animation = self.entity.type + '_' + self.entity.action
+            self.animation_num = 0
+            self.attack_animation_num = 0
+            self.animation_value = 0
+            self.jumping_animation_num = 0
+            self.Set_Sprite()
+
     # Set the idle state every 60 ticks to either up or down depending on last input
     def Set_Idle(self):
         return
-       
+    
+
+    def Handle_Animation_Update(self, delta_time) -> None:
+        if keys.attack in self.animation:
+            self.Update_Attack_Animation(delta_time)
+        elif 'jumping' in self.animation:
+            self.Update_Jumping_Animation(delta_time)
+        else:
+            self.Update_Animation(delta_time)
 
     def Update_Animation(self, delta_time) -> None:
         if self.animation_num_cooldown > 0:
@@ -102,15 +118,7 @@ class Animation_Handler():
         self.animation_value = self.jumping_animation_num
 
 
-    # Set new action for animation
-    def Set_Animation(self, action):
-        if action != self.entity.action:
-            self.entity.action = action
-            self.animation = self.entity.type + '_' + self.entity.action
-            self.animation_num = 0
-            self.attack_animation_num = 0
-            self.animation_value = 0
-            self.jumping_animation_num = 0
+
 
 
     def Set_Animation_Num_Max(self, value):

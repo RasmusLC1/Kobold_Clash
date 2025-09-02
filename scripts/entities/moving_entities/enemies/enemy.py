@@ -145,7 +145,6 @@ class Enemy(Moving_Entity):
         if not self.charge > 0:
             self.attack_direction = (0, 0)
             return
-        
         super().Set_Attack_Direction()
         
     def Attack_Strategy(self):
@@ -205,10 +204,14 @@ class Enemy(Moving_Entity):
 
 
     def Set_Action(self,  movement = None):
+        if self.distance_to_player > 300:
+            return
         if self.charge > 0:
             self.animation_handler.Set_Animation(keys.attack)
-        else:
+        elif self.frame_movement:
             self.animation_handler.Set_Animation('running')
+        else:
+            self.animation_handler.Set_Animation('idle')
 
 
 
