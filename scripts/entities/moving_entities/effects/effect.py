@@ -43,6 +43,7 @@ class Effect():
 
         if self.effect >= self.effect_max:
             return False
+        
         self.effect = min(effect_time + self.effect, self.effect_max)
         self.Set_Cooldown()
         return True

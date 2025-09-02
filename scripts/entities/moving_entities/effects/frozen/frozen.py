@@ -26,9 +26,7 @@ class Frozen(Effect):
         
 
         if self.entity.effects.frozen_resistance.effect:
-            self.effect = 0
-            self.cooldown = 0
-
+            self.Remove_Effect()
             return False
         
         if self.Update_Cooldown(delta_time):
