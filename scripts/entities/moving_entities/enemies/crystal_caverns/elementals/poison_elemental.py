@@ -4,15 +4,15 @@ from scripts.engine.keys.keys import keys
 
 ICE_PROJECTILE_NUM = 3 * 20
 
-class Ice_Spirit(Elemental):
+class Poison_Elemental(Elemental):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
         super().__init__(game, pos, keys.ice_spirit, health, strength, max_speed, agility, intelligence, stamina, 1.6,  20)
         self.animation_handler.Set_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(0.3)
-        self.animation_handler.Set_Animation_Num_Cooldown_Max(0.7)
+        self.animation_handler.Set_Animation_Num_Cooldown_Max(0.9)
         self.path_finding_strategy = 'standard'
-        self.attack_strategy = keys.long_range
+        self.attack_strategy = keys.medium_range
         self.intent_manager.Set_Intent([keys.attack])
         self.attack_distance  = 250
         self.shooting_ice = False
@@ -23,12 +23,11 @@ class Ice_Spirit(Elemental):
     def Update(self, tilemap, delta_time, movement = (0, 0)):
         if not super().Update(tilemap, delta_time, movement):
             return False
-        if self.effects.frozen.effect:
+        if self.effects.poison.effect:
             self.Set_Effect(keys.healing, self.effects.frozen.effect)
             self.Set_Effect(keys.frozen_resistance, 2)
-        
-        return True
 
+        return True
 
 
     def Attack(self, delta_time):

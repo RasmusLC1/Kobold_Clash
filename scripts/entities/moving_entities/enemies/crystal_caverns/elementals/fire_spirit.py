@@ -31,8 +31,7 @@ class Fire_Spirit(Elemental):
             self.Set_Effect(keys.healing, self.effects.frozen.effect)
             self.Set_Effect(keys.fire_resistance, 2)
 
-
-
+        return True
         
     
     def Attack(self, delta_time):

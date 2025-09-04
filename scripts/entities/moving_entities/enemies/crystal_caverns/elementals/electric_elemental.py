@@ -17,6 +17,15 @@ class Electric_Elemental(Elemental):
         self.active_weapon.Set_Damage(keys.electric, 2)
         self.attack_distance = 250
 
+    def Update(self, tilemap, delta_time, movement=...):
+        if not super().Update(tilemap, delta_time, movement):
+            return False
+        
+        if self.effects.electric.effect:
+            self.Set_Effect(keys.healing, self.effects.frozen.effect)
+            self.Set_Effect(keys.frozen_resistance, 2)
+        
+        return True
 
 
     # Returns true on succesful attack
