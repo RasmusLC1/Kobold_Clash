@@ -189,6 +189,7 @@ class Player(Moving_Entity):
         if not super().Check_If_Dead():
             return False
         
+        self.game.clatter.Reset_Awakening_Level()
         self.game.state_machine.Set_State('game_over')
 
         return True

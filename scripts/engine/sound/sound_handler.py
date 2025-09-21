@@ -33,6 +33,7 @@ class Sound_Handler():
     
     def Set_HeartBeat_Sound(self, awakening_level):
         if awakening_level == 0:
+            pygame.mixer.music.stop()  # stop playback
             return
         
         pygame.mixer.music.load('data/sounds/awakening/heartbeat/' + str(awakening_level) +'_heartbeat.mp3')
