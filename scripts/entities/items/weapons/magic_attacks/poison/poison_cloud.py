@@ -2,7 +2,7 @@ from scripts.entities.items.weapons.magic_attacks.base_attacks.elemental_explosi
 from scripts.engine.keys.keys import keys
 
 class Poison_Cloud(Elemental_Explosion):
-    def __init__(self, game, pos, power, entity):
+    def __init__(self, game, pos, power, entity = None):
         super().__init__(game, keys.poison_cloud, keys.poison, pos, power, 4, 3, 0.4, entity)
         self.poison_cooldown = 0
         self.poison_cooldown_max = 10
