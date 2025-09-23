@@ -420,9 +420,9 @@ Upgrade weapons
     # Ice spirit, shoots freeze projectiles
     # Fire spirit, high speeds shoot flamethrower at close range and retreats
     # Electric Elemental, damages the player indirectly if in range
-    Poison Elemental, creates poison plumes around the player and explodes when damaged
+    # Poison Elemental, creates poison plumes around the player and explodes when damaged
     Minotaur, boss mob, charges and breaks envoirement, high damage, low defence
-    Hydra, boss mob, splits head when a head is killed, needs to be attacked from behind or killed with enviorement damage
+    Hydra, boss mob, regens health fast, gains immunity to the last effect type that damaged it
     Clicker, blind but good hearing, loud because of clicks
     Echo stalker, becomes visible for 60 seconds when clatter is generated
     Shard Wraith, teleports close to clatter source when clatter is generated

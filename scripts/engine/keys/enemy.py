@@ -11,6 +11,8 @@ class Enemy():
 
     elemental = "elemental"
 
+    mythical = "mythical"
+
 
     claw = "claw"
 
@@ -242,6 +244,14 @@ class Enemy():
     poison_elemental_attack = "poison_elemental_attack"
 
     poison_elemental_running = "poison_elemental_running"
+
+# Minotaur
+    
+    minotaur = "minotaur"
+    
+    minotaur_attack = "minotaur_attack"
+
+    minotaur_running = "minotaur_running"
 
 
 # Wight King

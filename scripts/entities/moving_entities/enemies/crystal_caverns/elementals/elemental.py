@@ -10,6 +10,7 @@ class Elemental(Enemy):
         self.crystal_scale_max = self.max_health // 2
         self.crystal_scale = self.crystal_scale_max
         self.crystal_scale_heal_cooldown = CRYSTAL_SCALE_HEALTH_COOLDOWN_MAX
+        self.crystal_scale_holder = 9999
         self.crystal_scale_bar = self.game.assets[keys.crystal_scale_bar]
 
 
@@ -59,17 +60,25 @@ class Elemental(Enemy):
     def Render_Crystal_Scale_Bar(self, surf, offset):
         if not self.crystal_scale:
             return
+
+        self.Update_Crystal_Fraction()
+
+
+        crystal_scale_bar = self.crystal_scale_bar[self.crystal_scale_index]
+        surf.blit(crystal_scale_bar, (self.rect().left - offset[0], self.rect().bottom - offset[1] - self.size[1] // 2 + 10))
+
+    def Update_Crystal_Fraction(self):
+        if self.crystal_scale == self.crystal_scale_holder:
+            return
+        # Correct potential rounding issues at full health
+        if self.crystal_scale == self.crystal_scale_max:
+            self.crystal_scale_index = 0
+
+        self.crystal_scale_holder = self.crystal_scale
         crystal_scale_fraction = self.crystal_scale / self.crystal_scale_max
 
         # Map the fraction to an index from 0 to 9 (assuming 10 total images)
-        crystal_scale_index = max(-1, min(int((1 - crystal_scale_fraction) * 9), 9))  # Invert fraction and scale to index range
-        # Correct potential rounding issues at full health
-        if self.crystal_scale == self.crystal_scale_max:
-            crystal_scale_index = 0
-
-        crystal_scale_bar = self.crystal_scale_bar[crystal_scale_index]
-        surf.blit(crystal_scale_bar, (self.rect().left - offset[0], self.rect().bottom - offset[1] - self.size[1] // 2 + 10))
-
+        self.crystal_scale_index = max(-1, min(int((1 - crystal_scale_fraction) * 9), 9))  # Invert fraction and scale to index range
 
     def Render_Weapons(self, surf, offset):
         pass
