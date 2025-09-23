@@ -192,7 +192,7 @@ class Enemy(Moving_Entity):
 
     def Delete(self, generate_soul = True):
         if self.health > 0:
-            return
+            return False
         
         self.Spawn_Bones()
         self.Drop_Loot()
@@ -201,6 +201,7 @@ class Enemy(Moving_Entity):
         if self.distance_to_player < 150 and generate_soul:
             self.game.player.Increase_Souls(self.soul_value)
         super().Delete()
+        return True
 
 
     def Set_Action(self,  movement = None):
@@ -280,7 +281,7 @@ class Enemy(Moving_Entity):
     def Improve_Weapon(self, effect, amount):
         if not self.active_weapon:
             print("FAILED TO IMPROVE WEAPON, ", effect, self.type, vars(self))
-            
+
         self.active_weapon.Set_Damage(effect, amount)
 
 

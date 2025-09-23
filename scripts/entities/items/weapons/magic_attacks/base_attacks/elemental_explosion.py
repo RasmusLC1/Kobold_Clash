@@ -38,20 +38,21 @@ class Elemental_Explosion(Item):
     
     def Compute_Damage(self, entity):
         distance = self.Distance(self.pos, entity.pos)
-        damage = round(max(5, min(50, self.damage * 32 - distance)))
+        damage = round(max(5, min(50, self.damage * 10 - distance)))
         entity.Damage_Taken(damage, (self.effect_type, 0))
         if self.effect:
             entity.Set_Effect(self.effect, self.effect_strength)
 
     def Check_Player_Distance(self):
         distance = self.Distance(self.pos, self.game.player.pos)
-        if distance <= self.power * self.game.tilemap.tile_size:
+        max_distance = self.power * self.game.tilemap.tile_size
+        if distance <= max_distance:
             self.nearby_entities.append(self.game.player)
         
     # Get ID of caster for potential immunity
     def Get_Entity_ID(self):
         if not self.entity:
-            return 0
+            return -999 # return impossible entity ID 
         
         return self.entity.ID
 
