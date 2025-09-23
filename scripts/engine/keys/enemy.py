@@ -235,6 +235,15 @@ class Enemy():
 
     electric_elemental_running = "electric_elemental_running"
 
+# Poison Eleemntal
+    
+    poison_elemental = "poison_elemental"
+    
+    poison_elemental_attack = "poison_elemental_attack"
+
+    poison_elemental_running = "poison_elemental_running"
+
+
 # Wight King
     
     wight_king = "wight_king"
