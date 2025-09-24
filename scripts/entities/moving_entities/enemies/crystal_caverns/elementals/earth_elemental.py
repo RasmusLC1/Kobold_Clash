@@ -1,7 +1,6 @@
 from scripts.entities.items.weapons.enemy_weapons.claw import Claw
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.elemental import Elemental
-import random
 
 
 class Earth_Elemental(Elemental):
