@@ -44,8 +44,8 @@ class Animation_Handler():
     # Setting the item image and scaling it
     def Set_Entity_Image(self):
         try:
-            entity_image = self.sprite[self.animation_value]
-            self.entity_image = pygame.transform.scale(entity_image, self.entity.size)
+            self.entity_image = self.sprite[self.animation_value]
+            # self.entity_image = pygame.transform.scale(entity_image, self.entity.size)
         except Exception as e:
             print(f'ANIMATION WENT WRONG {e}', self.sprite, self.animation_value, self.animation)
         

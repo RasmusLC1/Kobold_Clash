@@ -53,6 +53,8 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Ghoul_List(self)
         Graphics_Loader.Asset_Enemy_Symbols_List(self)
         Graphics_Loader.Asset_vampire_List(self)
+        Graphics_Loader.Asset_minotaur_List(self)
+        Graphics_Loader.Asset_medusa_List(self)
         
     def Asset_Background_List(self):
         background_assets = {'background': load_image('background.png'),}
@@ -269,6 +271,22 @@ class Graphics_Loader:
             keys.earth_elemental: get_tiles_from_sheet('entities/enemies/elementals/earth_elemental/earth_elemental_idle.png', 3, 0, 0, 0, 48, 48),
             keys.earth_elemental_running: get_tiles_from_sheet('entities/enemies/elementals/earth_elemental/earth_elemental_running.png', 3, 0, 0, 0, 48, 48),
             keys.earth_elemental_attack: get_tiles_from_sheet('entities/enemies/elementals/earth_elemental/earth_elemental_attack.png', 3, 0, 0, 0, 48, 48),
+        }
+        self.assets.update(entities_assets)
+
+    def Asset_medusa_List(self):
+        entities_assets = {
+            keys.medusa: get_tiles_from_sheet('entities/enemies/mythical/medusa/IDLE.png', 5, 0, 0, 0, 150, 150),
+            keys.medusa_running: get_tiles_from_sheet('entities/enemies/mythical/medusa/MOVE.png', 3, 0, 0, 0, 150, 150),
+            keys.medusa_attack: get_tiles_from_sheet('entities/enemies/mythical/medusa/ATTACK1.png', 5, 0, 0, 0, 150, 150),
+        }
+        self.assets.update(entities_assets)
+
+    def Asset_minotaur_List(self):
+        entities_assets = {
+            keys.minotaur: get_tiles_from_sheet('entities/enemies/mythical/minotaur/minotaur_idle.png', 3, 0, 0, 0, 64, 64),
+            keys.minotaur_running: get_tiles_from_sheet('entities/enemies/mythical/minotaur/minotaur_running.png', 3, 0, 0, 0, 64, 64),
+            keys.minotaur_attack: get_tiles_from_sheet('entities/enemies/mythical/minotaur/minotaur_attacking.png', 3, 0, 0, 0, 46, 64),
         }
         self.assets.update(entities_assets)
 

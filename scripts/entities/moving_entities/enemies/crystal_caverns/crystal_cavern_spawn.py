@@ -3,6 +3,8 @@ from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.ice_spi
 from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.earth_elemental import Earth_Elemental
 from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.electric_elemental import Electric_Elemental
 from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.poison_elemental import Poison_Elemental
+from scripts.entities.moving_entities.enemies.crystal_caverns.mythicals.medusa import Medusa
+from scripts.entities.moving_entities.enemies.crystal_caverns.mythicals.minotaur.minotaur import Minotaur
 from scripts.entities.moving_entities.enemies.enemy_spawner import Enemy_Spawner
 from scripts.engine.keys.keys import keys
 
@@ -14,6 +16,8 @@ class Crystal_Cavern_Spawn(Enemy_Spawner):
             keys.earth_elemental: self.Spawn_Earth_Elemental,
             keys.electric_elemental: self.Spawn_Electric_Elemental,
             keys.poison_elemental: self.Spawn_Poison_Elemental,
+            keys.minotaur: self.Spawn_Minotaur,
+            keys.medusa: self.Spawn_Medusa,
         }
 
         enemy_types = {
@@ -22,6 +26,8 @@ class Crystal_Cavern_Spawn(Enemy_Spawner):
             keys.earth_elemental: 0.2,
             keys.electric_elemental: 0.2,
             keys.poison_elemental: 0.2,
+            keys.minotaur: 10.2,
+            keys.medusa: 0.2,
         }
         super().__init__(game, spawn_methods, enemy_types)
     
@@ -102,6 +108,38 @@ class Crystal_Cavern_Spawn(Enemy_Spawner):
         intelligence = 2
         stamina = 2
         return Poison_Elemental(self.game,
+                        pos, 
+                        health,
+                        strength,
+                        speed,
+                        agility,
+                        intelligence,
+                        stamina)
+
+    def Spawn_Medusa(self, pos):
+        health = 20
+        strength = 4
+        speed = 4
+        agility = 3
+        intelligence = 2
+        stamina = 2
+        return Medusa(self.game,
+                        pos, 
+                        health,
+                        strength,
+                        speed,
+                        agility,
+                        intelligence,
+                        stamina)
+    
+    def Spawn_Minotaur(self, pos):
+        health = 20
+        strength = 4
+        speed = 4
+        agility = 3
+        intelligence = 2
+        stamina = 2
+        return Minotaur(self.game,
                         pos, 
                         health,
                         strength,

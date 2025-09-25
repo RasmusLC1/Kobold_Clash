@@ -253,6 +253,14 @@ class Enemy():
 
     minotaur_running = "minotaur_running"
 
+# Minotaur
+    
+    medusa = "medusa"
+    
+    medusa_attack = "medusa_attack"
+
+    medusa_running = "medusa_running"
+
 
 # Wight King
     
