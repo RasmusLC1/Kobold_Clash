@@ -18,8 +18,7 @@ class Electric_Elemental(Elemental):
         self.attack_distance = 250
 
     def Update(self, tilemap, delta_time, movement=...):
-        if not super().Update(tilemap, delta_time, movement):
-            return False
+        super().Update(tilemap, delta_time, movement)
         
         if self.effects.electric.effect:
             self.Set_Effect(keys.healing, self.effects.frozen.effect)
@@ -28,16 +27,8 @@ class Electric_Elemental(Elemental):
         return True
 
 
-    # Returns true on succesful attack
-    def Attack(self, delta_time):
-        if not super().Attack(delta_time):
-            return False
-        if not self.active_weapon:
-            return False
-        self.charge = min(self.max_weapon_charge, self.charge + delta_time)
-        if self.charge < self.max_weapon_charge:
-            return False
-        
+
+    def Trigger_Attack(self):
         self.Set_Target(self.game.player.pos)
         self.Reset_Charge()
         
@@ -61,14 +52,3 @@ class Electric_Elemental(Elemental):
         return True
     
         
-    def Update_Active_Weapon(self, delta_time):
-        if not self.active_weapon:
-            return
-
-        self.active_weapon.Set_Equipped_Position(self.direction_y_holder)
-        if not self.active_weapon:
-            return
-        
-        self.active_weapon.Update_Attack(delta_time)
-
-        return

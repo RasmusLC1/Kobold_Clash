@@ -139,7 +139,16 @@ class Enemy(Moving_Entity):
         # Check if the player is invisible
         if self.game.player.effects.invisibility.effect:
             return False
+        
+        self.charge = min(self.max_weapon_charge, self.charge + delta_time)
+
         return True
+
+
+    def Trigger_Attack(self):
+        self.Set_Target(self.game.player.pos)
+        self.active_weapon.Set_Attack()
+        self.Reset_Charge()
 
     def Set_Attack_Direction(self):
         if not self.charge > 0:

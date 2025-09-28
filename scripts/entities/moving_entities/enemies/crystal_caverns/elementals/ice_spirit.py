@@ -21,45 +21,35 @@ class Ice_Spirit(Elemental):
         self.active_weapon = Ice_Shooter(self.game)
 
     def Update(self, tilemap, delta_time, movement = (0, 0)):
-        if not super().Update(tilemap, delta_time, movement):
-            return False
+        super().Update(tilemap, delta_time, movement)
+
+        
+        if self.shooting_ice:
+            self.Shoot_Ice_Particle()
+
+        
         if self.effects.frozen.effect:
             self.Set_Effect(keys.healing, self.effects.frozen.effect)
             self.Set_Effect(keys.frozen_resistance, 2)
         
         return True
 
-
-
     def Attack(self, delta_time):
-        if not super().Attack(delta_time):
-            return
-        
-        if self.game.player.effects.invisibility.effect:
-            return False
-        
         # If Player is to close, then ice spirit cannot shoot
         if self.distance_to_player < self.minimum_distance:
             return False
-        
-        self.charge += delta_time
-
-        if self.charge >= self.max_weapon_charge and not self.shooting_ice:
+        return super().Attack(delta_time)
+    
+    def Trigger_Attack(self):
+        if not self.shooting_ice:
             self.shooting_ice = ICE_PROJECTILE_NUM
 
-        if self.shooting_ice:
-            self.Shoot_Ice_Particle()
-
-    
-    
     def Shoot_Ice_Particle(self):
         self.Set_Target(self.game.player.pos)
         self.Set_Attack_Direction()
         self.shooting_ice = self.active_weapon.Particle_Creation(self, self.shooting_ice, self.ice_damage)
         if not self.shooting_ice:
             self.charge = 0
-
-
 
 
     def Render_Weapons(self, surf, offset):

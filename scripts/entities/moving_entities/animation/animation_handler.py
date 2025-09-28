@@ -1,6 +1,4 @@
-import pygame
 from scripts.engine.keys.keys import keys
-import traceback
 
 class Animation_Handler():
 
@@ -96,6 +94,9 @@ class Animation_Handler():
         if self.attack_animation_num > self.attack_animation_num_max:
             self.attack_animation_num = 0
 
+        if self.attack_animation_num == self.attack_frame:
+            self.entity.Trigger_Attack()
+
         self.Set_Entity_Image()
         self.animation_value = self.attack_animation_num
 
@@ -116,7 +117,8 @@ class Animation_Handler():
         self.animation_value = self.jumping_animation_num
 
 
-
+    def Set_Attack_Frame(self, attack_frame):
+        self.attack_frame = attack_frame
 
 
     def Set_Animation_Num_Max(self, value):
@@ -124,6 +126,8 @@ class Animation_Handler():
 
     def Set_Attack_Animation_Num_Max(self, value):
         self.attack_animation_num_max = value
+        self.Set_Attack_Frame(max(0, value - 1))
+        self.Set_Attack_Animation_Num_Cooldown_Max(value)
 
     def Set_Junmp_Animation_Num_Max(self, value):
         self.jumping_animation_num_max = value
@@ -131,8 +135,9 @@ class Animation_Handler():
     def Set_Animation_Num_Cooldown_Max(self, value):
         self.animation_num_cooldown_max = value
 
-    def Set_Attack_Animation_Num_Cooldown_Max(self, value):
-        self.attack_animation_num_cooldown_max = value
+    def Set_Attack_Animation_Num_Cooldown_Max(self, attack_animations):
+        self.attack_animation_num_cooldown_max = self.entity.max_weapon_charge / attack_animations
+        print(self.animation_num_cooldown_max, attack_animations, self.entity.max_weapon_charge)
 
     def Set_Junmp_Animation_Num_Cooldown_Max(self, value):
         self.jumping_animation_num_cooldown_max = value

@@ -2,7 +2,6 @@ from scripts.entities.moving_entities.enemies.enemy import Enemy
 from scripts.entities.items.weapons.enemy_weapons.claw import Claw
 from scripts.entities.moving_entities.enemies.crystal_caverns.mythicals.minotaur.minotaur_intent_manager import Minotaur_Intent_Manager
 from scripts.engine.keys.keys import keys
-from scripts.entities.moving_entities.animation.minotaur_animation_handler import Minotaur_Animation_Handler
 
 
 ICE_PROJECTILE_NUM = 3 * 20
@@ -10,14 +9,12 @@ CRYSTAL_SCALE_HEALTH_COOLDOWN_MAX = 1 # heals 1 health every second
 
 
 class Minotaur(Enemy):
-    _animation_handler = Minotaur_Animation_Handler
     intent_manager_class = Minotaur_Intent_Manager
 
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
         super().__init__(game, pos, keys.minotaur, health, strength, max_speed, agility, intelligence, stamina, 0.9, keys.mythical, 100, size = (64, 64))
         self.animation_handler.Set_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Max(5)
-        self.animation_handler.Set_Attack_Frame(4)
         self.intent_manager.Set_Intent([keys.keep_position, keys.direct, 'dash', keys.attack, keys.attack, keys.attack, keys.medium_range,])
         self.intent_manager.Set_Intent_Cooldown_Max(120)
         self.last_health_index = self.Calculate_Health_Index(self.health)
@@ -56,21 +53,3 @@ class Minotaur(Enemy):
         self.active_weapon.render = False
         del(weapon)
         return True
-    
-    # Returns true on succesful attack
-    def Attack(self, delta_time):
-        # if not super().Attack(delta_time):
-        #     return False
-        
-        if not self.active_weapon:
-            return False
-        self.charge = min(self.max_weapon_charge, self.charge + delta_time)
-
-
-        return True
-
-
-    def Trigger_Attack(self):
-        self.Set_Target(self.game.player.pos)
-        self.active_weapon.Set_Attack()
-        self.Reset_Charge()

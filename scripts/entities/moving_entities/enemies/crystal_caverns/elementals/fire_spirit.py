@@ -25,8 +25,11 @@ class Fire_Spirit(Elemental):
         self.active_weapon = Flame_Thrower(self.game)
 
     def Update(self, tilemap, delta_time, movement = (0, 0)):
-        if not super().Update(tilemap, delta_time, movement):
-            return False
+        super().Update(tilemap, delta_time, movement)
+
+        if self.shooting_fire:
+            self.Shoot_Fire_Particle()
+
         if self.effects.fire.effect:
             self.Set_Effect(keys.healing, self.effects.frozen.effect)
             self.Set_Effect(keys.fire_resistance, 2)
@@ -35,20 +38,14 @@ class Fire_Spirit(Elemental):
         
     
     def Attack(self, delta_time):
-        if not super().Attack(delta_time):
-            return
-
-        self.charge += delta_time
-
+        # If Player is to close, then ice spirit cannot shoot
         if self.distance_to_player < self.minimum_distance:
             return False
-        
-        if self.charge >= self.max_weapon_charge and not self.shooting_fire:
+        return super().Attack(delta_time)
+    
+    def Trigger_Attack(self):
+        if not self.shooting_fire:
             self.shooting_fire = FIRE_PROJECTILE_NUM
-
-        if self.shooting_fire:
-            self.Shoot_Fire_Particle()
-
     
     
     def Shoot_Fire_Particle(self):

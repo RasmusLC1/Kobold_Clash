@@ -23,6 +23,9 @@ class Poison_Elemental(Elemental):
         self.Delete(generate_soul = False)
         
         return True
+    
+    def Trigger_Attack(self):
+        pass
 
     def Improve_Weapon(self, effect, amount):
         return False
