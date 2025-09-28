@@ -16,7 +16,7 @@ class Poison_Elemental(Elemental):
 
     # Returns true on succesful attack
     def Attack(self, delta_time):
-        if self.distance_to_player > 42:
+        if self.distance_to_player > self.size[0] * 1.5:
             return False
         
         self.health = 0

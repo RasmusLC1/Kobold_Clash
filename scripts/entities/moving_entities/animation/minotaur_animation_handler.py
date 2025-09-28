@@ -2,7 +2,7 @@ import pygame
 from scripts.engine.keys.keys import keys
 import traceback
 
-class Animation_Handler():
+class Minotaur_Animation_Handler():
 
     def __init__(self, entity):
         # Handle regular animation
@@ -96,6 +96,9 @@ class Animation_Handler():
         if self.attack_animation_num > self.attack_animation_num_max:
             self.attack_animation_num = 0
 
+        if self.attack_animation_num == self.attack_frame:
+            self.entity.Trigger_Attack()
+
         self.Set_Entity_Image()
         self.animation_value = self.attack_animation_num
 
@@ -116,6 +119,8 @@ class Animation_Handler():
         self.animation_value = self.jumping_animation_num
 
 
+    def Set_Attack_Frame(self, attack_frame):
+        self.attack_frame = attack_frame
 
 
 
