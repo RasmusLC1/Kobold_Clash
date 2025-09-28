@@ -22,7 +22,6 @@ class Dweller(Enemy):
 
     def Update(self, tilemap, delta_time, movement=(0, 0)):
         super().Update(tilemap, delta_time, movement)
-        self.Update_Active_Weapon(delta_time)
         self.Darkness_Buff()
 
 
@@ -43,24 +42,6 @@ class Dweller(Enemy):
 
     
 
-    # Returns true on succesful attack
-    def Attack(self, delta_time):
-        if not super().Attack(delta_time):
-            return False
-        
-        if not self.active_weapon:
-            return False
-        self.charge = min(self.max_weapon_charge, self.charge + delta_time)
-
-        if self.charge < self.max_weapon_charge:
-            return False
-        
-        
-        self.Set_Target(self.game.player.pos)
-        self.active_weapon.Set_Attack()
-        self.Reset_Charge()
-        return True
-
 
     def Equip_Weapon(self, weapon):
         if not weapon:
@@ -76,19 +57,3 @@ class Dweller(Enemy):
     
     def Spawn_Damaged_Particles(self):
         self.game.particle_handler.Activate_Particles(10, keys.bone_particle, self.rect().center)
-
-    
-    def Update_Active_Weapon(self, delta_time):
-        if not self.active_weapon:
-            return
-
-        self.active_weapon.Set_Equipped_Position(self.direction_y_holder)
-        if not self.active_weapon:
-            return
-        
-        self.active_weapon.Update_Attack(delta_time)
-
-        return
-    
-    def Drop_Loot(self):
-        pass

@@ -142,24 +142,20 @@ class Ranged_Weapon(Weapon):
         
 
     def Enemy_Shooting(self):
-        if not self.entity.charge:
-            return False
 
-        if self.is_charging > self.max_charge_time:
-            self.is_charging = 120
-            self.Spawn_Arrow()
-            self.arrow.Set_Delete_Countdown(0.2)
-            self.arrow.pickup_allowed = False
-            self.Shoot_Arrow()
-            self.Reset_Bow()
-            return True
-        
-        self.is_charging = self.entity.charge
-        self.attack_animation_counter += 1
-        self.Update_Attack_Animation()
+        self.is_charging = 120
+        self.Spawn_Arrow()
+        self.arrow.Set_Delete_Countdown(0.2)
+        self.arrow.pickup_allowed = False
+        self.Shoot_Arrow()
+        self.Reset_Bow()
+        return True
+        # self.is_charging = self.entity.charge
+        # self.attack_animation_counter += 1
+        # self.Update_Attack_Animation()
 
-        self.animation_handler.Enemy_Shooting_Animation()
-        return False
+        # self.animation_handler.Enemy_Shooting_Animation()
+        # return False
         
     def Render_Equipped(self, surf, offset=(0, 0)):
         super().Render_Equipped(surf, offset)

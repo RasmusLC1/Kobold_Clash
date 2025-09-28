@@ -19,24 +19,6 @@ class Skeleton(Enemy):
         else:
             self.animation_handler.Set_Animation('running')
 
-    # Returns true on succesful attack
-    def Attack(self, delta_time):
-        if not super().Attack(delta_time):
-            return False
-        
-        if not self.active_weapon:
-            return False
-        
-
-        self.charge = min(self.max_weapon_charge, self.charge + delta_time)
-
-        if self.charge < self.max_weapon_charge:
-            return False
-        
-        self.Set_Target(self.game.player.pos)
-        self.active_weapon.Set_Attack()
-        self.Reset_Charge()
-        return True
 
     def Equip_Weapon(self, weapon):
         if not weapon:

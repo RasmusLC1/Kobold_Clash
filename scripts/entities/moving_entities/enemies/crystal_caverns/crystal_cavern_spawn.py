@@ -24,7 +24,7 @@ class Crystal_Cavern_Spawn(Enemy_Spawner):
             keys.fire_spirit: 0.2,
             keys.ice_spirit: 0.2,
             keys.earth_elemental: 0.2,
-            keys.electric_elemental: 10000.2,
+            keys.electric_elemental: 0.2,
             keys.poison_elemental: 0.2,
             keys.minotaur: 0.2,
             keys.medusa: 0.2,

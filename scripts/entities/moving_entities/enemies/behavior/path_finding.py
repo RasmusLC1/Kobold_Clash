@@ -1,8 +1,7 @@
-from scripts.engine.utility.helper_functions import Helper_Functions
+
 import math
 import pygame
 import random
-from scripts.engine.keys.keys import keys
 
 
 class Path_Finding():
@@ -30,8 +29,6 @@ class Path_Finding():
 
 
     def Path_Finding(self, delta_time):
-        self.Calculate_Distance_To_Player()
-
         self.Set_Position_Holder(delta_time)
 
         self.Corner_Handling()
@@ -130,11 +127,6 @@ class Path_Finding():
             self.entity.Tile_Map_Collision_Detection(self.game.tilemap)
 
 
-
-    
-    
-    def Calculate_Distance_To_Player(self):
-        self.entity.distance_to_player = Helper_Functions.Abs_Distance_Float(self.entity.pos, self.game.player.pos)
 
 
     # Save the entity's position every 200 ticks

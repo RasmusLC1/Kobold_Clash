@@ -14,7 +14,9 @@ class Animation_Handler():
         self.animation_value = 0
 
 
+        self.animation_lock = False
         self.Set_Animation('')
+
 
         self.animation_num = 0
         self.animation_num_max = 0
@@ -49,6 +51,10 @@ class Animation_Handler():
 
     # Set new action for animation
     def Set_Animation(self, action):
+        
+        if self.animation_lock:
+            return
+        
         if action != self.entity.action:
             self.entity.action = action
             self.animation = self.entity.type + '_' + self.entity.action
@@ -57,6 +63,7 @@ class Animation_Handler():
             self.animation_value = 0
             self.jumping_animation_num = 0
             self.Set_Sprite()
+            self.Set_Animation_Lock(True)
 
     # Set the idle state every 60 ticks to either up or down depending on last input
     def Set_Idle(self):
@@ -64,6 +71,7 @@ class Animation_Handler():
     
 
     def Handle_Animation_Update(self, delta_time) -> None:
+        print(self.animation)
         if keys.attack in self.animation:
             self.Update_Attack_Animation(delta_time)
         elif 'jumping' in self.animation:
@@ -79,6 +87,7 @@ class Animation_Handler():
         self.animation_num += 1
         if self.animation_num > self.animation_num_max:
             self.animation_num = 0
+            self.Set_Animation_Lock(False)
 
         self.Set_Entity_Image()
         self.animation_value = self.animation_num
@@ -87,15 +96,18 @@ class Animation_Handler():
         if self.attack_animation_num_cooldown > 0:
             self.attack_animation_num_cooldown = max(0, self.attack_animation_num_cooldown - delta_time)
             return
-
+        
         self.attack_animation_num_cooldown = self.attack_animation_num_cooldown_max
         self.attack_animation_num += 1
 
-        if self.attack_animation_num > self.attack_animation_num_max:
-            self.attack_animation_num = 0
 
         if self.attack_animation_num == self.attack_frame:
             self.entity.Trigger_Attack()
+
+        if self.attack_animation_num > self.attack_animation_num_max:
+            self.attack_animation_num = 0
+            self.Set_Animation_Lock(False)
+
 
         self.Set_Entity_Image()
         self.animation_value = self.attack_animation_num
@@ -113,6 +125,7 @@ class Animation_Handler():
 
         if self.jumping_animation_num > self.jumping_animation_num_max:
             self.jumping_animation_num = 0  # Reset animation
+            self.Set_Animation_Lock(False)
 
         self.animation_value = self.jumping_animation_num
 
@@ -141,3 +154,6 @@ class Animation_Handler():
 
     def Set_Junmp_Animation_Num_Cooldown_Max(self, value):
         self.jumping_animation_num_cooldown_max = value
+
+    def Set_Animation_Lock(self, state):
+        self.animation_lock = state

@@ -27,6 +27,3 @@ class Earth_Elemental(Elemental):
         self.active_weapon.render = False
         del(weapon)
         return True
-    
-        
- 

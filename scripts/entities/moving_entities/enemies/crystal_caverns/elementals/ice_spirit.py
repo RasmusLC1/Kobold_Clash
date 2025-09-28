@@ -9,8 +9,6 @@ class Ice_Spirit(Elemental):
         super().__init__(game, pos, keys.ice_spirit, health, strength, max_speed, agility, intelligence, stamina, 1.6,  20)
         self.animation_handler.Set_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Max(3)
-        self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(0.3)
-        self.animation_handler.Set_Animation_Num_Cooldown_Max(0.7)
         self.path_finding_strategy = 'standard'
         self.attack_strategy = keys.long_range
         self.intent_manager.Set_Intent([keys.attack])
@@ -23,7 +21,7 @@ class Ice_Spirit(Elemental):
     def Update(self, tilemap, delta_time, movement = (0, 0)):
         super().Update(tilemap, delta_time, movement)
 
-        
+
         if self.shooting_ice:
             self.Shoot_Ice_Particle()
 
@@ -37,6 +35,7 @@ class Ice_Spirit(Elemental):
     def Attack(self, delta_time):
         # If Player is to close, then ice spirit cannot shoot
         if self.distance_to_player < self.minimum_distance:
+            self.charge = 0
             return False
         return super().Attack(delta_time)
     

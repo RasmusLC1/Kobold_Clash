@@ -13,11 +13,6 @@ class Void_Spawn(Enemy):
         self.intent_manager.Set_Intent([keys.attack])
         self.Equip_Weapon(Claw(game, self.pos)) 
 
-    def Update(self, tilemap, delta_time, movement=(0, 0)):
-        super().Update(tilemap, delta_time, movement)
-        self.Update_Active_Weapon(delta_time)
-
-    
     def Tile_Map_Collision_Detection(self, tilemap):
         self.pos[0] += self.frame_movement[0]
         self.pos[1] += self.frame_movement[1]
@@ -30,24 +25,6 @@ class Void_Spawn(Enemy):
         
         return super().Damage_Taken(damage, effect, direction)
 
-    # Returns true on succesful attack
-    def Attack(self, delta_time):
-        if not super().Attack(delta_time):
-            return False
-        
-        if not self.active_weapon:
-            return False
-
-        self.charge = min(self.max_weapon_charge, self.charge + delta_time)
-
-        if self.charge < self.max_weapon_charge:
-            return False
-        
-        self.Set_Target(self.game.player.pos)
-        self.active_weapon.Set_Attack()
-        self.Reset_Charge()
-        return True
-
     def Equip_Weapon(self, weapon):
         if not weapon:
             return False
@@ -55,7 +32,6 @@ class Void_Spawn(Enemy):
         weapon.Pickup_Reset_Weapon(self)
         weapon.Set_Equip(True, self)
         self.Set_Active_Weapon(weapon)
-        
 
         self.active_weapon.render = False
         del(weapon)
@@ -67,16 +43,3 @@ class Void_Spawn(Enemy):
     def Spawn_Bones(self):
         pass
 
-    def Update_Active_Weapon(self, delta_time):
-        if not self.active_weapon:
-            return
-
-        self.active_weapon.Set_Equipped_Position(self.direction_y_holder)
-        # self.active_weapon.Update(offset)
-        if not self.active_weapon:
-            return
-        
-        self.active_weapon.Update_Attack(delta_time)
-
-
-        return

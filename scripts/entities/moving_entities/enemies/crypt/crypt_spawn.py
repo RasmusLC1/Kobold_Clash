@@ -47,7 +47,7 @@ class Crypt_Spawn(Enemy_Spawner):
             keys.skeleton_warlock: 0.05,
             keys.skeleton_banner_bearer: 0.05,
             keys.phantom: 0.1,
-            keys.wraith: 0.05,
+            keys.wraith: 10000.05,
             keys.shade: 0.05,
             keys.spider: 0.1,
             keys.ghoul: 0.2,
