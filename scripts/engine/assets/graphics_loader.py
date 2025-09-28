@@ -286,7 +286,7 @@ class Graphics_Loader:
         entities_assets = {
             keys.minotaur: get_tiles_from_sheet('entities/enemies/mythical/minotaur/minotaur_idle.png', 3, 0, 0, 0, 64, 64),
             keys.minotaur_running: get_tiles_from_sheet('entities/enemies/mythical/minotaur/minotaur_running.png', 3, 0, 0, 0, 64, 64),
-            keys.minotaur_attack: get_tiles_from_sheet('entities/enemies/mythical/minotaur/minotaur_attacking.png', 3, 0, 0, 0, 46, 64),
+            keys.minotaur_attack: get_tiles_from_sheet('entities/enemies/mythical/minotaur/minotaur_attacking.png', 5, 0, 0, 0, 64, 64),
         }
         self.assets.update(entities_assets)
 
