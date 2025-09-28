@@ -73,9 +73,6 @@ class Moving_Entity(PhysicsEntity):
         self.max_speed = max_speed  * 100  # Max speed of the entity
         self.max_speed_holder = self.max_speed # Max speed holder to reset it
 
-        # Handle attack animations
-        self.attacking = 0
-
         # Handle Blocking
         self.block_direction = (0,0)
 
@@ -168,19 +165,10 @@ class Moving_Entity(PhysicsEntity):
 
     # Movement handling
     def Movement(self, movement, tilemap, delta_time):
-        if self.Entity_Collision_Detection(tilemap):
-            return
+        if not self.Entity_Collision_Detection(tilemap):
+            self.Tile_Map_Collision_Detection(tilemap)
 
-        self.Tile_Map_Collision_Detection(tilemap)
-        if self.attacking:
-            return
-        
         self.Set_Action(movement)
-
-        if self.idle_count > 60:
-            self.animation_handler.Set_Idle()
-        else:
-            self.idle_count += 1
 
         self.animation_handler.Handle_Animation_Update(delta_time)
 
@@ -460,14 +448,9 @@ class Moving_Entity(PhysicsEntity):
         self.Set_Attack_Direction()
         if self.attack_direction[0] < 0:
             self.flip[0] = True
-            self.animation_handler.Set_Animation(keys.attack)
         else:
             self.flip[0] = False
-            self.animation_handler.Set_Animation(keys.attack)
 
-        # if self.attack_direction[1] < -0.5:
-        #     # TODO: UPDATE to attack up when that has been animated
-        #     self.animation_handler.Set_Animation(keys.attack)
 
     # Ice mechanic, lower friction and acceleration to simulate ice
     def On_Ice(self, effect):

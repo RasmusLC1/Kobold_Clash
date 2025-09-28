@@ -10,7 +10,6 @@ class Animation_Handler():
         self.animation_value = 0
         self.flip = [False, False]
         self.action = ''
-        self.animation = self.entity.type + '_running'
         self.animation_value = 0
 
 
@@ -51,7 +50,6 @@ class Animation_Handler():
 
     # Set new action for animation
     def Set_Animation(self, action):
-        
         if self.animation_lock:
             return
         
@@ -71,7 +69,6 @@ class Animation_Handler():
     
 
     def Handle_Animation_Update(self, delta_time) -> None:
-        print(self.animation)
         if keys.attack in self.animation:
             self.Update_Attack_Animation(delta_time)
         elif 'jumping' in self.animation:
@@ -150,7 +147,6 @@ class Animation_Handler():
 
     def Set_Attack_Animation_Num_Cooldown_Max(self, attack_animations):
         self.attack_animation_num_cooldown_max = self.entity.max_weapon_charge / attack_animations
-        print(self.animation_num_cooldown_max, attack_animations, self.entity.max_weapon_charge)
 
     def Set_Junmp_Animation_Num_Cooldown_Max(self, value):
         self.jumping_animation_num_cooldown_max = value

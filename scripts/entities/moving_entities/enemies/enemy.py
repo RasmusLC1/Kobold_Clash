@@ -152,6 +152,7 @@ class Enemy(Moving_Entity):
         # Check if the player is invisible
         if self.game.player.effects.invisibility.effect:
             return False
+        
         self.charge = min(self.max_weapon_charge, self.charge + delta_time)
 
         return True
@@ -225,7 +226,7 @@ class Enemy(Moving_Entity):
 
 
     def Set_Action(self,  movement = None):
-        if self.distance_to_player > 300 or self.animation_handler.animation_lock:
+        if self.distance_to_player > 300 :
             return
         
         if self.charge > 0:
