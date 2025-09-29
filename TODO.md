@@ -428,7 +428,7 @@ Upgrade weapons
     Shard Wraith, teleports close to clatter source when clatter is generated
     Crystal golemn, slow and shoots crystal shards (similar to freeze shards)
     Crystal Scarab, basic enemy that swarms player
-    Medusa, shoots electric projetiles and fast but very low health
+    Medusa, shoots electric projetiles and fast but very low health, will switch to melee if player is to close, chance to stun player if player mouse is closer to medusa than player
     Mirror crystal, reflects projectiles back at source by inverting angle
     Kobold, steals items from player and runs away
 ### Traps

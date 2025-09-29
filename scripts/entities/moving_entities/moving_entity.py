@@ -31,8 +31,6 @@ class Moving_Entity(PhysicsEntity):
         self.animation_state = 'up'
         self.idle_count = 0
 
-        self.charging = 0
-
         self.direction = (0,0)
         self.direction_x = 0
         self.direction_y = 0
@@ -122,15 +120,15 @@ class Moving_Entity(PhysicsEntity):
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False}
 
         self.Update_Movement(movement, delta_time)
+        self.Update_Animation(movement, delta_time)
         self.Update_Status_Effects(delta_time)
 
 
         # self.Update_Traps(delta_time)
         self.Nearby_Enemies(2, delta_time)
         self.Update_Damage_Cooldown(delta_time)
-        self.Charge_Update(delta_time)
 
-        self.Movement(movement, tilemap, delta_time)
+        self.Movement(tilemap)
         self.Update_Tile(delta_time)
     
 
@@ -161,16 +159,17 @@ class Moving_Entity(PhysicsEntity):
             (self.velocity[1] * delta_time) / self.game.render_scale
         ))
 
+    def Update_Animation(self, movement, delta_time):
+        self.Set_Action(movement)
+        self.animation_handler.Handle_Animation_Update(delta_time)
 
 
     # Movement handling
-    def Movement(self, movement, tilemap, delta_time):
-        if not self.Entity_Collision_Detection(tilemap):
-            self.Tile_Map_Collision_Detection(tilemap)
-
-        self.Set_Action(movement)
-
-        self.animation_handler.Handle_Animation_Update(delta_time)
+    def Movement(self, tilemap):
+        if self.Entity_Collision_Detection(tilemap):
+            return  
+        
+        self.Tile_Map_Collision_Detection(tilemap)
 
         self.last_frame_movement = self.frame_movement
     
@@ -405,21 +404,6 @@ class Moving_Entity(PhysicsEntity):
     def Reset_Attack_Direction(self):
         self.attack_direction = (0, 0)
 
-    def Set_Charge(self, charge_speed, offset=(0, 0)):
-        if not self.charging:
-            self.charging = min(12, charge_speed)
-
-
-    # Handle Charging Updates
-    def Charge_Update(self, delta_time):
-        if self.charging <= 0:
-            return
-        self.max_speed = 40  # Adjust max speed speed for dashing distance
-        self.charging = max(0, self.charging - delta_time)
-        
-
-        self.velocity[0] = self.attack_direction[0] * 100
-        self.velocity[1] = self.attack_direction[1] * 100
 
 
     def Set_Frame_movement(self, movement):
