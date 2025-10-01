@@ -38,21 +38,21 @@ class Crypt_Spawn(Enemy_Spawner):
         }
 
         enemy_types = {
-            keys.skeleton_warrior: 100.4,
-            keys.skeleton_ranger: 0.2,
-            keys.skeleton_bell_toller: 0.1,
-            keys.skeleton_cleric: 0.05,
-            keys.skeleton_undertaker: 0.05,
-            keys.skeleton_guardian: 0.2,
-            keys.skeleton_warlock: 0.05,
-            keys.skeleton_banner_bearer: 0.05,
-            keys.phantom: 0.1,
-            keys.wraith: 0.05,
-            keys.shade: 0.05,
-            keys.spider: 0.1,
-            keys.ghoul: 0.2,
-            keys.wight_king: 0.01,
-            keys.vampire: 0.01,
+            keys.skeleton_warrior: 10.4,
+            keys.skeleton_ranger: 10.2,
+            keys.skeleton_bell_toller: 10.1,
+            keys.skeleton_cleric: 10.05,
+            keys.skeleton_undertaker: 10.05,
+            keys.skeleton_guardian: 10.2,
+            keys.skeleton_warlock: 10.05,
+            keys.skeleton_banner_bearer: 10.05,
+            keys.phantom: 10.1,
+            keys.wraith: 10.05,
+            keys.shade: 10.05,
+            keys.spider: 10.1,
+            keys.ghoul: 10.2,
+            keys.wight_king: 10.01,
+            keys.vampire: 10.01,
         }
         super().__init__(game, spawn_methods, enemy_types)
         

@@ -312,7 +312,6 @@ class Enemy(Moving_Entity):
     def Render(self, surf, offset = (0,0)):
         if not super().Render(surf, offset):
             return
-        self.Render_Weapons(surf, offset)
         self.Render_Health_Bar(surf, offset)
         self.Render_Attacking_Symbol(surf, offset)
 
@@ -330,6 +329,17 @@ class Enemy(Moving_Entity):
         health_bar = self.health_bar[health_index]
         surf.blit(health_bar, (self.rect().left - offset[0], self.rect().bottom - offset[1] - self.size[1] // 2 + 4))
 
+    def Equip_Weapon(self, weapon):
+        if not weapon:
+            return False
+
+        weapon.Pickup_Reset_Weapon(self)
+        weapon.Set_Equip(True, self)
+        self.Set_Active_Weapon(weapon)
+
+        self.active_weapon.render = False
+        del(weapon)
+        return True
     
 
     def Render_Attacking_Symbol(self, surf, offset = (0,0)):

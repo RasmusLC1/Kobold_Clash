@@ -38,20 +38,6 @@ class Medusa(Enemy):
         health_fraction = health / self.max_health
         health_index = max(-1, min(int((1 - health_fraction) * 5), 5))  # Invert fraction and scale to index range
         return health_index
-    
-    def Equip_Weapon(self, weapon):
-        if not weapon:
-            return False
-
-        weapon.Pickup_Reset_Weapon(self)
-        weapon.Set_Equip(True, self)
-        self.Set_Active_Weapon(weapon)
-        
-
-        self.active_weapon.render = False
-        del(weapon)
-        return True
-    
 
     # Custom render function to account for large attack animations
     def Render(self, surf, offset=(0, 0)):

@@ -15,15 +15,3 @@ class Earth_Elemental(Elemental):
         self.active_weapon.Set_Damage(keys.blunt, 5)
 
 
-
-    def Equip_Weapon(self, weapon):
-        if not weapon:
-            return False
-
-        weapon.Pickup_Reset_Weapon(self)
-        weapon.Set_Equip(True, self)
-        self.Set_Active_Weapon(weapon)
-
-        self.active_weapon.render = False
-        del(weapon)
-        return True

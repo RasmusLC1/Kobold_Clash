@@ -25,17 +25,7 @@ class Void_Spawn(Enemy):
         
         return super().Damage_Taken(damage, effect, direction)
 
-    def Equip_Weapon(self, weapon):
-        if not weapon:
-            return False
 
-        weapon.Pickup_Reset_Weapon(self)
-        weapon.Set_Equip(True, self)
-        self.Set_Active_Weapon(weapon)
-
-        self.active_weapon.render = False
-        del(weapon)
-        return True
     
     def Spawn_Damaged_Particles(self):
         self.game.particle_handler.Activate_Particles(10, keys.bone_particle, self.rect().center)

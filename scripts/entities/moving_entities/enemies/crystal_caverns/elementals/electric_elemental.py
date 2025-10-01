@@ -37,16 +37,4 @@ class Electric_Elemental(Elemental):
         self.active_weapon.entity_attack_type.Set_player_Hit_Effect()
         return True
 
-    def Equip_Weapon(self, weapon):
-        if not weapon:
-            return False
-
-        weapon.Pickup_Reset_Weapon(self)
-        weapon.Set_Equip(True, self)
-        self.Set_Active_Weapon(weapon)
-
-        self.active_weapon.render = False
-        del(weapon)
-        return True
-    
-        
+  
