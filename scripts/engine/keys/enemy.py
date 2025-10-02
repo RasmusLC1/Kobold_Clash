@@ -257,7 +257,9 @@ class Enemy():
     
     medusa = "medusa"
     
-    medusa_attack = "medusa_attack"
+    medusa_attack_direct = "medusa_attack_direct"
+
+    medusa_attack_ranged = "medusa_attack_ranged"
 
     medusa_running = "medusa_running"
 

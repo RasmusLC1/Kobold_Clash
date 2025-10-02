@@ -278,7 +278,8 @@ class Graphics_Loader:
         entities_assets = {
             keys.medusa: get_tiles_from_sheet('entities/enemies/mythical/medusa/IDLE.png', 5, 0, 0, 0, 150, 150),
             keys.medusa_running: get_tiles_from_sheet('entities/enemies/mythical/medusa/MOVE.png', 3, 0, 0, 0, 150, 150),
-            keys.medusa_attack: get_tiles_from_sheet('entities/enemies/mythical/medusa/ATTACK1.png', 5, 0, 0, 0, 150, 150),
+            keys.medusa_attack_direct: get_tiles_from_sheet('entities/enemies/mythical/medusa/ATTACK1.png', 5, 0, 0, 0, 150, 150),
+            keys.medusa_attack_ranged: get_tiles_from_sheet('entities/enemies/mythical/medusa/ATTACK2.png', 5, 0, 0, 0, 150, 150),
         }
         self.assets.update(entities_assets)
 

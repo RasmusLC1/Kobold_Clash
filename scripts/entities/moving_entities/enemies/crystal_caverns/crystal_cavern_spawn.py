@@ -3,7 +3,7 @@ from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.ice_spi
 from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.earth_elemental import Earth_Elemental
 from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.electric_elemental import Electric_Elemental
 from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.poison_elemental import Poison_Elemental
-from scripts.entities.moving_entities.enemies.crystal_caverns.mythicals.medusa import Medusa
+from scripts.entities.moving_entities.enemies.crystal_caverns.mythicals.medusa.medusa import Medusa
 from scripts.entities.moving_entities.enemies.crystal_caverns.mythicals.minotaur.minotaur import Minotaur
 from scripts.entities.moving_entities.enemies.enemy_spawner import Enemy_Spawner
 from scripts.engine.keys.keys import keys

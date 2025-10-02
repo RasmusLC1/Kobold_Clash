@@ -1,13 +1,15 @@
 from scripts.entities.moving_entities.enemies.enemy import Enemy
 from scripts.entities.items.weapons.enemy_weapons.claw import Claw
-from scripts.entities.moving_entities.enemies.crystal_caverns.mythicals.minotaur.minotaur_intent_manager import Minotaur_Intent_Manager
+from scripts.entities.moving_entities.enemies.crystal_caverns.mythicals.medusa.medusa_animation_handler import Medusa_Animation_Handler
 from scripts.engine.keys.keys import keys
 import pygame
 
-ICE_PROJECTILE_NUM = 3 * 20
-CRYSTAL_SCALE_HEALTH_COOLDOWN_MAX = 1 # heals 1 health every second
+RANGED_DISTANCE = 100
+ATTACK_TYPE_COOLDOWN = 0.5 # heals 1 health very second
 
 class Medusa(Enemy):
+
+    _animation_handler = Medusa_Animation_Handler 
 
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
         super().__init__(game, pos, keys.medusa, health, strength, max_speed, agility, intelligence, stamina, 0.9, keys.mythical, 100, size = (64, 64))
@@ -16,28 +18,37 @@ class Medusa(Enemy):
         self.intent_manager.Set_Intent([keys.direct, keys.attack])
         self.intent_manager.Set_Intent_Cooldown_Max(120)
         self.last_health_index = self.Calculate_Health_Index(self.health)
+        self.attack_type_cooldown = 0
+        self.attack_type = keys.range
         # Equip the weapon
         self.Equip_Weapon(Claw(game, self.pos)) 
         self.active_weapon.Set_Damage(keys.slash, 5)
 
 
     def Update(self, tilemap, delta_time, movement=...):
-        self.Enrage()
+        self.Set_Attack_Type(delta_time)
         return super().Update(tilemap, delta_time, movement)
 
+    # Set the attack type based on player distance
+    def Set_Attack_Type(self, delta_time):
+        if self.attack_type_cooldown > 0:
+            self.attack_type_cooldown -= delta_time
+            return
+        
+        self.attack_type_cooldown = ATTACK_TYPE_COOLDOWN
+        if self.distance_to_player > RANGED_DISTANCE:
+            self.attack_type = keys.range
+        else:
+            self.attack_type = keys.direct
 
-    def Enrage(self):
-        current_index = self.Calculate_Health_Index(self.health)
-        if current_index < self.last_health_index:
-            # Lost a bucket → enrage once
-            self.Set_Strength(self.strength + 1)
-            self.last_health_index = current_index
+    def Ranged_Attack(self):
+        pass
 
-    # Cap the strength gain to +5
-    def Calculate_Health_Index(self, health):
-        health_fraction = health / self.max_health
-        health_index = max(-1, min(int((1 - health_fraction) * 5), 5))  # Invert fraction and scale to index range
-        return health_index
+    def Attack(self, delta_time):
+        if self.attack_type == keys.direct:
+            return super().Attack(delta_time)
+        else:
+            return self.Ranged_Attack()
 
     # Custom render function to account for large attack animations
     def Render(self, surf, offset=(0, 0)):

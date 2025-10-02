@@ -20,7 +20,7 @@ class Minotaur(Enemy):
         self.last_health_index = self.Calculate_Health_Index(self.health)
         # Equip the weapon
         self.Equip_Weapon(Claw(game, self.pos)) 
-        self.active_weapon.Set_Damage(keys.slash, 5)
+        self.active_weapon.Set_Damage(keys.slash, 10)
 
 
     def Update(self, tilemap, delta_time, movement=...):
