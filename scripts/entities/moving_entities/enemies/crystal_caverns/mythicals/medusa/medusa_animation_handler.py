@@ -4,12 +4,11 @@ from scripts.engine.keys.keys import keys
 class Medusa_Animation_Handler(Animation_Handler):
 
     def Set_Animation(self, action):
-        super().Set_Animation(action)
 
-        if action != keys.attack:
-            return
-        
-        if self.entity.attack_type == keys.range:
-            self.animation = keys.medusa_attack_ranged
-        else:
-            self.animation = keys.medusa_attack_direct
+        if action == keys.attack:
+            if self.entity.attack_type == keys.range:
+                action += '_ranged'
+            else:
+                action += '_direct'
+
+        super().Set_Animation(action)

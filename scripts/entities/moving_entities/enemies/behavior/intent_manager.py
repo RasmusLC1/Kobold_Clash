@@ -96,6 +96,7 @@ class Intent_Manager():
     def Set_Intent(self, intent):
         self.intent = intent
         self.intent_length = len(self.intent)
+        self.current_intent = 0
 
     def Increment_Intent(self):
         self.intent_index += 1

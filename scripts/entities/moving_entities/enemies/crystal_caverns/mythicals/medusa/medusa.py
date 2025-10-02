@@ -1,6 +1,7 @@
 from scripts.entities.moving_entities.enemies.enemy import Enemy
 from scripts.entities.items.weapons.enemy_weapons.claw import Claw
 from scripts.entities.moving_entities.enemies.crystal_caverns.mythicals.medusa.medusa_animation_handler import Medusa_Animation_Handler
+from scripts.entities.items.weapons.magic_attacks.electric.electric_shooter import Electric_Shooter
 from scripts.engine.keys.keys import keys
 import pygame
 
@@ -15,14 +16,18 @@ class Medusa(Enemy):
         super().__init__(game, pos, keys.medusa, health, strength, max_speed, agility, intelligence, stamina, 0.9, keys.mythical, 100, size = (64, 64))
         self.animation_handler.Set_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Max(5)
-        self.intent_manager.Set_Intent([keys.direct, keys.attack])
+        self.range_intent = [keys.medium_range, keys.attack]
+        self.direct_intent = [keys.direct, keys.attack, keys.attack, keys.attack, keys.long_range]
+        self.intent_manager.Set_Intent(self.range_intent)
         self.intent_manager.Set_Intent_Cooldown_Max(120)
-        self.last_health_index = self.Calculate_Health_Index(self.health)
         self.attack_type_cooldown = 0
         self.attack_type = keys.range
         # Equip the weapon
         self.Equip_Weapon(Claw(game, self.pos)) 
         self.active_weapon.Set_Damage(keys.slash, 5)
+        self.electric_damage = 15
+        self.ranged_weapon = Electric_Shooter(self.game)
+
 
 
     def Update(self, tilemap, delta_time, movement=...):
@@ -36,19 +41,25 @@ class Medusa(Enemy):
             return
         
         self.attack_type_cooldown = ATTACK_TYPE_COOLDOWN
-        if self.distance_to_player > RANGED_DISTANCE:
+        if self.distance_to_player > RANGED_DISTANCE and self.attack_type != keys.range:
             self.attack_type = keys.range
-        else:
+            self.intent_manager.Set_Intent(self.range_intent)
+
+        elif self.attack_type != keys.direct:
             self.attack_type = keys.direct
+            self.intent_manager.Set_Intent(self.range_intent)
 
-    def Ranged_Attack(self):
-        pass
 
-    def Attack(self, delta_time):
+    def Trigger_Ranged_Attack(self):
+        self.Set_Target(self.game.player.pos)
+        self.Set_Attack_Direction()
+        self.ranged_weapon.Particle_Creation(self, 100, self.electric_damage)
+
+    def Trigger_Attack(self):
         if self.attack_type == keys.direct:
-            return super().Attack(delta_time)
+            return super().Trigger_Attack()
         else:
-            return self.Ranged_Attack()
+            return self.Trigger_Ranged_Attack()
 
     # Custom render function to account for large attack animations
     def Render(self, surf, offset=(0, 0)):

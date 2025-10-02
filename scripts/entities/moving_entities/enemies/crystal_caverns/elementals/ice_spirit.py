@@ -2,7 +2,7 @@ from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.element
 from scripts.entities.items.weapons.magic_attacks.ice.ice_shooter import Ice_Shooter
 from scripts.engine.keys.keys import keys
 
-ICE_PROJECTILE_NUM = 3 * 20
+ICE_PROJECTILE_NUM = 3 * 20 # 20 for special attack
 
 class Ice_Spirit(Elemental):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
