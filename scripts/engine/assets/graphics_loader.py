@@ -164,6 +164,23 @@ class Graphics_Loader:
     def Asset_Player_List(self):
         entities_assets = {
 
+            keys.player_idle_down : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.player_idle_up : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.player_standing_still_down : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.player_standing_still_up : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.player_running_down : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_running.png', 5, 0, 0, 0, 32, 32),
+            keys.player_running_up : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_running.png', 5, 0, 0, 0, 32, 32),
+            keys.player_attack : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_attacking.png', 4, 0, 0, 0, 48, 48),
+
+
+        }
+        
+        self.assets.update(entities_assets)
+
+
+    def Asset_Kobold_List(self):
+        entities_assets = {
+
             keys.player_idle_down : get_tiles_from_sheet('entities/player/idle_down.png', 4, 0, 0, 0, 32, 32),
             keys.player_idle_up : get_tiles_from_sheet('entities/player/idle_up.png', 4, 0, 0, 0, 32, 32),
             keys.player_standing_still_down : get_tiles_from_sheet('entities/player/standing_still_down.png', 4, 0, 0, 0, 32, 32),

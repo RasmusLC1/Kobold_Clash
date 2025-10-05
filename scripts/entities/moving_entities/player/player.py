@@ -216,21 +216,41 @@ class Player(Moving_Entity):
         if abs(self.movement_handler.dashing) >= 50:
             return
         
-        self.animation_handler.Set_Entity_Image()
-        
-        entity_image = self.animation_handler.entity_image.copy()
+        if not self.active or not self.Update_Light_Level():
+            return False
+        if not self.animation_handler.entity_image:
+            return False
 
-        entity_image.set_alpha(min(255, self.active))
-        self.Render_Damage(surf, offset)
-        if not "up" in self.animation_handler.animation:
-            surf.blit(pygame.transform.flip(entity_image, self.flip[0], False), (self.pos[0] - offset[0] + self.anim_offset[0], self.pos[1] - offset[1] + self.anim_offset[1]))
+        self.Update_Dark_Surface()
 
+        # Get the larger sprite
+        image = pygame.transform.flip(self.rendered_image, self.flip[0], False)
+        image_rect = image.get_rect(center=(self.pos[0] - offset[0] + self.size[0] // 2,
+                                            self.pos[1] - offset[1] + self.size[1] // 2))
 
-        self.weapon_handler.Render_Weapons(surf, offset)
-        
+        # Draw it centered around Medusa's logic/collision box
+        surf.blit(image, image_rect.topleft)
 
-        if  "up" in self.animation_handler.animation:
-            surf.blit(pygame.transform.flip(entity_image, self.flip[0], False), (self.pos[0] - offset[0] + self.anim_offset[0], self.pos[1] - offset[1] + self.anim_offset[1]))
-
-        # Render status effects
+        # Draw effects (like damage flash, poison, etc.)
         self.effects.Render_Effects(surf, offset)
+        self.Render_Damage(surf, offset)
+
+        return True        
+        # self.animation_handler.Set_Entity_Image()
+        
+        # entity_image = self.animation_handler.entity_image.copy()
+
+        # entity_image.set_alpha(min(255, self.active))
+        # self.Render_Damage(surf, offset)
+        # if not "up" in self.animation_handler.animation:
+        #     surf.blit(pygame.transform.flip(entity_image, self.flip[0], False), (self.pos[0] - offset[0] + self.anim_offset[0], self.pos[1] - offset[1] + self.anim_offset[1]))
+
+
+        # self.weapon_handler.Render_Weapons(surf, offset)
+        
+
+        # if  "up" in self.animation_handler.animation:
+        #     surf.blit(pygame.transform.flip(entity_image, self.flip[0], False), (self.pos[0] - offset[0] + self.anim_offset[0], self.pos[1] - offset[1] + self.anim_offset[1]))
+
+        # # Render status effects
+        # self.effects.Render_Effects(surf, offset)
