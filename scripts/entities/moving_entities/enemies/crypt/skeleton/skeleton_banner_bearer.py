@@ -1,5 +1,5 @@
 from scripts.entities.moving_entities.enemies.crypt.skeleton.skeleton import Skeleton
-from scripts.entities.items.weapons.close_combat.sword import Sword
+from scripts.entities.items.weapons.enemy_weapons.claw import Claw
 from scripts.engine.keys.keys import keys
 
 import random
@@ -8,7 +8,8 @@ import random
 class Skeleton_Banner_Bearer(Skeleton):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
         super().__init__(game, pos, keys.skeleton_banner_bearer, health, strength, max_speed, agility, intelligence, stamina, 1, 15)
-        self.Equip_Weapon(Sword(self.game, self.pos))
+        self.Equip_Weapon(Claw(self.game, self.pos))
+        self.active_weapon.Set_Damage(keys.slash, 5)
         self.rally_cooldown = 0
         self.attack_strategy = keys.medium_range
         self.intent_manager.Set_Intent([keys.attack])

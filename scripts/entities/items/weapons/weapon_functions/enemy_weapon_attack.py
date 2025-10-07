@@ -21,7 +21,7 @@ class Enemy_Weapon_Attack():
         self.attacking -= delta_time
 
 
-        self.weapon.entity.Reduce_Movement(4) # Reduce movement to a quarter when attacking
+        self.weapon.entity.Reduce_Movement(2) # Reduce movement to a quarter when attacking
         return False
     
     # Initialise the attack and reset attack values
@@ -33,7 +33,7 @@ class Enemy_Weapon_Attack():
         self.attacking = max(0.1, 4 - (self.weapon.speed + entity.agility) / 10)
 
         self.attack_animation_time = int(self.attacking / self.weapon.attack_animation_max)
-        if entity.distance_to_player > self.game.tilemap.tile_size * 1.5:
+        if entity.distance_to_player > self.weapon.entity.size[0] * 1.5:
             return
         self.weapon.Entity_Hit(self.game.player)
         self.Set_player_Hit_Effect()

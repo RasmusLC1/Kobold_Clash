@@ -11,5 +11,3 @@ class Wraith(Void_Spawn):
         super().__init__(game, pos, keys.wraith, health, strength, max_speed, agility, intelligence, stamina, 1, 15)
         self.active_weapon.Set_Damage(keys.slash, 5)
         self.Set_Effect(keys.soul_stealer, 5, True)
-
-

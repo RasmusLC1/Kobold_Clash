@@ -31,10 +31,21 @@
     # Threat metre, a skull that fills up or something. If player generates clatter it has a chance to increase. It will also have a chance to decrease if player is quiet for longer periods of time
     Minimap, adjust rendering scale for minimap and only display tiles that has been in raycaster
 
+# UI
+    # Item Inventory in grid at bottom center of the screen, 9 inventory slots, each with hotkey
+    # Rune Inventory to the right of the item inventory, limit of 3 runes in grid, each with hotkey
+    # Weaopon Inventory to the left of the item inventory, limit of 2 weapons in grid. Can be switched between with scroll wheel
+    # Awakening skull that changes animation and fades in as the awakening level increases
+    # Bottom left, the health bar, using an hour glass dripping blood for visual interesting design
+    Top right rune amount, currently just a soul symbol with number, needs unique design, probably tying it to the minimap frame
+    Top right minimap of the explored dungeon, grows as the player explores more, resets each time new dungeon layer is reached
+    # Top left side and down, player status effects, can be curses etc. Each effect is an item that can be hovered over for information
 
-# LOADING PAGE:
+# Loading page:
     # Menu screen that renders parts of a loading bar every time a step in dungeon generator generates a new chunk
     # Save it in a seperate class that accepts an increment from dungeon generator
+    Display the description of the dungeon you're entering and give little tips and tricks to the player while loading
+    Have unique art for each dungeon theme
 
 # Shop
 Buy and sell items to help complete levels
@@ -64,6 +75,8 @@ Upgrade weapons
 
     Higher clatter levels generate better loot spawns as well
 
+# Progression mechanic
+    Player profile starts with basic items like potions and 
 
 # Weapons:
     Weapons have health, forcing players to either repair them with ingots at weapon shrines or to get new weapons 
@@ -346,15 +359,18 @@ Upgrade weapons
     - # Pots and urns that can be smashed to get loot, generates clatter
     - # Chest, standard loot, safe but multiple tiers that can determine the loot table
     - # Weapon racks, contains weapons
-    - # Soul gem, harvest souls but can summon/attract enemies
     - # Teleportation Circles, linked to each other, can be used to traverse the dungeon
-    - # Teleport shrine, pay souls to teleport to a lower dungeon
     - Shops where you can buy different items for gold, maybe a little kobold with a shop. Opens a menu, you can sell loot for gold and use gold to buy random selection of items
     - # Campfires, rest locations player can regain 50% hp, one per floor, one per floor, using it increases awakening by 1
+    - # Sacrifice Shrine, sacrifice loot for rewards, which are status effects. Scales with the gold value of the sacrificed item
+    - # Soul well, Sacrifice items for souls but can summon/attract enemies
+    - # Portal Shrine, each floor has a portal shrine that can be activated using scaling souls cost. Will transport the player to the next dungeon layer. Player needs to hunt enemies or sacrifice loot at 
 
 
 # Dugeon types
 ## Ancient Tomb - COMPLETE
+### Description
+    Long forgotten tomb of an ancient culture that worshipped the dead
 ### Specialty
     Basic dungeon, used as introduction
 ### Enemies
@@ -384,9 +400,6 @@ Upgrade weapons
 ### Decorations
     - # Braziers with fire, lights up area, can be extinguished/ignited
     - # Plinths, contains runes
-    - # Soul well, harvest souls but can summon/attract enemies
-    - # Teleportation Circles, linked to each other, can be used to traverse the dungeon
-    - # Teleport shrine, pay souls to teleport to a lower dungeon
     - # Rune shrine, pay souls to aquire new runes
     - # False walls, can be destroyed to reveal treasure rooms
     - # Levers that spawn items, open doors etc when activated
@@ -396,23 +409,25 @@ Upgrade weapons
 
 
 ## Crystal Caverns
+### Description
+    Caverns that resonate with strange energies
 ### Specialty
     Crystal Growth, walls occasionally dissapear or spawn changing the structure of the dungeon. Spawned walls can be broken
     Weapon gems spawn more often
     Crystaline enemies that grow a crystal skin that acts as armor, grows back if not damaged for a while
 ### Enemies
-    # Spider, shoots spiderweb that snares you, less damage
-    Crystal Elemental, high health and strength, shoots crystal
+    # Earth Elemental, high health and strength, close combat
+    # Ice spirit, shoots freeze projectiles
+    # Fire spirit, high speeds shoot flamethrower at close range and retreats
+    # Electric Elemental, damages the player indirectly if in range
+    # Poison Elemental, creates poison plumes around the player and explodes when damaged
     Minotaur, boss mob, charges and breaks envoirement, high damage, low defence
-    Hydra, boss mob, splits head when a head is killed, needs to be attacked from behind or killed with enviorement damage
+    Medusa, shoots electric projetiles and fast but very low health, will switch to melee if player is to close, chance to stun player if player mouse is closer to medusa than player
     Clicker, blind but good hearing, loud because of clicks
-    Echo stalker, becomes visible for a time when clatter is generated
+    Echo stalker, becomes visible for 60 seconds when clatter is generated
     Shard Wraith, teleports close to clatter source when clatter is generated
-    Crystal golemn, slow and shoots crystal shards (similar to freeze shards)
     Crystal Scarab, basic enemy that swarms player
-    Aurora Wisp, acts as light source, but might explode when clatter is triggered
-    Medusa, shoots electric projetiles and fast but very low health
-    Mirror crystal, reflects projectiles back at source by inverting angle
+    Hydra, boss mob, regens health fast, gains immunity to the last effect type that damaged it
     Kobold, steals items from player and runs away
 ### Traps
     - Crystal shards, shoots crystal spikes
@@ -438,6 +453,8 @@ Upgrade weapons
     
 
 ## Mycelium Depths enemies
+### Description
+    In the deep dark the roots of the world have come alive
 ### Specialty
     Mycelium network, clank is disabled. Instead enemies are aggroed by attacks or stepping on spore traps
     Potions spawn more often
@@ -472,6 +489,8 @@ Upgrade weapons
 
 
 ## Serpents Lair
+### Description
+    Ancient culture that guards the world from a curse
 ### Specialty
     Quatlz curse, player will slowly get more and more curse the longer they stay.
     Cursed items spawn more often
@@ -508,6 +527,8 @@ Upgrade weapons
 
 
 ## Titan Forge
+### Description
+    Forge masters of the deep, that have combined metal and demon
 ### Specialty
     Ash storms, lowers visibility for a period of time at random
     Utility items spawn more often
@@ -543,6 +564,8 @@ Upgrade weapons
     - 
 
 # Glacial Caverns
+### Description
+    Eternal winter and ancient creatures haunt this land
 ### Specialty
     Player needs to seek out heat sources (fire) to prevent freezing to death
     Runes spawn more often

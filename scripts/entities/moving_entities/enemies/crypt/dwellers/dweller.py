@@ -1,8 +1,6 @@
 from scripts.entities.moving_entities.enemies.enemy import Enemy
 from scripts.entities.items.weapons.enemy_weapons.claw import Claw
-import random
 from scripts.engine.keys.keys import keys
-import math
 
 class Dweller(Enemy):
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, size = (32, 32)):
@@ -24,7 +22,6 @@ class Dweller(Enemy):
 
     def Update(self, tilemap, delta_time, movement=(0, 0)):
         super().Update(tilemap, delta_time, movement)
-        self.Update_Active_Weapon(delta_time)
         self.Darkness_Buff()
 
 
@@ -45,52 +42,5 @@ class Dweller(Enemy):
 
     
 
-    # Returns true on succesful attack
-    def Attack(self, delta_time):
-        if not super().Attack(delta_time):
-            return False
-        
-        if not self.active_weapon:
-            return False
-        self.charge = min(self.max_weapon_charge, self.charge + delta_time)
-
-        if self.charge < self.max_weapon_charge:
-            return False
-        
-        
-        self.Set_Target(self.game.player.pos)
-        self.active_weapon.Set_Attack()
-        self.Reset_Charge()
-        return True
-
-
-    def Equip_Weapon(self, weapon):
-        if not weapon:
-            return False
-
-        weapon.Pickup_Reset_Weapon(self)
-        weapon.Set_Equip(True, self)
-        self.Set_Active_Weapon(weapon)
-
-        self.active_weapon.render = False
-        del(weapon)
-        return True
-    
     def Spawn_Damaged_Particles(self):
         self.game.particle_handler.Activate_Particles(10, keys.bone_particle, self.rect().center)
-
-    
-    def Update_Active_Weapon(self, delta_time):
-        if not self.active_weapon:
-            return
-
-        self.active_weapon.Set_Equipped_Position(self.direction_y_holder)
-        if not self.active_weapon:
-            return
-        
-        self.active_weapon.Update_Attack(delta_time)
-
-        return
-    
-    def Drop_Loot(self):
-        pass

@@ -40,6 +40,9 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Skeleton_Ranger_List(self)
         Graphics_Loader.Asset_Fire_Spirit_List(self)
         Graphics_Loader.Asset_Ice_Spirit_List(self)
+        Graphics_Loader.Asset_Earth_Elemental_List(self)
+        Graphics_Loader.Asset_Electric_Elemental_List(self)
+        Graphics_Loader.Asset_Poison_Elemental_List(self)
         Graphics_Loader.Asset_Void_Spawn_List(self)
         Graphics_Loader.Asset_Skeleton_Bell_Toller_List(self)
         Graphics_Loader.Asset_Skeleton_Cleric_List(self)
@@ -50,6 +53,8 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Ghoul_List(self)
         Graphics_Loader.Asset_Enemy_Symbols_List(self)
         Graphics_Loader.Asset_vampire_List(self)
+        Graphics_Loader.Asset_minotaur_List(self)
+        Graphics_Loader.Asset_medusa_List(self)
         
     def Asset_Background_List(self):
         background_assets = {'background': load_image('background.png'),}
@@ -159,6 +164,23 @@ class Graphics_Loader:
     def Asset_Player_List(self):
         entities_assets = {
 
+            keys.player_idle_down : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.player_idle_up : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.player_standing_still_down : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.player_standing_still_up : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.player_running_down : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_running.png', 5, 0, 0, 0, 32, 32),
+            keys.player_running_up : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_running.png', 5, 0, 0, 0, 32, 32),
+            keys.player_attack : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_attacking.png', 4, 0, 0, 0, 48, 48),
+
+
+        }
+        
+        self.assets.update(entities_assets)
+
+
+    def Asset_Kobold_List(self):
+        entities_assets = {
+
             keys.player_idle_down : get_tiles_from_sheet('entities/player/idle_down.png', 4, 0, 0, 0, 32, 32),
             keys.player_idle_up : get_tiles_from_sheet('entities/player/idle_up.png', 4, 0, 0, 0, 32, 32),
             keys.player_standing_still_down : get_tiles_from_sheet('entities/player/standing_still_down.png', 4, 0, 0, 0, 32, 32),
@@ -247,20 +269,61 @@ class Graphics_Loader:
 
     def Asset_Fire_Spirit_List(self):
         entities_assets = {
-            keys.fire_spirit_idle: get_tiles_from_sheet('entities/enemies/fire_spirit/fire_spirit_idle.png', 3, 0, 0, 0, 32, 32),
-            keys.fire_spirit_running: get_tiles_from_sheet('entities/enemies/fire_spirit/fire_spirit_moving.png', 3, 0, 0, 0, 32, 32),
-            keys.fire_spirit_attack: get_tiles_from_sheet('entities/enemies/fire_spirit/fire_spirit_attacking.png', 3, 0, 0, 0, 32, 32),
+            keys.fire_spirit_idle: get_tiles_from_sheet('entities/enemies/elementals/fire_spirit/fire_spirit_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.fire_spirit_running: get_tiles_from_sheet('entities/enemies/elementals/fire_spirit/fire_spirit_moving.png', 3, 0, 0, 0, 32, 32),
+            keys.fire_spirit_attack: get_tiles_from_sheet('entities/enemies/elementals/fire_spirit/fire_spirit_attacking.png', 3, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
     def Asset_Ice_Spirit_List(self):
         entities_assets = {
-            keys.ice_spirit: get_tiles_from_sheet('entities/enemies/ice_spirit/ice_spirit_idle.png', 3, 0, 0, 0, 32, 32),
-            keys.ice_spirit_attack: get_tiles_from_sheet('entities/enemies/ice_spirit/ice_spirit_moving.png', 3, 0, 0, 0, 32, 32),
-            keys.ice_spirit_running: get_tiles_from_sheet('entities/enemies/ice_spirit/ice_spirit_attacking.png', 3, 0, 0, 0, 32, 32),
+            keys.ice_spirit: get_tiles_from_sheet('entities/enemies/elementals/ice_spirit/ice_spirit_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.ice_spirit_attack: get_tiles_from_sheet('entities/enemies/elementals/ice_spirit/ice_spirit_moving.png', 3, 0, 0, 0, 32, 32),
+            keys.ice_spirit_running: get_tiles_from_sheet('entities/enemies/elementals/ice_spirit/ice_spirit_attacking.png', 3, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
+    def Asset_Earth_Elemental_List(self):
+        entities_assets = {
+            keys.earth_elemental: get_tiles_from_sheet('entities/enemies/elementals/earth_elemental/earth_elemental_idle.png', 3, 0, 0, 0, 48, 48),
+            keys.earth_elemental_running: get_tiles_from_sheet('entities/enemies/elementals/earth_elemental/earth_elemental_running.png', 3, 0, 0, 0, 48, 48),
+            keys.earth_elemental_attack: get_tiles_from_sheet('entities/enemies/elementals/earth_elemental/earth_elemental_attack.png', 3, 0, 0, 0, 48, 48),
+        }
+        self.assets.update(entities_assets)
+
+    def Asset_medusa_List(self):
+        entities_assets = {
+            keys.medusa: get_tiles_from_sheet('entities/enemies/mythical/medusa/IDLE.png', 5, 0, 0, 0, 150, 150),
+            keys.medusa_running: get_tiles_from_sheet('entities/enemies/mythical/medusa/MOVE.png', 3, 0, 0, 0, 150, 150),
+            keys.medusa_attack_direct: get_tiles_from_sheet('entities/enemies/mythical/medusa/ATTACK1.png', 5, 0, 0, 0, 150, 150),
+            keys.medusa_attack_ranged: get_tiles_from_sheet('entities/enemies/mythical/medusa/ATTACK2.png', 5, 0, 0, 0, 150, 150),
+        }
+        self.assets.update(entities_assets)
+
+    def Asset_minotaur_List(self):
+        entities_assets = {
+            keys.minotaur: get_tiles_from_sheet('entities/enemies/mythical/minotaur/minotaur_idle.png', 3, 0, 0, 0, 64, 64),
+            keys.minotaur_running: get_tiles_from_sheet('entities/enemies/mythical/minotaur/minotaur_running.png', 3, 0, 0, 0, 64, 64),
+            keys.minotaur_attack: get_tiles_from_sheet('entities/enemies/mythical/minotaur/minotaur_attacking.png', 5, 0, 0, 0, 64, 64),
+        }
+        self.assets.update(entities_assets)
+
+    def Asset_Electric_Elemental_List(self):
+        entities_assets = {
+            keys.electric_elemental: get_tiles_from_sheet('entities/enemies/elementals/electric_elemental/electric_elemental_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.electric_elemental_running: get_tiles_from_sheet('entities/enemies/elementals/electric_elemental/electric_elemental_running.png', 3, 0, 0, 0, 32, 32),
+            keys.electric_elemental_attack: get_tiles_from_sheet('entities/enemies/elementals/electric_elemental/electric_elemental_attack.png', 3, 0, 0, 0, 32, 32),
+        }
+        self.assets.update(entities_assets)
+
+    def Asset_Poison_Elemental_List(self):
+        entities_assets = {
+            keys.poison_elemental: get_tiles_from_sheet('entities/enemies/elementals/poison_elemental/poison_elemental_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.poison_elemental_running: get_tiles_from_sheet('entities/enemies/elementals/poison_elemental/poison_elemental_running.png', 3, 0, 0, 0, 32, 32),
+            keys.poison_elemental_attack: get_tiles_from_sheet('entities/enemies/elementals/poison_elemental/poison_elemental_attack.png', 3, 0, 0, 0, 32, 32),
+        }
+        self.assets.update(entities_assets)
+    
     def Wight_King_List(self):
         entities_assets = {
             keys.wight_king_running: get_tiles_from_sheet('entities/enemies/skeleton/wight_king/wight_king.png', 4, 0, 0, 0, 40, 40),
@@ -309,8 +372,9 @@ class Graphics_Loader:
 
     def Asset_Enemy_Symbols_List(self):
         symbols_assets = {
-            keys.exclamation_mark: get_tiles_from_sheet('entities/enemies/symbols/exclamation.png', 0, 0, 0, 0, 32, 32),
-            keys.health_bar: get_tiles_from_sheet('entities/enemies/symbols/health_bar.png', 9, 0, 0, 0, 32, 32),
+            keys.exclamation_mark: get_tiles_from_sheet('entities/enemies/symbols/exclamation.png', 0, 0, 0, 0, 16, 16),
+            keys.health_bar: get_tiles_from_sheet('entities/enemies/symbols/health_bar.png', 9, 0, 0, 0, 32, 16),
+            keys.crystal_scale_bar: get_tiles_from_sheet('entities/enemies/symbols/crystal_scale_bar.png', 9, 0, 0, 0, 32, 16),
         }
         self.assets.update(symbols_assets)
 

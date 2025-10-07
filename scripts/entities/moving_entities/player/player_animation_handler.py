@@ -16,3 +16,20 @@ class Player_Animation_Handler(Animation_Handler):
             self.Set_Animation('idle_up')
         else:
             self.Set_Animation('idle_down')
+
+
+    def Update_Attack_Animation(self, delta_time) -> None:
+        if self.attack_animation_num_cooldown > 0:
+            self.attack_animation_num_cooldown = max(0, self.attack_animation_num_cooldown - delta_time)
+            return
+        
+        self.attack_animation_num_cooldown = self.attack_animation_num_cooldown_max
+        self.attack_animation_num += 1
+
+        if self.attack_animation_num > self.attack_animation_num_max:
+            self.attack_animation_num = 0
+            self.Set_Animation_Lock(False)
+
+
+        self.Set_Entity_Image()
+        self.animation_value = self.attack_animation_num

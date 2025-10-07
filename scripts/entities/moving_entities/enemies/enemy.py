@@ -6,6 +6,7 @@ from scripts.entities.decoration.shared.bones.bones import Bones
 from scripts.entities.moving_entities.enemies.behavior.intent_manager import Intent_Manager
 from scripts.engine.keys.keys import keys
 
+import math
 import pygame
 import random
 
@@ -33,13 +34,16 @@ class Enemy(Moving_Entity):
         self.attack_strategy = keys.direct # Attack strategy that the enemy utalises
         self.path_finding_strategy = 'standard' # Maptype that is used for navigation
         
-        self.attack_distance  = 90
+        self.attack_distance  = self.size[0] * 3
+        self.distance_calculation_cooldown = 0
+
         self.max_weapon_charge = max_weapon_charge
 
 
         self.locked_on_target = 0 # If the enemy is locked onto a target, then it will not switch based on clatter
 
         self.attack_symbol_offset = 20
+        self.health_bar = self.game.assets[keys.health_bar]
         
 
         self.text_box = Enemy_Textbox(self)
@@ -48,10 +52,6 @@ class Enemy(Moving_Entity):
 
         self.Set_Description()
 
-
-
-
-        
     
     def Save_Data(self):
         super().Save_Data()
@@ -82,10 +82,10 @@ class Enemy(Moving_Entity):
 
     def Update(self, tilemap, delta_time, movement=(0, 0)):
         self.Reset_Max_Speed()
+        self.Calculate_Distance_To_Player(delta_time)
         self.intent_manager.Update_Behavior(delta_time)
         self.path_finding.Path_Finding(delta_time)
         movement = self.direction
-        
         super().Update(tilemap, delta_time, movement)
 
         self.Set_Direction_Holder()
@@ -98,13 +98,23 @@ class Enemy(Moving_Entity):
     def Set_Attack_Strategy(self, strategy):
         self.attack_strategy = strategy
 
-    def Set_Action_Intent(self, action):
-        self.intent_manager.Set_Action(action)
 
     def Set_Direction_Holder(self):
         if self.direction_x or self.direction_y:
             self.direction_x_holder = self.direction_x
             self.direction_y_holder = self.direction_y
+
+
+    def Calculate_Distance_To_Player(self, delta_time):
+        if self.distance_calculation_cooldown > 0:
+            self.distance_calculation_cooldown = max(0, self.distance_calculation_cooldown - delta_time)
+            return
+         
+        max_distance_cooldown = random.uniform(0.4, 0.6) # randomise time to prevent simulationious updates
+        self.distance_calculation_cooldown = max_distance_cooldown
+        
+        player_pos = self.game.player.pos
+        self.distance_to_player = math.sqrt((player_pos[0] - self.pos[0]) ** 2 + (player_pos[1] - self.pos[1]) ** 2)
 
     def Reset_Charge(self):
         self.charge = 0
@@ -142,13 +152,21 @@ class Enemy(Moving_Entity):
         # Check if the player is invisible
         if self.game.player.effects.invisibility.effect:
             return False
+        
+        self.charge = min(self.max_weapon_charge, self.charge + delta_time)
+
         return True
+
+
+    def Trigger_Attack(self):
+        self.Set_Target(self.game.player.pos)
+        self.active_weapon.Set_Attack()
+        self.Reset_Charge()
 
     def Set_Attack_Direction(self):
         if not self.charge > 0:
             self.attack_direction = (0, 0)
             return
-        
         super().Set_Attack_Direction()
         
     def Attack_Strategy(self):
@@ -187,32 +205,36 @@ class Enemy(Moving_Entity):
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
         self.Spawn_Damaged_Particles()
         if not super().Damage_Taken(damage, effect, direction):
-            return
+            return False
         
         self.Delete()
+        return True
 
     
-
-    def Delete(self):
+    def Delete(self, generate_soul = True):
         if self.health > 0:
-            return
+            return False
         
         self.Spawn_Bones()
         self.Drop_Loot()
         self.game.enemy_handler.Delete_Enemy(self)
         self.game.entities_render.Remove_Entity(self)
-        if self.distance_to_player < 150:
+        if self.distance_to_player < 300 and generate_soul:
             self.game.player.Increase_Souls(self.soul_value)
         super().Delete()
+        return True
 
 
     def Set_Action(self,  movement = None):
+        if self.distance_to_player > 300 :
+            return
+        
         if self.charge > 0:
             self.animation_handler.Set_Animation(keys.attack)
-        else:
+        elif self.frame_movement:
             self.animation_handler.Set_Animation('running')
-
-
+        else:
+            self.animation_handler.Set_Animation('idle')
 
 
     def Spawn_Damaged_Particles(self):
@@ -279,6 +301,7 @@ class Enemy(Moving_Entity):
     def Improve_Weapon(self, effect, amount):
         if not self.active_weapon:
             print("FAILED TO IMPROVE WEAPON, ", effect, self.type, vars(self))
+
         self.active_weapon.Set_Damage(effect, amount)
 
 
@@ -289,7 +312,6 @@ class Enemy(Moving_Entity):
     def Render(self, surf, offset = (0,0)):
         if not super().Render(surf, offset):
             return
-        self.Render_Weapons(surf, offset)
         self.Render_Health_Bar(surf, offset)
         self.Render_Attacking_Symbol(surf, offset)
 
@@ -300,16 +322,24 @@ class Enemy(Moving_Entity):
 
         # Map the fraction to an index from 0 to 9 (assuming 10 total images)
         health_index = max(-1, min(int((1 - health_fraction) * 9), 9))  # Invert fraction and scale to index range
-
         # Correct potential rounding issues at full health
         if self.health == self.max_health:
             health_index = 0
 
-        health_Bar = self.game.assets['health_bar'][health_index]
-        alpha_value = 150
-        health_Bar.set_alpha(alpha_value)
-        surf.blit(health_Bar, (self.rect().left - offset[0], self.rect().bottom - offset[1] - self.size[1] // 2 + 4))
+        health_bar = self.health_bar[health_index]
+        surf.blit(health_bar, (self.rect().left - offset[0], self.rect().bottom - offset[1] - self.size[1] // 2 + 4))
 
+    def Equip_Weapon(self, weapon):
+        if not weapon:
+            return False
+
+        weapon.Pickup_Reset_Weapon(self)
+        weapon.Set_Equip(True, self)
+        self.Set_Active_Weapon(weapon)
+
+        self.active_weapon.render = False
+        del(weapon)
+        return True
     
 
     def Render_Attacking_Symbol(self, surf, offset = (0,0)):

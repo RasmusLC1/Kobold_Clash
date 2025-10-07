@@ -272,7 +272,8 @@ class Tilemap:
             return None
     
     def Add_Tile(self, type, variant, pos, physics, active = 0, light_level = 0, translucent = True):
-        tile = Tile(self.game, type, variant, pos, self.tile_size, active, light_level, physics, translucent)
+        sub_type = self.Set_Sub_Type(type)
+        tile = Tile(self.game, type, sub_type, variant, pos, self.tile_size, active, light_level, physics, translucent)
         self.game.ray_caster.Remove_Tile(self.tilemap[pos]) # Remove old tile from renderer 
         self.tilemap[pos] = None
         self.tilemap[pos] = tile

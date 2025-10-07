@@ -40,3 +40,8 @@ class Clatter():
     def Disable_Clatter(self):
         self.temp_disable_clatter = True
 
+    # Sets awakening level to 0
+    def Reset_Awakening_Level(self):
+        self.awakening.awakening_cooldown = 0
+        self.awakening.Set_Awakening_Level(0)
+

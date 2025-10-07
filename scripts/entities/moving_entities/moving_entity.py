@@ -31,8 +31,6 @@ class Moving_Entity(PhysicsEntity):
         self.animation_state = 'up'
         self.idle_count = 0
 
-        self.charging = 0
-
         self.direction = (0,0)
         self.direction_x = 0
         self.direction_y = 0
@@ -72,9 +70,6 @@ class Moving_Entity(PhysicsEntity):
         self.acceleration_holder = self.acceleration # accelarition holder to reset it
         self.max_speed = max_speed  * 100  # Max speed of the entity
         self.max_speed_holder = self.max_speed # Max speed holder to reset it
-
-        # Handle attack animations
-        self.attacking = 0
 
         # Handle Blocking
         self.block_direction = (0,0)
@@ -125,15 +120,15 @@ class Moving_Entity(PhysicsEntity):
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False}
 
         self.Update_Movement(movement, delta_time)
+        self.Update_Animation(movement, delta_time)
         self.Update_Status_Effects(delta_time)
 
 
         # self.Update_Traps(delta_time)
         self.Nearby_Enemies(2, delta_time)
         self.Update_Damage_Cooldown(delta_time)
-        self.Charge_Update(delta_time)
 
-        self.Movement(movement, tilemap, delta_time)
+        self.Movement(tilemap)
         self.Update_Tile(delta_time)
     
 
@@ -164,30 +159,17 @@ class Moving_Entity(PhysicsEntity):
             (self.velocity[1] * delta_time) / self.game.render_scale
         ))
 
+    def Update_Animation(self, movement, delta_time):
+        self.Set_Action(movement)
+        self.animation_handler.Handle_Animation_Update(delta_time)
 
 
     # Movement handling
-    def Movement(self, movement, tilemap, delta_time):
+    def Movement(self, tilemap):
         if self.Entity_Collision_Detection(tilemap):
-            return
-
-        self.Tile_Map_Collision_Detection(tilemap)
-        if self.attacking:
-            return
+            return  
         
-        self.Set_Action(movement)
-
-        if self.idle_count > 60:
-            self.animation_handler.Set_Idle()
-        else:
-            self.idle_count += 1
-
-        if keys.attack in self.animation_handler.animation:
-            self.animation_handler.Update_Attack_Animation(delta_time)
-        elif 'jumping' in self.animation_handler.animation:
-            self.animation_handler.Update_Jumping_Animation(delta_time)
-        else:
-            self.animation_handler.Update_Animation(delta_time)
+        self.Tile_Map_Collision_Detection(tilemap)
 
         self.last_frame_movement = self.frame_movement
     
@@ -405,20 +387,7 @@ class Moving_Entity(PhysicsEntity):
         return False
 
 
-    def Attack_Direction_Handler(self):
-        self.Set_Attack_Direction()
-        
-        if self.attack_direction[0] < 0:
-            self.flip[0] = True
-            self.animation_handler.Set_Animation(keys.attack)
 
-        else:
-            self.flip[0] = False
-            self.animation_handler.Set_Animation(keys.attack)
-
-        if self.attack_direction[1] < -0.5:
-            # TODO: UPDATE to attack up when that has been animated
-            self.animation_handler.Set_Animation(keys.attack)
 
 
     def Set_Attack_Direction(self, attack_direction=None):
@@ -435,21 +404,6 @@ class Moving_Entity(PhysicsEntity):
     def Reset_Attack_Direction(self):
         self.attack_direction = (0, 0)
 
-    def Set_Charge(self, charge_speed, offset=(0, 0)):
-        if not self.charging:
-            self.charging = min(12, charge_speed)
-
-
-    # Handle Charging Updates
-    def Charge_Update(self, delta_time):
-        if self.charging <= 0:
-            return
-        self.max_speed = 40  # Adjust max speed speed for dashing distance
-        self.charging = max(0, self.charging - delta_time)
-        
-
-        self.velocity[0] = self.attack_direction[0] * 100
-        self.velocity[1] = self.attack_direction[1] * 100
 
 
     def Set_Frame_movement(self, movement):
@@ -467,11 +421,19 @@ class Moving_Entity(PhysicsEntity):
     def Reset_Max_Speed(self):
         self.max_speed = self.max_speed_holder
         
-    # Push the entity in the given direction
-    def Push(self, direction, tilemap, push_strength = -1):
+    def Push(self, direction, tilemap, push_strength=-1):
+        if direction is None:
+            return  # or pick a default direction like (0, 0)
         self.Set_Frame_movement((direction[0] * push_strength, direction[1] * push_strength))
         self.effects.Push(direction)
         self.Tile_Map_Collision_Detection(tilemap)
+
+    def Attack_Direction_Handler(self):
+        self.Set_Attack_Direction()
+        if self.attack_direction[0] < 0:
+            self.flip[0] = True
+        else:
+            self.flip[0] = False
 
 
     # Ice mechanic, lower friction and acceleration to simulate ice
@@ -583,7 +545,6 @@ class Moving_Entity(PhysicsEntity):
          # Create a darkening surface that is affected by darkness
         dark_surface = pygame.Surface(self.rendered_image.get_size(), pygame.SRCALPHA).convert_alpha()
         dark_surface.fill((self.light_level, self.light_level, self.light_level, 255))  
-
 
         # Apply darkening effect using BLEND_RGBA_MULT
         self.rendered_image.blit(dark_surface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)

@@ -36,7 +36,7 @@ class Particle(Projectile):
 
     def Reset_Shot(self):
         self.Set_Disabled()
-        super().Reset_Shot()
+        return super().Reset_Shot()
 
     def Set_Direction(self, direction):
         self.direction = direction

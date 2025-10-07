@@ -55,7 +55,7 @@ class Player_Movement():
         if self.back_step < 15:
             return
         if self.back_step_direction[0] and self.back_step_direction[1]:
-
+            self.player.friction = 1
             self.player.max_speed =  self.player.max_speed * 2  # Adjust max speed speed for dashing distance
 
 
@@ -81,8 +81,9 @@ class Player_Movement():
             return
         
         if self.roll_direction.length() > 0:
+            self.player.friction = 1
 
-            self.player.max_speed =  self.player.max_speed * 2  # Adjust max speed speed for dashing distance
+            self.player.max_speed =  self.player.max_speed * 3  # Adjust max speed speed for dashing distance
 
 
             # Set the velocity directly based on dash without friction interference

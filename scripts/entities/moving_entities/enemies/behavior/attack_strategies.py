@@ -32,7 +32,7 @@ class Attack_Stategies():
         elif attack_strategy == keys.medium_range: # keep medium distance
             return self.Keep_Distance(120, 80)
         elif attack_strategy == keys.short_range:
-            return self.Keep_Distance(80, 40)
+            return self.Keep_Distance(80, 60)
         elif attack_strategy == keys.keep_position:
             self.entity.direction = (0, 0)
         elif attack_strategy == keys.idle:

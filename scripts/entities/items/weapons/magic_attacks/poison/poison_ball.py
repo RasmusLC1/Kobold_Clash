@@ -9,7 +9,7 @@ class Poison_Ball(Elemental_Ball):
 
 
     def Reset_Shot(self):
-        fire_explosion = Poison_Explosion(self.game, self.pos, self.damage)
-        self.game.item_handler.Add_Item(fire_explosion)
+        poison_explosion = Poison_Explosion(self.game, self.pos, self.damage)
+        self.game.item_handler.Add_Item(poison_explosion)
         return super().Reset_Shot()
 

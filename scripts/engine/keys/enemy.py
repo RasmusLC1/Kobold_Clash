@@ -9,6 +9,11 @@ class Enemy():
 
     undead = "undead"
 
+    elemental = "elemental"
+
+    mythical = "mythical"
+
+
     claw = "claw"
 
 # Enemy Symbols
@@ -17,6 +22,8 @@ class Enemy():
     
     
     health_bar = "health_bar"
+
+    crystal_scale_bar = "crystal_scale_bar"
 
 # Modifications
     improve_weapon = "improve_weapon"
@@ -211,6 +218,51 @@ class Enemy():
     ice_spirit_attack = "ice_spirit_attack"
 
     ice_spirit_running = "ice_spirit_running"
+
+
+# Earth Eleemntal
+    
+    earth_elemental = "earth_elemental"
+    
+    earth_elemental_attack = "earth_elemental_attack"
+
+    earth_elemental_running = "earth_elemental_running"
+
+
+# Electric Eleemntal
+    
+    electric_elemental = "electric_elemental"
+    
+    electric_elemental_attack = "electric_elemental_attack"
+
+    electric_elemental_running = "electric_elemental_running"
+
+# Poison Eleemntal
+    
+    poison_elemental = "poison_elemental"
+    
+    poison_elemental_attack = "poison_elemental_attack"
+
+    poison_elemental_running = "poison_elemental_running"
+
+# Minotaur
+    
+    minotaur = "minotaur"
+    
+    minotaur_attack = "minotaur_attack"
+
+    minotaur_running = "minotaur_running"
+
+# Minotaur
+    
+    medusa = "medusa"
+    
+    medusa_attack_direct = "medusa_attack_direct"
+
+    medusa_attack_ranged = "medusa_attack_ranged"
+
+    medusa_running = "medusa_running"
+
 
 # Wight King
     

@@ -1,64 +1,56 @@
-from scripts.entities.moving_entities.enemies.enemy import Enemy
+from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.elemental import Elemental
 from scripts.entities.items.weapons.magic_attacks.fire.flame_thrower import Flame_Thrower
 from scripts.engine.keys.keys import keys
 
-FIRE_PROJECTILE_NUM = 1 * 20
+FIRE_PROJECTILE_NUM = 2 * 20
 
-class Fire_Spirit(Enemy):
-    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, 1.8, 'elemental', 20)
-        
-        self.animation = 'fire_spirit_idle'
+class Fire_Spirit(Elemental):
+    def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
+        super().__init__(game, pos, keys.fire_spirit, health, strength, max_speed, agility, intelligence, stamina, 1.2, 20)
+        self.animation_handler.Set_Animation_Num_Max(3)
+        self.animation_handler.Set_Attack_Animation_Num_Max(3)
         self.path_finding_strategy = 'ignore_lava'
         self.attack_strategy = keys.medium_range
         self.intent_manager.Set_Intent([keys.attack])
+        self.attack_distance  = 120
+        self.minimum_distance = 30
 
         self.look_for_health_cooldown = 0
         self.fire_cooldown = 0
         self.shooting_fire = 0
-        self.attack_distance  = 100
+        self.fire_damage = 3
 
-        self.animation_num_max = 3
-        self.attack_animation_num_max = 3
-        self.attack_animation_num_cooldown_max = 100
-        self.animation_num_cooldown_max = 100
-        self.flame_thrower = Flame_Thrower(self.game)
+        self.active_weapon = Flame_Thrower(self.game)
 
     def Update(self, tilemap, delta_time, movement = (0, 0)):
         super().Update(tilemap, delta_time, movement)
-        if self.effects.fire.effect:
-            self.Set_Effect(keys.healing, self.effects.frozen.effect)
-            self.Set_Effect(keys.fire_resistance, 2)
-
-
-
-        
-    
-    def Attack(self, delta_time):
-        if not super().Attack(delta_time):
-            return
-        
-        if self.game.player.effects.invisibility.effect:
-            return False
-        
-        # If Player is to close, then ice spirit cannot shoot
-        if self.distance_to_player < 50:
-            return False
-        
-        self.charge += delta_time
-
-        if self.charge >= self.max_weapon_charge and not self.shooting_fire:
-            self.shooting_fire = FIRE_PROJECTILE_NUM
 
         if self.shooting_fire:
             self.Shoot_Fire_Particle()
 
+        if self.effects.fire.effect:
+            self.Set_Effect(keys.healing, self.effects.frozen.effect)
+            self.Set_Effect(keys.fire_resistance, 2)
+
+        return True
+        
+    
+    def Attack(self, delta_time):
+        # If Player is to close, then ice spirit cannot shoot
+        if self.distance_to_player < self.minimum_distance:
+            self.charge = 0
+            return False
+        return super().Attack(delta_time)
+    
+    def Trigger_Attack(self):
+        if not self.shooting_fire:
+            self.shooting_fire = FIRE_PROJECTILE_NUM
     
     
     def Shoot_Fire_Particle(self):
         self.Set_Target(self.game.player.pos)
         self.Set_Attack_Direction()
-        self.shooting_fire = self.active_weapon.Particle_Creation(self, self.shooting_fire, 10)
+        self.shooting_fire = self.active_weapon.Particle_Creation(self, self.shooting_fire, self.fire_damage)
         if not self.shooting_fire:
             self.charge = 0
 
@@ -87,3 +79,7 @@ class Fire_Spirit(Enemy):
         
         return
 
+
+
+    def Render_Weapons(self, surf, offset):
+        pass

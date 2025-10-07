@@ -10,8 +10,6 @@ class Skeleton_Warlock(Skeleton):
         super().__init__(game, pos, keys.skeleton_warlock, health, strength, max_speed, agility, intelligence, stamina, 1, 25)
         self.animation_handler.Set_Animation_Num_Max(3)
         self.animation_handler.Set_Attack_Animation_Num_Max(4)
-        self.animation_handler.Set_Attack_Animation_Num_Cooldown_Max(0.3)
-        self.animation_handler.Set_Animation_Num_Cooldown_Max(1.2)
         self.attack_distance  = 200
         self.min_attack_range = 50
         self.attack_strategy = keys.long_range
@@ -31,28 +29,19 @@ class Skeleton_Warlock(Skeleton):
             self.attack_strategy = keys.medium_range
 
     def Attack(self, delta_time):
-        if self.game.player.effects.invisibility.effect:
-            return False
-        
-        if not self.active_weapon:
-            return False
-
         
         # If Player is to close, then archer cannot shoot
         if self.distance_to_player < self.min_attack_range:
+            self.charge = 0
             return False
+        self.active_weapon.Set_Charging_Enemy()
+        return super().Attack(delta_time)
 
-        if "staff" in self.active_weapon.type:
 
-            self.charge += delta_time
-            self.active_weapon.Set_Charging_Enemy()
-            if self.charge < self.max_weapon_charge:
-                return False
-            self.Set_Target(self.game.player.pos)
-            self.Attack_Direction_Handler()
-            self.game.particle_handler.Activate_Particles(random.randint(5, 10), keys.gold_particle, self.rect().center)
-            
-            self.active_weapon.Shoot_Projectiles()
-            self.Reset_Charge()
+    def Trigger_Attack(self):
+        self.Set_Target(self.game.player.pos)
+        self.game.particle_handler.Activate_Particles(random.randint(5, 10), keys.gold_particle, self.rect().center)
+        self.active_weapon.Shoot_Projectiles()
+        self.Reset_Charge()
         
         return True
