@@ -68,13 +68,11 @@ class Player(Moving_Entity):
 
         
         self.Update_Light()
-
         self.View_Direction(offset)
 
         self.weapon_handler.Update(delta_time, offset)
 
         self.Update_Souls_To_Remove()
-
         self.Spawn_Particles(delta_time)
 
 
@@ -129,20 +127,6 @@ class Player(Moving_Entity):
         if weapon.attacking and not self.attacking:
             self.Attack_Direction_Handler()
 
-
-            direction_x = 5 * self.attack_direction[0]
-            direction_y = 5 * self.attack_direction[1]
-            self.Set_Frame_movement((direction_x, direction_y))
-            self.Tile_Map_Collision_Detection(self.game.tilemap)
-            self.attacking = weapon.attacking
-
-
-        if self.attacking == 1:
-            direction_x = - 5 * self.attack_direction[0]
-            direction_y = - 5 * self.attack_direction[1]
-            self.Set_Frame_movement((direction_x, direction_y))
-            self.Tile_Map_Collision_Detection(self.game.tilemap)
-
         if self.attacking:
             self.attacking -= 1
 
@@ -195,8 +179,6 @@ class Player(Moving_Entity):
 
         return True
         
-
-
 
     def Set_Last_Shrine(self, shrine):
         self.last_shrine_visited = shrine

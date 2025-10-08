@@ -14,3 +14,5 @@ class Player():
     player_running_up = "player_running_up"
     
     player_attack = "player_attack"
+
+    player_rolling = "player_rolling"
