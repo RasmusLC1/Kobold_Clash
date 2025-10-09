@@ -20,7 +20,7 @@ class Animation_Handler():
         self.animation_num = 0
         self.animation_num_max = 0
         self.animation_num_cooldown = 0
-        self.animation_num_cooldown_max = 0.8
+        self.animation_num_cooldown_max = 0.1
 
         # Handle attack animations
         self.attack_animation_num = 0
@@ -33,8 +33,14 @@ class Animation_Handler():
         self.jumping_animation_num = 0
         self.jumping_animation_num_max = 0
         self.jumping_animation_num_cooldown = 0
-        self.jumping_animation_num_cooldown_max = 0.8
+        self.jumping_animation_num_cooldown_max = 0.2
 
+
+         # Idle Animation
+        self.idle_animation_num = 0
+        self.idle_animation_num_max = 0
+        self.idle_animation_num_cooldown = 0
+        self.idle_animation_num_cooldown_max = 0.2
 
     def Set_Sprite(self):
         self.sprite = self.entity.game.assets[self.animation]
@@ -126,6 +132,23 @@ class Animation_Handler():
 
         self.animation_value = self.jumping_animation_num
 
+    
+
+    def Update_Idle_Animation(self, delta_time) -> None:
+        if self.idle_animation_num_cooldown > 0:
+            self.idle_animation_num_cooldown = max(0, self.idle_animation_num_cooldown - delta_time)
+            return
+
+        self.idle_animation_num_cooldown = self.idle_animation_num_cooldown_max
+        self.idle_animation_num += 1
+        self.Set_Entity_Image()
+
+        if self.idle_animation_num > self.idle_animation_num_max:
+            self.idle_animation_num = 0  # Reset animation
+            self.Set_Animation_Lock(False)
+
+        self.animation_value = self.idle_animation_num
+
 
     def Set_Attack_Frame(self, attack_frame):
         self.attack_frame = attack_frame
@@ -133,6 +156,9 @@ class Animation_Handler():
 
     def Set_Animation_Num_Max(self, value):
         self.animation_num_max = value
+
+    def Set_Idle_Num_Max(self, value):
+        self.idle_animation_num_max = value
 
     def Set_Attack_Animation_Num_Max(self, value):
         self.attack_animation_num_max = value
@@ -151,5 +177,8 @@ class Animation_Handler():
     def Set_Junmp_Animation_Num_Cooldown_Max(self, value):
         self.jumping_animation_num_cooldown_max = value
 
+    def Set_Idle_Animation_Num_Cooldown_Max(self, value):
+        self.idle_animation_num_cooldown_max = value
+        
     def Set_Animation_Lock(self, state):
         self.animation_lock = state

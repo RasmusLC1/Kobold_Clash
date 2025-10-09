@@ -5,17 +5,18 @@ class Player_Animation_Handler(Animation_Handler):
     def __init__(self, entity):
         super().__init__(entity)
                  # Jumping attack
+
         self.rolling_animation_num = 0
         self.rolling_animation_num_max = 4
         self.rolling_animation_num_cooldown = 0
         self.rolling_animation_num_cooldown_max = 0.2
+        self.Set_Animation_Num_Max(4)
+        self.Set_Idle_Num_Max(3)
+        self.Set_Idle_Animation_Num_Cooldown_Max(0.2)
 
 
-    def Set_Entity_Image(self):
-        self.Set_Sprite()
-        if not self.sprite:
-            return
-        self.entity_image = self.sprite[self.animation_value]
+
+        
 
     # Set the idle state every 60 ticks to either up or down depending on last input
     def Set_Idle(self):
@@ -26,8 +27,11 @@ class Player_Animation_Handler(Animation_Handler):
 
 
     def Handle_Animation_Update(self, delta_time) -> None:
+        print(self.animation)
         if keys.attack in self.animation:
             self.Update_Attack_Animation(delta_time)
+        elif 'standing_still' in self.animation:
+            self.Update_Idle_Animation(delta_time)
         elif 'roll' in self.animation:
             self.Update_Roll_Animation(delta_time)
         else:
@@ -64,3 +68,34 @@ class Player_Animation_Handler(Animation_Handler):
 
         self.Set_Entity_Image()
         self.animation_value = self.rolling_animation_num
+
+
+    def Update_Animation(self, delta_time) -> None:
+        if self.animation_num_cooldown > 0:
+            self.animation_num_cooldown = max(0, self.animation_num_cooldown - delta_time)
+            return
+        self.animation_num_cooldown = self.animation_num_cooldown_max
+        self.animation_num += 1
+        if self.animation_num > self.animation_num_max:
+            self.animation_num = 0
+            self.Set_Animation_Lock(False)
+
+        self.Set_Entity_Image()
+        self.animation_value = self.animation_num
+
+
+    
+    def Update_Idle_Animation(self, delta_time) -> None:
+        if self.idle_animation_num_cooldown > 0:
+            self.idle_animation_num_cooldown = max(0, self.idle_animation_num_cooldown - delta_time)
+            return
+
+        self.idle_animation_num_cooldown = self.idle_animation_num_cooldown_max
+        self.idle_animation_num += 1
+        self.Set_Entity_Image()
+
+        if self.idle_animation_num > self.idle_animation_num_max:
+            self.idle_animation_num = 0  # Reset animation
+            self.Set_Animation_Lock(False)
+
+        self.animation_value = self.idle_animation_num

@@ -19,7 +19,6 @@ class Player(Moving_Entity):
     def __init__(self, game, pos, size, health, strength, max_speed, agility, intelligence, stamina):
         super().__init__(game, 'player', 'player', pos, size, health, strength, max_speed, agility, intelligence, stamina, 'player')
         
-        self.animation_num_max = 3
         
         self.bow_cooldown = 0
         self.animation_handler.Set_Animation('idle_down')
@@ -197,42 +196,4 @@ class Player(Moving_Entity):
     def Render(self, surf, offset=(0, 0)):
         if abs(self.movement_handler.dashing) >= 50:
             return
-        
-        if not self.active or not self.Update_Light_Level():
-            return False
-        if not self.animation_handler.entity_image:
-            return False
-
-        self.Update_Dark_Surface()
-
-        # Get the larger sprite
-        image = pygame.transform.flip(self.rendered_image, self.flip[0], False)
-        image_rect = image.get_rect(center=(self.pos[0] - offset[0] + self.size[0] // 2,
-                                            self.pos[1] - offset[1] + self.size[1] // 2))
-
-        # Draw it centered around Medusa's logic/collision box
-        surf.blit(image, image_rect.topleft)
-
-        # Draw effects (like damage flash, poison, etc.)
-        self.effects.Render_Effects(surf, offset)
-        self.Render_Damage(surf, offset)
-
-        return True        
-        # self.animation_handler.Set_Entity_Image()
-        
-        # entity_image = self.animation_handler.entity_image.copy()
-
-        # entity_image.set_alpha(min(255, self.active))
-        # self.Render_Damage(surf, offset)
-        # if not "up" in self.animation_handler.animation:
-        #     surf.blit(pygame.transform.flip(entity_image, self.flip[0], False), (self.pos[0] - offset[0] + self.anim_offset[0], self.pos[1] - offset[1] + self.anim_offset[1]))
-
-
-        # self.weapon_handler.Render_Weapons(surf, offset)
-        
-
-        # if  "up" in self.animation_handler.animation:
-        #     surf.blit(pygame.transform.flip(entity_image, self.flip[0], False), (self.pos[0] - offset[0] + self.anim_offset[0], self.pos[1] - offset[1] + self.anim_offset[1]))
-
-        # # Render status effects
-        # self.effects.Render_Effects(surf, offset)
+        super().Render(surf, offset)

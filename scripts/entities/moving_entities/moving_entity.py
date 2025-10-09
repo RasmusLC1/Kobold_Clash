@@ -482,17 +482,20 @@ class Moving_Entity(PhysicsEntity):
 
         self.idle_count = 0
 
-        # Determine animation and flip based on movement
-        if movement[0] > 0:
-            self.flip[0] = False
-        elif movement[0] < 0:
-            self.flip[0] = True
+        self.Flip_Entity_In_Move_Direction(movement)
 
         if movement[1] < 0:
             self.animation_handler.Set_Animation('running_up')
         else:
             self.animation_handler.Set_Animation('running_down')
 
+
+    # Determine animation and flip based on movement
+    def Flip_Entity_In_Move_Direction(self, movement):
+        if movement[0] > 0:
+            self.flip[0] = True
+        elif movement[0] < 0:
+            self.flip[0] = False
 
     # Render entity
     def Render(self, surf, offset=(0, 0)):
