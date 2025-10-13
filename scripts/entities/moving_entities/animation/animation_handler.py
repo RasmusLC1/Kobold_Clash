@@ -124,12 +124,12 @@ class Animation_Handler():
 
         self.jumping_animation_num_cooldown = self.jumping_animation_num_cooldown_max
         self.jumping_animation_num += 1
-        self.Set_Entity_Image()
 
         if self.jumping_animation_num > self.jumping_animation_num_max:
             self.jumping_animation_num = 0  # Reset animation
             self.Set_Animation_Lock(False)
 
+        self.Set_Entity_Image()
         self.animation_value = self.jumping_animation_num
 
     
@@ -141,12 +141,12 @@ class Animation_Handler():
 
         self.idle_animation_num_cooldown = self.idle_animation_num_cooldown_max
         self.idle_animation_num += 1
-        self.Set_Entity_Image()
 
         if self.idle_animation_num > self.idle_animation_num_max:
             self.idle_animation_num = 0  # Reset animation
             self.Set_Animation_Lock(False)
 
+        self.Set_Entity_Image()
         self.animation_value = self.idle_animation_num
 
 

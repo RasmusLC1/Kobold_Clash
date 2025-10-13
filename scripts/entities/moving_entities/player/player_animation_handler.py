@@ -5,14 +5,14 @@ class Player_Animation_Handler(Animation_Handler):
     def __init__(self, entity):
         super().__init__(entity)
                  # Jumping attack
-
         self.rolling_animation_num = 0
         self.rolling_animation_num_max = 4
         self.rolling_animation_num_cooldown = 0
         self.rolling_animation_num_cooldown_max = 0.2
-        self.Set_Animation_Num_Max(4)
         self.Set_Idle_Num_Max(3)
         self.Set_Idle_Animation_Num_Cooldown_Max(0.2)
+        self.Set_Animation_Num_Cooldown_Max(0.1)
+        self.Set_Animation_Num_Max(5)
 
 
 
@@ -27,7 +27,6 @@ class Player_Animation_Handler(Animation_Handler):
 
 
     def Handle_Animation_Update(self, delta_time) -> None:
-        print(self.animation)
         if keys.attack in self.animation:
             self.Update_Attack_Animation(delta_time)
         elif 'standing_still' in self.animation:
@@ -92,10 +91,10 @@ class Player_Animation_Handler(Animation_Handler):
 
         self.idle_animation_num_cooldown = self.idle_animation_num_cooldown_max
         self.idle_animation_num += 1
-        self.Set_Entity_Image()
 
         if self.idle_animation_num > self.idle_animation_num_max:
             self.idle_animation_num = 0  # Reset animation
             self.Set_Animation_Lock(False)
 
+        self.Set_Entity_Image()
         self.animation_value = self.idle_animation_num
