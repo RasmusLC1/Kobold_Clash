@@ -18,8 +18,6 @@ class Moving_Entity(PhysicsEntity):
     _effect_handler = Status_Effect_Handler
 
 
-
-    
     def __init__(self, game, type, category, pos, size, health, strength, max_speed, agility, intelligence, stamina, sub_category):
         super().__init__(game, type, category, pos, size, sub_category)
         self.velocity = [0, 0] # Velocity of the player
@@ -388,8 +386,6 @@ class Moving_Entity(PhysicsEntity):
 
 
 
-
-
     def Set_Attack_Direction(self, attack_direction=None):
         if not attack_direction:
             attack_direction = self.target
@@ -471,23 +467,7 @@ class Moving_Entity(PhysicsEntity):
         self.max_health += value
 
     def Set_Action(self, movement = None):
-        if not movement:
-            return
-        if not movement[0] and not movement[1]:
-            if self.direction_y_holder < 0:
-                self.animation_handler.Set_Animation('standing_still_up')
-            else:
-                self.animation_handler.Set_Animation('standing_still_down')
-            return
-
-        self.idle_count = 0
-
-        self.Flip_Entity_In_Move_Direction(movement)
-
-        if movement[1] < 0:
-            self.animation_handler.Set_Animation('running_up')
-        else:
-            self.animation_handler.Set_Animation('running_down')
+        pass
 
 
     # Determine animation and flip based on movement
