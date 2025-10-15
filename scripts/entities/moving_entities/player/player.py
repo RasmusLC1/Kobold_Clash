@@ -21,7 +21,6 @@ class Player(Moving_Entity):
         
         
         self.bow_cooldown = 0
-        self.animation_handler.Set_Animation('idle_down')
         self.souls = 500
         self.souls_to_remove = 0
         self.nearby_chests = []
@@ -67,7 +66,7 @@ class Player(Moving_Entity):
 
         
         self.Update_Light()
-        self.View_Direction(offset)
+        self.Caclulate_View_Direction()
 
         self.weapon_handler.Update(delta_time, offset)
 
@@ -76,7 +75,7 @@ class Player(Moving_Entity):
 
 
 
-    def View_Direction(self, offset):
+    def Caclulate_View_Direction(self):
         self.view_direction = pygame.math.Vector2(self.target[0] - self.pos[0], self.target[1] - self.pos[1])
         if self.view_direction.length() > 0:
             self.view_direction.normalize_ip()

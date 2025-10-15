@@ -170,11 +170,11 @@ class Graphics_Loader:
             keys.player_standing_still_up : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_idle.png', 3, 0, 0, 0, 32, 32),
             keys.player_running_down : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_running.png', 5, 0, 0, 0, 32, 32),
             keys.player_running_up : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_running_behind.png', 5, 0, 0, 0, 32, 32),
+            keys.player_rolling : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_rolling.png', 4, 0, 0, 0, 32, 32),
+            keys.player_backstep : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_rolling.png', 4, 0, 0, 0, 32, 32),
             keys.player_attack : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_attack_stab.png', 4, 0, 0, 0, 48, 48),
             keys.player_attack : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_attack_slash.png', 4, 0, 0, 0, 48, 48),
             keys.player_attack : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_attack_two_hand.png', 4, 0, 0, 0, 48, 48),
-            keys.player_rolling : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_rolling.png', 4, 0, 0, 0, 48, 48),
-            keys.player_backstep : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_rolling.png', 4, 0, 0, 0, 48, 48),
 
 
         }
