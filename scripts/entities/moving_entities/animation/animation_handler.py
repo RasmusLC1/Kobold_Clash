@@ -52,7 +52,23 @@ class Animation_Handler():
             # self.entity_image = pygame.transform.scale(entity_image, self.entity.size)
         except Exception as e:
             print(f'ANIMATION WENT WRONG {e}', self.sprite, self.animation_value, self.animation)
+    
+    def Update_Animation(self, delta_time):
+        self.Set_Action()
+        self.Handle_Animation_Update(delta_time)
+
+    def Set_Action(self):
+        entity = self.entity
+        if entity.distance_to_player > 300 :
+            return
         
+        if entity.charge > 0:
+            self.Set_Animation(keys.attack)
+        elif entity.frame_movement:
+            self.Set_Animation('running')
+        else:
+            self.Set_Animation('idle')
+
 
     # Set new action for animation
     def Set_Animation(self, action):

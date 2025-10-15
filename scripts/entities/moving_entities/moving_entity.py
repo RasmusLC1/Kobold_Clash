@@ -25,8 +25,6 @@ class Moving_Entity(PhysicsEntity):
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False} # Check for wall collision in each direction
         self.update_tile_cooldown = 0
 
-
-        self.animation_state = 'up'
         self.idle_count = 0
 
         self.direction = (0,0)
@@ -118,7 +116,8 @@ class Moving_Entity(PhysicsEntity):
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False}
 
         self.Update_Movement(movement, delta_time)
-        self.Update_Animation(movement, delta_time)
+        self.Flip_Entity_In_Move_Direction(movement)
+        self.animation_handler.Update_Animation(delta_time)
         self.Update_Status_Effects(delta_time)
 
 
@@ -157,9 +156,7 @@ class Moving_Entity(PhysicsEntity):
             (self.velocity[1] * delta_time) / self.game.render_scale
         ))
 
-    def Update_Animation(self, movement, delta_time):
-        self.Set_Action(movement)
-        self.animation_handler.Handle_Animation_Update(delta_time)
+
 
 
     # Movement handling
@@ -337,8 +334,6 @@ class Moving_Entity(PhysicsEntity):
             self.effects.Set_Effect(effect[0], effect[1])
 
         self.Check_If_Dead()
-
-        
         return True
     
 

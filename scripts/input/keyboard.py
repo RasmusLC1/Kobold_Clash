@@ -119,3 +119,7 @@ class Keyboard_Handler:
 
     def Set_Escape_Key(self, state):
         self.escape_pressed = state
+
+
+    def Check_If_Movement_Enabled(self):
+        return self.w_pressed or self.a_pressed or self.s_pressed or self.d_pressed

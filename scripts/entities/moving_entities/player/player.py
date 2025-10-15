@@ -129,24 +129,7 @@ class Player(Moving_Entity):
         if self.attacking:
             self.attacking -= 1
 
-    def Set_Action(self, movement = None):
-        if not movement:
-            return
-        if not movement[0] and not movement[1]:
-            if self.direction_y_holder < 0:
-                self.animation_handler.Set_Animation('standing_still_up')
-            else:
-                self.animation_handler.Set_Animation('standing_still_down')
-            return
 
-        self.idle_count = 0
-
-        self.Flip_Entity_In_Move_Direction(movement)
-
-        if movement[1] < 0:
-            self.animation_handler.Set_Animation('running_up')
-        else:
-            self.animation_handler.Set_Animation('running_down')
     
     def Set_Inventory_Interaction(self, state):
         self.weapon_handler.Set_Inventory_Interaction(state)

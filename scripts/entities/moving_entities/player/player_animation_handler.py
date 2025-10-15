@@ -26,6 +26,22 @@ class Player_Animation_Handler(Animation_Handler):
             self.Set_Animation('idle_down')
 
 
+    def Set_Action(self):
+        keyboard = self.game.keyboard_handler
+        if not keyboard.Check_If_Movement_Enabled():
+            if self.direction_y_holder < 0:
+                self.animation_handler.Set_Animation('standing_still_up')
+            else:
+                self.animation_handler.Set_Animation('standing_still_down')
+            return
+
+        self.idle_count = 0
+
+        if keyboard.w_pressed:
+            self.animation_handler.Set_Animation('running_up')
+        else:
+            self.animation_handler.Set_Animation('running_down')
+
     def Handle_Animation_Update(self, delta_time) -> None:
         if keys.attack in self.animation:
             self.Update_Attack_Animation(delta_time)
