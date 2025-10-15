@@ -16,8 +16,6 @@ class Player_Animation_Handler(Animation_Handler):
 
 
 
-        
-
     # Set the idle state every 60 ticks to either up or down depending on last input
     def Set_Idle(self):
         if self.entity.direction_y_holder < 0:
@@ -28,19 +26,47 @@ class Player_Animation_Handler(Animation_Handler):
 
     def Set_Action(self):
         keyboard = self.game.keyboard_handler
-        if not keyboard.Check_If_Movement_Enabled():
-            if self.direction_y_holder < 0:
-                self.animation_handler.Set_Animation('standing_still_up')
-            else:
-                self.animation_handler.Set_Animation('standing_still_down')
+        if self.Check_Movement(keyboard):
+            return
+        
+        if self.Check_Special_Animations(keyboard):
             return
 
-        self.idle_count = 0
+
+
+    def Check_Movement(self, keyboard):
+        if not keyboard.Check_If_Movement_Enabled():
+            if self.direction_y_holder < 0:
+                self.Set_Animation('standing_still_up')
+            else:
+                self.Set_Animation('standing_still_down')
+            return False
 
         if keyboard.w_pressed:
-            self.animation_handler.Set_Animation('running_up')
+            self.Set_Animation('running_up')
         else:
-            self.animation_handler.Set_Animation('running_down')
+            self.Set_Animation('running_down')
+        return True
+    
+    def Check_Special_Animations(self, keyboard):
+                # TODO: Needs animation
+        if keyboard.alt_pressed:
+            self.Set_Animation('backstep')
+            self.Set_Animation_Lock(True)
+            return True
+
+        if keyboard.space_pressed:
+            self.Set_Animation('rolling')
+            self.Set_Animation_Lock(True)
+            return True
+
+        # TODO: Needs animation
+        if keyboard.alt_pressed:
+            self.Set_Animation('backstep')
+            self.Set_Animation_Lock(True)
+            return True
+        
+        return False
 
     def Handle_Animation_Update(self, delta_time) -> None:
         if keys.attack in self.animation:

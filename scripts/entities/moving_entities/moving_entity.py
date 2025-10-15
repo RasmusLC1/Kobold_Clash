@@ -25,7 +25,6 @@ class Moving_Entity(PhysicsEntity):
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False} # Check for wall collision in each direction
         self.update_tile_cooldown = 0
 
-        self.idle_count = 0
 
         self.direction = (0,0)
         self.direction_x = 0
@@ -76,8 +75,6 @@ class Moving_Entity(PhysicsEntity):
 
         self.active_weapon_cooldown = 0
         self.Set_Sprite()
-
-
 
 
     def Save_Data(self):

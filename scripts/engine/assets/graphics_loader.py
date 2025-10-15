@@ -174,6 +174,7 @@ class Graphics_Loader:
             keys.player_attack : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_attack_slash.png', 4, 0, 0, 0, 48, 48),
             keys.player_attack : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_attack_two_hand.png', 4, 0, 0, 0, 48, 48),
             keys.player_rolling : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_rolling.png', 4, 0, 0, 0, 48, 48),
+            keys.player_backstep : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_rolling.png', 4, 0, 0, 0, 48, 48),
 
 
         }

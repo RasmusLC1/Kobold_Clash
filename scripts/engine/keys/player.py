@@ -16,3 +16,5 @@ class Player():
     player_attack = "player_attack"
 
     player_rolling = "player_rolling"
+
+    player_backstep = "player_backstep"
