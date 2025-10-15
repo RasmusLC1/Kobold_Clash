@@ -19,16 +19,16 @@ class Player_Animation_Handler(Animation_Handler):
         self.Set_Animation_Num_Max(keys.run, 5)
         self.Set_Animation_Cooldown_Max(keys.run, 0.1)
 
-    # --- State Handling ---
+    # State Handling 
     def Set_Action(self):
-        if self.Check_Special_Animations():
+        if self.Check_Special_Animations(): # Check special first as this is priority
             return
 
         if self.Check_Movement():
             return
 
-        self.Set_Idle()
 
+    # Check general movement and idling
     def Check_Movement(self):
         keyboard = self.keyboard
         if not keyboard.Check_If_Movement_Enabled():
@@ -36,11 +36,13 @@ class Player_Animation_Handler(Animation_Handler):
             return False
 
         if keyboard.w_pressed:
+            self.entity.flip[0] = not self.entity.flip[0] # Inverse orientation on flip
             self.Set_Animation('running_up')
         else:
             self.Set_Animation('running_down')
         return True
 
+    # Check for special animations, such as attacks and special movements
     def Check_Special_Animations(self):
         keyboard = self.keyboard
         if keyboard.space_pressed:
@@ -55,13 +57,8 @@ class Player_Animation_Handler(Animation_Handler):
 
         return False
 
-    def Set_Idle(self):
-        if self.entity.direction_y_holder < 0:
-            self.Set_Animation('idle_up')
-        else:
-            self.Set_Animation('idle_down')
 
-    # --- Animation Updates ---
+    # Animation Updates
     def Handle_Animation_Update(self, delta_time):
         for anim_type in self.animations.keys():
             if anim_type in self.animation:
