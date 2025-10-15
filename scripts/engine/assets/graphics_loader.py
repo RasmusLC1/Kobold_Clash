@@ -34,20 +34,13 @@ class Graphics_Loader:
 
 
     def Enemy_Assets(self):
-        Graphics_Loader.Asset_Skeleton_Warrior_List(self)
-        Graphics_Loader.Asset_Skeleton_Guardian_List(self)
-        Graphics_Loader.Asset_Skeleton_Banner_Bearer_List(self)
-        Graphics_Loader.Asset_Skeleton_Ranger_List(self)
+        Graphics_Loader.Add_Skeletons(self)
         Graphics_Loader.Asset_Fire_Spirit_List(self)
         Graphics_Loader.Asset_Ice_Spirit_List(self)
         Graphics_Loader.Asset_Earth_Elemental_List(self)
         Graphics_Loader.Asset_Electric_Elemental_List(self)
         Graphics_Loader.Asset_Poison_Elemental_List(self)
         Graphics_Loader.Asset_Void_Spawn_List(self)
-        Graphics_Loader.Asset_Skeleton_Bell_Toller_List(self)
-        Graphics_Loader.Asset_Skeleton_Cleric_List(self)
-        Graphics_Loader.Asset_Skeleton_Undertaker_List(self)
-        Graphics_Loader.Asset_Skeleton_Warlock_List(self)
         Graphics_Loader.Wight_King_List(self)
         Graphics_Loader.Asset_Spider_List(self)
         Graphics_Loader.Asset_Ghoul_List(self)
@@ -55,11 +48,33 @@ class Graphics_Loader:
         Graphics_Loader.Asset_vampire_List(self)
         Graphics_Loader.Asset_minotaur_List(self)
         Graphics_Loader.Asset_medusa_List(self)
-        
+    
     def Asset_Background_List(self):
         background_assets = {'background': load_image('background.png'),}
         self.assets.update(background_assets)
     
+    def Add_Skeletons(self):
+        Graphics_Loader.Asset_Skeleton_Warrior_List(self)
+        Graphics_Loader.Asset_Skeleton_Guardian_List(self)
+        Graphics_Loader.Asset_Skeleton_Banner_Bearer_List(self)
+        Graphics_Loader.Asset_Skeleton_Ranger_List(self)
+        Graphics_Loader.Asset_Skeleton_Bell_Toller_List(self)
+        Graphics_Loader.Asset_Skeleton_Cleric_List(self)
+        Graphics_Loader.Asset_Skeleton_Undertaker_List(self)
+        Graphics_Loader.Asset_Skeleton_Warlock_List(self)
+        
+        Graphics_Loader.Add_Placeholder_Idle_Animations(self)
+
+
+    def Add_Placeholder_Idle_Animations(self):
+        new_assets = {}
+        for key, value in self.assets.items():
+            # Only create idle animations for skeletons with running animations
+            if 'skeleton' in key and 'running' in key:
+                idle_key = key.replace('running', 'idle')
+                new_assets[idle_key] = value  # copy same frames
+        self.assets.update(new_assets)
+
 
     def Asset_Crypt_Tile_List(self):
         tiles_assets = {
@@ -269,6 +284,13 @@ class Graphics_Loader:
         }
         self.assets.update(entities_assets)
 
+    def Wight_King_List(self):
+        entities_assets = {
+            keys.wight_king_idle: get_tiles_from_sheet('entities/enemies/skeleton/wight_king/wight_king.png', 4, 0, 0, 0, 40, 40),
+            keys.wight_king_running: get_tiles_from_sheet('entities/enemies/skeleton/wight_king/wight_king.png', 4, 0, 0, 0, 40, 40),
+            keys.wight_king_attack: get_tiles_from_sheet('entities/enemies/skeleton/wight_king/wight_king_attack.png', 6, 0, 0, 0, 40, 40),
+        }
+        self.assets.update(entities_assets)
 
 
     def Asset_Fire_Spirit_List(self):
@@ -328,12 +350,6 @@ class Graphics_Loader:
         }
         self.assets.update(entities_assets)
     
-    def Wight_King_List(self):
-        entities_assets = {
-            keys.wight_king_running: get_tiles_from_sheet('entities/enemies/skeleton/wight_king/wight_king.png', 4, 0, 0, 0, 40, 40),
-            keys.wight_king_attack: get_tiles_from_sheet('entities/enemies/skeleton/wight_king/wight_king_attack.png', 6, 0, 0, 0, 40, 40),
-        }
-        self.assets.update(entities_assets)
 
     def Asset_vampire_List(self):
         entities_assets = {
@@ -344,12 +360,15 @@ class Graphics_Loader:
 
     def Asset_Void_Spawn_List(self):
         entities_assets = {
+            keys.wraith_idle: get_tiles_from_sheet('entities/enemies/void_spawn/wraith/wraith.png', 4, 0, 0, 0, 32, 32),
             keys.wraith_running: get_tiles_from_sheet('entities/enemies/void_spawn/wraith/wraith.png', 4, 0, 0, 0, 32, 32),
             keys.wraith_attack: get_tiles_from_sheet('entities/enemies/void_spawn/wraith/wraith_attack.png', 5, 0, 0, 0, 32, 32),
 
+            keys.phantom_idle: get_tiles_from_sheet('entities/enemies/void_spawn/phantom/phantom.png', 4, 0, 0, 0, 32, 32),
             keys.phantom_running: get_tiles_from_sheet('entities/enemies/void_spawn/phantom/phantom.png', 4, 0, 0, 0, 32, 32),
             keys.phantom_attack: get_tiles_from_sheet('entities/enemies/void_spawn/phantom/phantom_attack.png', 5, 0, 0, 0, 32, 32),
 
+            keys.shade_idle: get_tiles_from_sheet('entities/enemies/void_spawn/shade/shade.png', 4, 0, 0, 0, 32, 32),
             keys.shade_running: get_tiles_from_sheet('entities/enemies/void_spawn/shade/shade.png', 4, 0, 0, 0, 32, 32),
             keys.shade_attack: get_tiles_from_sheet('entities/enemies/void_spawn/shade/shade_attack.png', 5, 0, 0, 0, 32, 32),
         }

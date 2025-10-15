@@ -18,3 +18,26 @@ class Player():
     player_rolling = "player_rolling"
 
     player_backstep = "player_backstep"
+
+
+    # Animation types
+
+    idle = "idle"
+
+    run = "run"
+
+    attack = "attack"
+
+    jump = "jump"
+
+    roll = "roll"
+
+    backstep = "backstep"
+
+    num = "num"
+
+    num_max = "num_max"
+
+    cooldown = "cooldown"
+
+    cooldown_max = "cooldown_max"

@@ -7,9 +7,7 @@ import random
 
 class Skeleton_Warlock(Skeleton):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.skeleton_warlock, health, strength, max_speed, agility, intelligence, stamina, 1, 25)
-        self.animation_handler.Set_Animation_Num_Max(3)
-        self.animation_handler.Set_Attack_Animation_Num_Max(4)
+        super().__init__(game, pos, keys.skeleton_warlock, health, strength, max_speed, agility, intelligence, stamina, 1, 25, 0, 3, 4)
         self.attack_distance  = 200
         self.min_attack_range = 50
         self.attack_strategy = keys.long_range

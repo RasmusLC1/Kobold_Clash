@@ -7,7 +7,7 @@ from scripts.entities.items.weapons.magic_attacks.poison.poison_explosion import
 
 class Poison_Elemental(Elemental):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.poison_elemental, health, strength, max_speed, agility, intelligence, stamina, 0.1, 20, (32, 32))
+        super().__init__(game, pos, keys.poison_elemental, health, strength, max_speed, agility, intelligence, stamina, 0.1, 20, 3, 3, 3, (32, 32))
         self.intent_manager.Set_Intent([keys.direct, keys.attack])
         self.explosion_strength = 2
 

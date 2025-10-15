@@ -1,73 +1,44 @@
 from scripts.engine.keys.keys import keys
-import inspect
 
-
-class Animation_Handler():
-
+class Animation_Handler:
     def __init__(self, entity):
-        # Handle regular animation
         self.entity = entity
         self.sprite = None
         self.entity_image = None
         self.animation_value = 0
         self.flip = [False, False]
         self.action = ''
-        self.animation_value = 0
-
-
         self.animation_lock = False
         self.Set_Animation('')
 
+        # Unified animation data
+        self.animations = {
+            keys.run: {keys.num: 0, keys.num_max: 0, keys.cooldown: 0, keys.cooldown_max: 0.1},
+            keys.attack: {keys.num: 0, keys.num_max: 0, keys.cooldown: 0, keys.cooldown_max: 0.2},
+            keys.jump: {keys.num: 0, keys.num_max: 0, keys.cooldown: 0, keys.cooldown_max: 0.2},
+            keys.idle: {keys.num: 0, keys.num_max: 0, keys.cooldown: 0, keys.cooldown_max: 0.2}
+        }
 
-        self.run_animation_num = 0
-        self.run_animation_num_max = 0
-        self.run_animation_num_cooldown = 0
-        self.run_animation_num_cooldown_max = 0.1
-
-        # Handle attack animations
-        self.attack_animation_num = 0
-        self.attack_animation_num_max = 0
-        self.attack_animation_num_cooldown = 0
-        self.attack_animation_num_cooldown_max = 0.2
-
-
-         # Jumping attack
-        self.jumping_animation_num = 0
-        self.jumping_animation_num_max = 0
-        self.jumping_animation_num_cooldown = 0
-        self.jumping_animation_num_cooldown_max = 0.2
-
-
-         # Idle Animation
-        self.idle_animation_num = 0
-        self.idle_animation_num_max = 0
-        self.idle_animation_num_cooldown = 0
-        self.idle_animation_num_cooldown_max = 0.2
+        self.attack_frame = 0
 
     def Set_Sprite(self):
         self.sprite = self.entity.game.assets[self.animation]
 
-    # Setting the item image and scaling it
     def Set_Entity_Image(self):
         try:
             self.entity_image = self.sprite[self.animation_value]
-            # self.entity_image = pygame.transform.scale(entity_image, self.entity.size)
         except Exception as e:
-            frame = inspect.currentframe()
-            caller_frame = frame.f_back
-            caller_name = caller_frame.f_code.co_name
-            print(f"Called by: {caller_name}")
             print(f'ANIMATION WENT WRONG {e}', self.sprite, self.animation_value, self.animation)
-    
+
     def Update_Animation(self, delta_time):
         self.Set_Action()
         self.Handle_Animation_Update(delta_time)
 
     def Set_Action(self):
         entity = self.entity
-        if entity.distance_to_player > 300 :
+        if entity.distance_to_player > 300:
             return
-        
+
         if entity.charge > 0:
             self.Set_Animation(keys.attack)
         elif entity.frame_movement:
@@ -75,132 +46,61 @@ class Animation_Handler():
         else:
             self.Set_Animation('idle')
 
-
-    # Set new action for animation
     def Set_Animation(self, action):
         if self.animation_lock:
             return
-        
+
         if action != self.entity.action:
             self.entity.action = action
             self.animation = self.entity.type + '_' + self.entity.action
-            self.run_animation_num = 0
-            self.attack_animation_num = 0
+            for anim in self.animations.values():
+                anim[keys.num] = 0
             self.animation_value = 0
-            self.jumping_animation_num = 0
             self.Set_Sprite()
             self.Set_Animation_Lock(True)
 
-    # Set the idle state every 60 ticks to either up or down depending on last input
-    def Set_Idle(self):
-        return
-    
+    def Handle_Animation_Update(self, delta_time):
+        for anim_type in self.animations.keys():
+            if anim_type in self.animation:
+                self.Update_Generic_Animation(anim_type, delta_time)
+                break
 
-    def Handle_Animation_Update(self, delta_time) -> None:
-        if keys.attack in self.animation:
-            self.Update_Attack_Animation(delta_time)
-        elif 'jumping' in self.animation:
-            self.Update_Jumping_Animation(delta_time)
-        else:
-            self.Update_Running_Animation(delta_time)
-
-    def Update_Running_Animation(self, delta_time) -> None:
-        if self.run_animation_num_cooldown > 0:
-            self.run_animation_num_cooldown = max(0, self.run_animation_num_cooldown - delta_time)
+    def Update_Generic_Animation(self, anim_type, delta_time):
+        anim = self.animations[anim_type]
+        if anim[keys.cooldown] > 0:
+            anim[keys.cooldown] = max(0, anim[keys.cooldown] - delta_time)
             return
-        self.run_animation_num_cooldown = self.run_animation_num_cooldown_max
-        self.run_animation_num += 1
-        if self.run_animation_num > self.run_animation_num_max:
-            self.run_animation_num = 0
+
+        anim[keys.cooldown] = anim[keys.cooldown_max]
+        anim[keys.num] += 1
+
+        if anim[keys.num] > anim[keys.num_max]:
+            anim[keys.num] = 0
             self.Set_Animation_Lock(False)
 
-        self.Set_Entity_Image()
-        self.animation_value = self.run_animation_num
-
-    def Update_Attack_Animation(self, delta_time) -> None:
-        if self.attack_animation_num_cooldown > 0:
-            self.attack_animation_num_cooldown = max(0, self.attack_animation_num_cooldown - delta_time)
-            return
-        
-        self.attack_animation_num_cooldown = self.attack_animation_num_cooldown_max
-        self.attack_animation_num += 1
-
-
-        if self.attack_animation_num == self.attack_frame:
+        if anim_type == keys.attack and anim[keys.num] == self.attack_frame:
             self.entity.Trigger_Attack()
 
-        if self.attack_animation_num > self.attack_animation_num_max:
-            self.attack_animation_num = 0
-            self.Set_Animation_Lock(False)
-
-
+        self.animation_value = anim[keys.num]
         self.Set_Entity_Image()
-        self.animation_value = self.attack_animation_num
 
-    
+    # --- Generalized setter functions ---
+    def Set_Animation_Num_Max(self, anim_type, value):
+        if anim_type in self.animations:
+            self.animations[anim_type][keys.num_max] = value
 
-    def Update_Jumping_Animation(self, delta_time) -> None:
-        if self.jumping_animation_num_cooldown > 0:
-            self.jumping_animation_num_cooldown = max(0, self.jumping_animation_num_cooldown - delta_time)
-            return
+    def Set_Animation_Cooldown_Max(self, anim_type, value):
+        if anim_type in self.animations:
+            self.animations[anim_type][keys.cooldown_max] = value
 
-        self.jumping_animation_num_cooldown = self.jumping_animation_num_cooldown_max
-        self.jumping_animation_num += 1
-
-        if self.jumping_animation_num > self.jumping_animation_num_max:
-            self.jumping_animation_num = 0  # Reset animation
-            self.Set_Animation_Lock(False)
-
-        self.Set_Entity_Image()
-        self.animation_value = self.jumping_animation_num
-
-    
-
-    def Update_Idle_Animation(self, delta_time) -> None:
-        if self.idle_animation_num_cooldown > 0:
-            self.idle_animation_num_cooldown = max(0, self.idle_animation_num_cooldown - delta_time)
-            return
-
-        self.idle_animation_num_cooldown = self.idle_animation_num_cooldown_max
-        self.idle_animation_num += 1
-
-        if self.idle_animation_num > self.idle_animation_num_max:
-            self.idle_animation_num = 0  # Reset animation
-            self.Set_Animation_Lock(False)
-
-        self.Set_Entity_Image()
-        self.animation_value = self.idle_animation_num
-
+    # Attack-specific because it depends on entity stats
+    def Set_Attack_Animation_Num_Max(self, value):
+        self.Set_Animation_Num_Max(keys.attack, value)
+        self.attack_frame = max(0, value - 1)
+        self.Set_Animation_Cooldown_Max(keys.attack, self.entity.max_weapon_charge / value)
 
     def Set_Attack_Frame(self, attack_frame):
         self.attack_frame = attack_frame
 
-
-    def Set_Animation_Num_Max(self, value):
-        self.run_animation_num_max = value
-
-    def Set_Idle_Num_Max(self, value):
-        self.idle_animation_num_max = value
-
-    def Set_Attack_Animation_Num_Max(self, value):
-        self.attack_animation_num_max = value
-        self.Set_Attack_Frame(max(0, value - 1))
-        self.Set_Attack_Animation_Num_Cooldown_Max(value)
-
-    def Set_Junmp_Animation_Num_Max(self, value):
-        self.jumping_animation_num_max = value
-
-    def Set_Animation_Num_Cooldown_Max(self, value):
-        self.run_animation_num_cooldown_max = value
-
-    def Set_Attack_Animation_Num_Cooldown_Max(self, attack_animations):
-        self.attack_animation_num_cooldown_max = self.entity.max_weapon_charge / attack_animations
-
-    def Set_Junmp_Animation_Num_Cooldown_Max(self, value):
-        self.jumping_animation_num_cooldown_max = value
-
-    def Set_Idle_Animation_Num_Cooldown_Max(self, value):
-        self.idle_animation_num_cooldown_max = value
-        
     def Set_Animation_Lock(self, state):
         self.animation_lock = state

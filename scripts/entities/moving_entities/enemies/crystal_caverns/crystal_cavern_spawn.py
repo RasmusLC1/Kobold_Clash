@@ -27,7 +27,7 @@ class Crystal_Cavern_Spawn(Enemy_Spawner):
             keys.electric_elemental: 0.2,
             keys.poison_elemental: 0.2,
             keys.minotaur: 0.2,
-            keys.medusa: 1000.2,
+            keys.medusa: 0.2,
         }
         super().__init__(game, spawn_methods, enemy_types)
     
