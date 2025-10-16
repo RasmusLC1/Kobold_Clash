@@ -46,7 +46,7 @@ class Flame_Thrower(Particle_Shooter):
             pos_y = math.sin(angle) * speed
             direction = (pos_x, pos_y)
             
-            fire_particle.Set_Enabled(entity.rect(), speed, special_attack, direction, entity, 50, damage)
+            fire_particle.Set_Enabled(entity.rect(), speed, special_attack, direction, entity, 50, damage + self.base_damage)
 
     
     # Append extra fire particle to the pool in case it runs out

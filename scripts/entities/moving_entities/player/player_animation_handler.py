@@ -46,7 +46,7 @@ class Player_Animation_Handler(Animation_Handler):
     def Check_Special_Animations(self):
         keyboard = self.keyboard
         if keyboard.space_pressed:
-            self.Set_Animation(keys.roll)
+            self.Set_Animation("rolling")
             self.Set_Animation_Lock(True)
             return True
 

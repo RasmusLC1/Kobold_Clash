@@ -40,7 +40,7 @@ class Ice_Shooter(Particle_Shooter):
             pos_y = math.sin(base_angle) * speed
             direction = (pos_x, pos_y)
 
-        ice_particle.Set_Enabled(entity.rect(), speed, 100, direction, entity, 100, damage)
+        ice_particle.Set_Enabled(entity.rect(), speed, 100, direction, entity, 100, damage + self.base_damage)
         
     
     # Append extra fire particle to the pool in case it runs out
