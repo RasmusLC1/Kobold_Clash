@@ -24,6 +24,7 @@ class Player_Weapon_Handler():
 
     def Set_Attack_Lock(self, state):
         self.attack_lock = state
+
     
 
     # Function to update the player's weapons
@@ -45,12 +46,6 @@ class Player_Weapon_Handler():
         if not self.active_weapon:
             return
         self.active_weapon.Update_Attack(delta_time)
-        
-        if not self.active_weapon:
-            return
-        self.player.Attacking(self.active_weapon, offset)
-        # self.active_weapon.Set_Attack()
-
         return
     
 
@@ -62,7 +57,6 @@ class Player_Weapon_Handler():
             self.active_weapon.Disable_Gem_Effect()
             self.active_weapon.Unequip()
             self.active_weapon = None
-            self.player.attacking = 0
 
     def Check_If_Weapon_Should_Be_Removed(self, weapon):
         if not self.active_weapon:

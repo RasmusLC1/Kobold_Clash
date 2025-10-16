@@ -21,7 +21,7 @@ class Enemy(Moving_Entity):
         super().__init__(game, str(type), keys.enemy, pos, size, health, strength, max_speed, agility, intelligence, stamina, sub_category)
         self.animation_handler.Set_Animation_Num_Max(keys.run ,run_animation)
         self.animation_handler.Set_Animation_Num_Max(keys.idle ,idle_animation)
-        self.animation_handler.Set_Animation_Num_Max(keys.attack ,attack_animation)
+        self.animation_handler.Set_Animation_Num_Max(keys.attack, attack_animation)
         self.animation_handler.Set_Animation('running')
         self.random_movement_cooldown = 0
         self.alert_cooldown = 0

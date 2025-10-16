@@ -26,7 +26,8 @@ class Logic_Update():
 
 
           keyboard = self.game.keyboard_handler
-          self.game.player.Update(self.game.tilemap, delta_time, (keyboard.d_pressed - keyboard.a_pressed, keyboard.s_pressed - keyboard.w_pressed), self.game.render_scroll)
+          movement = (keyboard.d_pressed - keyboard.a_pressed, keyboard.s_pressed - keyboard.w_pressed)
+          self.game.player.Update(self.game.tilemap, delta_time, movement, self.game.render_scroll)
           
           self.game.ray_caster.Update()
           self.game.clatter.Update()

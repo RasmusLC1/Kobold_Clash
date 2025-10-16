@@ -69,7 +69,7 @@ class Medusa(Enemy):
         self.Update_Dark_Surface()
 
         # Get the larger sprite
-        image = pygame.transform.flip(self.rendered_image, self.flip[0], False)
+        image = pygame.transform.flip(self.rendered_image, self.animation_handler.flip[0], False)
         image_rect = image.get_rect(center=(self.pos[0] - offset[0] + self.size[0] // 2,
                                             self.pos[1] - offset[1] + self.size[1] // 2))
 

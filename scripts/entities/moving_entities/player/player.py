@@ -18,8 +18,7 @@ class Player(Moving_Entity):
 
     def __init__(self, game, pos, size, health, strength, max_speed, agility, intelligence, stamina):
         super().__init__(game, 'player', 'player', pos, size, health, strength, max_speed, agility, intelligence, stamina, 'player')
-        
-        
+ 
         self.bow_cooldown = 0
         self.souls = 500
         self.souls_to_remove = 0
@@ -32,7 +31,6 @@ class Player(Moving_Entity):
         self.game.light_handler.Initialise_Light_Level(self.tile)
         self.player_particle_cooldown = 0
         self.last_shrine_visited = None # used for teleporting and other shrine logic
-        self.attacking = 0
 
         self.weapons = []
         self.weapon_handler = Player_Weapon_Handler(self.game, self)
@@ -118,16 +116,9 @@ class Player(Moving_Entity):
     def Set_Health(self, health):
         self.health = health
 
-    def Attacking(self, weapon, offset=(0, 0)):
-        if not weapon:
-            return
-        
-        if weapon.attacking and not self.attacking:
-            self.Attack_Direction_Handler()
 
-        if self.attacking:
-            self.attacking -= 1
-
+    def Trigger_Attack_Animation(self):
+        self.animation_handler.Trigger_Attack_Animation()
 
     
     def Set_Inventory_Interaction(self, state):

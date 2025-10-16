@@ -44,7 +44,6 @@ class Moving_Entity(PhysicsEntity):
         
         self.action = ''
         self.anim_offset = (0, 0)
-        self.flip = [False, False]
         self.frame_movement = (0.0)
         self.last_frame_movement = (0.0)
 
@@ -113,8 +112,7 @@ class Moving_Entity(PhysicsEntity):
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False}
 
         self.Update_Movement(movement, delta_time)
-        self.Flip_Entity_In_Move_Direction(movement)
-        self.animation_handler.Update_Animation(delta_time)
+        self.animation_handler.Update_Animation(movement, delta_time)
         self.Update_Status_Effects(delta_time)
 
 
@@ -202,7 +200,10 @@ class Moving_Entity(PhysicsEntity):
 
     def Set_Description(self):
         pass
-        
+    
+    def Attack_Direction_Handler(self):
+        self.Set_Attack_Direction()
+        self.animation_handler.Attack_Direction_Handler()
 
     def Tile_Map_Collision_Detection(self, tilemap):
         self.pos[0] += self.frame_movement[0]
@@ -416,12 +417,9 @@ class Moving_Entity(PhysicsEntity):
         self.effects.Push(direction)
         self.Tile_Map_Collision_Detection(tilemap)
 
-    def Attack_Direction_Handler(self):
-        self.Set_Attack_Direction()
-        if self.attack_direction[0] < 0:
-            self.flip[0] = True
-        else:
-            self.flip[0] = False
+    def Trigger_Attack(self):
+        pass
+
 
 
     # Ice mechanic, lower friction and acceleration to simulate ice
@@ -462,12 +460,6 @@ class Moving_Entity(PhysicsEntity):
         pass
 
 
-    # Determine animation and flip based on movement
-    def Flip_Entity_In_Move_Direction(self, movement):
-        if movement[0] > 0:
-            self.flip[0] = True
-        elif movement[0] < 0:
-            self.flip[0] = False
 
     # Render entity
     def Render(self, surf, offset=(0, 0)):
@@ -491,7 +483,7 @@ class Moving_Entity(PhysicsEntity):
 
         self.Render_Damage(surf, offset)
 
-        surf.blit(pygame.transform.flip(self.rendered_image, self.flip[0], False), 
+        surf.blit(pygame.transform.flip(self.rendered_image, self.animation_handler.flip[0], False), 
                 (self.pos[0] - offset[0] + self.anim_offset[0], self.pos[1] - offset[1] + self.anim_offset[1]))
         return True
     

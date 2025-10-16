@@ -30,7 +30,8 @@ class Animation_Handler:
         except Exception as e:
             print(f'ANIMATION WENT WRONG {e}', self.sprite, self.animation_value, self.animation)
 
-    def Update_Animation(self, delta_time):
+    def Update_Animation(self, movement, delta_time):
+        self.Flip_Entity_In_Move_Direction(movement)
         self.Set_Action()
         self.Handle_Animation_Update(delta_time)
 
@@ -92,6 +93,19 @@ class Animation_Handler:
     def Set_Animation_Cooldown_Max(self, anim_type, value):
         if anim_type in self.animations:
             self.animations[anim_type][keys.cooldown_max] = value
+
+            # Determine animation and flip based on movement
+    def Flip_Entity_In_Move_Direction(self, movement):
+        if movement[0] > 0:
+            self.flip[0] = True
+        elif movement[0] < 0:
+            self.flip[0] = False
+
+    def Attack_Direction_Handler(self):
+        if self.entity.attack_direction[0] < 0:
+            self.flip[0] = False
+        else:
+            self.flip[0] = True
 
     # Attack-specific because it depends on entity stats
     def Set_Attack_Animation_Num_Max(self, value):

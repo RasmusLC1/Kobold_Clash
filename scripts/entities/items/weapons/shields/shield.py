@@ -47,7 +47,7 @@ class Shield(Weapon):
 
     def Set_Equipped_Position(self, direction_y):
         offset_x = 0
-        if self.entity.flip[0] and not self.attacking:
+        if self.entity.animation_handler.flip[0] and not self.attacking:
             self.flip_image = True
         else:
             self.flip_image = False

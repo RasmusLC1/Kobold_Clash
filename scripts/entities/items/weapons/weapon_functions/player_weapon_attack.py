@@ -40,6 +40,7 @@ class Player_Weapon_Attack():
         self.Set_Attacking()
         self.nearby_enemies = self.game.enemy_handler.Find_Nearby_Enemies(self.player, 3) # Find nearby enemies to attack
         self.nearby_decoration = self.game.decoration_handler.Find_Nearby_Decorations(self.player.pos, 3)
+        self.player.Trigger_Attack_Animation()
         return True
     
     def Attack_Collision_Check(self):
