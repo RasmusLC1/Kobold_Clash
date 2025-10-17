@@ -185,5 +185,14 @@ class Player(Moving_Entity):
     def Render(self, surf, offset=(0, 0)):
         if abs(self.movement_handler.dashing) >= 50:
             return
-        super().Render(surf, offset)
-        self.weapon_handler.Render_Weapons(surf, offset)
+        if 'up' in self.action:
+            self.weapon_handler.Render_Weapons(surf, offset)
+            super().Render(surf, offset)
+        else:
+            super().Render(surf, offset)
+            self.weapon_handler.Render_Weapons(surf, offset)
+   
+  
+  
+
+

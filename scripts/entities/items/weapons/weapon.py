@@ -91,9 +91,10 @@ class Weapon(Item):
    
     # General Update function, handles setting the attack and general logic
     def Update(self, delta_time, offset = (0,0)):
-        caller = inspect.stack()[1].function
         super().Update(delta_time)
-        self.animation_handler.Update_Animation(delta_time)
+        # Only animate on ground, player will handle all other animations
+        if not self.picked_up:
+            self.animation_handler.Update_Animation(delta_time)
         self.Special_Attack()
         self.Update_Delete_Countdown()
         if not self.entity:
@@ -112,7 +113,7 @@ class Weapon(Item):
         if self.entity_attack_type.Update_Attack(delta_time):
             self.Delete_Item()
             return
-        self.animation_handler.Update_Attack_Animation(delta_time)
+        # self.animation_handler.Update_Attack_Animation(delta_time)
         self.attack_effect_handler.Update_Attack_Effect_Animation(delta_time)
         self.Attack_Align_Weapon()
 
@@ -385,16 +386,35 @@ class Weapon(Item):
         self.Set_Entity_Image()
 
 
+    def Update_Player_Animation(self, player_animation):
+        self.animation = player_animation
+        
+
+    def Calculate_Image_Rect(self, image, player_flip, offset):
+        flip_offset = 0
+        if not player_flip:
+            flip_offset = 10
+
+        flip_up = 0
+        if 'up' in self.entity.action:
+            flip_up = 5
+
+        image_rect = image.get_rect(center=(self.pos[0] - offset[0]  - flip_offset + self.size[0] // 2,
+                                        self.pos[1] - offset[1]  - flip_up + self.size[1] // 2))
+
+        return image_rect
+
     # Render the weapon in player's hand and rotate towards target
     def Render_Equipped(self, surf, offset=(0, 0)):
         self.Set_Equipped_Sprite()
         weapon_image = self.entity_image.copy()
-        
-        if self.rotate:
-            weapon_image = pygame.transform.rotate(weapon_image, self.rotate - 180)
 
-        surf.blit( pygame.transform.flip(weapon_image, self.entity.animation_handler.flip[0], False),
-                    (self.pos[0] - offset[0], self.pos[1] - offset[1]))
+
+        #
+        player_flip = self.entity.animation_handler.flip[0]
+        image_rect = self.Calculate_Image_Rect(weapon_image, player_flip, offset)
+
+        surf.blit( pygame.transform.flip(weapon_image, player_flip, False), image_rect)
         
         # self.attack_effect_handler.Render_Attack_Effect(surf, offset)
         # self.charge_effect_handler.Render_Charge_Effect(surf, offset)

@@ -70,7 +70,7 @@ class Animation_Handler:
         anim = self.animations[anim_type]
         if anim[keys.cooldown] > 0:
             anim[keys.cooldown] = max(0, anim[keys.cooldown] - delta_time)
-            return
+            return False
 
         anim[keys.cooldown] = anim[keys.cooldown_max]
         anim[keys.num] += 1
@@ -84,6 +84,7 @@ class Animation_Handler:
 
         self.animation_value = anim[keys.num]
         self.Set_Entity_Image()
+        return True
 
     # --- Generalized setter functions ---
     def Set_Animation_Num_Max(self, anim_type, value):

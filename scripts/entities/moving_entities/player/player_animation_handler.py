@@ -98,3 +98,10 @@ class Player_Animation_Handler(Animation_Handler):
         # fallback if no match
         self.Update_Generic_Animation(keys.idle, delta_time)
 
+
+    def Update_Generic_Animation(self, anim_type, delta_time):
+        if not super().Update_Generic_Animation(anim_type, delta_time):
+            return False
+        anim = self.animations[anim_type]
+        self.entity.weapon_handler.Update_Weapon_Animation(anim[keys.num])
+        return True
