@@ -67,22 +67,22 @@ class Animation_Handler:
                 break
 
     def Update_Generic_Animation(self, anim_type, delta_time):
-        anim = self.animations[anim_type]
-        if anim[keys.cooldown] > 0:
-            anim[keys.cooldown] = max(0, anim[keys.cooldown] - delta_time)
+        animation = self.animations[anim_type]
+        if animation[keys.cooldown] > 0:
+            animation[keys.cooldown] = max(0, animation[keys.cooldown] - delta_time)
             return False
 
-        anim[keys.cooldown] = anim[keys.cooldown_max]
-        anim[keys.num] += 1
+        animation[keys.cooldown] = animation[keys.cooldown_max]
+        animation[keys.num] += 1
 
-        if anim[keys.num] > anim[keys.num_max]:
-            anim[keys.num] = 0
+        if animation[keys.num] > animation[keys.num_max]:
+            animation[keys.num] = 0
             self.Set_Animation_Lock(False)
 
-        if anim_type == keys.attack and anim[keys.num] == self.attack_frame:
+        if anim_type == keys.attack and animation[keys.num] == self.attack_frame:
             self.entity.Trigger_Attack()
 
-        self.animation_value = anim[keys.num]
+        self.animation_value = animation[keys.num]
         self.Set_Entity_Image()
         return True
 

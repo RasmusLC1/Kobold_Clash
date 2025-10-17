@@ -7,47 +7,13 @@ class Attack_Effect_Weapon():
         self.game = game
         self.weapon = weapon
         self.effect_type = None
-        self.attack_effect_animation = 0 # current effect animation frame
-        self.attack_effect_animation_max = 6 # Amount of effect animation frames
-        self.attack_effect_animation_time = 0 # Time it takes to change between frames
-        self.attack_effect_animation_counter = 0 # Animation countdown that ticks up to time
-
-        self.special_attack_effect_animation_max = 1 # Maximum amount of attack animations
-
-
-
-    def Update_Attack_Effect_Animation(self, delta_time):
-        if self.attack_effect_animation_counter >= self.attack_effect_animation_time:
-            self.attack_effect_animation_counter = 0
-            self.attack_effect_animation = min(self.attack_effect_animation + 1, self.attack_effect_animation_max)
-            return
-        self.attack_effect_animation_counter += delta_time
-
-    
-     # Used to update special attack animations, not the effect itself
-    def Update_Special_Attack_Effect_Animation(self):
-        if self.attack_effect_animation_counter >= self.attack_effect_animation_time:
-            self.attack_effect_animation_counter = 0
-            self.attack_effect_animation = min(self.attack_effect_animation + 1, self.special_attack_effect_animation_max)
-            return
-
-        self.attack_effect_animation_counter += 1
+        self.flip_x = False
 
 
     def Init_Attack_Effect_Animation(self):
         self.effect_type = self.weapon.Get_Dominant_Effect() + '_' + self.weapon.attack_type + '_' + keys.effect
-        self.attack_effect_animation_time = self.weapon.entity_attack_type.attacking / self.attack_effect_animation_max
+        self.flip_x != self.weapon.flip_x
 
-    def Set_Special_Attack_Effect_Animation_Time(self):
-        self.attack_effect_animation_time = self.weapon.special_attack / self.special_attack_effect_animation_max
-
-
-    def Reset_Attack_Effect_Animation(self):
-        self.attack_animation_counter = 0
-        self.attack_effect_animation_time = 0
-        self.attack_effect_animation = 0
-
-    
 
     # Handle computing the weapon's attack effect position
     def Attack_Effect_Position(self, offset):
@@ -69,13 +35,14 @@ class Attack_Effect_Weapon():
    
     # Handle rendering the weapons attack effect
     def Render_Attack_Effect(self, surf, offset):
-        if not self.weapon.entity_attack_type.attacking:
+        if self.weapon.entity_attack_type.attacking <= 0 or not self.effect_type:
             return
+        
         pos = self.Attack_Effect_Position(offset)
-        attack_effect = self.game.assets[self.effect_type][self.attack_effect_animation]
+        attack_effect = self.game.assets[self.effect_type][self.weapon.animation]
         # attack_effect.set_alpha()
-        attack_effect = pygame.transform.rotate(attack_effect, self.weapon.rotate)
-        surf.blit( pygame.transform.flip(attack_effect, self.weapon.flip_x, False), (pos[0], pos[1]))
+        # attack_effect = pygame.transform.rotate(attack_effect, self.weapon.rotate)
+        surf.blit( pygame.transform.flip(attack_effect, self.flip_x, True), (pos[0], pos[1]))
 
     
     def Set_Attack_Effect_Animation(self, state):

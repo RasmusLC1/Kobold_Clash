@@ -32,6 +32,14 @@ class Player_Animation_Handler(Animation_Handler):
 
         if self.Check_Movement():
             return
+        
+    def Set_Attack_Speed(self, attack_time):
+        attack_animation = self.animations[keys.attack]
+        max_animation = attack_animation[keys.num_max]
+        attack_speed = attack_time / max_animation
+        self.Set_Animation_Cooldown_Max(keys.attack, attack_speed)
+
+
 
 
     # Check general movement and idling
@@ -74,6 +82,8 @@ class Player_Animation_Handler(Animation_Handler):
         self.Attack_Direction_Handler()
         self.Set_Animation("attack")
         self.Set_Animation_Lock(True)
+        anim = self.animations[keys.attack]
+        self.entity.weapon_handler.Update_Weapon_Animation(anim[keys.num])
         return True
         
 

@@ -171,6 +171,9 @@ class Player(Moving_Entity):
     def Set_Last_Shrine(self, shrine):
         self.last_shrine_visited = shrine
 
+    def Set_Attack_Speed(self, attack_time):
+        self.animation_handler.Set_Attack_Speed(attack_time)
+
     # Spawn player particles at random intervals
     def Spawn_Particles(self, delta_time):
         if not self.player_particle_cooldown:
@@ -185,12 +188,18 @@ class Player(Moving_Entity):
     def Render(self, surf, offset=(0, 0)):
         if abs(self.movement_handler.dashing) >= 50:
             return
+        if 'roll'  in self.action or 'backstep' in self.action:
+            super().Render(surf, offset)
+            return
+
         if 'up' in self.action:
             self.weapon_handler.Render_Weapons(surf, offset)
             super().Render(surf, offset)
+            return
         else:
             super().Render(surf, offset)
             self.weapon_handler.Render_Weapons(surf, offset)
+            return
    
   
   

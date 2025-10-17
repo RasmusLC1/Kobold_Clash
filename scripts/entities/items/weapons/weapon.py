@@ -4,7 +4,6 @@ from scripts.entities.items.weapons.weapon_functions.attack_effect_weapon import
 from scripts.entities.items.weapons.weapon_functions.player_weapon_attack import Player_Weapon_Attack
 from scripts.entities.items.weapons.weapon_functions.enemy_weapon_attack import Enemy_Weapon_Attack
 from scripts.entities.items.weapons.weapon_functions.damage_handler_weapon import Damage_Handler_Weapon
-from scripts.entities.items.weapons.weapon_functions.animation_weapon import Animation_Weapon
 from scripts.entities.items.weapons.weapon_functions.gem_handler import Gem_Handler
 from scripts.entities.textbox.weapon_textbox import Weapon_Textbox
 import pygame
@@ -23,7 +22,6 @@ class Weapon(Item):
         self.attack_type = attack_type # Different kinds of attacks, like cutting and stabbing
         self.in_inventory = False # Is the weapon in an inventory
         self.equipped = False # Is the weapon currently equipped and can be used to attack
-        self.attacking = 0 # The time it takes for the attack to complete
         self.max_animation = 0 # Max amount of animations
 
         self.flip_x = False
@@ -58,7 +56,6 @@ class Weapon(Item):
         self.damage_handler = Damage_Handler_Weapon(self, effect, damage)
         self.charge_effect_handler = Charge_Effect_Weapon(game, self)
         self.attack_effect_handler = Attack_Effect_Weapon(game, self)
-        self.animation_handler = Animation_Weapon(game, self, 1)
         self.gem_handler = Gem_Handler(self)
         self.Set_Description()
 
@@ -74,7 +71,6 @@ class Weapon(Item):
         self.saved_data['in_inventory'] = self.in_inventory
         self.saved_data['equipped'] = self.equipped
         self.saved_data['rotate'] = self.rotate
-        self.saved_data['attacking'] = self.attacking
         self.saved_data['special_attack'] = self.special_attack
         
 
@@ -86,22 +82,17 @@ class Weapon(Item):
         self.in_inventory = data['in_inventory']
         self.equipped = data['equipped']
         self.rotate = data['rotate']
-        self.attacking = data['attacking']
         self.special_attack = data['special_attack']
    
     # General Update function, handles setting the attack and general logic
     def Update(self, delta_time, offset = (0,0)):
         super().Update(delta_time)
-        # Only animate on ground, player will handle all other animations
-        if not self.picked_up:
-            self.animation_handler.Update_Animation(delta_time)
         self.Special_Attack()
         self.Update_Delete_Countdown()
         if not self.entity:
             return False
         
         self.Set_Weapon_Charge(offset)
-        self.Set_Flip_X()
         return True
 
  
@@ -113,8 +104,6 @@ class Weapon(Item):
         if self.entity_attack_type.Update_Attack(delta_time):
             self.Delete_Item()
             return
-        # self.animation_handler.Update_Attack_Animation(delta_time)
-        self.attack_effect_handler.Update_Attack_Effect_Animation(delta_time)
         self.Attack_Align_Weapon()
 
     # Initialise the attack and reset attack values
@@ -126,10 +115,9 @@ class Weapon(Item):
             return False
         
         # Handle animations internally in weapon
-        self.animation_handler.Set_Attack_Animation_Time()
         self.Set_Charge_Time(0)  # Reset charge time
         self.wall_hit = False
-        self.Handle_Attack_Animation()
+        self.attack_effect_handler.Init_Attack_Effect_Animation()
         return True
 
     # Check tile logic for wall collision
@@ -146,21 +134,6 @@ class Weapon(Item):
         return True
     
 
-    def Handle_Attack_Animation(self):
-        self.attack_effect_handler.Init_Attack_Effect_Animation()
-        self.Set_Rotation()
-        self.rotate += 90
-
-    def Reset_Attack_Animation(self):
-        self.sub_type = self.type
-        
-        self.animation = 0
-        self.rotate = 0
-        self.entity.Reset_Max_Speed()
-        self.animation_handler.Reset_Animation()
-        self.attack_effect_handler.Reset_Attack_Effect_Animation()
-
-
     def Set_Rotation(self):
         if self.entity.category == keys.enemy:
             self.Point_Towards_Mouse_Enemy()
@@ -169,7 +142,7 @@ class Weapon(Item):
 
   
 
-    # Handle weapon charging
+    # Handle weapon charging, triggers attack when full
     def Set_Weapon_Charge(self, offset = (0, 0)):
         if self.weapon_cooldown:
 
@@ -246,8 +219,6 @@ class Weapon(Item):
             return
         self.rotate = 0
         self.special_attack_active = False
-        self.attack_effect_handler.Set_Attack_Effect_Animation(0)
-        self.attack_effect_handler.Set_Attack_Effect_Animation_Counter(0)
 
 
     # Initialise the charging of the weapon
@@ -300,12 +271,6 @@ class Weapon(Item):
         dy = self.game.mouse.mpos[1] - self.entity.pos[1]
         # Calculate the angle in degrees
         self.rotate = abs(math.degrees(math.atan2(dx, dy)))
-
-    def Set_Flip_X(self):
-        if self.entity.attack_direction[0] < 0:
-            self.flip_x = True
-        else:
-            self.flip_x = False
 
     def Get_Dominant_Effect(self):
         return self.damage_handler.Get_Dominant_Effect()
@@ -380,7 +345,6 @@ class Weapon(Item):
     
 
     def Set_Equipped_Sprite(self):
-
         sprite = self.sub_type + '_' + self.entity.action
         self.sprite = self.game.assets[sprite]
         self.Set_Entity_Image()
@@ -390,9 +354,9 @@ class Weapon(Item):
         self.animation = player_animation
         
 
-    def Calculate_Image_Rect(self, image, player_flip, offset):
+    def Calculate_Image_Rect(self, image, offset):
         flip_offset = 0
-        if not player_flip:
+        if not self.flip_x:
             flip_offset = 10
 
         flip_up = 0
@@ -408,16 +372,14 @@ class Weapon(Item):
     def Render_Equipped(self, surf, offset=(0, 0)):
         self.Set_Equipped_Sprite()
         weapon_image = self.entity_image.copy()
+        self.flip_x = self.entity.animation_handler.flip[0]
 
 
-        #
-        player_flip = self.entity.animation_handler.flip[0]
-        image_rect = self.Calculate_Image_Rect(weapon_image, player_flip, offset)
+        image_rect = self.Calculate_Image_Rect(weapon_image, offset)
 
-        surf.blit( pygame.transform.flip(weapon_image, player_flip, False), image_rect)
-        
-        # self.attack_effect_handler.Render_Attack_Effect(surf, offset)
-        # self.charge_effect_handler.Render_Charge_Effect(surf, offset)
+        surf.blit( pygame.transform.flip(weapon_image, self.flip_x, False), image_rect)
+        self.attack_effect_handler.Render_Attack_Effect(surf, offset)
+        self.charge_effect_handler.Render_Charge_Effect(surf, offset)
     
 
     # Render the weapon in entity's hand
@@ -431,7 +393,6 @@ class Weapon(Item):
 
         if not self.rendered_image:
             self.rendered_image = self.entity_image.copy()
-        
         surf.blit(
             pygame.transform.flip(self.rendered_image, False, False),
                                   (self.pos[0] - offset[0], self.pos[1] - offset[1]))

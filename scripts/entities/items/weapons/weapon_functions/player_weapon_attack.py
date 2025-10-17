@@ -113,7 +113,6 @@ class Player_Weapon_Attack():
             return False
         self.attacking = 0
         self.active = False
-        self.weapon.Reset_Attack_Animation()
         self.player.Reset_Attack_Direction()
 
         return True
@@ -138,6 +137,7 @@ class Player_Weapon_Attack():
 
     def Set_Attacking(self):
         self.attacking = max(0.1, 2 - (self.weapon.speed + self.player.agility) / 10)
+        self.player.Set_Attack_Speed(self.attacking)
 
     def Set_Enemy_Hit_Effect(self):
         if self.enemy_hit_effect_cooldown > 0:

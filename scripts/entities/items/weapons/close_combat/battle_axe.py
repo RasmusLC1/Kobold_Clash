@@ -54,7 +54,6 @@ class Battle_Axe(Weapon):
         return super().Reset_Special_Attack()
 
     def Spin_Attack_Effect(self):
-        self.attack_effect_handler.Update_Special_Attack_Effect_Animation()
         effect_type = self.Get_Dominant_Effect() + '_' + self.attack_type + '_effect'
         attack_effect = self.game.assets[effect_type][self.attack_effect_handler.attack_effect_animation]
         pos_x = self.entity.pos[0] - self.game.render_scroll[0] - 10
