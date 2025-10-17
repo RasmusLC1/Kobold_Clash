@@ -24,7 +24,6 @@ class Player_Weapon_Handler():
 
     def Set_Attack_Lock(self, state):
         self.attack_lock = state
-
     
 
     # Function to update the player's weapons
@@ -75,6 +74,5 @@ class Player_Weapon_Handler():
         
 
     def Render_Weapons(self, surf, offset):
-
         if self.active_weapon:
             self.active_weapon.Render_Equipped(surf, offset)

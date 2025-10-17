@@ -72,7 +72,6 @@ class Player(Moving_Entity):
         self.Spawn_Particles(delta_time)
 
 
-
     def Caclulate_View_Direction(self):
         self.view_direction = pygame.math.Vector2(self.target[0] - self.pos[0], self.target[1] - self.pos[1])
         if self.view_direction.length() > 0:
@@ -187,3 +186,4 @@ class Player(Moving_Entity):
         if abs(self.movement_handler.dashing) >= 50:
             return
         super().Render(surf, offset)
+        self.weapon_handler.Render_Weapons(surf, offset)

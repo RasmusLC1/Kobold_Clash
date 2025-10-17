@@ -137,8 +137,7 @@ class Item(PhysicsEntity):
     # Setting the item image and scaling it
     def Set_Entity_Image(self):
         try:
-            item_image = self.sprite[self.animation].convert_alpha()
-            self.entity_image = pygame.transform.scale(item_image, self.size)
+            self.entity_image = self.sprite[self.animation].convert_alpha()
         except Exception as e:
             print(f'SET Entity image failed {e}', self.type, self.pos, self.animation, self.max_animation, self.size, self.entity_image, self.sprite)
 
@@ -232,7 +231,7 @@ class Item(PhysicsEntity):
         if not self.rendered_image:
             self.Set_Sprite()
             if not self.rendered_image:
-                # print(self.type, vars(self))
+                
                 self.broken_rendering_counter += 1
                 if self.broken_rendering_counter >= 10:
                       self.Delete_Item()

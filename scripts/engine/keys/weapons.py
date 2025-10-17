@@ -66,6 +66,11 @@ class Weapons():
     
     torch = "torch"
 
+    torch_idle = "torch_idle"
+
+    torch_running_down = "torch_running_down"
+
+    torch_running_up = "torch_running_up"
     
     torch_attack_cut = "torch_attack_cut"
 

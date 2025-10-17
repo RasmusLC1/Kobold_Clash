@@ -377,17 +377,27 @@ class Weapon(Item):
     def Stabbing_Attack(self):
         pass
     
+
+    def Set_Equipped_Sprite(self):
+
+        sprite = self.sub_type + '_' + self.entity.action
+        self.sprite = self.game.assets[sprite]
+        self.Set_Entity_Image()
+
+
     # Render the weapon in player's hand and rotate towards target
     def Render_Equipped(self, surf, offset=(0, 0)):
+        self.Set_Equipped_Sprite()
         weapon_image = self.entity_image.copy()
+        
         if self.rotate:
             weapon_image = pygame.transform.rotate(weapon_image, self.rotate - 180)
 
-        surf.blit( pygame.transform.flip(weapon_image, self.flip_x, False),
+        surf.blit( pygame.transform.flip(weapon_image, self.entity.animation_handler.flip[0], False),
                     (self.pos[0] - offset[0], self.pos[1] - offset[1]))
         
-        self.attack_effect_handler.Render_Attack_Effect(surf, offset)
-        self.charge_effect_handler.Render_Charge_Effect(surf, offset)
+        # self.attack_effect_handler.Render_Attack_Effect(surf, offset)
+        # self.charge_effect_handler.Render_Charge_Effect(surf, offset)
     
 
     # Render the weapon in entity's hand

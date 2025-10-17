@@ -1,7 +1,7 @@
 class Player():
     # Player Assets
     
-    player_idle_down = "player_idle_down"
+    player_idle = "player_idle"
   
     player_idle_up = "player_idle_up"
 

@@ -38,7 +38,7 @@ class Player_Animation_Handler(Animation_Handler):
     def Check_Movement(self):
         keyboard = self.keyboard
         if not keyboard.Check_If_Movement_Enabled():
-            self.Set_Animation('idle_down')
+            self.Set_Animation('idle')
             return False
 
         if keyboard.w_pressed:

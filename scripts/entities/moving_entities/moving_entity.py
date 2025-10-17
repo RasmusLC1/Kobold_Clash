@@ -43,7 +43,6 @@ class Moving_Entity(PhysicsEntity):
         self.nearby_enemies_cooldown = 0
         
         self.action = ''
-        self.anim_offset = (0, 0)
         self.frame_movement = (0.0)
         self.last_frame_movement = (0.0)
 
@@ -484,7 +483,7 @@ class Moving_Entity(PhysicsEntity):
         self.Render_Damage(surf, offset)
 
         surf.blit(pygame.transform.flip(self.rendered_image, self.animation_handler.flip[0], False), 
-                (self.pos[0] - offset[0] + self.anim_offset[0], self.pos[1] - offset[1] + self.anim_offset[1]))
+                (self.pos[0] - offset[0], self.pos[1] - offset[1]))
         return True
     
     def Render_Damage(self, surf, offset):

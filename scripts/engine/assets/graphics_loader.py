@@ -179,7 +179,7 @@ class Graphics_Loader:
     def Asset_Player_List(self):
         entities_assets = {
 
-            keys.player_idle_down : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.player_idle : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_idle.png', 3, 0, 0, 0, 32, 32),
             keys.player_idle_up : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_idle.png', 3, 0, 0, 0, 32, 32),
             keys.player_standing_still_down : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_idle.png', 3, 0, 0, 0, 32, 32),
             keys.player_standing_still_up : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_idle.png', 3, 0, 0, 0, 32, 32),
@@ -200,7 +200,7 @@ class Graphics_Loader:
     def Asset_Kobold_List(self):
         entities_assets = {
 
-            keys.player_idle_down : get_tiles_from_sheet('entities/player/idle_down.png', 4, 0, 0, 0, 32, 32),
+            keys.player_idle : get_tiles_from_sheet('entities/player/idle.png', 4, 0, 0, 0, 32, 32),
             keys.player_idle_up : get_tiles_from_sheet('entities/player/idle_up.png', 4, 0, 0, 0, 32, 32),
             keys.player_standing_still_down : get_tiles_from_sheet('entities/player/standing_still_down.png', 4, 0, 0, 0, 32, 32),
             keys.player_standing_still_up : get_tiles_from_sheet('entities/player/standing_still_up.png', 4, 0, 0, 0, 32, 32),
@@ -408,7 +408,10 @@ class Graphics_Loader:
             keys.sword_attack_stab: get_tiles_from_sheet('items/weapons/sword/sword_attack.png', 3, 0, 0, 0, 32, 32),
             
             keys.torch: get_tiles_from_sheet('items/weapons/torch/torch.png', 8, 0, 0, 0, 32, 32),
-            keys.torch_attack_cut: get_tiles_from_sheet('items/weapons/torch/torch_attack.png', 8, 0, 0, 0, 32, 32),
+            keys.torch_idle: get_tiles_from_sheet('items/weapons/torch/torch_idle.png', 8, 0, 0, 0, 32, 32),
+            keys.torch_running_down: get_tiles_from_sheet('items/weapons/torch/torch_running_down.png', 8, 0, 0, 0, 32, 32),
+            keys.torch_running_up: get_tiles_from_sheet('items/weapons/torch/torch_running_up.png', 8, 0, 0, 0, 32, 32),
+            keys.torch_attack: get_tiles_from_sheet('items/weapons/torch/torch_attack.png', 8, 0, 0, 0, 48, 48),
             
             keys.spear: get_tiles_from_sheet('items/weapons/spear/spear.png', 8, 0, 0, 0, 32, 32),
             keys.spear_attack_stab: get_tiles_from_sheet('items/weapons/spear/spear.png', 8, 0, 0, 0, 32, 32),
