@@ -351,8 +351,8 @@ class Weapon(Item):
 
 
     def Update_Player_Animation(self, player_animation):
-        self.animation = player_animation
-        
+        self.animation = min(4, player_animation)
+
 
     def Calculate_Image_Rect(self, image, offset):
         flip_offset_x = 0
@@ -381,7 +381,7 @@ class Weapon(Item):
         image_rect = self.Calculate_Image_Rect(weapon_image, offset)
 
         surf.blit( pygame.transform.flip(weapon_image, self.flip_x, False), image_rect)
-        self.attack_effect_handler.Render_Attack_Effect(surf, offset)
+        self.attack_effect_handler.Render_Attack_Effect(surf, image_rect, self.flip_x)
         self.charge_effect_handler.Render_Charge_Effect(surf, offset)
     
 

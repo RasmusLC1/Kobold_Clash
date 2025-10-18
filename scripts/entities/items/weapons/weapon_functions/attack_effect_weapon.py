@@ -34,15 +34,16 @@ class Attack_Effect_Weapon():
 
    
     # Handle rendering the weapons attack effect
-    def Render_Attack_Effect(self, surf, offset):
+    def Render_Attack_Effect(self, surf, image_rect, flip_x):
         if self.weapon.entity_attack_type.attacking <= 0 or not self.effect_type:
             return
         
-        pos = self.Attack_Effect_Position(offset)
+        # TODO: ANIMATION VALUE IS UPDATED NEED TO FIND WHERE
+        print(self.effect_type, self.weapon.animation, self.weapon.entity.animation_handler.animation)
         attack_effect = self.game.assets[self.effect_type][self.weapon.animation]
         # attack_effect.set_alpha()
         # attack_effect = pygame.transform.rotate(attack_effect, self.weapon.rotate)
-        surf.blit( pygame.transform.flip(attack_effect, self.flip_x, True), (pos[0], pos[1]))
+        surf.blit( pygame.transform.flip(attack_effect, flip_x, False), image_rect)
 
     
     def Set_Attack_Effect_Animation(self, state):

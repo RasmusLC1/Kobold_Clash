@@ -411,7 +411,7 @@ class Graphics_Loader:
             keys.torch_idle: get_tiles_from_sheet('items/weapons/torch/torch_idle.png', 8, 0, 0, 0, 32, 32),
             keys.torch_running_down: get_tiles_from_sheet('items/weapons/torch/torch_running_down.png', 8, 0, 0, 0, 32, 32),
             keys.torch_running_up: get_tiles_from_sheet('items/weapons/torch/torch_running_up.png', 8, 0, 0, 0, 32, 32),
-            keys.torch_attack: get_tiles_from_sheet('items/weapons/torch/torch_attack.png', 8, 0, 0, 0, 48, 48),
+            keys.torch_attack: get_tiles_from_sheet('items/weapons/torch/torch_attack.png', 4, 0, 0, 0, 48, 48),
             
             keys.spear: get_tiles_from_sheet('items/weapons/spear/spear.png', 8, 0, 0, 0, 32, 32),
             keys.spear_attack_stab: get_tiles_from_sheet('items/weapons/spear/spear.png', 8, 0, 0, 0, 32, 32),
@@ -490,7 +490,7 @@ class Graphics_Loader:
             keys.electric_smash_effect: get_tiles_from_sheet('items/weapons/weapon_effects/electric_smash_attack.png', 5, 0, 0, 0, 64, 64),
             keys.electric_charge_effect: get_tiles_from_sheet('items/weapons/weapon_effects/electric_charge_attack.png', 5, 0, 0, 0, 32, 32),
 
-            keys.fire_cut_effect: get_tiles_from_sheet('items/weapons/weapon_effects/fire_cut_attack.png', 6, 0, 0, 0, 64, 64),
+            keys.fire_cut_effect: get_tiles_from_sheet('items/weapons/weapon_effects/fire_cut_attack.png', 4, 0, 0, 0, 48, 48),
             keys.fire_stab_effect: get_tiles_from_sheet('items/weapons/weapon_effects/fire_stab_attack.png', 6, 0, 0, 0, 64, 64),
             keys.fire_spin_effect: get_tiles_from_sheet('items/weapons/weapon_effects/fire_spin_attack.png', 7, 0, 0, 0, 64, 64),
             keys.fire_smash_effect: get_tiles_from_sheet('items/weapons/weapon_effects/fire_smash_attack.png', 5, 0, 0, 0, 64, 64),
