@@ -355,16 +355,19 @@ class Weapon(Item):
         
 
     def Calculate_Image_Rect(self, image, offset):
-        flip_offset = 0
+        flip_offset_x = 0
+        player_action = self.entity.action
         if not self.flip_x:
-            flip_offset = 10
+            flip_offset_x = 10
+        if 'attack' in player_action:
+            flip_offset_x = 5
 
-        flip_up = 0
-        if 'up' in self.entity.action:
-            flip_up = 5
-
-        image_rect = image.get_rect(center=(self.pos[0] - offset[0]  - flip_offset + self.size[0] // 2,
-                                        self.pos[1] - offset[1]  - flip_up + self.size[1] // 2))
+        flip_offset_y = 0
+        if 'up' in player_action:
+            flip_offset_y = 5
+        image_size = image.get_size()
+        image_rect = image.get_rect(center=(self.pos[0] - offset[0]  - flip_offset_x + image_size[0] // 2,
+                                        self.pos[1] - offset[1]  - flip_offset_y + image_size[1] // 2))
 
         return image_rect
 
