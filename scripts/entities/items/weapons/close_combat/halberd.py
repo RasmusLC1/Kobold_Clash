@@ -15,19 +15,6 @@ class Halberd(Weapon):
         self.Set_Block_Direction()
         self.Set_Attack_Type()
         
-        
-    def Set_Attack_Type(self):
-        if self.attack_type == keys.cut: # Handle Slashing
-            self.Slash_Attack()
-        else: # Handle Stabbing
-            self.Stabbing_Attack() 
-    
-  
-
-    def Set_Attack(self):
-        self.attack_type = random.choice([keys.cut, keys.stab]) # Set either cut or stab
-        return super().Set_Attack()
-
 
     # Handle special attack charge
     def Special_Attack(self):
@@ -42,8 +29,6 @@ class Halberd(Weapon):
             return
         self.Initialise_Charge()
         
-
-
         
     # Handle charging logic, return True if successful else False
     def Charge(self):

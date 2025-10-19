@@ -13,7 +13,7 @@ from scripts.engine.keys.keys import keys
 import inspect
 
 class Weapon(Item):
-    def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_type = 'cut', size = (32, 32), add_to_tile = True):
+    def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_types = ['cut'], size = (32, 32), add_to_tile = True):
         super().__init__(game, type, keys.weapon, pos, size, 1, add_to_tile)
         self.speed = max(1, 10 - speed) # Speed of the weapon
         self.max_animation = 5
@@ -21,7 +21,8 @@ class Weapon(Item):
         self.range = range # Range of the weapon
         self.damage = damage
         self.entity = None # Entity that holds the weapon
-        self.attack_type = attack_type # Different kinds of attacks, like cutting and stabbing
+        self.active_attack_type = '' # The currently active attack type
+        self.attack_types = attack_types # Different kinds of attacks, like cutting and stabbing
         self.in_inventory = False # Is the weapon in an inventory
         self.equipped = False # Is the weapon currently equipped and can be used to attack
         self.max_animation = 0 # Max amount of animations
@@ -52,6 +53,7 @@ class Weapon(Item):
         self.weapon_cooldown_max = 50 # How fast the weapon can attack
 
         self.delete_timer = 0 # time before weapon is deleted
+
 
         self.text_box = Weapon_Textbox(self)
         self.entity_attack_type = None # Used to determine if the weapon is being used by enemy or player
@@ -117,10 +119,16 @@ class Weapon(Item):
             return False
         
         # Handle animations internally in weapon
+        self.Set_Attack_Type()
         self.Set_Charge_Time(0)  # Reset charge time
         self.wall_hit = False
         self.attack_effect_handler.Init_Attack_Effect_Animation()
         return True
+    
+            
+    def Set_Attack_Type(self):
+        self.active_attack_type = random.choice(self.attack_types)
+
 
     # Check tile logic for wall collision
     def Check_Tile(self, new_pos):
@@ -332,18 +340,12 @@ class Weapon(Item):
     def Special_Attack(self):
         pass
 
-    def Slash_Attack(self):
-        pass
 
     # Align the weapon with the attacking entity while attacking
     def Attack_Align_Weapon(self):
         pass
     
-    def Stabbing_Attack_Handler(self):
-        pass
 
-    def Stabbing_Attack(self):
-        pass
     
 
     def Set_Equipped_Sprite(self):
@@ -355,7 +357,7 @@ class Weapon(Item):
     def Update_Player_Animation(self, player_animation):
         self.animation = min(self.attack_animation_max, player_animation)
 
-
+    # Responsible for calculating offset and centering the weapon 
     def Calculate_Image_Rect(self, image, offset):
         flip_offset_x = 0
         player_action = self.entity.animation_handler.action
@@ -363,6 +365,8 @@ class Weapon(Item):
             flip_offset_x = 10
         if 'attack' in player_action:
             flip_offset_x = 5
+            if self.flip_x:
+                flip_offset_x = 20
 
         flip_offset_y = 0
         if 'up' in player_action:

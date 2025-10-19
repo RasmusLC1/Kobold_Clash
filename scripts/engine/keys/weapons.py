@@ -1,5 +1,14 @@
 class Weapons():
 
+# Animations
+    cut = "cut"
+
+    stab = "stab"
+
+    two_hand = "two_hand"
+
+    spin = "spin"
+
 # Magic Attack Assets
     
     fire_particle_attack = "fire_particle_attack"

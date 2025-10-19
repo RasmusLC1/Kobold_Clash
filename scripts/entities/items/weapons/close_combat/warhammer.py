@@ -42,7 +42,7 @@ class Warhammer(Weapon):
     
         
     def Smash_Attack_Effect(self):
-        effect_type = self.Get_Dominant_Effect() + '_' + self.attack_type + '_' + keys.effect
+        effect_type = self.Get_Dominant_Effect() + '_' + self.active_attack_type + '_' + keys.effect
         attack_effect = self.game.assets[effect_type][self.attack_effect_animation]
         pos_x = self.entity.pos[0] - self.game.render_scroll[0] - 10
         pos_y = self.entity.pos[1] - self.game.render_scroll[1] - 10
@@ -51,10 +51,10 @@ class Warhammer(Weapon):
 
 
     def Set_Special_Attack(self, offset=...):
-        self.attack_type = keys.smash
+        self.active_attack_type = keys.smash
         super().Set_Special_Attack(offset)
         self.attack_effect_handler.Set_Special_Attack_Effect_Animation_Time()
     
     def Reset_Special_Attack(self):
-        self.attack_type = keys.cut
+        self.active_attack_type = ''
         return super().Reset_Special_Attack()

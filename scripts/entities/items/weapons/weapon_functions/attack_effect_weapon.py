@@ -11,7 +11,7 @@ class Attack_Effect_Weapon():
 
 
     def Init_Attack_Effect_Animation(self):
-        self.effect_type = self.weapon.Get_Dominant_Effect() + '_' + self.weapon.attack_type + '_' + keys.effect
+        self.effect_type = self.weapon.Get_Dominant_Effect() + '_' + self.weapon.active_attack_type + '_' + keys.effect
         self.flip_x != self.weapon.flip_x
 
 

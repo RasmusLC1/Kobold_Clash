@@ -312,11 +312,13 @@ class Moving_Entity(PhysicsEntity):
             
     # Damage = Total damage, effect = (effect, effect strength) 
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
+        # Prevent aditional damage if entity is already dead
         if self.health <= 0:
             return False
         
         if self.Check_Blocking_Direction(direction) or self.damage_cooldown > 0:
             return False
+        
         self.game.text_box_handler.Spawn_Damage_Text(self.pos.copy(), effect[0], str(damage))
 
         self.Set_Health(self.health - damage)
