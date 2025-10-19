@@ -182,11 +182,15 @@ class Weapons():
     range = "range"
 
     strength = "strength"
+
+
     
     slash_cut_effect = "slash_cut_effect"
 
     
     slash_stab_effect = "slash_stab_effect"
+
+    slash_two_hand_effect = "slash_two_hand_effect"
 
     
     slash_spin_effect = "slash_spin_effect"
@@ -197,11 +201,14 @@ class Weapons():
     
     slash_charge_effect = "slash_charge_effect"
 
+
     
     blunt_cut_effect = "blunt_cut_effect"
 
     
     blunt_stab_effect = "blunt_stab_effect"
+
+    blunt_two_hand_effect = "blunt_two_hand_effect"
 
     
     blunt_spin_effect = "blunt_spin_effect"
@@ -212,11 +219,15 @@ class Weapons():
     
     blunt_charge_effect = "blunt_charge_effect"
 
+
+
     
     electric_cut_effect = "electric_cut_effect"
 
     
     electric_stab_effect = "electric_stab_effect"
+
+    electric_two_hand_effect = "electric_two_hand_effect"
 
     
     electric_spin_effect = "electric_spin_effect"
@@ -233,6 +244,8 @@ class Weapons():
     
     fire_stab_effect = "fire_stab_effect"
 
+    fire_two_hand_effect = "fire_two_hand_effect"
+
     
     fire_spin_effect = "fire_spin_effect"
 
@@ -242,11 +255,16 @@ class Weapons():
     
     fire_charge_effect = "fire_charge_effect"
 
+
+
+
     
     frozen_cut_effect = "frozen_cut_effect"
 
     
     frozen_stab_effect = "frozen_stab_effect"
+
+    frozen_two_hand_effect = "frozen_two_hand_effect"
 
     
     frozen_spin_effect = "frozen_spin_effect"
@@ -257,11 +275,16 @@ class Weapons():
     
     frozen_charge_effect = "frozen_charge_effect"
 
+
+
+
     
     poison_cut_effect = "poison_cut_effect"
 
     
     poison_stab_effect = "poison_stab_effect"
+
+    poison_two_hand_effect = "poison_two_hand_effect"
 
     
     poison_spin_effect = "poison_spin_effect"
@@ -272,11 +295,16 @@ class Weapons():
     
     poison_charge_effect = "poison_charge_effect"
 
+
+
+
     
     regen_cut_effect = "regen_cut_effect"
 
     
     regen_stab_effect = "regen_stab_effect"
+
+    regen_two_hand_effect = "regen_two_hand_effect"
 
     
     regen_spin_effect = "regen_spin_effect"
@@ -287,11 +315,16 @@ class Weapons():
     
     regen_charge_effect = "regen_charge_effect"
 
+
+
+
     
     vampiric_cut_effect = "vampiric_cut_effect"
 
     
     vampiric_stab_effect = "vampiric_stab_effect"
+
+    vampiric_two_hand_effect = "vampiric_two_hand_effect"
 
     
     vampiric_spin_effect = "vampiric_spin_effect"
