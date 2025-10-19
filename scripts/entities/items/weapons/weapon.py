@@ -16,6 +16,8 @@ class Weapon(Item):
     def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_type = 'cut', size = (32, 32), add_to_tile = True):
         super().__init__(game, type, keys.weapon, pos, size, 1, add_to_tile)
         self.speed = max(1, 10 - speed) # Speed of the weapon
+        self.max_animation = 5
+        self.attack_animation_max = 4
         self.range = range # Range of the weapon
         self.damage = damage
         self.entity = None # Entity that holds the weapon
@@ -345,18 +347,18 @@ class Weapon(Item):
     
 
     def Set_Equipped_Sprite(self):
-        sprite = self.sub_type + '_' + self.entity.action
+        sprite = self.sub_type + '_' + self.entity.animation_handler.action
         self.sprite = self.game.assets[sprite]
         self.Set_Entity_Image()
 
 
     def Update_Player_Animation(self, player_animation):
-        self.animation = min(4, player_animation)
+        self.animation = min(self.attack_animation_max, player_animation)
 
 
     def Calculate_Image_Rect(self, image, offset):
         flip_offset_x = 0
-        player_action = self.entity.action
+        player_action = self.entity.animation_handler.action
         if not self.flip_x:
             flip_offset_x = 10
         if 'attack' in player_action:

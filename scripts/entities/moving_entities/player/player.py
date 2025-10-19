@@ -188,11 +188,13 @@ class Player(Moving_Entity):
     def Render(self, surf, offset=(0, 0)):
         if abs(self.movement_handler.dashing) >= 50:
             return
-        if 'roll'  in self.action or 'backstep' in self.action:
+        
+        action = self.animation_handler.Get_Action()
+        if 'roll'  in action or 'backstep' in action:
             super().Render(surf, offset)
             return
 
-        if 'up' in self.action:
+        if 'up' in action:
             self.weapon_handler.Render_Weapons(surf, offset)
             super().Render(surf, offset)
             return

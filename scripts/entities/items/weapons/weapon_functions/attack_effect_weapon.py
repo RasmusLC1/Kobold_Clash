@@ -39,10 +39,10 @@ class Attack_Effect_Weapon():
             return
         
         # TODO: ANIMATION VALUE IS UPDATED NEED TO FIND WHERE
-        print(self.effect_type, self.weapon.animation, self.weapon.entity.animation_handler.animation)
-        attack_effect = self.game.assets[self.effect_type][self.weapon.animation]
-        # attack_effect.set_alpha()
-        # attack_effect = pygame.transform.rotate(attack_effect, self.weapon.rotate)
+        try:
+            attack_effect = self.game.assets[self.effect_type][self.weapon.animation]
+        except Exception as e:
+            print(f'FAILED TO LOAD ATTACK EFFECT{e}', self.effect_type, self.weapon.animation)
         surf.blit( pygame.transform.flip(attack_effect, flip_x, False), image_rect)
 
     

@@ -6,8 +6,8 @@ class Animation_Handler:
         self.sprite = None
         self.entity_image = None
         self.animation_value = 0
-        self.flip = [False, False]
         self.action = ''
+        self.flip = [False, False]
         self.animation_lock = False
         self.Set_Animation('')
 
@@ -51,14 +51,17 @@ class Animation_Handler:
         if self.animation_lock:
             return
 
-        if action != self.entity.action:
-            self.entity.action = action
-            self.animation = self.entity.type + '_' + self.entity.action
-            for anim in self.animations.values():
-                anim[keys.num] = 0
+        if action != self.action:
+            self.action = action
+            self.animation = self.entity.type + '_' + self.action
+            self.Reset_Animation_Values()
             self.animation_value = 0
             self.Set_Sprite()
             self.Set_Animation_Lock(True)
+
+    def Reset_Animation_Values(self):
+        for anim in self.animations.values():
+            anim[keys.num] = 0
 
     def Handle_Animation_Update(self, delta_time):
         for anim_type in self.animations.keys():
@@ -119,3 +122,6 @@ class Animation_Handler:
 
     def Set_Animation_Lock(self, state):
         self.animation_lock = state
+
+    def Get_Action(self):
+        return self.action

@@ -79,6 +79,7 @@ class Player_Animation_Handler(Animation_Handler):
 
 
     def Trigger_Attack_Animation(self):
+        self.Reset_Animation_Values()
         self.Attack_Direction_Handler()
         self.Set_Animation("attack")
         self.Set_Animation_Lock(True)
@@ -90,16 +91,16 @@ class Player_Animation_Handler(Animation_Handler):
     def Set_Animation(self, action):
         if self.animation_lock:
             return
-
-        if action != self.entity.action:
-            self.entity.action = action
-            self.animation = self.entity.type + '_' + self.entity.action
+        
+        if action != self.action:
+            self.action = action
+            self.animation = self.entity.type + '_' + self.action
             for anim in self.animations.values():
                 anim[keys.num] = 0
             self.animation_value = 0
             self.Set_Sprite()
 
-    # Animation Updates
+    # Animation Updatesa
     def Handle_Animation_Update(self, delta_time):
         for anim_type in self.animations.keys():
             if anim_type in self.animation:
@@ -112,6 +113,5 @@ class Player_Animation_Handler(Animation_Handler):
     def Update_Generic_Animation(self, anim_type, delta_time):
         if not super().Update_Generic_Animation(anim_type, delta_time):
             return False
-        anim = self.animations[anim_type]
-        self.entity.weapon_handler.Update_Weapon_Animation(anim[keys.num])
+        self.entity.weapon_handler.Update_Weapon_Animation(self.animation_value)
         return True

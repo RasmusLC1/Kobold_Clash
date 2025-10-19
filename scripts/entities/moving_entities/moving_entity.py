@@ -42,7 +42,6 @@ class Moving_Entity(PhysicsEntity):
         self.nearby_enemies = []
         self.nearby_enemies_cooldown = 0
         
-        self.action = ''
         self.frame_movement = (0.0)
         self.last_frame_movement = (0.0)
 
