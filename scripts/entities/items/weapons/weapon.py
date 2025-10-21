@@ -347,7 +347,7 @@ class Weapon(Item):
     
 
     
-
+    # Takes the entity's sprite type and applies it to weapon
     def Set_Equipped_Sprite(self):
         sprite = self.sub_type + '_' + self.entity.animation_handler.action
         self.sprite = self.game.assets[sprite]

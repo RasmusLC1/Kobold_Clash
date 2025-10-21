@@ -81,7 +81,7 @@ class Weapons():
 
     torch_running_up = "torch_running_up"
     
-    torch_attack_cut = "torch_attack_cut"
+    torch_cut = "torch_cut"
 
     
     spear = "spear"

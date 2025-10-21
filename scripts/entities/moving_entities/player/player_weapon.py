@@ -25,6 +25,11 @@ class Player_Weapon_Handler():
     def Set_Attack_Lock(self, state):
         self.attack_lock = state
     
+    def Get_Weapon_Type(self):
+        if not self.active_weapon:
+            return None
+        
+        return self.active_weapon.type
 
     # Function to update the player's weapons
     def Update_Weapon(self, delta_time, offset=(0, 0)):

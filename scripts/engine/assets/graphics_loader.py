@@ -188,7 +188,7 @@ class Graphics_Loader:
             keys.player_rolling : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_rolling.png', 4, 0, 0, 0, 32, 32),
             keys.player_backstep : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_rolling.png', 4, 0, 0, 0, 32, 32),
             keys.player_attack : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_attack_stab.png', 4, 0, 0, 0, 48, 48),
-            keys.player_attack : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_attack_slash.png', 4, 0, 0, 0, 48, 48),
+            keys.player_cut : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_attack_slash.png', 4, 0, 0, 0, 48, 48),
             keys.player_attack : get_tiles_from_sheet('entities/enemies/mythical/kobold/kobold_red/kobold_attack_two_hand.png', 4, 0, 0, 0, 48, 48),
 
 
@@ -411,7 +411,7 @@ class Graphics_Loader:
             keys.torch_idle: get_tiles_from_sheet('items/weapons/torch/torch_idle.png', 8, 0, 0, 0, 32, 32),
             keys.torch_running_down: get_tiles_from_sheet('items/weapons/torch/torch_running_down.png', 8, 0, 0, 0, 32, 32),
             keys.torch_running_up: get_tiles_from_sheet('items/weapons/torch/torch_running_up.png', 8, 0, 0, 0, 32, 32),
-            keys.torch_attack: get_tiles_from_sheet('items/weapons/torch/torch_attack.png', 4, 0, 0, 0, 48, 48),
+            keys.torch_cut: get_tiles_from_sheet('items/weapons/torch/torch_attack.png', 4, 0, 0, 0, 48, 48),
             
             keys.spear: get_tiles_from_sheet('items/weapons/spear/spear.png', 8, 0, 0, 0, 32, 32),
             keys.spear_attack_stab: get_tiles_from_sheet('items/weapons/spear/spear.png', 8, 0, 0, 0, 32, 32),

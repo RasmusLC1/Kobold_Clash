@@ -1,5 +1,22 @@
 from scripts.entities.moving_entities.animation.animation_handler import Animation_Handler
 from scripts.engine.keys.keys import keys
+import random
+
+
+ATTACK_TYPES = {
+    keys.battle_axe : [keys.two_hand],
+    keys.bow : [keys.bow_draw],
+    keys.crossbow : [keys.crossbow_attack],
+    keys.bell : [keys.stab, keys.two_hand],
+    keys.halberd : [keys.stab, keys.two_hand],
+    keys.hatchet : [keys.cut],
+    keys.sceptre : [keys.two_hand, keys.stab],
+    keys.scythe : [keys.two_hand],
+    keys.spear : [keys.stab],
+    keys.sword : [keys.stab, keys.cut],
+    keys.torch : [keys.cut],
+    keys.warhammer : [keys.two_hand],
+}
 
 class Player_Animation_Handler(Animation_Handler):
     def __init__(self, entity):
@@ -81,11 +98,29 @@ class Player_Animation_Handler(Animation_Handler):
     def Trigger_Attack_Animation(self):
         self.Reset_Animation_Values()
         self.Attack_Direction_Handler()
-        self.Set_Animation("attack")
+        attack_type = self.Get_Attack_Animation_Type()
+        self.Set_Animation(attack_type)
         self.Set_Animation_Lock(True)
         anim = self.animations[keys.attack]
         self.entity.weapon_handler.Update_Weapon_Animation(anim[keys.num])
         return True
+    
+
+    def Get_Attack_Animation_Type(self):
+        weapon_type = self.entity.weapon_handler.Get_Weapon_Type()
+
+        if not weapon_type:
+            return None
+        
+        weapon_attack_types = ATTACK_TYPES.get(weapon_type)
+
+        if not weapon_attack_types:
+            print("WEAPON TYPE NOT FOUND", weapon_type, weapon_attack_types)
+            return
+
+        attack_type = random.choice(weapon_attack_types)
+
+        return attack_type
         
 
     def Set_Animation(self, action):
