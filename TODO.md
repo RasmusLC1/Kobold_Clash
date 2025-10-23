@@ -82,6 +82,7 @@ Upgrade weapons
     Weapons have health, forcing players to either repair them with ingots at weapon shrines or to get new weapons 
     Weapons have a pool of damage stats, so for instance a sword might have a dictionary with fire, frozen, sharpness and the damage value of each effect
     Weapons can be upgraded with gems
+    weapons have their animations tied to the player sprite
     # Implement better animations, bright arcs for where the damage area is
     # Torch, emits light and be be used to set enemies on fire, relatively low damage
     # Sword, best damage, little utility
@@ -96,6 +97,7 @@ Upgrade weapons
     # Crossbow, Same as bow, but takes longer to load, but can be preloaded
     # Bomb, one time use, splash damage, can break enviorement, knockback from blast
     # magic Staff, improved runes but poor melee damage, different staffs for different lores of magic, costs souls per cast. Special attack for each lores
+    
 
 # Items
     Items are held in inventory, not worth a lot of money, but helps navigate dungeon
