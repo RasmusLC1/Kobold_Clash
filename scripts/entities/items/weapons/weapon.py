@@ -377,7 +377,7 @@ class Weapon(Item):
 
         return image_rect
 
-    # Render the weapon in player's hand and rotate towards target
+    # Render the weapon in player's hand 
     def Render_Equipped(self, surf, offset=(0, 0)):
         self.Set_Equipped_Sprite()
         weapon_image = self.entity_image.copy()
