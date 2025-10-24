@@ -18,6 +18,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Potion_List(self)
         Graphics_Loader.Asset_Decoration_List(self)
         Graphics_Loader.Asset_Weapons_List(self)
+        Graphics_Loader.Asset_magic_staffs_List(self)
         Graphics_Loader.Asset_Weapons_Effects(self)
         Graphics_Loader.Asset_Inventory(self)
         Graphics_Loader.Asset_Font(self)
@@ -401,58 +402,8 @@ class Graphics_Loader:
         }
         self.assets.update(symbols_assets)
 
-    def Asset_Weapons_List(self):
+    def Asset_magic_staffs_List(self):
         Weapons_assets = {
-            keys.sword: get_tiles_from_sheet('items/weapons/sword/sword.png', 3, 0, 0, 0, 32, 32),
-            keys.sword_attack_cut: get_tiles_from_sheet('items/weapons/sword/sword.png', 3, 0, 0, 0, 32, 32),
-            keys.sword_attack_stab: get_tiles_from_sheet('items/weapons/sword/sword_attack.png', 3, 0, 0, 0, 32, 32),
-            
-            keys.torch: get_tiles_from_sheet('items/weapons/torch/torch.png', 8, 0, 0, 0, 32, 32),
-            keys.torch_idle: get_tiles_from_sheet('items/weapons/torch/torch_idle.png', 8, 0, 0, 0, 32, 32),
-            keys.torch_running_down: get_tiles_from_sheet('items/weapons/torch/torch_running_down.png', 8, 0, 0, 0, 32, 32),
-            keys.torch_running_up: get_tiles_from_sheet('items/weapons/torch/torch_running_up.png', 8, 0, 0, 0, 32, 32),
-            keys.torch_cut: get_tiles_from_sheet('items/weapons/torch/torch_attack.png', 4, 0, 0, 0, 48, 48),
-            
-            keys.spear: get_tiles_from_sheet('items/weapons/spear/spear.png', 8, 0, 0, 0, 32, 32),
-            keys.spear_attack_stab: get_tiles_from_sheet('items/weapons/spear/spear.png', 8, 0, 0, 0, 32, 32),
-            
-            keys.bow: get_tiles_from_sheet('items/weapons/bow/bow.png', 0, 0, 0, 0, 32, 32),
-            keys.bow_attack: get_tiles_from_sheet('items/weapons/bow/bow_attack.png', 2, 0, 0, 0, 32, 32),
-            
-            keys.arrow: get_tiles_from_sheet('items/weapons/arrow/arrow.png', 0, 0, 0, 0, 32, 32),
-            keys.arrow_attack: get_tiles_from_sheet('items/weapons/arrow/arrow.png', 0, 0, 0, 0, 32, 32),
-
-            keys.shield: get_tiles_from_sheet('items/weapons/shield/shields.png', 4, 4, 0, 0, 32, 32),
-            keys.shield_attack: get_tiles_from_sheet('items/weapons/shield/shields.png', 4, 4, 0, 0, 32, 32),
-
-            keys.halberd: get_tiles_from_sheet('items/weapons/halberd/halberd.png', 6, 0, 0, 0, 32, 32),
-            keys.halberd_attack_stab: get_tiles_from_sheet('items/weapons/halberd/halberd_stab_attack.png', 6, 0, 0, 0, 32, 50),
-            keys.halberd_attack_cut: get_tiles_from_sheet('items/weapons/halberd/halberd_cut_attack.png', 13, 0, 0, 0, 32, 32),
-
-            keys.battle_axe: get_tiles_from_sheet('items/weapons/battle_axe/battle_axe.png', 5, 0, 0, 0, 32, 32),
-            keys.battle_axe_attack_cut: get_tiles_from_sheet('items/weapons/battle_axe/battle_axe_cut_attack.png', 15, 0, 0, 0, 32, 32),
-            
-            keys.hammer: get_tiles_from_sheet('items/weapons/hammer/hammer.png', 6, 0, 0, 0, 32, 32),
-            keys.hammer_attack_cut: get_tiles_from_sheet('items/weapons/hammer/hammer_cut_attack.png', 9, 0, 0, 0, 32, 32),
-
-            keys.hatchet: get_tiles_from_sheet('items/weapons/hatchet/hatchet.png', 7, 0, 0, 0, 32, 32),
-            keys.hatchet_attack_cut: get_tiles_from_sheet('items/weapons/hatchet/hatchet_cut_attack.png', 8, 0, 0, 0, 32, 32),
-
-            keys.warhammer: get_tiles_from_sheet('items/weapons/warhammer/warhammer.png', 6, 0, 0, 0, 32, 32),
-            keys.warhammer_attack_cut: get_tiles_from_sheet('items/weapons/warhammer/warhammer_cut_attack.png', 12, 0, 0, 0, 32, 32),
-
-            keys.crossbow: get_tiles_from_sheet('items/weapons/crossbow/crossbow.png', 8, 0, 0, 0, 32, 32),
-            keys.crossbow_attack: get_tiles_from_sheet('items/weapons/crossbow/crossbow_attack.png', 2, 0, 0, 0, 32, 32),
-
-            keys.scythe: get_tiles_from_sheet('items/weapons/scythe/scythe.png', 7, 0, 0, 0, 32, 32),
-            keys.scythe_attack_cut: get_tiles_from_sheet('items/weapons/scythe/scythe_attack.png', 9, 0, 0, 0, 32, 32),
-
-            keys.bell: get_tiles_from_sheet('items/weapons/bell/bell.png', 7, 0, 0, 0, 32, 32),
-            keys.bell_attack_cut: get_tiles_from_sheet('items/weapons/bell/bell_attack_cut.png', 9, 0, 0, 0, 32, 32),
-
-            keys.sceptre: get_tiles_from_sheet('items/weapons/sceptre/sceptre.png', 7, 0, 0, 0, 32, 32),
-            keys.sceptre_attack_cut: get_tiles_from_sheet('items/weapons/sceptre/sceptre_cut_attack.png', 9, 0, 0, 0, 32, 32),
-
             keys.fire_staff: get_tiles_from_sheet('items/weapons/staff/fire_staff.png', 0, 0, 0, 0, 32, 32),
             keys.fire_staff_attack_cut: get_tiles_from_sheet('items/weapons/staff/fire_staff_attack.png', 5, 0, 0, 0, 32, 32),
 
@@ -467,6 +418,55 @@ class Graphics_Loader:
 
             keys.electric_staff: get_tiles_from_sheet('items/weapons/staff/electric_staff.png', 0, 0, 0, 0, 32, 32),
             keys.electric_staff_attack_cut: get_tiles_from_sheet('items/weapons/staff/electric_staff_attack.png', 5, 0, 0, 0, 32, 32),
+
+        }
+        self.assets.update(Weapons_assets)
+
+    def Asset_Weapons_List(self):
+        Weapons_assets = {
+            keys.sword: get_tiles_from_sheet('items/weapons/sword/sword.png', 3, 0, 0, 0, 32, 32),
+            keys.sword_idle: get_tiles_from_sheet('items/weapons/sword/sword_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.sword_running_behind: get_tiles_from_sheet('items/weapons/sword/sword_running_behind.png', 5, 0, 0, 0, 32, 32),
+            keys.sword_running_down: get_tiles_from_sheet('items/weapons/sword/sword_running_front.png', 5, 0, 0, 0, 32, 32),
+            keys.sword_cut: get_tiles_from_sheet('items/weapons/sword/sword_attack_cut.png', 4, 0, 0, 0, 48, 48),
+            keys.sword_stab: get_tiles_from_sheet('items/weapons/sword/sword_attack.png', 4, 0, 0, 0, 48, 48),
+            
+            keys.torch: get_tiles_from_sheet('items/weapons/torch/torch.png', 3, 0, 0, 0, 32, 32),
+            keys.torch_idle: get_tiles_from_sheet('items/weapons/torch/torch_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.torch_running_down: get_tiles_from_sheet('items/weapons/torch/torch_running_down.png', 5, 0, 0, 0, 32, 32),
+            keys.torch_running_up: get_tiles_from_sheet('items/weapons/torch/torch_running_up.png', 5, 0, 0, 0, 32, 32),
+            keys.torch_cut: get_tiles_from_sheet('items/weapons/torch/torch_attack.png', 4, 0, 0, 0, 48, 48),
+
+            keys.halberd: get_tiles_from_sheet('items/weapons/halberd/halberd.png', 3, 0, 0, 0, 32, 32),
+            keys.halberd_idle: get_tiles_from_sheet('items/weapons/halberd/halberd_idle.png',4, 0, 0, 0, 32, 32),
+            keys.halberd_running_behind: get_tiles_from_sheet('items/weapons/halberd/halberd_running_behind.png', 5, 0, 0, 0, 32, 32),
+            keys.halberd_running_down: get_tiles_from_sheet('items/weapons/halberd/halberd_running_down.png', 5, 0, 0, 0, 32, 32),
+            keys.halberd_stab: get_tiles_from_sheet('items/weapons/halberd/halberd_stab_attack.png', 4, 0, 0, 0, 48, 48),
+            keys.halberd_cut: get_tiles_from_sheet('items/weapons/halberd/halberd_cut_attack.png', 4, 0, 0, 0, 48, 48),
+            
+            keys.spear: get_tiles_from_sheet('items/weapons/spear/spear.png', 3, 0, 0, 0, 32, 32),
+            keys.spear_idle: get_tiles_from_sheet('items/weapons/spear/spear_idle.png', 3, 0, 0, 0, 32, 32),
+            keys.spear_running_behind: get_tiles_from_sheet('items/weapons/spear/spear_running_behind.png', 5, 0, 0, 0, 32, 32),
+            keys.spear_running_down: get_tiles_from_sheet('items/weapons/spear/spear_running_down.png', 5, 0, 0, 0, 32, 32),
+            keys.spear_stab: get_tiles_from_sheet('items/weapons/spear/spear_stab.png', 4, 0, 0, 0, 48, 48),
+            
+            keys.bow: get_tiles_from_sheet('items/weapons/bow/bow.png', 0, 0, 0, 0, 32, 32),
+            keys.bow_attack: get_tiles_from_sheet('items/weapons/bow/bow_attack.png', 2, 0, 0, 0, 32, 32),
+            
+            keys.arrow: get_tiles_from_sheet('items/weapons/arrow/arrow.png', 0, 0, 0, 0, 32, 32),
+            keys.arrow_attack: get_tiles_from_sheet('items/weapons/arrow/arrow.png', 0, 0, 0, 0, 32, 32),
+
+            keys.sceptre: get_tiles_from_sheet('items/weapons/sceptre/sceptre.png', 7, 0, 0, 0, 32, 32),
+            keys.sceptre_attack_cut: get_tiles_from_sheet('items/weapons/sceptre/sceptre_cut_attack.png', 9, 0, 0, 0, 32, 32),
+
+            keys.hatchet: get_tiles_from_sheet('items/weapons/hatchet/hatchet.png', 7, 0, 0, 0, 32, 32),
+            keys.hatchet_attack_cut: get_tiles_from_sheet('items/weapons/hatchet/hatchet_cut_attack.png', 8, 0, 0, 0, 32, 32),
+
+            keys.crossbow: get_tiles_from_sheet('items/weapons/crossbow/crossbow.png', 8, 0, 0, 0, 32, 32),
+            keys.crossbow_attack: get_tiles_from_sheet('items/weapons/crossbow/crossbow_attack.png', 2, 0, 0, 0, 32, 32),
+
+            keys.scythe: get_tiles_from_sheet('items/weapons/scythe/scythe.png', 7, 0, 0, 0, 32, 32),
+            keys.scythe_attack_cut: get_tiles_from_sheet('items/weapons/scythe/scythe_attack.png', 9, 0, 0, 0, 32, 32),
         }
         self.assets.update(Weapons_assets)
 

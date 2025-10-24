@@ -66,11 +66,17 @@ class Weapons():
     
     sword = "sword"
 
-    
-    sword_attack_cut = "sword_attack_cut"
+    sword_idle = "sword_idle"
+
+    sword_running_behind = "sword_running_behind"
+
+    sword_running_down = "sword_running_down"
 
     
-    sword_attack_stab = "sword_attack_stab"
+    sword_cut = "sword_cut"
+
+    
+    sword_stab = "sword_stab"
 
     
     torch = "torch"
@@ -86,8 +92,13 @@ class Weapons():
     
     spear = "spear"
 
+    spear_idle = "spear_idle"
+
+    spear_running_behind = "spear_running_behind"
+
+    spear_running_down = "spear_running_down"
     
-    spear_attack_stab = "spear_attack_stab"
+    spear_stab = "spear_stab"
 
 
     bow = "bow"
@@ -110,17 +121,22 @@ class Weapons():
     
     halberd = "halberd"
 
-    
-    halberd_attack_stab = "halberd_attack_stab"
+    halberd_idle = "halberd_idle"
 
+    halberd_running_behind = "halberd_running_behind"
+
+    halberd_running_down = "halberd_running_down"
     
-    halberd_attack_cut = "halberd_attack_cut"
+    halberd_stab = "halberd_stab"
+    
+    halberd_cut = "halberd_cut"
+
 
     
     battle_axe = "battle_axe"
 
     
-    battle_axe_attack_cut = "battle_axe_attack_cut"
+    battle_axe_cut = "battle_axe_cut"
 
     
     hammer = "hammer"

@@ -87,7 +87,6 @@ Upgrade weapons
     # Torch, emits light and be be used to set enemies on fire, relatively low damage
     # Sword, best damage, little utility
     # Spear, can be thrown
-    # Shield, can block damage, can be used to rocket jump with bomb
     # Bow, can press button, different arrows that can do certain things
     # Axe, can break wood doors
     # Hatchet, small axe, faster than axe
@@ -97,6 +96,7 @@ Upgrade weapons
     # Crossbow, Same as bow, but takes longer to load, but can be preloaded
     # Bomb, one time use, splash damage, can break enviorement, knockback from blast
     # magic Staff, improved runes but poor melee damage, different staffs for different lores of magic, costs souls per cast. Special attack for each lores
+    # Shield, can block damage, can be used to rocket jump with bomb
     
 
 # Items
