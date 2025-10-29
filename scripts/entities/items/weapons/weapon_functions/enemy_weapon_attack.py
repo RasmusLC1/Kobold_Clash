@@ -43,7 +43,6 @@ class Enemy_Weapon_Attack():
             return False
         
         self.attacking = 0
-        self.weapon.Reset_Attack_Animation()
 
         return True
         

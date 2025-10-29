@@ -6,9 +6,7 @@ ICE_PROJECTILE_NUM = 3 * 20 # 20 for special attack
 
 class Ice_Spirit(Elemental):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.ice_spirit, health, strength, max_speed, agility, intelligence, stamina, 1.6,  20)
-        self.animation_handler.Set_Animation_Num_Max(3)
-        self.animation_handler.Set_Attack_Animation_Num_Max(3)
+        super().__init__(game, pos, keys.ice_spirit, health, strength, max_speed, agility, intelligence, stamina, 1.6, 20, 3, 3, 3)
         self.path_finding_strategy = 'standard'
         self.attack_strategy = keys.long_range
         self.intent_manager.Set_Intent([keys.attack])

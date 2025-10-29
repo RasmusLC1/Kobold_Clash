@@ -23,7 +23,12 @@ class Logic_Update():
 
 
           self.game.rune_handler.Update(delta_time)
-          self.game.player.Update(self.game.tilemap, delta_time, (self.game.movement[1] - self.game.movement[0], self.game.movement[3] - self.game.movement[2]), self.game.render_scroll)
+
+
+          keyboard = self.game.keyboard_handler
+          movement = (keyboard.d_pressed - keyboard.a_pressed, keyboard.s_pressed - keyboard.w_pressed)
+          self.game.player.Update(self.game.tilemap, delta_time, movement, self.game.render_scroll)
+          
           self.game.ray_caster.Update()
           self.game.clatter.Update()
 

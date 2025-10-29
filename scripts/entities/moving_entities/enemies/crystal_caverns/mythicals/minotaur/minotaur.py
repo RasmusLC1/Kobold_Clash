@@ -12,9 +12,7 @@ class Minotaur(Enemy):
     intent_manager_class = Minotaur_Intent_Manager
 
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.minotaur, health, strength, max_speed, agility, intelligence, stamina, 0.9, keys.mythical, 100, size = (64, 64))
-        self.animation_handler.Set_Animation_Num_Max(3)
-        self.animation_handler.Set_Attack_Animation_Num_Max(5)
+        super().__init__(game, pos, keys.minotaur, health, strength, max_speed, agility, intelligence, stamina, 0.9, keys.mythical, 100, 3, 3, 5, size = (64, 64))
         self.intent_manager.Set_Intent([keys.keep_position, keys.direct, 'dash', keys.attack, keys.attack, keys.attack, keys.medium_range,])
         self.intent_manager.Set_Intent_Cooldown_Max(120)
         self.last_health_index = self.Calculate_Health_Index(self.health)

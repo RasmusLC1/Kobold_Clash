@@ -37,7 +37,6 @@ class Game_Initialiser():
         self.game.display = pygame.Surface((self.game.screen_width/self.game.render_scale, self.game.screen_height/self.game.render_scale))
         self.game.render_scroll = (0,0)
         
-        self.game.movement = [False, False, False, False]
 
         self.game.assets = {}
         Graphics_Loader.Run_All(self.game)

@@ -120,6 +120,6 @@ class Effect():
         image = self.entity.game.assets[self.effect_type][self.animation].convert_alpha()
         # Set the opacity to 70%
         image.set_alpha(179)
-        surf.blit(pygame.transform.flip(image, self.entity.flip[0], False), (self.entity.pos[0] - offset[0] + self.entity.anim_offset[0], self.entity.pos[1] - offset[1] - 5))
+        surf.blit(pygame.transform.flip(image, self.entity.animation_handler.flip[0], False), (self.entity.pos[0] - offset[0], self.entity.pos[1] - offset[1] - 5))
 
 

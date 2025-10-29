@@ -32,7 +32,7 @@ class Poison_CLoud_Shooter(Particle_Shooter):
             pos_x = math.cos(angle) * speed
             pos_y = math.sin(angle) * speed
             
-            poison_particle.Set_Enabled(entity.rect(), speed, special_attack,  entity, 50, damage)
+            poison_particle.Set_Enabled(entity.rect(), speed, special_attack,  entity, 50, damage + self.base_damage)
 
     
     # Append extra fire particle to the pool in case it runs out

@@ -6,6 +6,7 @@ class Particle_Shooter():
         self.game = game
         self.index = 0
         self.particle_pool = []
+        self.base_damage = 0
 
     def Particle_Creation(self, entity, special_attack):
         pass
@@ -16,7 +17,10 @@ class Particle_Shooter():
     # Append extra fire particle to the pool in case it runs out
     def Create_Extra_Particle(self):
         pass
-
+    
+    # Effect is ignored as this is a general weapons function
+    def Set_Damage(self, effect, amount):
+        self.base_damage += amount
 
     # Search for particles with an index
     def Find_Particle(self):

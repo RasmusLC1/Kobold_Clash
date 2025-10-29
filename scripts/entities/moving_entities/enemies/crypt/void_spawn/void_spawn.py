@@ -5,9 +5,7 @@ from scripts.engine.keys.keys import keys
 
 class Void_Spawn(Enemy):
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, soul_value, size = (32, 32)):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.void_spawn, soul_value, size)
-        self.animation_handler.Set_Animation_Num_Max(4)
-        self.animation_handler.Set_Attack_Animation_Num_Max(5)
+        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.void_spawn, soul_value, 4, 4, 5, size)
         self.path_finding_strategy = keys.void_spawn
         self.attack_strategy = keys.direct
         self.intent_manager.Set_Intent([ keys.direct, keys.attack])

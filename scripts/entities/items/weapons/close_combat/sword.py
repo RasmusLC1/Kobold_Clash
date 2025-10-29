@@ -13,19 +13,6 @@ class Sword(Weapon):
         if not super().Update_Attack(delta_time):
             return False
         self.Set_Block_Direction()
-        self.Set_Attack_Type()
-        
-        
-    def Set_Attack_Type(self):
-        if self.attack_type == keys.cut: # Handle Slashing
-            self.Slash_Attack()
-        else: # Handle Stabbing
-            self.Stabbing_Attack() 
-
-
-    def Set_Attack(self):
-        self.attack_type = random.choice([keys.cut, keys.stab]) # Set either cut or stab
-        return super().Set_Attack()
 
 
     # Handle special attack charge

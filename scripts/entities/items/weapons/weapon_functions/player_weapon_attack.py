@@ -40,6 +40,7 @@ class Player_Weapon_Attack():
         self.Set_Attacking()
         self.nearby_enemies = self.game.enemy_handler.Find_Nearby_Enemies(self.player, 3) # Find nearby enemies to attack
         self.nearby_decoration = self.game.decoration_handler.Find_Nearby_Decorations(self.player.pos, 3)
+        self.player.Trigger_Attack_Animation()
         return True
     
     def Attack_Collision_Check(self):
@@ -112,7 +113,6 @@ class Player_Weapon_Attack():
             return False
         self.attacking = 0
         self.active = False
-        self.weapon.Reset_Attack_Animation()
         self.player.Reset_Attack_Direction()
 
         return True
@@ -137,6 +137,7 @@ class Player_Weapon_Attack():
 
     def Set_Attacking(self):
         self.attacking = max(0.1, 2 - (self.weapon.speed + self.player.agility) / 10)
+        self.player.Set_Attack_Speed(self.attacking)
 
     def Set_Enemy_Hit_Effect(self):
         if self.enemy_hit_effect_cooldown > 0:

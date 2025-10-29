@@ -25,6 +25,11 @@ class Player_Weapon_Handler():
     def Set_Attack_Lock(self, state):
         self.attack_lock = state
     
+    def Get_Weapon_Type(self):
+        if not self.active_weapon:
+            return None
+        
+        return self.active_weapon.type
 
     # Function to update the player's weapons
     def Update_Weapon(self, delta_time, offset=(0, 0)):
@@ -45,12 +50,6 @@ class Player_Weapon_Handler():
         if not self.active_weapon:
             return
         self.active_weapon.Update_Attack(delta_time)
-        
-        if not self.active_weapon:
-            return
-        self.player.Attacking(self.active_weapon, offset)
-        # self.active_weapon.Set_Attack()
-
         return
     
 
@@ -62,7 +61,6 @@ class Player_Weapon_Handler():
             self.active_weapon.Disable_Gem_Effect()
             self.active_weapon.Unequip()
             self.active_weapon = None
-            self.player.attacking = 0
 
     def Check_If_Weapon_Should_Be_Removed(self, weapon):
         if not self.active_weapon:
@@ -79,8 +77,11 @@ class Player_Weapon_Handler():
             return False
         return self.active_weapon.ID == weapon.ID
         
+    def Update_Weapon_Animation(self, animation_num):
+        if not self.active_weapon:
+            return
+        self.active_weapon.Update_Player_Animation(animation_num)
 
     def Render_Weapons(self, surf, offset):
-
         if self.active_weapon:
             self.active_weapon.Render_Equipped(surf, offset)

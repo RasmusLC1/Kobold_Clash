@@ -4,8 +4,8 @@ from scripts.engine.keys.keys import keys
 
 
 class Projectile(Weapon):
-    def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect, shoot_distance, attack_type = 'cut', size = (32, 32), add_to_tile = True):
-        super().__init__(game, pos, type, damage, speed, range, max_charge_time, weapon_class,  effect, attack_type, size, add_to_tile)
+    def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect, shoot_distance, attack_types = ['cut'], size = (32, 32), add_to_tile = True):
+        super().__init__(game, pos, type, damage, speed, range, max_charge_time, weapon_class,  effect, attack_types, size, add_to_tile)
         self.speed = speed
         self.shoot_speed = 0
         self.shoot_distance = shoot_distance

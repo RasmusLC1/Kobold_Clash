@@ -35,13 +35,13 @@ class Keyboard_Handler:
             
     def Key_Down(self, key_press):
         if key_press.key == pygame.K_a:
-            self.game.movement[0] = True
+            self.a_pressed = True
         if key_press.key == pygame.K_d:
-            self.game.movement[1] = True
+            self.d_pressed = True
         if key_press.key == pygame.K_w:
-            self.game.movement[2] = True
+            self.w_pressed = True
         if key_press.key == pygame.K_s:
-            self.game.movement[3] = True
+            self.s_pressed = True
         if key_press.key == pygame.K_1:
             self._1_pressed = True
         if key_press.key == pygame.K_2:
@@ -77,13 +77,13 @@ class Keyboard_Handler:
 
     def Key_Up(self, key_press):
         if key_press.key == pygame.K_a:
-            self.game.movement[0] = False
+            self.a_pressed = False
         if key_press.key == pygame.K_d:
-            self.game.movement[1] = False
+            self.d_pressed = False
         if key_press.key == pygame.K_w:
-            self.game.movement[2] = False
+            self.w_pressed = False
         if key_press.key == pygame.K_s:
-            self.game.movement[3] = False
+            self.s_pressed = False
         if key_press.key == pygame.K_e:
             self.e_pressed = False
         if key_press.key == pygame.K_1:
@@ -119,3 +119,7 @@ class Keyboard_Handler:
 
     def Set_Escape_Key(self, state):
         self.escape_pressed = state
+
+
+    def Check_If_Movement_Enabled(self):
+        return self.w_pressed or self.a_pressed or self.s_pressed or self.d_pressed

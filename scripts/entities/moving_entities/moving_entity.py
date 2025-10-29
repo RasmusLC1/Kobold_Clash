@@ -18,8 +18,6 @@ class Moving_Entity(PhysicsEntity):
     _effect_handler = Status_Effect_Handler
 
 
-
-    
     def __init__(self, game, type, category, pos, size, health, strength, max_speed, agility, intelligence, stamina, sub_category):
         super().__init__(game, type, category, pos, size, sub_category)
         self.velocity = [0, 0] # Velocity of the player
@@ -27,9 +25,6 @@ class Moving_Entity(PhysicsEntity):
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False} # Check for wall collision in each direction
         self.update_tile_cooldown = 0
 
-
-        self.animation_state = 'up'
-        self.idle_count = 0
 
         self.direction = (0,0)
         self.direction_x = 0
@@ -47,9 +42,6 @@ class Moving_Entity(PhysicsEntity):
         self.nearby_enemies = []
         self.nearby_enemies_cooldown = 0
         
-        self.action = ''
-        self.anim_offset = (0, 0)
-        self.flip = [False, False]
         self.frame_movement = (0.0)
         self.last_frame_movement = (0.0)
 
@@ -80,8 +72,6 @@ class Moving_Entity(PhysicsEntity):
 
         self.active_weapon_cooldown = 0
         self.Set_Sprite()
-
-
 
 
     def Save_Data(self):
@@ -120,7 +110,7 @@ class Moving_Entity(PhysicsEntity):
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False}
 
         self.Update_Movement(movement, delta_time)
-        self.Update_Animation(movement, delta_time)
+        self.animation_handler.Update_Animation(movement, delta_time)
         self.Update_Status_Effects(delta_time)
 
 
@@ -159,9 +149,7 @@ class Moving_Entity(PhysicsEntity):
             (self.velocity[1] * delta_time) / self.game.render_scale
         ))
 
-    def Update_Animation(self, movement, delta_time):
-        self.Set_Action(movement)
-        self.animation_handler.Handle_Animation_Update(delta_time)
+
 
 
     # Movement handling
@@ -210,7 +198,10 @@ class Moving_Entity(PhysicsEntity):
 
     def Set_Description(self):
         pass
-        
+    
+    def Attack_Direction_Handler(self):
+        self.Set_Attack_Direction()
+        self.animation_handler.Attack_Direction_Handler()
 
     def Tile_Map_Collision_Detection(self, tilemap):
         self.pos[0] += self.frame_movement[0]
@@ -321,8 +312,13 @@ class Moving_Entity(PhysicsEntity):
             
     # Damage = Total damage, effect = (effect, effect strength) 
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
+        # Prevent aditional damage if entity is already dead
+        if self.health <= 0:
+            return False
+        
         if self.Check_Blocking_Direction(direction) or self.damage_cooldown > 0:
             return False
+        
         self.game.text_box_handler.Spawn_Damage_Text(self.pos.copy(), effect[0], str(damage))
 
         self.Set_Health(self.health - damage)
@@ -339,8 +335,6 @@ class Moving_Entity(PhysicsEntity):
             self.effects.Set_Effect(effect[0], effect[1])
 
         self.Check_If_Dead()
-
-        
         return True
     
 
@@ -388,8 +382,6 @@ class Moving_Entity(PhysicsEntity):
 
 
 
-
-
     def Set_Attack_Direction(self, attack_direction=None):
         if not attack_direction:
             attack_direction = self.target
@@ -428,12 +420,9 @@ class Moving_Entity(PhysicsEntity):
         self.effects.Push(direction)
         self.Tile_Map_Collision_Detection(tilemap)
 
-    def Attack_Direction_Handler(self):
-        self.Set_Attack_Direction()
-        if self.attack_direction[0] < 0:
-            self.flip[0] = True
-        else:
-            self.flip[0] = False
+    def Trigger_Attack(self):
+        pass
+
 
 
     # Ice mechanic, lower friction and acceleration to simulate ice
@@ -471,27 +460,8 @@ class Moving_Entity(PhysicsEntity):
         self.max_health += value
 
     def Set_Action(self, movement = None):
-        if not movement:
-            return
-        if not movement[0] and not movement[1]:
-            if self.direction_y_holder < 0:
-                self.animation_handler.Set_Animation('standing_still_up')
-            else:
-                self.animation_handler.Set_Animation('standing_still_down')
-            return
+        pass
 
-        self.idle_count = 0
-
-        # Determine animation and flip based on movement
-        if movement[0] > 0:
-            self.flip[0] = False
-        elif movement[0] < 0:
-            self.flip[0] = True
-
-        if movement[1] < 0:
-            self.animation_handler.Set_Animation('running_up')
-        else:
-            self.animation_handler.Set_Animation('running_down')
 
 
     # Render entity
@@ -516,8 +486,8 @@ class Moving_Entity(PhysicsEntity):
 
         self.Render_Damage(surf, offset)
 
-        surf.blit(pygame.transform.flip(self.rendered_image, self.flip[0], False), 
-                (self.pos[0] - offset[0] + self.anim_offset[0], self.pos[1] - offset[1] + self.anim_offset[1]))
+        surf.blit(pygame.transform.flip(self.rendered_image, self.animation_handler.flip[0], False), 
+                (self.pos[0] - offset[0], self.pos[1] - offset[1]))
         return True
     
     def Render_Damage(self, surf, offset):

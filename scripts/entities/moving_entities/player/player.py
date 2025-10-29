@@ -18,11 +18,8 @@ class Player(Moving_Entity):
 
     def __init__(self, game, pos, size, health, strength, max_speed, agility, intelligence, stamina):
         super().__init__(game, 'player', 'player', pos, size, health, strength, max_speed, agility, intelligence, stamina, 'player')
-        
-        self.animation_num_max = 3
-        
+ 
         self.bow_cooldown = 0
-        self.animation_handler.Set_Animation('idle_down')
         self.souls = 500
         self.souls_to_remove = 0
         self.nearby_chests = []
@@ -34,7 +31,6 @@ class Player(Moving_Entity):
         self.game.light_handler.Initialise_Light_Level(self.tile)
         self.player_particle_cooldown = 0
         self.last_shrine_visited = None # used for teleporting and other shrine logic
-        self.attacking = 0
 
         self.weapons = []
         self.weapon_handler = Player_Weapon_Handler(self.game, self)
@@ -68,18 +64,15 @@ class Player(Moving_Entity):
 
         
         self.Update_Light()
-
-        self.View_Direction(offset)
+        self.Caclulate_View_Direction()
 
         self.weapon_handler.Update(delta_time, offset)
 
         self.Update_Souls_To_Remove()
-
         self.Spawn_Particles(delta_time)
 
 
-
-    def View_Direction(self, offset):
+    def Caclulate_View_Direction(self):
         self.view_direction = pygame.math.Vector2(self.target[0] - self.pos[0], self.target[1] - self.pos[1])
         if self.view_direction.length() > 0:
             self.view_direction.normalize_ip()
@@ -122,30 +115,9 @@ class Player(Moving_Entity):
     def Set_Health(self, health):
         self.health = health
 
-    def Attacking(self, weapon, offset=(0, 0)):
-        if not weapon:
-            return
-        
-        if weapon.attacking and not self.attacking:
-            self.Attack_Direction_Handler()
 
-
-            direction_x = 5 * self.attack_direction[0]
-            direction_y = 5 * self.attack_direction[1]
-            self.Set_Frame_movement((direction_x, direction_y))
-            self.Tile_Map_Collision_Detection(self.game.tilemap)
-            self.attacking = weapon.attacking
-
-
-        if self.attacking == 1:
-            direction_x = - 5 * self.attack_direction[0]
-            direction_y = - 5 * self.attack_direction[1]
-            self.Set_Frame_movement((direction_x, direction_y))
-            self.Tile_Map_Collision_Detection(self.game.tilemap)
-
-        if self.attacking:
-            self.attacking -= 1
-
+    def Trigger_Attack_Animation(self):
+        self.animation_handler.Trigger_Attack_Animation()
 
     
     def Set_Inventory_Interaction(self, state):
@@ -196,10 +168,11 @@ class Player(Moving_Entity):
         return True
         
 
-
-
     def Set_Last_Shrine(self, shrine):
         self.last_shrine_visited = shrine
+
+    def Set_Attack_Speed(self, attack_time):
+        self.animation_handler.Set_Attack_Speed(attack_time)
 
     # Spawn player particles at random intervals
     def Spawn_Particles(self, delta_time):
@@ -216,41 +189,21 @@ class Player(Moving_Entity):
         if abs(self.movement_handler.dashing) >= 50:
             return
         
-        if not self.active or not self.Update_Light_Level():
-            return False
-        if not self.animation_handler.entity_image:
-            return False
+        action = self.animation_handler.Get_Action()
+        if 'roll'  in action or 'backstep' in action:
+            super().Render(surf, offset)
+            return
 
-        self.Update_Dark_Surface()
-
-        # Get the larger sprite
-        image = pygame.transform.flip(self.rendered_image, self.flip[0], False)
-        image_rect = image.get_rect(center=(self.pos[0] - offset[0] + self.size[0] // 2,
-                                            self.pos[1] - offset[1] + self.size[1] // 2))
-
-        # Draw it centered around Medusa's logic/collision box
-        surf.blit(image, image_rect.topleft)
-
-        # Draw effects (like damage flash, poison, etc.)
-        self.effects.Render_Effects(surf, offset)
-        self.Render_Damage(surf, offset)
-
-        return True        
-        # self.animation_handler.Set_Entity_Image()
-        
-        # entity_image = self.animation_handler.entity_image.copy()
-
-        # entity_image.set_alpha(min(255, self.active))
-        # self.Render_Damage(surf, offset)
-        # if not "up" in self.animation_handler.animation:
-        #     surf.blit(pygame.transform.flip(entity_image, self.flip[0], False), (self.pos[0] - offset[0] + self.anim_offset[0], self.pos[1] - offset[1] + self.anim_offset[1]))
+        if 'up' in action:
+            self.weapon_handler.Render_Weapons(surf, offset)
+            super().Render(surf, offset)
+            return
+        else:
+            super().Render(surf, offset)
+            self.weapon_handler.Render_Weapons(surf, offset)
+            return
+   
+  
+  
 
 
-        # self.weapon_handler.Render_Weapons(surf, offset)
-        
-
-        # if  "up" in self.animation_handler.animation:
-        #     surf.blit(pygame.transform.flip(entity_image, self.flip[0], False), (self.pos[0] - offset[0] + self.anim_offset[0], self.pos[1] - offset[1] + self.anim_offset[1]))
-
-        # # Render status effects
-        # self.effects.Render_Effects(surf, offset)

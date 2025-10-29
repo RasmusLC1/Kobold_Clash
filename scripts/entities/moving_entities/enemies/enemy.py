@@ -16,9 +16,12 @@ class Enemy(Moving_Entity):
     # Factory method
     intent_manager_class = Intent_Manager  # Default intent manager
 
-    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, sub_category, soul_value, size = (32, 32)):
+    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, sub_category, soul_value, idle_animation, run_animation, attack_animation, size = (32, 32)):
 
         super().__init__(game, str(type), keys.enemy, pos, size, health, strength, max_speed, agility, intelligence, stamina, sub_category)
+        self.animation_handler.Set_Animation_Num_Max(keys.run ,run_animation)
+        self.animation_handler.Set_Animation_Num_Max(keys.idle ,idle_animation)
+        self.animation_handler.Set_Animation_Num_Max(keys.attack, attack_animation)
         self.animation_handler.Set_Animation('running')
         self.random_movement_cooldown = 0
         self.alert_cooldown = 0

@@ -1,5 +1,14 @@
 class Weapons():
 
+# Animations
+    cut = "cut"
+
+    stab = "stab"
+
+    two_hand = "two_hand"
+
+    spin = "spin"
+
 # Magic Attack Assets
     
     fire_particle_attack = "fire_particle_attack"
@@ -57,23 +66,37 @@ class Weapons():
     
     sword = "sword"
 
-    
-    sword_attack_cut = "sword_attack_cut"
+    sword_idle = "sword_idle"
 
-    
-    sword_attack_stab = "sword_attack_stab"
+    sword_running_behind = "sword_running_behind"
 
-    
+    sword_running_down = "sword_running_down"
+
+    sword_cut = "sword_cut"
+
+    sword_stab = "sword_stab"
+
+
     torch = "torch"
 
+    torch_idle = "torch_idle"
+
+    torch_running_down = "torch_running_down"
+
+    torch_running_up = "torch_running_up"
     
-    torch_attack_cut = "torch_attack_cut"
+    torch_cut = "torch_cut"
 
     
     spear = "spear"
 
+    spear_idle = "spear_idle"
+
+    spear_running_behind = "spear_running_behind"
+
+    spear_running_down = "spear_running_down"
     
-    spear_attack_stab = "spear_attack_stab"
+    spear_stab = "spear_stab"
 
 
     bow = "bow"
@@ -96,17 +119,22 @@ class Weapons():
     
     halberd = "halberd"
 
-    
-    halberd_attack_stab = "halberd_attack_stab"
+    halberd_idle = "halberd_idle"
 
+    halberd_running_behind = "halberd_running_behind"
+
+    halberd_running_down = "halberd_running_down"
     
-    halberd_attack_cut = "halberd_attack_cut"
+    halberd_stab = "halberd_stab"
+    
+    halberd_cut = "halberd_cut"
+
 
     
     battle_axe = "battle_axe"
 
     
-    battle_axe_attack_cut = "battle_axe_attack_cut"
+    battle_axe_cut = "battle_axe_cut"
 
     
     hammer = "hammer"
@@ -177,11 +205,15 @@ class Weapons():
     range = "range"
 
     strength = "strength"
+
+
     
     slash_cut_effect = "slash_cut_effect"
 
     
     slash_stab_effect = "slash_stab_effect"
+
+    slash_two_hand_effect = "slash_two_hand_effect"
 
     
     slash_spin_effect = "slash_spin_effect"
@@ -192,11 +224,14 @@ class Weapons():
     
     slash_charge_effect = "slash_charge_effect"
 
+
     
     blunt_cut_effect = "blunt_cut_effect"
 
     
     blunt_stab_effect = "blunt_stab_effect"
+
+    blunt_two_hand_effect = "blunt_two_hand_effect"
 
     
     blunt_spin_effect = "blunt_spin_effect"
@@ -207,11 +242,15 @@ class Weapons():
     
     blunt_charge_effect = "blunt_charge_effect"
 
+
+
     
     electric_cut_effect = "electric_cut_effect"
 
     
     electric_stab_effect = "electric_stab_effect"
+
+    electric_two_hand_effect = "electric_two_hand_effect"
 
     
     electric_spin_effect = "electric_spin_effect"
@@ -228,6 +267,8 @@ class Weapons():
     
     fire_stab_effect = "fire_stab_effect"
 
+    fire_two_hand_effect = "fire_two_hand_effect"
+
     
     fire_spin_effect = "fire_spin_effect"
 
@@ -237,11 +278,16 @@ class Weapons():
     
     fire_charge_effect = "fire_charge_effect"
 
+
+
+
     
     frozen_cut_effect = "frozen_cut_effect"
 
     
     frozen_stab_effect = "frozen_stab_effect"
+
+    frozen_two_hand_effect = "frozen_two_hand_effect"
 
     
     frozen_spin_effect = "frozen_spin_effect"
@@ -252,11 +298,16 @@ class Weapons():
     
     frozen_charge_effect = "frozen_charge_effect"
 
+
+
+
     
     poison_cut_effect = "poison_cut_effect"
 
     
     poison_stab_effect = "poison_stab_effect"
+
+    poison_two_hand_effect = "poison_two_hand_effect"
 
     
     poison_spin_effect = "poison_spin_effect"
@@ -267,11 +318,16 @@ class Weapons():
     
     poison_charge_effect = "poison_charge_effect"
 
+
+
+
     
     regen_cut_effect = "regen_cut_effect"
 
     
     regen_stab_effect = "regen_stab_effect"
+
+    regen_two_hand_effect = "regen_two_hand_effect"
 
     
     regen_spin_effect = "regen_spin_effect"
@@ -282,11 +338,16 @@ class Weapons():
     
     regen_charge_effect = "regen_charge_effect"
 
+
+
+
     
     vampiric_cut_effect = "vampiric_cut_effect"
 
     
     vampiric_stab_effect = "vampiric_stab_effect"
+
+    vampiric_two_hand_effect = "vampiric_two_hand_effect"
 
     
     vampiric_spin_effect = "vampiric_spin_effect"

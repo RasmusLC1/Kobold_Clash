@@ -82,11 +82,11 @@ Upgrade weapons
     Weapons have health, forcing players to either repair them with ingots at weapon shrines or to get new weapons 
     Weapons have a pool of damage stats, so for instance a sword might have a dictionary with fire, frozen, sharpness and the damage value of each effect
     Weapons can be upgraded with gems
+    weapons have their animations tied to the player sprite
     # Implement better animations, bright arcs for where the damage area is
     # Torch, emits light and be be used to set enemies on fire, relatively low damage
     # Sword, best damage, little utility
     # Spear, can be thrown
-    # Shield, can block damage, can be used to rocket jump with bomb
     # Bow, can press button, different arrows that can do certain things
     # Axe, can break wood doors
     # Hatchet, small axe, faster than axe
@@ -96,6 +96,8 @@ Upgrade weapons
     # Crossbow, Same as bow, but takes longer to load, but can be preloaded
     # Bomb, one time use, splash damage, can break enviorement, knockback from blast
     # magic Staff, improved runes but poor melee damage, different staffs for different lores of magic, costs souls per cast. Special attack for each lores
+    # Shield, can block damage, can be used to rocket jump with bomb
+    
 
 # Items
     Items are held in inventory, not worth a lot of money, but helps navigate dungeon
@@ -367,6 +369,32 @@ Upgrade weapons
     - # Portal Shrine, each floor has a portal shrine that can be activated using scaling souls cost. Will transport the player to the next dungeon layer. Player needs to hunt enemies or sacrifice loot at 
 
 
+### Loot mechanic
+    - 3 attributes that affect the loot, depth (1 to 7), clatter (0 to 5) and luck (0 to 10), depth being the most important
+    - 5 tiers of items with the following basic drop rates
+        - Common: 400
+        - uncommon: 300
+        - rare: 200
+        - Epic: 80
+        - Legendary 20
+    - Formula something like this:
+        mult = 1
+            + Depth*(tier_norm*1.6 - 0.20)
+            + luck*(tier_norm*1.0)
+            - Clatter*(tier_norm*0.8 - 0.10)
+    - Design loottables for more powerful items to have higher rarities
+    - Basic items that are higher rarity like gems or gold will have a higher amount to represent higher quality
+    - Weapons will have buffs applied to them randomly according to their rarity, common will have none.
+        - Generate file with random names based on the rarity of the weapon
+    - Status effects will also have a loot table, where higher quality status effects will be smaller amount at higher rarities and commons will have higher amounts
+    - Runes will also be buffed depending on rarity
+    - When opening loot container or shrine, 3 options are presented to the player, optional if positive and forced if negative
+    - If a loot container is smashed (like vase) a random item is provided based on the rarity formula
+    - Different kinds of loot containers have different base levels, for example an epic chest will only spawn epic or above loot, meaning the tier distribution becomes Epic 80 and legendary 20
+        - Loot containers get better the deeper in the dungeon you go, each depth layer allows spawning of new types of container, depth 1 only common and uncommon, 2 adds rares, 3 adds epic and 4 adds legendary
+    - Different loot tables based on loot containers, loot containers dictated by dungeon and room type
+    - When spawning loot, check the current player attributes and inventory and increase spawn chance of synergy items for better player experience
+
 # Dugeon types
 ## Ancient Tomb - COMPLETE
 ### Description
@@ -449,8 +477,8 @@ Upgrade weapons
     - Prism pedestal, activate to unlock a random room (Remove blocking wall)
     - Harmonic crystal, activate to generate souls, but generate clatter
     - Amplifying node, runes are more effective when in range
-    
-    
+
+
 
 ## Mycelium Depths enemies
 ### Description
