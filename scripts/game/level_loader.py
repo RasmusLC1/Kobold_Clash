@@ -20,6 +20,7 @@ class Level_Loader():
         self.game = game
         self.initialised = False
         self.game.dungeon_type = None
+        self.game.depth = 0
 
     def load_level_From_Save(self, map_id):
         # Initialise the engine again upon load to prevent memory leaks
@@ -30,10 +31,11 @@ class Level_Loader():
 
 
     def Initialise_Level(self):
+        self.game.depth += 1
         self.game.item_handler.Initialise()
         self.game.enemy_handler.Initialise()
         self.game.rune_handler.Initialise_Runes()
-        self.game.decoration_handler.Initialise(3)
+        self.game.decoration_handler.Initialise()
         self.game.trap_handler.Initialise()
 
     def Load_Level_New_Map(self, map_id, clear_inventory = True):

@@ -28,7 +28,7 @@ class Decoration_Handler():
         self.decorations.clear()
         self.saved_data.clear()
 
-    def Initialise(self, depth=0):
+    def Initialise(self):
         self.decorations, self.item_sacrifice, self.spawn_methods = self.decoration_spawner.Initialise()
 
 

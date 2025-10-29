@@ -13,6 +13,7 @@ class Loot_Container(Decoration):
         self.text_animation = 0
         self.loot_weights = {}
         self.Set_Loot_Types()
+        self.rarity_value = self.Calculate_Rarity_Value()
         self.sub_category = keys.loot_container
 
     def Save_Data(self):
@@ -48,6 +49,10 @@ class Loot_Container(Decoration):
         rand_pos_x = self.pos[0] + random.randint(-100, 100)/10
         rand_pos_y = self.pos[1] + random.randint(-100, 100)/10
         return (rand_pos_x, rand_pos_y)
+
+    def Calculate_Rarity_Value(self):
+        base_value = random.randint(0, 5)
+        dungeon_floor_value = self.game.
 
     def Spawn_Loot(self, loot_type, pos):
         self.game.item_handler.loot_handler.Spawn_Loot_Type(loot_type, pos)

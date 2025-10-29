@@ -1,4 +1,16 @@
 class Items():
+
+# Rarities
+    common = "common"
+
+    uncommon = "uncommon"
+
+    rare = "rare"
+
+    epic = "epic"
+
+    legendary = "legendary"
+
 # Potion Assets
     
     full = "full"

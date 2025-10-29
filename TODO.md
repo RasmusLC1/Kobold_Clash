@@ -382,6 +382,7 @@ Upgrade weapons
             + Depth*(tier_norm*1.6 - 0.20)
             + luck*(tier_norm*1.0)
             - Clatter*(tier_norm*0.8 - 0.10)
+            
     - Design loottables for more powerful items to have higher rarities
     - Basic items that are higher rarity like gems or gold will have a higher amount to represent higher quality
     - Weapons will have buffs applied to them randomly according to their rarity, common will have none.

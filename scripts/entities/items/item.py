@@ -5,10 +5,11 @@ from scripts.entities.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 
 class Item(PhysicsEntity):
-    def __init__(self, game, type, sub_category, pos, size, amount = 1, add_to_tile = True, value = 100):
+    def __init__(self, game, type, sub_category, pos, size, amount = 1, add_to_tile = True, value = 100, rarity = keys.common):
         super().__init__(game, type, keys.item, pos, size, sub_category)
         self.game = game
         self.sub_type = type
+        self.rarity = rarity # rarity used for loot defaults to common
         self.used = False
         self.picked_up = False
         self.clicked = False # Used for if the item is active

@@ -38,6 +38,21 @@ class Potion_Handler(Loot_Types_Handler):
             keys.arcane_hunger: 5,
         }
 
+        self.rarity = {
+            keys.healing: keys.common,
+            keys.regen: keys.rare,
+            keys.increase_souls: keys.uncommon,
+            keys.speed: keys.uncommon,
+            keys.increase_strength: keys.common,
+            keys.invisibility: keys.epic,
+            keys.silence: keys.rare,
+            keys.fire_resistance: keys.common,
+            keys.frozen_resistance: keys.common,
+            keys.poison_resistance: keys.common,
+            keys.vampiric: keys.uncommon,
+            keys.arcane_hunger: keys.uncommon,
+        }
+
         self.weights = {
             keys.healing: 0.1,
             keys.regen: 0.1,

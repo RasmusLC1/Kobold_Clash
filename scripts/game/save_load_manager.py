@@ -29,6 +29,13 @@ class Save_Load_Manager():
             entity_data = data[name]
             entity.Load_Data(entity_data)
 
+        self.Save_Game_Data(entity_data['game'])
+
+    
+    def Load_Game_Data(self, data):
+        self.game.depth = data['depth']
+
+
 
     def Clear_Data_File(self, name):
         file_name = self.save_folder+"/"+name+self.file_extension
@@ -66,13 +73,13 @@ class Save_Load_Manager():
         self.game.item_handler.Save_Item_Data()
         self.game.rune_handler.Save_Rune_Data()
         self.game.trap_handler.Save_Trap_Data()
-        self.Inventory_Save_Data()
         self.game.decoration_handler.Save_Decoration_Data()
-
-    
-
-    def Inventory_Save_Data(self):
         self.game.inventory.Save_Inventory_Data()
+        self.Save_Game_Data(self.saved_data['game'])
+        
+    # Save game values such as depth
+    def Save_Game_Data(self, save_data):
+        save_data['depth'] = self.game.depth
 
     def Save_Data_Structure(self):
         self.Save_Data()
