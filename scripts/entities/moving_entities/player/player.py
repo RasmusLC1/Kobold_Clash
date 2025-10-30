@@ -31,6 +31,7 @@ class Player(Moving_Entity):
         self.game.light_handler.Initialise_Light_Level(self.tile)
         self.player_particle_cooldown = 0
         self.last_shrine_visited = None # used for teleporting and other shrine logic
+        self.luck = 1 # player luck, can be upgraded
 
         self.weapons = []
         self.weapon_handler = Player_Weapon_Handler(self.game, self)
@@ -153,6 +154,9 @@ class Player(Moving_Entity):
     def Find_Nearby_Chests(self, range):
         self.nearby_chests = self.game.chest_handler.Find_Nearby_Chests(self.pos, range)
 
+    # Set luck, called by luck effect, minimum value of 1
+    def Update_Luck(self, amount):
+        self.luck = max(1, amount)
 
     def Check_If_Dead(self):
         # Check if the player can be revived

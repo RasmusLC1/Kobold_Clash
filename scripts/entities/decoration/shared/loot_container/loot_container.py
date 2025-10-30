@@ -50,12 +50,31 @@ class Loot_Container(Decoration):
         rand_pos_y = self.pos[1] + random.randint(-100, 100)/10
         return (rand_pos_x, rand_pos_y)
 
+
     def Calculate_Rarity_Value(self):
-        base_value = random.randint(0, 5)
-        dungeon_floor_value = self.game.
+        base = random.uniform(0.8, 1.2)
+        depth_factor = self.game.depth * 1.5
+        luck_factor = self.game.player.luck * 2
+        clatter_factor = self.game.clatter * 2.5
+
+        rarity_value = (base + depth_factor + luck_factor + clatter_factor)
+
+        normalised_rarity_value = self.Normalise_Rarity(rarity_value)
+        return max(0, normalised_rarity_value)
+
+    def Normalise_Rarity(self, rarity_value):
+        # --- Dynamic normalization ---
+        max_depth = self.game.max_depth  # define this once in your game setup
+        min_value = 0.8 + 1.5 * 1  # minimum possible depth=1, luck=0, clatter=0
+        max_value = 1.2 + 1.5 * max_depth + 2 * 10 + 2.5 * 5  # full caps
+
+        normalised_rarity_value = (rarity_value - min_value) / (max_value - min_value)
+        normalised_rarity_value = max(0, min(1, normalised_rarity_value))  # clamp to 0–1 just in case
+        return normalised_rarity_value
 
     def Spawn_Loot(self, loot_type, pos):
-        self.game.item_handler.loot_handler.Spawn_Loot_Type(loot_type, pos)
+        rarity_val = self.Calculate_Rarity_Value()
+        self.game.item_handler.loot_handler.Spawn_Loot_Type(loot_type, pos, rarity_value = rarity_val)
 
     def Set_Loot_Types(self):
         pass

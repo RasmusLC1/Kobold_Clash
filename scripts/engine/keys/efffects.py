@@ -37,6 +37,8 @@ class Effects():
 
     magnet = "magnet"
 
+    luck = "luck"
+
     power = "power"
 
     silence = "silence"

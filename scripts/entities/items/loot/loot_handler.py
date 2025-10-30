@@ -123,7 +123,7 @@ class Loot_Handler():
         return self.key_loot_handler.Loot_Spawner(pos)
 
 
-    def Spawn_Loot_Type(self, loot_type, pos, data = None, type = None, amount = None):
+    def Spawn_Loot_Type(self, loot_type, pos, data = None, type = None, rarity_value = 1):
         loot_handler = self.loot_types_dic.get(loot_type)
         if not loot_handler:
             return None
@@ -131,7 +131,7 @@ class Loot_Handler():
         if data:
             type = data[keys.type]
 
-        loot = loot_handler.Loot_Spawner(pos, type, amount)
+        loot = loot_handler.Loot_Spawner(pos, type, rarity_value)
 
         return self.Load_Data(loot, data)
     
