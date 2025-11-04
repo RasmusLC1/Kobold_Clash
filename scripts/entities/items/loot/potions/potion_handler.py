@@ -106,14 +106,13 @@ class Potion_Handler(Loot_Types_Handler):
         return weights
     
 
-    def Loot_Spawner(self, pos, type, amount = None):
+    def Loot_Spawner(self, pos, type, rarity_value, amount = None):
         if not type:   
             weights_dict = self.Update_Potion_Weights()
             
             # Extract weight values in the same order as potions list
             weight_values = [weights_dict[potion] for potion in self.potions]
             type = random.choices(self.potions, weight_values, k=1)[0]
-
         if not amount:
             amount = random.randint(1, 3)
 

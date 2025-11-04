@@ -55,7 +55,7 @@ class Loot_Container(Decoration):
         base = random.uniform(0.8, 1.2)
         depth_factor = self.game.depth * 1.5
         luck_factor = self.game.player.luck * 2
-        clatter_factor = self.game.clatter * 2.5
+        clatter_factor = self.game.clatter.Get_Awakening_Level() * 2.5
 
         rarity_value = (base + depth_factor + luck_factor + clatter_factor)
 
@@ -64,7 +64,7 @@ class Loot_Container(Decoration):
 
     def Normalise_Rarity(self, rarity_value):
         # --- Dynamic normalization ---
-        max_depth = self.game.max_depth  # define this once in your game setup
+        max_depth = self.game.depth  # define this once in your game setup
         min_value = 0.8 + 1.5 * 1  # minimum possible depth=1, luck=0, clatter=0
         max_value = 1.2 + 1.5 * max_depth + 2 * 10 + 2.5 * 5  # full caps
 

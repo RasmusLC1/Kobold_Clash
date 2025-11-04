@@ -41,7 +41,7 @@ class Decoration_Initialiser():
         self.Spawn_Lever()
 
     def Spawn_Chests(self):
-        amount = random.randint(5, 10)
+        amount = random.randint(50, 100)
         self.Find_Floor_Tiles(keys.chest, amount)
 
     def Spawn_Vase(self):

@@ -74,7 +74,7 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
         self.game.item_handler.Add_Item(loot)
         return loot
     
-    def Loot_Spawner(self, pos, type = None, amount = None):
+    def Loot_Spawner(self, pos, rarity_value, type = None, amount = None):
         if not type:
             type = random.choice(list(self.loot_map.keys()))
 

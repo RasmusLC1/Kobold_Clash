@@ -18,7 +18,7 @@ class Bomb_Loot_Handler(Loot_Types_Handler):
             keys.vampiric_bomb,
         ]
 
-    def Loot_Spawner(self, pos, type = None, amount = None):
+    def Loot_Spawner(self, pos, rarity_value, type = None, amount = None):
         if not type:
             type = random.choice(self.types)
         bomb = Bomb(self.game, type, pos)

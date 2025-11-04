@@ -33,18 +33,19 @@ class Potion(Loot):
     def Set_Sprite(self):
         self.effect = self.type.replace('_potion', '')
         self.Update_Sub_Type()
+        
         super().Set_Sprite()
 
     def Increase_Strength(self):
         self.strength += 1
     
     def Update_Sub_Type(self):
-        if self.amount == 1:
-            self.sub_type = self.effect + '_low'
+        if self.amount <= 1:
+            self.sub_type = self.type + '_low'
         elif self.amount == 2:
-            self.sub_type = self.effect + '_half'
-        elif self.amount == 3:
-            self.sub_type = self.effect + '_full'
+            self.sub_type = self.type + '_half'
+        elif self.amount >= 3:
+            self.sub_type = self.type + '_full'
 
 
     def Activate(self):

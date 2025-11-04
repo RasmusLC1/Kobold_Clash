@@ -31,6 +31,9 @@ class Clatter():
     def Increase_Awakening(self):
         self.awakening.Set_Awakening_Level(self.awakening.awakening_level + 1)
 
+    def Get_Awakening_Level(self):
+        return self.awakening.awakening_level
+
     def Calculate_Silence_Modifier(self, clatter_range):
         if self.game.player.effects.silence.effect:
             clatter_range = max(1, clatter_range - self.game.player.effects.silence.effect * 100)
