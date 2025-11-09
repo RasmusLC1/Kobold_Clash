@@ -8,7 +8,7 @@ from scripts.engine.keys.keys import keys
 
 class Rune(Item):
     def __init__(self, game, type, pos, power, soul_cost):
-        super().__init__(game,  type, keys.rune, pos, (24, 24), 1, False)
+        super().__init__(game,  type, keys.rune, pos, (16, 16), 1, False)
         self.player = self.game.player
         self.menu_pos = pos
         self.max_amount = 1

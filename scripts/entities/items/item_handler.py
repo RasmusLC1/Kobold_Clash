@@ -202,3 +202,7 @@ class Item_Handler():
                 return
             if item.inventory_index == index:
                 return item
+            
+    
+    def Spawn_Item_By_Type(self, category, pos, type = None, rarity_value = 0):
+        self.loot_handler.Spawn_Loot_Type(category, pos, type = type, rarity_value = rarity_value)

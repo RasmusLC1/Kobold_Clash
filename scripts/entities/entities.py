@@ -176,12 +176,12 @@ class PhysicsEntity:
 
     def Update_Dark_Surface(self):
         if not self.render_needs_update:
-            return
+            return False
         if not self.entity_image:
-            return
+            return False
         alpha_value = max(0, min(255, self.active))  # Adjust the factor as needed
         if not alpha_value:
-            return
+            return False
         try:
             # Set image
             self.rendered_image = self.entity_image.copy()
@@ -194,6 +194,7 @@ class PhysicsEntity:
             # Blit the chest layer on top the dark layer
             self.rendered_image.blit(dark_surface_head, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
             self.render_needs_update = False
+            return True
         except Exception as e:
             print("Error in Updating dark surface entity: ", e, dark_surface_head, self.light_level, alpha_value, self.type)
 

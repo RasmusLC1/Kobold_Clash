@@ -73,8 +73,8 @@ class Loot_Container(Decoration):
         return normalised_rarity_value
 
     def Spawn_Loot(self, loot_type, pos):
-        rarity_val = self.Calculate_Rarity_Value()
-        self.game.item_handler.loot_handler.Spawn_Loot_Type(loot_type, pos, rarity_value = rarity_val)
+        rarity_value = self.Calculate_Rarity_Value()
+        self.game.item_handler.Spawn_Item_By_Type(loot_type, pos, rarity_value = rarity_value)
 
     def Set_Loot_Types(self):
         pass

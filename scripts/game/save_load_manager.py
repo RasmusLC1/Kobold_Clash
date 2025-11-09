@@ -75,7 +75,7 @@ class Save_Load_Manager():
         self.game.trap_handler.Save_Trap_Data()
         self.game.decoration_handler.Save_Decoration_Data()
         self.game.inventory.Save_Inventory_Data()
-        self.Save_Game_Data(self.saved_data['game'])
+        # self.Save_Game_Data(self.saved_data['game'])
         
     # Save game values such as depth
     def Save_Game_Data(self, save_data):

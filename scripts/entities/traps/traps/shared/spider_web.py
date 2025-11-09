@@ -65,7 +65,7 @@ class Spider_Web(Trap):
         return False
 
     # # TODO: Logic for spider shooting web
-    def Shoot(self):
+    def Shoot(self, delta_time = 0):
         if not self.active:
             return
         direction_x = self.direction[0] * self.speed

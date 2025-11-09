@@ -25,7 +25,7 @@ class Potion_Table(Loot_Container):
             if loot_type == keys.potion:
                 self.Spawn_Loot(loot_type, pos)
             else:
-                self.game.item_handler.loot_handler.passive_loot_handler.Loot_Spawner(pos, keys.recipe_scroll)
+                self.game.item_handler.Spawn_Item_By_Type(keys.passive, pos, keys.recipe_scroll)
 
     def Get_Pos(self):
         rand_pos_x = self.pos[0] + random.randint(-100, 100)/5

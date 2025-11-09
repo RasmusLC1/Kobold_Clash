@@ -30,8 +30,10 @@ class Faded_Hourglass(Radius_Effect_Loot):
         if self.slowdown_triggered <= 0:
             return
         
-        for enemy in self.nearby_entities:
-            enemy.Remove_Effect(keys.slow, self.slowdown_amount)
+        for entity in self.nearby_entities:
+            if entity.category != keys.enemy:
+                continue
+            entity.Remove_Effect(keys.slow, self.slowdown_amount)
 
         self.nearby_entities = None
 

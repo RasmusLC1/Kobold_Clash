@@ -10,10 +10,11 @@ from scripts.engine.keys.keys import keys
 
 class Bomb(Projectile):
     def __init__(self, game, pos, shoot_distance):
-        super().__init__(game, pos, keys.fire_bomb, 1, 2, 2, 40, keys.bomb, keys.blunt, shoot_distance, keys.cut, (20, 20), False)
+        super().__init__(game, pos, keys.fire_bomb, 1, 2, 2, 40, keys.bomb, keys.blunt, shoot_distance, keys.cut, (16, 16), False)
         self.target = None
         self.distance_to_target = 99999
         self.disabled = True
+        self.inventory_size = (16, 16)
 
 
         self.explosions = {
@@ -36,7 +37,7 @@ class Bomb(Projectile):
             return
         return super().Update(offset)
 
-    def Shoot(self):
+    def Shoot(self, delta_time = 0):
         if not self.shoot_speed:
             self.Initialise_Shooting(self.speed)
         self.Calculate_Distance_To_Target()
@@ -45,7 +46,7 @@ class Bomb(Projectile):
             self.Reset_Shot()
             return
 
-        super().Shoot()
+        super().Shoot(delta_time)
 
 
     def Calculate_Distance_To_Target(self):

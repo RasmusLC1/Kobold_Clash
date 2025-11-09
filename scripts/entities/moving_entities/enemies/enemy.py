@@ -267,7 +267,7 @@ class Enemy(Moving_Entity):
         if loot_type == keys.nothing:
             return
         
-        self.game.item_handler.loot_handler.Spawn_Loot_Type(loot_type, self.pos)
+        self.game.item_handler.Spawn_Item_By_Type(loot_type, self.pos)
     
 
     def Set_Description(self):

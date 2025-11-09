@@ -13,7 +13,7 @@ from scripts.engine.keys.keys import keys
 import inspect
 
 class Weapon(Item):
-    def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_types = ['cut'], size = (32, 32), add_to_tile = True):
+    def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_types = ['cut'], size = (16, 16), add_to_tile = True):
         super().__init__(game, type, keys.weapon, pos, size, 1, add_to_tile)
         self.speed = max(1, 10 - speed) # Speed of the weapon
         self.max_animation = 5

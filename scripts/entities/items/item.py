@@ -5,7 +5,7 @@ from scripts.entities.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 
 class Item(PhysicsEntity):
-    def __init__(self, game, type, sub_category, pos, size, amount = 1, add_to_tile = True, value = 100, rarity = keys.common):
+    def __init__(self, game, type, sub_category, pos, size = (16, 16), amount = 1, add_to_tile = True, value = 100, rarity = keys.common):
         super().__init__(game, type, keys.item, pos, size, sub_category)
         self.game = game
         self.sub_type = type
@@ -218,6 +218,9 @@ class Item(PhysicsEntity):
     # Render legal position
     def Render_Inventory(self, surf, pos, size):
         try:
+            if not self.entity_image:
+                self.Set_Entity_Image()
+
             item_image = pygame.transform.scale(self.entity_image, size)
             surf.blit(item_image, pos)
         except Exception as e:
@@ -234,6 +237,7 @@ class Item(PhysicsEntity):
         # Render the item
         if not self.rendered_image:
             self.Set_Sprite()
+
             if not self.rendered_image:
                 
                 self.broken_rendering_counter += 1
@@ -242,13 +246,19 @@ class Item(PhysicsEntity):
                 return
         surf.blit(self.rendered_image, (self.pos[0] - offset[0], self.pos[1] - offset[1]))
 
+    def Update_Dark_Surface(self):
+        if not super().Update_Dark_Surface():
+            return False
+        
+        self.rendered_image =  pygame.transform.scale(self.rendered_image, self.floor_size)
+        return True
+
 
     # Render item with fadeout if it's in an illegal position
     def Render_Out_Of_Bounds(self, player_pos, mouse_pos, surf, offset = (0,0)):
         # Calculate distance between player and mouse
 
         distance = max(20, 100 - self.Distance(player_pos, mouse_pos))
-        
         entity_image =  pygame.transform.scale(self.entity_image.copy(), self.floor_size)
         
         entity_image.set_alpha(distance)
@@ -259,6 +269,7 @@ class Item(PhysicsEntity):
     
     # Render item with fadeout if it's in an illegal position
     def Render_In_Bounds(self, player_pos, mouse_pos, surf, offset = (0,0)):
+
         entity_image =  pygame.transform.scale(self.entity_image.copy(), self.floor_size)
         
         # Render on Mouse position as the item position is not being updated
