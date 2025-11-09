@@ -106,7 +106,7 @@ class Potion_Handler(Loot_Types_Handler):
         return weights
     
 
-    def Loot_Spawner(self, pos, type, rarity_value, amount = None):
+    def Loot_Spawner(self, pos, type = None, rarity_value = 0, amount = None):
         if not type:   
             weights_dict = self.Update_Potion_Weights()
             

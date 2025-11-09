@@ -132,8 +132,11 @@ class Item(PhysicsEntity):
 
     # Setting the initial sprite type from assets, only called during initial setup
     def Set_Sprite(self):
-        self.sprite = self.game.assets[self.sub_type]
-        self.Set_Entity_Image()
+        try:
+            self.sprite = self.game.assets[self.sub_type]
+            self.Set_Entity_Image()
+        except Exception as e:
+            print("SETTING ITEM SUBTYPE FAILED", vars(self))
 
     # Setting the item image and scaling it
     def Set_Entity_Image(self):
