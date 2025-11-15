@@ -5,8 +5,8 @@ from scripts.engine.keys.keys import keys
 
 class Chest(Loot_Container):
     def __init__(self, game, pos) -> None:
-        super().__init__(game, keys.chest, pos, (32, 32), True, 20, keys.chest_break, 500)
         self.version = 1
+        super().__init__(game, keys.chest, pos, (32, 32), True, 20, keys.chest_break, 500)
 
     def Save_Data(self):
         super().Save_Data()

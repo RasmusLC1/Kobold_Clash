@@ -6,9 +6,12 @@ from scripts.engine.keys.keys import keys
 class Loot_Container(Decoration):
     def __init__(self, game, type, pos, size = (32, 32), destructable = False, health = 100, destruction_sound = None, destruction_clatter = 500) -> None:
         super().__init__(game, type, pos, size, destructable, health, destruction_sound, destruction_clatter)
+        self.version = 1
         self.loot_type = 0
         self.empty = False
         self.loot_amount = 0
+        self.Set_Min_Rarity()
+        self.Set_Max_Rarity()
         self.text_cooldown = 0
         self.text_animation = 0
         self.loot_weights = {}
@@ -52,25 +55,70 @@ class Loot_Container(Decoration):
 
 
     def Calculate_Rarity_Value(self):
-        base = random.uniform(0.8, 1.2)
-        depth_factor = self.game.depth * 1.5
-        luck_factor = self.game.player.luck * 2
-        clatter_factor = self.game.clatter.Get_Awakening_Level() * 2.5
+        # Depth 0–7 → 0–30
+        depth_factor = (self.game.depth / 7) * 30
 
-        rarity_value = (base + depth_factor + luck_factor + clatter_factor)
+        # Luck 0–10 → 0–30
+        luck_factor = (self.game.player.luck / 10) * 30
 
-        normalised_rarity_value = self.Normalise_Rarity(rarity_value)
-        return max(0, normalised_rarity_value)
+        # Clatter 0–10 → 0–30
+        clatter_factor = (self.game.clatter.Get_Awakening_Level() / 10) * 30
 
-    def Normalise_Rarity(self, rarity_value):
-        # --- Dynamic normalization ---
-        max_depth = self.game.depth  # define this once in your game setup
-        min_value = 0.8 + 1.5 * 1  # minimum possible depth=1, luck=0, clatter=0
-        max_value = 1.2 + 1.5 * max_depth + 2 * 10 + 2.5 * 5  # full caps
+        # Base randomness (small noise): 0–20
+        noise = random.uniform(0, 20)
 
-        normalised_rarity_value = (rarity_value - min_value) / (max_value - min_value)
-        normalised_rarity_value = max(0, min(1, normalised_rarity_value))  # clamp to 0–1 just in case
-        return normalised_rarity_value
+        # Swing randomness (rare bumps/dips): -10 to +10
+        swing = random.uniform(-10, 10)
+
+        total = depth_factor + luck_factor + clatter_factor + noise + swing
+        return self.Clamp_Rarity(total)
+
+
+    # Clamp the rarity value to prevent legendaries from dropping in vases
+    def Clamp_Rarity(self, rarity_value):
+        return max(self.min_rarity_value, min(self.max_rarity_value, rarity_value))
+
+
+
+    def Set_Min_Rarity(self):
+        min_rarity_values = {
+            keys.chest : 5,
+            keys.plinth : 20,
+            keys.potion_table : 30,
+            keys.weapon_rack : 5,
+            keys.bookshelf : 20,
+            keys.effigy_tomb : 40,
+            keys.vase : 1
+        }
+
+        rarity = min_rarity_values.get(self.type)
+
+        if not rarity:
+            rarity = 1
+            print("LOOT TYPE NOT FOUND", self.type)
+
+        self.min_rarity_value = rarity * self.version
+
+
+    def Set_Max_Rarity(self):
+        max_rarity_values = {
+            keys.chest : 20,
+            keys.plinth : 60, # High end runes are available in shrines
+            keys.potion_table : 80,
+            keys.weapon_rack : 20,
+            keys.bookshelf : 80,
+            keys.effigy_tomb : 90,
+            keys.vase : 5
+        }
+
+        rarity = max_rarity_values.get(self.type)
+
+        if not rarity:
+            rarity = 1
+            print("LOOT TYPE NOT FOUND", self.type)
+
+        self.max_rarity_value = rarity * self.version
+
 
     def Spawn_Loot(self, loot_type, pos):
         rarity_value = self.Calculate_Rarity_Value()
