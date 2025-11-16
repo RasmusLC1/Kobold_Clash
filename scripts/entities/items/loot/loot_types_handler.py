@@ -12,7 +12,8 @@ class Loot_Types_Handler():
 
     def Loot_Spawner(self, pos, type = None, rarity_value = 0, amount = None):
         if not type:
-            type = random.choice(list(self.loot_map.keys()))
+            type = self.Get_Loot_Based_On_Rarity(rarity_value)
+            amount, type = random.choice(list(self.loot_map.keys()))
         loot_class = self.loot_map.get(type)
         if not loot_class:
             return None
@@ -21,3 +22,25 @@ class Loot_Types_Handler():
         loot = loot_class(self.game, pos)
 
         return loot
+
+
+    def Get_Loot_Based_On_Rarity(self, rarity_value):
+        valid_items  = self.Get_Valid_Items(rarity_value)
+
+        if not valid_items:
+            return None, 0
+
+        weights = self.Set_Weights(valid_items)
+
+        # Weighted random choice
+        chosen_loot, chosen_cost = random.choices(valid_items, weights=weights, k=1)[0]
+
+        amount = rarity_value // chosen_cost
+
+        return chosen_loot, amount
+    
+    def Get_Valid_Items(self, rarity_value):
+        return None
+    
+    def Set_Weights(self, valid_items):
+        return None

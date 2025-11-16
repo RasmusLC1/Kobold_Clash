@@ -77,9 +77,9 @@ class Save_Load_Manager():
         self.game.inventory.Save_Inventory_Data()
         # self.Save_Game_Data(self.saved_data['game'])
         
-    # Save game values such as depth
-    def Save_Game_Data(self, save_data):
-        save_data['depth'] = self.game.depth
+    # # Save game values such as depth
+    # def Save_Game_Data(self, save_data):
+    #     save_data['depth'] = self.game.depth
 
     def Save_Data_Structure(self):
         self.Save_Data()

@@ -90,3 +90,60 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
         loot = loot_class(pos, amount)
 
         return loot
+
+
+
+    def Get_Loot_Based_On_Rarity(self, rarity_value):
+        valid_items  = self.Get_Valid_Items(rarity_value)
+
+        if not valid_items:
+            return None, 0
+
+        weights = self.Set_Weights(valid_items)
+
+        # Weighted random choice
+        chosen_loot, chosen_cost = random.choices(valid_items, weights=weights, k=1)[0]
+
+        amount = rarity_value // chosen_cost
+
+        return chosen_loot, amount
+    
+    def Get_Valid_Items(self, rarity_value):
+        loot_types_cost = {
+            keys.gold : 1,
+            keys.fire : 5,
+            keys.frozen : 5,
+            keys.electric : 5,
+            keys.poison : 5,
+            keys.vampiric : 10,
+            keys.arcane_hunger : 10,
+            keys.blunt : 5,
+            keys.slash : 5,
+            keys.halo : 15,
+            keys.power : 10,
+            keys.range : 10,
+            keys.speed : 5,
+            keys.increase_strength : 5,
+            keys.terror : 10,
+            keys.vulnerable : 10,
+            keys.weakness : 10,
+            keys.wet : 5,
+            keys.durability : 5,
+        }
+
+        # Filter valid items
+        valid_items = [(name, cost) for name, cost in loot_types_cost.items() if cost <= rarity_value]
+
+        return valid_items
+
+    # Weight rare items more as rarity_value increases
+    def Set_Weights(self, valid_items):
+        weights = []
+        for name, cost in valid_items:
+            # Higher cost ⇒ larger weight
+            # Lower cost ⇒ tiny weight
+            weight = max(1, cost)  
+            weights.append(weight)
+
+        return weights
+
