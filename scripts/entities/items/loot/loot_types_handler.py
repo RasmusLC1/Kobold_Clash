@@ -41,6 +41,15 @@ class Loot_Types_Handler():
     
     def Get_Valid_Items(self, rarity_value):
         return None
-    
+
+    # Weight rare items more as rarity_value increases
     def Set_Weights(self, valid_items):
-        return None
+        weights = []
+        for name, cost in valid_items:
+            # Higher cost ⇒ larger weight
+            # Lower cost ⇒ tiny weight
+            weight = max(1, cost)  
+            weights.append(weight)
+
+        return weights
+
