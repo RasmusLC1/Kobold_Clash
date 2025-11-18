@@ -15,84 +15,51 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
         self.loot_map = {
             keys.gold: self.Spawn_Gold,
             keys.gem: self.Spawn_Gem,
+            keys.hunter_treasure: self.Spawn_Hunter_Treasure
         }
 
+    def Loot_Spawner(self, pos, type = None, rarity_value = 0, amount = 0):
+        if not type:
+            type, amount = self.Get_Loot_Based_On_Rarity(rarity_value)
+
+        if str(type).endswith("_gem"):
+            loot_class = self.Spawn_Gem
+        else:
+            loot_class = self.loot_map.get(type)
+
+        if not loot_class:
+            return None
+
+        loot = loot_class(self.game, pos, amount, type)
+
+        return loot
 
 
-    def Spawn_Gold(self, pos, amount = None):
+
+    def Spawn_Gold(self, pos, amount = None, type = None):
         if not amount:
-            amount = random.randint(10 * self.game.level, 10 * self.game.level)
+            amount = random.randint(5 * self.game.level, 15 * self.game.level)
+
 
         loot = Gold(self.game, pos, amount)
         return loot
 
-    def Get_Gem_Effect(self):
-        effects = {
-            keys.fire : 8,
-            keys.frozen : 8,
-            keys.electric : 8,
-            keys.poison : 8,
-            keys.electric : 8,
-            keys.vampiric : 12,
-            keys.arcane_hunger : 16,
-            keys.blunt : 6,
-            keys.slash : 6,
-            keys.halo : 14,
-            keys.power : 16,
-            keys.range : 10,
-            keys.speed : 10,
-            keys.increase_strength : 8,
-            keys.terror : 16,
-            keys.vulnerable : 12,
-            keys.weakness : 10,
-            keys.wet : 8,
-            keys.durability : 8,
-        }
-
-
-        max_val = max(effects.values())
-        inverted_weights = [max_val - v + 1 for v in effects.values()]
-
-        effect = random.choices(
-            population=list(effects.keys()),
-            weights=inverted_weights,
-            k=1
-        )[0]
-        value = effects[effect]
-        return effect, value
     
-    def Spawn_Gem(self, pos, amount):
-        if not amount:
-            amount = min(10, random.randint(max(1, self.game.level - 1), self.game.level + 1))
-        
-        effect, value = self.Get_Gem_Effect()
+    def Spawn_Gem(self, pos, amount, type):
+
+        effect = type.split("_")[0]
+        loot_types_cost = self.Get_Loot_Values()
+        value = loot_types_cost.get(type, 10)
         loot = Gem(self.game, pos, amount, effect, value)
         return loot
 
-    def Spawn_Hunter_Treasure(self, pos):
+    def Spawn_Hunter_Treasure(self, pos, amount = 0, type = None):
         loot = Hunter_Treasure(self.game, pos)
         self.game.item_handler.Add_Item(loot)
         return loot
-    
-    def Loot_Spawner(self, pos, type = None, rarity_value = 0, amount = None):
-        if not type:
-            type = random.choice(list(self.loot_map.keys()))
 
-        # Handle hunter treasure seperately
-        if type == keys.hunter_treasure:
-            hunter_loot = self.Spawn_Hunter_Treasure(pos)
-            return hunter_loot
-        
-        loot_class = self.loot_map.get(type)
-        if not loot_class:
-            return None
-        
-        loot = loot_class(pos, amount)
 
-        return loot
-
-    
-    def Get_Valid_Items(self, rarity_value):
+    def Get_Loot_Values(self):
         loot_types_cost = {
             keys.gold : 10,
             keys.fire_gem : 10,
@@ -114,6 +81,11 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
             keys.wet_gem : 10,
             keys.durability_gem : 10,
         }
+        return loot_types_cost
+    
+    def Get_Valid_Items(self, rarity_value):
+        
+        loot_types_cost = self.Get_Loot_Values()
 
         # Filter valid items
         valid_items = [(name, cost) for name, cost in loot_types_cost.items() if cost <= rarity_value]
