@@ -38,7 +38,6 @@ class Loot_Types_Handler():
             chosen_cost = 1
 
         amount = rarity_value // chosen_cost
-
         return chosen_loot, amount
     
     def Get_Valid_Items(self, rarity_value):

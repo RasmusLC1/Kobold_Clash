@@ -9,6 +9,9 @@ class Gold(Valuable):
         self.amount = amount
         self.max_amount = 99
         self.animation = random.randint(1, 3)
+        self.Set_Description()
+
+
+
+    def Set_Description(self):
         self.description = f"gold {self.amount}\n"
-
-

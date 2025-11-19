@@ -65,10 +65,10 @@ class Loot_Container(Decoration):
         clatter_factor = (self.game.clatter.Get_Awakening_Level() / 10) * 30
 
         # Base randomness (small noise): 0–20
-        noise = random.uniform(0, 20)
+        noise = random.uniform(0, 10)
 
         # Swing randomness (rare bumps/dips): -10 to +10
-        swing = random.uniform(-10, 10)
+        swing = random.uniform(-5, 5)
 
         total = depth_factor + luck_factor + clatter_factor + noise + swing
         return self.Clamp_Rarity(total)

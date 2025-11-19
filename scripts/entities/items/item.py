@@ -20,7 +20,7 @@ class Item(PhysicsEntity):
         self.inventory_size = (32,32) # Used to upscale item for inventory
         self.activate_cooldown = 0
         self.animation_cooldown = 0
-        self.amount = amount
+        self.amount = int(amount)
         self.max_amount = 1
         self.max_animation = 0
         self.animation_cooldown_max = 0.8
@@ -147,7 +147,7 @@ class Item(PhysicsEntity):
 
     
     def Increase_Amount(self, amount):
-        self.amount = min(self.max_amount, self.amount + amount)
+        self.amount = int(min(self.max_amount, self.amount + int(amount)))
 
     def Decrease_Amount(self, amount):
         self.amount = max(0, self.amount - amount)

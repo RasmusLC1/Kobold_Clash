@@ -43,8 +43,8 @@ class Item_Inventory(Base_Inventory):
                 continue
 
             # Calculate how much can be merged
-            available_space = inventory_slot.item.max_amount - inventory_slot.item.amount
-            amount_to_merge = min(item.amount, available_space)
+            available_space = int(inventory_slot.item.max_amount - inventory_slot.item.amount)
+            amount_to_merge = int(min(item.amount, available_space))
 
             # Merge items
             inventory_slot.item.Increase_Amount(amount_to_merge)
