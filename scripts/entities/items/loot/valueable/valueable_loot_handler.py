@@ -30,7 +30,7 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
         if not loot_class:
             return None
 
-        loot = loot_class(pos, amount, type)
+        loot = loot_class(pos, int(amount), type)
 
         return loot
 
@@ -47,7 +47,7 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
     
     def Spawn_Gem(self, pos, amount, type):
 
-        effect = type.split("_")[0]
+        effect = type.split("_g")[0] # Use _g to prevent failure at multi word gems like increase_strength
         loot_types_cost = self.Get_Loot_Values()
         value = loot_types_cost.get(type, 10)
         loot = Gem(self.game, pos, amount, effect, value)
@@ -61,25 +61,25 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
 
     def Get_Loot_Values(self):
         loot_types_cost = {
-            # keys.gold : 10,
+            keys.gold : 10,
             keys.fire_gem : 10,
-            # keys.frozen_gem : 10,
-            # keys.electric_gem : 10,
-            # keys.poison_gem : 10,
-            # keys.vampiric_gem : 30,
-            # keys.arcane_hunger : 30,
-            # keys.blunt_gem : 5,
-            # keys.slash_gem : 5,
-            # keys.halo_gem : 40,
-            # keys.power_gem : 30,
-            # keys.range_gem : 10,
-            # keys.speed_gem : 10,
-            # keys.strength_gem : 10,
-            # keys.terror_gem : 40,
-            # keys.vulnerable_gem : 20,
-            # keys.weakness_gem : 20,
-            # keys.wet_gem : 10,
-            # keys.durability_gem : 10,
+            keys.frozen_gem : 10,
+            keys.electric_gem : 10,
+            keys.poison_gem : 10,
+            keys.vampiric_gem : 30,
+            keys.arcane_hunger : 30,
+            keys.blunt_gem : 5,
+            keys.slash_gem : 5,
+            keys.halo_gem : 40,
+            keys.power_gem : 30,
+            keys.range_gem : 10,
+            keys.speed_gem : 10,
+            keys.strength_gem : 10,
+            keys.terror_gem : 40,
+            keys.vulnerable_gem : 20,
+            keys.weakness_gem : 20,
+            keys.wet_gem : 10,
+            keys.durability_gem : 10,
         }
         return loot_types_cost
     

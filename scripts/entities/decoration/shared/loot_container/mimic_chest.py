@@ -5,8 +5,7 @@ import random
 
 class Mimic_Chest(Loot_Container):
     def __init__(self, game, pos, version) -> None:
-        super().__init__(game, keys.chest, pos, (32, 32), True, 50, keys.chest_break, 500)
-        self.version = version
+        super().__init__(game, keys.chest, pos, (32, 32), True, 50, keys.chest_break, 500, version)
 
     def Save_Data(self):
         super().Save_Data()

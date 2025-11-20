@@ -136,7 +136,7 @@ class Item(PhysicsEntity):
             self.sprite = self.game.assets[self.sub_type]
             self.Set_Entity_Image()
         except Exception as e:
-            print("SETTING ITEM SUBTYPE FAILED", vars(self))
+            print("SETTING ITEM SUBTYPE FAILED", self.sub_type, self.type)
 
     # Setting the item image and scaling it
     def Set_Entity_Image(self):
