@@ -24,25 +24,25 @@ class Cursed_Loot_Handler(Loot_Types_Handler):
             keys.black_coin,
         ]
 
-
-
     def Loot_Spawner(self, pos, type = None, rarity_value = 0, amount = None):
         if not type:
-            type = random.choice(list(self.loot_map.keys()))
-        loot = None
-        if type in self.special_type: # Handle lantern seperately as it needs light updates
-            loot_class = self.loot_map.get(type)
-            if not loot_class:
-                return None
-            
-
-            loot = loot_class(self.game, pos)
-        else:
-            loot = Cursed_Loot(self.game, type, pos)
-
+            type, amount = self.Get_Loot_Based_On_Rarity(rarity_value)
+        loot_class = self.loot_map.get(type)
+        if not loot_class:
+            return None
+        
+        loot_types_cost = self.Get_Loot_Values()
+        value = loot_types_cost.get(type, 10)
+        loot = loot_class(self.game, type, pos, amount, value)
 
         return loot
 
 
-
-
+    def Get_Loot_Values(self):
+        loot_types_cost = {
+            keys.black_coin : 50,
+            keys.temptress_embrace : 40,
+            keys.demonic_bargain : 40,
+            keys.blood_tomb : 40,
+        }
+        return loot_types_cost

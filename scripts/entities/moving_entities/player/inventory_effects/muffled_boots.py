@@ -3,7 +3,7 @@ from scripts.engine.keys.keys import keys
 
 class Muffled_Boots(Inventory_Effect):
     def __init__(self, entity):
-        super().__init__(entity, "muffled_boots")
+        super().__init__(entity, keys.silence)
 
     def Enable(self):
         self.player.Set_Effect(keys.silence, 2, True)

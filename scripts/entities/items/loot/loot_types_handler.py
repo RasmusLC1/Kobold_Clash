@@ -40,8 +40,20 @@ class Loot_Types_Handler():
         amount = rarity_value // chosen_cost
         return chosen_loot, amount
     
+    def Get_Loot_Values(self):
+        pass
+
     def Get_Valid_Items(self, rarity_value):
-        return None
+        
+        loot_types_cost = self.Get_Loot_Values()
+
+        if not loot_types_cost:
+            return None
+
+        # Filter valid items
+        valid_items = [(name, cost) for name, cost in loot_types_cost.items() if cost <= rarity_value]
+
+        return valid_items
 
     # Weight rare items more as rarity_value increases
     def Set_Weights(self, valid_items):

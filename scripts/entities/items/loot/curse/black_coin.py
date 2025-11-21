@@ -3,8 +3,8 @@ import pygame
 from scripts.engine.keys.keys import keys
 
 class Black_Coin(Cursed_Loot):
-    def __init__(self, game, pos):
-        super().__init__(game, keys.black_coin, pos)
+    def __init__(self, game, type, pos, effect_power, value):
+        super().__init__(game, keys.black_coin, pos, effect_power, value)
         self.update_cooldown = 0
         self.gold_IDs = {}
         self.description = 'Increases gold\nand damage\ntaken'
@@ -50,22 +50,6 @@ class Black_Coin(Cursed_Loot):
         item.Increase_Amount(change // 4) 
         self.gold_IDs[item.ID] = item.amount
 
-    # # Render item with fadeout if it's in an illegal position
-    def Render_In_Bounds(self, player_pos, mouse_pos, surf, offset = (0,0)):
-         # Copy image and set alpha
-        entity_image = self.entity_image.copy()
-        # entity_image.set_alpha(255)
-
-        # Create red overlay
-        red_overlay = pygame.Surface(entity_image.get_size(), pygame.SRCALPHA)
-        red_overlay.fill((255, 0, 0, 100))  # Red with transparency
-
-        # Blit entity and red overlay
-        pos = (mouse_pos[0] - offset[0], mouse_pos[1] - offset[1])
-        surf.blit(entity_image, pos)
-        surf.blit(red_overlay, pos)
-        # Render on Mouse position as the item position is not being updated
-        # surf.blit(self.entity_image, (mouse_pos[0] - offset[0], mouse_pos[1] - offset[1]))
 
     def Place_Down(self):
         self.Delete_Item()

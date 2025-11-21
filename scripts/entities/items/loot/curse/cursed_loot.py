@@ -5,7 +5,7 @@ import pygame
 # Generic passive loot that changes depending on the type, simplified to one
 # class since it uses effects
 class Cursed_Loot(Loot):
-    def __init__(self, game, type, pos):
+    def __init__(self, game, type, pos, effect_power, value):
         super().__init__(game, type, pos, (16, 16), 10, keys.passive)
 
     def Pick_Up(self):

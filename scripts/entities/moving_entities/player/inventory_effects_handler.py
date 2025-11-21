@@ -55,14 +55,14 @@ class Inventory_Effects_Handler:
         self.active_effects = []
 
     # Enable a specific inventory effect
-    def Enable(self, effect_name):
-        effect = self.effects.get(effect_name)
+    def Enable(self, effect_name, effect_strength = 1):
+        effect = self.effects.get(effect_name, effect_strength)
         if effect:
             effect.Enable()
 
     # Disable a specific inventory effect
-    def Disable(self, effect_name):
-        effect = self.effects.get(effect_name)
+    def Disable(self, effect_name, effect_strength = 1):
+        effect = self.effects.get(effect_name, effect_strength)
         if effect:
             effect.Disable()
 

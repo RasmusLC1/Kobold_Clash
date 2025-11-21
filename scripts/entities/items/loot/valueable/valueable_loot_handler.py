@@ -82,12 +82,3 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
             keys.durability_gem : 10,
         }
         return loot_types_cost
-    
-    def Get_Valid_Items(self, rarity_value):
-        
-        loot_types_cost = self.Get_Loot_Values()
-
-        # Filter valid items
-        valid_items = [(name, cost) for name, cost in loot_types_cost.items() if cost <= rarity_value]
-
-        return valid_items
