@@ -6,9 +6,8 @@ class Loot(Item):
     def __init__(self, game, type, pos, size, value, loot_type, amount = 1):
         super().__init__(game=game, type=type, sub_category=keys.loot, pos=pos, size=size, amount=amount, add_to_tile=True, value = value)
         self.loot_type =  loot_type
-
+        self.Set_Description()
         self.text_box = Loot_Textbox(self)
-        self.description = f"gold {self.value}\n"
 
     def Save_Data(self):
         # self.saved_data[keys.type] = self.type
@@ -23,7 +22,9 @@ class Loot(Item):
     def Update_Animation(self, delta_time = 0):
         pass
 
-    
+    def Set_Description(self):
+        self.description = f"gold {self.value}\n"
+
     def Revive(self):
         return False
     

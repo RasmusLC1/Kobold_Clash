@@ -3,7 +3,7 @@ from scripts.engine.keys.keys import keys
 
 class Compass(Inventory_Effect):
     def __init__(self, entity):
-        super().__init__(entity, "compass")
+        super().__init__(entity, keys.compass)
 
     
     def Set_Decription(self):

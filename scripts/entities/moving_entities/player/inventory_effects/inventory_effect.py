@@ -17,6 +17,7 @@ class Inventory_Effect():
 
     def Disable(self, effect_strength = 1):
         self.player.Remove_Effect(self.effect, effect_strength)
+        
     def Damage_Taken(self):
         pass
 

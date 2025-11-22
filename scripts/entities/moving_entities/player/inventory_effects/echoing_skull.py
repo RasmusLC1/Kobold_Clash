@@ -3,7 +3,7 @@ from scripts.engine.keys.keys import keys
 
 class Echoing_Skull(Inventory_Effect):
     def __init__(self, entity):
-        super().__init__(entity, "echoing_skull")
+        super().__init__(entity, keys.echoing_skull)
 
     
     def Set_Decription(self):

@@ -62,13 +62,14 @@ class Items():
     
     strength_totem = "strength_totem"
 
-
+    luck_totem = "luck_totem"
     
     muffled_boots = "muffled_boots"
 
     
     blood_coin = "blood_coin"
 
+    compass = "compass"
     
     blood_pact = "blood_pact"
 

@@ -6,8 +6,8 @@ import pygame
 # class since it uses effects
 class Cursed_Loot(Loot):
     def __init__(self, game, type, pos, effect_power, value):
+        self.effect_power = int(effect_power)
         super().__init__(game, type, pos, (16, 16), value, keys.passive)
-        self.effect_power = effect_power
 
 
     def Pick_Up(self):
@@ -18,11 +18,11 @@ class Cursed_Loot(Loot):
         return True
 
     def Place_Down(self):
-        if not super().Place_Down():
+        if self.game.decoration_handler.Check_Item_Collision(self):
             return False
-        
         self.game.player.Disable_Inventory_Effect(self.type, self.effect_power)
-        return True
+        self.Delete_Item()
+        return False
 
 
 
@@ -41,11 +41,9 @@ class Cursed_Loot(Loot):
         surf.blit(entity_image, pos)
         surf.blit(red_overlay, pos)
 
-    def Place_Down(self):
-        self.Delete_Item()
-
     def Set_Description(self):
         self.description = (
-                            f"{self.effect} {self.amount}\n"
+                            f"{self.type} {self.effect_power}\n"
                             f"gold {self.value}\n"
+                            f"rarity: {self.rarity}"
                         )

@@ -28,7 +28,7 @@ class Item(PhysicsEntity):
         self.animation = random.randint(0, self.max_animation)
         self.nearby_entities = []
         self.delete_countdown = 0
-        self.value = value # Placeholder gold value, counts per item in stack
+        self.value = int(value) # Placeholder gold value, counts per item in stack
         self.is_projectile = False
         self.Set_Sprite()
         self.broken_rendering_counter = 0 # Counter if it hits 10, delete item since something is wrong
@@ -107,10 +107,10 @@ class Item(PhysicsEntity):
 
     # Returns false if the item was deleted in the process of palcedown
     def Place_Down(self):
-        self.picked_up = False
-        self.in_inventory = False
         if self.game.decoration_handler.Check_Item_Collision(self):
             return False
+        self.picked_up = False
+        self.in_inventory = False
         self.Set_Tile()
         self.Set_Size(self.floor_size) # Standard loot size on floor
         self.game.sound_handler.Play_Sound(keys.item_placedown, 0.2)
@@ -188,17 +188,20 @@ class Item(PhysicsEntity):
             self.game.tilemap.Add_Entity_To_Tile(new_tile, self)
             self.tile = new_tile
 
+    # Iterates over the thresholds until it finds one that passes
     def Calculate_Rarity(self, value):
-        if value > 80:
-            return keys.legendary
-        if value > 60:
-            return keys.epic
-        if value > 40:
-            return keys.rare
-        if value > 20:
-            return keys.uncommon
+        thresholds = [
+            (90, keys.legendary),
+            (70, keys.epic),
+            (50, keys.rare),
+            (30, keys.uncommon),
+        ]
         
+        for limit, rarity in thresholds:
+            if value > limit:
+                return rarity
         return keys.common
+
     
 
     def Update_Delete_Cooldown(self, delta_time):

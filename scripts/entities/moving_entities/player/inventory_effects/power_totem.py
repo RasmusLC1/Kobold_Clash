@@ -3,7 +3,7 @@ from scripts.engine.keys.keys import keys
 
 class Power_Totem(Inventory_Effect):
     def __init__(self, entity):
-        super().__init__(entity, keys.power)
+        super().__init__(entity, keys.power_totem)
 
     
     def Set_Decription(self):

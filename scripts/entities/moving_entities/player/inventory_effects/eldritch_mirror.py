@@ -3,7 +3,7 @@ from scripts.engine.keys.keys import keys
 
 class Eldritch_Mirror(Inventory_Effect):
     def __init__(self, entity):
-        super().__init__(entity, "eldritch_mirror")
+        super().__init__(entity, keys.eldritch_mirror)
 
 
     def Set_Decription(self):

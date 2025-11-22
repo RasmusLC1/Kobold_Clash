@@ -3,7 +3,7 @@ from scripts.engine.keys.keys import keys
 
 class Forsaken_Grimoire(Inventory_Effect):
     def __init__(self, entity):
-        super().__init__(entity, "forsaken_grimoire")
+        super().__init__(entity, keys.forsaken_grimoire)
 
     
     def Set_Decription(self):
