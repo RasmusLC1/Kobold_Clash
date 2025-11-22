@@ -6,23 +6,25 @@ import pygame
 # class since it uses effects
 class Cursed_Loot(Loot):
     def __init__(self, game, type, pos, effect_power, value):
-        super().__init__(game, type, pos, (16, 16), 10, keys.passive)
+        super().__init__(game, type, pos, (16, 16), value, keys.passive)
+        self.effect_power = effect_power
+
 
     def Pick_Up(self):
         if not super().Pick_Up():
             return False
         
-        self.game.player.inventory_effects.Enable(self.type)
+        self.game.player.Enable_Inventory_Effect(self.type, self.effect_power)
         return True
 
     def Place_Down(self):
         if not super().Place_Down():
             return False
         
-        self.game.player.inventory_effects.Disable(self.type)
+        self.game.player.Disable_Inventory_Effect(self.type, self.effect_power)
         return True
 
-        
+
 
       # # Render item with fadeout if it's in an illegal position
     def Render_In_Bounds(self, player_pos, mouse_pos, surf, offset = (0,0)):
@@ -41,3 +43,9 @@ class Cursed_Loot(Loot):
 
     def Place_Down(self):
         self.Delete_Item()
+
+    def Set_Description(self):
+        self.description = (
+                            f"{self.effect} {self.amount}\n"
+                            f"gold {self.value}\n"
+                        )

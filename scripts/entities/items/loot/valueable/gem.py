@@ -12,4 +12,4 @@ class Gem(Valuable):
 
 
     def Set_Description(self):
-        self.description = f"Add {self.effect, str(self.amount)}\nto weapon\ngold {self.amount * self.value}\n"
+        self.description = f"Add {self.effect, str(self.amount)}\nto weapon\ngold {self.Calculate_Value()}\n"

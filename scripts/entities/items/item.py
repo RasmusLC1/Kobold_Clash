@@ -5,11 +5,11 @@ from scripts.entities.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 
 class Item(PhysicsEntity):
-    def __init__(self, game, type, sub_category, pos, size = (16, 16), amount = 1, add_to_tile = True, value = 100, rarity = keys.common):
+    def __init__(self, game, type, sub_category, pos, size = (16, 16), amount = 1, add_to_tile = True, value = 100):
         super().__init__(game, type, keys.item, pos, size, sub_category)
         self.game = game
         self.sub_type = type
-        self.rarity = rarity # rarity used for loot defaults to common
+        self.rarity = self.Calculate_Rarity(value) # rarity used for loot defaults to common
         self.used = False
         self.picked_up = False
         self.clicked = False # Used for if the item is active
@@ -28,7 +28,7 @@ class Item(PhysicsEntity):
         self.animation = random.randint(0, self.max_animation)
         self.nearby_entities = []
         self.delete_countdown = 0
-        self.value = value # Placeholder gold value
+        self.value = value # Placeholder gold value, counts per item in stack
         self.is_projectile = False
         self.Set_Sprite()
         self.broken_rendering_counter = 0 # Counter if it hits 10, delete item since something is wrong
@@ -64,6 +64,8 @@ class Item(PhysicsEntity):
     def Update_In_Inventory(self):
         pass
 
+    def Calculate_Value(self):
+        return self.amount * self.value
     
     def Activate(self):
         if self.activate_cooldown:
@@ -186,6 +188,17 @@ class Item(PhysicsEntity):
             self.game.tilemap.Add_Entity_To_Tile(new_tile, self)
             self.tile = new_tile
 
+    def Calculate_Rarity(self, value):
+        if value > 80:
+            return keys.legendary
+        if value > 60:
+            return keys.epic
+        if value > 40:
+            return keys.rare
+        if value > 20:
+            return keys.uncommon
+        
+        return keys.common
     
 
     def Update_Delete_Cooldown(self, delta_time):

@@ -31,18 +31,16 @@ class Cursed_Loot_Handler(Loot_Types_Handler):
         if not loot_class:
             return None
         
-        loot_types_cost = self.Get_Loot_Values()
-        value = loot_types_cost.get(type, 10)
-        loot = loot_class(self.game, type, pos, amount, value)
+        loot = loot_class(self.game, type, pos, amount, rarity_value)
 
         return loot
 
 
     def Get_Loot_Values(self):
         loot_types_cost = {
-            keys.black_coin : 50,
-            keys.temptress_embrace : 40,
-            keys.demonic_bargain : 40,
-            keys.blood_tomb : 40,
+            keys.black_coin : 30,
+            keys.temptress_embrace : 25,
+            keys.demonic_bargain : 25,
+            keys.blood_tomb : 25,
         }
         return loot_types_cost

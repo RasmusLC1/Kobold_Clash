@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Loot(Item):
     def __init__(self, game, type, pos, size, value, loot_type, amount = 1):
-        super().__init__(game, type, keys.loot, pos, size, amount, True, value)
+        super().__init__(game=game, type=type, sub_category=keys.loot, pos=pos, size=size, amount=amount, add_to_tile=True, value = value)
         self.loot_type =  loot_type
 
         self.text_box = Loot_Textbox(self)
@@ -26,3 +26,4 @@ class Loot(Item):
     
     def Revive(self):
         return False
+    

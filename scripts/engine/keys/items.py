@@ -72,6 +72,18 @@ class Items():
     
     blood_pact = "blood_pact"
 
+    cursed_dice = "cursed_dice"
+
+    eldritch_mirror = "eldritch_mirror"
+
+    forsaken_grimoire = "forsaken_grimoire"
+
+    cracked_talisman = "cracked_talisman"
+
+    echoing_skull = "echoing_skull"
+
+    vampire_locket = "vampire_locket"
+
     recipe_scroll = "recipe_scroll"
 
     

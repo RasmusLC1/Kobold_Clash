@@ -154,6 +154,12 @@ class Player(Moving_Entity):
     def Find_Nearby_Chests(self, range):
         self.nearby_chests = self.game.chest_handler.Find_Nearby_Chests(self.pos, range)
 
+    def Enable_Inventory_Effect(self, effect, effect_power):
+        self.inventory_effects.Enable(effect, effect_power)
+
+    def Disable_Inventory_Effect(self, effect, effect_power):
+        self.inventory_effects.Disable(effect, effect_power)
+
     # Set luck, called by luck effect, minimum value of 1
     def Update_Luck(self, amount):
         self.luck = max(1, amount)
