@@ -3,15 +3,8 @@ from scripts.engine.keys.keys import keys
 
 class Anchor_Stone(Inventory_Effect):
     def __init__(self, entity):
-        super().__init__(entity, "anchor_stone")
+        super().__init__(entity, keys.anchor)
 
-    def Enable(self):
-        self.player.Set_Effect('anchor', 1, True)
-        
-
-    def Disable(self):
-        self.player.Remove_Effect('anchor', 1)
-        
     
     def Set_Decription(self):
         self.description = 'Prevents pushing'

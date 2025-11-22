@@ -3,13 +3,9 @@ from scripts.engine.keys.keys import keys
 
 class Luck_Totem(Inventory_Effect):
     def __init__(self, entity):
-        super().__init__(entity, "luck_totem")
+        super().__init__(entity, keys.luck)
 
-    def Enable(self):
-        pass
 
-    def Disable(self):
-        pass
     
     def Set_Decription(self):
         self.description = 'Improves chest loot'

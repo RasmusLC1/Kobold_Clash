@@ -5,11 +5,6 @@ class Cursed_Dice(Inventory_Effect):
     def __init__(self, entity):
         super().__init__(entity, "cursed_dice")
 
-    def Enable(self):
-        pass
-
-    def Disable(self):
-        pass
     
     def Set_Decription(self):
         self.description = 'Reroll effects'
