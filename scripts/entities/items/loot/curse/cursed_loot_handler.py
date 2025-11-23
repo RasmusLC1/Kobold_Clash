@@ -25,7 +25,6 @@ class Cursed_Loot_Handler(Loot_Types_Handler):
         ]
 
     def Loot_Spawner(self, pos, type = None, rarity_value = 0, amount = None):
-        print(rarity_value)
         if not type:
             type, amount = self.Get_Loot_Based_On_Rarity(rarity_value)
         loot_class = self.loot_map.get(type)

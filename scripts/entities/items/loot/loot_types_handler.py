@@ -17,8 +17,7 @@ class Loot_Types_Handler():
         if not loot_class:
             return None
         
-
-        loot = loot_class(self.game, pos)
+        loot = loot_class(self.game, pos, amount)
 
         return loot
 

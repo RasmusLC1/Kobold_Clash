@@ -69,6 +69,24 @@ class Potion_Handler(Loot_Types_Handler):
         }
 
 
+    def Get_Loot_Values(self):
+        loot_types_cost = {
+            keys.healing: 15,
+            keys.regen: 15,
+            keys.increase_souls: 10,
+            keys.speed: 10,
+            keys.increase_strength: 10,
+            keys.invisibility: 50,
+            keys.silence: 40,
+            keys.fire_resistance: 10,
+            keys.frozen_resistance: 10,
+            keys.poison_resistance: 10,
+            keys.vampiric: 30,
+            keys.arcane_hunger: 30,
+        }
+        return loot_types_cost
+
+
 
     def Update_Potion_Weights(self):
         weights = self.weights.copy()
