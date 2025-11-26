@@ -4,8 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Potion(Loot):
     def __init__(self, game, type, pos, amount, strength):
-        super().__init__(game, type, pos, (16, 16), 5, keys.potion, amount)
-        self.max_amount = 3
+        super().__init__(game, type, pos, (16, 16), 5, keys.potion, amount, 3)
         self.max_animation = 4
         self.strength = strength
         
@@ -31,6 +30,10 @@ class Potion(Loot):
                         )
 
     def Set_Sprite(self):
+        if not self.type:
+            print("POTION HAS NO TYPE", vars(self))
+            return
+        
         self.effect = self.type.replace('_potion', '')
         self.Update_Sub_Type()
         

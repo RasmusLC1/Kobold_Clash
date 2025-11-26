@@ -32,6 +32,7 @@ class Cursed_Loot_Handler(Loot_Types_Handler):
             return None
         
         loot = loot_class(self.game, type, pos, amount, rarity_value)
+        self.game.item_handler.Add_Item(loot)
 
         return loot
 

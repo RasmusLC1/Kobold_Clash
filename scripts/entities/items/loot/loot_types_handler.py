@@ -18,6 +18,7 @@ class Loot_Types_Handler():
             return None
         
         loot = loot_class(self.game, pos, amount)
+        self.game.item_handler.Add_Item(loot)
 
         return loot
 
@@ -31,13 +32,13 @@ class Loot_Types_Handler():
         weights = self.Set_Weights(valid_items)
 
         # Weighted random choice
-        chosen_loot, chosen_cost = random.choices(valid_items, weights=weights, k=1)[0]
+        chosen_loot_type, chosen_cost = random.choices(valid_items, weights=weights, k=1)[0]
 
-        if chosen_loot == keys.gold:
+        if chosen_loot_type == keys.gold:
             chosen_cost = 1
 
         amount = rarity_value // chosen_cost
-        return chosen_loot, amount
+        return chosen_loot_type, amount
     
     def Get_Loot_Values(self):
         pass

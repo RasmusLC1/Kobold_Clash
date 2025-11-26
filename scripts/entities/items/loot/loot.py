@@ -3,8 +3,8 @@ from scripts.entities.textbox.loot_textbox import Loot_Textbox
 from scripts.engine.keys.keys import keys
 
 class Loot(Item):
-    def __init__(self, game, type, pos, size, value, loot_type, amount = 1):
-        super().__init__(game=game, type=type, sub_category=keys.loot, pos=pos, size=size, amount=amount, add_to_tile=True, value = value)
+    def __init__(self, game, type, pos, size, rarity_value, loot_type, amount = 1, max_amount = 1):
+        super().__init__(game=game, type=type, sub_category=keys.loot, pos=pos, size=size, amount=amount, add_to_tile=True, rarity_value = rarity_value, max_amount=max_amount)
         self.loot_type =  loot_type
         self.Set_Description()
         self.text_box = Loot_Textbox(self)

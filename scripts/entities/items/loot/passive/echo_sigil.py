@@ -2,6 +2,7 @@ from scripts.entities.items.loot.loot import Loot
 import pygame
 from scripts.engine.keys.keys import keys
 
+# Grants extra use to items
 class Echo_Sigil(Loot):
     def __init__(self, game, pos):
         super().__init__(game, keys.echo_sigil, pos, (16, 16), 10, keys.passive)

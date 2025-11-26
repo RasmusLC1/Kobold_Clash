@@ -32,6 +32,7 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
 
         loot = loot_class(pos, int(amount), type)
 
+        self.game.item_handler.Add_Item(loot)
         return loot
 
 
@@ -55,7 +56,6 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
 
     def Spawn_Hunter_Treasure(self, pos, amount = 0, type = None):
         loot = Hunter_Treasure(self.game, pos)
-        self.game.item_handler.Add_Item(loot)
         return loot
 
 

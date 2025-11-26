@@ -5,11 +5,11 @@ from scripts.entities.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 
 class Item(PhysicsEntity):
-    def __init__(self, game, type, sub_category, pos, size = (16, 16), amount = 1, add_to_tile = True, value = 100):
+    def __init__(self, game, type, sub_category, pos, size = (16, 16), amount = 1, add_to_tile = True, rarity_value = 100, max_amount=1):
         super().__init__(game, type, keys.item, pos, size, sub_category)
         self.game = game
         self.sub_type = type
-        self.rarity = self.Calculate_Rarity(value) # rarity used for loot defaults to common
+        self.rarity = self.Calculate_Rarity(rarity_value) # rarity used for loot defaults to common
         self.used = False
         self.picked_up = False
         self.clicked = False # Used for if the item is active
@@ -20,15 +20,15 @@ class Item(PhysicsEntity):
         self.inventory_size = (32,32) # Used to upscale item for inventory
         self.activate_cooldown = 0
         self.animation_cooldown = 0
-        self.amount = int(amount)
-        self.max_amount = 1
+        self.amount = min(max_amount, int(amount)) # Cap the amount
+        self.max_amount = max_amount
         self.max_animation = 0
         self.animation_cooldown_max = 0.8
 
         self.animation = random.randint(0, self.max_animation)
         self.nearby_entities = []
         self.delete_countdown = 0
-        self.value = int(value) # Placeholder gold value, counts per item in stack
+        self.value = int(rarity_value) # Placeholder gold value, counts per item in stack
         self.is_projectile = False
         self.Set_Sprite()
         self.broken_rendering_counter = 0 # Counter if it hits 10, delete item since something is wrong
@@ -198,7 +198,7 @@ class Item(PhysicsEntity):
         ]
         
         for limit, rarity in thresholds:
-            if value > limit:
+            if value >= limit:
                 return rarity
         return keys.common
 
