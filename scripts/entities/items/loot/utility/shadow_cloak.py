@@ -3,10 +3,8 @@ import random
 from scripts.engine.keys.keys import keys
 
 class Shadow_Cloak(Utility_Loot):
-    def __init__(self, game, pos):
-        amount = random.randint(1, 2)
-        super().__init__(game, keys.shadow_cloak, pos, 320, amount)
-        self.max_amount = 3
+    def __init__(self, game, type, pos, amount, rarity_value):
+        super().__init__(game, type, pos, 320, amount, rarity_value)
         self.Set_Description()
 
     def Set_Description(self):

@@ -4,11 +4,8 @@ from scripts.engine.keys.keys import keys
 
 
 class Ethereal_Chains(Radius_Effect_Loot):
-    def __init__(self, game, pos):
-        amount = random.randint(2, 4)
-        super().__init__(game, keys.ethereal_chains, pos, 150, keys.utility, 3, amount)
-        self.Set_Description()
-        self.max_amount = 5
+    def __init__(self, game, type, pos, amount, rarity_value):
+        super().__init__(game, type, pos, 150, keys.utility, 3, amount, rarity_value)
         
    
 

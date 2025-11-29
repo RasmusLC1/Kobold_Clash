@@ -24,18 +24,6 @@ class Cursed_Loot_Handler(Loot_Types_Handler):
             keys.black_coin,
         ]
 
-    def Loot_Spawner(self, pos, type = None, rarity_value = 0, amount = None):
-        if not type:
-            type, amount = self.Get_Loot_Based_On_Rarity(rarity_value)
-        loot_class = self.loot_map.get(type)
-        if not loot_class:
-            return None
-        
-        loot = loot_class(self.game, type, pos, amount, rarity_value)
-        self.game.item_handler.Add_Item(loot)
-
-        return loot
-
 
     def Get_Loot_Values(self):
         loot_types_cost = {
