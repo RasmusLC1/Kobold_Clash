@@ -16,9 +16,12 @@ class Loot_Types_Handler():
         if not loot_class:
             return None
         
-        loot = loot_class(self.game, type, pos, amount, rarity_value)
-        self.game.item_handler.Add_Item(loot)
-        print(rarity_value, amount, type)
+        try:
+            loot = loot_class(self.game, type, pos, amount, rarity_value)
+            self.game.item_handler.Add_Item(loot)
+        except Exception as e:
+            print(f"Failed to spawn loot{e}", type, pos, amount, rarity_value, loot_class)
+
         return loot
 
     def Get_Loot_Based_On_Rarity(self, rarity_value):

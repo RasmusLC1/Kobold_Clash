@@ -156,6 +156,13 @@ class Item(PhysicsEntity):
         if self.amount <= 0:
             self.used = True
 
+    def Increase_Max_Amount(self, amount):
+        self.max_amount = int(self.max_amount + int(amount))
+
+    def Decrease_Max_Amount(self, amount):
+        self.max_amount = max(1, self.max_amount - amount)
+
+
     def Set_Inventory_Type(self, inventory_type):
         self.inventory_type = inventory_type
     

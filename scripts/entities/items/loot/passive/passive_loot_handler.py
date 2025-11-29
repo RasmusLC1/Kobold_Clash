@@ -34,22 +34,22 @@ class Passive_Loot_Handler(Loot_Types_Handler):
         ]
 
 
-    def Loot_Spawner(self, pos, type = None, rarity_value = 0, amount = None):
-        if not type:
-            type = random.choice(list(self.loot_map.keys()))
-        loot = None
-        if type in self.special_type: # Handle lantern seperately as it needs light updates
-            loot_class = self.loot_map.get(type)
-            if not loot_class:
-                return None
-            
+    def Get_Loot_Values(self):
+        loot_types_cost = {
+            # Echo Bell – Creates a noise at a targeted location to lure enemies away.
+            keys.echo_bell: 20,
+            # Faded Hourglass – Slows down nearby enemies movement.
+            keys.faded_hourglass: 30,
+            # Ethereal Chains – Snares nearby enemies for a short duration.
+            keys.ethereal_chains: 50,
+            # Cloak of Shadows – Temporarily makes the player invisible to enemies.
+            keys.shadow_cloak: 50,
+            # Recall Parchment – Teleports the player back to the last shrine visited.
+            keys.recall_scroll: 20,
+        }
 
-            loot = loot_class(self.game, pos)
-        else:
-            loot = Passive_Loot(self.game, type, pos)
+        return loot_types_cost
 
-
-        return loot
 
 
 

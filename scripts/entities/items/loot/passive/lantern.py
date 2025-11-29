@@ -2,8 +2,9 @@ from scripts.entities.items.loot.loot import Loot
 from scripts.engine.keys.keys import keys
 
 class Lantern(Loot):
-    def __init__(self, game, pos):
-        super().__init__(game, keys.lantern, pos, (16, 16), 10, keys.passive)
+    def __init__(self, game, type, pos, effect_power, rarity_value):
+        self.effect_power = int(effect_power)
+        super().__init__(game,  type, pos, (16, 16), rarity_value, keys.passive)
         self.light_source = self.game.light_handler.Add_Light(self.pos, 9, self.tile)
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
 
@@ -12,7 +13,7 @@ class Lantern(Loot):
         if not super().Pick_Up():
             return False
         
-        self.game.player.Update_Light_Source(9)
+        self.game.player.Update_Light_Source(self.effect_power)
         self.game.light_handler.Remove_Light(self.light_source)
         return True
     

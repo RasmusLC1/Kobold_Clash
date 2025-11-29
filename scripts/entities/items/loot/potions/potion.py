@@ -39,8 +39,11 @@ class Potion(Loot):
         
         super().Set_Sprite()
 
-    def Increase_Strength(self):
-        self.strength += 1
+    def Increase_Strength(self, amount):
+        self.strength += amount
+
+    def Decrease_Strength(self, amount):
+        self.strength -= amount
     
     def Update_Sub_Type(self):
         if self.amount <= 1:
