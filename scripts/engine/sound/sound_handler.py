@@ -7,17 +7,26 @@ class Sound_Handler():
         pygame.mixer.init()
 
     def Play_Sound(self, sound_name, volume = 1):
-        # Disable all sounds if the player is silenced
-        if self.game.player.effects.silence.effect:
-            return
         if self.game.clatter.temp_disable_clatter:
             return
         
+        volume = self.Mute_Volume_Silence(volume)
+
         try:
             self.game.sfx[sound_name].set_volume(volume)
             self.game.sfx[sound_name].play()
         except Exception as e:
             print(f"Wrong sound input {e}", sound_name, volume)
+
+
+    def Mute_Volume_Silence(self, volume):
+        silence = self.game.player.effects.silence.effect
+        if silence:
+            normalised_silence = min(silence / 10, 1)       # normalize
+            smooth = normalised_silence * normalised_silence * (3 - 2 * normalised_silence)   # SmoothStep 0→1
+            volume *= (1 - 0.8 * smooth) # 100% at max, 20% at min
+        
+        return volume
 
 
     # Player noise disabled

@@ -17,7 +17,7 @@ class Recipe_Scroll(Inventory_Item):
             if item.sub_category != keys.loot:
                 print("WRONG Item type added to Recipe Scroll", item)
                 continue
-            if item.ID in self.potion_IDs:
+            if item.ID in self.loot_IDs:
                 continue
             
             if item.loot_type != keys.potion:
@@ -25,7 +25,7 @@ class Recipe_Scroll(Inventory_Item):
 
             # Item is verified to be a potion
             item.Increase_Strength(self.effect_power) 
-            self.potion_IDs.append(item.ID)
+            self.loot_IDs.append(item.ID)
 
 
     def Place_Down(self):
@@ -36,7 +36,7 @@ class Recipe_Scroll(Inventory_Item):
 
         for item in inventory_loot:
 
-            if item.ID not in self.potion_IDs:
+            if item.ID not in self.loot_IDs:
                 continue
             
             # Item is verified to be a potion

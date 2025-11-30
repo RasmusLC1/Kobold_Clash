@@ -3,8 +3,9 @@ from scripts.entities.moving_entities.enemies.crypt.crypt_spawn import Crypt_Spa
 from scripts.entities.moving_entities.enemies.crystal_caverns.crystal_cavern_spawn import Crystal_Cavern_Spawn
 from scripts.entities.moving_entities.enemies.enemy_pathfinding_handler import Enemy_Pathfinding_Handler
 from scripts.engine.keys.keys import keys
-import math
 import random
+
+INTIAL_ENEMIES = 1
 
 class Enemy_Handler():
     def __init__(self, game):
@@ -51,7 +52,7 @@ class Enemy_Handler():
 
 
         
-        for i in range(40):
+        for i in range(INTIAL_ENEMIES):
             # Spawn enemy at a random location
             spawner_index = random.randint(0, spawners_length - 1)
             spawner = spawners[spawner_index]
