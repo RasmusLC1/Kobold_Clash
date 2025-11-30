@@ -15,6 +15,22 @@ class Revive_Loot_Handler(Loot_Types_Handler):
         }
 
  
+    
+    def Get_Loot_Values(self):
+        loot_types_cost = {
+            # Phoenix Feather – Upon death, revives the player with 1 health, then burns up.
+            keys.phoenix_feather: 45,
+            
+            # Pendant of light, Revive on death for souls 
+            keys.light_pendant: 45,
 
+            # Gravedigger’s Coin – Revive the player one time to full health for gold
+            keys.gravediggers_coin: 50,
+
+            # Blood Pact Scroll – Allows revival at the cost of a permanent debuff.
+            keys.blood_pact_scroll : 40
+        }
+
+        return loot_types_cost
 
 

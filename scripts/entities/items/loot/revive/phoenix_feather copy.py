@@ -6,15 +6,15 @@ from scripts.engine.keys.keys import keys
 class Phoenix_Feather(Loot):
     def __init__(self, game, type, pos, amount, rarity_value):
         super().__init__(game, type, pos, size=(16, 16), rarity_value=rarity_value, loot_type=keys.revive, amount=amount)
-        self.health_on_revive = 5 * amount
+        self.gold_cost_to_revive = 300 // amount
 
     
     def Set_Description(self):
-        self.description = f"Revive with {self.health_on_revive} {keys.health}"
+        self.description = f"Revive for {self.gold_cost_to_revive} {keys.gold}"
 
     def Revive(self):
         self.game.particle_handler.Activate_Particles(20, keys.gold, self.game.player.pos)
-        self.game.player.Set_Health(self.health_on_revive)
+        self.game.player.Set_Health(self.gold_cost_to_revive)
         self.game.player.damage_cooldown = 5
         self.game.item_handler.Remove_Item(self, True)
         self.game.inventory.Remove_Item(self)

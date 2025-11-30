@@ -93,6 +93,9 @@ class Items():
     
     light_pendant = "light_pendant"
 
+    gravediggers_coin = "gravediggers_coin"
+
+    blood_pact_scroll = "blood_pact_scroll"
     
     faded_hourglass = "faded_hourglass"
 

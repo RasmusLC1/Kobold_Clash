@@ -91,6 +91,8 @@ class Player(Moving_Entity):
             return False
         self.souls_to_remove += subtract_soul
         return True
+    
+    
 
     # Subtract the souls that are to be removed from total souls to get a correct souls count
     def Get_Total_Available_Souls(self):

@@ -92,8 +92,6 @@ class Item_Inventory(Base_Inventory):
         return loot_items
 
 
-
-    
     def Revive(self):
         for inventory_slot in self.inventory:
             item = inventory_slot.item
@@ -120,6 +118,9 @@ class Item_Inventory(Base_Inventory):
             gold_sum += item.amount
 
         return gold_sum
+    
+    def Pay_Gold(self, amount):
+        pass
 
     # Places an item in an empty slot if merging is not possible
     def Add_Item_To_Inventory_Slot(self, item):
