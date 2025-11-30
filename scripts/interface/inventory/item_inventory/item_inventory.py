@@ -119,8 +119,34 @@ class Item_Inventory(Base_Inventory):
 
         return gold_sum
     
-    def Pay_Gold(self, amount):
-        pass
+
+    def Pay_Gold(self, gold_to_pay):
+        gold_in_inventory = self.Check_Gold_In_Inventory()
+
+        if gold_to_pay > gold_in_inventory:
+            return False
+        
+        gold_inventory_slots = self.Find_Inventory_Slots_With_Sub_Type("gold")
+        
+        for inventory_slot in gold_inventory_slots:
+            item = inventory_slot.item
+            
+            # Skip empty slots, safety check
+            if not item:
+                continue
+                
+            # Determine the amount to deduct from this stack: 
+            deduction = min(gold_to_pay, item.amount)
+            
+            # Delete item if amount <= 0
+            item.Decrease_Amount(deduction)
+            
+            # If all required gold has been paid, stop iterating.
+            gold_to_pay -= deduction
+            if gold_to_pay <= 0:
+                break
+                
+        return True
 
     # Places an item in an empty slot if merging is not possible
     def Add_Item_To_Inventory_Slot(self, item):

@@ -11,7 +11,6 @@ from scripts.entities.moving_entities.player.inventory_effects.muffled_boots imp
 from scripts.entities.moving_entities.player.inventory_effects.halo import Halo
 from scripts.entities.moving_entities.player.inventory_effects.black_coin import Black_Coin
 from scripts.entities.moving_entities.player.inventory_effects.vampire_locket import Vampire_Locket
-from scripts.entities.moving_entities.player.inventory_effects.blood_pact import Blood_Pact
 from scripts.entities.moving_entities.player.inventory_effects.demonic_bargain import Demonic_Bargain
 from scripts.entities.moving_entities.player.inventory_effects.temptress_embrace import Temptress_Embrace
 from scripts.entities.moving_entities.player.inventory_effects.cursed_dice import Cursed_Dice
@@ -32,7 +31,7 @@ class Inventory_Effects_Handler:
         self.effects = {
             keys.blood_tomb: Blood_Tomb(self.entity),
             keys.magnet: Magnet(self.entity),
-            "compass": Compass(self.entity),
+            keys.compass: Compass(self.entity),
             keys.power_totem: Power_Totem(self.entity),
             keys.strength_totem: Strength_Totem(self.entity),
             keys.luck_totem: Luck_Totem(self.entity),
@@ -42,7 +41,6 @@ class Inventory_Effects_Handler:
             keys.halo: Halo(self.entity),
             keys.black_coin: Black_Coin(self.entity),
             keys.vampire_locket: Vampire_Locket(self.entity),
-            keys.blood_pact: Blood_Pact(self.entity),
             keys.demonic_bargain: Demonic_Bargain(self.entity),
             keys.temptress_embrace: Temptress_Embrace(self.entity, ),
             keys.cursed_dice: Cursed_Dice(self.entity, ),

@@ -162,6 +162,10 @@ class Player(Moving_Entity):
     def Disable_Inventory_Effect(self, effect, effect_power):
         self.inventory_effects.Disable(effect, effect_power)
 
+    # Interface function to call the actual inventory function
+    def Pay_Gold(self, amount):
+        return self.game.inventory.item_inventory.Pay_Gold(amount)
+
     # Set luck, called by luck effect, minimum value of 1
     def Update_Luck(self, amount):
         self.luck = max(1, amount)
