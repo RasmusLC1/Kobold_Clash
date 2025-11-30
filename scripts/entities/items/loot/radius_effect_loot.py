@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Radius_Effect_Loot(Interactive_Loot):
     def __init__(self, game, type, pos, max_distance, loot_type, radius, amount, rarity_value, max_amount=5):
-        super().__init__(game, type, pos, max_distance, (16, 16), loot_type=loot_type, value=rarity_value, amount = amount,max_amount=max_amount)
+        super().__init__(game, type, pos, max_distance, (16, 16), loot_type=loot_type, rarity_value=rarity_value, amount = amount,max_amount=max_amount)
         self.radius = radius
         self.Set_Radius_Image()
  

@@ -3,8 +3,8 @@ from scripts.engine.keys.keys import keys
 
 class Blood_Key(Key):
     def __init__(self, game, type, pos, amount, rarity_value):
+        self.damage = int(max(1, 5 - amount))
         super().__init__(game, keys.blood_key, pos, rarity_value)
-        self.damage = max(1, 5 - amount)
 
 
     def Set_Description(self):

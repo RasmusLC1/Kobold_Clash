@@ -4,8 +4,8 @@ import pygame
 from scripts.engine.keys.keys import keys
 
 class Interactive_Loot(Loot):
-    def __init__(self, game, type, pos, max_distance, size, loot_type, value, amount, max_amount = 3):
-        super().__init__(game, type, pos, size, rarity_value=value, loot_type=loot_type, amount=amount, max_amount = max_amount)
+    def __init__(self, game, type, pos, max_distance, size, loot_type, rarity_value, amount, max_amount = 3):
+        super().__init__(game, type, pos, size, rarity_value=rarity_value, loot_type=loot_type, amount=amount, max_amount = max_amount)
         self.distance_to_player = 0
         self.max_distance = max_distance
 

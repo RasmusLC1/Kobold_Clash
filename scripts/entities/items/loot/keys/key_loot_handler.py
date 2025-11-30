@@ -25,7 +25,7 @@ class Key_Loot_Handler(Loot_Types_Handler):
     def Get_Loot_Values(self):
         loot_types_cost = {
             # Skeleton Key – Unlocks any door but disappears after 1 use.
-            keys.skeleton_key: 5,
+            keys.skeleton_key: 10,
 
             # Blood Key – Unlocks any door but costs health.
             keys.blood_key: 15,
@@ -37,7 +37,9 @@ class Key_Loot_Handler(Loot_Types_Handler):
             keys.cursed_key: 15,
 
             # Lockpick – has a 1/3chance to open the door and persist, high clatter on fail
-            keys.lockpick: 5,
+            keys.lockpick: 10,
         }
 
         return loot_types_cost
+
+

@@ -2,9 +2,9 @@ from scripts.entities.items.loot.keys.key import Key
 from scripts.engine.keys.keys import keys
 
 class Soul_Key(Key):
-    def __init__(self, game, pos, type, amount, rarity_value):
+    def __init__(self, game, type, pos, amount, rarity_value):
+        self.soul_cost = int(max(5, 30 - amount * 5))
         super().__init__(game, keys.soul_key, pos, rarity_value)
-        self.soul_cost = max(5, 30 - amount * 5)
 
 
     def Set_Description(self):

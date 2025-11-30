@@ -21,6 +21,7 @@ class Loot_Types_Handler():
             self.game.item_handler.Add_Item(loot)
         except Exception as e:
             print(f"Failed to spawn loot{e}", type, pos, amount, rarity_value, loot_class)
+            return
 
         return loot
 
