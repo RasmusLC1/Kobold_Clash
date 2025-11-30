@@ -27,12 +27,6 @@ class Passive_Loot_Handler(Loot_Types_Handler):
             keys.lucky_charm : Passive_Loot,
         }
 
-        self.special_type = [
-            keys.lantern,
-            keys.echo_sigil,
-            keys.recipe_scroll,
-        ]
-
 
     def Get_Loot_Values(self):
         loot_types_cost = {

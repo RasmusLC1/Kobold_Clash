@@ -3,6 +3,7 @@ from scripts.engine.awakening.awakening_effects.awakening_function import Awaken
 
 import random
 
+# TODO: Enemy selection needs to be moved to the enemy spawners
 ASCENSION_TABLE = {
     0: {
         keys.skeleton_warrior: 1,

@@ -2,8 +2,8 @@ from scripts.entities.items.loot.interactive_loot import Interactive_Loot
 from scripts.engine.keys.keys import keys
 
 class Key(Interactive_Loot):
-    def __init__(self, game, type, pos):
-        super().__init__(game, type, pos, 64, (16, 16), keys.key, 1)
+    def __init__(self, game, type, pos, rarity_value):
+        super().__init__(game, type, pos, max_distance=64, size=(16, 16), loot_type=keys.key, rarity_value=rarity_value, amount=1, max_amount=1)
 
 
     # The update function in the inventory

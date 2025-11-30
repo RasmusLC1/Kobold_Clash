@@ -247,7 +247,7 @@ class Item(PhysicsEntity):
             item_image = pygame.transform.scale(self.entity_image, size)
             surf.blit(item_image, pos)
         except Exception as e:
-            print(f"ITEM Render_Inventory failed {e}", self.entity_image, size, pos)
+            print(f"ITEM Render_Inventory failed {e}", self.entity_image, size, pos, self.type, self.sub_type)
         
 
     def Render_Floor(self, surf, offset=(0, 0)):

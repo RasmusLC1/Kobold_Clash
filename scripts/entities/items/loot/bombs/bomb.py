@@ -3,11 +3,13 @@ from scripts.engine.keys.keys import keys
 
 
 class Bomb(Radius_Effect_Loot):
-    def __init__(self, game, type, pos):
-        super().__init__(game, type, pos, 192, keys.bomb, 4, 1)
-        effect = self.type.replace('_' + keys.bomb, '')
-        self.description = effect + ' explosion\nwhen trown'
+    def __init__(self, game, type, pos, amount, rarity_value):
+        super().__init__(game, type, pos, 192, keys.bomb, radius=4, amount=amount, rarity_value=rarity_value, max_amount=3)
         
+
+    def Set_Description(self):
+        effect = self.type.replace('_' + keys.bomb, '')
+        self.description = effect + ' explosion\nwhen thrown' 
 
     def Reset_Bomb(self):
         self.game.item_handler.Remove_Item(self, True)
@@ -21,9 +23,6 @@ class Bomb(Radius_Effect_Loot):
         if self.game.mouse.left_click:
             self.Initalise_Throw()
 
-    
-
-    
 
     # Effect of opening door on key
     def Initalise_Throw(self):
