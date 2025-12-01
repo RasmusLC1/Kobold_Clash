@@ -36,9 +36,6 @@ class Loot_Types_Handler():
         # Weighted random choice
         chosen_loot_type, chosen_cost = random.choices(valid_items, weights=weights, k=1)[0]
 
-        if chosen_loot_type == keys.gold:
-            chosen_cost = 1
-
         amount = rarity_value // chosen_cost
         return chosen_loot_type, amount
     
