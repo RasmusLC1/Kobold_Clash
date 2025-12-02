@@ -1,8 +1,7 @@
 from scripts.entities.items.weapons.weapon_handler import Weapon_Handler
 from scripts.entities.items.loot.potions.potion_handler import Potion_Handler
 from scripts.entities.items.loot.loot_handler import Loot_Handler
-import math
-import random
+import pygame
 from scripts.engine.keys.keys import keys
 
 
@@ -154,7 +153,7 @@ class Item_Handler():
             print(f"Item is not throwable {e}", item.type, item.entity, item.tile, vars(item))
 
     def Check_Keyboard_Input(self):
-        if self.game.keyboard_handler.e_pressed:
+        if self.game.keyboard_handler.is_key_pressed(pygame.K_e):
             if not self.Pick_Up_Items(2):
                 return
             else:

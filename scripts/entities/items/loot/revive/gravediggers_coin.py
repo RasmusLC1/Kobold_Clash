@@ -2,12 +2,12 @@ from scripts.entities.items.loot.loot import Loot
 import random
 from scripts.engine.keys.keys import keys
 
-
+# Revives for gold
 class Gravediggers_Coin(Loot):
     def __init__(self, game, type, pos, amount, rarity_value):
-        self.gold_cost_to_revive = int(40 // amount)
+        self.gold_cost_to_revive = int(99 // amount)
         print(self.gold_cost_to_revive)
-        self.revive_health_amount = int(max(10, game.player.max_health // amount))
+        self.revive_health_amount = int(max(10, game.player.max_health // amount // 2))
         super().__init__(game, type, pos, size=(16, 16), rarity_value=rarity_value, loot_type=keys.revive, amount=amount)
 
     

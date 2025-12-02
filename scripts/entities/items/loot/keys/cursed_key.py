@@ -15,7 +15,7 @@ class Cursed_Key(Key):
 
     # Cost souls to open door
     def Open_Door(self):
-        curse = Effect_Curse.Set_Random_Negative_Effect()
+        curse = Effect_Curse().Set_Random_Negative_Effect()
         intensity = random.randint(self.min_curse, self.max_curse)
         self.game.player.Set_Effect(curse, intensity)
         return True

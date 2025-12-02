@@ -1,7 +1,7 @@
 from scripts.entities.items.loot.loot import Loot
 from scripts.engine.keys.keys import keys
 
-
+# Revives the player in exchange for souls
 class Light_Pendant(Loot):
     def __init__(self, game, type, pos, amount, rarity_value):
         self.revive_cost_adjustment = amount

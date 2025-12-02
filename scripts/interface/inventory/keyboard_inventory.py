@@ -1,9 +1,24 @@
 from scripts.engine.keys.keys import keys
+import pygame
 
 class Keyboard_Inventory():
     def __init__(self, game, shared_inventory):
         self.inventory = shared_inventory
         self.game = game
+        self.KEY_MAP = {
+            pygame.K_1: 0,
+            pygame.K_2: 1,
+            pygame.K_3: 2,
+            pygame.K_4: 3,
+            pygame.K_5: 4,
+            pygame.K_6: 5,
+            pygame.K_7: 6,
+            pygame.K_8: 7,
+            pygame.K_9: 8,
+            pygame.K_z: 9,
+            pygame.K_x: 10,
+            pygame.K_c: 11,
+        }
     
     def Key_Board_Input(self):
         index = self.Check_Keyboard_input()
@@ -16,36 +31,16 @@ class Keyboard_Inventory():
 
     # Return negative if not no keyboard input
     def Check_Keyboard_input(self):
-        keyboard = self.game.keyboard_handler
+            keyboard_handler = self.game.keyboard_handler
+            
+            # Iterate through the keys in the predefined map
+            for key_constant, return_index in self.KEY_MAP.items():
+                
+                if keyboard_handler.is_key_pressed(key_constant):
+                    return return_index
 
-        match True:
-            case keyboard._1_pressed:
-                return 0
-            case keyboard._2_pressed:
-                return 1
-            case keyboard._3_pressed:
-                return 2
-            case keyboard._4_pressed:
-                return 3
-            case keyboard._5_pressed:
-                return 4
-            case keyboard._6_pressed:
-                return 5
-            case keyboard._7_pressed:
-                return 6
-            case keyboard._8_pressed:
-                return 7
-            case keyboard._9_pressed:
-                return 8
-            case keyboard.z_pressed:
-                return 9
-            case keyboard.x_pressed:
-                return 10
-            case keyboard.c_pressed:
-                return 11
-            case _:
-                return -999
-
+            # Default case: no mapped key is pressed
+            return -999
 
     def Find_Inventory_Slot_By_Index(self, index):
         for inventory_slot in self.inventory:

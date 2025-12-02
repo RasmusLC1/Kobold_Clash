@@ -32,9 +32,9 @@ class Player_Movement():
 
     def Check_Keyboard_input(self):
         keyboard = self.game.keyboard_handler
-        if keyboard.space_pressed:
+        if keyboard.is_key_pressed(pygame.K_SPACE):
             self.Roll_Forward(self.game.render_scroll)
-        elif keyboard.alt_pressed:
+        if keyboard.is_key_pressed(pygame.K_LALT):
             self.Back_Step(self.game.render_scroll)
 
     def Back_Step(self,  offset=(0, 0)):

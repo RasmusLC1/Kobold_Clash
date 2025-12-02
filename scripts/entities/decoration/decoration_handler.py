@@ -1,6 +1,6 @@
 from scripts.entities.decoration.decoration_spawner import Decoration_Spawner
 import random
-import math
+import pygame
 from scripts.engine.keys.keys import keys
 
 class Decoration_Handler():
@@ -87,7 +87,7 @@ class Decoration_Handler():
             decoration.Update(delta_time)
 
     def Check_Keyboard_Input(self):
-        if self.game.keyboard_handler.e_pressed:
+        if self.game.keyboard_handler.is_key_pressed(pygame.K_e):
             if not self.Check_Decorations():
                 return
             self.game.keyboard_handler.Set_E_Key(False)

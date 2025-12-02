@@ -45,8 +45,8 @@ class Decoration(PhysicsEntity):
 
     # Setting the item image and scaling it
     def Set_Entity_Image(self):
-        entity_image = self.sprite[self.animation].convert_alpha()
-        self.entity_image = pygame.transform.scale(entity_image, self.size)
+        self.entity_image = self.sprite[self.animation].convert_alpha()
+        # self.entity_image = pygame.transform.scale(entity_image, self.size)
 
     def Damage_Taken(self, damage, effect):
         if not self.health:
@@ -85,7 +85,7 @@ class Decoration(PhysicsEntity):
             self.Update_Dark_Surface()
             if not self.rendered_image:
                 self.Set_Sprite()
-                print(vars(self))
+                print("Failed to update dark surface decoration", vars(self))
                 return
         
         # Render the chest

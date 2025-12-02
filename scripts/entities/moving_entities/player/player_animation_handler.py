@@ -1,7 +1,7 @@
 from scripts.entities.moving_entities.animation.animation_handler import Animation_Handler
 from scripts.engine.keys.keys import keys
 import random
-
+import pygame
 
 ATTACK_TYPES = {
     keys.battle_axe : [keys.two_hand],
@@ -66,8 +66,8 @@ class Player_Animation_Handler(Animation_Handler):
             self.Set_Animation('idle')
             return False
 
-        if keyboard.w_pressed:
-            if keyboard.d_pressed:
+        if keyboard.is_key_pressed(pygame.K_w):
+            if keyboard.is_key_pressed(pygame.K_d):
                 self.flip[0] = False
             else:
                 self.flip[0] = True
@@ -82,12 +82,12 @@ class Player_Animation_Handler(Animation_Handler):
     # Check for special animations, such as attacks and special movements
     def Check_Special_Animations(self):
         keyboard = self.keyboard
-        if keyboard.space_pressed:
+        if keyboard.is_key_pressed(pygame.K_SPACE):
             self.Set_Animation("rolling")
             self.Set_Animation_Lock(True)
             return True
 
-        if keyboard.alt_pressed:
+        if keyboard.is_key_pressed(pygame.K_LALT):
             self.Set_Animation(keys.backstep)
             self.Set_Animation_Lock(True)
             return True

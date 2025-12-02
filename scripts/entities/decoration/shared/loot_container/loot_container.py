@@ -5,13 +5,13 @@ from scripts.engine.keys.keys import keys
 
 class Loot_Container(Decoration):
     def __init__(self, game, type, pos, size = (32, 32), destructable = False, health = 100, destruction_sound = None, destruction_clatter = 500, version = 1) -> None:
-        super().__init__(game, type, pos, size, destructable, health, destruction_sound, destruction_clatter)
         self.version = version
+        super().__init__(game, type, pos, size, destructable, health, destruction_sound, destruction_clatter)
+        self.Set_Max_Rarity()
+        self.Set_Min_Rarity()
         self.loot_type = 0
         self.empty = False
         self.loot_amount = 0
-        self.Set_Min_Rarity()
-        self.Set_Max_Rarity()
         self.text_cooldown = 0
         self.text_animation = 0
         self.loot_weights = {}
@@ -93,9 +93,10 @@ class Loot_Container(Decoration):
 
         rarity = min_rarity_values.get(self.type)
 
-        if not rarity:
+        if not rarity or not self.version:
+            print("LOOT TYPE NOT FOUND", self.type, self.version, rarity)
             rarity = 1
-            print("LOOT TYPE NOT FOUND", self.type)
+            return
 
         self.min_rarity_value = rarity * self.version
 

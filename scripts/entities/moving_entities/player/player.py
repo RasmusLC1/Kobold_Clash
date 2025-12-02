@@ -58,7 +58,8 @@ class Player(Moving_Entity):
     
 
     def Update(self, tilemap, delta_time, movement=(0, 0), offset=(0, 0)):
-
+        if self.game.keyboard_handler.is_key_pressed(pygame.K_p):
+            self.Damage_Taken(self.health)
         super().Update(tilemap, delta_time, movement=movement)
         self.Mouse_Handler()
         self.movement_handler.Update()

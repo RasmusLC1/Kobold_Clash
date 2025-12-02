@@ -29,10 +29,10 @@ class Revive_Loot_Handler(Loot_Types_Handler):
             # keys.light_pendant: 40,
 
             # Gravedigger’s Coin – Revive the player one time to full health for gold
-            keys.gravediggers_coin: 45,
+            # keys.gravediggers_coin: 40,
 
             # Blood Pact Scroll – Allows revival at the cost of a permanent debuff.
-            # keys.blood_pact : 30
+            keys.blood_pact : 30
         }
 
         return loot_types_cost
