@@ -44,6 +44,6 @@ class Cursed_Loot(Loot):
     def Set_Description(self):
         self.description = (
                             f"{self.type} {self.effect_power}\n"
-                            f"gold {self.value}\n"
+                            f"{self.Calculate_Value()} {keys.gold}\n"
                             f"rarity: {self.rarity}"
                         )

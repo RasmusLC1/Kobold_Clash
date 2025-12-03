@@ -25,6 +25,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Loot(self)
         Graphics_Loader.Asset_Keys(self)
         Graphics_Loader.Asset_Gems(self)
+        Graphics_Loader.Asset_Ingots(self)
         Graphics_Loader.Asset_Bombs(self)
         Graphics_Loader.Asset_Rune(self)
         Graphics_Loader.Asset_Menu(self)
@@ -707,6 +708,16 @@ class Graphics_Loader:
             keys.weakness_gem: get_tiles_from_sheet('items/gems/weakness.png', 0, 0, 0, 0, 32, 32),
             keys.wet_gem: get_tiles_from_sheet('items/gems/wet.png', 0, 0, 0, 0, 32, 32),
             keys.lockpick_gem: get_tiles_from_sheet('items/gems/blunt.png', 0, 0, 0, 0, 32, 32),
+        }
+        self.assets.update(loot)
+
+    def Asset_Ingots(self):
+        loot = {
+            keys.Steel_ingot: get_tiles_from_sheet('items/ingots/Steel_ingot.png', 0, 0, 0, 0, 32, 32),
+            keys.jade_ingot: get_tiles_from_sheet('items/ingots/jade_ingot.png', 0, 0, 0, 0, 32, 32),
+            keys.copper_ingot: get_tiles_from_sheet('items/ingots/copper_ingot.png', 0, 0, 0, 0, 32, 32),
+            keys.Gold_ingot: get_tiles_from_sheet('items/ingots/Gold_ingot.png', 0, 0, 0, 0, 32, 32),
+            keys.Silver_ingot: get_tiles_from_sheet('items/ingots/Silver_ingot.png', 0, 0, 0, 0, 32, 32),
         }
         self.assets.update(loot)
 

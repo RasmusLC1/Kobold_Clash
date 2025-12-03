@@ -194,6 +194,16 @@ class Items():
 
     ingot = "ingot"
 
+    Steel_ingot = "Steel_ingot"
+    
+    jade_ingot = "jade_ingot"
+    
+    copper_ingot = "copper_ingot"
+    
+    Gold_ingot = "Gold_ingot"
+    
+    Silver_ingot = "Silver_ingot"
+
 
 
 # Runes

@@ -23,7 +23,7 @@ class Loot(Item):
         pass
 
     def Set_Description(self):
-        self.description = f"gold {self.value}\n"
+        self.description = f"{self.Calculate_Value()} {keys.gold}\n"
 
     def Revive(self):
         return False

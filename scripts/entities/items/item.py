@@ -20,7 +20,7 @@ class Item(PhysicsEntity):
         self.inventory_size = (32,32) # Used to upscale item for inventory
         self.activate_cooldown = 0
         self.animation_cooldown = 0
-        self.amount = min(max_amount, int(amount)) # Cap the amount
+        self.amount = int(min(max_amount, int(amount))) # Cap the amount
         self.max_amount = max_amount
         self.max_animation = max_animation
         self.animation_cooldown_max = 0.8

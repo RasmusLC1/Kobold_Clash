@@ -249,8 +249,8 @@ class Weapon(Item):
                             f"Damage {self.damage_handler.Get_Damage()}\n"
                             f"speed {self.speed}\n"
                             f"range {self.range}\n"
-                            f"Dur {self.range}\n"
-                            f"gold {self.value}\n"
+                            f"Dur {self.durability}\n"
+                            f"{self.Calculate_Value()} {keys.gold}\n"
                         )
 
     # Set the attack direction   

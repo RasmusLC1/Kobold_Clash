@@ -26,7 +26,7 @@ class Potion(Loot):
     def Set_Description(self):
         self.description = (
                             f"{self.effect} {self.amount}\n"
-                            f"gold {self.value}\n"
+                            f"{self.Calculate_Value()} {keys.gold}\n"
                         )
 
     def Set_Sprite(self):

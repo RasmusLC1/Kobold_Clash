@@ -1,4 +1,5 @@
 from scripts.entities.items.loot.gems_ingots.gem import Gem
+from scripts.entities.items.loot.gems_ingots.ingot import Ingot
 from scripts.entities.items.loot.loot_types_handler import Loot_Types_Handler
 from scripts.engine.keys.keys import keys
 from scripts.engine.utility.luck_calculator import Luck_Calculator
@@ -12,6 +13,7 @@ class Gem_Ingot_Loot_Handler(Loot_Types_Handler):
 
         self.loot_map = {
             keys.gem: Gem,
+            keys.ingot: Ingot,
         }
 
     def Loot_Spawner(self, pos, sub_type = None, rarity_value = 0, amount = None):
@@ -43,30 +45,37 @@ class Gem_Ingot_Loot_Handler(Loot_Types_Handler):
             loot_type = keys.gem
         elif keys.ingot in sub_type:
             loot_type = keys.ingot 
-
+        print(sub_type, loot_type)
         return loot_type
 
 
     def Get_Loot_Values(self):
-        gems = {
-            keys.fire_gem : 10,
-            keys.frozen_gem : 10,
-            keys.electric_gem : 10,
-            keys.poison_gem : 10,
-            keys.vampiric_gem : 30,
-            keys.arcane_hunger : 30,
-            keys.blunt_gem : MIN_GEM_VALUE,
-            keys.slash_gem : MIN_GEM_VALUE,
-            keys.halo_gem : 40,
-            keys.power_gem : 30,
-            keys.range_gem : 10,
-            keys.speed_gem : 10,
-            keys.strength_gem : 10,
-            keys.terror_gem : 40,
-            keys.vulnerable_gem : 20,
-            keys.weakness_gem : 20,
-            keys.wet_gem : 10,
-            keys.durability_gem : 10,
+        gems_and_ingots = {
+            # keys.fire_gem: 10,        # Set fire effect on weapon
+            # keys.frozen_gem: 10,      # Set freeze effect on weapon
+            # keys.electric_gem: 10,    # Set electric effect on weapon
+            # keys.poison_gem: 10,      # Set poison effect on weapon
+            # keys.vampiric_gem: 30,    # Set vampiric effect on weapon
+            # keys.arcane_hunger_gem: 30,   # Set Arcane hunger effect on weapon
+            # keys.blunt_gem: MIN_GEM_VALUE,  # Set blunt damage on weapon
+            # keys.slash_gem: MIN_GEM_VALUE,  # Set slash damage on weapon
+            # keys.halo_gem: 40,        # Grants wielder a chance to protect from damage
+            # keys.power_gem: 30,       # Increases rune power while equipped
+            # keys.range_gem: 10,       # Increases weapon range
+            # keys.speed_gem: 10,       # Increases weapon attack speed
+            # keys.strength_gem: 10,    # Increases wielders strength
+            # keys.terror_gem: 40,      # Chance for enemies to run away
+            # keys.vulnerable_gem: 20,  # Entities hit take extra damage
+            # keys.weakness_gem: 20,    # Entities hit gets weakness
+            # keys.wet_gem: 10,         # Set wet effect on weapon, can combo
+            # keys.durability_gem: 10,  # Increases weapon health
+            # # keys.multishot: 50,       # Fires two arrows at a time (guessed cost 50)
+
+            keys.Steel_ingot: 15,     # Repairs weapons
+            keys.jade_ingot: 15,      # Repairs runes
+            keys.copper_ingot: 20,    # Add amount to items
+            keys.Gold_ingot: 30,      # Can add gem slots
+            keys.Silver_ingot: 30,    # Can upgrade rune power
         }
-        return gems
+        return gems_and_ingots
 
