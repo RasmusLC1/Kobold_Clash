@@ -3,11 +3,14 @@ from scripts.entities.items.loot.valueable.gem import Gem
 from scripts.entities.items.loot.valueable.hunter_treasure import Hunter_Treasure 
 from scripts.entities.items.loot.loot_types_handler import Loot_Types_Handler
 from scripts.engine.keys.keys import keys
+from scripts.engine.utility.luck_calculator import Luck_Calculator
+
 import random
 
 GOLD_COST = 3
 MIN_GEM_VALUE = 5
 
+# Handle valuables uniquely since gems and ingots have a large pool of potential items
 class Valuable_Loot_Handler(Loot_Types_Handler):
     def __init__(self, game):
         super().__init__(game)
@@ -34,6 +37,20 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
             return
 
         return loot
+    
+    def Get_Loot_Based_On_Rarity(self, rarity_value):
+        valid_items  = self.Get_Valid_Items(rarity_value)
+
+        if not valid_items:
+            return None, 0
+
+        weights = Luck_Calculator.Set_Weights(valid_items)
+
+        # Weighted random choice
+        chosen_loot_type, chosen_cost = random.choices(valid_items, weights=weights, k=1)[0]
+
+        amount = rarity_value // chosen_cost
+        return chosen_loot_type, amount
 
     def Spawn_Gold(self, pos, amount = 1, rarity_value = 1):
         amount *= GOLD_COST # offset the gold cost used for weights
@@ -44,7 +61,7 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
     def Spawn_Gem(self, pos, amount, rarity_value):
 
         valid_item = self.Get_Valid_Items(rarity_value, self.Get_Gem_Values())
-        weights = self.Set_Weights(valid_item)
+        weights = Luck_Calculator.Set_Weights(valid_item)
 
         chosen_loot_type, chosen_cost = random.choices(valid_item, weights=weights, k=1)[0]
         amount = rarity_value // chosen_cost

@@ -1,7 +1,7 @@
 from scripts.entities.items.loot.potions.potion import Potion
 from scripts.entities.items.loot.loot_types_handler import Loot_Types_Handler
+from scripts.engine.utility.luck_calculator import Luck_Calculator
 
-import random
 from scripts.engine.keys.keys import keys
 
 
@@ -86,7 +86,7 @@ class Potion_Handler(Loot_Types_Handler):
 
     def Loot_Spawner(self, pos, type = None, rarity_value = 0, amount = None):
         if not type:   
-            type, amount = self.Get_Loot_Based_On_Rarity(rarity_value)
+            type, amount = Luck_Calculator.Get_Loot_Based_On_Rarity(rarity_value, self.Get_Loot_Values())
 
         strength = self.Get_Strength(type)
         potion = Potion(self.game, type, pos, amount, strength)

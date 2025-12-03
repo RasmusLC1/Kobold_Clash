@@ -27,13 +27,13 @@ class Chest(Loot_Container):
 
     def Set_Loot_Types(self):
         self.loot_weights = {
-                            #  keys.passive : 0.05,
-                            #  keys.key : 0.1,
-                            #  keys.bomb : 0.2,
-                            #  keys.potion : 0.3,
-                             keys.revive : 0.5,
-                            #  keys.utility : 0.2,
-                            #  keys.curse : 0.1,
-                             keys.valuable : 0.5}
+                             keys.passive : 0.05,
+                             keys.key : 0.1,
+                             keys.bomb : 0.1,
+                             keys.potion : 0.1,
+                             keys.revive : 0.1,
+                             keys.utility : 0.2,
+                             keys.curse : 0.1,
+                             keys.valuable : 0.1}
 
 
