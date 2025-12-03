@@ -34,6 +34,7 @@ class Chest(Loot_Container):
                              keys.revive : 0.1,
                              keys.utility : 0.2,
                              keys.curse : 0.1,
-                             keys.valuable : 0.1}
+                             keys.valuable : 0.1,
+                             keys.gem_ingot : 111}
 
 

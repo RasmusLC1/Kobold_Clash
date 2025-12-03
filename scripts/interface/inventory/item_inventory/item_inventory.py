@@ -50,6 +50,9 @@ class Item_Inventory(Base_Inventory):
             inventory_slot.item.Increase_Amount(amount_to_merge)
             item.Set_Amount(item.amount - amount_to_merge)
 
+            inventory_slot.item.Set_Description()
+            item.Set_Description()
+
             # If the entire item was merged, remove it
             if item.amount == 0:
                 self.game.item_handler.Remove_Item(item)

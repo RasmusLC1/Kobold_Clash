@@ -188,6 +188,13 @@ class Items():
 
     nothing = "nothing"
 
+# Ingots
+
+    gem_ingot = "gem_ingot"
+
+    ingot = "ingot"
+
+
 
 # Runes
     

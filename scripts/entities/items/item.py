@@ -5,7 +5,7 @@ from scripts.entities.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 
 class Item(PhysicsEntity):
-    def __init__(self, game, type, sub_category, pos, size = (16, 16), amount = 1, add_to_tile = True, rarity_value = 100, max_amount=1):
+    def __init__(self, game, type, sub_category, pos, size = (16, 16), amount = 1, add_to_tile = True, rarity_value = 100, max_amount=1, max_animation = 0):
         super().__init__(game, type, keys.item, pos, size, sub_category)
         self.game = game
         self.sub_type = type
@@ -22,7 +22,7 @@ class Item(PhysicsEntity):
         self.animation_cooldown = 0
         self.amount = min(max_amount, int(amount)) # Cap the amount
         self.max_amount = max_amount
-        self.max_animation = 0
+        self.max_animation = max_animation
         self.animation_cooldown_max = 0.8
 
         self.animation = random.randint(0, self.max_animation)
@@ -139,6 +139,7 @@ class Item(PhysicsEntity):
             self.Set_Entity_Image()
         except Exception as e:
             print("SETTING ITEM SUBTYPE FAILED", self.sub_type, self.type)
+            self.Delete_Item()
 
     # Setting the item image and scaling it
     def Set_Entity_Image(self):
