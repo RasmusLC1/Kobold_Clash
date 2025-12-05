@@ -1,6 +1,7 @@
 import random
 from scripts.entities.decoration.decoration import Decoration
 from scripts.engine.keys.keys import keys
+from scripts.engine.utility.luck_calculator import Luck_Calculator
 
 
 class Loot_Container(Decoration):
