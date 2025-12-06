@@ -196,12 +196,14 @@ class Item_Handler():
 
     def Find_Items_In_Inventory(self, index):
         for item in self.items:
-            print(item.type, index)
             if not item.inventory_index:
                 return
             if item.inventory_index == index:
                 return item
             
+    # Returns a list of all item_types that can be spawned
+    def Check_If_Loot_Is_Affordable(self, item_types, rarity_value):
+        return self.loot_handler.Check_If_Loot_Is_Affordable(item_types, rarity_value)
     
     def Spawn_Item_By_Type(self, category, pos, type = None, rarity_value = 0):
         self.loot_handler.Spawn_Loot_Type(category, pos, type = type, rarity_value = rarity_value)

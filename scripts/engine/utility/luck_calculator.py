@@ -39,3 +39,30 @@ class Luck_Calculator():
             weights.append(weight)
 
         return weights
+    
+    
+    def Calculate_Rarity_Value(game, min_rarity_value, max_rarity_value):
+        # Depth 0–7 → 0–30
+        depth_factor = (game.depth / 7) * 30
+
+        # Luck 0–10 → 0–30
+        luck_factor = (game.player.luck / 10) * 30
+
+        # Clatter 0–10 → 0–30
+        clatter_factor = (game.clatter.Get_Awakening_Level() / 10) * 30
+
+        # Base randomness (small noise): 0–20
+        noise = random.uniform(0, 10)
+
+        # Swing randomness (rare bumps/dips): -10 to +10
+        swing = random.uniform(-5, 5)
+
+        total_rarity = depth_factor + luck_factor + clatter_factor + noise + swing
+        return Luck_Calculator.Clamp_Rarity(total_rarity, min_rarity_value, max_rarity_value)
+    
+    
+    # Clamp the rarity value to prevent legendaries from dropping in vases
+    def Clamp_Rarity(rarity_value, min_rarity_value, max_rarity_value):
+        return max(min_rarity_value, min(max_rarity_value, rarity_value))
+
+

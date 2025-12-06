@@ -23,6 +23,11 @@ class Loot_Types_Handler():
             return
 
         return loot
+    
+
+    def Get_Lowest_Value(self, rarity_value):
+        min_cost = min(self.Get_Loot_Values().values())
+        return rarity_value > min_cost
 
 
     def Get_Loot_Values(self):

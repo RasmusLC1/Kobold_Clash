@@ -111,8 +111,24 @@ class Loot_Handler():
 
         return weights
 
- 
-    # Function for creating loot
+    
+    # Returns a list of all item_types that can be spawned
+    def Check_If_Loot_Is_Affordable(self, item_types, rarity_value):
+        item_types_that_can_spawn = []
+        for item_type in item_types:
+            loot_handler = self.loot_types_dic.get(item_type)
+            if not loot_handler:
+                print("Loot handler not found", item_type)
+                continue
+
+            if loot_handler.Get_Lowest_Value(rarity_value):
+                item_types_that_can_spawn.append(item_type)
+
+        return item_types_that_can_spawn
+
+
+
+    # Spawns random loot by using internal weights
     def Spawn_Random_Loot(self, pos):
         weights_dict = self.Adjust_Weights()
         weight_values = [weights_dict[loot_types_keys] for loot_types_keys in self.loot_types_keys]

@@ -20,7 +20,7 @@ class Level_Loader():
         self.game = game
         self.initialised = False
         self.game.dungeon_type = None
-        self.game.depth = 7
+        self.game.depth = 1
 
     def load_level_From_Save(self, map_id):
         # Initialise the engine again upon load to prevent memory leaks
