@@ -50,6 +50,7 @@ class Decoration_Handler():
             self.saved_data[decoration.ID] = decoration.saved_data
 
     def Load_Data(self, data):
+        self.Initialise()
         self.decoration_spawner.Get_Dungeon_Type()
         for ID, item_data in data.items():
             if not item_data:

@@ -544,7 +544,7 @@ class Graphics_Loader:
 
     def Asset_Interative_Objects_List(self):
         Objects_assets = {
-            keys.chest: get_tiles_from_sheet('decoration/chest.png', 8, 0, 0, 0, 32, 32),
+            keys.chest: get_tiles_from_sheet('decoration/loot_containers/chest.png', 8, 0, 0, 0, 32, 32),
             keys.vase: get_tiles_from_sheet('decoration/loot_containers/vase/vase.png', 4, 0, 0, 0, 32, 32),
             keys.bookshelf: get_tiles_from_sheet('decoration/loot_containers/bookshelf.png', 3, 0, 0, 0, 32, 32),
             keys.soul_well: get_tiles_from_sheet('decoration/Shrine/soul_well.png', 3, 0, 0, 0, 64, 64),

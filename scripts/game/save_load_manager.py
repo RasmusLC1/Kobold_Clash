@@ -29,13 +29,6 @@ class Save_Load_Manager():
             entity_data = data[name]
             entity.Load_Data(entity_data)
 
-        self.Save_Game_Data(entity_data['game'])
-
-    
-    def Load_Game_Data(self, data):
-        self.game.depth = data['depth']
-
-
 
     def Clear_Data_File(self, name):
         file_name = self.save_folder+"/"+name+self.file_extension

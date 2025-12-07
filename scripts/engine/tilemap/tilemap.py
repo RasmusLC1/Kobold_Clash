@@ -7,6 +7,8 @@ import json
 import pygame
 import math
 import copy
+import traceback
+
 
 # Tiles that are checked for physics
 NEIGHBOR_OFFSETS = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 0), (-1, 1), (0, 1), (1, 1)]
@@ -41,7 +43,8 @@ class Tilemap:
             json.dump({
                 'tilemap': serializable_tilemap,
                 'tile_size': self.tile_size,
-                'offgrid': self.offgrid_tiles
+                'offgrid': self.offgrid_tiles,
+                'dungeon_type': self.dungeon_type
             }, f)
 
 
@@ -51,7 +54,9 @@ class Tilemap:
 
         self.tile_size = map_data['tile_size']
         tilemap_data = map_data['tilemap']
-        self.Set_Dungeon_Type()
+        self.dungeon_type = map_data.get('dungeon_type')
+        if not self.dungeon_type:
+            self.Set_Dungeon_Type()
 
         for tile_key_str, tile_values in tilemap_data.items():
             x, y = map(int, tile_key_str.split(';'))
@@ -93,6 +98,9 @@ class Tilemap:
 
 
     def Set_Sub_Type(self, type):
+        print(self.dungeon_type, type)
+        traceback.print_stack(limit=5)
+        exit(0)
         return self.dungeon_type + type
 
     # Runs one time when loading, but expensive to compute

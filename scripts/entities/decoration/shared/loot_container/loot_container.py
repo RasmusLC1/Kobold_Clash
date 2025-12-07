@@ -5,9 +5,10 @@ from scripts.engine.utility.luck_calculator import Luck_Calculator
 
 
 class Loot_Container(Decoration):
-    def __init__(self, game, type, pos, size = (32, 32), destructable = False, health = 100, destruction_sound = None, destruction_clatter = 500, version = 1) -> None:
-        self.version = version
-        super().__init__(game, type, pos, size, destructable, health, destruction_sound, destruction_clatter)
+    def __init__(self, game, type, pos, size = (32, 32), destructable = False, health = 100, destruction_sound = None, destruction_clatter = 500, max_version = 0) -> None:
+        self.max_version = max_version # 0 indexed
+        version = self.Set_Version(game)
+        super().__init__(game, type, pos, size, destructable, health, destruction_sound, destruction_clatter, version, max_version)
         self.Set_Max_Rarity()
         self.Set_Min_Rarity()
         self.loot_type = 0
@@ -55,8 +56,9 @@ class Loot_Container(Decoration):
         rand_pos_y = self.pos[1] + random.randint(-100, 100)/10
         return (rand_pos_x, rand_pos_y)
 
-
-
+    # Return default version 0
+    def Set_Version(self, game):
+        return 0
 
     def Set_Min_Rarity(self):
         min_rarity_values = {
@@ -71,12 +73,12 @@ class Loot_Container(Decoration):
 
         rarity = min_rarity_values.get(self.type)
 
-        if not rarity or not self.version:
-            print("LOOT TYPE NOT FOUND", self.type, self.version, rarity)
+        if not rarity:
+            print("LOOT TYPE NOT FOUND", self.type, self.animation, rarity)
             rarity = 1
             return
 
-        self.min_rarity_value = rarity * self.version
+        self.min_rarity_value = rarity * self.animation
 
 
     def Set_Max_Rarity(self):
@@ -96,7 +98,7 @@ class Loot_Container(Decoration):
             rarity = 1
             print("LOOT TYPE NOT FOUND", self.type)
 
-        self.max_rarity_value = rarity * self.version
+        self.max_rarity_value = rarity * self.animation
 
 
     def Spawn_Loot(self, loot_type, pos, rarity_value):
