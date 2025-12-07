@@ -1,4 +1,5 @@
 import random
+import pickle
 
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.player.player import Player
@@ -21,14 +22,43 @@ class Level_Loader():
         self.initialised = False
         self.game.dungeon_type = None
         self.game.depth = 1
+        self.saved_data = {}
+ 
 
+
+    def Save_Level_Data(self):
+        self.saved_data['depth'] = self.game.depth
+        self.saved_data['dungeon_type'] = self.game.dungeon_type
+
+    def Load_Data(self, data):
+        if not data:
+            return
+        self.game.depth = data['depth']
+        self.game.dungeon_type = data['dungeon_type']
+    
     def load_level_From_Save(self, map_id):
+
         # Initialise the engine again upon load to prevent memory leaks
         self.game.game_initialiser.initialise_Engine()
-
+        data = self.Open_File('save_Data')
+        self.Load_Data(data['level_loader']) # Make sure to initialise the level data first, can be reworked  later
         self.load_level(map_id)
-        self.game.save_load_manager.Load_Data_Structure() # Load data from save file
 
+        self.game.save_load_manager.Load_Data_Structure(data) # Load data from save file
+
+
+    def Open_File(self, name):
+        save_load_manager = self.game.save_load_manager
+        file_name = save_load_manager.save_folder+"/"+name+save_load_manager.file_extension
+
+        if not save_load_manager.Check_For_File(file_name):
+            print("File not found\t", file_name)
+            exit(0)
+
+        data_file = open(file_name, "rb")
+        
+        data = pickle.load(data_file)
+        return data
 
     def Initialise_Level(self):
         self.game.depth += 1

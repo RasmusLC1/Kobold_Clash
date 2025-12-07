@@ -29,6 +29,7 @@ class Tilemap:
         self.dungeon_type = None
      
     def save(self, path):
+
         serializable_tilemap = {
             f"{x};{y}": {
                 keys.type: tile[keys.type],
@@ -48,7 +49,11 @@ class Tilemap:
             }, f)
 
 
-    def Load(self, path):
+    def Load(self, path, data = None):
+        # Set the dungeon information
+        if data:
+            self.game.depth = data['depth']
+            self.game.dungeon_type = data['dungeon_type']
         with open(path, 'r') as f:
             map_data = json.load(f)
 
@@ -98,9 +103,6 @@ class Tilemap:
 
 
     def Set_Sub_Type(self, type):
-        print(self.dungeon_type, type)
-        traceback.print_stack(limit=5)
-        exit(0)
         return self.dungeon_type + type
 
     # Runs one time when loading, but expensive to compute
