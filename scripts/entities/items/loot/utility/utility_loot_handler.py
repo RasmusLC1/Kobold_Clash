@@ -20,5 +20,19 @@ class Utility_Loot_Handler(Loot_Types_Handler):
             keys.recall_scroll: Recall_Scroll,
         }
 
- 
 
+    def Get_Loot_Values(self):
+        loot_types_cost = {
+            # Echo Bell – Creates a noise at a targeted location to lure enemies away.
+            keys.echo_bell: 20,
+            # Faded Hourglass – Slows down nearby enemies movement.
+            keys.faded_hourglass: 30,
+            # Ethereal Chains – Snares nearby enemies for a short duration.
+            keys.ethereal_chains: 50,
+            # Cloak of Shadows – Temporarily makes the player invisible to enemies.
+            keys.shadow_cloak: 50,
+            # Recall Parchment – Teleports the player back to the last shrine visited.
+            keys.recall_scroll: 20,
+        }
+
+        return loot_types_cost

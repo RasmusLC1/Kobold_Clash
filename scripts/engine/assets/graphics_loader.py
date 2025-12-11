@@ -25,6 +25,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_Loot(self)
         Graphics_Loader.Asset_Keys(self)
         Graphics_Loader.Asset_Gems(self)
+        Graphics_Loader.Asset_Ingots(self)
         Graphics_Loader.Asset_Bombs(self)
         Graphics_Loader.Asset_Rune(self)
         Graphics_Loader.Asset_Menu(self)
@@ -429,7 +430,7 @@ class Graphics_Loader:
             keys.sword_running_behind: get_tiles_from_sheet('items/weapons/sword/sword_running_behind.png', 5, 0, 0, 0, 32, 32),
             keys.sword_running_down: get_tiles_from_sheet('items/weapons/sword/sword_running_front.png', 5, 0, 0, 0, 32, 32),
             keys.sword_cut: get_tiles_from_sheet('items/weapons/sword/sword_attack_cut.png', 4, 0, 0, 0, 48, 48),
-            keys.sword_stab: get_tiles_from_sheet('items/weapons/sword/sword_attack.png', 4, 0, 0, 0, 48, 48),
+            keys.sword_stab: get_tiles_from_sheet('items/weapons/sword/sword_attack_stab.png', 4, 0, 0, 0, 48, 48),
             
             keys.torch: get_tiles_from_sheet('items/weapons/torch/torch.png', 3, 0, 0, 0, 32, 32),
             keys.torch_idle: get_tiles_from_sheet('items/weapons/torch/torch_idle.png', 3, 0, 0, 0, 32, 32),
@@ -543,7 +544,7 @@ class Graphics_Loader:
 
     def Asset_Interative_Objects_List(self):
         Objects_assets = {
-            keys.chest: get_tiles_from_sheet('decoration/chest.png', 8, 0, 0, 0, 32, 32),
+            keys.chest: get_tiles_from_sheet('decoration/loot_containers/chest.png', 8, 0, 0, 0, 32, 32),
             keys.vase: get_tiles_from_sheet('decoration/loot_containers/vase/vase.png', 4, 0, 0, 0, 32, 32),
             keys.bookshelf: get_tiles_from_sheet('decoration/loot_containers/bookshelf.png', 3, 0, 0, 0, 32, 32),
             keys.soul_well: get_tiles_from_sheet('decoration/Shrine/soul_well.png', 3, 0, 0, 0, 64, 64),
@@ -672,10 +673,10 @@ class Graphics_Loader:
             keys.demonic_bargain: get_tiles_from_sheet('items/cursed/demonic_bargain.png', 0, 0, 0, 0, 32, 32),
             keys.temptress_embrace: get_tiles_from_sheet('items/cursed/temptress_embrace.png', 0, 0, 0, 0, 32, 32),
             keys.black_coin: get_tiles_from_sheet('items/cursed/black_coin.png', 0, 0, 0, 0, 32, 32),
-            keys.blood_coin: get_tiles_from_sheet('items/revive/blood_coin.png', 0, 0, 0, 0, 32, 32),
             keys.blood_pact: get_tiles_from_sheet('items/revive/blood_pact.png', 0, 0, 0, 0, 32, 32),
             keys.phoenix_feather: get_tiles_from_sheet('items/revive/phoenix_feather.png', 0, 0, 0, 0, 32, 32),
             keys.light_pendant: get_tiles_from_sheet('items/revive/light_pendant.png', 0, 0, 0, 0, 32, 32),
+            keys.gravediggers_coin: get_tiles_from_sheet('items/revive/gravediggers_coin.png', 0, 0, 0, 0, 32, 32),
             keys.faded_hourglass: get_tiles_from_sheet('items/utility/faded_hourglass.png', 4, 0, 0, 0, 32, 32),
             keys.ethereal_chains: get_tiles_from_sheet('items/utility/ethereal_chains.png', 0, 0, 0, 0, 32, 32),
             keys.recall_scroll: get_tiles_from_sheet('items/utility/recall_parchment.png', 0, 0, 0, 0, 32, 32),
@@ -707,6 +708,16 @@ class Graphics_Loader:
             keys.weakness_gem: get_tiles_from_sheet('items/gems/weakness.png', 0, 0, 0, 0, 32, 32),
             keys.wet_gem: get_tiles_from_sheet('items/gems/wet.png', 0, 0, 0, 0, 32, 32),
             keys.lockpick_gem: get_tiles_from_sheet('items/gems/blunt.png', 0, 0, 0, 0, 32, 32),
+        }
+        self.assets.update(loot)
+
+    def Asset_Ingots(self):
+        loot = {
+            keys.Steel_ingot: get_tiles_from_sheet('items/ingots/Steel_ingot.png', 0, 0, 0, 0, 32, 32),
+            keys.jade_ingot: get_tiles_from_sheet('items/ingots/jade_ingot.png', 0, 0, 0, 0, 32, 32),
+            keys.copper_ingot: get_tiles_from_sheet('items/ingots/copper_ingot.png', 0, 0, 0, 0, 32, 32),
+            keys.Gold_ingot: get_tiles_from_sheet('items/ingots/Gold_ingot.png', 0, 0, 0, 0, 32, 32),
+            keys.Silver_ingot: get_tiles_from_sheet('items/ingots/Silver_ingot.png', 0, 0, 0, 0, 32, 32),
         }
         self.assets.update(loot)
 

@@ -106,7 +106,7 @@ class Elemental_Explosion(Item):
 
     # Own render function since we don't need to compute light
     def Render(self, surf, offset=(0, 0)):
-        self.Update_Animation()
+        self.Update_Animation(self.game.delta_time)
         try:
             weapon_image = self.game.assets[self.type][self.animation].convert_alpha()
         except Exception as e:

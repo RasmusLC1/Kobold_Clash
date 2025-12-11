@@ -11,12 +11,13 @@ class Inventory_Effect():
     def Update(self):
         pass
 
-    def Enable(self):
-        pass
+    def Enable(self, effect_strength = 1):
+        self.player.Set_Effect(self.effect, effect_strength, True)
+        
 
-    def Disable(self):
-        pass
-
+    def Disable(self, effect_strength = 1):
+        self.player.Remove_Effect(self.effect, effect_strength)
+        
     def Damage_Taken(self):
         pass
 

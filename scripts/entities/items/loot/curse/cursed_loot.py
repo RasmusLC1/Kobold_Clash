@@ -5,24 +5,26 @@ import pygame
 # Generic passive loot that changes depending on the type, simplified to one
 # class since it uses effects
 class Cursed_Loot(Loot):
-    def __init__(self, game, type, pos):
-        super().__init__(game, type, pos, (16, 16), 10, keys.passive)
+    def __init__(self, game, type, pos, effect_power, value):
+        self.effect_power = int(effect_power)
+        super().__init__(game, type, pos, (16, 16), value, keys.passive)
+
 
     def Pick_Up(self):
         if not super().Pick_Up():
             return False
         
-        self.game.player.inventory_effects.Enable(self.type)
+        self.game.player.Enable_Inventory_Effect(self.type, self.effect_power)
         return True
 
     def Place_Down(self):
-        if not super().Place_Down():
+        if self.game.decoration_handler.Check_Item_Collision(self):
             return False
-        
-        self.game.player.inventory_effects.Disable(self.type)
-        return True
+        self.game.player.Disable_Inventory_Effect(self.type, self.effect_power)
+        self.Delete_Item()
+        return False
 
-        
+
 
       # # Render item with fadeout if it's in an illegal position
     def Render_In_Bounds(self, player_pos, mouse_pos, surf, offset = (0,0)):
@@ -39,5 +41,9 @@ class Cursed_Loot(Loot):
         surf.blit(entity_image, pos)
         surf.blit(red_overlay, pos)
 
-    def Place_Down(self):
-        self.Delete_Item()
+    def Set_Description(self):
+        self.description = (
+                            f"{self.type} {self.effect_power}\n"
+                            f"{self.Calculate_Value()} {keys.gold}\n"
+                            f"rarity: {self.rarity}"
+                        )

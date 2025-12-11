@@ -14,8 +14,3 @@ class Magnet(Effect):
             return False
         self.entity.game.item_handler.Pick_Up_All_Nearby_Items(self.effect)
         return True
-
-    
-
-    
-    

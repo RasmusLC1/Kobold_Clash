@@ -1,6 +1,6 @@
 from scripts.entities.decoration.decoration_spawner import Decoration_Spawner
 import random
-import math
+import pygame
 from scripts.engine.keys.keys import keys
 
 class Decoration_Handler():
@@ -28,7 +28,7 @@ class Decoration_Handler():
         self.decorations.clear()
         self.saved_data.clear()
 
-    def Initialise(self, depth=0):
+    def Initialise(self):
         self.decorations, self.item_sacrifice, self.spawn_methods = self.decoration_spawner.Initialise()
 
 
@@ -50,6 +50,7 @@ class Decoration_Handler():
             self.saved_data[decoration.ID] = decoration.saved_data
 
     def Load_Data(self, data):
+        self.Initialise()
         self.decoration_spawner.Get_Dungeon_Type()
         for ID, item_data in data.items():
             if not item_data:
@@ -87,7 +88,7 @@ class Decoration_Handler():
             decoration.Update(delta_time)
 
     def Check_Keyboard_Input(self):
-        if self.game.keyboard_handler.e_pressed:
+        if self.game.keyboard_handler.is_key_pressed(pygame.K_e):
             if not self.Check_Decorations():
                 return
             self.game.keyboard_handler.Set_E_Key(False)

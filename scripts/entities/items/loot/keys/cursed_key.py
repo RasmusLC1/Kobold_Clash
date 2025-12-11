@@ -4,14 +4,18 @@ import random
 from scripts.engine.keys.keys import keys
 
 class Cursed_Key(Key):
-    def __init__(self, game, pos):
-        super().__init__(game, keys.cursed_key, pos)
+    def __init__(self, game, type, pos, amount, rarity_value):
+        super().__init__(game, keys.cursed_key, pos, rarity_value)
+        self.min_curse =  max(1, 4 - amount) 
+        self.max_curse =  max(1, 6 - amount)
+
+    def Set_Description(self):
         self.description = 'Open any\ndoor and\nbe cursed'
-        self.curse_generator = Effect_Curse()
+
 
     # Cost souls to open door
     def Open_Door(self):
-        curse = self.curse_generator.Set_Random_Negative_Effect()
-        intensity = random.randint(3, 5)
+        curse = Effect_Curse().Set_Random_Negative_Effect()
+        intensity = random.randint(self.min_curse, self.max_curse)
         self.game.player.Set_Effect(curse, intensity)
         return True

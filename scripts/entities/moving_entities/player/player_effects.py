@@ -11,6 +11,7 @@ from scripts.entities.moving_entities.effects.player.power import Power
 from scripts.entities.moving_entities.effects.player.demonic_bargain import Demonic_Bargain
 from scripts.entities.moving_entities.effects.player.temptress_embrace import Temptress_Embrace
 from scripts.entities.moving_entities.effects.souls.increase_souls import Increase_Souls
+from scripts.entities.moving_entities.effects.player.luck import Luck
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.player.effect_icon import Effect_Icon
 
@@ -21,6 +22,7 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
 
         self.active_effect_symbols = []
 
+        # UI position
         self.x_pos = 20
         self.y_pos = 60
         self.y_pos_increment = 20
@@ -50,6 +52,7 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
         self.temptress_embrace = Temptress_Embrace(self.entity)
         self.increase_souls = Increase_Souls(self.entity)
         self.soul_drained = Soul_Drained(self.entity)
+        self.luck = Luck(self.entity)
 
         self.effects.update({
             self.silence.effect_type: self.silence,
@@ -63,6 +66,7 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
             self.temptress_embrace.effect_type: self.temptress_embrace,
             self.increase_souls.effect_type: self.increase_souls,
             self.soul_drained.effect_type: self.soul_drained,
+            self.luck.effect_type: self.luck,
             'player_movement_invunerable': self.player_movement_invunerable
         })
 

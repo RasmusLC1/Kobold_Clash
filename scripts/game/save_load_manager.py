@@ -13,16 +13,7 @@ class Save_Load_Manager():
         self.saved_data = {}
 
 
-    def Load_Game_Data(self, name):
-        file_name = self.save_folder+"/"+name+self.file_extension
-        # Graceful exit if file does not exists
-        if not self.Check_For_File(file_name):
-            print("File not found\t", file_name)
-            exit(0)
-        data_file = open(file_name, "rb")
-        
-        data = pickle.load(data_file)
-        
+    def Load_Game_Data(self, data):
         # Iterate over the data and assign it correctly to the appropriate entity
         for index, name in enumerate(self.entities_to_load_names):
             entity = self.entities_to_load[index]
@@ -66,13 +57,14 @@ class Save_Load_Manager():
         self.game.item_handler.Save_Item_Data()
         self.game.rune_handler.Save_Rune_Data()
         self.game.trap_handler.Save_Trap_Data()
-        self.Inventory_Save_Data()
         self.game.decoration_handler.Save_Decoration_Data()
-
-    
-
-    def Inventory_Save_Data(self):
         self.game.inventory.Save_Inventory_Data()
+        self.game.level_loader.Save_Level_Data()
+        # self.Save_Game_Data(self.saved_data['game'])
+        
+    # # Save game values such as depth
+    # def Save_Game_Data(self, save_data):
+    #     save_data['depth'] = self.game.depth
 
     def Save_Data_Structure(self):
         self.Save_Data()
@@ -84,6 +76,7 @@ class Save_Load_Manager():
                                 self.game.trap_handler.saved_data,
                                 self.game.inventory.saved_data,
                                 self.game.decoration_handler.saved_data,
+                                self.game.level_loader.saved_data,
                                 ]
         
         self.data_structure_names = ['player',
@@ -93,6 +86,7 @@ class Save_Load_Manager():
                                     'trap_handler',
                                     'inventory',
                                     'decoration_handler',
+                                    'level_loader'
                                     ]
         
         for index, name in enumerate(self.data_structure_names):
@@ -103,7 +97,7 @@ class Save_Load_Manager():
         self.Save_Game_Data('save_Data')
 
 
-    def Load_Data_Structure(self):
+    def Load_Data_Structure(self, data):
         self.entities_to_load = [self.game.player,
                                 self.game.item_handler,
                                 self.game.rune_handler,
@@ -121,5 +115,5 @@ class Save_Load_Manager():
                                      'inventory',
                                     'decoration_handler',
                                     ]
-        self.Load_Game_Data('save_Data')
+        self.Load_Game_Data(data)
         

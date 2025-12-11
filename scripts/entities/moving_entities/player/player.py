@@ -31,6 +31,7 @@ class Player(Moving_Entity):
         self.game.light_handler.Initialise_Light_Level(self.tile)
         self.player_particle_cooldown = 0
         self.last_shrine_visited = None # used for teleporting and other shrine logic
+        self.luck = 10 # player luck, can be upgraded
 
         self.weapons = []
         self.weapon_handler = Player_Weapon_Handler(self.game, self)
@@ -57,7 +58,8 @@ class Player(Moving_Entity):
     
 
     def Update(self, tilemap, delta_time, movement=(0, 0), offset=(0, 0)):
-
+        if self.game.keyboard_handler.is_key_pressed(pygame.K_p):
+            self.Damage_Taken(self.health)
         super().Update(tilemap, delta_time, movement=movement)
         self.Mouse_Handler()
         self.movement_handler.Update()
@@ -90,6 +92,8 @@ class Player(Moving_Entity):
             return False
         self.souls_to_remove += subtract_soul
         return True
+    
+    
 
     # Subtract the souls that are to be removed from total souls to get a correct souls count
     def Get_Total_Available_Souls(self):
@@ -153,6 +157,19 @@ class Player(Moving_Entity):
     def Find_Nearby_Chests(self, range):
         self.nearby_chests = self.game.chest_handler.Find_Nearby_Chests(self.pos, range)
 
+    def Enable_Inventory_Effect(self, effect, effect_power):
+        self.inventory_effects.Enable(effect, effect_power)
+
+    def Disable_Inventory_Effect(self, effect, effect_power):
+        self.inventory_effects.Disable(effect, effect_power)
+
+    # Interface function to call the actual inventory function
+    def Pay_Gold(self, amount):
+        return self.game.inventory.item_inventory.Pay_Gold(amount)
+
+    # Set luck, called by luck effect, minimum value of 1
+    def Update_Luck(self, amount):
+        self.luck = max(1, amount)
 
     def Check_If_Dead(self):
         # Check if the player can be revived

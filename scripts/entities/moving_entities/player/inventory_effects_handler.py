@@ -11,7 +11,6 @@ from scripts.entities.moving_entities.player.inventory_effects.muffled_boots imp
 from scripts.entities.moving_entities.player.inventory_effects.halo import Halo
 from scripts.entities.moving_entities.player.inventory_effects.black_coin import Black_Coin
 from scripts.entities.moving_entities.player.inventory_effects.vampire_locket import Vampire_Locket
-from scripts.entities.moving_entities.player.inventory_effects.blood_pact import Blood_Pact
 from scripts.entities.moving_entities.player.inventory_effects.demonic_bargain import Demonic_Bargain
 from scripts.entities.moving_entities.player.inventory_effects.temptress_embrace import Temptress_Embrace
 from scripts.entities.moving_entities.player.inventory_effects.cursed_dice import Cursed_Dice
@@ -32,39 +31,38 @@ class Inventory_Effects_Handler:
         self.effects = {
             keys.blood_tomb: Blood_Tomb(self.entity),
             keys.magnet: Magnet(self.entity),
-            "compass": Compass(self.entity),
-            "power_totem": Power_Totem(self.entity),
-            "strength_totem": Strength_Totem(self.entity),
-            "luck_totem": Luck_Totem(self.entity),
-            "faith_pendant": Faith_Pendant(self.entity),
-            "anchor_stone": Anchor_Stone(self.entity),
-            "muffled_boots": Muffled_Boots(self.entity),
+            keys.compass: Compass(self.entity),
+            keys.power_totem: Power_Totem(self.entity),
+            keys.strength_totem: Strength_Totem(self.entity),
+            keys.luck_totem: Luck_Totem(self.entity),
+            keys.faith_pendant: Faith_Pendant(self.entity),
+            keys.anchor_stone: Anchor_Stone(self.entity),
+            keys.muffled_boots: Muffled_Boots(self.entity),
             keys.halo: Halo(self.entity),
-            "black_coin": Black_Coin(self.entity),
-            "vampire_locket": Vampire_Locket(self.entity),
-            "blood_pact": Blood_Pact(self.entity),
+            keys.black_coin: Black_Coin(self.entity),
+            keys.vampire_locket: Vampire_Locket(self.entity),
             keys.demonic_bargain: Demonic_Bargain(self.entity),
             keys.temptress_embrace: Temptress_Embrace(self.entity, ),
-            "cursed_dice": Cursed_Dice(self.entity, ),
-            "eldritch_mirror": Eldritch_Mirror(self.entity),
-            "forsaken_grimoire": Forsaken_Grimoire(self.entity),
-            "cracked_talisman": Cracked_Talisman(self.entity),
-            "echoing_skull": Echoing_Skull(self.entity),
+            keys.cursed_dice: Cursed_Dice(self.entity, ),
+            keys.eldritch_mirror: Eldritch_Mirror(self.entity),
+            keys.forsaken_grimoire: Forsaken_Grimoire(self.entity),
+            keys.cracked_talisman: Cracked_Talisman(self.entity),
+            keys.echoing_skull: Echoing_Skull(self.entity),
         }
 
         self.active_effects = []
 
     # Enable a specific inventory effect
-    def Enable(self, effect_name):
+    def Enable(self, effect_name, effect_strength = 1):
         effect = self.effects.get(effect_name)
         if effect:
-            effect.Enable()
+            effect.Enable(effect_strength)
 
     # Disable a specific inventory effect
-    def Disable(self, effect_name):
+    def Disable(self, effect_name, effect_strength = 1):
         effect = self.effects.get(effect_name)
         if effect:
-            effect.Disable()
+            effect.Disable(effect_strength)
 
 
     def Get_Description(self, effect_name):

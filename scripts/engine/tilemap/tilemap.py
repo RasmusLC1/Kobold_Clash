@@ -7,6 +7,8 @@ import json
 import pygame
 import math
 import copy
+import traceback
+
 
 # Tiles that are checked for physics
 NEIGHBOR_OFFSETS = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 0), (-1, 1), (0, 1), (1, 1)]
@@ -27,6 +29,7 @@ class Tilemap:
         self.dungeon_type = None
      
     def save(self, path):
+
         serializable_tilemap = {
             f"{x};{y}": {
                 keys.type: tile[keys.type],
@@ -41,17 +44,24 @@ class Tilemap:
             json.dump({
                 'tilemap': serializable_tilemap,
                 'tile_size': self.tile_size,
-                'offgrid': self.offgrid_tiles
+                'offgrid': self.offgrid_tiles,
+                'dungeon_type': self.dungeon_type
             }, f)
 
 
-    def Load(self, path):
+    def Load(self, path, data = None):
+        # Set the dungeon information
+        if data:
+            self.game.depth = data['depth']
+            self.game.dungeon_type = data['dungeon_type']
         with open(path, 'r') as f:
             map_data = json.load(f)
 
         self.tile_size = map_data['tile_size']
         tilemap_data = map_data['tilemap']
-        self.Set_Dungeon_Type()
+        self.dungeon_type = map_data.get('dungeon_type')
+        if not self.dungeon_type:
+            self.Set_Dungeon_Type()
 
         for tile_key_str, tile_values in tilemap_data.items():
             x, y = map(int, tile_key_str.split(';'))

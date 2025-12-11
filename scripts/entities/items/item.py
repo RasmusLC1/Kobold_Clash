@@ -5,10 +5,11 @@ from scripts.entities.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 
 class Item(PhysicsEntity):
-    def __init__(self, game, type, sub_category, pos, size, amount = 1, add_to_tile = True, value = 100):
+    def __init__(self, game, type, sub_category, pos, size = (16, 16), amount = 1, add_to_tile = True, rarity_value = 100, max_amount=1, max_animation = 0):
         super().__init__(game, type, keys.item, pos, size, sub_category)
         self.game = game
         self.sub_type = type
+        self.rarity = self.Calculate_Rarity(rarity_value) # rarity used for loot defaults to common
         self.used = False
         self.picked_up = False
         self.clicked = False # Used for if the item is active
@@ -19,15 +20,15 @@ class Item(PhysicsEntity):
         self.inventory_size = (32,32) # Used to upscale item for inventory
         self.activate_cooldown = 0
         self.animation_cooldown = 0
-        self.amount = amount
-        self.max_amount = 1
-        self.max_animation = 0
+        self.amount = int(min(max_amount, int(amount))) # Cap the amount
+        self.max_amount = max_amount
+        self.max_animation = max_animation
         self.animation_cooldown_max = 0.8
 
         self.animation = random.randint(0, self.max_animation)
         self.nearby_entities = []
         self.delete_countdown = 0
-        self.value = value # Placeholder gold value
+        self.value = int(rarity_value) # Placeholder gold value, counts per item in stack
         self.is_projectile = False
         self.Set_Sprite()
         self.broken_rendering_counter = 0 # Counter if it hits 10, delete item since something is wrong
@@ -63,6 +64,8 @@ class Item(PhysicsEntity):
     def Update_In_Inventory(self):
         pass
 
+    def Calculate_Value(self):
+        return self.amount * self.value
     
     def Activate(self):
         if self.activate_cooldown:
@@ -104,10 +107,10 @@ class Item(PhysicsEntity):
 
     # Returns false if the item was deleted in the process of palcedown
     def Place_Down(self):
-        self.picked_up = False
-        self.in_inventory = False
         if self.game.decoration_handler.Check_Item_Collision(self):
             return False
+        self.picked_up = False
+        self.in_inventory = False
         self.Set_Tile()
         self.Set_Size(self.floor_size) # Standard loot size on floor
         self.game.sound_handler.Play_Sound(keys.item_placedown, 0.2)
@@ -131,8 +134,12 @@ class Item(PhysicsEntity):
 
     # Setting the initial sprite type from assets, only called during initial setup
     def Set_Sprite(self):
-        self.sprite = self.game.assets[self.sub_type]
-        self.Set_Entity_Image()
+        try:
+            self.sprite = self.game.assets[self.sub_type]
+            self.Set_Entity_Image()
+        except Exception as e:
+            print("SETTING ITEM SUBTYPE FAILED", self.sub_type, self.type)
+            self.Delete_Item()
 
     # Setting the item image and scaling it
     def Set_Entity_Image(self):
@@ -143,12 +150,19 @@ class Item(PhysicsEntity):
 
     
     def Increase_Amount(self, amount):
-        self.amount = min(self.max_amount, self.amount + amount)
+        self.amount = int(min(self.max_amount, self.amount + int(amount)))
 
     def Decrease_Amount(self, amount):
         self.amount = max(0, self.amount - amount)
         if self.amount <= 0:
             self.used = True
+
+    def Increase_Max_Amount(self, amount):
+        self.max_amount = int(self.max_amount + int(amount))
+
+    def Decrease_Max_Amount(self, amount):
+        self.max_amount = max(1, self.max_amount - amount)
+
 
     def Set_Inventory_Type(self, inventory_type):
         self.inventory_type = inventory_type
@@ -182,6 +196,20 @@ class Item(PhysicsEntity):
             self.game.tilemap.Add_Entity_To_Tile(new_tile, self)
             self.tile = new_tile
 
+    # Iterates over the thresholds until it finds one that passes
+    def Calculate_Rarity(self, value):
+        thresholds = [
+            (90, keys.legendary),
+            (70, keys.epic),
+            (50, keys.rare),
+            (30, keys.uncommon),
+        ]
+        
+        for limit, rarity in thresholds:
+            if value >= limit:
+                return rarity
+        return keys.common
+
     
 
     def Update_Delete_Cooldown(self, delta_time):
@@ -214,10 +242,13 @@ class Item(PhysicsEntity):
     # Render legal position
     def Render_Inventory(self, surf, pos, size):
         try:
+            if not self.entity_image:
+                self.Set_Entity_Image()
+
             item_image = pygame.transform.scale(self.entity_image, size)
             surf.blit(item_image, pos)
         except Exception as e:
-            print(f"ITEM Render_Inventory failed {e}", self.entity_image, size, pos)
+            print(f"ITEM Render_Inventory failed {e}", self.entity_image, size, pos, self.type, self.sub_type)
         
 
     def Render_Floor(self, surf, offset=(0, 0)):
@@ -230,6 +261,7 @@ class Item(PhysicsEntity):
         # Render the item
         if not self.rendered_image:
             self.Set_Sprite()
+
             if not self.rendered_image:
                 
                 self.broken_rendering_counter += 1
@@ -238,13 +270,19 @@ class Item(PhysicsEntity):
                 return
         surf.blit(self.rendered_image, (self.pos[0] - offset[0], self.pos[1] - offset[1]))
 
+    def Update_Dark_Surface(self):
+        if not super().Update_Dark_Surface():
+            return False
+        
+        self.rendered_image =  pygame.transform.scale(self.rendered_image, self.floor_size)
+        return True
+
 
     # Render item with fadeout if it's in an illegal position
     def Render_Out_Of_Bounds(self, player_pos, mouse_pos, surf, offset = (0,0)):
         # Calculate distance between player and mouse
 
         distance = max(20, 100 - self.Distance(player_pos, mouse_pos))
-        
         entity_image =  pygame.transform.scale(self.entity_image.copy(), self.floor_size)
         
         entity_image.set_alpha(distance)
@@ -255,6 +293,7 @@ class Item(PhysicsEntity):
     
     # Render item with fadeout if it's in an illegal position
     def Render_In_Bounds(self, player_pos, mouse_pos, surf, offset = (0,0)):
+
         entity_image =  pygame.transform.scale(self.entity_image.copy(), self.floor_size)
         
         # Render on Mouse position as the item position is not being updated

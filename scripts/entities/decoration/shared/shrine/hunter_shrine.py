@@ -51,7 +51,7 @@ class Hunter_Shrine(Decoration):
                 if fail > 10:
                     return
                 continue
-            treasure = self.game.item_handler.loot_handler.Spawn_Loot_Type(keys.valuable, tile.scaled_pos, None, keys.hunter_treasure)
+            treasure = self.game.item_handler.Spawn_Item_By_Type(keys.valuable, tile.scaled_pos, type = keys.hunter_treasure)
             if not treasure:
                 print("Treasure not spawned, HUNTER SHRINE")
                 return

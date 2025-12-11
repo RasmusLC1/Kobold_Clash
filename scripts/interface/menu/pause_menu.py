@@ -1,5 +1,5 @@
 from scripts.interface.menu.menu import Menu
-from scripts.engine.keys.keys import keys
+import pygame
 
 class Pause_Menu(Menu):
     def __init__(self, game) -> None:
@@ -15,7 +15,7 @@ class Pause_Menu(Menu):
 
 
     def Check_Keyboard_Input(self):
-         if self.game.keyboard_handler.escape_pressed:
+         if self.game.keyboard_handler.is_key_pressed(pygame.K_ESCAPE):
             self.game.keyboard_handler.Set_Escape_Key(False)
             self.game.state_machine.Set_State('run_game')
 

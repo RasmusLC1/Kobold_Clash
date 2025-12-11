@@ -1,8 +1,7 @@
 from scripts.entities.items.weapons.weapon_handler import Weapon_Handler
 from scripts.entities.items.loot.potions.potion_handler import Potion_Handler
 from scripts.entities.items.loot.loot_handler import Loot_Handler
-import math
-import random
+import pygame
 from scripts.engine.keys.keys import keys
 
 
@@ -57,7 +56,7 @@ class Item_Handler():
 
     def Initialise(self):
         for gold in self.game.tilemap.extract([(keys.gold, 0)].copy()):
-            gold = self.loot_handler.Spawn_Loot_Type(keys.valuable, gold[keys.pos], None, keys.gold)
+            gold = self.loot_handler.Spawn_Loot_Type(keys.valuable, gold[keys.pos], type = keys.gold)
             if gold:
                 self.Add_Item(gold)
 
@@ -154,7 +153,7 @@ class Item_Handler():
             print(f"Item is not throwable {e}", item.type, item.entity, item.tile, vars(item))
 
     def Check_Keyboard_Input(self):
-        if self.game.keyboard_handler.e_pressed:
+        if self.game.keyboard_handler.is_key_pressed(pygame.K_e):
             if not self.Pick_Up_Items(2):
                 return
             else:
@@ -197,8 +196,14 @@ class Item_Handler():
 
     def Find_Items_In_Inventory(self, index):
         for item in self.items:
-            print(item.type, index)
             if not item.inventory_index:
                 return
             if item.inventory_index == index:
                 return item
+            
+    # Returns a list of all item_types that can be spawned
+    def Check_If_Loot_Is_Affordable(self, item_types, rarity_value):
+        return self.loot_handler.Check_If_Loot_Is_Affordable(item_types, rarity_value)
+    
+    def Spawn_Item_By_Type(self, category, pos, type = None, rarity_value = 0):
+        self.loot_handler.Spawn_Loot_Type(category, pos, type = type, rarity_value = rarity_value)

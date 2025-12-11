@@ -3,11 +3,9 @@ import random
 from scripts.engine.keys.keys import keys
 
 class Echo_Bell(Utility_Loot):
-    def __init__(self, game, pos):
-        amount = random.randint(2, 4)
-        super().__init__(game, keys.echo_bell, pos, 320, amount)
+    def __init__(self, game, type, pos, amount, rarity_value):
+        super().__init__(game, type, pos, 320, amount, rarity_value)
         self.Set_Description()
-        self.max_amount = 5
 
     def Set_Description(self):
         self.description = 'Lure enemies\nto a location'

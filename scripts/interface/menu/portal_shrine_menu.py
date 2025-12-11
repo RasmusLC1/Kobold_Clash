@@ -1,6 +1,7 @@
 from scripts.interface.menu.portal_button import Portal_Button
 from scripts.interface.menu.menu import Menu
-from scripts.engine.keys.keys import keys
+import pygame
+
 
 
 class Portal_Shrine_Menu(Menu):
@@ -39,7 +40,7 @@ class Portal_Shrine_Menu(Menu):
         self.unlock_portal_button = Portal_Button(self.game, (self.width - self.button_size_x // 2, self.button_size_y * 2.5), (self.button_size_x, self.button_size_y), 'unlock', 'Unlock Portal')
 
     def Check_Keyboard_Input(self):
-         if self.game.keyboard_handler.escape_pressed:
+         if self.game.keyboard_handler.is_key_pressed(pygame.K_ESCAPE):
             self.game.keyboard_handler.Set_Escape_Key(False)
             self.game.state_machine.Set_State('run_game')
 

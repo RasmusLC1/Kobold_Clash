@@ -86,3 +86,10 @@ class Game_Types():
     ancient_crypt = "ancient_crypt"
 
     crystal_caverns = "crystal_caverns"
+
+
+# Random
+
+    block = "block"
+    chain = "chain"
+    health = "health"

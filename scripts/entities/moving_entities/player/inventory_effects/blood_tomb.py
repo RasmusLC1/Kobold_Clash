@@ -4,12 +4,5 @@ class Blood_Tomb(Inventory_Effect):
     def __init__(self, entity):
         super().__init__(entity, keys.blood_tomb)
 
-    def Enable(self):
-        self.player.Set_Effect(keys.blood_tomb, 1, True)
-        
-
-    def Disable(self):
-        self.player.Remove_Effect(keys.blood_tomb, 1)
-    
     def Set_Decription(self):
         self.description = 'Gain souls\nwhen damaged'

@@ -4,122 +4,76 @@ from scripts.engine.keys.keys import keys
 class Keyboard_Handler:
     def __init__(self, game) -> None:
         self.game = game
-        self.a_pressed = False
-        self.w_pressed = False
-        self.s_pressed = False
-        self.d_pressed = False
-        self.e_pressed = False
-        self.z_pressed = False
-        self.x_pressed = False
-        self.c_pressed = False
-        self.space_pressed = False
-        self.alt_pressed = False
-        self.escape_pressed = False
-        self._1_pressed = False
-        self._2_pressed = False
-        self._3_pressed = False
-        self._4_pressed = False
-        self._5_pressed = False
-        self._6_pressed = False
-        self._7_pressed = False
-        self._8_pressed = False
-        self._9_pressed = False
+        
+        self.key_states = {
+            pygame.K_a: False,
+            pygame.K_w: False,
+            pygame.K_s: False,
+            pygame.K_d: False,
+            pygame.K_e: False,
+            pygame.K_z: False,
+            pygame.K_x: False,
+            pygame.K_c: False,
+            pygame.K_p: False,
+            pygame.K_SPACE: False,
+            pygame.K_LALT: False,
+            pygame.K_ESCAPE: False,
+            # Number keys (k_1 through k_9)
+            pygame.K_1: False,
+            pygame.K_2: False,
+            pygame.K_3: False,
+            pygame.K_4: False,
+            pygame.K_5: False,
+            pygame.K_6: False,
+            pygame.K_7: False,
+            pygame.K_8: False, 
+            pygame.K_9: False,
+        }
 
+    # Handler function
     def keyboard_Input(self, key_press, offset=(0, 0)):
         if key_press.type == pygame.KEYDOWN:
             self.Key_Down(key_press)
-
 
         if key_press.type == pygame.KEYUP:
             self.Key_Up(key_press)
             
     def Key_Down(self, key_press):
-        if key_press.key == pygame.K_a:
-            self.a_pressed = True
-        if key_press.key == pygame.K_d:
-            self.d_pressed = True
-        if key_press.key == pygame.K_w:
-            self.w_pressed = True
-        if key_press.key == pygame.K_s:
-            self.s_pressed = True
-        if key_press.key == pygame.K_1:
-            self._1_pressed = True
-        if key_press.key == pygame.K_2:
-            self._2_pressed = True
-        if key_press.key == pygame.K_3:
-            self._3_pressed = True
-        if key_press.key == pygame.K_4:
-            self._4_pressed = True
-        if key_press.key == pygame.K_5:
-            self._5_pressed = True
-        if key_press.key == pygame.K_6:
-            self._6_pressed = True
-        if key_press.key == pygame.K_7:
-            self._7_pressed = True
-        if key_press.key == pygame.K_e:
-            self.e_pressed = True
+        key = key_press.key
+        
+        # Optimization: Set the state directly in the dictionary if the key is monitored.
+        if key in self.key_states:
+            self.key_states[key] = True
 
-        if key_press.key == pygame.K_p:
+        # Special action (K_o): This stays separate because it performs an immediate action
+        if key == pygame.K_o:
             self.game.tilemap.Render_All_Tiles()
 
-        if key_press.key == pygame.K_SPACE:
-            self.space_pressed = True
-        if key_press.key == pygame.K_LALT:
-            self.alt_pressed = True
-        if key_press.key == pygame.K_z:
-            self.z_pressed = True
-        if key_press.key == pygame.K_x:
-            self.x_pressed = True
-        if key_press.key == pygame.K_c:
-            self.c_pressed = True
-        if key_press.key == pygame.K_ESCAPE:
-            self.escape_pressed = True
-
     def Key_Up(self, key_press):
-        if key_press.key == pygame.K_a:
-            self.a_pressed = False
-        if key_press.key == pygame.K_d:
-            self.d_pressed = False
-        if key_press.key == pygame.K_w:
-            self.w_pressed = False
-        if key_press.key == pygame.K_s:
-            self.s_pressed = False
-        if key_press.key == pygame.K_e:
-            self.e_pressed = False
-        if key_press.key == pygame.K_1:
-            self._1_pressed = False
-        if key_press.key == pygame.K_2:
-            self._2_pressed = False
-        if key_press.key == pygame.K_3:
-            self._3_pressed = False
-        if key_press.key == pygame.K_4:
-            self._4_pressed = False
-        if key_press.key == pygame.K_5:
-            self._5_pressed = False
-        if key_press.key == pygame.K_6:
-            self._6_pressed = False
-        if key_press.key == pygame.K_7:
-            self._7_pressed = False
-        if key_press.key == pygame.K_z:
-            self.z_pressed = False
-        if key_press.key == pygame.K_x:
-            self.x_pressed = False
-        if key_press.key == pygame.K_c:
-            self.c_pressed = False
-        if key_press.key == pygame.K_SPACE:
-            self.space_pressed = False
-        if key_press.key == pygame.K_LALT:
-            self.alt_pressed = False
-        if key_press.key == pygame.K_ESCAPE:
-            self.escape_pressed = False
+        key = key_press.key
+        
+        # Set the state directly in the dictionary if the key is monitored.
+        if key in self.key_states:
+            self.key_states[key] = False
+
+
+    
+    # Key press lookup
+    def is_key_pressed(self, key_constant):
+        return self.key_states.get(key_constant, False)
 
 
     def Set_E_Key(self, state):
-        self.e_pressed = state
+        self.key_states[pygame.K_e] = state
 
     def Set_Escape_Key(self, state):
-        self.escape_pressed = state
+        self.key_states[pygame.K_ESCAPE] = state
 
 
     def Check_If_Movement_Enabled(self):
-        return self.w_pressed or self.a_pressed or self.s_pressed or self.d_pressed
+        return (
+            self.is_key_pressed(pygame.K_w) or 
+            self.is_key_pressed(pygame.K_a) or 
+            self.is_key_pressed(pygame.K_s) or 
+            self.is_key_pressed(pygame.K_d)
+        )

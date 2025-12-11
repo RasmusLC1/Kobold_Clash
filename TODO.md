@@ -104,7 +104,7 @@ Upgrade weapons
     Rare objects found in loot rooms
     
     
-    ## Permanent:
+    ## Passive:
         # Lantern, Sets the player light to 7, passive light
         # Magnet, autopickup of items
         # Totem of Power, increases Rune power, stacks with more totems
@@ -124,7 +124,7 @@ Upgrade weapons
         Soul echo, same as Greed echo 
 
 
-    # Triggered:
+    # Utility:
         # Pendant of light, Revive on death for souls 
         # Phoenix Feather – Upon death, revives the player with 1 health, then burns up.
         # Gravedigger’s Coin – Revive the player one time to full health for 100 gold
@@ -382,6 +382,7 @@ Upgrade weapons
             + Depth*(tier_norm*1.6 - 0.20)
             + luck*(tier_norm*1.0)
             - Clatter*(tier_norm*0.8 - 0.10)
+            
     - Design loottables for more powerful items to have higher rarities
     - Basic items that are higher rarity like gems or gold will have a higher amount to represent higher quality
     - Weapons will have buffs applied to them randomly according to their rarity, common will have none.

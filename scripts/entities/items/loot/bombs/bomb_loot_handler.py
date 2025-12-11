@@ -8,19 +8,23 @@ from scripts.engine.keys.keys import keys
 class Bomb_Loot_Handler(Loot_Types_Handler):
     def __init__(self, game):
         super().__init__(game)
- 
 
-        self.types = [
-            keys.fire_bomb,
-            keys.frozen_bomb,
-            keys.electric_bomb,
-            keys.poison_bomb,
-            keys.vampiric_bomb,
-        ]
+        self.loot_map = {
+            keys.fire_bomb : Bomb,
+            keys.frozen_bomb : Bomb,
+            keys.electric_bomb : Bomb,
+            keys.poison_bomb : Bomb,
+            keys.vampiric_bomb : Bomb,
+        }
 
-    def Loot_Spawner(self, pos, type = None, amount = None):
-        if not type:
-            type = random.choice(self.types)
-        bomb = Bomb(self.game, type, pos)
-        return bomb
 
+    def Get_Loot_Values(self):
+        loot_types_cost = {
+            keys.fire_bomb : 15,
+            keys.frozen_bomb : 15,
+            keys.electric_bomb : 15,
+            keys.poison_bomb : 15,
+            keys.vampiric_bomb : 20,
+        }
+
+        return loot_types_cost

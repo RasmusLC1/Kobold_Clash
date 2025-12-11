@@ -155,7 +155,7 @@ class Decoration_Spawner():
                 self.decorations.append(light_source)
     
     def Spawn_Mimic_Chest(self, pos, size=None, version=None, radius=None, level=None):
-        chest = Mimic_Chest(self.game, pos, version)  
+        chest = Mimic_Chest(self.game, pos)  
         self.decorations.append(chest)
         return chest
    

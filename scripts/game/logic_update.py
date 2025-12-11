@@ -1,4 +1,5 @@
 from scripts.engine.keys.keys import keys
+import pygame
 
 class Logic_Update():
     def __init__(self, game) -> None:
@@ -26,7 +27,10 @@ class Logic_Update():
 
 
           keyboard = self.game.keyboard_handler
-          movement = (keyboard.d_pressed - keyboard.a_pressed, keyboard.s_pressed - keyboard.w_pressed)
+          movement = (
+          keyboard.is_key_pressed(pygame.K_d) - keyboard.is_key_pressed(pygame.K_a),
+          keyboard.is_key_pressed(pygame.K_s) - keyboard.is_key_pressed(pygame.K_w)
+          )
           self.game.player.Update(self.game.tilemap, delta_time, movement, self.game.render_scroll)
           
           self.game.ray_caster.Update()
@@ -51,6 +55,6 @@ class Logic_Update():
 
             
     def Check_Keyboard_Input(self):
-         if self.game.keyboard_handler.escape_pressed:
+         if self.game.keyboard_handler.is_key_pressed(pygame.K_ESCAPE):
             self.game.keyboard_handler.Set_Escape_Key(False)
             self.game.state_machine.Set_State('pause_menu')

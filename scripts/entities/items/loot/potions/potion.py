@@ -4,8 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Potion(Loot):
     def __init__(self, game, type, pos, amount, strength):
-        super().__init__(game, type, pos, (16, 16), 5, keys.potion, amount)
-        self.max_amount = 3
+        super().__init__(game, type, pos, (16, 16), 5, keys.potion, amount, 3)
         self.max_animation = 4
         self.strength = strength
         
@@ -27,24 +26,32 @@ class Potion(Loot):
     def Set_Description(self):
         self.description = (
                             f"{self.effect} {self.amount}\n"
-                            f"gold {self.value}\n"
+                            f"{self.Calculate_Value()} {keys.gold}\n"
                         )
 
     def Set_Sprite(self):
+        if not self.type:
+            print("POTION HAS NO TYPE", vars(self))
+            return
+        
         self.effect = self.type.replace('_potion', '')
         self.Update_Sub_Type()
+        
         super().Set_Sprite()
 
-    def Increase_Strength(self):
-        self.strength += 1
+    def Increase_Strength(self, amount):
+        self.strength += amount
+
+    def Decrease_Strength(self, amount):
+        self.strength -= amount
     
     def Update_Sub_Type(self):
-        if self.amount == 1:
-            self.sub_type = self.effect + '_low'
+        if self.amount <= 1:
+            self.sub_type = self.type + '_low'
         elif self.amount == 2:
-            self.sub_type = self.effect + '_half'
-        elif self.amount == 3:
-            self.sub_type = self.effect + '_full'
+            self.sub_type = self.type + '_half'
+        elif self.amount >= 3:
+            self.sub_type = self.type + '_full'
 
 
     def Activate(self):

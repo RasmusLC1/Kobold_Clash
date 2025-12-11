@@ -26,6 +26,6 @@ class Soul_Trap(Trap):
             return False
 
         self.animation = 1
-        treasure = self.game.item_handler.loot_handler.Spawn_Loot_Type(keys.valuable, tile.scaled_pos, None, keys.soul_shard)
+        self.game.item_handler.Spawn_Item_By_Type(keys.valuable, tile.scaled_pos, type = keys.soul_shard)
         self.game.player.Set_Effect(keys.soul_drained, 1, True)
         return True

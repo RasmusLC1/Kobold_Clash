@@ -3,11 +3,8 @@ import random
 from scripts.engine.keys.keys import keys
 
 class Faded_Hourglass(Radius_Effect_Loot):
-    def __init__(self, game, pos):
-        amount = random.randint(2, 4)
-        super().__init__(game, keys.faded_hourglass, pos, 320, keys.utility, 4, amount)
-        self.Set_Description()
-        self.max_amount = 5
+    def __init__(self, game, type, pos, amount, rarity_value):
+        super().__init__(game, type, pos, 320, keys.utility, 4, amount, rarity_value)
         self.slowdown_triggered = 0
         self.animation_cooldown = 20
         self.max_animation = 4
@@ -30,8 +27,10 @@ class Faded_Hourglass(Radius_Effect_Loot):
         if self.slowdown_triggered <= 0:
             return
         
-        for enemy in self.nearby_entities:
-            enemy.Remove_Effect(keys.slow, self.slowdown_amount)
+        for entity in self.nearby_entities:
+            if entity.category != keys.enemy:
+                continue
+            entity.Remove_Effect(keys.slow, self.slowdown_amount)
 
         self.nearby_entities = None
 

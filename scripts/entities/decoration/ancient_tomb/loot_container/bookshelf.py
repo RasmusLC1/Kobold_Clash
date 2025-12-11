@@ -35,7 +35,7 @@ class Bookshelf(Loot_Container):
             self.Select_Available_Rune()
         else:
             loot_category = self.loot_categories[loot_type]
-            self.game.item_handler.loot_handler.Spawn_Loot_Type(loot_category, pos, None, loot_type)
+            self.game.item_handler.Spawn_Item_By_Type(loot_category, pos, type = loot_type)
         return
 
 

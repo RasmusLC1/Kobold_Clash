@@ -6,6 +6,7 @@ from scripts.entities.items.loot.utility.utility_loot_handler import Utility_Loo
 from scripts.entities.items.loot.passive.passive_loot_handler import Passive_Loot_Handler
 from scripts.entities.items.loot.revive.revive_loot_handler import Revive_Loot_Handler
 from scripts.entities.items.loot.curse.cursed_loot_handler import Cursed_Loot_Handler
+from scripts.entities.items.loot.gems_ingots.gem_ingot_loot_handler import Gem_Ingot_Loot_Handler
 
 
 from scripts.entities.items.loot.potions.potion_handler import Potion_Handler
@@ -30,6 +31,7 @@ class Loot_Handler():
         self.potion_loot_handler = Potion_Handler(game) 
         self.cursed_loot_handler = Cursed_Loot_Handler(game) 
         self.valueable_loot_handler = Valuable_Loot_Handler(game) 
+        self.gem_ingot_loot_handler = Gem_Ingot_Loot_Handler(game) 
 
         self.loot_types = [
             self.key_loot_handler,
@@ -50,6 +52,7 @@ class Loot_Handler():
             keys.potion : self.potion_loot_handler,
             keys.curse : self.cursed_loot_handler,
             keys.valuable : self.valueable_loot_handler,
+            keys.gem_ingot : self.gem_ingot_loot_handler,
         }
 
         self.loot_types_weights = {
@@ -60,6 +63,7 @@ class Loot_Handler():
             keys.revive : 0.02,
             keys.potion : 0.3,
             keys.curse : 0.1,
+            keys.gem_ingot : 0.1,
         }
 
         self.loot_types_keys = [
@@ -71,6 +75,7 @@ class Loot_Handler():
             keys.potion,
             keys.curse,
             keys.valuable,
+            keys.gem_ingot
         ]
 
     
@@ -106,8 +111,24 @@ class Loot_Handler():
 
         return weights
 
- 
-    # Function for creating loot
+    
+    # Returns a list of all item_types that can be spawned
+    def Check_If_Loot_Is_Affordable(self, item_types, rarity_value):
+        item_types_that_can_spawn = []
+        for item_type in item_types:
+            loot_handler = self.loot_types_dic.get(item_type)
+            if not loot_handler:
+                print("Loot handler not found", item_type)
+                continue
+
+            if loot_handler.Get_Lowest_Value(rarity_value):
+                item_types_that_can_spawn.append(item_type)
+
+        return item_types_that_can_spawn
+
+
+
+    # Spawns random loot by using internal weights
     def Spawn_Random_Loot(self, pos):
         weights_dict = self.Adjust_Weights()
         weight_values = [weights_dict[loot_types_keys] for loot_types_keys in self.loot_types_keys]
@@ -123,7 +144,7 @@ class Loot_Handler():
         return self.key_loot_handler.Loot_Spawner(pos)
 
 
-    def Spawn_Loot_Type(self, loot_type, pos, data = None, type = None, amount = None):
+    def Spawn_Loot_Type(self, loot_type, pos, data = None, type = None, rarity_value = 1):
         loot_handler = self.loot_types_dic.get(loot_type)
         if not loot_handler:
             return None
@@ -131,7 +152,7 @@ class Loot_Handler():
         if data:
             type = data[keys.type]
 
-        loot = loot_handler.Loot_Spawner(pos, type, amount)
+        loot = loot_handler.Loot_Spawner(pos, type, rarity_value)
 
         return self.Load_Data(loot, data)
     

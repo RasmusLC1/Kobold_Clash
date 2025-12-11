@@ -43,12 +43,15 @@ class Item_Inventory(Base_Inventory):
                 continue
 
             # Calculate how much can be merged
-            available_space = inventory_slot.item.max_amount - inventory_slot.item.amount
-            amount_to_merge = min(item.amount, available_space)
+            available_space = int(inventory_slot.item.max_amount - inventory_slot.item.amount)
+            amount_to_merge = int(min(item.amount, available_space))
 
             # Merge items
             inventory_slot.item.Increase_Amount(amount_to_merge)
             item.Set_Amount(item.amount - amount_to_merge)
+
+            inventory_slot.item.Set_Description()
+            item.Set_Description()
 
             # If the entire item was merged, remove it
             if item.amount == 0:
@@ -92,8 +95,6 @@ class Item_Inventory(Base_Inventory):
         return loot_items
 
 
-
-    
     def Revive(self):
         for inventory_slot in self.inventory:
             item = inventory_slot.item
@@ -120,6 +121,35 @@ class Item_Inventory(Base_Inventory):
             gold_sum += item.amount
 
         return gold_sum
+    
+
+    def Pay_Gold(self, gold_to_pay):
+        gold_in_inventory = self.Check_Gold_In_Inventory()
+
+        if gold_to_pay > gold_in_inventory:
+            return False
+        
+        gold_inventory_slots = self.Find_Inventory_Slots_With_Sub_Type("gold")
+        
+        for inventory_slot in gold_inventory_slots:
+            item = inventory_slot.item
+            
+            # Skip empty slots, safety check
+            if not item:
+                continue
+                
+            # Determine the amount to deduct from this stack: 
+            deduction = min(gold_to_pay, item.amount)
+            
+            # Delete item if amount <= 0
+            item.Decrease_Amount(deduction)
+            
+            # If all required gold has been paid, stop iterating.
+            gold_to_pay -= deduction
+            if gold_to_pay <= 0:
+                break
+                
+        return True
 
     # Places an item in an empty slot if merging is not possible
     def Add_Item_To_Inventory_Slot(self, item):

@@ -1,4 +1,16 @@
 class Items():
+
+# Rarities
+    common = "common"
+
+    uncommon = "uncommon"
+
+    rare = "rare"
+
+    epic = "epic"
+
+    legendary = "legendary"
+
 # Potion Assets
     
     full = "full"
@@ -50,15 +62,28 @@ class Items():
     
     strength_totem = "strength_totem"
 
-
+    luck_totem = "luck_totem"
     
     muffled_boots = "muffled_boots"
 
     
     blood_coin = "blood_coin"
 
+    compass = "compass"
     
     blood_pact = "blood_pact"
+
+    cursed_dice = "cursed_dice"
+
+    eldritch_mirror = "eldritch_mirror"
+
+    forsaken_grimoire = "forsaken_grimoire"
+
+    cracked_talisman = "cracked_talisman"
+
+    echoing_skull = "echoing_skull"
+
+    vampire_locket = "vampire_locket"
 
     recipe_scroll = "recipe_scroll"
 
@@ -68,6 +93,9 @@ class Items():
     
     light_pendant = "light_pendant"
 
+    gravediggers_coin = "gravediggers_coin"
+
+    blood_pact_scroll = "blood_pact_scroll"
     
     faded_hourglass = "faded_hourglass"
 
@@ -159,6 +187,23 @@ class Items():
     lockpick_gem = "lockpick_gem"
 
     nothing = "nothing"
+
+# Ingots
+
+    gem_ingot = "gem_ingot"
+
+    ingot = "ingot"
+
+    Steel_ingot = "Steel_ingot"
+    
+    jade_ingot = "jade_ingot"
+    
+    copper_ingot = "copper_ingot"
+    
+    Gold_ingot = "Gold_ingot"
+    
+    Silver_ingot = "Silver_ingot"
+
 
 
 # Runes
