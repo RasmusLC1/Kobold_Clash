@@ -210,7 +210,9 @@ class Item(PhysicsEntity):
                 return rarity
         return keys.common
 
-    
+    # defaults to return False, custom for different item types
+    def Add_Ingot(self, ingot):
+        return False
 
     def Update_Delete_Cooldown(self, delta_time):
         if not self.delete_countdown:

@@ -298,13 +298,9 @@ class Inventory_Handler():
                 if inventory_slot.active:
                     return False
 
-                if inventory_slot.item and self.active_item:
-                    if {inventory_slot.item.sub_category == keys.weapon:
-                        self.active_item.type == keys.gem}:
-                            if self.Add_Gem_To_Weapon(inventory_slot.item, self.active_item):
-                                return True
-                            else:
-                                return False
+                if self.Gem_Check(inventory_slot):
+                    return True
+                
 
                 if self.Swap_Item(inventory_slot, self.active_item):
                     return True
@@ -317,6 +313,51 @@ class Inventory_Handler():
                     self.active_item = None  # Clear active item
                     return True
         return False
+
+    def Gem_Check(self, inventory_slot):
+        if not {inventory_slot.item.sub_category == keys.weapon
+            and not self.active_item.type == keys.gem}:
+            return False
+            
+        if self.Add_Gem_To_Weapon(inventory_slot.item, self.active_item):
+            return True
+        else:
+            return False
+
+    def Ingot_Check(self, inventory_slot):
+        if not self.active_item.type == keys.ingot:
+            return False
+        
+        item_types = {
+            keys.Steel_ingot : keys.weapon,
+            keys.Gold_ingot : keys.weapon,
+            keys.Silver_ingot : keys.rune,
+            keys.jade_ingot : keys.rune,
+            keys.copper_ingot : keys.utility,
+        }
+
+
+        # Check for the inventory item type matches the ingot type
+        affected_item_type = item_types.get(self.active_item.sub_type, None)
+
+        if not affected_item_type:
+            print("INGOT NOT FOUND", self.active_item.sub_type, inventory_slot.item)
+            return False
+        
+        if inventory_slot.item.type != affected_item_type:
+            return False
+        
+        # Returns true if succesfully added
+        add_ingot_success = inventory_slot.item.Add_Ingot(self.active_item)
+        self.Reset_Active_Item()
+        return add_ingot_success
+    
+    def Reset_Active_Item(self):
+        # Reset the gem inventory slot
+        self.clicked_inventory_slot.Reset_Inventory_Slot()
+        self.Set_Clicked_Inventory_Slot()  # Clear clicked slot
+        self.active_item = None  # Clear active item
+
 
     def Move_Item(self, item, inventory_slot):
         inventory_type_holder = item.inventory_type
@@ -378,9 +419,7 @@ class Inventory_Handler():
             return False
         
         # Reset the gem inventory slot
-        self.clicked_inventory_slot.Reset_Inventory_Slot()
-        self.Set_Clicked_Inventory_Slot()  # Clear clicked slot
-        self.active_item = None  # Clear active item
+        self.Reset_Active_Item()
         return True
 
     def Active_Item(self, offset=(0, 0)):

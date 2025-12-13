@@ -73,7 +73,7 @@ class Gem_Ingot_Loot_Handler(Loot_Types_Handler):
 
             keys.Steel_ingot: 15,     # Repairs weapons
             keys.jade_ingot: 15,      # Repairs runes
-            keys.copper_ingot: 20,    # Add amount to items
+            keys.copper_ingot: 20,    # Add amount to utility items
             keys.Gold_ingot: 30,      # Can add gem slots
             keys.Silver_ingot: 30,    # Can upgrade rune power
         }
