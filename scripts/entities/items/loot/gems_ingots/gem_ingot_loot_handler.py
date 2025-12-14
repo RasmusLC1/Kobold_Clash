@@ -71,11 +71,11 @@ class Gem_Ingot_Loot_Handler(Loot_Types_Handler):
             # keys.durability_gem: 10,  # Increases weapon health
             # # keys.multishot: 50,       # Fires two arrows at a time (guessed cost 50)
 
-            keys.Steel_ingot: 15,     # Repairs weapons
-            keys.jade_ingot: 15,      # Repairs runes
-            keys.copper_ingot: 20,    # Add amount to utility items
-            keys.Gold_ingot: 30,      # Can add gem slots
-            keys.Silver_ingot: 30,    # Can upgrade rune power
+            keys.Steel_ingot: 30,     # Repairs weapons
+            keys.jade_ingot: 30,      # Repairs runes
+            keys.copper_ingot: 40,    # Add amount to utility items
+            keys.Gold_ingot: 45,      # Can add gem slots
+            keys.Silver_ingot: 45,    # Can upgrade rune power
         }
         return gems_and_ingots
 

@@ -62,4 +62,4 @@ class Potion(Loot):
             self.Set_Sprite()
             self.Set_Description()
         if self.amount <= 0:
-            self.used = True
+            self.durability = 0

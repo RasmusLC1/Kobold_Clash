@@ -5,12 +5,13 @@ from scripts.entities.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 
 class Item(PhysicsEntity):
-    def __init__(self, game, type, sub_category, pos, size = (16, 16), amount = 1, add_to_tile = True, rarity_value = 100, max_amount=1, max_animation = 0):
+    def __init__(self, game, type, sub_category, pos, size = (16, 16), amount = 1, add_to_tile = True, rarity_value = 100, max_amount=1, max_animation = 0, durability = 1, max_durability = 1):
         super().__init__(game, type, keys.item, pos, size, sub_category)
         self.game = game
         self.sub_type = type
         self.rarity = self.Calculate_Rarity(rarity_value) # rarity used for loot defaults to common
-        self.used = False
+        self.durability = durability
+        self.max_durability = max_durability
         self.picked_up = False
         self.clicked = False # Used for if the item is active
         self.move_inventory_slot = False # Check for if the item is being moved to a new inventory slot
@@ -40,7 +41,7 @@ class Item(PhysicsEntity):
         super().Save_Data()
         self.saved_data['sub_type'] = self.sub_type
         self.saved_data['sub_category'] = self.sub_category
-        self.saved_data['used'] = self.used
+        self.saved_data['durability'] = self.durability
         self.saved_data['picked_up'] = self.picked_up
         self.saved_data['inventory_type'] = self.inventory_type
         self.saved_data['amount'] = self.amount
@@ -51,7 +52,7 @@ class Item(PhysicsEntity):
         super().Load_Data(data)
         self.sub_type = data['sub_type']
         self.sub_category = data['sub_category']
-        self.used = data['used']
+        self.durability = data['durability']
         self.picked_up = data['picked_up']
         self.inventory_type = data['inventory_type']
         self.amount = data['amount']
@@ -155,7 +156,7 @@ class Item(PhysicsEntity):
     def Decrease_Amount(self, amount):
         self.amount = max(0, self.amount - amount)
         if self.amount <= 0:
-            self.used = True
+            self.durability = 0
 
     def Increase_Max_Amount(self, amount):
         self.max_amount = int(self.max_amount + int(amount))
@@ -184,6 +185,13 @@ class Item(PhysicsEntity):
     def Move(self, new_pos):
         self.pos = list(new_pos)
 
+    def Increase_Durability(self, amount):
+        self.durability = max(0, min(self.max_durability, self.durability + amount))
+
+    def Decrease_Durability(self, amount):
+        self.durability -= max(0, min(self.max_durability, self.durability - amount))
+
+
     # TODO: OPTIMISE
     def Update_Tile(self, new_pos):
 
@@ -210,9 +218,6 @@ class Item(PhysicsEntity):
                 return rarity
         return keys.common
 
-    # defaults to return False, custom for different item types
-    def Add_Ingot(self, ingot):
-        return False
 
     def Update_Delete_Cooldown(self, delta_time):
         if not self.delete_countdown:
@@ -240,7 +245,7 @@ class Item(PhysicsEntity):
         self.Render_Floor(surf, offset)
     
 
-
+# RENDERING LOGIC
     # Render legal position
     def Render_Inventory(self, surf, pos, size):
         try:

@@ -5,7 +5,6 @@ from scripts.engine.keys.keys import keys
 class Ingot(Valuable):
 
     def __init__(self, game, ingot_name, pos, amount, rarity_value):
-
         super().__init__(game, type=ingot_name, pos=pos, value=rarity_value, amount=amount, max_amount = 10)
         self.type = keys.ingot
 
@@ -18,3 +17,23 @@ class Ingot(Valuable):
             keys.Silver_ingot : f"Add {self.amount} gemslots\nto rune",
         }
         self.description = descriptions.get(self.sub_type)+f"\nvalue:\t{self.Calculate_Value()} {keys.gold}"
+
+
+    def Add_Ingot_To_Item(self, item):
+        functions = {
+            keys.Steel_ingot : self.Increase_Durability(), 
+            keys.jade_ingot : self.Increase_Durability(), 
+            keys.copper_ingot : self.Increase_Item_Amount(),
+            keys.Gold_ingot : self.Add_Gem_Slot_To_Item(),
+            keys.Silver_ingot : self.Add_Gem_Slot_To_Item(),
+        }
+        self.Decrease_Amount(1)
+
+    def Increase_Durability(self):
+        pass
+
+    def Increase_Item_Amount(self):
+        pass
+
+    def Add_Gem_Slot_To_Item(self):
+        pass

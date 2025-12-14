@@ -13,8 +13,8 @@ from scripts.engine.keys.keys import keys
 import inspect
 
 class Weapon(Item):
-    def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_types = ['cut'], size = (16, 16), add_to_tile = True):
-        super().__init__(game, type, keys.weapon, pos, size, 1, add_to_tile)
+    def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_types = ['cut'], size = (16, 16), add_to_tile = True, durability = 100, max_durability = 100):
+        super().__init__(game, type, keys.weapon, pos, size, 1, add_to_tile, durability=durability, max_durability=max_durability)
         self.speed = max(1, 10 - speed) # Speed of the weapon
         self.max_animation = 5
         self.attack_animation_max = 4
@@ -45,9 +45,7 @@ class Weapon(Item):
         self.entities_hit = [] # Index of entities hit by weapon in attack
 
         # TODO: calculate better durability value
-        self.max_durability = 200 # max Durability 
         self.last_durability_step = self.max_durability # Used for tracking decrements accurately so it does not skip a percentage
-        self.durability = self.max_durability # Durability is decreased by one every time an attack hits
 
         self.weapon_cooldown = 0
         self.weapon_cooldown_max = 50 # How fast the weapon can attack
@@ -492,10 +490,6 @@ class Weapon(Item):
         self.Set_Description()
         self.range += amount
 
-    def Increase_Durability(self, amount):
-        self.Set_Description()
-        self.max_durability += amount
-        self.durability += amount
 
     def Decrease_Range(self, amount):
         self.range -= amount
@@ -503,11 +497,20 @@ class Weapon(Item):
     def Decrease_Speed(self, amount):
         self.Set_Description()
         self.range -= amount
+ 
+ 
+    def Increase_Durability(self, amount):
+        super().Increase_Durability(amount)
+        self.Set_Description()
+        self.Update_Durability_Bar()
 
     def Decrease_Durability(self, amount):
+        super().Decrease_Durability(amount)
         self.Set_Description()
-        self.durability -= amount
+        self.Update_Durability_Bar()
 
+
+    def Update_Durability_Bar(self):
         current_step = int((self.durability / self.max_durability) * 10)
 
         while self.last_durability_step > current_step:

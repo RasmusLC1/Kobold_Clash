@@ -348,7 +348,7 @@ class Inventory_Handler():
             return False
         
         # Returns true if succesfully added
-        add_ingot_success = inventory_slot.item.Add_Ingot(self.active_item)
+        add_ingot_success = self.active_item.Add_Ingot_To_Item(inventory_slot.item)
         self.Reset_Active_Item()
         return add_ingot_success
     
