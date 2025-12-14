@@ -315,6 +315,9 @@ class Inventory_Handler():
         return False
 
     def Gem_Check(self, inventory_slot):
+        if not inventory_slot.item:
+            return False
+
         if not {inventory_slot.item.sub_category == keys.weapon
             and not self.active_item.type == keys.gem}:
             return False
@@ -325,6 +328,9 @@ class Inventory_Handler():
             return False
 
     def Ingot_Check(self, inventory_slot):
+        if not inventory_slot.item:
+            return False
+
         if not self.active_item.type == keys.ingot:
             return False
         

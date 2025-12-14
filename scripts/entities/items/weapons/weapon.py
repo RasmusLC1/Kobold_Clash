@@ -13,10 +13,8 @@ from scripts.engine.keys.keys import keys
 import inspect
 
 class Weapon(Item):
-    def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_types = ['cut'], size = (16, 16), add_to_tile = True, durability = 100, max_durability = 100):
-        super().__init__(game, type, keys.weapon, pos, size, 1, add_to_tile, durability=durability, max_durability=max_durability)
+    def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_types = ['cut'], size = (16, 16), add_to_tile = True, max_animation = 5, amount = 1, max_amount = 1, durability = 100, max_durability = 100):
         self.speed = max(1, 10 - speed) # Speed of the weapon
-        self.max_animation = 5
         self.attack_animation_max = 4
         self.range = range # Range of the weapon
         self.damage = damage
@@ -44,9 +42,6 @@ class Weapon(Item):
         self.special_attack_active = False # Check if weapon is special attacking
         self.entities_hit = [] # Index of entities hit by weapon in attack
 
-        # TODO: calculate better durability value
-        self.last_durability_step = self.max_durability # Used for tracking decrements accurately so it does not skip a percentage
-
         self.weapon_cooldown = 0
         self.weapon_cooldown_max = 50 # How fast the weapon can attack
 
@@ -59,7 +54,7 @@ class Weapon(Item):
         self.charge_effect_handler = Charge_Effect_Weapon(game, self)
         self.attack_effect_handler = Attack_Effect_Weapon(game, self)
         self.gem_handler = Gem_Handler(self)
-        self.Set_Description()
+        super().__init__(game, type, keys.weapon, pos, size, amount=amount, max_amount=max_amount, add_to_tile=add_to_tile, max_animation = max_animation, durability=durability, max_durability=max_durability)
 
     def Save_Data(self):
         if self.entity:
@@ -498,30 +493,3 @@ class Weapon(Item):
         self.Set_Description()
         self.range -= amount
  
- 
-    def Increase_Durability(self, amount):
-        super().Increase_Durability(amount)
-        self.Set_Description()
-        self.Update_Durability_Bar()
-
-    def Decrease_Durability(self, amount):
-        super().Decrease_Durability(amount)
-        self.Set_Description()
-        self.Update_Durability_Bar()
-
-
-    def Update_Durability_Bar(self):
-        current_step = int((self.durability / self.max_durability) * 10)
-
-        while self.last_durability_step > current_step:
-            self.Decrease_Value(self.value // 10)
-            self.last_durability_step -= 1
-
-
-    def Increase_Value(self, value):
-        self.Set_Description()
-        self.value += value
-
-    def Decrease_Value(self, value):
-        self.Set_Description()
-        self.value -= value

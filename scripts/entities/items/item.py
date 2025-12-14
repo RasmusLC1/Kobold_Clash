@@ -10,8 +10,9 @@ class Item(PhysicsEntity):
         self.game = game
         self.sub_type = type
         self.rarity = self.Calculate_Rarity(rarity_value) # rarity used for loot defaults to common
-        self.durability = durability
-        self.max_durability = max_durability
+
+
+
         self.picked_up = False
         self.clicked = False # Used for if the item is active
         self.move_inventory_slot = False # Check for if the item is being moved to a new inventory slot
@@ -30,6 +31,15 @@ class Item(PhysicsEntity):
         self.nearby_entities = []
         self.delete_countdown = 0
         self.value = int(rarity_value) # Placeholder gold value, counts per item in stack
+
+        # Durability logic
+        self.durability = durability
+        self.max_durability = max_durability
+        self.last_durability_step = 999  # Used for tracking decrements accurately so it does not skip a percentage
+        self.durability_bar_image = None
+        self.Update_Durability_Bar()
+
+
         self.is_projectile = False
         self.Set_Sprite()
         self.broken_rendering_counter = 0 # Counter if it hits 10, delete item since something is wrong
@@ -185,12 +195,44 @@ class Item(PhysicsEntity):
     def Move(self, new_pos):
         self.pos = list(new_pos)
 
+# DURABILITY LOGIC
     def Increase_Durability(self, amount):
         self.durability = max(0, min(self.max_durability, self.durability + amount))
+        self.Set_Description()
+        self.Update_Durability_Bar()
 
     def Decrease_Durability(self, amount):
-        self.durability -= max(0, min(self.max_durability, self.durability - amount))
+        self.durability = max(0, self.durability - amount)
+        self.Set_Description()
+        self.Update_Durability_Bar()
+    
+    def Update_Durability_Bar(self):
+        current_step = int((self.durability / self.max_durability) * 10)
 
+        while self.last_durability_step > current_step:
+            self.Decrease_Value(self.value // 10)
+            self.last_durability_step -= 1
+            self.Set_Durability_Bar_Image()
+
+    def Set_Durability_Bar_Image(self):
+        if self.max_durability <= 1:
+            return
+
+        # 10 - step maps 10 (full) to 0, and 1 (low) to 9.
+        image_index = 10 - self.last_durability_step
+        # Ensure the index is within the valid range [0, 9]
+        image_index = max(0, min(9, image_index))
+        self.durability_bar_image = self.game.assets[keys.durability_bar][image_index]
+
+    
+    def Increase_Value(self, value):
+        self.value += value
+        self.Set_Description()
+
+    
+    def Decrease_Value(self, value):
+        self.value -= value
+        self.Set_Description()
 
     # TODO: OPTIMISE
     def Update_Tile(self, new_pos):
@@ -239,13 +281,15 @@ class Item(PhysicsEntity):
     def Damage_Taken(self, damage):
         self.game.item_handler.Remove_Item(self, True)
     
+    
+
+# RENDERING LOGIC
+
     def Render(self, surf, offset=(0, 0)):
         if self.picked_up:
             return
         self.Render_Floor(surf, offset)
-    
 
-# RENDERING LOGIC
     # Render legal position
     def Render_Inventory(self, surf, pos, size):
         try:
@@ -254,9 +298,18 @@ class Item(PhysicsEntity):
 
             item_image = pygame.transform.scale(self.entity_image, size)
             surf.blit(item_image, pos)
+            
         except Exception as e:
             print(f"ITEM Render_Inventory failed {e}", self.entity_image, size, pos, self.type, self.sub_type)
-        
+
+        self.Render_Durability_Bar(surf, pos)
+
+    def Render_Durability_Bar(self, surf, pos):
+        try:
+            if self.durability_bar_image:
+                surf.blit(self.durability_bar_image, (pos[0], pos[1] + 30))
+        except Exception as e:
+            print(f"ITEM Render durability bar failed{e}", self.durability_bar_image, pos, self.type, self.sub_type)
 
     def Render_Floor(self, surf, offset=(0, 0)):
         

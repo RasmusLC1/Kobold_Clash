@@ -831,13 +831,17 @@ class Graphics_Loader:
             keys.healthbar_8: get_tiles_from_sheet('ui/healthbar/healthbar_8.png', 5, 0, 0, 0, 64, 64),
             keys.healthbar_9: get_tiles_from_sheet('ui/healthbar/healthbar_9.png', 5, 0, 0, 0, 64, 64),
             keys.healthbar_10: get_tiles_from_sheet('ui/healthbar/healthbar_10.png', 5, 0, 0, 0, 64, 64),
+
             keys.awakening_skull_1: get_tiles_from_sheet('ui/skull/skull_1.png', 0, 0, 0, 0, 32, 32),
             keys.awakening_skull_2: get_tiles_from_sheet('ui/skull/skull_2.png', 0, 0, 0, 0, 32, 32),
             keys.awakening_skull_3: get_tiles_from_sheet('ui/skull/skull_3.png', 0, 0, 0, 0, 32, 32),
             keys.awakening_skull_4: get_tiles_from_sheet('ui/skull/skull_4.png', 0, 0, 0, 0, 32, 32),
             keys.awakening_skull_5: get_tiles_from_sheet('ui/skull/skull_5.png', 0, 0, 0, 0, 32, 32),
+
+            keys.durability_bar: get_tiles_from_sheet('ui/durability_bar/durability_bar.png', 9, 0, 0, 0, 16, 8),
         }
         self.assets.update(health_bars)
+
 
     def Asset_Menu(self):
         menu = {

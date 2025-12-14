@@ -8,8 +8,7 @@ from scripts.engine.keys.keys import keys
 
 class Rune(Item):
     def __init__(self, game, type, pos, power, soul_cost):
-        super().__init__(game,  type, keys.rune, pos, (16, 16), 1, False)
-        self.player = self.game.player
+        self.player = game.player
         self.menu_pos = pos
         self.max_amount = 1
         self.upgrade_cost = max(10, math.ceil(soul_cost / 3))
@@ -23,15 +22,15 @@ class Rune(Item):
         self.animation_size = 0
         self.animation_size_max = 0
         self.active = False
-        self.effect = self.type.replace('_rune', '')
+        self.effect = type.replace('_rune', '')
         self.render = True
         # self.picked_up = True
         self.cost_to_buy = soul_cost // 2 * power // 2
         self.activate_cooldown = 0
         self.activate_cooldown_max = 5
         self.clicked = False # Used for projectiles
-        self.Set_Description()
         self.text_box = Rune_Textbox(self)
+        super().__init__(game,  type, keys.rune, pos, (16, 16), 1, False)
 
 
     def Save_Data(self):
@@ -195,7 +194,6 @@ class Rune(Item):
 
     def Menu_Rect(self):
         return pygame.Rect(self.menu_pos[0], self.menu_pos[1], (self.size[0] * 1.5), (self.size[1] * 1.5))
-
 
     def Render_Floor(self, surf, offset=(0, 0)):
         
