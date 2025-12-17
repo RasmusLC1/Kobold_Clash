@@ -174,6 +174,8 @@ class Item(PhysicsEntity):
     def Decrease_Max_Amount(self, amount):
         self.max_amount = max(1, self.max_amount - amount)
 
+    def Add_Gem_Slot(self, amount):
+        pass
 
     def Set_Inventory_Type(self, inventory_type):
         self.inventory_type = inventory_type

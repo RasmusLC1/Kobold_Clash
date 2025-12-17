@@ -14,7 +14,7 @@ class Ingot(Valuable):
             keys.jade_ingot : f"Repairs Runes\nby {self.amount}",
             keys.copper_ingot : f"Add amount\nto items {self.amount}",
             keys.Gold_ingot : f"Add {self.amount} gemslots\nto weapon",
-            keys.Silver_ingot : f"Add {self.amount} gemslots\nto rune",
+            keys.Silver_ingot : f"Add {self.amount} power\nto rune",
         }
         self.description = descriptions.get(self.sub_type)+f"\nvalue:\t{self.Calculate_Value()} {keys.gold}"
 
@@ -27,13 +27,18 @@ class Ingot(Valuable):
             keys.Gold_ingot : self.Add_Gem_Slot_To_Item(),
             keys.Silver_ingot : self.Add_Gem_Slot_To_Item(),
         }
+        function = functions.get(item.type)
+        function(item)
         self.Decrease_Amount(1)
 
-    def Increase_Durability(self):
-        pass
+    def Increase_Durability(self, item):
+        durability_tenth = int(max(1, item.max_durability // 10))
+        item.Increase_Durability(durability_tenth)
 
-    def Increase_Item_Amount(self):
-        pass
+    def Increase_Item_Amount(self, item):
+        amount_tenth = int(max(1, item.max_amount // 10))
+        item.Increase_Max_Amount(amount_tenth)
+        item.Increase_Amount(amount_tenth)
 
-    def Add_Gem_Slot_To_Item(self):
-        pass
+    def Add_Gem_Slot_To_Item(self, item):
+        item.Increase_Power(1)

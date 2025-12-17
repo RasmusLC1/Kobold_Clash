@@ -43,6 +43,8 @@ class Attack_Effect_Weapon():
             attack_effect = self.game.assets[self.effect_type][self.weapon.animation]
         except Exception as e:
             print(f'FAILED TO LOAD ATTACK EFFECT{e}', self.effect_type, self.weapon.animation)
+            return
+        
         surf.blit( pygame.transform.flip(attack_effect, flip_x, False), image_rect)
 
     

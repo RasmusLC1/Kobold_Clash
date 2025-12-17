@@ -22,12 +22,10 @@ class Gem_Handler():
             return False
         
         self.gems.append(gem)
-
         self.Set_Effect(gem)
-        
-        
         return True
     
+
     # Finds and calls the various effect functions
     def Set_Effect(self, gem):
         gem_effects = {
@@ -119,8 +117,8 @@ class Gem_Handler():
                 continue
             self.weapon.entity.Set_Effect(gem.effect, min(10, self.Get_Effect_Amount(gem)), True)
 
-    def Increase_Max_Gems(self):
-        self.max_gems += 1
+    def Increase_Max_Gems(self, amount = 1):
+        self.max_gems += amount
 
     def Render_Effects(self, surf, offset=(0, 0)):
         for gem in self.gems:

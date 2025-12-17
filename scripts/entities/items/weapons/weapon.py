@@ -493,3 +493,6 @@ class Weapon(Item):
         self.Set_Description()
         self.range -= amount
  
+
+    def Add_Gem_Slot(self, amount):
+        self.gem_handler.Increase_Max_Gems(amount)

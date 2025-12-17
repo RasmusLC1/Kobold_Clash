@@ -113,15 +113,21 @@ class Rune(Item):
         self.current_soul_cost += change
         return True
 
-    def Modify_Upgrade_Cost(self, change):
-        self.upgrade_cost += change
+    def Upgrade_Cost(self):
+        self.upgrade_cost = (5 * self.current_power**2) + (5 * self.current_power) + 30
+
         return True
     
     def Modify_Power(self, change):
         if self.player.Get_Total_Available_Souls() < self.upgrade_cost:
             return False
-        self.current_power += change
+        self.Increase_Power(change)
         return True
+    
+    def Increase_Power(self, amount):
+        for i in range(amount):
+            self.current_power += 1
+            self.Upgrade_Cost()
     
     def Update_Activate_Cooldown(self, delta_time):
         if self.activate_cooldown:
