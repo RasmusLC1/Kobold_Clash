@@ -27,7 +27,7 @@ class PhysicsEntity:
         self.Set_Tile()
 
         self.saved_data = {}
-        self.text_box = None
+        self.Set_Text_Box()
         self.description = ''
         self.light_up_color = (255, 0, 0, 255)
 
@@ -170,6 +170,8 @@ class PhysicsEntity:
         if clatter:
             self.game.clatter.Generate_Clatter(pos, clatter) # Generate clatter to alert nearby enemies
 
+    def Set_Text_Box(self):
+        self.text_box = None
 
     def Render(self, surf, offset=(0, 0)):
         pass

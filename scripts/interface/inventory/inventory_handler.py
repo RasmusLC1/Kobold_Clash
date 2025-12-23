@@ -12,7 +12,7 @@ class Inventory_Handler():
         self.item_clicked = 0
         self.Set_Clicked_Inventory_Slot()
         self.clicked_inventory_slot_lock = False
-        self.inventory = [] # General shared inventory
+        self.inventory = [None] * 14 # General shared inventory
 
         self.item_inventory = Item_Inventory(game, self.inventory)
         self.weapon_inventory = Weapon_Inventory(game, self.inventory)

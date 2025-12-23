@@ -45,7 +45,6 @@ class Gem_Ingot_Loot_Handler(Loot_Types_Handler):
             loot_type = keys.gem
         elif keys.ingot in sub_type:
             loot_type = keys.ingot 
-        print(sub_type, loot_type)
         return loot_type
 
 

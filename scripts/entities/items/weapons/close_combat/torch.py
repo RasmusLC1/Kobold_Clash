@@ -32,7 +32,7 @@ class Torch(Weapon):
 
 
     def Update_Animation(self, delta_time):
-        if self.entity:
+        if self.picked_up or self.equipped:
             return
         if self.animation_cooldown > 0:
             self.animation_cooldown -= delta_time

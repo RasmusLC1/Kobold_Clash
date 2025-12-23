@@ -29,7 +29,6 @@ class Rune(Item):
         self.activate_cooldown = 0
         self.activate_cooldown_max = 5
         self.clicked = False # Used for projectiles
-        self.text_box = Rune_Textbox(self)
         super().__init__(game,  type, keys.rune, pos, (16, 16), 1, False)
 
 
@@ -101,6 +100,11 @@ class Rune(Item):
 
     def Set_Menu_Pos(self, pos):
         self.menu_pos = pos
+
+    
+    def Set_Text_Box(self):
+        self.text_box = Rune_Textbox(self)
+
 
     def Remove_Rune_From_Inventory(self):
         pass

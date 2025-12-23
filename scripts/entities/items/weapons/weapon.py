@@ -44,8 +44,6 @@ class Weapon(Item):
 
         self.delete_timer = 0 # time before weapon is deleted
 
-
-        self.text_box = Weapon_Textbox(self)
         self.entity_attack_type = None # Used to determine if the weapon is being used by enemy or player
         self.damage_handler = Damage_Handler_Weapon(self, effect, damage)
         self.charge_effect_handler = Charge_Effect_Weapon(game, self)
@@ -490,3 +488,7 @@ class Weapon(Item):
 
     def Add_Gem_Slot(self, amount):
         self.gem_handler.Increase_Max_Gems(amount)
+
+    
+    def Set_Text_Box(self):
+        self.text_box = Weapon_Textbox(self)

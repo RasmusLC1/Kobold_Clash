@@ -8,7 +8,6 @@ class Potion(Loot):
         self.max_animation = 4
         self.strength = strength
         
-        self.text_box = Potion_Textbox(self)
         self.Set_Description()
     
 
@@ -63,3 +62,6 @@ class Potion(Loot):
             self.Set_Description()
         if self.amount <= 0:
             self.durability = 0
+
+    def Set_Text_Box(self):
+        self.text_box = Potion_Textbox(self)

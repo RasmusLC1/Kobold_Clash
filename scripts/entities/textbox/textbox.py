@@ -9,7 +9,6 @@ class Text_Box():
         self.y_size = 0
 
     def Update(self, hitbox_1, hitbox_2):
-        
         # Handle when entity is in inventory
         if hitbox_1.colliderect(hitbox_2):
             self.render = True
