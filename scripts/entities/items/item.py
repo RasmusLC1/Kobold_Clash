@@ -70,6 +70,8 @@ class Item(PhysicsEntity):
         self.Set_Description()
         
     def Update(self, delta_time):
+        if self.durability <= 0:
+            self.Delete_Item()
         self.Update_Activate_Cooldown(delta_time)
 
     def Update_In_Inventory(self):
@@ -162,17 +164,22 @@ class Item(PhysicsEntity):
     
     def Increase_Amount(self, amount):
         self.amount = int(min(self.max_amount, self.amount + int(amount)))
+        self.Set_Description()
 
     def Decrease_Amount(self, amount):
         self.amount = max(0, self.amount - amount)
+        self.Set_Description()
         if self.amount <= 0:
             self.durability = 0
 
     def Increase_Max_Amount(self, amount):
         self.max_amount = int(self.max_amount + int(amount))
+        self.Set_Description()
 
     def Decrease_Max_Amount(self, amount):
         self.max_amount = max(1, self.max_amount - amount)
+        self.Set_Description()
+
 
     def Add_Gem_Slot(self, amount):
         pass

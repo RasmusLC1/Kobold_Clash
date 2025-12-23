@@ -236,7 +236,8 @@ class Weapon(Item):
                             f"Damage {self.damage_handler.Get_Damage()}\n"
                             f"speed {self.speed}\n"
                             f"range {self.range}\n"
-                            f"Dur {self.durability}\n"
+                            f"Dur {self.durability} / {self.max_durability}\n"
+                            f"Gemslots {self.gem_handler.max_gems}\n"
                             f"{self.Calculate_Value()} {keys.gold}\n"
                         )
 
@@ -459,6 +460,10 @@ class Weapon(Item):
     def Spawn_Spark(self):
         self.game.particle_handler.Activate_Particles(random.randint(2, 5), keys.spark_particle, self.rect().center, random.uniform(1, 1.5))
 
+
+    def Add_Gem_Slot(self, amount):
+        self.gem_handler.Increase_Max_Gems(amount)
+
     def Add_Gem(self, gem):
         return self.gem_handler.Add_Gem(gem)
 
@@ -484,10 +489,7 @@ class Weapon(Item):
     def Decrease_Speed(self, amount):
         self.Set_Description()
         self.range -= amount
- 
 
-    def Add_Gem_Slot(self, amount):
-        self.gem_handler.Increase_Max_Gems(amount)
 
     
     def Set_Text_Box(self):
