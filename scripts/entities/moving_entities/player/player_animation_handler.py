@@ -24,6 +24,9 @@ class Player_Animation_Handler(Animation_Handler):
 
 
         self.keyboard = self.entity.game.keyboard_handler
+        self.running_animation = 5
+        self.max_idle_animation = 3
+        self.max_attack_animation = 4
 
         # Add player-specific animations to unified handler
         self.animations.update({

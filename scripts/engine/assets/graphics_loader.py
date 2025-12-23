@@ -432,7 +432,7 @@ class Graphics_Loader:
             keys.sword_cut: get_tiles_from_sheet('items/weapons/sword/sword_attack_cut.png', 4, 0, 0, 0, 48, 48),
             keys.sword_stab: get_tiles_from_sheet('items/weapons/sword/sword_attack_stab.png', 4, 0, 0, 0, 48, 48),
             
-            keys.torch: get_tiles_from_sheet('items/weapons/torch/torch.png', 3, 0, 0, 0, 32, 32),
+            keys.torch: get_tiles_from_sheet('items/weapons/torch/torch.png', 7, 0, 0, 0, 32, 32),
             keys.torch_idle: get_tiles_from_sheet('items/weapons/torch/torch_idle.png', 3, 0, 0, 0, 32, 32),
             keys.torch_running_down: get_tiles_from_sheet('items/weapons/torch/torch_running_down.png', 5, 0, 0, 0, 32, 32),
             keys.torch_running_up: get_tiles_from_sheet('items/weapons/torch/torch_running_up.png', 5, 0, 0, 0, 32, 32),

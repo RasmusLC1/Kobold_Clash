@@ -10,12 +10,10 @@ import pygame
 import math
 import random
 from scripts.engine.keys.keys import keys
-import inspect
 
 class Weapon(Item):
-    def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_types = ['cut'], size = (16, 16), add_to_tile = True, max_animation = 5, amount = 1, max_amount = 1, durability = 100, max_durability = 100):
+    def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_types = ['cut'], size = (16, 16), add_to_tile = True, max_animation = 0, amount = 1, max_amount = 1, durability = 100, max_durability = 100):
         self.speed = max(1, 10 - speed) # Speed of the weapon
-        self.attack_animation_max = 4
         self.range = range # Range of the weapon
         self.damage = damage
         self.entity = None # Entity that holds the weapon
@@ -23,7 +21,6 @@ class Weapon(Item):
         self.attack_types = attack_types # Different kinds of attacks, like cutting and stabbing
         self.in_inventory = False # Is the weapon in an inventory
         self.equipped = False # Is the weapon currently equipped and can be used to attack
-        self.max_animation = 0 # Max amount of animations
 
         self.flip_x = False
 
@@ -203,7 +200,6 @@ class Weapon(Item):
                 self.Set_Charging_Player()
         except TypeError as e:
             print(f"Entity neither enemy nor player: {e}")
-    
 
 
      # Initialise special attack
@@ -338,17 +334,11 @@ class Weapon(Item):
     def Attack_Align_Weapon(self):
         pass
     
-
     
     # Takes the entity's sprite type and applies it to weapon
     def Set_Equipped_Sprite(self):
-        sprite = self.sub_type + '_' + self.entity.animation_handler.action
-        self.sprite = self.game.assets[sprite]
-        self.Set_Entity_Image()
-
-
-    def Update_Player_Animation(self, player_animation):
-        self.animation = min(self.attack_animation_max, player_animation)
+        self.sub_type = self.type + '_' + self.entity.animation_handler.action
+        self.Set_Sprite()
 
     # Responsible for calculating offset and centering the weapon 
     def Calculate_Image_Rect(self, image, offset):
@@ -369,6 +359,10 @@ class Weapon(Item):
                                         self.pos[1] - offset[1]  - flip_offset_y + image_size[1] // 2))
 
         return image_rect
+    
+    def Set_Animation(self, animation_num):
+        self.animation = animation_num
+        self.Set_Equipped_Sprite()
 
     # Render the weapon in player's hand 
     def Render_Equipped(self, surf, offset=(0, 0)):

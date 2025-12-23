@@ -157,7 +157,7 @@ class Item(PhysicsEntity):
         try:
             self.entity_image = self.sprite[self.animation].convert_alpha()
         except Exception as e:
-            print(f'SET Entity image failed {e}', self.type, self.pos, self.animation, self.max_animation, self.size, self.entity_image, self.sprite)
+            print(f'SET Entity image failed {e}', self.type, self.sub_type, self.pos, self.animation, self.max_animation, self.size, self.entity_image, self.sprite)
 
     
     def Increase_Amount(self, amount):

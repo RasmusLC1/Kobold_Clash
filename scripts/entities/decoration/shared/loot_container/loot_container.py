@@ -78,7 +78,7 @@ class Loot_Container(Decoration):
             rarity = 1
             return
 
-        self.min_rarity_value = rarity * self.animation
+        self.min_rarity_value = rarity * max(1, self.animation)
 
 
     def Set_Max_Rarity(self):
@@ -89,7 +89,7 @@ class Loot_Container(Decoration):
             keys.weapon_rack : 20,
             keys.bookshelf : 80,
             keys.effigy_tomb : 90,
-            keys.vase : 5
+            keys.vase : 10
         }
 
         rarity = max_rarity_values.get(self.type)
@@ -98,7 +98,7 @@ class Loot_Container(Decoration):
             rarity = 1
             print("LOOT TYPE NOT FOUND", self.type)
 
-        self.max_rarity_value = rarity * self.animation
+        self.max_rarity_value = rarity * max(1, self.animation)
 
 
     def Spawn_Loot(self, loot_type, pos, rarity_value):
@@ -110,7 +110,7 @@ class Loot_Container(Decoration):
     def Destroyed(self):
         if not super().Destroyed():
             return False
-
         self.Drop_Loot()
+
         return True
 

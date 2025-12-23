@@ -1,4 +1,4 @@
-from scripts.entities.decoration.ancient_tomb.loot_container.vase import Vase
+from scripts.entities.decoration.shared.loot_container.vase import Vase
 from scripts.entities.decoration.ancient_tomb.loot_container.effigy_tomb import Effigy_Tomb
 from scripts.entities.decoration.ancient_tomb.shrine.rune_shrine import Rune_Shrine
 from scripts.entities.decoration.ancient_tomb.loot_container.bookshelf import Bookshelf
