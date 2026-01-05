@@ -22,7 +22,6 @@ class Cursed_Loot(Passive_Loot):
         effects = {
             keys.blood_tomb : keys.blood_tomb,
             keys.black_coin : keys.black_coin,
-            keys.vampire_locket : keys.vampiric,
             keys.demonic_bargain : keys.demonic_bargain,
             keys.temptress_embrace : keys.temptress_embrace,
             keys.cursed_dice : keys.cursed_dice,
@@ -30,6 +29,7 @@ class Cursed_Loot(Passive_Loot):
             keys.forsaken_grimoire : keys.forsaken_grimoire,
             keys.cracked_talisman : keys.cracked_talisman,
             keys.echoing_skull : keys.echoing_skull,
+            keys.blood_ring : keys.blood_ring,
         }
         self.effect = effects.get(type)
 

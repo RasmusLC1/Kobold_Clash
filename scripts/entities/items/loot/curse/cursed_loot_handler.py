@@ -17,6 +17,7 @@ class Cursed_Loot_Handler(Loot_Types_Handler):
             keys.temptress_embrace : Cursed_Loot,
             keys.demonic_bargain : Cursed_Loot,
             keys.blood_tomb : Cursed_Loot,
+            keys.blood_ring : Cursed_Loot,
         }
 
         # Needs special spawning conditions
@@ -27,9 +28,10 @@ class Cursed_Loot_Handler(Loot_Types_Handler):
 
     def Get_Loot_Values(self):
         loot_types_cost = {
-            keys.black_coin : 30,
-            keys.temptress_embrace : 25,
-            keys.demonic_bargain : 25,
-            keys.blood_tomb : 25,
+            # keys.black_coin : 30,
+            # keys.temptress_embrace : 25,
+            # keys.demonic_bargain : 25,
+            # keys.blood_tomb : 25,
+            keys.blood_ring : 30,
         }
         return loot_types_cost

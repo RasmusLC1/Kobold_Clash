@@ -14,6 +14,7 @@ class Effect():
         self.animation_max = animation_max
         self.animation_cooldown = 0
         self.animation_cooldown_max = animation_cooldown_max
+        self.update_trigged = False
         self.cooldown_range = cooldown_range
         self.description = description
         self.saved_data = {}
@@ -53,7 +54,6 @@ class Effect():
             return False
         
         self.Update_Cooldown(delta_time)
-        
         return True
 
     def Remove_Effect(self, reduce_permanent = 0):
@@ -74,18 +74,21 @@ class Effect():
         self.effect = max(self.effect - 1, 0)
 
     def Update_Cooldown(self, delta_time) -> bool:
-        if self.permanent >= self.effect:
-            return False
+            
         if self.cooldown > 0:
             self.cooldown -= delta_time
             return False
+        
         self.Set_Cooldown()
+        if self.permanent >= self.effect:
+            return False
         self.effect -= 1
         self.entity.Set_Description()
         
         return True
     
     def Set_Cooldown(self):
+        self.update_trigged = True
         self.cooldown = random.uniform(self.cooldown_range[0], self.cooldown_range[1])
 
     def Effect_Animation_Cooldown(self, delta_time):

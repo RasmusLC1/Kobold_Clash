@@ -12,6 +12,7 @@ from scripts.entities.moving_entities.effects.player.demonic_bargain import Demo
 from scripts.entities.moving_entities.effects.player.temptress_embrace import Temptress_Embrace
 from scripts.entities.moving_entities.effects.souls.increase_souls import Increase_Souls
 from scripts.entities.moving_entities.effects.player.luck import Luck
+from scripts.entities.moving_entities.effects.player.blood_ring import Blood_Ring
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.player.effect_icon import Effect_Icon
 
@@ -30,6 +31,7 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
         keys.increase_souls: Increase_Souls,
         keys.soul_drained: Soul_Drained,
         keys.luck: Luck,
+        keys.blood_ring:  Blood_Ring,
         'player_movement_invunerable': Player_Movement_Invunerable # Use key if available
     }
     

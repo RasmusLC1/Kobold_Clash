@@ -83,7 +83,7 @@ class Items():
 
     echoing_skull = "echoing_skull"
 
-    vampire_locket = "vampire_locket"
+    blood_ring = "blood_ring"
 
     recipe_scroll = "recipe_scroll"
 

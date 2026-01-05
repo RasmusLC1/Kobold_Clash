@@ -57,6 +57,7 @@ class Interface():
 
     player_damage_font = "player_damage_font"
 
+    # Include headline in string to trigger headline handling in font handler
     font_commmon = "font_commmon_headline" 
 
     font_uncommon = "font_uncommon_headline"
