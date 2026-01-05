@@ -12,7 +12,7 @@ class Inventory_Handler():
         self.item_clicked = 0
         self.Set_Clicked_Inventory_Slot()
         self.clicked_inventory_slot_lock = False
-        self.inventory = [] # General shared inventory
+        self.inventory = [None] * 14 # General shared inventory
 
         self.item_inventory = Item_Inventory(game, self.inventory)
         self.weapon_inventory = Weapon_Inventory(game, self.inventory)
@@ -299,7 +299,10 @@ class Inventory_Handler():
                     return False
 
                 if self.Gem_Check(inventory_slot):
-                    return True
+                    return False
+                
+                if self.Ingot_Check(inventory_slot):
+                    return False
                 
 
                 if self.Swap_Item(inventory_slot, self.active_item):
@@ -344,18 +347,17 @@ class Inventory_Handler():
 
 
         # Check for the inventory item type matches the ingot type
-        affected_item_type = item_types.get(self.active_item.sub_type, None)
+        affected_item_category = item_types.get(self.active_item.sub_type, None)
 
-        if not affected_item_type:
+        if not affected_item_category:
             print("INGOT NOT FOUND", self.active_item.sub_type, inventory_slot.item)
-            return False
+            return True
         
-        if inventory_slot.item.type != affected_item_type:
-            return False
+        if inventory_slot.item.sub_category != affected_item_category:
+            return True
         
         # Returns true if succesfully added
         add_ingot_success = self.active_item.Add_Ingot_To_Item(inventory_slot.item)
-        self.Reset_Active_Item()
         return add_ingot_success
     
     def Reset_Active_Item(self):
@@ -387,11 +389,16 @@ class Inventory_Handler():
     # receiving_inventory_slot is the inventory slot that item_being_moved is
     # being moved to
     def Swap_Item(self, receiving_inventory_slot, item_being_moved):
-        if not receiving_inventory_slot.item:
+        receiving_item_holder = receiving_inventory_slot.item  # Store item to be swapped
+        
+        if not receiving_item_holder:
             return False
         
+        # Check to prevent runes being moved away from rune inventory
+        if receiving_item_holder.category == keys.rune:
+            if item_being_moved.category != keys.rune:
+                return False
 
-        item_holder = receiving_inventory_slot.item  # Store item to be swapped
 
         
         self.clicked_inventory_slot.Reset_Inventory_Slot()
@@ -399,7 +406,7 @@ class Inventory_Handler():
         # Check if the items being moved are gems and weapons
 
         # Move original item to active inventory slot
-        self.clicked_inventory_slot.Add_Item(item_holder)
+        self.clicked_inventory_slot.Add_Item(receiving_item_holder)
 
         self.Set_Clicked_Inventory_Slot()  # Clear clicked slot
 

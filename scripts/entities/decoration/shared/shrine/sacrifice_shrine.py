@@ -54,7 +54,6 @@ class Sacrifice_Shrine(Decoration):
 
 
     def Spawn_Reward(self, item):
-        print(item.type)
         value = self.Calculate_Reward(item)
 
         if value == RewardType.BAD:

@@ -89,5 +89,5 @@ class Base_Inventory():
 
 
     def Add_Inventory_Slot(self, inventory_slot):
-        self.shared_inventory.append(inventory_slot)
+        self.shared_inventory[inventory_slot.index] = inventory_slot
         self.inventory.append(inventory_slot)

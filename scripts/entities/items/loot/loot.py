@@ -7,7 +7,6 @@ class Loot(Item):
         super().__init__(game=game, type=type, sub_category=keys.loot, pos=pos, size=size, amount=amount, add_to_tile=True, rarity_value = rarity_value, max_amount=max_amount, max_animation=max_animation)
         self.loot_type =  loot_type
         self.Set_Description()
-        self.text_box = Loot_Textbox(self)
 
     def Save_Data(self):
         # self.saved_data[keys.type] = self.type
@@ -28,3 +27,6 @@ class Loot(Item):
     def Revive(self):
         return False
     
+
+    def Set_Text_Box(self):
+        self.text_box = Loot_Textbox(self)

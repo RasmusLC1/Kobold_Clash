@@ -8,10 +8,10 @@ class Torch(Weapon):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.torch, 1, 2, 3, 100, 'one_handed_melee', keys.fire)
         self.animation_cooldown_max = 0.5
+        self.max_animation = 7
         self.light_source = self.game.light_handler.Add_Light(self.pos, 8, self.tile)
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
         self.flame_thrower = Flame_Thrower(self.game)
-
 
     # Pick up the torch and update the general light in the area
     def Pick_Up(self):
@@ -32,9 +32,12 @@ class Torch(Weapon):
 
 
     def Update_Animation(self, delta_time):
+        if self.picked_up or self.equipped:
+            return
         if self.animation_cooldown > 0:
             self.animation_cooldown -= delta_time
         else:
+            self.sub_type = keys.torch
             self.animation_cooldown = random.uniform(self.animation_cooldown_max * 0.7, self.animation_cooldown_max)
             self.Spawn_Fire_Particle()
 

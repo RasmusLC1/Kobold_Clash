@@ -29,8 +29,7 @@ class Rune(Item):
         self.activate_cooldown = 0
         self.activate_cooldown_max = 5
         self.clicked = False # Used for projectiles
-        self.text_box = Rune_Textbox(self)
-        super().__init__(game,  type, keys.rune, pos, (16, 16), 1, False)
+        super().__init__(game,  type, keys.rune, pos, size=(16, 16), amount=1, add_to_tile=False, durability=100, max_durability=100)
 
 
     def Save_Data(self):
@@ -90,6 +89,9 @@ class Rune(Item):
         self.Reset_Animation_Size()
         self.Set_Activate_Cooldown(self.activate_cooldown_max)
         self.player.weapon_handler.Set_Attack_Lock(True)
+
+        durability_damage = int(max(1, self.current_power // 2))
+        self.Decrease_Durability(durability_damage)
         self.clicked = False
 
     
@@ -101,6 +103,11 @@ class Rune(Item):
 
     def Set_Menu_Pos(self, pos):
         self.menu_pos = pos
+
+    
+    def Set_Text_Box(self):
+        self.text_box = Rune_Textbox(self)
+
 
     def Remove_Rune_From_Inventory(self):
         pass
@@ -144,6 +151,8 @@ class Rune(Item):
         self.description = (
                             f"soul {self.current_soul_cost}\n"
                             f"power {self.current_power + self.player.effects.power.effect}\n"
+                            f"Dur {self.durability} / {self.max_durability}\n"
+                            f"{self.Calculate_Value()} {keys.gold}\n"
                         )  
 
     

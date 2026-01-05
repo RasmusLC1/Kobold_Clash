@@ -7,6 +7,8 @@ class Particle(Projectile):
         super().__init__(game, pos, type, 0, speed, range, max_charge_time, keys.particle, damage_type, shoot_distance, keys.cut, (4, 4), False)
         self.attack_animation_max = 3
         self.disabled = True
+        self.max_animation = 0
+        self.animation = 0
         self.pickup_allowed = False
         self.damage_type = damage_type
         self.temp_damage = 0
@@ -83,6 +85,9 @@ class Particle(Projectile):
     # Own render function since we don't need to compute light
     def Render(self, surf, offset=(0, 0)):
         if self.disabled:
+            return
+        
+        if not self.entity_image:
             return
         
         weapon_image = self.entity_image.convert_alpha()

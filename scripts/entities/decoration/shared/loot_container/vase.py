@@ -10,14 +10,13 @@ class Vase(Loot_Container):
         super().__init__(game, keys.vase, pos, (32, 32), True, 5, 'vase_shatter', 600)
         self.animation = random.randint(0, 4)
         self.Set_Sprite()
-        self.empty = True
 
     def Open(self):
         return
 
     def Set_Loot_Types(self):
 
-        self.loot_weights = {keys.valuable : 110.8,
+        self.loot_weights = {keys.valuable : 0.8,
                              keys.key : 0.3,
                              keys.revive : 0.02,
                              keys.nothing : 1}

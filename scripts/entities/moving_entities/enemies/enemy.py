@@ -47,9 +47,6 @@ class Enemy(Moving_Entity):
 
         self.attack_symbol_offset = 20
         self.health_bar = self.game.assets[keys.health_bar]
-        
-
-        self.text_box = Enemy_Textbox(self)
 
         self.intent_manager = self.intent_manager_class(game, self)
 
@@ -307,11 +304,16 @@ class Enemy(Moving_Entity):
 
         self.active_weapon.Set_Damage(effect, amount)
 
+        
+    def Set_Text_Box(self):
+        self.text_box = Enemy_Textbox(self)
+
 
     def Future_Rect(self, direction):
              return pygame.Rect(self.pos[0] + direction[0]*32, self.pos[1] + direction[1]*32, self.size[0], self.size[1])
 
     
+# RENDER FUNCTIONS
     def Render(self, surf, offset = (0,0)):
         if not super().Render(surf, offset):
             return

@@ -3,6 +3,18 @@ from scripts.entities.textbox.textbox import Text_Box
 
 class Weapon_Textbox(Text_Box):
 
+    
+    def Update(self, hitbox_1, hitbox_2):
+        # Handle when entity is in inventory
+        if hitbox_1.colliderect(hitbox_2):
+            self.render = True
+            return True
+        
+        if self.render:
+            self.render = False
+
+        return False
+
     def Set_Y_Size(self):
         self.y_size = 80
 
