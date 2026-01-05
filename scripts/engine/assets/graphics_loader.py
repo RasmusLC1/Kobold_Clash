@@ -104,16 +104,16 @@ class Graphics_Loader:
 
     def Asset_Trap_List(self):
         trap_assets = {
-            keys.spike_trap : get_tiles_from_sheet('traps/spike_trap.png', 6, 0, 0, 0, 32, 32),
-            keys.spike_poison_trap : get_tiles_from_sheet('traps/Spike_Trap_poison.png', 13, 0, 0, 0, 32, 32),
-            keys.pit_trap : get_tiles_from_sheet('traps/Pit_Trap_Spikes.png', 1, 0, 0, 0, 32, 32),
-            keys.fire_trap : get_tiles_from_sheet('traps/Fire_Trap.png', 13, 0, 0, 0, 32, 20),
+            keys.spike_trap : get_tiles_from_sheet('decoration/traps/spike_trap.png', 6, 0, 0, 0, 32, 32),
+            keys.spike_poison_trap : get_tiles_from_sheet('decoration/traps/Spike_Trap_poison.png', 13, 0, 0, 0, 32, 32),
+            keys.pit_trap : get_tiles_from_sheet('decoration/traps/Pit_Trap_Spikes.png', 1, 0, 0, 0, 32, 32),
+            keys.fire_trap : get_tiles_from_sheet('decoration/traps/Fire_Trap.png', 13, 0, 0, 0, 32, 20),
             keys.spider_web : get_tiles_from_sheet('entities/enemies/dwellers/spider/spider_web.png', 3, 0, 0, 0, 32, 32),
-            keys.poison_plume : get_tiles_from_sheet('traps/poison_plume.png', 7, 0, 0, 0, 32, 32),
-            keys.rubble : get_tiles_from_sheet('traps/rubble.png', 3, 0, 0, 0, 32, 32),
-            keys.pressure_plate : get_tiles_from_sheet('traps/pressure_plate.png', 0, 0, 0, 0, 32, 32),
-            keys.arrow_trap : get_tiles_from_sheet('traps/arrow_trap.png', 0, 0, 0, 0, 32, 32),
-            keys.soul_trap : get_tiles_from_sheet('traps/soul_trap.png', 1, 0, 0, 0, 32, 32),
+            keys.poison_plume : get_tiles_from_sheet('decoration/traps/poison_plume.png', 7, 0, 0, 0, 32, 32),
+            keys.rubble : get_tiles_from_sheet('decoration/traps/rubble.png', 3, 0, 0, 0, 32, 32),
+            keys.pressure_plate : get_tiles_from_sheet('decoration/traps/pressure_plate.png', 0, 0, 0, 0, 32, 32),
+            keys.arrow_trap : get_tiles_from_sheet('decoration/traps/arrow_trap.png', 0, 0, 0, 0, 32, 32),
+            keys.soul_trap : get_tiles_from_sheet('decoration/traps/soul_trap.png', 1, 0, 0, 0, 32, 32),
         }
 
         self.assets.update(trap_assets)
@@ -592,63 +592,63 @@ class Graphics_Loader:
 
     def Asset_Potion_List(self):
         potion_assets = {
-            keys.empty_bottle: get_tiles_from_sheet('Potions/Healing_potions/empty.png', 0, 0, 0, 0, 32, 32),
+            keys.empty_bottle: get_tiles_from_sheet('items/potions/Healing_potions/empty.png', 0, 0, 0, 0, 32, 32),
 
-            keys.invisibility + '_' + keys.full: get_tiles_from_sheet('Potions/invisibility/invisibility.png', 2, 2, 0, 0, 32, 32),
-            keys.invisibility + '_' + keys.half: get_tiles_from_sheet('Potions/invisibility/invisibility.png', 2, 2, 0, 0, 32, 32),
-            keys.invisibility + '_' + keys.low: get_tiles_from_sheet('Potions/invisibility/invisibility.png', 2, 2, 0, 0, 32, 32),
+            keys.invisibility + '_' + keys.full: get_tiles_from_sheet('items/potions/invisibility/invisibility.png', 2, 2, 0, 0, 32, 32),
+            keys.invisibility + '_' + keys.half: get_tiles_from_sheet('items/potions/invisibility/invisibility.png', 2, 2, 0, 0, 32, 32),
+            keys.invisibility + '_' + keys.low: get_tiles_from_sheet('items/potions/invisibility/invisibility.png', 2, 2, 0, 0, 32, 32),
 
-            keys.healing + '_' + keys.full: get_tiles_from_sheet('Potions/Healing_potions/healing_full.png', 2, 2, 0, 0, 32, 32),
-            keys.healing + '_' + keys.half: get_tiles_from_sheet('Potions/Healing_potions/healing_half.png', 2, 2, 0, 0, 32, 32),
-            keys.healing + '_' + keys.low: get_tiles_from_sheet('Potions/Healing_potions/healing_low.png', 2, 2, 0, 0, 32, 32),
+            keys.healing + '_' + keys.full: get_tiles_from_sheet('items/potions/Healing_potions/healing_full.png', 2, 2, 0, 0, 32, 32),
+            keys.healing + '_' + keys.half: get_tiles_from_sheet('items/potions/Healing_potions/healing_half.png', 2, 2, 0, 0, 32, 32),
+            keys.healing + '_' + keys.low: get_tiles_from_sheet('items/potions/Healing_potions/healing_low.png', 2, 2, 0, 0, 32, 32),
 
-            keys.increase_souls + '_' + keys.full: get_tiles_from_sheet('Potions/soul_potions/soul_full.png', 2, 2, 0, 0, 32, 32),
-            keys.increase_souls + '_' + keys.half: get_tiles_from_sheet('Potions/soul_potions/soul_half.png', 2, 2, 0, 0, 32, 32),
-            keys.increase_souls + '_' + keys.low: get_tiles_from_sheet('Potions/soul_potions/soul_low.png', 2, 2, 0, 0, 32, 32),
+            keys.increase_souls + '_' + keys.full: get_tiles_from_sheet('items/potions/soul_potions/soul_full.png', 2, 2, 0, 0, 32, 32),
+            keys.increase_souls + '_' + keys.half: get_tiles_from_sheet('items/potions/soul_potions/soul_half.png', 2, 2, 0, 0, 32, 32),
+            keys.increase_souls + '_' + keys.low: get_tiles_from_sheet('items/potions/soul_potions/soul_low.png', 2, 2, 0, 0, 32, 32),
 
-            keys.arcane_hunger + '_' + keys.full: get_tiles_from_sheet('Potions/soul_potions/arcane_hunger_full.png', 2, 2, 0, 0, 32, 32),
-            keys.arcane_hunger + '_' + keys.half: get_tiles_from_sheet('Potions/soul_potions/arcane_hunger_half.png', 2, 2, 0, 0, 32, 32),
-            keys.arcane_hunger + '_' + keys.low: get_tiles_from_sheet('Potions/soul_potions/arcane_hunger_low.png', 2, 2, 0, 0, 32, 32),
+            keys.arcane_hunger + '_' + keys.full: get_tiles_from_sheet('items/potions/soul_potions/arcane_hunger_full.png', 2, 2, 0, 0, 32, 32),
+            keys.arcane_hunger + '_' + keys.half: get_tiles_from_sheet('items/potions/soul_potions/arcane_hunger_half.png', 2, 2, 0, 0, 32, 32),
+            keys.arcane_hunger + '_' + keys.low: get_tiles_from_sheet('items/potions/soul_potions/arcane_hunger_low.png', 2, 2, 0, 0, 32, 32),
 
-            keys.speed + '_' + keys.full: get_tiles_from_sheet('Potions/speed_potions/speed_full.png', 2, 2, 0, 0, 32, 32),
-            keys.speed + '_' + keys.half: get_tiles_from_sheet('Potions/speed_potions/speed_half.png', 2, 2, 0, 0, 32, 32),
-            keys.speed + '_' + keys.low: get_tiles_from_sheet('Potions/speed_potions/speed_low.png', 2, 2, 0, 0, 32, 32),
+            keys.speed + '_' + keys.full: get_tiles_from_sheet('items/potions/speed_potions/speed_full.png', 2, 2, 0, 0, 32, 32),
+            keys.speed + '_' + keys.half: get_tiles_from_sheet('items/potions/speed_potions/speed_half.png', 2, 2, 0, 0, 32, 32),
+            keys.speed + '_' + keys.low: get_tiles_from_sheet('items/potions/speed_potions/speed_low.png', 2, 2, 0, 0, 32, 32),
 
-            keys.green + '_' + keys.full: get_tiles_from_sheet('Potions/Greenpotions/green_full.png', 2, 2, 0, 0, 32, 32),
-            keys.green + '_' + keys.half: get_tiles_from_sheet('Potions/Greenpotions/green_half.png', 2, 2, 0, 0, 32, 32),
-            keys.green + '_' + keys.low: get_tiles_from_sheet('Potions/Greenpotions/green_low.png', 2, 2, 0, 0, 32, 32),
+            keys.luck + '_' + keys.full: get_tiles_from_sheet('items/potions/luck_potions/luck_full.png', 2, 2, 0, 0, 32, 32),
+            keys.luck + '_' + keys.half: get_tiles_from_sheet('items/potions/luck_potions/luck_half.png', 2, 2, 0, 0, 32, 32),
+            keys.luck + '_' + keys.low: get_tiles_from_sheet('items/potions/luck_potions/luck_low.png', 2, 2, 0, 0, 32, 32),
 
-            keys.increase_strength + '_' + keys.full: get_tiles_from_sheet('Potions/strength_potions/strength_full.png', 2, 2, 0, 0, 32, 32),
-            keys.increase_strength + '_' + keys.half: get_tiles_from_sheet('Potions/strength_potions/strength_half.png', 2, 2, 0, 0, 32, 32),
-            keys.increase_strength + '_' + keys.low: get_tiles_from_sheet('Potions/strength_potions/strength_low.png', 2, 2, 0, 0, 32, 32),
+            keys.increase_strength + '_' + keys.full: get_tiles_from_sheet('items/potions/strength_potions/strength_full.png', 2, 2, 0, 0, 32, 32),
+            keys.increase_strength + '_' + keys.half: get_tiles_from_sheet('items/potions/strength_potions/strength_half.png', 2, 2, 0, 0, 32, 32),
+            keys.increase_strength + '_' + keys.low: get_tiles_from_sheet('items/potions/strength_potions/strength_low.png', 2, 2, 0, 0, 32, 32),
 
-            keys.poison_resistance + '_' + keys.full: get_tiles_from_sheet('Potions/poison_resistance_potions/poison_resistance_full.png', 2, 2, 0, 0, 32, 32),
-            keys.poison_resistance + '_' + keys.half: get_tiles_from_sheet('Potions/poison_resistance_potions/poison_resistance_half.png', 2, 2, 0, 0, 32, 32),
-            keys.poison_resistance + '_' + keys.low: get_tiles_from_sheet('Potions/poison_resistance_potions/poison_resistance_low.png', 2, 2, 0, 0, 32, 32),
+            keys.poison_resistance + '_' + keys.full: get_tiles_from_sheet('items/potions/poison_resistance_potions/poison_resistance_full.png', 2, 2, 0, 0, 32, 32),
+            keys.poison_resistance + '_' + keys.half: get_tiles_from_sheet('items/potions/poison_resistance_potions/poison_resistance_half.png', 2, 2, 0, 0, 32, 32),
+            keys.poison_resistance + '_' + keys.low: get_tiles_from_sheet('items/potions/poison_resistance_potions/poison_resistance_low.png', 2, 2, 0, 0, 32, 32),
 
-            keys.purple + '_' + keys.full: get_tiles_from_sheet('Potions/Purplepotions/Purple_full.png', 2, 2, 0, 0, 32, 32),
-            keys.purple + '_' + keys.half: get_tiles_from_sheet('Potions/Purplepotions/Purple_half.png', 2, 2, 0, 0, 32, 32),
-            keys.purple + '_' + keys.low: get_tiles_from_sheet('Potions/Purplepotions/Purple_low.png', 2, 2, 0, 0, 32, 32),
+            keys.purple + '_' + keys.full: get_tiles_from_sheet('items/potions/Purplepotions/Purple_full.png', 2, 2, 0, 0, 32, 32),
+            keys.purple + '_' + keys.half: get_tiles_from_sheet('items/potions/Purplepotions/Purple_half.png', 2, 2, 0, 0, 32, 32),
+            keys.purple + '_' + keys.low: get_tiles_from_sheet('items/potions/Purplepotions/Purple_low.png', 2, 2, 0, 0, 32, 32),
 
-            keys.frozen_resistance + '_' + keys.full: get_tiles_from_sheet('Potions/freeze_resistance_potions/freeze_resistance_full.png', 2, 2, 0, 0, 32, 32),
-            keys.frozen_resistance + '_' + keys.half: get_tiles_from_sheet('Potions/freeze_resistance_potions/freeze_resistance_half.png', 2, 2, 0, 0, 32, 32),
-            keys.frozen_resistance + '_' + keys.low: get_tiles_from_sheet('Potions/freeze_resistance_potions/freeze_resistance_low.png', 2, 2, 0, 0, 32, 32),
+            keys.frozen_resistance + '_' + keys.full: get_tiles_from_sheet('items/potions/freeze_resistance_potions/freeze_resistance_full.png', 2, 2, 0, 0, 32, 32),
+            keys.frozen_resistance + '_' + keys.half: get_tiles_from_sheet('items/potions/freeze_resistance_potions/freeze_resistance_half.png', 2, 2, 0, 0, 32, 32),
+            keys.frozen_resistance + '_' + keys.low: get_tiles_from_sheet('items/potions/freeze_resistance_potions/freeze_resistance_low.png', 2, 2, 0, 0, 32, 32),
 
-            keys.silence + '_' + keys.full: get_tiles_from_sheet('Potions/silence_potions/silence_full.png', 2, 2, 0, 0, 32, 32),
-            keys.silence + '_' + keys.half: get_tiles_from_sheet('Potions/silence_potions/silence_half.png', 2, 2, 0, 0, 32, 32),
-            keys.silence + '_' + keys.low: get_tiles_from_sheet('Potions/silence_potions/silence_low.png', 2, 2, 0, 0, 32, 32),
+            keys.silence + '_' + keys.full: get_tiles_from_sheet('items/potions/silence_potions/silence_full.png', 2, 2, 0, 0, 32, 32),
+            keys.silence + '_' + keys.half: get_tiles_from_sheet('items/potions/silence_potions/silence_half.png', 2, 2, 0, 0, 32, 32),
+            keys.silence + '_' + keys.low: get_tiles_from_sheet('items/potions/silence_potions/silence_low.png', 2, 2, 0, 0, 32, 32),
 
-            keys.regen + '_' + keys.full: get_tiles_from_sheet('Potions/regen_potions/regen_full.png', 2, 2, 0, 0, 32, 32),
-            keys.regen + '_' + keys.half: get_tiles_from_sheet('Potions/regen_potions/regen_half.png', 2, 2, 0, 0, 32, 32),
-            keys.regen + '_' + keys.low: get_tiles_from_sheet('Potions/regen_potions/regen_low.png', 2, 2, 0, 0, 32, 32),
+            keys.regen + '_' + keys.full: get_tiles_from_sheet('items/potions/regen_potions/regen_full.png', 2, 2, 0, 0, 32, 32),
+            keys.regen + '_' + keys.half: get_tiles_from_sheet('items/potions/regen_potions/regen_half.png', 2, 2, 0, 0, 32, 32),
+            keys.regen + '_' + keys.low: get_tiles_from_sheet('items/potions/regen_potions/regen_low.png', 2, 2, 0, 0, 32, 32),
 
-            keys.vampiric + '_' + keys.full: get_tiles_from_sheet('Potions/vampiric_potions/vampiric_full.png', 2, 2, 0, 0, 32, 32),
-            keys.vampiric + '_' + keys.half: get_tiles_from_sheet('Potions/vampiric_potions/vampiric_half.png', 2, 2, 0, 0, 32, 32),
-            keys.vampiric + '_' + keys.low: get_tiles_from_sheet('Potions/vampiric_potions/vampiric_low.png', 2, 2, 0, 0, 32, 32),
+            keys.vampiric + '_' + keys.full: get_tiles_from_sheet('items/potions/vampiric_potions/vampiric_full.png', 2, 2, 0, 0, 32, 32),
+            keys.vampiric + '_' + keys.half: get_tiles_from_sheet('items/potions/vampiric_potions/vampiric_half.png', 2, 2, 0, 0, 32, 32),
+            keys.vampiric + '_' + keys.low: get_tiles_from_sheet('items/potions/vampiric_potions/vampiric_low.png', 2, 2, 0, 0, 32, 32),
 
-            keys.fire_resistance + '_' + keys.full: get_tiles_from_sheet('Potions/fire_resistance_potions/fire_resistance_full.png', 2, 2, 0, 0, 32, 32),
-            keys.fire_resistance + '_' + keys.half: get_tiles_from_sheet('Potions/fire_resistance_potions/fire_resistance_half.png', 2, 2, 0, 0, 32, 32),
-            keys.fire_resistance + '_' + keys.low: get_tiles_from_sheet('Potions/fire_resistance_potions/fire_resistance_low.png', 2, 2, 0, 0, 32, 32),
+            keys.fire_resistance + '_' + keys.full: get_tiles_from_sheet('items/potions/fire_resistance_potions/fire_resistance_full.png', 2, 2, 0, 0, 32, 32),
+            keys.fire_resistance + '_' + keys.half: get_tiles_from_sheet('items/potions/fire_resistance_potions/fire_resistance_half.png', 2, 2, 0, 0, 32, 32),
+            keys.fire_resistance + '_' + keys.low: get_tiles_from_sheet('items/potions/fire_resistance_potions/fire_resistance_low.png', 2, 2, 0, 0, 32, 32),
         }
 
         self.assets.update(potion_assets)

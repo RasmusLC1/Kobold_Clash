@@ -14,15 +14,16 @@ class Potion_Handler(Loot_Types_Handler):
             keys.healing: 20,
             keys.regen: 4,
             keys.increase_souls: 20,
-            keys.speed: 4,
-            keys.increase_strength: 4,
+            keys.speed: 3,
+            keys.increase_strength: 3,
             keys.invisibility: 3,
             keys.silence: 3,
-            keys.fire_resistance: 6,
-            keys.frozen_resistance: 6,
-            keys.poison_resistance: 6,
-            keys.vampiric: 5,
-            keys.arcane_hunger: 5,
+            keys.fire_resistance: 5,
+            keys.frozen_resistance: 5,
+            keys.poison_resistance: 5,
+            keys.vampiric: 3,
+            keys.arcane_hunger: 2,
+            keys.luck: 2,
         }
 
         return strength.get(key, 1)
@@ -42,6 +43,7 @@ class Potion_Handler(Loot_Types_Handler):
             keys.poison_resistance: 10,
             keys.vampiric: 50,
             keys.arcane_hunger: 50,
+            keys.luck: 20,
         }
 
         # Adjust the cost based on player state

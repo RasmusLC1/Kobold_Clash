@@ -85,7 +85,7 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
 
             return self.Set_Effect_Icon(effect_name)
         except Exception as e:
-            print(f'FAILED TO FIND PARENT CLASS {e}', effect_name, duration, permanent)
+            print(f'FAILED TO SET PLAYER EFFECT {e}', effect_name, duration, permanent)
             return False
 
     def Play_Sound_Effect(self, effect):

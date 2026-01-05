@@ -30,7 +30,7 @@ class Player(Moving_Entity):
         self.game.light_handler.Initialise_Light_Level(self.tile)
         self.player_particle_cooldown = 0
         self.last_shrine_visited = None # used for teleporting and other shrine logic
-        self.luck = 10 # player luck, can be upgraded
+        self.luck = 10 # player luck, can be upgraded from 0 -> 10
 
         self.weapons = []
         self.weapon_handler = Player_Weapon_Handler(self.game, self)
