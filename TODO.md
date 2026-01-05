@@ -52,6 +52,7 @@ Buy and sell items to help complete levels
 Upgrade weapons
 
 # Awakening engine
+    # Complete
     Generating clatter has a chance to increase the difficulty of the dungeon layer (Awakening)
 
     Increasing difficulty can have the following effects
@@ -204,12 +205,12 @@ Upgrade weapons
         multishot - Fires two arrows at a time
 
     ## Ingots
-        Can be used to repair items and add upgrades, also have high value at market depending on rarety
-        Steel ingot - repairs weapons
-        Jade ingot - repairs runes
-        copper ingot - repairs items
-        Gold ingot - can add gem slots
-        Silver ingot - can upgrade rune power
+        # Can be used to repair items and add upgrades, also have high value at market depending on rarety
+        # Steel ingot - repairs weapons
+        # Jade ingot - repairs runes
+        # copper ingot - repairs items
+        # Gold ingot - can add gem slots
+        # Silver ingot - can upgrade rune power
 
 
     ## Potions

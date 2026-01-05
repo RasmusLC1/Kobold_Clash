@@ -28,14 +28,37 @@ from scripts.engine.keys.keys import keys
 
 class Status_Effect_Handler:
 
+    EFFECT_REGISTRY = {
+        keys.fire: Fire,
+        keys.poison: Poison,
+        keys.frozen: Frozen,
+        keys.wet: Wet,
+        keys.regen: Regen,
+        keys.speed: Speed,
+        keys.increase_strength: Increase_Strength,
+        keys.weakness: Weakness,
+        keys.invisibility: Invisibility,
+        keys.fire_resistance: Fire_Resistance,
+        keys.poison_resistance: Poison_Resistance,
+        keys.frozen_resistance: Frozen_Resistance,
+        keys.resistance: Resistance,
+        keys.snare: Snare,
+        keys.anchor: Anchor,
+        keys.healing: Healing,
+        keys.increase_max_health: Increase_Max_Health, 
+        keys.slow: Slow,
+        keys.vampiric: Vampiric,
+        keys.invulnerable: Invulnerable,
+        keys.vulnerable: Vulnerable,
+        keys.thorns: Thorns,
+        keys.electric: Electric,
+        keys.electric_resistance: Electric_Resistance,
+    }
+
     def __init__(self, entity):
         self.entity = entity
-
-        self.Initialise_Effects()       
-
         self.active_effects = []
-        
-        self.is_on_ice = 0
+        self.instantiated_effects = {}
         self.saved_data = {}
 
     def Save_Data(self):
@@ -46,127 +69,76 @@ class Status_Effect_Handler:
 
 
     def Load_Data(self, data):
-        for ID, effect_data in data.items():
+        for effect_id, effect_data in data.items():
             if not effect_data:
                 continue
-            
-            if not ID in self.effects:
+
+            effect = self.Get_Effect(effect_id)
+
+            if not effect:
                 continue
-            try:
-                self.effects[ID].Load_Data(effect_data)
-                self.active_effects.append(self.effects[ID])
-            except Exception as e:
-                print(f"Wrong loaded data{e}", effect_data, ID)
-
     
-    # Used to initialise effects so different entities can have different effects
-    # Keep unique self.fire etc for easy callback since they are widely used,
-    # Improves performance as it removes search and easier to build with
-    def Initialise_Effects(self):
-        self.fire = Fire(self.entity)
+            try:
+                effect.Load_Data(effect_data)
+                if effect not in self.active_effects:
+                    self.active_effects.append(effect)
+            except Exception as e:
+                print(f"Error loading {effect_id}: {e}")
 
-        self.poison = Poison(self.entity)
+
+    def Get_Effect(self, effect_name):
+        # Initial check if it's initalised
+        if effect_name in self.instantiated_effects:
+            return self.instantiated_effects[effect_name]
         
-        self.frozen = Frozen(self.entity)
+        effect_class = self.EFFECT_REGISTRY.get(effect_name, None)
 
-        self.wet = Wet(self.entity)
-
-        self.regen = Regen(self.entity)
+        # Check if effect exists
+        if not effect_class:
+            print("EFFECT CLASS NOT FOUND", effect_name)
+            return None
         
-        self.speed = Speed(self.entity)
+        # Instantiate new effect
+        new_effect = effect_class(self.entity)
+        self.instantiated_effects[effect_name] = new_effect
 
-        self.increase_strength = Increase_Strength(self.entity)
-        
-        self.weakness = Weakness(self.entity)
-
-        self.invisibility = Invisibility(self.entity)
-        
-        self.fire_resistance = Fire_Resistance(self.entity)
-
-        self.poison_resistance = Poison_Resistance(self.entity)
-        
-        self.frozen_resistance = Frozen_Resistance(self.entity)
-
-        self.resistance = Resistance(self.entity)
-
-        self.snare = Snare(self.entity)
-
-        self.anchor = Anchor(self.entity)
-
-        self.healing = Healing(self.entity)
-
-        self.increase_max_health = Healing(self.entity)
-
-        
-        self.slow = Slow(self.entity)
-        
-        self.vampiric = Vampiric(self.entity)
-
-        self.invulnerable = Invulnerable(self.entity)
-        
-        self.vulnerable = Vulnerable(self.entity)
-
-        self.thorns = Thorns(self.entity)
-
-        self.electric = Electric(self.entity)
-
-        self.electric_resistance = Electric_Resistance(self.entity)
-
-        self.effects = {
-            self.fire.effect_type: self.fire,
-            self.poison.effect_type: self.poison,
-            self.frozen.effect_type: self.frozen,
-            self.wet.effect_type: self.wet,
-            self.regen.effect_type: self.regen,
-            self.speed.effect_type: self.speed,
-            self.increase_strength.effect_type: self.increase_strength,
-            self.weakness.effect_type: self.weakness,
-            self.invisibility.effect_type: self.invisibility,
-            self.fire_resistance.effect_type: self.fire_resistance,
-            self.poison_resistance.effect_type: self.poison_resistance,
-            self.frozen_resistance.effect_type: self.frozen_resistance,
-            self.resistance.effect_type: self.resistance,
-            self.snare.effect_type: self.snare,
-            self.anchor.effect_type: self.anchor,
-            self.healing.effect_type: self.healing,
-            self.increase_max_health.effect_type: self.increase_max_health,
-            self.slow.effect_type: self.slow,
-            self.vampiric.effect_type: self.vampiric,
-            self.invulnerable.effect_type: self.invulnerable,
-            self.vulnerable.effect_type: self.vulnerable,
-            self.thorns.effect_type: self.thorns,
-            self.electric.effect_type: self.electric,
-            self.electric_resistance.effect_type: self.electric_resistance,
-            'slash': None,
-            'blunt': None,
-        }
+        return new_effect
+    
+    # Allows access like handler.fire
+    def __getattr__(self, name):
+        if name in self.EFFECT_REGISTRY:
+            return self.Get_Effect(name)
+        raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
 
 
     # Set the effect of the entity
     def Set_Effect(self, effect, duration, permanent = False):
-        if self.entity.effects.invulnerable.effect:
+        # Check if entity is invulnerable
+        if self.Check_Invulnerable():
             return False
-        try:
-            effect = self.effects.get(effect)
-            
-            if not effect:
-                return False
-            effect_set_success = effect.Set_Effect(duration, permanent)
-            if effect_set_success:
-                effect_found = False
 
-                for active_effect in self.active_effects:
-                    # Check if the type is in effects and skip if yes
-                    if effect.effect_type == active_effect.effect_type:
-                        effect_found = True
-                        break
-                
-                if not effect_found:
-                    self.active_effects.append(effect)
+        effect = self.Get_Effect(effect)
+        if not effect:
+            return False
+        
+        try:
+            effect_set_success = effect.Set_Effect(duration, permanent)
+
+            if effect_set_success and effect not in self.active_effects:
+                self.active_effects.append(effect)
+
             return effect_set_success
         except Exception as e:
             print(f"Wrong effect input{e}", effect, duration, effect.effect_type)
 
+
+    def Check_Invulnerable(self):
+        invulnerable_check = self.Get_Effect(keys.invulnerable)
+
+        if invulnerable_check and invulnerable_check.effect:
+            return True
+        
+        return False
 
     def Reset_Effects(self):
         for effect in self.active_effects:
@@ -179,18 +151,14 @@ class Status_Effect_Handler:
 
 
     def Get_Effect_Description(self, effect):
-        effect = self.effects[effect]
+        effect = self.Get_Effect(effect)
         if not effect:
             return None
-        
         return effect.description
-    
-    def Get_Effect(self, effect):
-        return self.effects.get(effect)
+
 
     def Remove_Effect(self, effect, reduce_permanent = 0):
-
-        effect = self.effects[effect]
+        effect = self.Get_Effect(effect)
         
         if not effect:
             return False

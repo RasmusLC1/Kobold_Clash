@@ -17,6 +17,26 @@ from scripts.entities.moving_entities.player.effect_icon import Effect_Icon
 
 
 class Player_Status_Effect_Handler(Status_Effect_Handler):
+    PLAYER_REGISTRY = {
+        keys.silence: Silence,
+        keys.arcane_conduit: Arcane_Conduit,
+        keys.arcane_hunger: Arcane_Hunger,
+        keys.magnet: Magnet,
+        keys.blood_tomb: Blood_Tomb,
+        keys.halo: Halo,
+        keys.power: Power,
+        keys.demonic_bargain: Demonic_Bargain,
+        keys.temptress_embrace: Temptress_Embrace,
+        keys.increase_souls: Increase_Souls,
+        keys.soul_drained: Soul_Drained,
+        keys.luck: Luck,
+        'player_movement_invunerable': Player_Movement_Invunerable # Use key if available
+    }
+    
+    # Combine both registries into one for this class
+    EFFECT_REGISTRY = Status_Effect_Handler.EFFECT_REGISTRY | PLAYER_REGISTRY
+
+    
     def __init__(self, entity):
         super().__init__(entity)
 
@@ -36,49 +56,17 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
         # Load in the effect icons by iterating over all active effects
         for effect in self.active_effects:
             self.Find_Available_Effect_Icon(effect.effect_type)
-        
-    def Initialise_Effects(self):
-        super().Initialise_Effects()
 
-        self.silence =  Silence(self.entity)
-        self.arcane_conduit = Arcane_Conduit(self.entity)
-        self.arcane_hunger = Arcane_Hunger(self.entity)
-        self.magnet = Magnet(self.entity)
-        self.blood_tomb = Blood_Tomb(self.entity)
-        self.player_movement_invunerable = Player_Movement_Invunerable(self.entity)
-        self.halo = Halo(self.entity)
-        self.power = Power(self.entity)
-        self.demonic_bargain = Demonic_Bargain(self.entity)
-        self.temptress_embrace = Temptress_Embrace(self.entity)
-        self.increase_souls = Increase_Souls(self.entity)
-        self.soul_drained = Soul_Drained(self.entity)
-        self.luck = Luck(self.entity)
-
-        self.effects.update({
-            self.silence.effect_type: self.silence,
-            self.arcane_conduit.effect_type: self.arcane_conduit,
-            self.arcane_hunger.effect_type: self.arcane_hunger,
-            self.magnet.effect_type: self.magnet,
-            self.blood_tomb.effect_type: self.blood_tomb,
-            self.halo.effect_type: self.halo,
-            self.power.effect_type: self.power,
-            self.demonic_bargain.effect_type: self.demonic_bargain,
-            self.temptress_embrace.effect_type: self.temptress_embrace,
-            self.increase_souls.effect_type: self.increase_souls,
-            self.soul_drained.effect_type: self.soul_drained,
-            self.luck.effect_type: self.luck,
-            'player_movement_invunerable': self.player_movement_invunerable
-        })
 
     def Update_Status_Effects(self, delta_time):
         super().Update_Status_Effects(delta_time)
-
         self.Update_Sound_Cooldown(delta_time)
 
-        # Disable the effect icon if effect no longer active
-        for effect_icon in self.active_effect_symbols:
-            if effect_icon.Update():
-                self.Disable_Effect_Icon(effect_icon)
+        # Reverse over the loop for safety
+        for i in range(len(self.active_effect_symbols) - 1, -1, -1):
+            icon = self.active_effect_symbols[i]
+            if icon.Update(): 
+                self.Disable_Effect_Icon(icon)
 
     # Prevent spamming of sound effects
     def Update_Sound_Cooldown(self, delta_time):
