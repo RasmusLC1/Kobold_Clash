@@ -57,15 +57,15 @@ class Interface():
 
     player_damage_font = "player_damage_font"
 
-    font_commmon = "font_commmon" 
+    font_commmon = "font_commmon_headline" 
 
-    font_uncommon = "font_uncommon"
+    font_uncommon = "font_uncommon_headline"
     
-    font_rare = "font_rare"
+    font_rare = "font_rare_headline"
     
-    font_epic = "font_epic"
+    font_epic = "font_epic_headline"
     
-    font_legendary = "font_legendary"
+    font_legendary = "font_legendary_headline"
 
     noise = "noise"
     
