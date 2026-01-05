@@ -76,14 +76,17 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
         self.sound_cooldown = max(0, self.sound_cooldown - delta_time)
         return
 
-    def Set_Effect(self, effect, duration, permanent = False):
-        
-        if not super().Set_Effect(effect, duration, permanent):
-            return False
-        
-        self.Play_Sound_Effect(effect)
+    def Set_Effect(self, effect_name, duration, permanent = False):
+        try:
+            if not super().Set_Effect(effect_name, duration, permanent):
+                return False
+            
+            self.Play_Sound_Effect(effect_name)
 
-        return self.Set_Effect_Icon(effect)
+            return self.Set_Effect_Icon(effect_name)
+        except Exception as e:
+            print(f'FAILED TO FIND PARENT CLASS {e}', effect_name, duration, permanent)
+            return False
 
     def Play_Sound_Effect(self, effect):
         if self.sound_cooldown:
@@ -159,6 +162,7 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
         self.effect_icons_pool = []
         for _ in range(self.pool_length):
             self.effect_icons_pool.append(Effect_Icon(self.entity.game))
+            
 
     def Render_Effects_Symbols(self, surf):
         for effect_icon in self.active_effect_symbols:

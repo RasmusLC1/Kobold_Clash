@@ -106,8 +106,12 @@ class Status_Effect_Handler:
     
     # Allows access like handler.fire
     def __getattr__(self, name):
-        if name in self.EFFECT_REGISTRY:
-            return self.Get_Effect(name)
+        # Bridge: handler.magnet -> keys.magnet -> "magnet_id"
+        key_value = getattr(keys, name, name) 
+        
+        if key_value in self.EFFECT_REGISTRY:
+            return self.Get_Effect(key_value)
+            
         raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
 
 
@@ -131,6 +135,20 @@ class Status_Effect_Handler:
         except Exception as e:
             print(f"Wrong effect input{e}", effect, duration, effect.effect_type)
 
+    def Remove_Effect(self, effect, reduce_permanent = 0):
+        effect = self.Get_Effect(effect)
+        
+        if not effect:
+            return False
+        try:
+            remove_effect_succes = effect.Remove_Effect(reduce_permanent)
+            if remove_effect_succes:
+                if effect in self.active_effects:
+                    self.active_effects.remove(effect)
+            return remove_effect_succes 
+        
+        except Exception as e:
+                print(f"Wrong effect input{e} EFFECT NAME", effect)
 
     def Check_Invulnerable(self):
         invulnerable_check = self.Get_Effect(keys.invulnerable)
@@ -157,20 +175,7 @@ class Status_Effect_Handler:
         return effect.description
 
 
-    def Remove_Effect(self, effect, reduce_permanent = 0):
-        effect = self.Get_Effect(effect)
-        
-        if not effect:
-            return False
-        try:
-            remove_effect_succes = effect.Remove_Effect(reduce_permanent)
-            if remove_effect_succes:
-                if effect in self.active_effects:
-                    self.active_effects.remove(effect)
-            return remove_effect_succes 
-        
-        except Exception as e:
-                print(f"Wrong effect input{e} EFFECT NAME", effect)
+
 
 
     def Damage_Dealt(self, damage):

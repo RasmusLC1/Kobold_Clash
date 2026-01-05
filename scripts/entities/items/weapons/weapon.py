@@ -452,6 +452,7 @@ class Weapon(Item):
         self.Set_Equip(True, self.game.player)
         self.Activate_Gem_Effect()
         self.game.player.Set_Active_Weapon(self)
+        self.animation = 0 # Reset animation when equipped
 
     def Unequip(self):
         self.Set_Equip(False, None)

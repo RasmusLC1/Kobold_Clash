@@ -117,7 +117,7 @@ Upgrade weapons
         # Recipe scroll, increase potion strength by + 1, works similar to echo sigil
 
         Compass that points towards boss room
-        Lucky Charm, Improves chest loot
+        Lucky Charm - Improves player luck
         Pendant of Faith, Highlights traps, Needs trap rework first
         Different types of Cursed Talisman, Gives scaling benefits for each curse, maybe 10% movement increase for 1 curse, 20 for 2 etc
         Shrine hunter items, increases an effect for each shrine visited, health, strength, speed etc.
