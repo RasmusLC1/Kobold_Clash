@@ -30,6 +30,7 @@ class Font():
         return char_positions
 
 
+    # Finds the specific font style and loads it in
     def Find_Font(self, font_style):
         try:
             return self.game.assets[font_style]
