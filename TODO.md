@@ -173,11 +173,10 @@ Upgrade weapons
         # Demonic Bargain – Increases damage output but prevents healing
         # Temptress Embrace - Reduces damage output when health > 50% but increases below 50%
         # Black Coin – Increases gold earned but increases damage taken
+        # Vampire’s Locket – Grants lifesteal but disables all other healing.
 
-        Vampire’s Locket – Grants lifesteal but disables all other healing.
-        Cursed Dice – Rerolls effects to be random, but weighted for positive effects
+        Forsaken Grimoire – Increases rune power but reduces player strength
         Eldritch Mirror – Reflects a portion of damage taken but doubles negative status effect duration.
-        Forsaken Grimoire – Increases rune power but randomly casts negative effects on the player
         Cracked Talisman – Grants resistance to elemental damage but causes physical damage to double
         Echoing Skull – Reveals hidden secrets in the dungeon but whispers eerie sounds, attracting enemies
 

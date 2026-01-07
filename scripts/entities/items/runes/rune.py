@@ -79,7 +79,7 @@ class Rune(Item):
     # Add the player's current power level to the runes power and checks if it is
     # Valid. If yes then it triggers the rune and subtract the cost
     def Trigger_Effect(self):
-        if self.player.Set_Effect(self.effect, self.current_power + self.player.effects.power.effect):
+        if self.player.Set_Effect(self.effect, self.current_power + self.player.rune_power):
             self.Trigger_Rune()
 
     # Trigger the rune, cost already verified as possible in activate
@@ -150,7 +150,7 @@ class Rune(Item):
     def Set_Description(self):
         self.description = (
                             f"soul {self.current_soul_cost}\n"
-                            f"power {self.current_power + self.player.effects.power.effect}\n"
+                            f"power {self.current_power + self.player.rune_power}\n"
                             f"Dur {self.durability} / {self.max_durability}\n"
                             f"{self.Calculate_Value()} {keys.gold}\n"
                         )  
