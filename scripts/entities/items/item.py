@@ -9,7 +9,7 @@ class Item(PhysicsEntity):
         super().__init__(game, type, keys.item, pos, size, sub_category)
         self.game = game
         self.sub_type = type
-        self.rarity = self.Calculate_Rarity(rarity_value) # rarity used for loot defaults to common
+        self.value = rarity_value
 
 
 
@@ -26,11 +26,11 @@ class Item(PhysicsEntity):
         self.max_amount = max_amount
         self.max_animation = max_animation
         self.animation_cooldown_max = 0.8
+        self.rarity = self.Calculate_Rarity() # rarity used for loot defaults to common
 
         self.animation = random.randint(0, self.max_animation)
         self.nearby_entities = []
         self.delete_countdown = 0
-        self.value = int(rarity_value) # Placeholder gold value, counts per item in stack
 
         # Durability logic
         self.durability = durability
@@ -38,6 +38,7 @@ class Item(PhysicsEntity):
         self.last_durability_step = 999  # Used for tracking decrements accurately so it does not skip a percentage
         self.durability_bar_image = None
         self.Update_Durability_Bar()
+
 
 
         self.is_projectile = False
@@ -256,17 +257,20 @@ class Item(PhysicsEntity):
             self.tile = new_tile
 
     # Iterates over the thresholds until it finds one that passes
-    def Calculate_Rarity(self, value):
+    def Calculate_Rarity(self):
+        value = self.Calculate_Value()
+
         thresholds = [
             (90, keys.legendary),
             (70, keys.epic),
             (50, keys.rare),
-            (30, keys.uncommon),
+            (20, keys.uncommon),
         ]
         
         for limit, rarity in thresholds:
             if value >= limit:
                 return rarity
+            
         return keys.common
 
 

@@ -229,6 +229,10 @@ class Weapon(Item):
     
     def Decoration_Hit(self, decoration):
         return self.damage_handler.Decoration_Hit(decoration)
+    
+    # TODO: Better calculation
+    def Calculate_Value(self):
+        return self.value * self.damage
 
     def Set_Description(self):
         

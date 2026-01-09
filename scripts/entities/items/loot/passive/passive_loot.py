@@ -45,6 +45,9 @@ class Passive_Loot(Loot):
             return False
 
         return True
+    
+    def Calculate_Value(self):
+        return self.value * self.effect_power * self.amount
 
     def Set_Description(self):
         self.description = (

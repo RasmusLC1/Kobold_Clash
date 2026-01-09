@@ -43,5 +43,4 @@ class Cursed_Loot_Handler(Loot_Types_Handler):
             # Improves runes but reduces strength
             keys.forsaken_grimoire : 10, 
         }
-        print(self.game.player.luck)
         return loot_types_cost
