@@ -7,8 +7,7 @@ import pygame
 class Cursed_Loot(Passive_Loot):
     def __init__(self, game, type, pos, effect_power, value):
         super().__init__(game, type, pos, effect_power=effect_power, rarity_value=value, loot_type=keys.curse)
-
-
+        print(effect_power)
 
     def Place_Down(self):
         if self.game.decoration_handler.Check_Item_Collision(self):

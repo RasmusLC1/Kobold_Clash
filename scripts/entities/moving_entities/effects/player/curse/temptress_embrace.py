@@ -22,10 +22,15 @@ class Temptress_Embrace(Effect):
 
     # Scale the player's strength with health lost
     def Calculate_Strength(self):
-        normalised_health = self.Normalise_Health()
-        self.entity.strength = min(20, self.entity.strength + normalised_health)
-
-
+        health_bonus = self.Normalise_Health()
+        
+        # Scale that bonus by the potency (self.effect)
+        potency_multiplier = self.effect / 10
+        
+        # Scaled bonus at effect 1, you get 10% of the bonus; at effect 10, you get 100%
+        final_bonus = round(health_bonus * potency_multiplier)
+        
+        self.entity.strength = min(20, self.entity.strength + final_bonus)
 
     def Normalise_Health(self):
         entity = self.entity

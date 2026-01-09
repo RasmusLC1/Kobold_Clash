@@ -672,6 +672,7 @@ class Graphics_Loader:
             keys.muffled_boots: get_tiles_from_sheet('items/passive/muffled_boots.png', 0, 0, 0, 0, 32, 32),
             keys.demonic_bargain: get_tiles_from_sheet('items/cursed/demonic_bargain.png', 0, 0, 0, 0, 32, 32),
             keys.temptress_embrace: get_tiles_from_sheet('items/cursed/temptress_embrace.png', 0, 0, 0, 0, 32, 32),
+            keys.forsaken_grimoire: get_tiles_from_sheet('items/cursed/forsaken_grimoire.png', 0, 0, 0, 0, 32, 32),
             keys.black_coin: get_tiles_from_sheet('items/cursed/black_coin.png', 0, 0, 0, 0, 32, 32),
             keys.blood_ring: get_tiles_from_sheet('items/cursed/blood_ring.png', 0, 0, 0, 0, 32, 32),
             keys.blood_pact: get_tiles_from_sheet('items/revive/blood_pact.png', 0, 0, 0, 0, 32, 32),
@@ -819,7 +820,7 @@ class Graphics_Loader:
             keys.font_small_wet: get_tiles_from_sheet('font/font_small/font_small_wet.png', 7, 5, 0, 0, 8, 8),
             keys.font_small_blunt: get_tiles_from_sheet('font/font_small/font_small_blunt.png', 7, 5, 0, 0, 8, 8),
             keys.floating_E: get_tiles_from_sheet('font/floating_e.png', 1, 0, 0, 0, 16, 16),
-            keys.symbols: get_tiles_from_sheet('font/symbols.png', 7, 5, 0, 0, 16, 16),
+            keys.symbols: get_tiles_from_sheet('font/symbols.png', 7, 6, 0, 0, 16, 16),
             keys.souls: get_tiles_from_sheet('font/souls.png', 3, 0, 0, 0, 32, 32),
             keys.noise: get_tiles_from_sheet('font/noise.png', 2, 0, 0, 0, 16, 16),
         }

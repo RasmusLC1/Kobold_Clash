@@ -57,13 +57,14 @@ class Player(Moving_Entity):
     
 
     def Update(self, tilemap, delta_time, movement=(0, 0), offset=(0, 0)):
+        # Resets luck and rune power
+        self.Update_Luck(-self.luck)
+        self.Update_Rune_Power(-self.rune_power)
+
         if self.game.keyboard_handler.is_key_pressed(pygame.K_p):
             self.Damage_Taken(self.health)
         super().Update(tilemap, delta_time, movement=movement)
 
-        # Resets luck and rune power
-        self.Update_Luck(-self.luck)
-        self.Update_Rune_Power(-self.rune_power)
 
         self.Mouse_Handler()
         self.movement_handler.Update()

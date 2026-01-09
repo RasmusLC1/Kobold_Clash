@@ -1,10 +1,10 @@
 from scripts.entities.moving_entities.effects.effect import Effect
 from scripts.engine.keys.keys import keys
 
-# Don't generate sound and clatter
+# Improves runes but reduces strength
 class Forsaken_Grimoire(Effect):
     def __init__(self, entity):
-        description = 'Improves runes\nbut drains strength'
+        description = 'Improves runes\nbut reduces strength'
         super().__init__(entity, keys.blood_tomb, 0, 0, (2, 3), description)
 
 

@@ -1,7 +1,7 @@
 from scripts.entities.moving_entities.effects.effect import Effect
 from scripts.engine.keys.keys import keys
 
-# Double damage but prevent healing
+# Scales damage but prevent healing
 class Demonic_Bargain(Effect):
     def __init__(self, entity):
         description = 'Doubles strength,\nprevents healing'
@@ -14,7 +14,7 @@ class Demonic_Bargain(Effect):
         if self.entity.effects.poison.effect:
             return True
         
-        self.entity.strength = min(20, self.entity.strength * 2)
+        self.entity.strength = min(20, self.entity.strength * self.effect)
 
         self.Update_Cooldown(delta_time)
         return True

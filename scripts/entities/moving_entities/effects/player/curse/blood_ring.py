@@ -1,6 +1,7 @@
 from scripts.entities.moving_entities.effects.effect import Effect
 from scripts.engine.keys.keys import keys
 
+# Powerful life steal but slowly drains you
 class Blood_Ring(Effect):
     def __init__(self, entity):
         description = 'Powerful life steal\nbut slowly drains you'
@@ -9,7 +10,7 @@ class Blood_Ring(Effect):
 
     def Damage_Dealt(self, damage):
         modifier = 10 - self.effect
-        damage_heal = max(1, damage // modifier) * 3 # Twice as efficient 
+        damage_heal = max(1, damage // modifier) * 3 # 3 times as efficient 
         self.entity.Set_Effect(keys.healing, damage_heal)
     
     def Damage_Entity(self):

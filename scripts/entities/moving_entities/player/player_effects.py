@@ -5,14 +5,16 @@ from scripts.entities.moving_entities.effects.souls.arcane_conduit import Arcane
 from scripts.entities.moving_entities.effects.souls.arcane_hunger import Arcane_Hunger
 from scripts.entities.moving_entities.effects.player.magnet import Magnet
 from scripts.entities.moving_entities.effects.player.halo import Halo
-from scripts.entities.moving_entities.effects.player.blood_tomb import Blood_Tomb
+from scripts.entities.moving_entities.effects.player.curse.blood_tomb import Blood_Tomb
 from scripts.entities.moving_entities.effects.player.player_movement_invunerable import Player_Movement_Invunerable
 from scripts.entities.moving_entities.effects.player.power import Power
-from scripts.entities.moving_entities.effects.player.demonic_bargain import Demonic_Bargain
-from scripts.entities.moving_entities.effects.player.temptress_embrace import Temptress_Embrace
+from scripts.entities.moving_entities.effects.player.curse.demonic_bargain import Demonic_Bargain
+from scripts.entities.moving_entities.effects.player.curse.temptress_embrace import Temptress_Embrace
+from scripts.entities.moving_entities.effects.player.curse.forsaken_grimoire import Forsaken_Grimoire
+from scripts.entities.moving_entities.effects.player.curse.black_coin import Black_Coin
 from scripts.entities.moving_entities.effects.souls.increase_souls import Increase_Souls
 from scripts.entities.moving_entities.effects.player.luck import Luck
-from scripts.entities.moving_entities.effects.player.blood_ring import Blood_Ring
+from scripts.entities.moving_entities.effects.player.curse.blood_ring import Blood_Ring
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.player.effect_icon import Effect_Icon
 
@@ -26,12 +28,14 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
         keys.blood_tomb: Blood_Tomb,
         keys.halo: Halo,
         keys.power: Power,
+        keys.increase_souls: Increase_Souls,
+        keys.luck: Luck,
+        keys.soul_drained: Soul_Drained,
         keys.demonic_bargain: Demonic_Bargain,
         keys.temptress_embrace: Temptress_Embrace,
-        keys.increase_souls: Increase_Souls,
-        keys.soul_drained: Soul_Drained,
-        keys.luck: Luck,
         keys.blood_ring:  Blood_Ring,
+        keys.forsaken_grimoire:  Forsaken_Grimoire,
+        keys.black_coin:  Black_Coin,
         'player_movement_invunerable': Player_Movement_Invunerable # Use key if available
     }
     

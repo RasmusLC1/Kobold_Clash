@@ -1,7 +1,7 @@
 from scripts.entities.moving_entities.effects.effect import Effect
 from scripts.engine.keys.keys import keys
 
-# Don't generate sound and clatter
+# Gain souls when damaged
 class Blood_Tomb(Effect):
     def __init__(self, entity):
         description = 'Gain souls\nwhen damaged'
