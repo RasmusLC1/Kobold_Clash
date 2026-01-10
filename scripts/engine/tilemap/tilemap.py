@@ -1,5 +1,6 @@
 from scripts.engine.utility.helper_functions import Helper_Functions
 from scripts.engine.tilemap.tile import Tile
+from scripts.engine.tilemap.minimap import Minimap
 from scripts.engine.keys.keys import keys
 
 import random
@@ -7,7 +8,6 @@ import json
 import pygame
 import math
 import copy
-import traceback
 
 
 # Tiles that are checked for physics
@@ -27,6 +27,7 @@ class Tilemap:
         self.min_y = 99999
         self.max_y = -99999
         self.dungeon_type = None
+        self.minimap = Minimap(game, self)
      
     def save(self, path):
 
@@ -70,6 +71,7 @@ class Tilemap:
 
         self.offgrid_tiles = map_data['offgrid']
         self.Find_Tiles_Not_Touching_Wall()
+
 
     def Generate_Tile(self, tile_pos, tile_values):
         type = tile_values[keys.type]
@@ -374,12 +376,6 @@ class Tilemap:
                 rects.append(pygame.Rect(tile.scaled_pos[0], tile.scaled_pos[1], self.tile_size, self.tile_size))
         return rects
     
-    def Render_All_Tiles(self):
-        self.game.ray_caster.Set_Disable_Distance_Debugger(True)
-        for tile_key in self.tilemap:
-            self.tilemap[tile_key].Render_All()
-            self.game.ray_caster.Add_Tile(self.tilemap[tile_key])
-
 
     def Set_Light_Level(self, tile, new_light_level):
         tile.Set_Light_Level(new_light_level)
@@ -440,11 +436,12 @@ class Tilemap:
             if fail > 40:
                 return None
         return random_tile
-
-
+    
     def Clear_Tilemap(self):
         self.tilemap.clear()
         self.offgrid_tiles.clear()
+        self.minimap.Clear()
+
     
     # Render function that shows the entire screen
     # Not really used
@@ -457,12 +454,22 @@ class Tilemap:
                 continue
             surf.blit(self.game.assets[tile.type][tile.variant], (tile.pos[0] - offset[0], tile.pos[1] - offset[1]))
 
+
     # Render function that only renders the tiles in the tiles array
     def Render_Tiles(self, tiles, surf, offset=(0, 0)):
         for tile in tiles:
             if not tile:
                 continue
             tile.Render(surf, offset)
-            
 
 
+
+    def Add_Tile_To_Minimap(self, tile):
+        if not tile.Add_To_Minimap():
+            return False
+        
+        self.minimap.Add_Tile_To_Minimap(tile)
+        return True
+
+    def Render_Minimap(self, surf):
+        self.minimap.Render(surf)

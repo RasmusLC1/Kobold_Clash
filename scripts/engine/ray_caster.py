@@ -62,11 +62,11 @@ class Ray_Caster():
         self.tiles.remove(tile)
 
     def Check_Tile(self, tile):
-        tile = self.game.tilemap.Current_Tile(tile)
+        tilemap = self.game.tilemap
+        tile = tilemap.Current_Tile(tile)
         if tile:
             if not tile.active:
-                tile.Set_Active(DEFAULT_ACTIVITY)
-                self.tiles.append(tile)
+                self.Add_Tile(tilemap, tile)
             else:
                 tile.Set_Active(DEFAULT_ACTIVITY)
                 
@@ -80,14 +80,16 @@ class Ray_Caster():
             
         return True
 
+    # Logic for adding tile to the active tiles
+    def Add_Tile(self, tilemap, tile):
+        tile.Set_Active(DEFAULT_ACTIVITY)
+        self.tiles.append(tile)
+        tilemap.Add_Tile_To_Minimap(tile) # Try to add tile
+
     def Clear_Entity_From_Tiles(self, entity_ID):
         for tile in self.tiles:
             tile.Clear_Entity(entity_ID)
-    
-    def Add_Tile(self, tile):
-        self.tiles.append(tile)
-
-
+ 
     def Ray_Caster(self):
         
         player = self.game.player

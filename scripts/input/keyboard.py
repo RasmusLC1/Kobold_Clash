@@ -45,9 +45,6 @@ class Keyboard_Handler:
         if key in self.key_states:
             self.key_states[key] = True
 
-        # Special action (K_o): This stays separate because it performs an immediate action
-        if key == pygame.K_o:
-            self.game.tilemap.Render_All_Tiles()
 
     def Key_Up(self, key_press):
         key = key_press.key
