@@ -1,7 +1,7 @@
 from scripts.entities.moving_entities.effects.effect import Effect
 from scripts.engine.keys.keys import keys
 
-# Double damage but prevent healing
+# Healing disabled until soul recovered
 class Soul_Drained(Effect):
     def __init__(self, entity):
         description = 'Healing disabled\nuntil soul recovered'

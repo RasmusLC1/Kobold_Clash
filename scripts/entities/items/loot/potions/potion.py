@@ -4,11 +4,11 @@ from scripts.engine.keys.keys import keys
 
 class Potion(Loot):
     def __init__(self, game, type, pos, amount, strength):
+        self.effect = type.replace('_potion', '')
         super().__init__(game, type, pos, (16, 16), 5, keys.potion, amount, 3)
         self.max_animation = 4
         self.strength = strength
         
-        self.text_box = Potion_Textbox(self)
         self.Set_Description()
     
 
@@ -34,7 +34,6 @@ class Potion(Loot):
             print("POTION HAS NO TYPE", vars(self))
             return
         
-        self.effect = self.type.replace('_potion', '')
         self.Update_Sub_Type()
         
         super().Set_Sprite()
@@ -62,4 +61,7 @@ class Potion(Loot):
             self.Set_Sprite()
             self.Set_Description()
         if self.amount <= 0:
-            self.used = True
+            self.durability = 0
+
+    def Set_Text_Box(self):
+        self.text_box = Potion_Textbox(self)

@@ -10,9 +10,6 @@ class Staff(Weapon):
     def __init__(self, game, pos):
         self.Set_Random_Type(game)
         super().__init__(game, pos, self.sub_type, 2, 4, 7, 50, 'two_handed_melee', keys.blunt)
-        self.max_animation = 0
-        self.attack_animation_max = 2
-        self.attack_animation_counter = 0
 
         self.cooldown = 0
         self.max_cooldown = 10

@@ -4,11 +4,8 @@ from scripts.engine.keys.keys import keys
 
 class Arrow(Projectile):
     def __init__(self, game, pos, amount = 1, direction = (0,0), damage_type = 'slash'):
-        super().__init__(game, pos, keys.arrow, 3, 6, 8, 10, keys.arrow,  damage_type, 50)
-        self.max_animation = 0
+        super().__init__(game, pos, keys.arrow, 3, 6, 8, 10, keys.arrow,  damage_type, 50, max_animation=0, amount=amount)
         self.direction = direction  # Store the direction vector
-        self.max_amount = 20
-        self.amount = amount
 
 
     
@@ -29,9 +26,6 @@ class Arrow(Projectile):
         self.special_attack = 100
         self.direction = direction
         self.shoot_distance = self.special_attack
-
-
-
     
     def Shoot(self, delta_time):
         if not self.shoot_speed:

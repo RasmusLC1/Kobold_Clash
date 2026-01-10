@@ -57,6 +57,17 @@ class Interface():
 
     player_damage_font = "player_damage_font"
 
+    # Include headline in string to trigger headline handling in font handler
+    font_commmon = "font_commmon_headline" 
+
+    font_uncommon = "font_uncommon_headline"
+    
+    font_rare = "font_rare_headline"
+    
+    font_epic = "font_epic_headline"
+    
+    font_legendary = "font_legendary_headline"
+
     noise = "noise"
     
     floating_E = "floating_e"
@@ -66,35 +77,16 @@ class Interface():
     symbols = "symbols"
 
     souls = "souls"
-
     
     healthbar_1 = "healthbar_1"
-
-    
     healthbar_2 = "healthbar_2"
-
-    
     healthbar_3 = "healthbar_3"
-
-    
     healthbar_4 = "healthbar_4"
-
-    
     healthbar_5 = "healthbar_5"
-
-    
     healthbar_6 = "healthbar_6"
-
-    
     healthbar_7 = "healthbar_7"
-
-    
     healthbar_8 = "healthbar_8"
-
-    
     healthbar_9 = "healthbar_9"
-
-    
     healthbar_10 = "healthbar_10"
 
     
@@ -110,3 +102,6 @@ class Interface():
     awakening_skull_3 = "awakening_skull_3"
     awakening_skull_4 = "awakening_skull_4"
     awakening_skull_5 = "awakening_skull_5"
+
+
+    durability_bar = "durability_bar"

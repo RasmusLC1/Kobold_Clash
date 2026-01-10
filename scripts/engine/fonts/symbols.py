@@ -24,7 +24,8 @@ class Symbols():
                 keys.weakness, keys.vulnerable, keys.luck,
                 keys.anchor, keys.blood_tomb, keys.halo,
                 keys.demonic_bargain, keys.temptress_embrace,
-                keys.slow, keys.soul_drained, keys.health
+                keys.slow, keys.soul_drained, keys.health, keys.blood_ring,
+                keys.forsaken_grimoire, keys.black_coin                
             ])
         }
 

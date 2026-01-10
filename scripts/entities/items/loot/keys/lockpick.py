@@ -1,6 +1,8 @@
 from scripts.entities.items.loot.keys.key import Key
 import random
 from scripts.engine.keys.keys import keys
+import math
+
 
 class Lockpick(Key):
     def __init__(self, game, type, pos, amount, rarity_value):
@@ -50,4 +52,4 @@ class Lockpick(Key):
         success_rate_percent = min_success_percent + (self.chance_to_break - min_amount) * (
             (max_success_percent - min_success_percent) / (max_amount - min_amount)
         )
-        return success_rate_percent
+        return math.ceil(success_rate_percent)

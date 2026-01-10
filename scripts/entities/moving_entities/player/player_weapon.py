@@ -80,7 +80,7 @@ class Player_Weapon_Handler():
     def Update_Weapon_Animation(self, animation_num):
         if not self.active_weapon:
             return
-        self.active_weapon.Update_Player_Animation(animation_num)
+        self.active_weapon.Set_Animation(animation_num)
 
     def Render_Weapons(self, surf, offset):
         if self.active_weapon:

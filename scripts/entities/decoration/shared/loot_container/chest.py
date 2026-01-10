@@ -44,8 +44,6 @@ class Chest(Loot_Container):
         # Clamp between 0 and 7 after taking the floor (or truncation)
         version = int(min(MAX_VERSION_INDEX, max(0, raw_version_float)))
         
-        
-        print(f"Rarity: {rarity_value:.2f} -> Chest Version: {version}")
         return version
     
     def Update_Animation(self):
@@ -59,7 +57,7 @@ class Chest(Loot_Container):
                              keys.potion : 0.1,
                              keys.revive : 0.04,
                              keys.utility : 0.2,
-                             keys.curse : 0.1,
+                             keys.curse : 99990.1,
                              keys.valuable : 0.2,
                              keys.gem_ingot : 0.2}
 

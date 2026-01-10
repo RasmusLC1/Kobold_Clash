@@ -5,12 +5,14 @@ from scripts.entities.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 
 class Item(PhysicsEntity):
-    def __init__(self, game, type, sub_category, pos, size = (16, 16), amount = 1, add_to_tile = True, rarity_value = 100, max_amount=1, max_animation = 0):
+    def __init__(self, game, type, sub_category, pos, size = (16, 16), amount = 1, add_to_tile = True, rarity_value = 100, max_amount=1, max_animation = 0, durability = 1, max_durability = 1):
         super().__init__(game, type, keys.item, pos, size, sub_category)
         self.game = game
         self.sub_type = type
-        self.rarity = self.Calculate_Rarity(rarity_value) # rarity used for loot defaults to common
-        self.used = False
+        self.value = rarity_value
+
+
+
         self.picked_up = False
         self.clicked = False # Used for if the item is active
         self.move_inventory_slot = False # Check for if the item is being moved to a new inventory slot
@@ -24,11 +26,21 @@ class Item(PhysicsEntity):
         self.max_amount = max_amount
         self.max_animation = max_animation
         self.animation_cooldown_max = 0.8
+        self.rarity = self.Calculate_Rarity() # rarity used for loot defaults to common
 
         self.animation = random.randint(0, self.max_animation)
         self.nearby_entities = []
         self.delete_countdown = 0
-        self.value = int(rarity_value) # Placeholder gold value, counts per item in stack
+
+        # Durability logic
+        self.durability = durability
+        self.max_durability = max_durability
+        self.last_durability_step = 999  # Used for tracking decrements accurately so it does not skip a percentage
+        self.durability_bar_image = None
+        self.Update_Durability_Bar()
+
+
+
         self.is_projectile = False
         self.Set_Sprite()
         self.broken_rendering_counter = 0 # Counter if it hits 10, delete item since something is wrong
@@ -40,7 +52,7 @@ class Item(PhysicsEntity):
         super().Save_Data()
         self.saved_data['sub_type'] = self.sub_type
         self.saved_data['sub_category'] = self.sub_category
-        self.saved_data['used'] = self.used
+        self.saved_data['durability'] = self.durability
         self.saved_data['picked_up'] = self.picked_up
         self.saved_data['inventory_type'] = self.inventory_type
         self.saved_data['amount'] = self.amount
@@ -51,7 +63,7 @@ class Item(PhysicsEntity):
         super().Load_Data(data)
         self.sub_type = data['sub_type']
         self.sub_category = data['sub_category']
-        self.used = data['used']
+        self.durability = data['durability']
         self.picked_up = data['picked_up']
         self.inventory_type = data['inventory_type']
         self.amount = data['amount']
@@ -59,6 +71,8 @@ class Item(PhysicsEntity):
         self.Set_Description()
         
     def Update(self, delta_time):
+        if self.durability <= 0:
+            self.Delete_Item()
         self.Update_Activate_Cooldown(delta_time)
 
     def Update_In_Inventory(self):
@@ -146,23 +160,30 @@ class Item(PhysicsEntity):
         try:
             self.entity_image = self.sprite[self.animation].convert_alpha()
         except Exception as e:
-            print(f'SET Entity image failed {e}', self.type, self.pos, self.animation, self.max_animation, self.size, self.entity_image, self.sprite)
+            print(f'SET Entity image failed {e}', self.type, self.sub_type, self.pos, self.animation, self.max_animation, self.size, self.entity_image, self.sprite)
 
     
     def Increase_Amount(self, amount):
         self.amount = int(min(self.max_amount, self.amount + int(amount)))
+        self.Set_Description()
 
     def Decrease_Amount(self, amount):
         self.amount = max(0, self.amount - amount)
+        self.Set_Description()
         if self.amount <= 0:
-            self.used = True
+            self.durability = 0
 
     def Increase_Max_Amount(self, amount):
         self.max_amount = int(self.max_amount + int(amount))
+        self.Set_Description()
 
     def Decrease_Max_Amount(self, amount):
         self.max_amount = max(1, self.max_amount - amount)
+        self.Set_Description()
 
+
+    def Add_Gem_Slot(self, amount):
+        pass
 
     def Set_Inventory_Type(self, inventory_type):
         self.inventory_type = inventory_type
@@ -184,6 +205,45 @@ class Item(PhysicsEntity):
     def Move(self, new_pos):
         self.pos = list(new_pos)
 
+# DURABILITY LOGIC
+    def Increase_Durability(self, amount):
+        self.durability = max(0, min(self.max_durability, self.durability + amount))
+        self.Set_Description()
+        self.Update_Durability_Bar()
+
+    def Decrease_Durability(self, amount):
+        self.durability = max(0, self.durability - amount)
+        self.Set_Description()
+        self.Update_Durability_Bar()
+    
+    def Update_Durability_Bar(self):
+        current_step = int((self.durability / self.max_durability) * 10)
+
+        while self.last_durability_step > current_step:
+            self.Decrease_Value(self.value // 10)
+            self.last_durability_step -= 1
+            self.Set_Durability_Bar_Image()
+
+    def Set_Durability_Bar_Image(self):
+        if self.max_durability <= 1:
+            return
+
+        # 10 - step maps 10 (full) to 0, and 1 (low) to 9.
+        image_index = 10 - self.last_durability_step
+        # Ensure the index is within the valid range [0, 9]
+        image_index = max(0, min(9, image_index))
+        self.durability_bar_image = self.game.assets[keys.durability_bar][image_index]
+
+    
+    def Increase_Value(self, value):
+        self.value += value
+        self.Set_Description()
+
+    
+    def Decrease_Value(self, value):
+        self.value -= value
+        self.Set_Description()
+
     # TODO: OPTIMISE
     def Update_Tile(self, new_pos):
 
@@ -197,20 +257,22 @@ class Item(PhysicsEntity):
             self.tile = new_tile
 
     # Iterates over the thresholds until it finds one that passes
-    def Calculate_Rarity(self, value):
+    def Calculate_Rarity(self):
+        value = self.Calculate_Value()
+
         thresholds = [
             (90, keys.legendary),
             (70, keys.epic),
             (50, keys.rare),
-            (30, keys.uncommon),
+            (20, keys.uncommon),
         ]
         
         for limit, rarity in thresholds:
             if value >= limit:
                 return rarity
+            
         return keys.common
 
-    
 
     def Update_Delete_Cooldown(self, delta_time):
         if not self.delete_countdown:
@@ -232,12 +294,14 @@ class Item(PhysicsEntity):
     def Damage_Taken(self, damage):
         self.game.item_handler.Remove_Item(self, True)
     
+    
+
+# RENDERING LOGIC
+
     def Render(self, surf, offset=(0, 0)):
         if self.picked_up:
             return
         self.Render_Floor(surf, offset)
-    
-
 
     # Render legal position
     def Render_Inventory(self, surf, pos, size):
@@ -247,9 +311,18 @@ class Item(PhysicsEntity):
 
             item_image = pygame.transform.scale(self.entity_image, size)
             surf.blit(item_image, pos)
+            
         except Exception as e:
             print(f"ITEM Render_Inventory failed {e}", self.entity_image, size, pos, self.type, self.sub_type)
-        
+
+        self.Render_Durability_Bar(surf, pos)
+
+    def Render_Durability_Bar(self, surf, pos):
+        try:
+            if self.durability_bar_image:
+                surf.blit(self.durability_bar_image, (pos[0], pos[1] + 30))
+        except Exception as e:
+            print(f"ITEM Render durability bar failed{e}", self.durability_bar_image, pos, self.type, self.sub_type)
 
     def Render_Floor(self, surf, offset=(0, 0)):
         

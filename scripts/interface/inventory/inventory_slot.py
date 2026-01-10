@@ -43,10 +43,21 @@ class Inventory_Slot():
         if self.active:
             self.activate_counter += 1
             return
-        if self.item and self.item.used:
-            self.item = None
+        
+        self.Check_Item_Durability()
         return
     
+    def Check_Item_Durability(self):
+        if not self.item:
+            return False
+        
+        if self.item.durability > 0:
+            return False
+        
+        self.game.item_handler.Remove_Item(self.item, True)
+        self.item = None
+        return True
+
     def Update_Item(self, delta_time):
         if not self.item:
             return

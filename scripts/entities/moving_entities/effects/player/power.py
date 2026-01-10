@@ -7,18 +7,15 @@ class Power(Effect):
         description = 'Increases Rune power'
         super().__init__(entity, keys.power, 0, 0, (2, 3), description)
 
-    def Set_Effect(self, effect_time, permanent=False):
-        if not super().Set_Effect(effect_time, permanent):
+    def Update_Effect(self, delta_time):
+        if not super().Update_Effect(delta_time):
             return False
         
-        self.entity.game.inventory.rune_inventory.Set_Descriptions()
+        
+        self.entity.Update_Rune_Power(self.effect) # Set the player's rune power to the effect value
+
+        if  self.update_trigged:
+            self.entity.game.inventory.rune_inventory.Set_Descriptions()
 
         return True
     
-    def Remove_Effect(self, reduce_permanent=0):
-        if not super().Remove_Effect(reduce_permanent):
-            return False
-        
-        self.entity.game.inventory.rune_inventory.Set_Descriptions()
-        
-        return True

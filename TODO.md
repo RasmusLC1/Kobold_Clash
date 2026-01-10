@@ -52,6 +52,7 @@ Buy and sell items to help complete levels
 Upgrade weapons
 
 # Awakening engine
+    # Complete
     Generating clatter has a chance to increase the difficulty of the dungeon layer (Awakening)
 
     Increasing difficulty can have the following effects
@@ -114,9 +115,9 @@ Upgrade weapons
         # Halo, 1/10 chance to cancel damage
         # Echo Sigil, increases the activations of items by 1
         # Recipe scroll, increase potion strength by + 1, works similar to echo sigil
+        # Lucky Charm - Improves player luck
 
         Compass that points towards boss room
-        Lucky Charm, Improves chest loot
         Pendant of Faith, Highlights traps, Needs trap rework first
         Different types of Cursed Talisman, Gives scaling benefits for each curse, maybe 10% movement increase for 1 curse, 20 for 2 etc
         Shrine hunter items, increases an effect for each shrine visited, health, strength, speed etc.
@@ -171,12 +172,11 @@ Upgrade weapons
         # Blood tomb, Gain souls when damaged
         # Demonic Bargain – Increases damage output but prevents healing
         # Temptress Embrace - Reduces damage output when health > 50% but increases below 50%
+        # Black Coin – Increases gold earned but increases damage taken
+        # Vampire’s Locket – Grants lifesteal but disables all other healing.
 
-        Black Coin – Increases gold earned but increases damage taken
-        Vampire’s Locket – Grants lifesteal but slowly reduces max health over time.
-        Cursed Dice – Rerolls effects to be random, but weighted for positive effects
+        Forsaken Grimoire – Increases rune power but reduces player strength
         Eldritch Mirror – Reflects a portion of damage taken but doubles negative status effect duration.
-        Forsaken Grimoire – Increases rune power but randomly casts negative effects on the player
         Cracked Talisman – Grants resistance to elemental damage but causes physical damage to double
         Echoing Skull – Reveals hidden secrets in the dungeon but whispers eerie sounds, attracting enemies
 
@@ -204,12 +204,12 @@ Upgrade weapons
         multishot - Fires two arrows at a time
 
     ## Ingots
-        Can be used to repair items and add upgrades, also have high value at market depending on rarety
-        Steel ingot - repairs weapons
-        Jade ingot - repairs runes
-        copper ingot - repairs items
-        Gold ingot - can add gem slots
-        Silver ingot - can upgrade rune power
+        # Can be used to repair items and add upgrades, also have high value at market depending on rarety
+        # Steel ingot - repairs weapons
+        # Jade ingot - repairs runes
+        # copper ingot - repairs items
+        # Gold ingot - can add gem slots
+        # Silver ingot - can upgrade rune power
 
 
     ## Potions
@@ -224,9 +224,8 @@ Upgrade weapons
         # poison resistance
         # fire resistance
         # freeze resistance
-        luck
+        # luck
         # vampire, heals based on damage dealt
-
 
 # Runes
     You can have 3 runes equipped at a time
@@ -316,21 +315,19 @@ Upgrade weapons
     # Frozen Resistance – Reduces or nullifies freeze effects.
     # Electric Charge – Causes electric attacks to arc to nearby enemies.
     # Silence – Prevents the affected entity from casting spells or using magic-based attacks.
-    Luck Boost – Increases the chance for critical hits, rare drops, or dodging attacks.
+    # Luck Boost – Increases the chance for critical hits, rare drops, or dodging attacks.
     # Vampirism – Heals based on damage dealt.
     # Shielded – Grants temporary immunity to damage until shield is broken.
     # Thorns – Reflects damage back to attackers.
     # Magnetized – Automatically attracts loot, gold, and items.
-    Soul Leech – Drains the souls of slain enemies for additional effects.
-    Terror – Makes enemies flee from the player.
     # Slow – Reduces movement and attack speed.
     # Curse – Lowers stats temporarily or causes random negative effects.
     # Confusion – Inverts enemy movement or attack patterns.
     # Stone – Immobilizes but provides high defense.
-    Sleep – Puts the affected entity in a sleep state until hit.
     # Snare – Stops movement for a short period.
     # Arcane conduit - Reduce the cost runes
     # Arcane_Hunger - Gain souls from entity kills
+    Terror – Makes enemies flee from the player.
     
 
 # Rooms:

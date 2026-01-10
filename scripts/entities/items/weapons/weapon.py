@@ -10,14 +10,10 @@ import pygame
 import math
 import random
 from scripts.engine.keys.keys import keys
-import inspect
 
 class Weapon(Item):
-    def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_types = ['cut'], size = (16, 16), add_to_tile = True):
-        super().__init__(game, type, keys.weapon, pos, size, 1, add_to_tile)
+    def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_types = ['cut'], size = (16, 16), add_to_tile = True, max_animation = 0, amount = 1, max_amount = 1, durability = 100, max_durability = 100):
         self.speed = max(1, 10 - speed) # Speed of the weapon
-        self.max_animation = 5
-        self.attack_animation_max = 4
         self.range = range # Range of the weapon
         self.damage = damage
         self.entity = None # Entity that holds the weapon
@@ -25,7 +21,6 @@ class Weapon(Item):
         self.attack_types = attack_types # Different kinds of attacks, like cutting and stabbing
         self.in_inventory = False # Is the weapon in an inventory
         self.equipped = False # Is the weapon currently equipped and can be used to attack
-        self.max_animation = 0 # Max amount of animations
 
         self.flip_x = False
 
@@ -44,24 +39,17 @@ class Weapon(Item):
         self.special_attack_active = False # Check if weapon is special attacking
         self.entities_hit = [] # Index of entities hit by weapon in attack
 
-        # TODO: calculate better durability value
-        self.max_durability = 200 # max Durability 
-        self.last_durability_step = self.max_durability # Used for tracking decrements accurately so it does not skip a percentage
-        self.durability = self.max_durability # Durability is decreased by one every time an attack hits
-
         self.weapon_cooldown = 0
         self.weapon_cooldown_max = 50 # How fast the weapon can attack
 
         self.delete_timer = 0 # time before weapon is deleted
 
-
-        self.text_box = Weapon_Textbox(self)
         self.entity_attack_type = None # Used to determine if the weapon is being used by enemy or player
         self.damage_handler = Damage_Handler_Weapon(self, effect, damage)
         self.charge_effect_handler = Charge_Effect_Weapon(game, self)
         self.attack_effect_handler = Attack_Effect_Weapon(game, self)
         self.gem_handler = Gem_Handler(self)
-        self.Set_Description()
+        super().__init__(game, type, keys.weapon, pos, size, amount=amount, max_amount=max_amount, add_to_tile=add_to_tile, max_animation = max_animation, durability=durability, max_durability=max_durability)
 
     def Save_Data(self):
         if self.entity:
@@ -210,7 +198,6 @@ class Weapon(Item):
                 self.Set_Charging_Player()
         except TypeError as e:
             print(f"Entity neither enemy nor player: {e}")
-    
 
 
      # Initialise special attack
@@ -242,6 +229,10 @@ class Weapon(Item):
     
     def Decoration_Hit(self, decoration):
         return self.damage_handler.Decoration_Hit(decoration)
+    
+    # TODO: Better calculation
+    def Calculate_Value(self):
+        return self.value * self.damage
 
     def Set_Description(self):
         
@@ -249,7 +240,8 @@ class Weapon(Item):
                             f"Damage {self.damage_handler.Get_Damage()}\n"
                             f"speed {self.speed}\n"
                             f"range {self.range}\n"
-                            f"Dur {self.durability}\n"
+                            f"Dur {self.durability} / {self.max_durability}\n"
+                            f"Gemslots {self.gem_handler.max_gems}\n"
                             f"{self.Calculate_Value()} {keys.gold}\n"
                         )
 
@@ -345,17 +337,11 @@ class Weapon(Item):
     def Attack_Align_Weapon(self):
         pass
     
-
     
     # Takes the entity's sprite type and applies it to weapon
     def Set_Equipped_Sprite(self):
-        sprite = self.sub_type + '_' + self.entity.animation_handler.action
-        self.sprite = self.game.assets[sprite]
-        self.Set_Entity_Image()
-
-
-    def Update_Player_Animation(self, player_animation):
-        self.animation = min(self.attack_animation_max, player_animation)
+        self.sub_type = self.type + '_' + self.entity.animation_handler.action
+        self.Set_Sprite()
 
     # Responsible for calculating offset and centering the weapon 
     def Calculate_Image_Rect(self, image, offset):
@@ -376,6 +362,10 @@ class Weapon(Item):
                                         self.pos[1] - offset[1]  - flip_offset_y + image_size[1] // 2))
 
         return image_rect
+    
+    def Set_Animation(self, animation_num):
+        self.animation = animation_num
+        self.Set_Equipped_Sprite()
 
     # Render the weapon in player's hand 
     def Render_Equipped(self, surf, offset=(0, 0)):
@@ -466,6 +456,7 @@ class Weapon(Item):
         self.Set_Equip(True, self.game.player)
         self.Activate_Gem_Effect()
         self.game.player.Set_Active_Weapon(self)
+        self.animation = 0 # Reset animation when equipped
 
     def Unequip(self):
         self.Set_Equip(False, None)
@@ -473,6 +464,10 @@ class Weapon(Item):
 
     def Spawn_Spark(self):
         self.game.particle_handler.Activate_Particles(random.randint(2, 5), keys.spark_particle, self.rect().center, random.uniform(1, 1.5))
+
+
+    def Add_Gem_Slot(self, amount):
+        self.gem_handler.Increase_Max_Gems(amount)
 
     def Add_Gem(self, gem):
         return self.gem_handler.Add_Gem(gem)
@@ -492,10 +487,6 @@ class Weapon(Item):
         self.Set_Description()
         self.range += amount
 
-    def Increase_Durability(self, amount):
-        self.Set_Description()
-        self.max_durability += amount
-        self.durability += amount
 
     def Decrease_Range(self, amount):
         self.range -= amount
@@ -504,21 +495,7 @@ class Weapon(Item):
         self.Set_Description()
         self.range -= amount
 
-    def Decrease_Durability(self, amount):
-        self.Set_Description()
-        self.durability -= amount
 
-        current_step = int((self.durability / self.max_durability) * 10)
-
-        while self.last_durability_step > current_step:
-            self.Decrease_Value(self.value // 10)
-            self.last_durability_step -= 1
-
-
-    def Increase_Value(self, value):
-        self.Set_Description()
-        self.value += value
-
-    def Decrease_Value(self, value):
-        self.Set_Description()
-        self.value -= value
+    
+    def Set_Text_Box(self):
+        self.text_box = Weapon_Textbox(self)

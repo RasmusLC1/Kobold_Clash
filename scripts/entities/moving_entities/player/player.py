@@ -3,7 +3,6 @@ from scripts.entities.moving_entities.player.player_effects import Player_Status
 from scripts.entities.moving_entities.player.player_weapon import Player_Weapon_Handler
 from scripts.entities.moving_entities.player.player_movement import Player_Movement
 from scripts.entities.moving_entities.player.player_animation_handler import Player_Animation_Handler
-from scripts.entities.moving_entities.player.inventory_effects_handler import Inventory_Effects_Handler
 from scripts.engine.keys.keys import keys
 from scripts.entities.items.weapons.projectiles.bombs.bomb_launcher import Bomb_Launcher
 
@@ -31,12 +30,12 @@ class Player(Moving_Entity):
         self.game.light_handler.Initialise_Light_Level(self.tile)
         self.player_particle_cooldown = 0
         self.last_shrine_visited = None # used for teleporting and other shrine logic
-        self.luck = 10 # player luck, can be upgraded
+        self.luck = 10 # player luck, can be upgraded from 0 -> 10
+        self.rune_power = 0
 
         self.weapons = []
         self.weapon_handler = Player_Weapon_Handler(self.game, self)
         self.movement_handler = Player_Movement(self.game, self)
-        self.inventory_effects = Inventory_Effects_Handler(self)
 
 
         self.bomb_launcher = Bomb_Launcher(game)
@@ -58,9 +57,15 @@ class Player(Moving_Entity):
     
 
     def Update(self, tilemap, delta_time, movement=(0, 0), offset=(0, 0)):
+        # Resets luck and rune power
+        self.Update_Luck(-self.luck)
+        self.Update_Rune_Power(-self.rune_power)
+
         if self.game.keyboard_handler.is_key_pressed(pygame.K_p):
             self.Damage_Taken(self.health)
         super().Update(tilemap, delta_time, movement=movement)
+
+
         self.Mouse_Handler()
         self.movement_handler.Update()
 
@@ -157,11 +162,12 @@ class Player(Moving_Entity):
     def Find_Nearby_Chests(self, range):
         self.nearby_chests = self.game.chest_handler.Find_Nearby_Chests(self.pos, range)
 
-    def Enable_Inventory_Effect(self, effect, effect_power):
-        self.inventory_effects.Enable(effect, effect_power)
 
-    def Disable_Inventory_Effect(self, effect, effect_power):
-        self.inventory_effects.Disable(effect, effect_power)
+    def Enable_Inventory_Effect(self, effect_name, effect_power):
+        self.effects.Set_Effect(effect_name, effect_power, True)
+
+    def Disable_Inventory_Effect(self, effect_name, effect_power):
+        self.effects.Remove_Effect(effect_name, effect_power)
 
     # Interface function to call the actual inventory function
     def Pay_Gold(self, amount):
@@ -169,8 +175,11 @@ class Player(Moving_Entity):
 
     # Set luck, called by luck effect, minimum value of 1
     def Update_Luck(self, amount):
-        self.luck = max(1, amount)
+        self.luck = max(0, self.luck + amount)
 
+    def Update_Rune_Power(self, amount):
+        self.rune_power = max(0, self.rune_power + amount)
+        
     def Check_If_Dead(self):
         # Check if the player can be revived
         if self.health <= 0:
@@ -183,7 +192,8 @@ class Player(Moving_Entity):
         self.game.state_machine.Set_State('game_over')
 
         return True
-        
+    
+
 
     def Set_Last_Shrine(self, shrine):
         self.last_shrine_visited = shrine

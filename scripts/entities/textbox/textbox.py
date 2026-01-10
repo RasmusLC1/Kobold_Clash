@@ -7,9 +7,10 @@ class Text_Box():
         self.render = False
         self.x_size = 0
         self.y_size = 0
+        self.Set_Headline_Font()
+        self.mixed_symbols = self.entity.game.mixed_symbols
 
     def Update(self, hitbox_1, hitbox_2):
-        
         # Handle when entity is in inventory
         if hitbox_1.colliderect(hitbox_2):
             self.render = True
@@ -43,6 +44,9 @@ class Text_Box():
         rectangle_surface.fill(rectangle_color)
         return rectangle_surface
     
+    def Set_Headline_Font(self):
+        self.headline_font = self.entity.game.default_font
+
     # Seperate function for size flexibility
     def Set_Y_Size(self):
         self.y_size = 40
@@ -50,7 +54,6 @@ class Text_Box():
     def Set_X_Size(self, entity_name):
         entity_name_len = len(entity_name)
         self.x_size = 12 * entity_name_len 
-
 
 
     def Text_Box_Setup(self, surf, entity_name, offset):
@@ -73,9 +76,14 @@ class Text_Box():
         text_box_pos = self.Text_Box_Setup(surf, entity_name, offset)
         if not text_box_pos:
             return
-        self.entity.game.default_font.Render_Word(surf, entity_name, text_box_pos, keys.textbox_headline)
+
+        self.Render_Headline(surf, entity_name, text_box_pos)
 
         # Render the description of the entity
-        self.entity.game.mixed_symbols.Render_Mixed_Text(surf, self.entity.description, (text_box_pos[0], text_box_pos[1] + 20), 0.5)
+        self.mixed_symbols.Render_Mixed_Text(surf, self.entity.description, (text_box_pos[0], text_box_pos[1] + 20), 0.5)
 
         return 
+    
+ 
+    def Render_Headline(self, surf, entity_name, text_box_pos):
+        self.headline_font.Render_Word(surf, entity_name, text_box_pos, keys.textbox_headline)

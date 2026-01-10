@@ -5,18 +5,44 @@ from scripts.entities.moving_entities.effects.souls.arcane_conduit import Arcane
 from scripts.entities.moving_entities.effects.souls.arcane_hunger import Arcane_Hunger
 from scripts.entities.moving_entities.effects.player.magnet import Magnet
 from scripts.entities.moving_entities.effects.player.halo import Halo
-from scripts.entities.moving_entities.effects.player.blood_tomb import Blood_Tomb
+from scripts.entities.moving_entities.effects.player.curse.blood_tomb import Blood_Tomb
 from scripts.entities.moving_entities.effects.player.player_movement_invunerable import Player_Movement_Invunerable
 from scripts.entities.moving_entities.effects.player.power import Power
-from scripts.entities.moving_entities.effects.player.demonic_bargain import Demonic_Bargain
-from scripts.entities.moving_entities.effects.player.temptress_embrace import Temptress_Embrace
+from scripts.entities.moving_entities.effects.player.curse.demonic_bargain import Demonic_Bargain
+from scripts.entities.moving_entities.effects.player.curse.temptress_embrace import Temptress_Embrace
+from scripts.entities.moving_entities.effects.player.curse.forsaken_grimoire import Forsaken_Grimoire
+from scripts.entities.moving_entities.effects.player.curse.black_coin import Black_Coin
 from scripts.entities.moving_entities.effects.souls.increase_souls import Increase_Souls
 from scripts.entities.moving_entities.effects.player.luck import Luck
+from scripts.entities.moving_entities.effects.player.curse.blood_ring import Blood_Ring
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.player.effect_icon import Effect_Icon
 
 
 class Player_Status_Effect_Handler(Status_Effect_Handler):
+    PLAYER_REGISTRY = {
+        keys.silence: Silence,
+        keys.arcane_conduit: Arcane_Conduit,
+        keys.arcane_hunger: Arcane_Hunger,
+        keys.magnet: Magnet,
+        keys.blood_tomb: Blood_Tomb,
+        keys.halo: Halo,
+        keys.power: Power,
+        keys.increase_souls: Increase_Souls,
+        keys.luck: Luck,
+        keys.soul_drained: Soul_Drained,
+        keys.demonic_bargain: Demonic_Bargain,
+        keys.temptress_embrace: Temptress_Embrace,
+        keys.blood_ring:  Blood_Ring,
+        keys.forsaken_grimoire:  Forsaken_Grimoire,
+        keys.black_coin:  Black_Coin,
+        'player_movement_invunerable': Player_Movement_Invunerable # Use key if available
+    }
+    
+    # Combine both registries into one for this class
+    EFFECT_REGISTRY = Status_Effect_Handler.EFFECT_REGISTRY | PLAYER_REGISTRY
+
+    
     def __init__(self, entity):
         super().__init__(entity)
 
@@ -36,49 +62,17 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
         # Load in the effect icons by iterating over all active effects
         for effect in self.active_effects:
             self.Find_Available_Effect_Icon(effect.effect_type)
-        
-    def Initialise_Effects(self):
-        super().Initialise_Effects()
 
-        self.silence =  Silence(self.entity)
-        self.arcane_conduit = Arcane_Conduit(self.entity)
-        self.arcane_hunger = Arcane_Hunger(self.entity)
-        self.magnet = Magnet(self.entity)
-        self.blood_tomb = Blood_Tomb(self.entity)
-        self.player_movement_invunerable = Player_Movement_Invunerable(self.entity)
-        self.halo = Halo(self.entity)
-        self.power = Power(self.entity)
-        self.demonic_bargain = Demonic_Bargain(self.entity)
-        self.temptress_embrace = Temptress_Embrace(self.entity)
-        self.increase_souls = Increase_Souls(self.entity)
-        self.soul_drained = Soul_Drained(self.entity)
-        self.luck = Luck(self.entity)
-
-        self.effects.update({
-            self.silence.effect_type: self.silence,
-            self.arcane_conduit.effect_type: self.arcane_conduit,
-            self.arcane_hunger.effect_type: self.arcane_hunger,
-            self.magnet.effect_type: self.magnet,
-            self.blood_tomb.effect_type: self.blood_tomb,
-            self.halo.effect_type: self.halo,
-            self.power.effect_type: self.power,
-            self.demonic_bargain.effect_type: self.demonic_bargain,
-            self.temptress_embrace.effect_type: self.temptress_embrace,
-            self.increase_souls.effect_type: self.increase_souls,
-            self.soul_drained.effect_type: self.soul_drained,
-            self.luck.effect_type: self.luck,
-            'player_movement_invunerable': self.player_movement_invunerable
-        })
 
     def Update_Status_Effects(self, delta_time):
         super().Update_Status_Effects(delta_time)
-
         self.Update_Sound_Cooldown(delta_time)
 
-        # Disable the effect icon if effect no longer active
-        for effect_icon in self.active_effect_symbols:
-            if effect_icon.Update():
-                self.Disable_Effect_Icon(effect_icon)
+        # Reverse over the loop for safety
+        for i in range(len(self.active_effect_symbols) - 1, -1, -1):
+            icon = self.active_effect_symbols[i]
+            if icon.Update(): 
+                self.Disable_Effect_Icon(icon)
 
     # Prevent spamming of sound effects
     def Update_Sound_Cooldown(self, delta_time):
@@ -88,14 +82,17 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
         self.sound_cooldown = max(0, self.sound_cooldown - delta_time)
         return
 
-    def Set_Effect(self, effect, duration, permanent = False):
-        
-        if not super().Set_Effect(effect, duration, permanent):
-            return False
-        
-        self.Play_Sound_Effect(effect)
+    def Set_Effect(self, effect_name, duration, permanent = False):
+        try:
+            if not super().Set_Effect(effect_name, duration, permanent):
+                return False
+            
+            self.Play_Sound_Effect(effect_name)
 
-        return self.Set_Effect_Icon(effect)
+            return self.Set_Effect_Icon(effect_name)
+        except Exception as e:
+            print(f'FAILED TO SET PLAYER EFFECT {e}', effect_name, duration, permanent)
+            return False
 
     def Play_Sound_Effect(self, effect):
         if self.sound_cooldown:
@@ -171,6 +168,7 @@ class Player_Status_Effect_Handler(Status_Effect_Handler):
         self.effect_icons_pool = []
         for _ in range(self.pool_length):
             self.effect_icons_pool.append(Effect_Icon(self.entity.game))
+            
 
     def Render_Effects_Symbols(self, surf):
         for effect_icon in self.active_effect_symbols:

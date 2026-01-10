@@ -8,8 +8,7 @@ from scripts.engine.keys.keys import keys
 
 class Rune(Item):
     def __init__(self, game, type, pos, power, soul_cost):
-        super().__init__(game,  type, keys.rune, pos, (16, 16), 1, False)
-        self.player = self.game.player
+        self.player = game.player
         self.menu_pos = pos
         self.max_amount = 1
         self.upgrade_cost = max(10, math.ceil(soul_cost / 3))
@@ -23,15 +22,14 @@ class Rune(Item):
         self.animation_size = 0
         self.animation_size_max = 0
         self.active = False
-        self.effect = self.type.replace('_rune', '')
+        self.effect = type.replace('_rune', '')
         self.render = True
         # self.picked_up = True
         self.cost_to_buy = soul_cost // 2 * power // 2
         self.activate_cooldown = 0
         self.activate_cooldown_max = 5
         self.clicked = False # Used for projectiles
-        self.Set_Description()
-        self.text_box = Rune_Textbox(self)
+        super().__init__(game,  type, keys.rune, pos, size=(16, 16), amount=1, add_to_tile=False, durability=100, max_durability=100)
 
 
     def Save_Data(self):
@@ -81,7 +79,7 @@ class Rune(Item):
     # Add the player's current power level to the runes power and checks if it is
     # Valid. If yes then it triggers the rune and subtract the cost
     def Trigger_Effect(self):
-        if self.player.Set_Effect(self.effect, self.current_power + self.player.effects.power.effect):
+        if self.player.Set_Effect(self.effect, self.current_power + self.player.rune_power):
             self.Trigger_Rune()
 
     # Trigger the rune, cost already verified as possible in activate
@@ -91,6 +89,9 @@ class Rune(Item):
         self.Reset_Animation_Size()
         self.Set_Activate_Cooldown(self.activate_cooldown_max)
         self.player.weapon_handler.Set_Attack_Lock(True)
+
+        durability_damage = int(max(1, self.current_power // 2))
+        self.Decrease_Durability(durability_damage)
         self.clicked = False
 
     
@@ -103,6 +104,11 @@ class Rune(Item):
     def Set_Menu_Pos(self, pos):
         self.menu_pos = pos
 
+    
+    def Set_Text_Box(self):
+        self.text_box = Rune_Textbox(self)
+
+
     def Remove_Rune_From_Inventory(self):
         pass
 
@@ -114,15 +120,21 @@ class Rune(Item):
         self.current_soul_cost += change
         return True
 
-    def Modify_Upgrade_Cost(self, change):
-        self.upgrade_cost += change
+    def Upgrade_Cost(self):
+        self.upgrade_cost = (5 * self.current_power**2) + (5 * self.current_power) + 30
+
         return True
     
     def Modify_Power(self, change):
         if self.player.Get_Total_Available_Souls() < self.upgrade_cost:
             return False
-        self.current_power += change
+        self.Increase_Power(change)
         return True
+    
+    def Increase_Power(self, amount):
+        for i in range(amount):
+            self.current_power += 1
+            self.Upgrade_Cost()
     
     def Update_Activate_Cooldown(self, delta_time):
         if self.activate_cooldown:
@@ -138,7 +150,9 @@ class Rune(Item):
     def Set_Description(self):
         self.description = (
                             f"soul {self.current_soul_cost}\n"
-                            f"power {self.current_power + self.player.effects.power.effect}\n"
+                            f"power {self.current_power + self.player.rune_power}\n"
+                            f"Dur {self.durability} / {self.max_durability}\n"
+                            f"{self.Calculate_Value()} {keys.gold}\n"
                         )  
 
     
@@ -175,6 +189,9 @@ class Rune(Item):
         
         self.game.symbols.Render_Symbol(surf, self.effect,  (self.player.pos[0] - offset[0] + 8 - inversed_animation_size, self.player.pos[1] - offset[1] - inversed_animation_size), inversed_animation_size)
 
+    def Calculate_Value(self):
+        return self.value * self.current_power
+
     def Place_Down(self):
         self.game.rune_handler.Remove_Rune_From_Active_Runes(self)
         self.Delete_Item()
@@ -195,7 +212,6 @@ class Rune(Item):
 
     def Menu_Rect(self):
         return pygame.Rect(self.menu_pos[0], self.menu_pos[1], (self.size[0] * 1.5), (self.size[1] * 1.5))
-
 
     def Render_Floor(self, surf, offset=(0, 0)):
         
