@@ -26,13 +26,13 @@ class Minimap:
             self.tiles[tile.pos] = tile
 
     def Render(self, surf):
-        # 1. Clear the surface (maybe with a semi-transparent background)
+        # Clear the surface 
         self.minimap_display.fill((20, 20, 20, 150)) 
+        
         game = self.game
         player_pos = game.player.pos
 
         # 2. Calculate offset to center map on player
-        # player_pos is usually in world coords (pixels), convert to tile coords
         p_tile_x = player_pos[0] / self.tilemap.tile_size
         p_tile_y = player_pos[1] / self.tilemap.tile_size
 

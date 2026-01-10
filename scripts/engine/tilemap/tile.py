@@ -181,7 +181,6 @@ class Tile():
     # Used to render the minimap
     def Render_Minimap(self, surf, minimap_pos):
         # Determine color based on tile type
-        # You can use your 'keys' to define these
         color = (100, 100, 100) # Default Gray
         if self.physics: # It's a wall
             color = (200, 200, 200) # Light Gray/White
@@ -191,6 +190,5 @@ class Tile():
         #   if self.trap:
         #     color = (255, 50, 50) # Red
         
-        # Draw a small rectangle representing the tile
-        # 'minimap_pos' is the calculated coordinate on the minimap surface
+        # Draw a small rectangle representing the tile, performant
         pygame.draw.rect(surf, color, (minimap_pos[0], minimap_pos[1], 2, 2))
