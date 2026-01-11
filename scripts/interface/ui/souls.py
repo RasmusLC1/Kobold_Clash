@@ -5,7 +5,7 @@ import pygame
 
 class Souls(UI):
     def __init__(self, game):
-        pos_x = game.screen_width // game.render_scale - 50
+        pos_x = game.screen_width // game.render_scale - 70
         pos_y = 120 # 20 + minimap height
         animation_max = 3
         animation_cooldown_max = 0.3
