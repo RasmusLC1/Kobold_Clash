@@ -29,7 +29,7 @@
     # Particle Engine
     # Sound engine
     # Threat metre, a skull that fills up or something. If player generates clatter it has a chance to increase. It will also have a chance to decrease if player is quiet for longer periods of time
-    Minimap, adjust rendering scale for minimap and only display tiles that has been in raycaster
+    # Minimap, adjust rendering scale for minimap and only display tiles that has been in raycaster
 
 # UI
     # Item Inventory in grid at bottom center of the screen, 9 inventory slots, each with hotkey
@@ -80,10 +80,10 @@ Upgrade weapons
     Player profile starts with basic items like potions and 
 
 # Weapons:
-    Weapons have health, forcing players to either repair them with ingots at weapon shrines or to get new weapons 
-    Weapons have a pool of damage stats, so for instance a sword might have a dictionary with fire, frozen, sharpness and the damage value of each effect
-    Weapons can be upgraded with gems
-    weapons have their animations tied to the player sprite
+    # Weapons have health, forcing players to either repair them with ingots at weapon shrines or to get new weapons 
+    # Weapons have a pool of damage stats, so for instance a sword might have a dictionary with fire, frozen, sharpness and the damage value of each effect
+    # Weapons can be upgraded with gems
+    # weapons have their animations tied to the player sprite
     # Implement better animations, bright arcs for where the damage area is
     # Torch, emits light and be be used to set enemies on fire, relatively low damage
     # Sword, best damage, little utility
@@ -174,8 +174,8 @@ Upgrade weapons
         # Temptress Embrace - Reduces damage output when health > 50% but increases below 50%
         # Black Coin – Increases gold earned but increases damage taken
         # Vampire’s Locket – Grants lifesteal but disables all other healing.
+        # Forsaken Grimoire – Increases rune power but reduces player strength
 
-        Forsaken Grimoire – Increases rune power but reduces player strength
         Eldritch Mirror – Reflects a portion of damage taken but doubles negative status effect duration.
         Cracked Talisman – Grants resistance to elemental damage but causes physical damage to double
         Echoing Skull – Reveals hidden secrets in the dungeon but whispers eerie sounds, attracting enemies
@@ -380,17 +380,17 @@ Upgrade weapons
             + luck*(tier_norm*1.0)
             - Clatter*(tier_norm*0.8 - 0.10)
             
-    - Design loottables for more powerful items to have higher rarities
-    - Basic items that are higher rarity like gems or gold will have a higher amount to represent higher quality
+    - # Design loottables for more powerful items to have higher rarities
+    - # Basic items that are higher rarity like gems or gold will have a higher amount to represent higher quality
     - Weapons will have buffs applied to them randomly according to their rarity, common will have none.
         - Generate file with random names based on the rarity of the weapon
     - Status effects will also have a loot table, where higher quality status effects will be smaller amount at higher rarities and commons will have higher amounts
     - Runes will also be buffed depending on rarity
     - When opening loot container or shrine, 3 options are presented to the player, optional if positive and forced if negative
     - If a loot container is smashed (like vase) a random item is provided based on the rarity formula
-    - Different kinds of loot containers have different base levels, for example an epic chest will only spawn epic or above loot, meaning the tier distribution becomes Epic 80 and legendary 20
+    - # Different kinds of loot containers have different base levels, for example an epic chest will only spawn epic or above loot, meaning the tier distribution becomes Epic 80 and legendary 20
         - Loot containers get better the deeper in the dungeon you go, each depth layer allows spawning of new types of container, depth 1 only common and uncommon, 2 adds rares, 3 adds epic and 4 adds legendary
-    - Different loot tables based on loot containers, loot containers dictated by dungeon and room type
+    - # Different loot tables based on loot containers, loot containers dictated by dungeon and room type
     - When spawning loot, check the current player attributes and inventory and increase spawn chance of synergy items for better player experience
 
 # Dugeon types
