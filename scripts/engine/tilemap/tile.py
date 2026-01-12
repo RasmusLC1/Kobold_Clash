@@ -12,8 +12,8 @@ class Tile():
         self.type = type
         self.sub_type = sub_type
         self.variant = variant
-        self.pos = pos
-        self.scaled_pos = (pos[0] * TILE_SIZE, pos[1] * TILE_SIZE)
+        self.pos = pos # Tile coordinates
+        self.scaled_pos = (pos[0] * TILE_SIZE, pos[1] * TILE_SIZE) # Scaled size 
         self.size = size
         self.active = active
         self.light_level = light_level
@@ -24,11 +24,12 @@ class Tile():
         self.entities = {}
         self.update_entity_cooldown = 0
         self.sprite = None
-        self.needs_redraw = True  # ✅ Add flag to track if we need to redraw
-        self.rendered_surface = None  # ✅ Cached surface
+        self.needs_redraw = True  # Add flag to track if we need to redraw
+        self.rendered_surface = None  # Cached surface
         self.contains_decoration = False # Flag to prevent spawning multiple decorations
         self.room = False # Flag to check if tile is part of room
         self.trap = False # Flag to check if tile contains trap
+        self.minimap = False # Flag if the tile has been added to the minimap
         # Dictionary to hold each light's contribution
         # Key: light_id, Value: contributed_light_level
         self.light_contributions = {}
@@ -60,9 +61,6 @@ class Tile():
     def Set_Light_ID(self, light_id):
         self.light_ID = light_id
 
-    def Render_All(self):
-        self.Set_Light_Level(200)
-        self.Set_Active(200000)
 
     
     def Search_Entities(self, category, ID=0):
@@ -107,6 +105,16 @@ class Tile():
 
     def Set_Trap(self, state):
         self.trap = state
+
+    def Add_To_Minimap(self):
+        # If already added to minimap return false
+        if self.minimap:
+            return False
+        
+        self.minimap = True
+        return True
+
+
 
     def Add_Light_Contribution(self, light_id, contribution):
         # Add/update light contribution
@@ -169,3 +177,18 @@ class Tile():
             self.Update_Tile_Surface() 
         # Blit the darkened tile surface onto the main surface
         surf.blit(self.rendered_surface, (self.pos[0] * self.size - offset[0], self.pos[1] * self.size - offset[1]))
+
+    # Used to render the minimap
+    def Render_Minimap(self, surf, minimap_pos):
+        # Determine color based on tile type
+        color = (100, 100, 100) # Default Gray
+        if self.physics: # It's a wall
+            color = (200, 200, 200) # Light Gray/White
+
+        # TODO: Add item to detect traps
+        # if self.game.player.trap_detection:
+        #   if self.trap:
+        #     color = (255, 50, 50) # Red
+        
+        # Draw a small rectangle representing the tile, performant
+        pygame.draw.rect(surf, color, (minimap_pos[0], minimap_pos[1], 2, 2))

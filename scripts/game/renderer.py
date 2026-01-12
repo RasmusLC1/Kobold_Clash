@@ -30,9 +30,10 @@ class Renderer():
 
         self.game.text_box_handler.Render(surf, render_scroll)
         self.game.player.effects.Render_Effects_Symbols(surf)
-
+    
         self.game.ui_handler.Render(surf)
 
+        self.game.tilemap.Render_Minimap(surf)
 
 
 
