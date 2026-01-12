@@ -16,12 +16,11 @@ class Minimap:
         self.tiles.clear()
 
     def Add_Tile_To_Minimap(self, tile):
-        # Fixed logic: self.tiles[key] = tile
         if tile.pos not in self.tiles:
             self.tiles[tile.pos] = tile
 
     def Render(self, surf):
-        # 1. Clear with a transparent background
+        # Clear with a transparent background
         self.minimap_display.fill((0, 0, 0, 0)) 
         
         # Draw the dark circular background for the map
@@ -30,14 +29,14 @@ class Minimap:
         self.Render_Circle(center)
 
 
-        # 2. Render tiles and player
+        # Render tiles and player
         p_tile_x = self.game.player.pos[0] / self.tilemap.tile_size
         p_tile_y = self.game.player.pos[1] / self.tilemap.tile_size
         self.Render_Tiles(p_tile_x, p_tile_y, center[0], center[1])
         pygame.draw.circle(self.minimap_display, (50, 255, 50), center, 3)
 
         
-        # Final blit to screen
+        # blit to screen
         padding = 5
         pos_x = self.game.screen_width // self.game.render_scale - padding - self.size
         pos_y = padding
@@ -50,7 +49,7 @@ class Minimap:
         mask = pygame.Surface((self.size, self.size), pygame.SRCALPHA)
         mask.fill((255, 255, 255, 255)) # Fill with solid white
         
-        # Cut a "hole" in the mask (everything inside this circle becomes transparent on the mask)
+        # Cut a hole in the mask (everything inside this circle becomes transparent on the mask)
         pygame.draw.circle(mask, (0, 0, 0, 0), center, self.radius)
         
         # Use BLEND_RGBA_SUB to subtract the solid white corners of the mask from your minimap
