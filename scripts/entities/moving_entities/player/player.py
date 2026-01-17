@@ -212,6 +212,9 @@ class Player(Moving_Entity):
         self.player_particle_cooldown -= delta_time
         return
 
+    def Get_Animation(self):
+        return self.animation_handler.Get_Action()
+
     # Render player
     def Render(self, surf, offset=(0, 0)):
         if abs(self.movement_handler.dashing) >= 50:

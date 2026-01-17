@@ -427,7 +427,7 @@ class Graphics_Loader:
         Weapons_assets = {
             keys.sword: get_tiles_from_sheet('items/weapons/sword/sword.png', 3, 0, 0, 0, 32, 32),
             keys.sword_idle: get_tiles_from_sheet('items/weapons/sword/sword_idle.png', 3, 0, 0, 0, 32, 32),
-            keys.sword_running_behind: get_tiles_from_sheet('items/weapons/sword/sword_running_behind.png', 5, 0, 0, 0, 32, 32),
+            keys.sword_running_up: get_tiles_from_sheet('items/weapons/sword/sword_running_behind.png', 5, 0, 0, 0, 32, 32),
             keys.sword_running_down: get_tiles_from_sheet('items/weapons/sword/sword_running_front.png', 5, 0, 0, 0, 32, 32),
             keys.sword_cut: get_tiles_from_sheet('items/weapons/sword/sword_attack_cut.png', 4, 0, 0, 0, 48, 48),
             keys.sword_stab: get_tiles_from_sheet('items/weapons/sword/sword_attack_stab.png', 4, 0, 0, 0, 48, 48),
@@ -447,7 +447,7 @@ class Graphics_Loader:
             
             keys.spear: get_tiles_from_sheet('items/weapons/spear/spear.png', 3, 0, 0, 0, 32, 32),
             keys.spear_idle: get_tiles_from_sheet('items/weapons/spear/spear_idle.png', 3, 0, 0, 0, 32, 32),
-            keys.spear_running_behind: get_tiles_from_sheet('items/weapons/spear/spear_running_behind.png', 5, 0, 0, 0, 32, 32),
+            keys.spear_running_up: get_tiles_from_sheet('items/weapons/spear/spear_running_behind.png', 5, 0, 0, 0, 32, 32),
             keys.spear_running_down: get_tiles_from_sheet('items/weapons/spear/spear_running_down.png', 5, 0, 0, 0, 32, 32),
             keys.spear_stab: get_tiles_from_sheet('items/weapons/spear/spear_stab.png', 4, 0, 0, 0, 48, 48),
             

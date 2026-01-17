@@ -78,7 +78,3 @@ class Fire_Spirit(Elemental):
         
         return
 
-
-
-    def Render_Weapons(self, surf, offset):
-        pass

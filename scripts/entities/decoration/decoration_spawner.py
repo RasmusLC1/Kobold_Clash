@@ -59,7 +59,6 @@ class Decoration_Spawner():
         self.Spawn_Lightsource()
         self.Set_Item_Sacrifice_Decorations()
         self.Link_Teleportation_Circles()
-        self.Spawn_Items()
         return self.decorations, self.item_sacrifice, self.spawn_methods
 
 
@@ -126,16 +125,6 @@ class Decoration_Spawner():
                 decoration = cls(self.game, pos)
                 self.decorations.append(decoration)
 
-    def Spawn_Items(self):
-        for decoration in self.decorations:
-            if decoration.type == keys.weapon_rack:
-                decoration.Spawn_Weapons()
-                continue
-
-            if decoration.type == keys.plinth:
-                decoration.Spawn_Rune()
-
-    
     def Spawn_Lightsource(self):
         if not keys.light_source in self.decoration_initialiser.decorations:
             return

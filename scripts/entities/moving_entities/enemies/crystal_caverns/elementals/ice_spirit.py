@@ -47,7 +47,3 @@ class Ice_Spirit(Elemental):
         self.shooting_ice = self.active_weapon.Particle_Creation(self, self.shooting_ice, self.ice_damage)
         if not self.shooting_ice:
             self.charge = 0
-
-
-    def Render_Weapons(self, surf, offset):
-        pass

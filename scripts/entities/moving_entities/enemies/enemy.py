@@ -358,8 +358,3 @@ class Enemy(Moving_Entity):
         exclamation_mark.set_alpha(alpha_value)
         surf.blit(exclamation_mark, (self.rect().left - offset[0], self.rect().top - offset[1] - self.attack_symbol_offset))
 
-
-    def Render_Weapons(self, surf, offset):
-        if self.active_weapon:
-            self.active_weapon.Render_Equipped_Enemy(surf, offset)
-        

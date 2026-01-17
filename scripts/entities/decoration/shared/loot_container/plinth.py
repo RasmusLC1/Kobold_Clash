@@ -8,7 +8,7 @@ class Plinth(Decoration):
         
         
 
-    def Spawn_Rune(self):
+    def Drop_Loot(self):
         runes = {
             keys.dash_rune : 0.2,
             keys.healing_rune : 0.2,

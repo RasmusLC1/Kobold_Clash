@@ -337,10 +337,14 @@ class Weapon(Item):
     def Attack_Align_Weapon(self):
         pass
     
+
     
     # Takes the entity's sprite type and applies it to weapon
     def Set_Equipped_Sprite(self):
-        self.sub_type = self.type + '_' + self.entity.animation_handler.action
+        player_action = self.entity.Get_Animation()
+        if 'roll'  not in player_action and 'backstep' not in player_action:
+            self.sub_type = self.type + '_' + self.entity.animation_handler.action
+            
         self.Set_Sprite()
 
     # Responsible for calculating offset and centering the weapon 
@@ -371,6 +375,8 @@ class Weapon(Item):
     def Render_Equipped(self, surf, offset=(0, 0)):
         if not self.entity:
             return
+        
+
         self.Set_Equipped_Sprite()
         weapon_image = self.entity_image.copy()
 
@@ -386,21 +392,7 @@ class Weapon(Item):
         self.charge_effect_handler.Render_Charge_Effect(surf, offset)
     
 
-    # Render the weapon in entity's hand
-    def Render_Equipped_Enemy(self, surf, offset=(0, 0)):
-        alpha_value = max(0, min(255, self.active)) 
-
-        if not alpha_value:
-            return
-
-        self.Update_Dark_Surface_Enemy(alpha_value)
-
-        if not self.rendered_image:
-            self.rendered_image = self.entity_image.copy()
-        surf.blit(
-            pygame.transform.flip(self.rendered_image, False, False),
-                                  (self.pos[0] - offset[0], self.pos[1] - offset[1]))
-    
+  
     # Updates the dark surface for enemies
     def Update_Dark_Surface_Enemy(self, alpha_value):
         if not self.render_needs_update:

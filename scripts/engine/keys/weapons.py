@@ -68,7 +68,7 @@ class Weapons():
 
     sword_idle = "sword_idle"
 
-    sword_running_behind = "sword_running_behind"
+    sword_running_up = "sword_running_up"
 
     sword_running_down = "sword_running_down"
 
@@ -92,7 +92,7 @@ class Weapons():
 
     spear_idle = "spear_idle"
 
-    spear_running_behind = "spear_running_behind"
+    spear_running_up = "spear_running_up"
 
     spear_running_down = "spear_running_down"
     
@@ -129,8 +129,6 @@ class Weapons():
     
     halberd_cut = "halberd_cut"
 
-
-    
     battle_axe = "battle_axe"
 
     
