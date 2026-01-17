@@ -69,7 +69,7 @@ class Item_Inventory(Base_Inventory):
     # Returns true if inventory contains an arrow and reduces the amount of the
     # amount of the first arrow by 1
     def Find_Arrow(self):
-        inventory_slots = self.Find_Inventory_Slots_With_Type('arrow')
+        inventory_slots = self.Find_Inventory_Slots_With_Item_Type(keys.arrow)
 
         if not inventory_slots:
             return False
@@ -82,6 +82,22 @@ class Item_Inventory(Base_Inventory):
 
         return True
     
+
+    def Get_Arrow_Amount(self):
+        inventory_slots = self.Find_Inventory_Slots_With_Item_Type(keys.arrow)
+
+        arrow_count = 0
+
+        if not inventory_slots:
+            return arrow_count
+        
+
+        for inventory_slot in inventory_slots:
+            arrow_count += inventory_slot.item.amount
+
+        return arrow_count
+
+
     # Returns all items in the inventory
     def Find_Loot(self):
         loot_items = []

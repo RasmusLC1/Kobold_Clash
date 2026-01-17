@@ -34,6 +34,7 @@ class Decoration_Initialiser():
         self.Spawn_Soul_Well()
 
     def Spawn_Small_Objects(self):
+        self.Spawn_Weapon_Rack()
         self.Spawn_Campfire()
         self.Spawn_Chests()
         self.Spawn_Vase()
@@ -41,16 +42,16 @@ class Decoration_Initialiser():
         self.Spawn_Lever()
 
     def Spawn_Chests(self):
-        amount = random.randint(50, 100)
+        amount = random.randint(10, 20)
         self.Find_Floor_Tiles(keys.chest, amount)
 
     def Spawn_Vase(self):
-        amount = random.randint(20, 30)
+        amount = random.randint(10, 20)
         self.Find_Floor_Tiles(keys.vase, amount)
 
     def Spawn_Weapon_Rack(self):
-        amount = random.randint(20, 30)
-        self.Find_Floor_Tiles(keys.vase, amount)
+        amount = random.randint(40, 50)
+        self.Find_Floor_Tiles(keys.weapon_rack, amount)
 
     def Spawn_Lever(self):
         amount = random.randint(4, 7)

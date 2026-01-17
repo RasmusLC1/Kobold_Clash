@@ -369,6 +369,8 @@ class Weapon(Item):
 
     # Render the weapon in player's hand 
     def Render_Equipped(self, surf, offset=(0, 0)):
+        if not self.entity:
+            return
         self.Set_Equipped_Sprite()
         weapon_image = self.entity_image.copy()
         self.flip_x = self.entity.animation_handler.flip[0]

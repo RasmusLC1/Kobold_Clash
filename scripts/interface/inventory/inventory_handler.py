@@ -468,8 +468,27 @@ class Inventory_Handler():
             self.clicked_inventory_slot_lock = False
 
         self.clicked_inventory_slot = inventory_slot
+    
+
+    def Check_If_Bow_Equipped(self):
+        bow_inventory_slots = self.weapon_inventory.Find_Inventory_Slots_With_Item_Type(keys.bow)
+
+        if bow_inventory_slots:
+            return True
+        
+        crossbow_inventory_slots = self.weapon_inventory.Find_Inventory_Slots_With_Item_Type(keys.crossbow)
+
+        if crossbow_inventory_slots:
+            return True
         
 
+        return False
+
+    def Find_Arrow(self):
+        return self.item_inventory.Find_Arrow()
+    
+    def Get_Total_Arrows(self):
+        return self.item_inventory.Get_Arrow_Amount()
 
     def Overflow(self, item):
         empty_slots = {i: slot for i, slot in enumerate(self.inventory) if not slot.item}

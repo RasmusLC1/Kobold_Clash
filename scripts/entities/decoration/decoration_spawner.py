@@ -159,8 +159,6 @@ class Decoration_Spawner():
         self.decorations.append(chest)
         return chest
    
-
-    
     def Link_Teleportation_Circles(self):
         teleportation_circles = []
         for decoration in self.decorations:

@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Arrow(Projectile):
     def __init__(self, game, pos, amount = 1, direction = (0,0), damage_type = 'slash'):
-        super().__init__(game, pos, keys.arrow, 3, 6, 8, 10, keys.arrow,  damage_type, 50, max_animation=0, amount=amount)
+        super().__init__(game, pos, keys.arrow, damage=3, speed=6, range=8, max_charge_time=10, weapon_class=keys.arrow,  effect=damage_type, shoot_distance=50, max_animation=0, amount=amount)
         self.direction = direction  # Store the direction vector
 
 

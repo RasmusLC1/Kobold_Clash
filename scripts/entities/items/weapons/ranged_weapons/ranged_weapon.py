@@ -98,7 +98,7 @@ class Ranged_Weapon(Weapon):
         if self.arrow:
             return True
         
-        if not self.game.inventory.item_inventory.Find_Arrow():
+        if not self.game.inventory.Find_Arrow():
             return False
 
         if not self.Spawn_Arrow():

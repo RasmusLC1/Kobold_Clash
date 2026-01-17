@@ -18,27 +18,14 @@ class Halberd(Weapon):
     def Special_Attack(self):
         if not self.entity:
             return
-        
-        if self.Charge():
-            return
-        
+
         if self.special_attack <= 0 or not self.equipped:
             # self.Reset_Special_Attack()
             return
         self.Initialise_Charge()
         
         
-    # Handle charging logic, return True if successful else False
-    def Charge(self):
-        if not self.entity.charging:
-            return False
-        self.rotate = self.stored_rotation
-        new_x_pos = self.entity.pos[0] + self.entity.attack_direction[0] * 10
-        new_y_pos = self.entity.pos[1] + self.entity.attack_direction[1] * 10
-        self.Move((new_x_pos, new_y_pos))
-        # self.Player_Attack_Collision_Check()
-        return True
-    
+
     # Initialise the charge logic
     def Initialise_Charge(self):
         self.stored_rotation = self.rotate

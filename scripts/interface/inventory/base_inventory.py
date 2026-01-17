@@ -25,7 +25,7 @@ class Base_Inventory():
             
         return inventory_slots_with_item_type
     
-    def Find_Inventory_Slots_With_Type(self, type):
+    def Find_Inventory_Slots_With_Item_Type(self, type):
         inventory_slots_with_item_type = []
         for inventory_slot in self.inventory:
             if not inventory_slot.item:
