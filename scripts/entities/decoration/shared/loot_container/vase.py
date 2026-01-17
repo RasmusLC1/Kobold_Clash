@@ -12,7 +12,10 @@ class Vase(Loot_Container):
         self.Set_Sprite()
 
     def Open(self):
-        return
+        if not super().Open():
+            return False
+        
+        self.game.decoration_handler.Remove_Decoration(self)
 
     def Set_Loot_Types(self):
 

@@ -1,7 +1,9 @@
-from scripts.entities.decoration.shared.loot_container.loot_container import Loot_Container
+from scripts.entities.decoration.shared.loot_container.display_loot_container import Display_Loot_Container
 from scripts.engine.keys.keys import keys
+import math
 
-class Weapon_rack(Loot_Container):
+
+class Weapon_rack(Display_Loot_Container):
     def __init__(self, game, pos) -> None:
         super().__init__(game, type=keys.weapon_rack, pos=pos, size=(32, 32), destructable=True, health=20, destruction_sound='weapon_rack_break', destruction_clatter= 400)
 
