@@ -193,7 +193,8 @@ class Player(Moving_Entity):
 
         return True
     
-
+    def Charge(self, render_scroll):
+        self.movement_handler.Dash(render_scroll)
 
     def Set_Last_Shrine(self, shrine):
         self.last_shrine_visited = shrine

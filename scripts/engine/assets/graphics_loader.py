@@ -440,7 +440,7 @@ class Graphics_Loader:
 
             keys.halberd: get_tiles_from_sheet('items/weapons/halberd/halberd.png', 3, 0, 0, 0, 32, 32),
             keys.halberd_idle: get_tiles_from_sheet('items/weapons/halberd/halberd_idle.png',4, 0, 0, 0, 32, 32),
-            keys.halberd_running_behind: get_tiles_from_sheet('items/weapons/halberd/halberd_running_behind.png', 5, 0, 0, 0, 32, 32),
+            keys.halberd_running_up: get_tiles_from_sheet('items/weapons/halberd/halberd_running_behind.png', 5, 0, 0, 0, 32, 32),
             keys.halberd_running_down: get_tiles_from_sheet('items/weapons/halberd/halberd_running_down.png', 5, 0, 0, 0, 32, 32),
             keys.halberd_stab: get_tiles_from_sheet('items/weapons/halberd/halberd_stab_attack.png', 4, 0, 0, 0, 48, 48),
             keys.halberd_cut: get_tiles_from_sheet('items/weapons/halberd/halberd_cut_attack.png', 4, 0, 0, 0, 48, 48),

@@ -121,7 +121,7 @@ class Weapons():
 
     halberd_idle = "halberd_idle"
 
-    halberd_running_behind = "halberd_running_behind"
+    halberd_running_up = "halberd_running_up"
 
     halberd_running_down = "halberd_running_down"
     

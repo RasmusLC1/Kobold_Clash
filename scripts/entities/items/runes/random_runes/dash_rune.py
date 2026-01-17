@@ -11,4 +11,4 @@ class Dash_Rune(Projectile_Rune):
         self.effect = None
 
     def Generate_Projectile(self):
-        self.game.player.movement_handler.Dash(self.game.render_scroll)
+        self.game.player.Charge(self.game.render_scroll)

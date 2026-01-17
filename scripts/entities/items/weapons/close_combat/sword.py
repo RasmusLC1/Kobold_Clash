@@ -28,7 +28,5 @@ class Sword(Weapon):
 
     # Initialise the charge logic
     def Initialise_Charge(self):
-        self.stored_rotation = self.rotate
-        self.entity.Set_Charge(self.special_attack)
-        self.nearby_enemies = self.game.enemy_handler.Find_Nearby_Enemies(self.entity, 8 * 32) # Find nearby enemies to attack
+        self.entity.Charge(self.game.render_scroll)
         self.special_attack = 0

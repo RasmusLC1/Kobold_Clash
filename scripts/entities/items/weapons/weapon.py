@@ -373,6 +373,9 @@ class Weapon(Item):
             return
         self.Set_Equipped_Sprite()
         weapon_image = self.entity_image.copy()
+
+        if not self.entity:
+            return
         self.flip_x = self.entity.animation_handler.flip[0]
 
 
