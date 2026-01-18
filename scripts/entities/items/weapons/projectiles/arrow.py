@@ -3,8 +3,8 @@ from scripts.engine.keys.keys import keys
 
 
 class Arrow(Projectile):
-    def __init__(self, game, pos, amount = 1, direction = (0,0), damage_type = 'slash'):
-        super().__init__(game, pos, keys.arrow, damage=3, speed=6, range=8, max_charge_time=10, weapon_class=keys.arrow,  effect=damage_type, shoot_distance=50, max_animation=0, amount=amount)
+    def __init__(self, game, pos, amount = 1, direction = (0,0), damage_type = 'slash', add_arrow_to_tile = True):
+        super().__init__(game, pos, keys.arrow, damage=3, speed=6, range=8, max_charge_time=10, weapon_class=keys.arrow,  effect=damage_type, shoot_distance=50, max_animation=0, amount=amount, add_to_tile=add_arrow_to_tile)
         self.direction = direction  # Store the direction vector
 
 

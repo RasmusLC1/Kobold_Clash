@@ -353,10 +353,10 @@ class Weapon(Item):
         player_action = self.entity.animation_handler.action
         if not self.flip_x:
             flip_offset_x = 10
-        if 'attack' in player_action:
-            flip_offset_x = 5
-            if self.flip_x:
-                flip_offset_x = 20
+        # if 'attack' in player_action:
+            # flip_offset_x = 5
+            # if self.flip_x:
+            #     flip_offset_x = 20
 
         flip_offset_y = 0
         if 'up' in player_action:
@@ -450,9 +450,10 @@ class Weapon(Item):
 
     # Only used for Player Weapons
     def Equip(self):
-        self.Set_Equip(True, self.game.player)
+        player =  self.game.player
+        self.Set_Equip(True, player)
         self.Activate_Gem_Effect()
-        self.game.player.Set_Active_Weapon(self)
+        player.Set_Active_Weapon(self)
         self.animation = 0 # Reset animation when equipped
 
     def Unequip(self):
