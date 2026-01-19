@@ -425,7 +425,7 @@ class Graphics_Loader:
 
     def Asset_Weapons_List(self):
         Weapons_assets = {
-            keys.sword: get_tiles_from_sheet('items/weapons/sword/sword.png', 3, 0, 0, 0, 32, 32),
+            keys.sword: get_tiles_from_sheet('items/weapons/sword/sword.png', 0, 0, 0, 0, 32, 32),
             keys.sword_idle: get_tiles_from_sheet('items/weapons/sword/sword_idle.png', 3, 0, 0, 0, 32, 32),
             keys.sword_running_up: get_tiles_from_sheet('items/weapons/sword/sword_running_behind.png', 5, 0, 0, 0, 32, 32),
             keys.sword_running_down: get_tiles_from_sheet('items/weapons/sword/sword_running_front.png', 5, 0, 0, 0, 32, 32),
@@ -438,14 +438,13 @@ class Graphics_Loader:
             keys.torch_running_up: get_tiles_from_sheet('items/weapons/torch/torch_running_up.png', 5, 0, 0, 0, 32, 32),
             keys.torch_cut: get_tiles_from_sheet('items/weapons/torch/torch_attack.png', 4, 0, 0, 0, 48, 48),
 
-            keys.halberd: get_tiles_from_sheet('items/weapons/halberd/halberd.png', 3, 0, 0, 0, 32, 32),
+            keys.halberd: get_tiles_from_sheet('items/weapons/halberd/halberd.png', 0, 0, 0, 0, 32, 32),
             keys.halberd_idle: get_tiles_from_sheet('items/weapons/halberd/halberd_idle.png',4, 0, 0, 0, 32, 32),
             keys.halberd_running_up: get_tiles_from_sheet('items/weapons/halberd/halberd_running_behind.png', 5, 0, 0, 0, 32, 32),
             keys.halberd_running_down: get_tiles_from_sheet('items/weapons/halberd/halberd_running_down.png', 5, 0, 0, 0, 32, 32),
-            keys.halberd_stab: get_tiles_from_sheet('items/weapons/halberd/halberd_stab_attack.png', 4, 0, 0, 0, 48, 48),
             keys.halberd_cut: get_tiles_from_sheet('items/weapons/halberd/halberd_cut_attack.png', 4, 0, 0, 0, 48, 48),
             
-            keys.spear: get_tiles_from_sheet('items/weapons/spear/spear.png', 3, 0, 0, 0, 32, 32),
+            keys.spear: get_tiles_from_sheet('items/weapons/spear/spear.png', 0, 0, 0, 0, 32, 32),
             keys.spear_idle: get_tiles_from_sheet('items/weapons/spear/spear_idle.png', 3, 0, 0, 0, 32, 32),
             keys.spear_running_up: get_tiles_from_sheet('items/weapons/spear/spear_running_behind.png', 5, 0, 0, 0, 32, 32),
             keys.spear_running_down: get_tiles_from_sheet('items/weapons/spear/spear_running_down.png', 5, 0, 0, 0, 32, 32),

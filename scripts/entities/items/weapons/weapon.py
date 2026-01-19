@@ -44,6 +44,8 @@ class Weapon(Item):
 
         self.delete_timer = 0 # time before weapon is deleted
 
+        self.Set_Inventory_Image(game, type)
+
         self.entity_attack_type = None # Used to determine if the weapon is being used by enemy or player
         self.damage_handler = Damage_Handler_Weapon(self, effect, damage)
         self.charge_effect_handler = Charge_Effect_Weapon(game, self)
@@ -299,7 +301,14 @@ class Weapon(Item):
         self.charge_time = 0
         return
 
-    
+    def Set_Inventory_Image(self, game, type):
+        image = game.assets.get(type)
+        self.inventory_image = None
+        if not image:
+            return
+        
+        self.inventory_image = image[0]
+
     def Set_Entity(self, entity):
         self.entity = entity
         if not entity:
@@ -344,7 +353,7 @@ class Weapon(Item):
         player_action = self.entity.Get_Animation()
         if 'roll'  not in player_action and 'backstep' not in player_action:
             self.sub_type = self.type + '_' + self.entity.animation_handler.action
-            
+        
         self.Set_Sprite()
 
     # Responsible for calculating offset and centering the weapon 
@@ -409,8 +418,16 @@ class Weapon(Item):
 
 
     def Render_Inventory(self, surf, pos, size):
+        if not self.inventory_image:
+            return
         self.gem_handler.Render_Gems_Inventory(surf, pos, size)
-        return super().Render_Inventory(surf, pos, size)
+        try:
+
+            item_image = pygame.transform.scale(self.inventory_image, size)
+            surf.blit(item_image, pos)
+            
+        except Exception as e:
+            print(f"ITEM Render_Inventory failed WEAPON {e}", self.entity_image, size, pos, self.type, self.sub_type)
     
     # Used to reset weapon when equipped by enemy
     def Pickup_Reset_Weapon(self, entity):

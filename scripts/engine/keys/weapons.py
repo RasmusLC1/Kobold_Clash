@@ -36,6 +36,8 @@ class Weapons():
     
     
     poison_ball = "poison_ball"
+
+    magic_projectile = "magic_projectile"
     
     
     poison_explosion = "poison_explosion"
