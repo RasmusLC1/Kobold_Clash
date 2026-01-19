@@ -1,7 +1,7 @@
 from scripts.entities.decoration.shared.loot_container.display_loot_container import Display_Loot_Container
 from scripts.engine.keys.keys import keys
-import math
 
+BASE_VALUE = 20
 
 class Weapon_rack(Display_Loot_Container):
     def __init__(self, game, pos) -> None:
@@ -9,4 +9,4 @@ class Weapon_rack(Display_Loot_Container):
 
 
     def Drop_Loot(self):
-        self.game.item_handler.Spawn_Weapon((self.pos[0], self.pos[1] - 3))
+        self.game.item_handler.Spawn_Weapon((self.pos[0], self.pos[1] - 3), value = BASE_VALUE)

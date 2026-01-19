@@ -1,22 +1,19 @@
 from scripts.entities.items.weapons.close_combat.sword import Sword
 from scripts.entities.items.weapons.close_combat.halberd import Halberd
 from scripts.entities.items.weapons.close_combat.torch import Torch
-from scripts.entities.items.weapons.close_combat.warhammer import Warhammer
-from scripts.entities.items.weapons.close_combat.battle_axe import Battle_Axe
 from scripts.entities.items.weapons.close_combat.sceptre import Sceptre
-from scripts.entities.items.weapons.close_combat.bell import Bell
 from scripts.entities.items.weapons.close_combat.scythe import Scythe
-from scripts.entities.items.weapons.close_combat.staff import Staff
 
 from scripts.entities.items.weapons.projectiles.spear import Spear
 from scripts.entities.items.weapons.projectiles.hatchet import Hatchet
-from scripts.entities.items.weapons.projectiles.hammer import Hammer
 from scripts.entities.items.weapons.projectiles.arrow import Arrow
 
 from scripts.entities.items.weapons.ranged_weapons.bow import Bow
 from scripts.entities.items.weapons.ranged_weapons.crossbow import Crossbow
 from scripts.entities.items.weapons.shields.shield import Shield
+
 from scripts.engine.keys.keys import keys
+from scripts.engine.utility.luck_calculator import Luck_Calculator
 
 import random
 
@@ -52,13 +49,13 @@ class Weapon_Handler():
 
 
 
-    def Weapon_Spawner(self, type, pos_x, pos_y, amount=0, data=None):
+    def Weapon_Spawner(self, type, pos_x, pos_y, value = 0, data=None):
         # Handle special cases first
         if keys.particle in type:
             return True  # or your specific logic for particles
 
         if keys.arrow in type:
-            weapon = Arrow(self.game, (pos_x, pos_y), amount)
+            weapon = Arrow(self.game, (pos_x, pos_y), 1)
         else:
             # Lookup the class; return False if not found
             weapon_class = self.weapon_map.get(type)
@@ -93,6 +90,7 @@ class Weapon_Handler():
         return weapon
     
 
+
     def Modify_Arrow_Spawn_Rate(self):
         weapon_rates = self.random_weapon_map.copy()
 
@@ -113,3 +111,9 @@ class Weapon_Handler():
         weapon_rates[keys.arrow] = int(base_rate * mult)
 
         return weapon_rates
+    
+    def Spawn_Arrow_For_Trap(self, pos):
+        weapon = Arrow(self.game, pos, add_arrow_to_tile=False)
+        self.game.item_handler.Add_Item(weapon)
+        return weapon
+

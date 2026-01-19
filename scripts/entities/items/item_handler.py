@@ -35,7 +35,7 @@ class Item_Handler():
             amount = item_data['amount']
             item = None
             if item_data['sub_category'] == keys.weapon:
-                item = self.weapon_handler.Weapon_Spawner(type, pos[0], pos[1], amount, item_data)
+                item = self.weapon_handler.Weapon_Spawner(type, pos[0], pos[1], amount, data=item_data)
             elif item_data['sub_category'] == keys.loot:
                 loot_type = item_data[keys.loot_type]
                 item = self.loot_handler.Spawn_Loot_Type(loot_type, pos, item_data)
@@ -60,14 +60,17 @@ class Item_Handler():
             if gold:
                 self.Add_Item(gold)
 
-    def Spawn_Weapon(self, pos, type = None, amount = 1):
+    def Spawn_Weapon(self, pos, type = None, value = 0):
         weapon = None
         if type:
-            weapon = self.weapon_handler.Weapon_Spawner(type, pos[0], pos[1], amount)
+            weapon = self.weapon_handler.Weapon_Spawner(type, pos[0], pos[1], value)
         else:
             weapon = self.weapon_handler.Spawn_Random_Weapon(pos)
 
         return weapon
+    
+    def Spawn_Arrow_For_Trap(self, pos):
+        return self.weapon_handler.Spawn_Arrow_For_Trap(pos)
 
     def Add_Item(self, item):
         if item in self.items:
