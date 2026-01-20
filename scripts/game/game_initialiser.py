@@ -65,7 +65,7 @@ class Game_Initialiser():
         self.game.keyboard_handler = Keyboard_Handler(self.game)
         
         self.game.ui_handler = UI_Handler(self.game)
-        self.game.dungeon_generator = Dungeon_Generator(self.game)
         self.game.tilemap = Tilemap(self.game, tile_size=16)
+        self.game.dungeon_generator = Dungeon_Generator(self.game)
 
         

@@ -6,14 +6,11 @@ from scripts.level_generation.room_generation.level_structure import Level_Struc
 from scripts.level_generation.rooms.spawn_boss_room import Spawn_Boss_Room
 from scripts.level_generation.rooms.spawn_loot_room import Spawn_Loot_Room
 from scripts.level_generation.rooms.spawn_lakes import Spawn_Lakes
-from scripts.level_generation.entities.spawn_player import Spawn_Player
 from scripts.level_generation.entities.spawn_enemy import Spawn_Enemy
 from scripts.level_generation.loot.weapon_spawner import Weapon_Spawner
 from scripts.level_generation.loot.rune_spawner import Rune_Spawner
 from scripts.level_generation.dungeon_enum_keys import *
 import os
-import random
-from scripts.engine.keys.keys import keys
 
 # TODO:  shrines, entrance and exit, keys 
 
@@ -25,7 +22,8 @@ class Dungeon_Generator():
         self.player_spawn = (0, 0)
         self.cellular_automata = Cellular_Automata()
         self.tile_size = 32
-        self.tilemap = Tilemap(self, tile_size=self.tile_size)
+        self.player_spawn = (20, 20)
+        self.offgrid_tiles = []
         self.a_star = A_Star()
         # TODO: IMPLEMENT MORE TRAPS AND ADD THEM HERE
         self.noise_map = Noise_Map()
@@ -39,23 +37,23 @@ class Dungeon_Generator():
     def Generate_Map(self, map_id):
         self.Update_Load_Menu(1)
 
-        self.tilemap.Clear_Tilemap() # Clears tiles and offgrid
+        self.game.tilemap.Clear_Tilemap() # Clears tiles and offgrid
         self.cellular_automata.Create_Map()
         self.Update_Load_Menu(2)
 
-        Spawn_Lakes.Spawn_Lakes(self.noise_map, self.cellular_automata, 7, FLOOR, LAVA, self.tilemap.offgrid_tiles)
+        Spawn_Lakes.Spawn_Lakes(self.noise_map, self.cellular_automata, 7, FLOOR, LAVA, self.offgrid_tiles)
         size_x = self.cellular_automata.size_x
         size_y = self.cellular_automata.size_y
         
         self.Update_A_Star_Map()
 
-        self.player_spawn = Spawn_Player.Player_Spawn(self.tile_size, self.tilemap)
+        
         self.a_star.Set_Map('custom')
         self.Update_Load_Menu(3)
 
         # Spawn more loot rooms in lower levels of dungeon
         # TODO: PROPER LEVEL SYSTEM
-        if not Spawn_Loot_Room.Spawn_Loot_Room(self.cellular_automata.map, size_x, size_y, map_id, self.player_spawn, self.A_Star_Search, self.tilemap.offgrid_tiles):
+        if not Spawn_Loot_Room.Spawn_Loot_Room(self.cellular_automata.map, size_x, size_y, map_id, self.player_spawn, self.A_Star_Search, self.offgrid_tiles):
             self.Generate_Map(map_id)
             return
         
@@ -63,26 +61,26 @@ class Dungeon_Generator():
 
         self.Update_Load_Menu(4)
 
-        Spawn_Boss_Room.Spawn_Boss_Room(self.cellular_automata.map, self.tile_size, size_x, size_y, self.player_spawn, self.A_Star_Search, self.tilemap.offgrid_tiles)
+        Spawn_Boss_Room.Spawn_Boss_Room(self.cellular_automata.map, self.tile_size, size_x, size_y, self.player_spawn, self.A_Star_Search, self.offgrid_tiles)
 
         self.Update_A_Star_Map()
 
         # Call itself recursively and generate a new map if it fails to spawn enemies
-        if not Spawn_Enemy.Enemy_Spawner(self.cellular_automata.map, self.tile_size, size_x, size_y, self.A_Star_Search, self.tilemap.offgrid_tiles):
+        if not Spawn_Enemy.Enemy_Spawner(self.cellular_automata.map, self.tile_size, size_x, size_y, self.A_Star_Search, self.offgrid_tiles):
             self.Generate_Map(map_id)
             return
         
         self.Update_Load_Menu(5)
   
 
-        Weapon_Spawner.Spawn_Weapons(self.cellular_automata.map, map_id, self.tile_size, size_x, size_y, self.tilemap.offgrid_tiles)
+        Weapon_Spawner.Spawn_Weapons(self.cellular_automata.map, map_id, self.tile_size, size_x, size_y, self.offgrid_tiles)
 
-        Rune_Spawner.Spawn_Runes(self.cellular_automata.map, map_id, self.tile_size, size_x, size_y, self.tilemap.offgrid_tiles)
+        Rune_Spawner.Spawn_Runes(self.cellular_automata.map, map_id, self.tile_size, size_x, size_y, self.offgrid_tiles)
 
-        self.level_structure.Level_Structure(self.cellular_automata.map, self.tile_size, size_x, size_y, self.tilemap)
+        tile_data = self.level_structure.Level_Structure(self.cellular_automata.map, self.tile_size, size_x, size_y, self.player_spawn, self.offgrid_tiles)
 
         self.Update_Load_Menu(6)
-        self.tilemap.save(f'data/maps/{map_id}.json')
+        self.game.tilemap.Convert_Dungeon_Generation_Dic_To_Tilemap(tile_data, self.offgrid_tiles)
 
 
     def Update_Load_Menu(self, value):

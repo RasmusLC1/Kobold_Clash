@@ -29,6 +29,8 @@ class Level_Loader():
     def Save_Level_Data(self):
         self.saved_data['depth'] = self.game.depth
         self.saved_data['dungeon_type'] = self.game.dungeon_type
+        self.game.tilemap.save(f'data/maps/{self.game.level}.json')
+
 
     def Load_Data(self, data):
         if not data:
@@ -37,7 +39,6 @@ class Level_Loader():
         self.game.dungeon_type = data['dungeon_type']
     
     def load_level_From_Save(self, map_id):
-
         # Initialise the engine again upon load to prevent memory leaks
         self.game.game_initialiser.initialise_Engine()
         data = self.Open_File('save_Data')
@@ -105,7 +106,6 @@ class Level_Loader():
     def load_level(self, map_id, clear_inventory = True):
         self.Clear_Level(clear_inventory)
 
-        self.game.tilemap.Load('data/maps/' + str(map_id) + '.json')
         self.game.a_star.Setup_Map_From_Game(self.game) # Initialise Astar early since other functions needs it
         if not self.initialised:
             self.Initial_Setup()
@@ -137,7 +137,6 @@ class Level_Loader():
         self.initialised = True
 
     def Spawn_Player(self):
-        print(self.game.dungeon_type)
         for spawner in self.game.tilemap.extract([(keys.spawners, 0)]):
             self.game.player = Player(self.game, spawner[keys.pos], (28, 28), 100, 5, 5, 5, 5, 5)
             return
