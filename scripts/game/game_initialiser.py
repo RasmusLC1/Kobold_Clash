@@ -52,7 +52,7 @@ class Game_Initialiser():
     def initialise_Engine(self):
         self.game.mouse = Mouse_Handler(self.game)
         self.game.ray_caster = Ray_Caster(self.game)
-        self.game.a_star = A_Star()
+        self.game.a_star = A_Star(self.game)
         self.game.entities_render = Entity_Renderer(self.game)
         self.game.default_font = Font(self.game)
         self.game.symbols = Symbols(self.game)

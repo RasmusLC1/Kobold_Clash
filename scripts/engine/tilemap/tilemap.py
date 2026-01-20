@@ -17,11 +17,11 @@ class Tilemap:
     def __init__(self, game, tile_size=32) -> None:
         self.game = game
         self.tile_size = 32
+        self.saved_data = {}
         self.tilemap = {}
         self.tiles_not_touching_wall = {}
         self.offgrid_tiles = []
         self.update_timer = 0
-        self.saved_data = {}
         self.min_x = 99999
         self.max_x = -99999
         self.min_y = 99999
@@ -29,56 +29,57 @@ class Tilemap:
         self.dungeon_type = None
         self.minimap = Minimap(game, self)
      
-    def save(self, path):
-        serializable_tilemap = {
-            f"{x};{y}": {
-                keys.type: tile[keys.type],
-                keys.variant: tile[keys.variant],
-            }
-            for (x, y), tile in self.tilemap.items()
-        }
-        tiles = self.minimap.Get_Tiles()
+    def Save_data(self):
+        self.saved_data['depth'] = self.game.depth
+        self.saved_data['dungeon_type'] = self.game.dungeon_type
+        self.saved_data['tiles'] = {}
+        for tile in self.tilemap.values():
+            tile.Save_Data()
+            tile_key = self.Convert_Tile_Pos_To_Key(tile.pos)
+            self.saved_data['tiles'][tile_key] = tile.saved_data
+    
+        minimap_tiles =  self.minimap.Get_Tiles()
+        self.saved_data['minimap'] = []
+        for tile_pos in minimap_tiles:
+            self.saved_data['minimap'].append(self.Convert_Tile_Pos_To_Key(tile_pos))
 
-        with open(path, 'w') as f:
-            json.dump({
-                'tilemap': serializable_tilemap,
-                'tile_size': self.tile_size,
-                'offgrid': self.offgrid_tiles,
-                'dungeon_type': self.dungeon_type,
-                'minimap' : tiles
-            }, f)
-
-
-    def Load(self, path, data = None):
+    def Load_Data(self, data = None):
         # Set the dungeon information
         if data:
             self.game.depth = data['depth']
             self.game.dungeon_type = data['dungeon_type']
-            self.minimap.Load_Data(data)
-        with open(path, 'r') as f:
-            map_data = json.load(f)
+            self.dungeon_type = self.game.dungeon_type
+            
+            for tile_key, tile_data in data['tiles'].items():
+                tile_pos = self.Tuple_From_String(tile_key)
+                tile = self.Generate_Tile(tile_pos, tile_data)
+                tile.Load_Data(tile_data)
 
-        self.tile_size = map_data['tile_size']
-        tilemap_data = map_data['tilemap']
-        self.dungeon_type = map_data.get('dungeon_type')
-        if not self.dungeon_type:
-            self.Set_Dungeon_Type()
+            
+        for tile_key in data['minimap']:
+            tile_pos = self.Tuple_From_String(tile_key)
+            tile = self.Get_Tile(tile_pos)
+            if not tile:
+                print("FAILED TO FIND TILE FOR MINIMAP", tile_key)
+                return
+            self.Add_Tile_To_Minimap(tile)
 
-        for tile_key_str, tile_values in tilemap_data.items():
-            x, y = map(int, tile_key_str.split(';'))
-            tile_key = (x, y)
-            self.Generate_Tile(tile_key, tile_values)
+    def Tuple_From_String(self, tile_key):
+        x, y = map(int, tile_key.split(';'))
+        tile_pos = (x, y)
+        return tile_pos
 
-        self.offgrid_tiles = map_data['offgrid']
-        self.Find_Tiles_Not_Touching_Wall()
-
+    def Convert_Tile_Pos_To_Key(self, pos):
+        return f"{pos[0]};{pos[1]}"
 
     def Convert_Dungeon_Generation_Dic_To_Tilemap(self, tilemap, offgrid_data):
         self.Set_Dungeon_Type()
-        for tile_key, tile_values in tilemap.items():
-            self.Generate_Tile(tile_key, tile_values)
+        for tile_pos, tile_values in tilemap.items():
+            self.Generate_Tile(tile_pos, tile_values)
 
         self.offgrid_tiles = offgrid_data
+        self.Find_Tiles_Not_Touching_Wall()
+
 
 
     def Generate_Tile(self, tile_pos, tile_values):
@@ -95,13 +96,13 @@ class Tilemap:
             physics = True
             translucent = False
 
-        tile = Tile(self.game, type, sub_type, variant, tile_pos, self.tile_size, active, light_level, physics, translucent)
+        tile = Tile(self.game, type, sub_type, variant, tile_pos, active, light_level, physics, translucent)
         self.tilemap[tile_pos] = tile
-
         self.min_x = min(self.min_x, tile_pos[0])
         self.max_x = max(self.max_x, tile_pos[0])
         self.min_y = min(self.min_y, tile_pos[1])
         self.max_y = max(self.max_y, tile_pos[1])
+        return tile
 
     def Set_Dungeon_Type(self):
         dungeon_types = {
@@ -293,7 +294,7 @@ class Tilemap:
     
     def Add_Tile(self, type, variant, pos, physics, active = 0, light_level = 0, translucent = True):
         sub_type = self.Set_Sub_Type(type)
-        tile = Tile(self.game, type, sub_type, variant, pos, self.tile_size, active, light_level, physics, translucent)
+        tile = Tile(self.game, type, sub_type, variant, pos, active, light_level, physics, translucent)
         self.game.ray_caster.Remove_Tile(self.tilemap[pos]) # Remove old tile from renderer 
         self.tilemap[pos] = None
         self.tilemap[pos] = tile

@@ -10,8 +10,9 @@ BOSS_ROOM = 5
 
 
 class A_Star:
-    def __init__(self):
+    def __init__(self, game):
         # Parent coords and costs
+        self.game = game
         self.parent_x = 0
         self.parent_y = 0
         self.f = float('inf')
@@ -23,6 +24,8 @@ class A_Star:
         self.min_y = 0
         self.width = 0   # number of cells in X dimension
         self.height = 0  # number of cells in Y dimension
+
+        self.saved_data = {}
 
         # Various maps
         self.standard_map = []
@@ -39,7 +42,27 @@ class A_Star:
         self.void_spawn_map.clear()
         self.custom_map.clear()
 
+    def Save_Data(self):
+        self.saved_data['min_x'] = self.min_x
+        self.saved_data['min_y'] = self.min_y
+        self.saved_data['width'] = self.width
+        self.saved_data['height'] = self.height
+        self.saved_data['standard_map'] = self.standard_map 
+        self.saved_data['ignore_lava_map'] = self.ignore_lava_map 
+        self.saved_data['void_spawn_map'] = self.void_spawn_map 
+        self.saved_data['custom_map'] = self.custom_map 
+        self.saved_data['map'] = self.map 
 
+    def Load_Data(self, data):
+        self.min_x = data['min_x']
+        self.min_y = data['min_y']
+        self.width = data['width']
+        self.height = data['height']
+        self.standard_map = data['standard_map'] 
+        self.ignore_lava_map = data['ignore_lava_map'] 
+        self.void_spawn_map = data['void_spawn_map'] 
+        self.custom_map = data['custom_map'] 
+        self.map = data['map'] 
 
     def Setup_Custom_Map(self, custom_map, size_x, size_y):
         """
@@ -219,7 +242,7 @@ class A_Star:
 
         # Build a 2D array of cell info (like parent_x, f, g, h)
         # cell_details[x][y] = A_Star()
-        cell_details = [[A_Star() for _ in range(self.height)] for _ in range(self.width)]
+        cell_details = [[A_Star(self.game) for _ in range(self.height)] for _ in range(self.width)]
 
         # Initialize the start cell
         cell_details[sx][sy].f = 0.0
@@ -295,7 +318,7 @@ class A_Star:
             return [start]
 
         closed_list = [[False]*self.height for _ in range(self.width)]
-        cell_details = [[A_Star() for _ in range(self.height)] for _ in range(self.width)]
+        cell_details = [[A_Star(self.game) for _ in range(self.height)] for _ in range(self.width)]
 
         # Initialize start cell (same as before)
         cell_details[sx][sy].f = 0.0

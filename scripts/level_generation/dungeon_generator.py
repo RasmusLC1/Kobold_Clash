@@ -24,7 +24,7 @@ class Dungeon_Generator():
         self.tile_size = 32
         self.player_spawn = (20, 20)
         self.offgrid_tiles = []
-        self.a_star = A_Star()
+        self.a_star = A_Star(game)
         # TODO: IMPLEMENT MORE TRAPS AND ADD THEM HERE
         self.noise_map = Noise_Map()
         self.level_structure = Level_Structure(game)

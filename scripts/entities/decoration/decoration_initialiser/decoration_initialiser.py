@@ -200,7 +200,6 @@ class Decoration_Initialiser():
             
             if fail > amount * 2 and fail > 30:
                 return
-
             tile_key, floor_tile = random.choice(list(self.floor_tiles.items()))
             del self.floor_tiles[tile_key]
             

@@ -7,14 +7,15 @@ TILE_SIZE = 32
 
 # Use dictionary keyed to pos in tilemap
 class Tile():
-    def __init__(self, game, type, sub_type, variant, pos, size, active, light_level, physics, translucent) -> None:
+    def __init__(self, game, type, sub_type, variant, pos, active, light_level, physics, translucent) -> None:
         self.game = game
+        self.saved_data = {}
         self.type = type
         self.sub_type = sub_type
         self.variant = variant
         self.pos = pos # Tile coordinates
         self.scaled_pos = (pos[0] * TILE_SIZE, pos[1] * TILE_SIZE) # Scaled size 
-        self.size = size
+        self.size = 32
         self.active = active
         self.light_level = light_level
         self.max_light = 0  # Cache the max light contribution
@@ -41,6 +42,37 @@ class Tile():
             self.sprite = self.game.assets[self.sub_type][self.variant].copy()
         except Exception as e:
             return
+
+    def Save_Data(self):
+        self.saved_data[keys.type] = self.type
+        self.saved_data[keys.sub_type] = self.sub_type
+        self.saved_data[keys.variant] = self.variant
+        self.saved_data[keys.pos] = self.pos
+        self.saved_data["scaled_pos"] = self.scaled_pos
+        self.saved_data["active"] = self.active
+        self.saved_data["light_level"] = self.light_level
+        self.saved_data["max_light"] = self.max_light
+        self.saved_data["translucent"] = self.translucent
+        self.saved_data["next_to_Wall"] = self.next_to_Wall
+        self.saved_data["light_contributions"] = self.light_contributions
+
+
+    def Load_Data(self, data):
+        if not data:
+            return
+        
+        self.type = data[keys.type] 
+        self.sub_type = data[keys.sub_type] 
+        self.variant = data[keys.variant] 
+        self.scaled_pos = data["scaled_pos"] 
+        self.active = data["active"] 
+        self.light_level = data["light_level"] 
+        self.max_light = data["max_light"] 
+        self.translucent = data["translucent"] 
+        self.next_to_Wall = data["next_to_Wall"] 
+        self.light_contributions = data["light_contributions"]
+        self.needs_redraw = True
+        self.Set_Sprite()
 
 
     def Set_Type(self, new_type):

@@ -13,14 +13,8 @@ class Minimap:
         self.zoom = 0.8
 
     def Get_Tiles(self):
-        return self.tiles
+        return self.tiles.keys()
     
-    def Load_Data(self, data):
-        self.tiles = data['minimap']
-        print(self.tiles, "TESTTEST")
-
-        for tile in self.tiles:
-            tile.Add_To_Minimap()
 
 
     def Clear(self):

@@ -52,6 +52,8 @@ class Save_Load_Manager():
 
     # Initialise the data that needs to be saved
     def Save_Data(self):
+        self.game.a_star.Save_Data()
+        self.game.tilemap.Save_data()
         self.game.player.Save_Data()
         self.game.enemy_handler.Save_Enemy_Data()
         self.game.item_handler.Save_Item_Data()
@@ -59,17 +61,15 @@ class Save_Load_Manager():
         self.game.trap_handler.Save_Trap_Data()
         self.game.decoration_handler.Save_Decoration_Data()
         self.game.inventory.Save_Inventory_Data()
-        self.game.level_loader.Save_Level_Data()
-        # self.Save_Game_Data(self.saved_data['game'])
-        
-    # # Save game values such as depth
-    # def Save_Game_Data(self, save_data):
-    #     save_data['depth'] = self.game.depth
+        self.game.ray_caster.Save_Data()
+
 
     def Save_Data_Structure(self):
         self.Save_Data()
 
-        self.data_structures = [self.game.player.saved_data,
+        self.data_structures = [self.game.a_star.saved_data,
+                                self.game.tilemap.saved_data,
+                                self.game.player.saved_data,
                                 self.game.item_handler.saved_data,
                                 self.game.rune_handler.saved_data,
                                 self.game.enemy_handler.saved_data,
@@ -77,16 +77,20 @@ class Save_Load_Manager():
                                 self.game.inventory.saved_data,
                                 self.game.decoration_handler.saved_data,
                                 self.game.level_loader.saved_data,
+                                self.game.ray_caster.saved_data,
                                 ]
         
-        self.data_structure_names = ['player',
+        self.data_structure_names = ['a_star',
+                                    'tilemap',
+                                    'player',
                                     'item_handler',
                                     'rune_handler',
                                     'enemy_handler',
                                     'trap_handler',
                                     'inventory',
                                     'decoration_handler',
-                                    'level_loader'
+                                    'level_loader',
+                                    'ray_caster'
                                     ]
         
         for index, name in enumerate(self.data_structure_names):
@@ -98,22 +102,30 @@ class Save_Load_Manager():
 
 
     def Load_Data_Structure(self, data):
-        self.entities_to_load = [self.game.player,
+        self.entities_to_load = [
+                                self.game.tilemap,
+                                self.game.a_star,
+                                self.game.player,
                                 self.game.item_handler,
                                 self.game.rune_handler,
                                 self.game.enemy_handler,
                                 self.game.trap_handler,
                                 self.game.inventory,
                                 self.game.decoration_handler,
+                                self.game.ray_caster,
                                 ]
         
-        self.entities_to_load_names = ['player',
+        self.entities_to_load_names = [
+                                    'tilemap',
+                                    'a_star',
+                                    'player',
                                     'item_handler',
                                     'rune_handler',
                                      'enemy_handler',
                                     'trap_handler',
                                      'inventory',
                                     'decoration_handler',
+                                    'ray_caster',
                                     ]
         self.Load_Game_Data(data)
         

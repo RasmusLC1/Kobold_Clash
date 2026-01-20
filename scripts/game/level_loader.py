@@ -25,13 +25,6 @@ class Level_Loader():
         self.saved_data = {}
  
 
-
-    def Save_Level_Data(self):
-        self.saved_data['depth'] = self.game.depth
-        self.saved_data['dungeon_type'] = self.game.dungeon_type
-        self.game.tilemap.save(f'data/maps/{self.game.level}.json')
-
-
     def Load_Data(self, data):
         if not data:
             return
@@ -43,8 +36,9 @@ class Level_Loader():
         self.game.game_initialiser.initialise_Engine()
         data = self.Open_File('save_Data')
         self.Load_Data(data['level_loader']) # Make sure to initialise the level data first, can be reworked  later
-        self.load_level(map_id)
-
+        if not self.initialised:
+            self.Initial_Setup()
+        self.game.player = Player(self.game, (10, 10), (28, 28), 100, 5, 5, 5, 5, 5)
         self.game.save_load_manager.Load_Data_Structure(data) # Load data from save file
 
 
@@ -57,7 +51,7 @@ class Level_Loader():
             exit(0)
 
         data_file = open(file_name, "rb")
-        
+        print(file_name)
         data = pickle.load(data_file)
         return data
 
@@ -73,7 +67,7 @@ class Level_Loader():
         self.Select_Dungeon_Type()
         self.game.game_initialiser.initialise_Engine()
         self.game.dungeon_generator.Generate_Map(map_id)
-        self.load_level(map_id, clear_inventory)
+        self.load_level(clear_inventory)
         self.Initialise_Level()
 
 
@@ -103,7 +97,7 @@ class Level_Loader():
         self.game.tilemap.Clear_Tilemap()
 
 
-    def load_level(self, map_id, clear_inventory = True):
+    def load_level(self, clear_inventory = True):
         self.Clear_Level(clear_inventory)
 
         self.game.a_star.Setup_Map_From_Game(self.game) # Initialise Astar early since other functions needs it

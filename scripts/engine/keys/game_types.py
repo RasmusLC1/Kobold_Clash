@@ -42,6 +42,9 @@ class Game_Types():
 
 # Spawning keys
     type = "type"
+
+    sub_type = "sub_type"
+
     
     variant = "variant"
     
