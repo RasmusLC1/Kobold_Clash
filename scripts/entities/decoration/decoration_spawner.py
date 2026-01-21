@@ -80,6 +80,7 @@ class Decoration_Spawner():
             keys.teleportation_circle: Teleportation_Circle,
             keys.campfire: Campfire,
             keys.torch: None,
+            keys.brazier: Brazier,
         }
 
         # Dungeon-specific decorations
@@ -90,7 +91,6 @@ class Decoration_Spawner():
                 keys.blood_shrine: Blood_Shrine,
                 keys.sacrifice_shrine: Sacrifice_Shrine,
                 keys.bookshelf: Bookshelf,
-                keys.brazier: Brazier,
             },
             keys.crystal_caverns: {
                 # Add crystal-specific ones if needed

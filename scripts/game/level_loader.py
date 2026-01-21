@@ -62,6 +62,7 @@ class Level_Loader():
         self.game.rune_handler.Initialise_Runes()
         self.game.decoration_handler.Initialise()
         self.game.trap_handler.Initialise()
+        self.game.trap_handler.Spawn_Traps()
 
     def Load_Level_New_Map(self, map_id, clear_inventory = True):
         self.Select_Dungeon_Type()

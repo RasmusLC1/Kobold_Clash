@@ -23,7 +23,7 @@ from scripts.entities.moving_entities.effects.electric.eletric import Electric
 from scripts.entities.moving_entities.effects.electric.electric_resistance import Electric_Resistance
 from scripts.entities.moving_entities.effects.general.resistance import Resistance
 from scripts.engine.keys.keys import keys
-
+import traceback
 
 
 class Status_Effect_Handler:
@@ -96,6 +96,7 @@ class Status_Effect_Handler:
         # Check if effect exists
         if not effect_class:
             print("EFFECT CLASS NOT FOUND", effect_name)
+            traceback.print_stack(limit=5)
             return None
         
         # Instantiate new effect

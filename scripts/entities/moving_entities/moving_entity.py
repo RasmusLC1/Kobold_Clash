@@ -86,7 +86,7 @@ class Moving_Entity(PhysicsEntity):
         self.saved_data['stamina'] = self.stamina
         self.saved_data['target'] = self.target
         self.saved_data['animation'] = self.animation_handler.animation
-        self.saved_data.update(self.effects.Save_Data())
+        self.saved_data['effects'] = self.effects.Save_Data()
 
 
     def Load_Data(self, data):
@@ -101,7 +101,7 @@ class Moving_Entity(PhysicsEntity):
         self.stamina = data['stamina']
         self.target = data['target']
         self.animation_handler.animation = data['animation']
-        self.effects.Load_Data(data)
+        self.effects.Load_Data(data['effects'])
     
 
 

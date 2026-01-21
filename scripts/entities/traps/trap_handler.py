@@ -2,8 +2,7 @@
 from scripts.engine.keys.keys import keys
 from scripts.entities.traps.trap_spawners.ancient_crypt_trap_spawner import Ancient_Crypt_Trap_Spawner
 from scripts.entities.traps.trap_spawners.crystal_cavern_trap_spawner import Crystal_Cavern_Trap_Spawner
-import math
-import random
+
 
 
 
@@ -26,14 +25,21 @@ class Trap_Handler:
         }
         trap_spawner = trap_spawners.get(self.game.dungeon_type)
         self.trap_spawner = trap_spawner(self.game)
+
+    def Spawn_Traps(self):
         self.traps = self.trap_spawner.Initialise()
-        
+
+
     def Save_Trap_Data(self):
         for trap in self.traps:
             trap.Save_Data()
             self.saved_data[trap.ID] = trap.saved_data
 
     def Load_Data(self, data):
+        if not self.trap_spawner:
+            self.Initialise()
+
+
         for item_id, item_data in data.items():
             if not item_data:
                 continue

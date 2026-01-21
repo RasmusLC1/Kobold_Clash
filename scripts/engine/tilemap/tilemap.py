@@ -32,6 +32,10 @@ class Tilemap:
     def Save_data(self):
         self.saved_data['depth'] = self.game.depth
         self.saved_data['dungeon_type'] = self.game.dungeon_type
+        self.saved_data['wall_tiles'] = []
+        for tile in self.tiles_not_touching_wall.values():
+            self.saved_data['wall_tiles'].append(tile.pos)
+
         self.saved_data['tiles'] = {}
         for tile in self.tilemap.values():
             tile.Save_Data()
@@ -55,6 +59,12 @@ class Tilemap:
                 tile = self.Generate_Tile(tile_pos, tile_data)
                 tile.Load_Data(tile_data)
 
+            for tile_pos in data['wall_tiles']:
+                tile = self.Get_Tile(tile_pos)
+                if not tile:
+                    print(tile_pos)
+                    continue
+                self.tiles_not_touching_wall[tile_pos] = tile
             
         for tile_key in data['minimap']:
             tile_pos = self.Tuple_From_String(tile_key)
