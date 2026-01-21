@@ -274,15 +274,6 @@ class Tilemap:
         for tile in self.tilemap.values():
             positions.append(tile.pos)
         return positions
-    
-    # Get the position of tiles in the tilemap
-    def Set_Global_Brightness(self, light_level):
-        for tile in self.tilemap.values():
-            tile.Set_Light_Level(light_level)
-            tile.Set_Active(10000)
-        return
-    
-
 
     # Get surrounding tiles
     def tiles_around(self, pos):

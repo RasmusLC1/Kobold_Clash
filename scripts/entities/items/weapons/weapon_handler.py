@@ -49,7 +49,7 @@ class Weapon_Handler():
 
 
 
-    def Weapon_Spawner(self, type, pos_x, pos_y, value = 0, data=None):
+    def Weapon_Spawner(self, type, pos_x, pos_y, data=None):
         # Handle special cases first
         if keys.particle in type:
             return True  # or your specific logic for particles
@@ -74,8 +74,9 @@ class Weapon_Handler():
         self.game.item_handler.Add_Item(weapon)
         return weapon
 
-    def Spawn_Random_Weapon(self, pos):
-
+    def Spawn_Random_Weapon(self, pos, rarity_value = None):
+        if not rarity_value:
+            rarity_value = Luck_Calculator.Calculate_Rarity_Value(self.game, clamp_values=False)
         random_weapon_map = self.Modify_Arrow_Spawn_Rate()
 
         selected_weapon = random.choices(

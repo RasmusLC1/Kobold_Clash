@@ -102,7 +102,6 @@ class Moving_Entity(PhysicsEntity):
         self.target = data['target']
         self.animation_handler.animation = data['animation']
         self.effects.Load_Data(data['effects'])
-    
 
 
     # Update the entity 

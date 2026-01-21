@@ -60,10 +60,10 @@ class Item_Handler():
             if gold:
                 self.Add_Item(gold)
 
-    def Spawn_Weapon(self, pos, type = None, value = 0):
+    def Spawn_Weapon(self, pos, type = None):
         weapon = None
         if type:
-            weapon = self.weapon_handler.Weapon_Spawner(type, pos[0], pos[1], value)
+            weapon = self.weapon_handler.Weapon_Spawner(type, pos[0], pos[1])
         else:
             weapon = self.weapon_handler.Spawn_Random_Weapon(pos)
 
