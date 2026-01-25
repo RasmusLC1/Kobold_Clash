@@ -48,35 +48,32 @@ class Font():
 
         return font_size
 
+
     def Render_Word(self, surf, text, pos, font_style=None):
-        # Initalise to default font if none found
         if not font_style:
             font_style = keys.font
-        original_x, original_y = pos
-        current_y = original_y
+        
         font = self.Find_Font(font_style)
-        if not font:
-            caller_frame = inspect.stack()[1]
-            caller_name = caller_frame.function
-            print("RENDER WORD FAILED ", font_style, caller_name)
-            return
+        if not font: return
+        
         size = self.Find_Font_Size(font_style)
-
-        # Split by newline and then process each line
+        char_w, char_h = size
+        
+        origin_x, current_y = pos
         lines = text.split('\n')
 
         for line in lines:
-            words = line.split()  # Split the line into words
-            chunks = [words[i:i+2] for i in range(0, len(words), 2)]  # Group words into chunks
-            current_x = original_x  # Reset x for each line
-
-            for chunk in chunks:
-                line_text = ' '.join(chunk)
-                char_positions = self.find_char_positions(line_text)
-                self.Render_Chunk(surf, current_x, current_y, char_positions, size[0], font)
-                current_x += len(line_text) * size[0]  # Adjust spacing if needed
-
-            current_y += size[1]  # Move to the next line
+            current_x = origin_x
+            # Process every single character, including spaces
+            char_positions = self.find_char_positions(line)
+            
+            for pos_index in char_positions:
+                if pos_index is not None:
+                    surf.blit(font[pos_index], (current_x, current_y))
+                # ALWAYS increment x, even if char is None (like a space)
+                current_x += char_w
+            
+            current_y += char_h
 
     # Handles words
     def Render_Chunk(self, surf, current_x, current_y, char_positions, x_increment, font):

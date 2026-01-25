@@ -15,6 +15,10 @@ class Player():
     
     player_attack = "player_attack"
 
+    player_two_hand = "player_two_hand"
+
+    player_stab = "player_stab"
+
     player_cut = "player_cut"
 
     player_rolling = "player_rolling"

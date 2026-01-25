@@ -12,6 +12,11 @@ class Minimap:
         self.minimap_display = pygame.Surface((self.size, self.size), pygame.SRCALPHA)
         self.zoom = 0.8
 
+    def Get_Tiles(self):
+        return self.tiles.keys()
+    
+
+
     def Clear(self):
         self.tiles.clear()
 

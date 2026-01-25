@@ -133,17 +133,21 @@ class Inventory_Slot():
         if self.item.clicked:
             self.item.Render_Active(surf, self.game.render_scroll)
 
-        if self.item and not self.active:
-            self.item.Render_Inventory(surf, self.pos, self.size)
-        else:
-
-            return
+        if not self.Render_Item(surf):
+            return 
 
         self.Render_Key(surf)
         if not self.item.amount > 1:
             return
         
         self.Render_Item_Amount(surf)
+
+    def Render_Item(self, surf):
+        if self.item and not self.active:
+            self.item.Render_Inventory(surf, self.pos, self.size)
+            return True
+        return False
+         
 
     # Render the amount of an item
     def Render_Item_Amount(self, surf):

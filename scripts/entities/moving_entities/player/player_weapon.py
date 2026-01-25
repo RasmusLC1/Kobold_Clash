@@ -6,7 +6,6 @@ class Player_Weapon_Handler():
         self.game = game
         self.player = player
         self.active_weapon = None
-        self.inventory_interaction = 0
         self.active_weapon_cooldown = 0
         self.attack_lock = False
 
@@ -16,11 +15,13 @@ class Player_Weapon_Handler():
         self.Update_Weapon(delta_time, offset)
 
     def Set_Active_Weapon(self, weapon):  
-          
         equipped_weapon = weapon
         equipped_weapon.Move(self.player.pos)
         self.active_weapon = equipped_weapon
+        self.active_weapon.Reset_Charge()
+        self.player.Set_Animation_Idle()
         return
+
 
     def Set_Attack_Lock(self, state):
         self.attack_lock = state
@@ -36,11 +37,7 @@ class Player_Weapon_Handler():
 
         if not self.active_weapon:
             return
-        
-        if self.inventory_interaction:
-            self.Set_Inventory_Interaction(self.inventory_interaction - 1)
-            self.active_weapon.Reset_Charge()
-            return
+
         self.active_weapon.Set_Equipped_Position(self.player.direction_y_holder)
         # Set the attack lock above the update to prevent attacks
         if self.attack_lock:

@@ -13,7 +13,7 @@ from scripts.engine.keys.keys import keys
 
 class Weapon(Item):
     def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_types = ['cut'], size = (16, 16), add_to_tile = True, max_animation = 0, amount = 1, max_amount = 1, durability = 100, max_durability = 100):
-        self.speed = max(1, 10 - speed) # Speed of the weapon
+        self.speed = speed # Speed of the weapon
         self.range = range # Range of the weapon
         self.damage = damage
         self.entity = None # Entity that holds the weapon
@@ -43,6 +43,8 @@ class Weapon(Item):
         self.weapon_cooldown_max = 50 # How fast the weapon can attack
 
         self.delete_timer = 0 # time before weapon is deleted
+
+        self.Set_Inventory_Image(game, type)
 
         self.entity_attack_type = None # Used to determine if the weapon is being used by enemy or player
         self.damage_handler = Damage_Handler_Weapon(self, effect, damage)
@@ -229,20 +231,20 @@ class Weapon(Item):
     
     def Decoration_Hit(self, decoration):
         return self.damage_handler.Decoration_Hit(decoration)
-    
-    # TODO: Better calculation
-    def Calculate_Value(self):
-        return self.value * self.damage
 
     def Set_Description(self):
-        
+        damage_dict = self.damage_handler.Get_Damage_Values()
+        damage_lines = [f"{val}{name}" for name, val in damage_dict.items()]
+    
+        # 2. Join them with a separator (like a comma or a newline)
+        damage_string = "".join(damage_lines)
         self.description = (
-                            f"Damage {self.damage_handler.Get_Damage()}\n"
+                            f"Damage {damage_string}\n"
                             f"speed {self.speed}\n"
                             f"range {self.range}\n"
                             f"Dur {self.durability} / {self.max_durability}\n"
                             f"Gemslots {self.gem_handler.max_gems}\n"
-                            f"{self.Calculate_Value()} {keys.gold}\n"
+                            f"{self.value} {keys.gold}\n"
                         )
 
     # Set the attack direction   
@@ -299,7 +301,14 @@ class Weapon(Item):
         self.charge_time = 0
         return
 
-    
+    def Set_Inventory_Image(self, game, type):
+        image = game.assets.get(type)
+        self.inventory_image = None
+        if not image:
+            return
+        
+        self.inventory_image = image[0]
+
     def Set_Entity(self, entity):
         self.entity = entity
         if not entity:
@@ -337,10 +346,14 @@ class Weapon(Item):
     def Attack_Align_Weapon(self):
         pass
     
+
     
     # Takes the entity's sprite type and applies it to weapon
     def Set_Equipped_Sprite(self):
-        self.sub_type = self.type + '_' + self.entity.animation_handler.action
+        player_action = self.entity.Get_Animation()
+        if 'roll'  not in player_action and 'backstep' not in player_action:
+            self.sub_type = self.type + '_' + self.entity.animation_handler.action
+        
         self.Set_Sprite()
 
     # Responsible for calculating offset and centering the weapon 
@@ -349,10 +362,10 @@ class Weapon(Item):
         player_action = self.entity.animation_handler.action
         if not self.flip_x:
             flip_offset_x = 10
-        if 'attack' in player_action:
-            flip_offset_x = 5
-            if self.flip_x:
-                flip_offset_x = 20
+        # if 'attack' in player_action:
+            # flip_offset_x = 5
+            # if self.flip_x:
+            #     flip_offset_x = 20
 
         flip_offset_y = 0
         if 'up' in player_action:
@@ -369,8 +382,15 @@ class Weapon(Item):
 
     # Render the weapon in player's hand 
     def Render_Equipped(self, surf, offset=(0, 0)):
+        if not self.entity:
+            return
+        
+
         self.Set_Equipped_Sprite()
         weapon_image = self.entity_image.copy()
+
+        if not self.entity:
+            return
         self.flip_x = self.entity.animation_handler.flip[0]
 
 
@@ -381,21 +401,7 @@ class Weapon(Item):
         self.charge_effect_handler.Render_Charge_Effect(surf, offset)
     
 
-    # Render the weapon in entity's hand
-    def Render_Equipped_Enemy(self, surf, offset=(0, 0)):
-        alpha_value = max(0, min(255, self.active)) 
-
-        if not alpha_value:
-            return
-
-        self.Update_Dark_Surface_Enemy(alpha_value)
-
-        if not self.rendered_image:
-            self.rendered_image = self.entity_image.copy()
-        surf.blit(
-            pygame.transform.flip(self.rendered_image, False, False),
-                                  (self.pos[0] - offset[0], self.pos[1] - offset[1]))
-    
+  
     # Updates the dark surface for enemies
     def Update_Dark_Surface_Enemy(self, alpha_value):
         if not self.render_needs_update:
@@ -412,8 +418,16 @@ class Weapon(Item):
 
 
     def Render_Inventory(self, surf, pos, size):
+        if not self.inventory_image:
+            return
         self.gem_handler.Render_Gems_Inventory(surf, pos, size)
-        return super().Render_Inventory(surf, pos, size)
+        try:
+
+            item_image = pygame.transform.scale(self.inventory_image, size)
+            surf.blit(item_image, pos)
+            
+        except Exception as e:
+            print(f"ITEM Render_Inventory failed WEAPON {e}", self.entity_image, size, pos, self.type, self.sub_type)
     
     # Used to reset weapon when equipped by enemy
     def Pickup_Reset_Weapon(self, entity):
@@ -453,9 +467,10 @@ class Weapon(Item):
 
     # Only used for Player Weapons
     def Equip(self):
-        self.Set_Equip(True, self.game.player)
+        player =  self.game.player
+        self.Set_Equip(True, player)
         self.Activate_Gem_Effect()
-        self.game.player.Set_Active_Weapon(self)
+        player.Set_Active_Weapon(self)
         self.animation = 0 # Reset animation when equipped
 
     def Unequip(self):
@@ -470,7 +485,11 @@ class Weapon(Item):
         self.gem_handler.Increase_Max_Gems(amount)
 
     def Add_Gem(self, gem):
-        return self.gem_handler.Add_Gem(gem)
+        succesfully_added = self.gem_handler.Add_Gem(gem)
+        if not succesfully_added:
+            return False
+        self.Increase_Value(gem.value // 2)
+        return True
 
     # Set the player effects for gem
     def Activate_Gem_Effect(self):

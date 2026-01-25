@@ -13,7 +13,7 @@ INACTIVE_DISTANCE = 800 * 800
 class Ray_Caster():
     def __init__(self, game):
         self.tiles = []
-        
+        self.saved_data = {}
         self.nearby_cooldown = 0
         
         self.game = game
@@ -21,6 +21,30 @@ class Ray_Caster():
         self.disable_distance_debugger = False
 
         self.angles = []
+
+    def Save_Data(self):
+        tilemap = self.game.tilemap
+        for tile in self.tiles:
+            # Get the string key for the dictionary
+            tile_key = tilemap.Convert_Tile_Pos_To_Key(tile.pos)
+            # Store the position. Note: JSON will turn this tuple into a list [x, y]
+            self.saved_data[tile_key] = tile.pos
+
+    def Load_Data(self, data):
+        # data is a dict where values are like [109, 104]
+        for pos_data in data.values():
+            # Ensure the position is a tuple, not a list
+            tile_key = tuple(pos_data) 
+            
+            tile = self.game.tilemap.Get_Tile(tile_key)
+            
+            if not tile:
+                print(f"RAYCASTER TILE NOT FOUND AT {tile_key}")
+                continue
+                
+            self.tiles.append(tile)
+
+
 
     def Update(self):
         if self.disable_distance_debugger:

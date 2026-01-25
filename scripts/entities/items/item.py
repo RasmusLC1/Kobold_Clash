@@ -45,6 +45,8 @@ class Item(PhysicsEntity):
         self.Set_Sprite()
         self.broken_rendering_counter = 0 # Counter if it hits 10, delete item since something is wrong
         if add_to_tile:
+            if not self.tile:
+                self.Set_Tile()
             self.game.tilemap.Add_Entity_To_Tile(self.tile, self)
 
 

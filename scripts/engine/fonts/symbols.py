@@ -16,7 +16,7 @@ class Symbols():
                 keys.frozen, keys.poison, keys.wet,
                 keys.block, keys.fire_resistance,
                 keys.frozen_resistance, keys.poison_resistance,
-                keys.power, keys.gold, range, keys.key,
+                keys.power, keys.gold, keys.range, keys.key,
                 keys.arcane_conduit, keys.magnet, keys.arcane_hunger, 
                 keys.invulnerable, keys.snare, keys.thorns,
                 keys.electric_resistance,

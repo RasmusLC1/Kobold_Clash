@@ -93,7 +93,6 @@ class Gem_Handler():
         self.weapon.Increase_Speed(gem.amount)
         return True
 
-    # TODO: REMOVE THE EFFECT from SET_EFFECT
     def Remove_Entity_Effect_Gems(self):
         if not self.effects_active:
             return

@@ -137,7 +137,6 @@ class Boss_Room():
             return False
         # Calculate distance and set the cooldown to the distance to avoid computation
         distance = math.sqrt((self.game.player.pos[0] - self.pos[0]) ** 2 + (self.game.player.pos[1] - self.pos[1]) ** 2)        
-        print(distance)
         self.distance_cooldown = distance // 10
         if distance < self.radius * 12:
             return True

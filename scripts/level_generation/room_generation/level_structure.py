@@ -7,7 +7,8 @@ class Level_Structure():
     def __init__(self, game):
         self.game = game
 
-    def Level_Structure(self, map, tile_size, size_x, size_y, tilemap):
+    def Level_Structure(self, map, tile_size, size_x, size_y, player_spawn, offgrid_tiles):
+        tilemap = {}
         self.Set_Dungeon_Type()
 
         traps = [keys.spike_trap, keys.spike_poison_trap, keys.pit_trap]
@@ -15,52 +16,67 @@ class Level_Structure():
         for j in range(size_y):
             for i in range(size_x):
                 if map[i][j] == WALL: 
-                    if not self.Wall_Checker(map, i, j, size_x, size_y, tilemap.tilemap):
-                        tilemap.tilemap[(i, j)] = {keys.type: self.wall_bottom, keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
+                    if not self.Wall_Checker(map, i, j, size_x, size_y, tilemap):
+                        tilemap[(i, j)] = {keys.type: self.wall_bottom, keys.variant: 0, keys.pos: (i, j)}
 
 
                 elif map[i][j] == FLOOR: # Floor
                     random_variant = random.randint(0, 10)
-                    tilemap.tilemap[(i, j)] = {keys.type: self.floor, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+                    tilemap[(i, j)] = {keys.type: self.floor, keys.variant: random_variant, keys.pos: (i, j)}
 
                 elif map[i][j] == LAVA:
-                    tilemap.tilemap[(i, j)] = {keys.type: keys.lava_env, keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
+                    tilemap[(i, j)] = {keys.type: keys.lava_env, keys.variant: 0, keys.pos: (i, j)}
                 elif map[i][j] == DOOR:
-                    tilemap.tilemap[(i, j)] = {keys.type: self.floor, keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
-                    tilemap.offgrid_tiles.append({
+                    tilemap[(i, j)] = {keys.type: self.floor, keys.variant: 0, keys.pos: (i, j)}
+                    offgrid_tiles.append({
                                     keys.type: keys.door_basic,
                                     keys.variant: 0,
                                     keys.pos: (i * tile_size, j * tile_size)
                                 })
                 elif map[i][j] == TRAP:
                     trap_type = random.randint(0, 2)
-                    tilemap.tilemap[(i, j)] = {keys.type: traps[trap_type], keys.variant: 0, keys.pos: (i, j), 'active': 0, 'light': 0}
-    
+                    tilemap[(i, j)] = {keys.type: traps[trap_type], keys.variant: 0, keys.pos: (i, j)}
 
+        tilemap = self.Spawn_Player_Area(player_spawn, tilemap)
+        offgrid_tiles.append({keys.type: keys.spawners, keys.variant: 0, keys.pos: (player_spawn[0] * tile_size, player_spawn[1] * tile_size)})
+
+
+        return tilemap
+
+
+    def Spawn_Player_Area(self, player_spawn, tilemap):
+        player_spawn = (20, 20)
+        for y in range(player_spawn[1] - 5, player_spawn[1] + 5):
+            for x in range(player_spawn[0] - 5, player_spawn[0] + 5):
+                random_variant = random.randint(0, 10)
+                tilemap[(x, y)] = {keys.type: keys.floor, keys.variant: random_variant, keys.pos: (x, y)}
+        
+        return tilemap
+    
 
     def Wall_Checker(self, map, i, j, size_x, size_y, tilemap):
         random_variant = random.randint(0, 3)
         # Handle Edge cases first to prevent crashes
         if i <= 1:
-            tilemap[(i, j)] = {keys.type: self.wall_left, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: self.wall_left, keys.variant: random_variant, keys.pos: (i, j)}
             return True
 
         elif i >= size_x - 2:
-            tilemap[(i, j)] = {keys.type: self.wall_right, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: self.wall_right, keys.variant: random_variant, keys.pos: (i, j)}
             return True
         
         elif j <= 1:
-            tilemap[(i, j)] = {keys.type: self.wall_top, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: self.wall_top, keys.variant: random_variant, keys.pos: (i, j)}
             return True
         
         elif j >= size_y - 2:
-            tilemap[(i, j)] = {keys.type: self.wall_top, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: self.wall_top, keys.variant: random_variant, keys.pos: (i, j)}
             return True
         
 
 
         if map[i][j + 1] != WALL:
-            tilemap[(i, j)] = {keys.type: self.wall_top, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: self.wall_top, keys.variant: random_variant, keys.pos: (i, j)}
             return True
 
 
@@ -70,16 +86,16 @@ class Level_Structure():
         
 
         if map[i + 1][j] != WALL and map[i - 1][j] != WALL:
-            tilemap[(i, j)] = {keys.type: self.wall_middle, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: self.wall_middle, keys.variant: random_variant, keys.pos: (i, j)}
             return True
 
         if map[i + 1][j] != WALL:
-            tilemap[(i, j)] = {keys.type: self.wall_left, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: self.wall_left, keys.variant: random_variant, keys.pos: (i, j)}
             return True
 
 
         if map[i - 1][j] != WALL:
-            tilemap[(i, j)] = {keys.type: self.wall_right, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: self.wall_right, keys.variant: random_variant, keys.pos: (i, j)}
             return True
 
         return False
@@ -92,16 +108,16 @@ class Level_Structure():
         right_side = 1
         both_sides = 2
         if map[i + 1][j] != WALL and map[i - 1][j] != WALL:
-            tilemap[(i, j)] = {keys.type: self.wall_bottom_corner, keys.variant: both_sides, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: self.wall_bottom_corner, keys.variant: both_sides, keys.pos: (i, j)}
 
         elif map[i + 1][j] != WALL:
-            tilemap[(i, j)] = {keys.type: self.wall_bottom_corner, keys.variant: right_side, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: self.wall_bottom_corner, keys.variant: right_side, keys.pos: (i, j)}
 
         elif map[i - 1][j] != WALL:
-            tilemap[(i, j)] = {keys.type: self.wall_bottom_corner, keys.variant: left_side, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: self.wall_bottom_corner, keys.variant: left_side, keys.pos: (i, j)}
 
         else:
-            tilemap[(i, j)] = {keys.type: self.wall_bottom, keys.variant: random_variant, keys.pos: (i, j), 'active': 0, 'light': 0}
+            tilemap[(i, j)] = {keys.type: self.wall_bottom, keys.variant: random_variant, keys.pos: (i, j)}
         return True
     
 

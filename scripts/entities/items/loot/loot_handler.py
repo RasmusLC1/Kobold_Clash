@@ -20,8 +20,9 @@ import random
 
 
 class Loot_Handler():
-    def __init__(self, game):
+    def __init__(self, game, item_handler):
         self.game = game
+        self.item_handler = item_handler
 
         self.key_loot_handler = Key_Loot_Handler(game) 
         self.bomb_loot_handler = Bomb_Loot_Handler(game) 
@@ -143,6 +144,8 @@ class Loot_Handler():
     def Spawn_Key(self, pos):
         return self.key_loot_handler.Loot_Spawner(pos)
 
+    def Get_Gems_For_Weapon(self, value):
+        return self.gem_ingot_loot_handler.Get_Random_Gem(value)
 
     def Spawn_Loot_Type(self, loot_type, pos, data = None, type = None, rarity_value = 1):
         loot_handler = self.loot_types_dic.get(loot_type)

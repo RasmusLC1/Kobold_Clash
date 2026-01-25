@@ -35,7 +35,7 @@ class Arrow_Trap(Trap):
         for arrow_id in arrow_ids:
             arrow = item_handler.Find_Item(arrow_id)
             if not arrow:
-                arrow = item_handler.Spawn_Weapon((-999,-999), keys.arrow, 1)
+                arrow = item_handler.Spawn_Arrow_For_Trap((-999,-999))
             
             self.arrows.append(arrow)
 
@@ -43,7 +43,7 @@ class Arrow_Trap(Trap):
         item_handler = self.game.item_handler
 
         for _ in range(3):
-            arrow = item_handler.Spawn_Weapon((-999,-999), keys.arrow, 1)
+            arrow = item_handler.Spawn_Arrow_For_Trap((-999,-999))
             arrow.pickup_allowed = False
             self.arrows.append(arrow)
 

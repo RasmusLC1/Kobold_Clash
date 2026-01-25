@@ -87,6 +87,7 @@ class Decoration(PhysicsEntity):
             self.Update_Dark_Surface()
             if not self.rendered_image:
                 self.Set_Sprite()
+                self.rendered_image = self.entity_image
                 print("Failed to update dark surface decoration", vars(self))
                 return
         

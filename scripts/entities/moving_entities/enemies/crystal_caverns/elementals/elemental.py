@@ -80,5 +80,3 @@ class Elemental(Enemy):
         # Map the fraction to an index from 0 to 9 (assuming 10 total images)
         self.crystal_scale_index = max(-1, min(int((1 - crystal_scale_fraction) * 9), 9))  # Invert fraction and scale to index range
 
-    def Render_Weapons(self, surf, offset):
-        pass

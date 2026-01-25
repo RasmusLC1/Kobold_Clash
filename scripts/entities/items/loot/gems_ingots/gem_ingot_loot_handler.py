@@ -46,35 +46,47 @@ class Gem_Ingot_Loot_Handler(Loot_Types_Handler):
         elif keys.ingot in sub_type:
             loot_type = keys.ingot 
         return loot_type
+    
+    # Get a random gem within the given cost
+    def Get_Random_Gem(self, rarity_value):
+        gems = self.Get_Loot_Values(keys.gem)
+        gem_type, amount = Luck_Calculator.Get_Loot_Based_On_Rarity(rarity_value, gems)
+        return gem_type, gems.get(gem_type)
 
 
-    def Get_Loot_Values(self):
-        gems_and_ingots = {
-            # keys.fire_gem: 10,        # Set fire effect on weapon
-            # keys.frozen_gem: 10,      # Set freeze effect on weapon
-            # keys.electric_gem: 10,    # Set electric effect on weapon
-            # keys.poison_gem: 10,      # Set poison effect on weapon
-            # keys.vampiric_gem: 30,    # Set vampiric effect on weapon
-            # keys.arcane_hunger_gem: 30,   # Set Arcane hunger effect on weapon
-            # keys.blunt_gem: MIN_GEM_VALUE,  # Set blunt damage on weapon
-            # keys.slash_gem: MIN_GEM_VALUE,  # Set slash damage on weapon
-            # keys.halo_gem: 40,        # Grants wielder a chance to protect from damage
-            # keys.power_gem: 30,       # Increases rune power while equipped
-            # keys.range_gem: 10,       # Increases weapon range
-            # keys.speed_gem: 10,       # Increases weapon attack speed
-            # keys.strength_gem: 10,    # Increases wielders strength
-            # keys.terror_gem: 40,      # Chance for enemies to run away
-            # keys.vulnerable_gem: 20,  # Entities hit take extra damage
-            # keys.weakness_gem: 20,    # Entities hit gets weakness
-            # keys.wet_gem: 10,         # Set wet effect on weapon, can combo
-            # keys.durability_gem: 10,  # Increases weapon health
-            # # keys.multishot: 50,       # Fires two arrows at a time (guessed cost 50)
 
-            keys.Steel_ingot: 25,     # Repairs weapons
-            keys.jade_ingot: 25,      # Repairs runes
-            keys.copper_ingot: 30,    # Add amount to utility items
-            keys.Gold_ingot: 40,      # Can add gem slots
-            keys.Silver_ingot: 45,    # Can upgrade rune power
-        }
+    def Get_Loot_Values(self, type = None):
+        gems_and_ingots = {}
+        if not type or type == keys.gem:
+            gems_and_ingots.update({
+                keys.fire_gem: 10,        # Set fire effect on weapon
+                keys.frozen_gem: 10,      # Set freeze effect on weapon
+                keys.electric_gem: 10,    # Set electric effect on weapon
+                keys.poison_gem: 10,      # Set poison effect on weapon
+                keys.vampiric_gem: 30,    # Set vampiric effect on weapon
+                keys.arcane_hunger_gem: 30,   # Set Arcane hunger effect on weapon
+                keys.blunt_gem: MIN_GEM_VALUE,  # Set blunt damage on weapon
+                keys.slash_gem: MIN_GEM_VALUE,  # Set slash damage on weapon
+                keys.halo_gem: 40,        # Grants wielder a chance to protect from damage
+                keys.power_gem: 30,       # Increases rune power while equipped
+                keys.range_gem: 10,       # Increases weapon range
+                keys.speed_gem: 10,       # Increases weapon attack speed
+                keys.strength_gem: 10,    # Increases wielders strength
+                keys.terror_gem: 40,      # Chance for enemies to run away
+                keys.vulnerable_gem: 20,  # Entities hit take extra damage
+                keys.weakness_gem: 20,    # Entities hit gets weakness
+                keys.wet_gem: 10,         # Set wet effect on weapon, can combo
+                keys.durability_gem: 10,  # Increases weapon health
+                # keys.multishot: 50,       # Fires two arrows at a time (guessed cost 50)
+            })
+
+        if not type or type == keys.ingot:
+            gems_and_ingots.update({
+                keys.Steel_ingot: 25,     # Repairs weapons
+                keys.jade_ingot: 25,      # Repairs runes
+                keys.copper_ingot: 30,    # Add amount to utility items
+                keys.Gold_ingot: 40,      # Can add gem slots
+                keys.Silver_ingot: 45,    # Can upgrade rune power
+            })
+
         return gems_and_ingots
-

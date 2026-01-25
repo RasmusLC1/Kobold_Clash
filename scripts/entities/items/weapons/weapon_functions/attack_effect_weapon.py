@@ -45,8 +45,20 @@ class Attack_Effect_Weapon():
             print(f'FAILED TO LOAD ATTACK EFFECT{e}', self.effect_type, self.weapon.animation)
             return
         
-        surf.blit( pygame.transform.flip(attack_effect, flip_x, False), image_rect)
+        original_center = image_rect.center 
 
+        # 2. Scale and Flip the image
+        scaled_image = pygame.transform.scale_by(attack_effect, 2.0) # Example scale
+        final_image = pygame.transform.flip(scaled_image, flip_x, False)
+
+        # 3. Create a NEW rect from the new image size
+        image_rect = final_image.get_rect()
+
+        # 4. Move the new rect so its center matches the original center
+        image_rect.center = original_center
+
+        # 5. Blit using the updated rect
+        surf.blit(final_image, image_rect)
     
     def Set_Attack_Effect_Animation(self, state):
         self.attack_effect_animation = state

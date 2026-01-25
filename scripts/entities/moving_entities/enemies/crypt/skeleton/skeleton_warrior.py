@@ -13,8 +13,3 @@ class Skeleton_Warrior(Skeleton):
         self.intent_manager.Set_Intent([keys.direct, keys.attack, keys.attack, keys.attack, keys.medium_range])
         self.Equip_Weapon(Claw(game, self.pos)) 
         self.active_weapon.Set_Damage(keys.slash, 5)
-
-
-    def Render_Weapons(self, surf, offset):
-        pass
-

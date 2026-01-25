@@ -129,9 +129,6 @@ class Player(Moving_Entity):
         self.animation_handler.Trigger_Attack_Animation()
 
     
-    def Set_Inventory_Interaction(self, state):
-        self.weapon_handler.Set_Inventory_Interaction(state)
-
     def Set_Active_Weapon(self, weapon):  
         self.weapon_handler.Set_Active_Weapon(weapon)
     
@@ -193,7 +190,8 @@ class Player(Moving_Entity):
 
         return True
     
-
+    def Charge(self, render_scroll):
+        self.movement_handler.Dash(render_scroll)
 
     def Set_Last_Shrine(self, shrine):
         self.last_shrine_visited = shrine
@@ -210,6 +208,14 @@ class Player(Moving_Entity):
             return
         self.player_particle_cooldown -= delta_time
         return
+
+    def Get_Animation(self):
+        return self.animation_handler.Get_Action()
+    
+    def Set_Animation_Idle(self):
+        # Reset the animation lock to overwrite current animation
+        self.animation_handler.Set_Animation_Lock(False)
+        return self.animation_handler.Set_Animation(keys.idle)
 
     # Render player
     def Render(self, surf, offset=(0, 0)):

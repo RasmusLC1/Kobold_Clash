@@ -41,7 +41,7 @@ class Luck_Calculator():
         return weights
     
     
-    def Calculate_Rarity_Value(game, min_rarity_value, max_rarity_value, clamp_values = True):
+    def Calculate_Rarity_Value(game, min_rarity_value = None, max_rarity_value = None, clamp_values = True):
         # Depth 0–7 → 0–30
         depth_factor = (game.depth / 7) * 30
 
@@ -53,8 +53,8 @@ class Luck_Calculator():
 
         # Swing randomness (rare bumps/dips): -10 to +10
         swing = random.uniform(-15, 15)
+        total_rarity = max(1, int(depth_factor + luck_factor + clatter_factor + swing))
 
-        total_rarity = depth_factor + luck_factor + clatter_factor + swing
         if not clamp_values:
             return total_rarity
         
