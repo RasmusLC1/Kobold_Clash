@@ -38,7 +38,7 @@
     # Awakening skull that changes animation and fades in as the awakening level increases
     # Bottom left, the health bar, using an hour glass dripping blood for visual interesting design
     Top right rune amount, currently just a soul symbol with number, needs unique design, probably tying it to the minimap frame
-    Top right minimap of the explored dungeon, grows as the player explores more, resets each time new dungeon layer is reached
+    # Top right minimap of the explored dungeon, grows as the player explores more, resets each time new dungeon layer is reached
     # Top left side and down, player status effects, can be curses etc. Each effect is an item that can be hovered over for information
 
 # Loading page:
@@ -52,8 +52,10 @@ Buy and sell items to help complete levels
 Upgrade weapons
 
 # Awakening engine
-    # Complete
     Generating clatter has a chance to increase the difficulty of the dungeon layer (Awakening)
+    Use an aggro budget, similar to Left 4 dead, where each clatter gives the aggro engine resources
+    The budget slowly goes up over time even if player does not generate clatter (Prevents boring game)
+    Big budget increases for certain events, like discovering the portal or activating certain shrines
 
     Increasing difficulty can have the following effects
         - Spawn enemies
@@ -244,9 +246,8 @@ Upgrade weapons
         # Speed
         # Strength
         # Immunity
-        Random Teleport, to get out of bad situations
+        Random Teleport to a random telport circle, to get out of bad situations
         Scream, make enemies run away from you
-        Shield charm, have 4 shield around you that grant immunity but breaks when damage taken
         # Vampiric, regen from damaging enemies
     
     Passive Runes:
@@ -298,9 +299,6 @@ Upgrade weapons
     # Backstep, move backwards a little and be immune
     # Block, block damage, if the player has shield block all damage, if not then it only blocks melee
 
-    Teleport to a random destination, has x amount of charges
-    Push certain objects and block
-
 # Effects:
     # Fire – Burns the entity over time, dealing continuous damage.
     # Poison – Deals damage over time, but slower than fire.
@@ -331,12 +329,12 @@ Upgrade weapons
     
 
 # Rooms:
-    Walls generated in dungeon generator and loot determined by the room type in decoration handler
+    # Walls generated in dungeon generator and loot determined by the room type in decoration handler
     # Treasure room, contains loot
     # Library, contains bookshelves and potion tables
-    Trapped room, contains traps but more valuable loot
     # Boss room, spawns a boss that then spawns a weapon or rune shrine when killed
-    Lakes, can be any kind of elements
+    # Lakes, can be any kind of elements
+    Trapped room, contains traps but more valuable loot
 
 
 # Enemies:
@@ -367,14 +365,14 @@ Upgrade weapons
 
 
 ### Loot mechanic
-    - 3 attributes that affect the loot, depth (1 to 7), clatter (0 to 5) and luck (0 to 10), depth being the most important
-    - 5 tiers of items with the following basic drop rates
+    - # 3 attributes that affect the loot, depth (1 to 7), clatter (0 to 5) and luck (0 to 10), depth being the most important
+    - # 5 tiers of items with the following basic drop rates
         - Common: 400
         - uncommon: 300
         - rare: 200
         - Epic: 80
         - Legendary 20
-    - Formula something like this:
+    - # Formula something like this:
         mult = 1
             + Depth*(tier_norm*1.6 - 0.20)
             + luck*(tier_norm*1.0)
@@ -382,16 +380,16 @@ Upgrade weapons
             
     - # Design loottables for more powerful items to have higher rarities
     - # Basic items that are higher rarity like gems or gold will have a higher amount to represent higher quality
-    - Weapons will have buffs applied to them randomly according to their rarity, common will have none.
+    - # Weapons will have buffs applied to them randomly according to their rarity, common will have none.
         - Generate file with random names based on the rarity of the weapon
-    - Status effects will also have a loot table, where higher quality status effects will be smaller amount at higher rarities and commons will have higher amounts
+    - # Status effects will also have a loot table, where higher quality status effects will be smaller amount at higher rarities and commons will have higher amounts
     - Runes will also be buffed depending on rarity
     - When opening loot container or shrine, 3 options are presented to the player, optional if positive and forced if negative
-    - If a loot container is smashed (like vase) a random item is provided based on the rarity formula
+    - # If a loot container is smashed (like vase) a random item is provided based on the rarity formula
     - # Different kinds of loot containers have different base levels, for example an epic chest will only spawn epic or above loot, meaning the tier distribution becomes Epic 80 and legendary 20
-        - Loot containers get better the deeper in the dungeon you go, each depth layer allows spawning of new types of container, depth 1 only common and uncommon, 2 adds rares, 3 adds epic and 4 adds legendary
+        - # Loot containers get better the deeper in the dungeon you go, each depth layer allows spawning of new types of container, depth 1 only common and uncommon, 2 adds rares, 3 adds epic and 4 adds legendary
     - # Different loot tables based on loot containers, loot containers dictated by dungeon and room type
-    - When spawning loot, check the current player attributes and inventory and increase spawn chance of synergy items for better player experience
+    - # When spawning loot, check the current player attributes and inventory and increase spawn chance of synergy items for better player experience
 
 # Dugeon types
 ## Ancient Tomb - COMPLETE
