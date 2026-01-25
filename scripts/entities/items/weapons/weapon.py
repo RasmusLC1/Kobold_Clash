@@ -231,20 +231,20 @@ class Weapon(Item):
     
     def Decoration_Hit(self, decoration):
         return self.damage_handler.Decoration_Hit(decoration)
-    
-    # TODO: Better calculation
-    def Calculate_Value(self):
-        return self.value * self.damage
 
     def Set_Description(self):
-        
+        damage_dict = self.damage_handler.Get_Damage_Values()
+        damage_lines = [f"{val}{name}" for name, val in damage_dict.items()]
+    
+        # 2. Join them with a separator (like a comma or a newline)
+        damage_string = "".join(damage_lines)
         self.description = (
-                            f"Damage {self.damage_handler.Get_Damage()}\n"
+                            f"Damage {damage_string}\n"
                             f"speed {self.speed}\n"
                             f"range {self.range}\n"
                             f"Dur {self.durability} / {self.max_durability}\n"
                             f"Gemslots {self.gem_handler.max_gems}\n"
-                            f"{self.Calculate_Value()} {keys.gold}\n"
+                            f"{self.value} {keys.gold}\n"
                         )
 
     # Set the attack direction   
@@ -485,8 +485,11 @@ class Weapon(Item):
         self.gem_handler.Increase_Max_Gems(amount)
 
     def Add_Gem(self, gem):
+        succesfully_added = self.gem_handler.Add_Gem(gem)
+        if not succesfully_added:
+            return False
         self.Increase_Value(gem.value // 2)
-        return self.gem_handler.Add_Gem(gem)
+        return True
 
     # Set the player effects for gem
     def Activate_Gem_Effect(self):

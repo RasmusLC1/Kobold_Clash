@@ -7,62 +7,70 @@ class Mixed_Symbols():
         self.font = font
         self.symbols = symbols
 
-    def parse_mixed_elements(self, input_str):
-        # Split by spaces, newlines, and symbols, but capture everything
-        parts = re.split(r'(\s+|\n|[^\w\s])', input_str)
-        elements = []
-        current_text = ''
+        # Filter to ensure we only try to sort actual strings
+        all_symbol_names = [
+            str(name) for name in self.symbols.symbols_lookup.keys() 
+            if name is not None
+        ]
+        
+        # Sort by length descending
+        all_symbol_names.sort(key=len, reverse=True)
+        self.symbol_re = "|".join(map(re.escape, all_symbol_names))
 
+
+    def parse_mixed_elements(self, input_str):
+        # This regex splits by newlines OR any of your specific symbol words
+        pattern = f"(\\n|{self.symbol_re})"
+        parts = re.split(pattern, input_str, flags=re.IGNORECASE)
+        
+        elements = []
         for part in parts:
             if not part:
                 continue
             
-            if part == '\n':  # Handle newline separately
-                if current_text:
-                    elements.append({keys.type: 'text', 'content': current_text})
-                    current_text = ''
-                elements.append({keys.type: 'newline', 'content': part})
-            elif part.isspace():  # Handle spaces by appending to current_text
-                current_text += part
-            elif self.symbols.Check_If_Symbol_Exist(part.lower()):  # Check for symbols
-                if current_text:
-                    elements.append({keys.type: 'text', 'content': current_text})
-                    current_text = ''
-                elements.append({keys.type: 'symbol', 'content': part})
-            else:  # Otherwise, it's regular text
-                current_text += part
-
-        if current_text:
-            elements.append({keys.type: 'text', 'content': current_text})
-
+            if part == '\n':
+                elements.append({keys.type: 'newline'})
+            elif self.symbols.Check_If_Symbol_Exist(part.lower()):
+                elements.append({keys.type: 'symbol', 'content': part.lower()})
+            else:
+                # This is regular text (including spaces)
+                elements.append({keys.type: 'text', 'content': part})
         return elements
-
+    
     def Get_Font_Size(self, scale):
-        font_size = keys.font
-        if scale == 1:
-            font_size = keys.font # Set font size 
-        elif scale < 1:
-            font_size = keys.font_small
-        # elif scale > 1:
-        #     font_size = "large"
-        return font_size
+        # Default to standard font
+        font_key = keys.font 
         
+        # Logic based on your specific key names
+        if scale < 1:
+            font_key = keys.font_small
+        elif scale > 1:
+            # If you have a keys.font_large, use it here
+            font_key = keys.font 
+            
+        return font_key
 
-    # 2 is default size
-    def Render_Mixed_Text(self, surf, input_str, pos, scale=1, font_style = None):
+    def Render_Mixed_Text(self, surf, input_str, pos, scale=1, font_style=None):
         if not font_style:
             font_style = self.Get_Font_Size(scale)
+            
         elements = self.parse_mixed_elements(input_str)
         current_x, current_y = pos
+        
+        # Get dimensions from Font class
+        char_w, char_h = self.font.Find_Font_Size(font_style)
+        symbol_size = int(16 * scale)
+
         for element in elements:
             if element[keys.type] == 'text':
-                self.font.Render_Word(surf, element['content'], (current_x, current_y), font_style)
-                # Update x position based on number of characters (14 pixels per character)
-                current_x += 14 * len(element['content']) * scale
+                content = element['content']
+                self.font.Render_Word(surf, content, (current_x, current_y), font_style)
+                current_x += len(content) * char_w
+                
             elif element[keys.type] == 'symbol':
-                # Render the symbol and update x position
                 self.symbols.Render_Symbol(surf, element['content'], (current_x, current_y), scale)
-                current_x += 16 * scale  # Assuming each symbol is 16 pixels wide, scaled
-            elif element[keys.type] == 'newline':  # Handle newlines properly
-                current_y += 16 * scale  # Adjust line height for the next line of text
-                current_x = pos[0]  # Reset x position for the new line
+                current_x += symbol_size
+                
+            elif element[keys.type] == 'newline':
+                current_y += char_h
+                current_x = pos[0]

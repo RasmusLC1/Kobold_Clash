@@ -70,6 +70,9 @@ class Damage_Handler_Weapon():
     
     def Get_Damage(self):
         return sum(self.damage.values())
+    
+    def Get_Damage_Values(self):
+        return self.damage
 
     def Set_Damage(self, damage_type, damage):
         if damage == 0:
