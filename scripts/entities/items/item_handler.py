@@ -12,9 +12,8 @@ class Item_Handler():
         self.nearby_items = []
         self.nearby_item_cooldown = 0
         self.saved_data = {}
-        self.weapon_handler = Weapon_Handler(self.game)
-        self.potion_handler = Potion_Handler(self.game)
-        self.loot_handler = Loot_Handler(self.game)
+        self.weapon_handler = Weapon_Handler(self.game, self)
+        self.loot_handler = Loot_Handler(self.game, self)
 
     def Save_Item_Data(self):
         for item in self.items:
@@ -60,6 +59,7 @@ class Item_Handler():
             if gold:
                 self.Add_Item(gold)
 
+
     def Spawn_Weapon(self, pos, type = None):
         weapon = None
         if type:
@@ -84,6 +84,9 @@ class Item_Handler():
                 return item
         
         return None
+    
+    def Get_Gems_For_Weapon(self, value):
+        return self.loot_handler.Get_Gems_For_Weapon(value)
 
     def Remove_Item(self, item, delete_item = False):
         if not item in self.items:

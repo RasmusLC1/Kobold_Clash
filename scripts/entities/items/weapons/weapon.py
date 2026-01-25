@@ -485,6 +485,7 @@ class Weapon(Item):
         self.gem_handler.Increase_Max_Gems(amount)
 
     def Add_Gem(self, gem):
+        self.Increase_Value(gem.value // 2)
         return self.gem_handler.Add_Gem(gem)
 
     # Set the player effects for gem

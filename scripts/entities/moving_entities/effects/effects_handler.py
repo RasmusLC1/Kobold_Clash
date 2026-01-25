@@ -93,10 +93,8 @@ class Status_Effect_Handler:
         
         effect_class = self.EFFECT_REGISTRY.get(effect_name, None)
 
-        # Check if effect exists
+        # Check if effect exists, prevents slash and blunt damage trigger
         if not effect_class:
-            print("EFFECT CLASS NOT FOUND", effect_name)
-            traceback.print_stack(limit=5)
             return None
         
         # Instantiate new effect

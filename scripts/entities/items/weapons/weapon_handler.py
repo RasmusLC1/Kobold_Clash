@@ -12,14 +12,16 @@ from scripts.entities.items.weapons.ranged_weapons.bow import Bow
 from scripts.entities.items.weapons.ranged_weapons.crossbow import Crossbow
 from scripts.entities.items.weapons.shields.shield import Shield
 
+from scripts.entities.items.loot.gems_ingots.gem import Gem
 from scripts.engine.keys.keys import keys
 from scripts.engine.utility.luck_calculator import Luck_Calculator
 
 import random
 
 class Weapon_Handler():
-    def __init__(self, game):
+    def __init__(self, game, item_handler):
         self.game = game
+        self.item_handler = item_handler
 
         # Map weapon names to their classes
         self.weapon_map = {
@@ -77,6 +79,8 @@ class Weapon_Handler():
     def Spawn_Random_Weapon(self, pos, rarity_value = None):
         if not rarity_value:
             rarity_value = Luck_Calculator.Calculate_Rarity_Value(self.game, clamp_values=False)
+
+
         random_weapon_map = self.Modify_Arrow_Spawn_Rate()
 
         selected_weapon = random.choices(
@@ -86,11 +90,34 @@ class Weapon_Handler():
             )[0]
 
         weapon = selected_weapon(self.game, pos)
+        gems = self.Spawn_Gems_For_Weapon(rarity_value)
+        self.Apply_Gems(weapon, gems)
         # Finally, add to the item handler
         self.game.item_handler.Add_Item(weapon)
         return weapon
     
+    def Spawn_Gems_For_Weapon(self, rarity_value):
+        iterations = 10 # Condition to prevent infinite loop
+        gems = []
+        while rarity_value > 0 or iterations > 0:
+            iterations -= 1
+            gem_type, cost = self.item_handler.Get_Gems_For_Weapon(rarity_value)
 
+            if gem_type:
+                gem = Gem(self.game, gem_type, (999, 999), 1, cost)
+            else:
+                break
+
+            rarity_value -= cost
+            iterations -= 1
+            gems.append(gem)
+
+        return gems
+    
+    def Apply_Gems(self, weapon, gems):
+        weapon.Add_Gem_Slot(len(gems))
+        for gem in gems:
+            weapon.Add_Gem(gem)
 
     def Modify_Arrow_Spawn_Rate(self):
         weapon_rates = self.random_weapon_map.copy()
