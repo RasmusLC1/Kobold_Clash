@@ -228,6 +228,7 @@ class Rune_Handler():
     def Get_Rune(self, type):
         return self.runes[type]
     
+    
     def Find_Nearby_Runes(self, entity_pos, max_distance):
         entity_pos = (entity_pos[0] - self.game.render_scroll[0], entity_pos[1] - self.game.render_scroll[1])
         nearby_runes = []
@@ -252,6 +253,61 @@ class Rune_Handler():
             if active_rune.type == new_rune_type:
                 return True
         return False
+    
+    def Get_Rune_Values(self):
+        rune_values = {
+            # Utility & Movement
+            keys.dash_rune : 10,                # Dash
+            keys.key_rune : 15,                 # Door unlock
+            keys.regen_rune : 30,               # Regen (Passive)
+
+            # Buffs & Survival
+            keys.healing_rune : 20,             # Healing
+            keys.invisibility_rune : 60,        # Invisibility
+            keys.invulnerable_rune: 45,         # Immunity
+            keys.resistance_rune : 40,          # General damage resistance
+            keys.silence_rune : 55,             # Active Silence effect
+            keys.speed_rune : 15,               # Active Speed effect
+            keys.increase_strength_rune : 15,   # Active Strength effect
+            keys.vampiric_rune : 25,            # Vampiric, regen from damaging enemies
+
+            # Passive Runes
+            keys.arcane_conduit_rune : 40,      # Arcane conduit, increase power level of your other runes
+            keys.arcane_hunger_rune : 30,       # Arcane Hunger, increase souls generation
+            keys.light_rune : 15,               # Passive light
+            keys.magnet_rune : 10,              # Magnet, Auto pickup of items
+            keys.shield_rune : 15,              # Frost Shield, enemies freeze when damaging you (or general shield)
+
+            # Fire Runes
+            keys.fire_resistance_rune : 10,     # Passive Fire Resistance
+            keys.fire_cirlce_rune : 20,         # Fire wall, wall of fire that damage anything that tries to cross it
+            keys.fire_ball_rune : 25,           # Fireball, ball of fire that leads to fire explosion
+            keys.fire_spray_rune : 15,          # Fire spew, flamethrower attack
+            
+            # Frost Runes
+            keys.freeze_circle_rune : 30,       # Area freeze effect
+            keys.freeze_storm_rune : 30,        # Ice storm, Creates a tornado that shoots ice projectiles
+            keys.freeze_spray_rune : 15,        # Ice projectiles, fast ice projectiles shot like a bullet
+            keys.freeze_ball_rune : 25,         # Iceball, ball that causes a freeze explosion
+            keys.frozen_resistance_rune : 10,   # Passive Frost Resistance
+            
+            # Poison Runes
+            keys.poison_resistance_rune : 10,   # Passive Poison Resistance
+            keys.poison_ball_rune : 25,         # Poison ball that turns into a poison cloud
+            keys.poison_cloud_rune : 30,        # Poison cloud, creates a big poison cloud around entity (AoE)
+            keys.poison_plume_rune : 20,        # Poison plumes, creates poison clouds at random positions
+
+            # Electric Runes
+            keys.electric_ball_rune : 25,       # Electric ball that generates electric explosion
+            keys.electric_spray_rune : 20,      # Electric homing particle, target nearest entity
+            keys.chain_lightning_rune : 30,     # Chain lightning, Lightning projectile that bounces
+
+            # Vampiric Runes
+            keys.soul_reap_rune : 25,           # Soul reap, broad projectile that sucks health
+            keys.soul_pit_rune : 30,            # Soul pit that pulls entities in and sucks health
+        }
+
+        return rune_values
 
     def Render_Animation(self, surf, offset = (0, 0)):
         for rune in self.active_runes:
