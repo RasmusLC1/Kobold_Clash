@@ -16,10 +16,7 @@ class Bomb_Loot_Handler(Loot_Types_Handler):
             keys.poison_bomb : Bomb,
             keys.vampiric_bomb : Bomb,
         }
-
-
-    def Get_Loot_Values(self):
-        loot_types_cost = {
+        self.loot_types_cost = {
             keys.fire_bomb : 15,
             keys.frozen_bomb : 15,
             keys.electric_bomb : 15,
@@ -27,4 +24,7 @@ class Bomb_Loot_Handler(Loot_Types_Handler):
             keys.vampiric_bomb : 20,
         }
 
-        return loot_types_cost
+
+    def Get_Loot_Values(self):
+
+        return self.loot_types_cost

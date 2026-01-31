@@ -26,9 +26,7 @@ class Passive_Loot_Handler(Loot_Types_Handler):
             keys.lucky_charm : Passive_Loot,
         }
 
-
-    def Get_Loot_Values(self):
-        loot_types_cost = {
+        self.loot_types_cost = {
             # Lantern – Sets the player's light radius to 7 (passive light).
             keys.lantern: 10,
 
@@ -66,8 +64,10 @@ class Passive_Loot_Handler(Loot_Types_Handler):
             keys.lucky_charm: 25,
         }
 
+    def Get_Loot_Values(self):
 
-        return loot_types_cost
+
+        return self.loot_types_cost
 
 
 

@@ -21,9 +21,7 @@ class Key_Loot_Handler(Loot_Types_Handler):
             keys.lockpick: Lockpick,
         }
 
-
-    def Get_Loot_Values(self):
-        loot_types_cost = {
+        self.loot_types_cost = {
             # Skeleton Key – Unlocks any door but disappears after 1 use.
             keys.skeleton_key: 10,
 
@@ -40,6 +38,9 @@ class Key_Loot_Handler(Loot_Types_Handler):
             keys.lockpick: 10,
         }
 
-        return loot_types_cost
+
+    def Get_Loot_Values(self):
+
+        return self.loot_types_cost
 
 

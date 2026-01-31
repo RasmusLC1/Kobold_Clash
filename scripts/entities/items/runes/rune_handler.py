@@ -52,7 +52,7 @@ class Rune_Handler():
         self.active_runes = []
         self.saved_data = {}
         self.runes = {}
-        self.Rune_Spawner()
+        self.Rune_Initialiser()
     
 
     def Save_Rune_Data(self):
@@ -66,7 +66,7 @@ class Rune_Handler():
         if not data:
             return None
         
-        self.Rune_Spawner()
+        self.Rune_Initialiser()
         type = data.get(keys.type)
 
         if not type:
@@ -89,7 +89,7 @@ class Rune_Handler():
     def Initialise_Runes(self):
         self.Add_Runes_To_Inventory_TEST()
 
-    def Rune_Spawner(self):
+    def Rune_Initialiser(self):
         if self.runes:
             return
         self.runes = {
@@ -134,7 +134,6 @@ class Rune_Handler():
 
             keys.soul_reap_rune : Soul_Reap_Rune,
             keys.soul_pit_rune : Soul_Pit_Rune,
-
         }
 
         self.damage_runes = [
