@@ -34,7 +34,7 @@ class Item_Handler():
             amount = item_data['amount']
             item = None
             if item_data['sub_category'] == keys.weapon:
-                item = self.weapon_handler.Weapon_Spawner(type, pos[0], pos[1], amount, data=item_data)
+                item = self.weapon_handler.Weapon_Spawner(type, pos[0], pos[1], data=item_data)
             elif item_data['sub_category'] == keys.loot:
                 loot_type = item_data[keys.loot_type]
                 item = self.loot_handler.Spawn_Loot_Type(loot_type, pos, item_data)
