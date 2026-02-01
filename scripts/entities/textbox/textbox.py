@@ -51,7 +51,7 @@ class Text_Box():
 
     # Seperate function for size flexibility
     def Set_Y_Size(self):
-        self.y_size = 70
+        self.y_size = 80
 
     def Set_X_Size(self):
         self.x_size = 100

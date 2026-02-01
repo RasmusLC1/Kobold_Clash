@@ -27,7 +27,7 @@ class Keyboard_Inventory():
         if index < 0:
             return
         
-        self.Activate_Inventory_Slot(index)
+        return self.Activate_Inventory_Slot(index)
 
     # Return negative if not no keyboard input
     def Check_Keyboard_input(self):
@@ -52,10 +52,9 @@ class Keyboard_Inventory():
     def Activate_Inventory_Slot(self, index):
         inventory_slot = self.Find_Inventory_Slot_By_Index(index)
         if not inventory_slot:
-            return
+            return None
         
         if not inventory_slot.item:
-            return
+            return None
         
-        inventory_slot.item.Activate()
-        inventory_slot.Update()
+        return inventory_slot

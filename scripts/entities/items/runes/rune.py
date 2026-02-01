@@ -10,7 +10,6 @@ class Rune(Item):
     def __init__(self, game, type, pos, power, soul_cost):
         self.player = game.player
         self.menu_pos = pos
-        self.max_amount = 1
         self.upgrade_cost = max(10, math.ceil(soul_cost / 3))
         self.original_power = power
         self.current_power = power
@@ -21,15 +20,13 @@ class Rune(Item):
         self.animation_time = 0
         self.animation_size = 0
         self.animation_size_max = 0
-        self.active = False
         self.effect = type.replace('_rune', '')
-        self.render = True
         # self.picked_up = True
         self.cost_to_buy = soul_cost // 2 * power // 2
         self.activate_cooldown = 0
         self.activate_cooldown_max = 5
         self.clicked = False # Used for projectiles
-        super().__init__(game,  type, keys.rune, pos, size=(16, 16), amount=1, add_to_tile=False, durability=100, max_durability=100)
+        super().__init__(game,  type, keys.rune, pos, size=(16, 16), amount=1, max_amount=1, add_to_tile=False, durability=100, max_durability=100)
 
 
     def Save_Data(self):
@@ -40,7 +37,6 @@ class Rune(Item):
         self.saved_data['current_power'] = self.current_power
         self.saved_data['original_soul_cost'] = self.original_soul_cost
         self.saved_data['current_soul_cost'] = self.current_soul_cost
-        self.saved_data['active'] = self.active
         self.saved_data['menu_pos'] = self.menu_pos
 
         return self.saved_data
@@ -53,7 +49,6 @@ class Rune(Item):
         self.current_power = data['current_power']
         self.original_soul_cost = data['original_soul_cost'] 
         self.current_soul_cost = data['current_soul_cost'] 
-        self.active = data['active'] 
         self.menu_pos = data['menu_pos']
 
     
@@ -67,7 +62,6 @@ class Rune(Item):
     def Activate(self):
         if self.activate_cooldown:
             return False
-        
         if not super().Activate():
             return False
         if self.player.Get_Total_Available_Souls() < self.current_soul_cost:

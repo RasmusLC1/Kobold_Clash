@@ -84,13 +84,18 @@ class Inventory_Handler():
             
             
         self.Item_Click()
-        self.keyboard_handler.Key_Board_Input()
+        inventory_slot = self.keyboard_handler.Key_Board_Input()
+
+        if inventory_slot:
+            inventory_slot.Activate_Item()
+
         return
 
     def Update_Runes(self):
         self.rune_inventory.Add_Active_Runes()
 
-    # Needs to resize the UI correctly when screen is resized
+
+    # TODO: Needs to resize the UI correctly when screen is resized
     def Update_Inventory_Slot_Pos(self):
         return
         for index, inventory_slot in enumerate(self.inventory):
@@ -225,8 +230,7 @@ class Inventory_Handler():
         if not (0 < self.game.mouse.hold_down_left < 5):
             return False
 
-        self.clicked_inventory_slot.item.Activate()
-        self.clicked_inventory_slot.Update()
+        self.clicked_inventory_slot.Activate_Item()
         self.Set_Clicked_Inventory_Slot()
         self.game.mouse.Set_Inventory_Clicked(10)
         return True

@@ -39,6 +39,7 @@ class Projectile_Rune(Rune):
             self.Set_Charge()
             self.Set_Activate_Cooldown(self.activate_cooldown_max )
             self.Compute_Souls_Cost()
+            self.clicked = False
         
         # Handle shooting
         if self.charge:
