@@ -51,7 +51,6 @@ class Level_Loader():
             exit(0)
 
         data_file = open(file_name, "rb")
-        print(file_name)
         data = pickle.load(data_file)
         return data
 

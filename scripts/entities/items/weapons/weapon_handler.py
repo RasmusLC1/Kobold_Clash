@@ -57,7 +57,11 @@ class Weapon_Handler():
             return True  # or your specific logic for particles
 
         if keys.arrow in type:
-            weapon = Arrow(self.game, (pos_x, pos_y), 1)
+            if data:
+                add_to_tile = False
+            else:
+                add_to_tile = True
+            weapon = Arrow(self.game, (pos_x, pos_y), 1, add_arrow_to_tile=add_to_tile)
         else:
             # Lookup the class; return False if not found
             weapon_class = self.weapon_map.get(type)
