@@ -39,14 +39,14 @@ class Weapon_Handler():
 
         self.random_weapon_map = {
             Sword: 1,
-            # Halberd: 1,
             Spear: 1,
-            # Bow: 1,
+            Halberd: 1,
+            Bow: 1,
+            Arrow: 0.5,
             # Sceptre: 0.3,
             # Scythe: 0.3,
             # Staff: 0.2,
             # Crossbow: 0.5,
-            # Arrow: 0.5,
         }
 
 

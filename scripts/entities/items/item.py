@@ -126,7 +126,6 @@ class Item(PhysicsEntity):
         if self.game.decoration_handler.Check_Item_Collision(self):
             return False
         self.picked_up = False
-        self.in_inventory = False
         self.Set_Tile()
         self.Set_Size(self.floor_size) # Standard loot size on floor
         self.game.sound_handler.Play_Sound(keys.item_placedown, 0.2)

@@ -135,6 +135,7 @@ class Rune(Item):
         for i in range(amount):
             self.current_power += 1
             self.Upgrade_Cost()
+            
     
     def Update_Activate_Cooldown(self, delta_time):
         if self.activate_cooldown:
@@ -149,9 +150,9 @@ class Rune(Item):
     # Updated in rune inventory when player's power is modified
     def Set_Description(self):
         self.description = (
-                            f"soul {self.current_soul_cost}\n"
-                            f"power {self.current_power + self.player.rune_power}\n"
-                            f"Dur {self.durability} / {self.max_durability}\n"
+                            f"{keys.souls} {self.current_soul_cost}\n"
+                            f"{keys.power} {self.current_power + self.player.rune_power}\n"
+                            f"Dur {self.durability}/{self.max_durability}\n"
                             f"{self.Calculate_Value()} {keys.gold}\n"
                         )  
 

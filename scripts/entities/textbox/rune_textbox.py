@@ -9,5 +9,14 @@ class Rune_Textbox(Text_Box):
         return entity_name
 
     def Set_Text_Box_pos(self, offset):
-        text_box_pos = (self.entity.game.screen_width // self.entity.game.render_scale - self.x_size - 20, self.entity.pos[1] -  self.y_size - 20)
+        entity_pos = self.entity.pos
+        
+        # Set the position to be in inventory
+        if self.entity.picked_up:
+            text_box_pos = (self.entity.game.screen_width // self.entity.game.render_scale - self.x_size - 40, entity_pos[1] -  self.y_size - 20)
+        else:
+            text_box_pos = (self.entity.pos[0] - offset[0], self.entity.pos[1] - offset[1] - self.y_size)
+
+
+            
         return text_box_pos
