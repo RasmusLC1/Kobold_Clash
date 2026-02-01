@@ -12,6 +12,7 @@ class Decoration_Handler():
         self.nearby_decoration_cooldown = 0
         self.saved_data = {}
         self.decoration_spawner = Decoration_Spawner(game)
+        self.initalised = False
 
         self.spawn_methods = None
 
@@ -30,6 +31,7 @@ class Decoration_Handler():
 
     def Initialise(self):
         self.decorations, self.item_sacrifice, self.spawn_methods = self.decoration_spawner.Initialise()
+        self.initalised = True
 
 
     def Get_Random_Decoration_Of_Type(self, type):
@@ -50,7 +52,10 @@ class Decoration_Handler():
             self.saved_data[decoration.ID] = decoration.saved_data
 
     def Load_Data(self, data):
-        self.Initialise()
+        # Check if the decoration spawner is initialised
+        if not self.initalised:
+            self.Initialise()
+
         self.decoration_spawner.Get_Dungeon_Type()
         for ID, item_data in data.items():
             if not item_data:
@@ -62,6 +67,9 @@ class Decoration_Handler():
             except Exception as e:
                 print("DATA WRONG DECORATION HANDLER", item_data, e)
 
+        self.Load_Portal_Links()
+
+    def Load_Portal_Links(self):
         for decoration in self.decorations:
             if decoration.type == keys.teleportation_circle:
                 linked_portal = self.Get_Decoration_By_ID(decoration.linked_portal_ID)

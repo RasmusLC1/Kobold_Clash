@@ -54,7 +54,107 @@ class Rune_Handler(Loot_Types_Handler):
         
         self.active_runes = []
         self.saved_data = {}
+        self.Configure_Rune_Tables()
 
+        
+        # Pre-calculate min cost for the base class performance
+        self.min_cost = min(self.rune_values.values())
+
+    # Function to initialise the runes at the start of game
+    def Initialise_Runes(self):
+        self.Add_Runes_To_Inventory_TEST()
+
+    # needs to be 3 random runes with a budget of 100 
+    def Add_Runes_To_Inventory_TEST(self):
+        self.Add_Rune_To_Rune_Inventory(keys.key_rune)
+        self.Add_Rune_To_Rune_Inventory(keys.fire_spray_rune)
+        self.Add_Rune_To_Rune_Inventory(keys.dash_rune)
+
+    def Load_Data(self, data):
+        if not data:
+            return None
+        
+        rune_type = data.get(keys.type)
+        if not rune_type:
+            return None
+
+        rune = self.Add_Rune_To_Rune_Inventory(rune_type)
+        if rune:
+            rune.Load_Data(data)
+        return rune
+    
+    def Save_Rune_Data(self):
+        self.saved_data.clear()
+
+        for rune in self.active_runes:
+            self.saved_data[rune.type] = rune.Save_Data()
+
+        return self.saved_data
+    
+    # --- MODIFICATION LOGIC ---
+
+    # Swaps an active rune for a new one
+    def Replace_Rune_In_Inventory(self, old_rune, new_rune):
+        # 1. Update Inventory System
+        self.game.inventory.Replace_Rune(old_rune, new_rune)
+        
+        # 2. Activate New
+        new_rune.active = True
+        self.active_runes.append(new_rune)
+        self.game.item_handler.Add_Item(new_rune)
+
+        # 3. Deactivate Old
+        old_rune.active = False
+        if old_rune in self.active_runes:
+            self.active_runes.remove(old_rune)
+        self.game.item_handler.Remove_Item(old_rune)
+
+    def Clear_Runes(self):
+        self.active_runes.clear()
+        self.saved_data.clear()
+
+    # MANDATORY OVERRIDE for Loot_Types_Handler
+    def Get_Loot_Values(self):
+        return self.rune_values
+
+    # --- INVENTORY LOGIC ---
+
+    def Add_Rune_To_Rune_Inventory(self, rune_type):
+        rune_class = self.loot_map.get(rune_type)
+        if not rune_class:
+            return None
+        
+        rune = rune_class(self.game, (999, 999))
+        rune.active = True
+        self.active_runes.append(rune)
+        self.game.item_handler.Add_Item(rune)
+        rune.Pick_Up()
+        return rune
+
+    def Find_Nearby_Runes(self, entity_pos, max_distance):
+        # Optimization: Use squared distance to avoid math.sqrt()
+        scroll_x, scroll_y = self.game.render_scroll
+        screen_pos = (entity_pos[0] - scroll_x, entity_pos[1] - scroll_y)
+        
+        max_dist_sq = max_distance ** 2
+        return [r for r in self.active_runes if 
+                (screen_pos[0] - r.pos[0])**2 + (screen_pos[1] - r.pos[1])**2 < max_dist_sq]
+
+    def Check_If_Player_Has_Damage_Runes(self):
+        # Set lookup is O(1) - much faster than List lookup
+        return any(rune.type in self.damage_runes for rune in self.active_runes)
+
+    def Update(self, delta_time):
+        for rune in self.active_runes:
+            rune.Update(delta_time)
+
+    def Render_Animation(self, surf, offset=(0, 0)):
+        for rune in self.active_runes:
+            rune.Render_Animation(surf, offset)
+
+
+    def Configure_Rune_Tables(self):
+        
         self.loot_map = {
             keys.dash_rune: Dash_Rune,
             keys.key_rune: Key_Rune,
@@ -153,99 +253,3 @@ class Rune_Handler(Loot_Types_Handler):
             keys.electric_spray_rune, keys.chain_lightning_rune, keys.soul_reap_rune,
             keys.soul_pit_rune,
         }
-        
-        # Pre-calculate min cost for the base class performance
-        self.min_cost = min(self.rune_values.values())
-
-    # Function to initialise the runes at the start of game
-    def Initialise_Runes(self):
-        self.Add_Runes_To_Inventory_TEST()
-
-    # needs to be 3 random runes with a budget of 100 
-    def Add_Runes_To_Inventory_TEST(self):
-        self.Add_Rune_To_Rune_Inventory(keys.key_rune)
-        self.Add_Rune_To_Rune_Inventory(keys.fire_spray_rune)
-        self.Add_Rune_To_Rune_Inventory(keys.dash_rune)
-
-    def Load_Data(self, data):
-        if not data:
-            return None
-        
-        rune_type = data.get(keys.type)
-        if not rune_type:
-            return None
-
-        rune = self.Add_Rune_To_Rune_Inventory(rune_type)
-        if rune:
-            rune.Load_Data(data)
-        return rune
-    
-    def Save_Rune_Data(self):
-        self.saved_data.clear()
-
-        for rune in self.active_runes:
-            self.saved_data[rune.type] = rune.Save_Data()
-
-        return self.saved_data
-    
-    # --- MODIFICATION LOGIC ---
-
-    # Swaps an active rune for a new one
-    def Replace_Rune_In_Inventory(self, old_rune, new_rune):
-        # 1. Update Inventory System
-        self.game.inventory.Replace_Rune(old_rune, new_rune)
-        
-        # 2. Activate New
-        new_rune.active = True
-        self.active_runes.append(new_rune)
-        self.game.item_handler.Add_Item(new_rune)
-
-        # 3. Deactivate Old
-        old_rune.active = False
-        if old_rune in self.active_runes:
-            self.active_runes.remove(old_rune)
-        self.game.item_handler.Remove_Item(old_rune)
-
-    def Clear_Runes(self):
-        self.active_runes.clear()
-        self.saved_data.clear()
-
-    # MANDATORY OVERRIDE for Loot_Types_Handler
-    def Get_Loot_Values(self):
-        return self.rune_values
-
-    # --- INVENTORY LOGIC ---
-
-    def Add_Rune_To_Rune_Inventory(self, rune_type):
-        rune_class = self.loot_map.get(rune_type)
-        if not rune_class:
-            return None
-        
-        rune = rune_class(self.game, (999, 999))
-        rune.active = True
-        self.active_runes.append(rune)
-        self.game.item_handler.Add_Item(rune)
-        rune.Pick_Up()
-        return rune
-
-    def Find_Nearby_Runes(self, entity_pos, max_distance):
-        # Optimization: Use squared distance to avoid math.sqrt()
-        scroll_x, scroll_y = self.game.render_scroll
-        screen_pos = (entity_pos[0] - scroll_x, entity_pos[1] - scroll_y)
-        
-        max_dist_sq = max_distance ** 2
-        return [r for r in self.active_runes if 
-                (screen_pos[0] - r.pos[0])**2 + (screen_pos[1] - r.pos[1])**2 < max_dist_sq]
-
-    def Check_If_Player_Has_Damage_Runes(self):
-        # Set lookup is O(1) - much faster than List lookup
-        return any(rune.type in self.damage_runes for rune in self.active_runes)
-
-    def Update(self, delta_time):
-        for rune in self.active_runes:
-            rune.Update(delta_time)
-
-    def Render_Animation(self, surf, offset=(0, 0)):
-        for rune in self.active_runes:
-            rune.Render_Animation(surf, offset)
-

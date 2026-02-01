@@ -24,7 +24,7 @@ class Level_Loader():
         self.game.depth = 1
         self.saved_data = {}
  
-
+    # Load basic structural parts of the dungeon
     def Load_Data(self, data):
         if not data:
             return
