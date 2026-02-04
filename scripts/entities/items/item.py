@@ -11,8 +11,6 @@ class Item(PhysicsEntity):
         self.sub_type = type
         self.value = rarity_value
 
-
-
         self.picked_up = False
         self.clicked = False # Used for if the item is active
         self.move_inventory_slot = False # Check for if the item is being moved to a new inventory slot

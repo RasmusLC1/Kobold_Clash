@@ -57,7 +57,7 @@ class Save_Load_Manager():
         self.game.player.Save_Data()
         self.game.enemy_handler.Save_Enemy_Data()
         self.game.item_handler.Save_Item_Data()
-        self.game.rune_handler.Save_Rune_Data()
+        self.game.item_handler.rune_handler.Save_Rune_Data()
         self.game.trap_handler.Save_Trap_Data()
         self.game.decoration_handler.Save_Decoration_Data()
         self.game.inventory.Save_Inventory_Data()
@@ -71,7 +71,7 @@ class Save_Load_Manager():
                                 self.game.tilemap.saved_data,
                                 self.game.player.saved_data,
                                 self.game.item_handler.saved_data,
-                                self.game.rune_handler.saved_data,
+                                self.game.item_handler.rune_handler.saved_data,
                                 self.game.enemy_handler.saved_data,
                                 self.game.trap_handler.saved_data,
                                 self.game.inventory.saved_data,
@@ -107,7 +107,7 @@ class Save_Load_Manager():
                                 self.game.a_star,
                                 self.game.player,
                                 self.game.item_handler,
-                                self.game.rune_handler,
+                                self.game.item_handler.rune_handler,
                                 self.game.enemy_handler,
                                 self.game.trap_handler,
                                 self.game.inventory,

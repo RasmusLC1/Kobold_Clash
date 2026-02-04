@@ -26,14 +26,14 @@ class Rune_Shrine(Decoration):
         self.saved_data['rune_type'] = self.available_rune.type
         print(self.is_open, self.available_rune.type)
 
-
+    # TODO: Might need a rework for the available rune
     def Load_Data(self, data):
         super().Load_Data(data)
         self.is_open = data['is_open']
         rune_type = data['rune_type']
         if not rune_type:
             return
-        self.available_rune = self.game.rune_handler.Get_Rune(rune_type)
+        self.available_rune = self.game.item_handler.Spawn_Rune((999,999), rune_type)
 
 
 

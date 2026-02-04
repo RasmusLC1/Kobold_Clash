@@ -90,6 +90,7 @@ class Rune_Handler(Loot_Types_Handler):
             self.saved_data[rune.type] = rune.Save_Data()
 
         return self.saved_data
+
     
     # --- MODIFICATION LOGIC ---
 
@@ -112,6 +113,13 @@ class Rune_Handler(Loot_Types_Handler):
     def Clear_Runes(self):
         self.active_runes.clear()
         self.saved_data.clear()
+
+    def Remove_Rune_From_Active_Runes(self, rune):
+        if rune not in self.active_runes:
+            return False
+        self.active_runes.remove(rune)
+        return True
+
 
     # MANDATORY OVERRIDE for Loot_Types_Handler
     def Get_Loot_Values(self):
@@ -141,7 +149,6 @@ class Rune_Handler(Loot_Types_Handler):
                 (screen_pos[0] - r.pos[0])**2 + (screen_pos[1] - r.pos[1])**2 < max_dist_sq]
 
     def Check_If_Player_Has_Damage_Runes(self):
-        # Set lookup is O(1) - much faster than List lookup
         return any(rune.type in self.damage_runes for rune in self.active_runes)
 
     def Update(self, delta_time):
@@ -152,6 +159,8 @@ class Rune_Handler(Loot_Types_Handler):
         for rune in self.active_runes:
             rune.Render_Animation(surf, offset)
 
+    def Get_Active_Runes(self):
+        return self.active_runes
 
     def Configure_Rune_Tables(self):
         

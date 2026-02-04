@@ -44,7 +44,7 @@ class Bookshelf(Loot_Container):
         runes = self.Adjust_Rune_Weight()
 
         counter = 0
-        rune_handler = self.game.rune_handler
+        rune_handler = self.game.item_handler.rune_handler
         rune_type = None
         rune_active = False
         while not rune_active:
@@ -67,7 +67,7 @@ class Bookshelf(Loot_Container):
 
         
     def Spawn_Rune(self, rune_type):
-        self.game.rune_handler.Spawn_Rune_Floor(rune_type, self.Get_Pos())
+        self.game.item_handler.Spawn_Rune(rune_type, self.Get_Pos())
         return
     
 

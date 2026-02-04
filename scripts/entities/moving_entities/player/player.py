@@ -103,6 +103,10 @@ class Player(Moving_Entity):
     # Subtract the souls that are to be removed from total souls to get a correct souls count
     def Get_Total_Available_Souls(self):
         return self.souls - self.souls_to_remove
+    
+    # Returns acane conduit effect
+    def Get_Acane_Conduit(self):
+        return self.effects.Get_Effect(keys.arcane_conduit)
 
     def Update_Souls_To_Remove(self):
         if not self.souls_to_remove:

@@ -1,5 +1,5 @@
 from scripts.entities.items.weapons.weapon_handler import Weapon_Handler
-from scripts.entities.items.loot.potions.potion_handler import Potion_Handler
+from scripts.entities.items.runes.rune_handler import Rune_Handler
 from scripts.entities.items.loot.loot_handler import Loot_Handler
 import pygame
 from scripts.engine.keys.keys import keys
@@ -14,11 +14,13 @@ class Item_Handler():
         self.saved_data = {}
         self.weapon_handler = Weapon_Handler(self.game, self)
         self.loot_handler = Loot_Handler(self.game, self)
+        self.rune_handler = Rune_Handler(self.game, self)
 
     def Save_Item_Data(self):
         for item in self.items:
             item.Save_Data()
             self.saved_data[item.ID] = item.saved_data
+
 
     def Load_Data(self, data):
         for ID, item_data in data.items():
@@ -39,7 +41,7 @@ class Item_Handler():
                 loot_type = item_data[keys.loot_type]
                 item = self.loot_handler.Spawn_Loot_Type(loot_type, pos, item_data)
             elif item_data['sub_category'] == keys.rune:
-                item = self.game.rune_handler.Load_Data(item_data)
+                item = self.rune_handler.Load_Data(item_data)
             else:
                 return None
             
@@ -52,6 +54,8 @@ class Item_Handler():
         self.items.clear()
         self.nearby_items.clear()
         self.saved_data.clear()
+        self.rune_handler.Clear_Runes()
+
 
     def Initialise(self):
         for gold in self.game.tilemap.extract([(keys.gold, 0)].copy()):
@@ -59,7 +63,21 @@ class Item_Handler():
             if gold:
                 self.Add_Item(gold)
 
+        self.rune_handler.Initialise_Runes()
+        
 
+    def Spawn_Rune(self, pos, type = None, rarity_value = None):
+        return self.rune_handler.Loot_Spawner(pos, type, rarity_value)
+    
+    def Remove_Rune_From_Active_Runes(self, rune):
+        return self.rune_handler.Remove_Rune_From_Active_Runes(rune)
+    
+    def Get_Active_Runes(self):
+        return self.rune_handler.Get_Active_Runes()
+    
+    def Replace_Rune_In_Inventory(self, rune_to_replace, new_rune):
+        return self.rune_handler.Replace_Rune_In_Inventory(rune_to_replace, new_rune)
+    
     def Spawn_Weapon(self, pos, type = None):
         weapon = None
         if type:
@@ -137,6 +155,9 @@ class Item_Handler():
                 continue
 
             self.Throw_Projectile(item, delta_time)
+
+        self.game.rune_handler.Update(delta_time)
+        
 
 
     

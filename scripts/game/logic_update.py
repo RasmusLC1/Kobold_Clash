@@ -23,7 +23,6 @@ class Logic_Update():
           self.game.trap_handler.Update(delta_time)
 
 
-          self.game.rune_handler.Update(delta_time)
 
 
           keyboard = self.game.keyboard_handler

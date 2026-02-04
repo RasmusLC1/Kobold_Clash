@@ -10,7 +10,7 @@ class Rune(Item):
     def __init__(self, game, type, pos, power, soul_cost):
         self.player = game.player
         self.menu_pos = pos
-        self.upgrade_cost = max(10, math.ceil(soul_cost / 3))
+        self.upgrade_cost = math.ceil(soul_cost / 3)
         self.original_power = power
         self.current_power = power
         self.original_soul_cost = soul_cost
@@ -38,7 +38,6 @@ class Rune(Item):
         self.saved_data['original_soul_cost'] = self.original_soul_cost
         self.saved_data['current_soul_cost'] = self.current_soul_cost
         self.saved_data['menu_pos'] = self.menu_pos
-
         return self.saved_data
     
     def Load_Data(self, data):
@@ -90,8 +89,9 @@ class Rune(Item):
 
     
     def Compute_Souls_Cost(self):
-        if self.player.effects.arcane_conduit.effect:
-            self.player.Decrease_Souls(max(1, self.current_soul_cost - self.game.rune_handler.arcane_conduit_rune.current_power))
+        arcane_effect = self.player.Get_Acane_Conduit()
+        if arcane_effect:
+            self.player.Decrease_Souls(max(1, self.current_soul_cost - arcane_effect))
         else:
             self.player.Decrease_Souls(self.current_soul_cost)
 
@@ -188,7 +188,7 @@ class Rune(Item):
         return self.value * self.current_power
 
     def Place_Down(self):
-        self.game.rune_handler.Remove_Rune_From_Active_Runes(self)
+        self.game.item_handler.Remove_Rune_From_Active_Runes(self)
         self.Delete_Item()
 
 
