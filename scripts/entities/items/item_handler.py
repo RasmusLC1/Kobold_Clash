@@ -65,7 +65,7 @@ class Item_Handler():
 
         self.rune_handler.Initialise_Runes()
         
-
+# RUNE LOGIC
     def Spawn_Rune(self, pos, type = None, rarity_value = None):
         return self.rune_handler.Loot_Spawner(pos, type, rarity_value)
     
@@ -78,6 +78,10 @@ class Item_Handler():
     def Replace_Rune_In_Inventory(self, rune_to_replace, new_rune):
         return self.rune_handler.Replace_Rune_In_Inventory(rune_to_replace, new_rune)
     
+    def Check_For_Damage_Rune(self):
+        return self.rune_handler.Check_If_Player_Has_Damage_Runes()
+    
+# WEAPON LOGIC
     def Spawn_Weapon(self, pos, type = None):
         weapon = None
         if type:
@@ -156,7 +160,7 @@ class Item_Handler():
 
             self.Throw_Projectile(item, delta_time)
 
-        self.game.rune_handler.Update(delta_time)
+        self.rune_handler.Update(delta_time)
         
 
 

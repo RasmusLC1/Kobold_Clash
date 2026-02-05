@@ -12,7 +12,8 @@ class Fire_Spray_Rune(Projectile_Rune):
 
 
     def Set_Charge(self):
-        self.charge = max(40,(20 + self.current_power * 20))
+        self.charge = max(40,(self.current_power * 20))
+
 
     def Generate_Projectile(self):
         self.charge = self.fire_shooter.Particle_Creation(self.game.player, self.charge, self.current_power * 3)

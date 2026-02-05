@@ -49,9 +49,9 @@ from scripts.entities.items.loot.loot_types_handler import Loot_Types_Handler
 import math
 
 class Rune_Handler(Loot_Types_Handler):
-    def __init__(self, game):
+    def __init__(self, game, item_handler):
         super().__init__(game)
-        
+        self.item_handler = item_handler
         self.active_runes = []
         self.saved_data = {}
         self.Configure_Rune_Tables()
@@ -102,13 +102,13 @@ class Rune_Handler(Loot_Types_Handler):
         # 2. Activate New
         new_rune.active = True
         self.active_runes.append(new_rune)
-        self.game.item_handler.Add_Item(new_rune)
+        self.item_handler.Add_Item(new_rune)
 
         # 3. Deactivate Old
         old_rune.active = False
         if old_rune in self.active_runes:
             self.active_runes.remove(old_rune)
-        self.game.item_handler.Remove_Item(old_rune)
+        self.item_handler.Remove_Item(old_rune)
 
     def Clear_Runes(self):
         self.active_runes.clear()
@@ -135,7 +135,7 @@ class Rune_Handler(Loot_Types_Handler):
         rune = rune_class(self.game, (999, 999))
         rune.active = True
         self.active_runes.append(rune)
-        self.game.item_handler.Add_Item(rune)
+        self.item_handler.Add_Item(rune)
         rune.Pick_Up()
         return rune
 

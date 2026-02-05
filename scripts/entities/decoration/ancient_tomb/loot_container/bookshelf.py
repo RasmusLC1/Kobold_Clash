@@ -118,7 +118,7 @@ class Bookshelf(Loot_Container):
             keys.soul_reap_rune,
         ]
 
-        if not self.game.rune_handler.Check_If_Player_Has_Damage_Runes():
+        if not self.game.item_handler.Check_For_Damage_Rune():
             for damage_rune in damage_runes:
                 if damage_rune in runes:
                     runes[damage_rune] += 0.1

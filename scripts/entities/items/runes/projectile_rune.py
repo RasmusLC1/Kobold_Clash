@@ -11,9 +11,13 @@ class Projectile_Rune(Rune):
 
     
     def Activate(self):
+        print(self.charge)
+        if self.charge:
+            return False
         if not super().Activate():
-            return
+            return False
         self.clicked = True
+        return True
    
 
     def Update(self, delta_time):
