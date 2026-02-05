@@ -11,7 +11,6 @@ class Projectile_Rune(Rune):
 
     
     def Activate(self):
-        print(self.charge)
         if self.charge:
             return False
         if not super().Activate():

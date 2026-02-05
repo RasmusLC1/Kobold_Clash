@@ -7,6 +7,13 @@ class Particle_Shooter():
         self.index = 0
         self.particle_pool = []
         self.base_damage = 0
+        self.cooldown = 0
+
+    def Update(self, delta_time):
+        if self.cooldown <= 0:
+            return True
+        self.cooldown -= delta_time
+        return False
 
     def Particle_Creation(self, entity, special_attack):
         pass

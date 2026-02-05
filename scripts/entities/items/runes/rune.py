@@ -90,7 +90,6 @@ class Rune(Item):
     
     def Compute_Souls_Cost(self):
         arcane_effect = self.player.Get_Acane_Conduit()
-        print(arcane_effect)
         if arcane_effect:
             self.player.Decrease_Souls(max(1, self.current_soul_cost - arcane_effect))
         else:
