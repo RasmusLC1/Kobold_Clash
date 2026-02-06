@@ -54,6 +54,7 @@ class Torch(Weapon):
         if self.special_attack <= 0 or not self.equipped:
             self.Reset_Special_Attack()
             return
+        self.special_attack = 0
         self.flame_thrower.Initialise_Shooting(self.entity, self.fire_charge_max, 3)
 
 

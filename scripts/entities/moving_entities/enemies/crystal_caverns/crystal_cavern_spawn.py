@@ -21,7 +21,7 @@ class Crystal_Cavern_Spawn(Enemy_Spawner):
         }
 
         enemy_types = {
-            keys.fire_spirit: 0.2,
+            keys.fire_spirit: 9990.2,
             keys.ice_spirit: 0.2,
             keys.earth_elemental: 0.2,
             keys.electric_elemental: 0.2,

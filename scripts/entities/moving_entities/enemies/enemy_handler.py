@@ -5,7 +5,7 @@ from scripts.entities.moving_entities.enemies.enemy_pathfinding_handler import E
 from scripts.engine.keys.keys import keys
 import random
 
-INTIAL_ENEMIES = 1
+INTIAL_ENEMIES = 30
 
 class Enemy_Handler():
     def __init__(self, game):

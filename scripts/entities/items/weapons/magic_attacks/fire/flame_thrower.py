@@ -5,15 +5,12 @@ from scripts.engine.keys.keys import keys
 
 class Flame_Thrower(Particle_Shooter):
     def __init__(self, game):
-        super().__init__(game)
+        super().__init__(game, cooldown_max=0.5)
         self.ready_to_shoot = False
         self.charge = 0
 
 
-    def Particle_Creation(self, cooldown = 1):
-        self.Shoot_Particles()
-        self.cooldown = cooldown
-
+    
 
     def Shoot_Particles(self):
         # Basic raycasting attributes

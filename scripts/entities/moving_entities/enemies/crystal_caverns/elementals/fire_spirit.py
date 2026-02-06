@@ -2,8 +2,6 @@ from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.element
 from scripts.entities.items.weapons.magic_attacks.fire.flame_thrower import Flame_Thrower
 from scripts.engine.keys.keys import keys
 
-FIRE_PROJECTILE_NUM = 2 * 20
-
 class Fire_Spirit(Elemental):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
         super().__init__(game, pos, keys.fire_spirit, health, strength, max_speed, agility, intelligence, stamina, 1.2, 20, 3, 3, 3)
@@ -15,8 +13,6 @@ class Fire_Spirit(Elemental):
         self.minimum_distance = 30
 
         self.look_for_health_cooldown = 0
-        self.fire_cooldown = 0
-        self.shooting_fire = 0
         self.fire_damage = 3
 
         self.active_weapon = Flame_Thrower(self.game)
@@ -24,15 +20,19 @@ class Fire_Spirit(Elemental):
     def Update(self, tilemap, delta_time, movement = (0, 0)):
         super().Update(tilemap, delta_time, movement)
 
-        if self.shooting_fire:
-            self.Shoot_Fire_Particle()
-
-        if self.effects.fire.effect:
-            self.Set_Effect(keys.healing, self.effects.frozen.effect)
-            self.Set_Effect(keys.fire_resistance, 2)
-
-        return True
+        self.Check_If_On_Fire()
         
+        self.active_weapon.Update(delta_time)
+
+        
+    def Check_If_On_Fire(self):
+        fire = self.effects.Get_Effect_Strength(keys.fire)
+        if not fire:
+            return False
+        
+        self.Set_Effect(keys.healing, self.effects.frozen.effect)
+        self.Set_Effect(keys.fire_resistance, 2)
+        return True
     
     def Attack(self, delta_time):
         # If Player is to close, then ice spirit cannot shoot
@@ -42,18 +42,11 @@ class Fire_Spirit(Elemental):
         return super().Attack(delta_time)
     
     def Trigger_Attack(self):
-        if not self.shooting_fire:
-            self.shooting_fire = FIRE_PROJECTILE_NUM
-    
-    
-    def Shoot_Fire_Particle(self):
         self.Set_Target(self.game.player.pos)
         self.Set_Attack_Direction()
-        self.shooting_fire = self.active_weapon.Particle_Creation(self, self.shooting_fire, self.fire_damage)
-        if not self.shooting_fire:
-            self.charge = 0
-
-
+        self.active_weapon.Initialise_Shooting(self, 2, self.fire_damage)
+    
+    
     # TODO: IMPLEMENT
     def Look_For_Health(self, delta_time):
         if self.look_for_health_cooldown:

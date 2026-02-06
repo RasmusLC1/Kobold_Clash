@@ -2,12 +2,13 @@ from scripts.engine.keys.keys import keys
 
 
 class Particle_Shooter():
-    def __init__(self, game):
+    def __init__(self, game, cooldown_max):
         self.game = game
         self.index = 0
         self.particle_pool = []
         self.base_damage = 0
         self.cooldown = 0
+        self.cooldown_max = cooldown_max
         self.charge = 0
         self.entity = None
         self.ready_to_shoot = False
@@ -22,7 +23,7 @@ class Particle_Shooter():
         self.Generate_Projectile()
 
     def Generate_Projectile(self):
-        self.Particle_Creation(self.entity, 3, cooldown=0.5)
+        self.Shoot_Particles()
         self.ready_to_shoot = False
         self.charge -= 1
         return
@@ -32,19 +33,12 @@ class Particle_Shooter():
             return False
         
         if self.cooldown <= 0:
+            self.cooldown = self.cooldown_max
             return True
+        
         self.cooldown -= delta_time
         return False
     
-    def Check_Shooting_Ready(self, delta_time):
-        if not self.charge:
-            return
-        
-        self.ready_to_shoot = self.flame_thrower.Update(delta_time)
-        if not self.ready_to_shoot:
-            return
-        
-        self.Generate_Projectile()
 
     def Initialise_Shooting(self, entity, charge, damage):
         self.entity = entity
@@ -52,10 +46,8 @@ class Particle_Shooter():
         self.base_damage = damage
         self.ready_to_shoot = True
 
-    def Particle_Creation(self, special_attack):
-        pass
-            
-    def Shoot_Particles(self, special_attack):
+
+    def Shoot_Particles(self):
         pass
     
     # Append extra fire particle to the pool in case it runs out

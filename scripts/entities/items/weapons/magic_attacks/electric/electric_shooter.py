@@ -6,7 +6,7 @@ from scripts.engine.keys.keys import keys
 
 class Electric_Shooter(Particle_Shooter):
     def __init__(self, game):
-        super().__init__(game)
+        super().__init__(game, cooldown_max=0.4)
         self.electric_cooldown = 0
 
     def Particle_Creation(self, entity, special_attack, damage):

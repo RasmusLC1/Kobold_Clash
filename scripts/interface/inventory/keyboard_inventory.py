@@ -27,6 +27,7 @@ class Keyboard_Inventory():
         if index < 0:
             return
         
+        # Returns the inventory slot that should be activated
         return self.Activate_Inventory_Slot(index)
 
     # Return negative if not no keyboard input
@@ -49,6 +50,7 @@ class Keyboard_Inventory():
 
         return None 
 
+    # Returns the inventory slot that should be activated
     def Activate_Inventory_Slot(self, index):
         inventory_slot = self.Find_Inventory_Slot_By_Index(index)
         if not inventory_slot:

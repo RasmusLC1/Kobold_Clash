@@ -3,7 +3,7 @@ from scripts.entities.moving_entities.effects.frozen.frozen import Frozen
 from scripts.entities.moving_entities.effects.water.wet import Wet
 from scripts.entities.moving_entities.effects.healing.regen import Regen
 from scripts.entities.moving_entities.effects.movement.speed import Speed
-from scripts.entities.moving_entities.effects.general.increase_strength import Increase_Strength
+from scripts.entities.moving_entities.effects.general.strength import Increase_Strength
 from scripts.entities.moving_entities.effects.general.weakness import Weakness
 from scripts.entities.moving_entities.effects.general.invisibility import Invisibility
 from scripts.entities.moving_entities.effects.fire.fire_resistance import Fire_Resistance
@@ -102,6 +102,14 @@ class Status_Effect_Handler:
         self.instantiated_effects[effect_name] = new_effect
 
         return new_effect
+    
+    def Get_Effect_Strength(self, effect_name):
+        effect = self.Get_Effect(effect_name)
+
+        if not effect:
+            return None
+        
+        return effect.effect
     
     # Allows access like handler.fire
     def __getattr__(self, name):

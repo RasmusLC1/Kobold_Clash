@@ -16,6 +16,6 @@ class Fire_Spray_Rune(Projectile_Rune):
         return super().Update(delta_time)
 
     def Set_Charge(self):
-        self.fire_shooter.Initialise_Shooting(self.player, self.charge, self.damage)
+        self.fire_shooter.Initialise_Shooting(self.player, self.current_power, self.damage)
 
  
