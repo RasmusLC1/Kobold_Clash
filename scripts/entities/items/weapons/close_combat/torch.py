@@ -12,13 +12,19 @@ class Torch(Weapon):
         self.light_source = self.game.light_handler.Add_Light(self.pos, 8, self.tile)
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
         self.flame_thrower = Flame_Thrower(self.game)
+        self.fire_charge_max = 2
+
+    def Update(self, delta_time, offset=None):
+        self.flame_thrower.Update(delta_time)
+        return super().Update(delta_time, offset)
+    
+    
 
     # Pick up the torch and update the general light in the area
     def Pick_Up(self):
         if not super().Pick_Up():
             return
         self.game.light_handler.Remove_Light(self.light_source)
-
 
     def Spawn_Fire_Particle(self):
         self.game.particle_handler.Activate_Particles(random.randint(1, 3), keys.fire_particle, self.rect().center)
@@ -48,7 +54,7 @@ class Torch(Weapon):
         if self.special_attack <= 0 or not self.equipped:
             self.Reset_Special_Attack()
             return
-        self.special_attack = self.flame_thrower.Particle_Creation(self.entity, self.special_attack, 3)
+        self.flame_thrower.Initialise_Shooting(self.entity, self.fire_charge_max, 3)
 
 
     def Set_Special_Attack(self, offset = (0,0)):

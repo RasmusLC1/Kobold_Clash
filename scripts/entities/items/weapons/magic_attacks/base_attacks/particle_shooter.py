@@ -8,17 +8,54 @@ class Particle_Shooter():
         self.particle_pool = []
         self.base_damage = 0
         self.cooldown = 0
+        self.charge = 0
+        self.entity = None
+        self.ready_to_shoot = False
 
     def Update(self, delta_time):
+        if not self.charge:
+            return
+        
+        if not self.Handle_Cooldown(delta_time):
+            return False
+        
+        self.Generate_Projectile()
+
+    def Generate_Projectile(self):
+        self.Particle_Creation(self.entity, 3, cooldown=0.5)
+        self.ready_to_shoot = False
+        self.charge -= 1
+        return
+    
+    def Handle_Cooldown(self, delta_time):
+        if not self.charge:
+            return False
+        
         if self.cooldown <= 0:
             return True
         self.cooldown -= delta_time
         return False
+    
+    def Check_Shooting_Ready(self, delta_time):
+        if not self.charge:
+            return
+        
+        self.ready_to_shoot = self.flame_thrower.Update(delta_time)
+        if not self.ready_to_shoot:
+            return
+        
+        self.Generate_Projectile()
 
-    def Particle_Creation(self, entity, special_attack):
+    def Initialise_Shooting(self, entity, charge, damage):
+        self.entity = entity
+        self.charge = charge
+        self.base_damage = damage
+        self.ready_to_shoot = True
+
+    def Particle_Creation(self, special_attack):
         pass
             
-    def Shoot_Particles(self, entity, special_attack):
+    def Shoot_Particles(self, special_attack):
         pass
     
     # Append extra fire particle to the pool in case it runs out

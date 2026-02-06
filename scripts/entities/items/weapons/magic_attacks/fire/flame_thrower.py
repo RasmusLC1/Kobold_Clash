@@ -6,22 +6,25 @@ from scripts.engine.keys.keys import keys
 class Flame_Thrower(Particle_Shooter):
     def __init__(self, game):
         super().__init__(game)
+        self.ready_to_shoot = False
+        self.charge = 0
 
 
-    def Particle_Creation(self, entity, damage, cooldown = 1):
-        self.Shoot_Particles(entity, damage)
+    def Particle_Creation(self, cooldown = 1):
+        self.Shoot_Particles()
         self.cooldown = cooldown
 
 
-    def Shoot_Particles(self, entity, damage):
+    def Shoot_Particles(self):
         # Basic raycasting attributes
         num_lines = 8  # Define the number of lines and the spread angle (in degrees)
         spread_angle = 50  # Total spread of the fan (in degrees)
         angle_increment = spread_angle / (num_lines - 1)  # Calculate the angle increment between each line
-
+        entity = self.entity
         # Calculate the base angle using atan2(y, x)
         base_angle = math.atan2(entity.attack_direction[1], entity.attack_direction[0])
         start_angle = base_angle - math.radians(spread_angle / 2)
+        damage = self.base_damage
 
         speed = 1  
 
@@ -37,7 +40,7 @@ class Flame_Thrower(Particle_Shooter):
             pos_y = math.sin(angle) * speed
             direction = (pos_x, pos_y)
             
-            fire_particle.Set_Enabled(entity.rect(), speed, 20, direction, entity, 50, damage + self.base_damage)
+            fire_particle.Set_Enabled(entity.rect(), speed, 20, direction, entity, 50, damage)
 
     
     # Append extra fire particle to the pool in case it runs out
