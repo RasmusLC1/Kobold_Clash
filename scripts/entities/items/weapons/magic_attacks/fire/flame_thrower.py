@@ -6,11 +6,7 @@ from scripts.engine.keys.keys import keys
 class Flame_Thrower(Particle_Shooter):
     def __init__(self, game):
         super().__init__(game, cooldown_max=0.5)
-        self.ready_to_shoot = False
-        self.charge = 0
 
-
-    
 
     def Shoot_Particles(self):
         # Basic raycasting attributes
@@ -19,9 +15,11 @@ class Flame_Thrower(Particle_Shooter):
         angle_increment = spread_angle / (num_lines - 1)  # Calculate the angle increment between each line
         entity = self.entity
         # Calculate the base angle using atan2(y, x)
+        self.entity.Set_Attack_Direction()
         base_angle = math.atan2(entity.attack_direction[1], entity.attack_direction[0])
         start_angle = base_angle - math.radians(spread_angle / 2)
         damage = self.base_damage
+
 
         speed = 1  
 

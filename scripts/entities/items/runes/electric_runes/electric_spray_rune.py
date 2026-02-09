@@ -9,14 +9,14 @@ class Electric_Spray_Rune(Projectile_Rune):
         self.animation_size_max = 15
         self.electric_shooter = Electric_Shooter(self.game)
         self.activate_cooldown_max = 2
+        self.damage = 10
+
+
+    def Update(self, delta_time):
+        self.electric_shooter.Update(delta_time)
+        return super().Update(delta_time)
 
     def Set_Charge(self):
-        self.charge = self.current_power * 100
+        self.electric_shooter.Initialise_Shooting(self.player, self.current_power, self.damage)
 
-    def Generate_Projectile(self):
-        self.charge = self.electric_shooter.Particle_Creation(self.game.player, self.charge, self.current_power * 7)
-        if self.charge <= 0:
-            self.Set_Activate_Cooldown(self.activate_cooldown_max)
-        else:
-            self.Set_Activate_Cooldown(0)
-        return
+

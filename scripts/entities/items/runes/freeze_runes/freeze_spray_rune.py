@@ -9,15 +9,14 @@ class Freeze_Spray_Rune(Projectile_Rune):
         self.animation_size_max = 15
         self.ice_shooter = Ice_Shooter(self.game)
         self.activate_cooldown_max = 2
+        self.damage = 12
+
+
+
+    def Update(self, delta_time):
+        self.ice_shooter.Update(delta_time)
+        return super().Update(delta_time)
 
     def Set_Charge(self):
-        self.charge = self.current_power * 100
-
-    def Generate_Projectile(self):
-        self.charge = self.ice_shooter.Particle_Creation(self.charge ,self.game.player, self.current_power * 10)
-        if self.charge <= 0:
-            self.Set_Activate_Cooldown(self.activate_cooldown_max)
-        else:
-            self.Set_Activate_Cooldown(0)
-        return
+        self.ice_shooter.Initialise_Shooting(self.player, self.current_power, self.damage)
 
