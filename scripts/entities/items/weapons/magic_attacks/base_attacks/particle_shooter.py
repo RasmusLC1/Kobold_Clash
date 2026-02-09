@@ -2,16 +2,20 @@ from scripts.engine.keys.keys import keys
 
 
 class Particle_Shooter():
-    def __init__(self, game, cooldown_max):
+    def __init__(self, game, range, speed, cooldown_max, particle_type):
         self.game = game
         self.index = 0
         self.particle_pool = []
         self.base_damage = 0
+        self.range = range
+        self.speed = speed
         self.cooldown = 0
         self.cooldown_max = cooldown_max
         self.charge = 0
         self.entity = None
         self.ready_to_shoot = False
+        self.particle_type = particle_type
+
 
     def Update(self, delta_time):
         if not self.charge:
@@ -81,3 +85,14 @@ class Particle_Shooter():
             return None
         
         return particle
+
+
+    # Append extra particle to the pool in case it runs out
+    def Create_Extra_Particle(self):
+        ice_particle = self.particle_type(
+                self.game,
+                (-999, -999),
+                100
+            )
+        self.particle_pool.append(ice_particle)
+        return ice_particle

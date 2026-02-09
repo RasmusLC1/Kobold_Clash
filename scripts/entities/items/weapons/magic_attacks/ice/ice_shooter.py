@@ -5,9 +5,8 @@ from scripts.engine.keys.keys import keys
 
 class Ice_Shooter(Particle_Shooter):
     def __init__(self, game):
-        super().__init__(game, cooldown_max=0.3)
-        self.range = 100
-        self.speed = 1.2
+        super().__init__(game, speed=1.4, range=80 ,cooldown_max=0.3, particle_type=Ice_Particle)
+
 
 
     def Shoot_Particles(self):
@@ -31,12 +30,4 @@ class Ice_Shooter(Particle_Shooter):
         ice_particle.Set_Enabled(self.entity.rect(), self.speed, self.range, direction, self.entity, 100, self.base_damage)
         
     
-    # Append extra fire particle to the pool in case it runs out
-    def Create_Extra_Particle(self):
-        ice_particle = Ice_Particle(
-                self.game,
-                (-999, -999),
-                100
-            )
-        self.particle_pool.append(ice_particle)
-        return ice_particle
+ 

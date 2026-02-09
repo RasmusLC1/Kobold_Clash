@@ -6,11 +6,9 @@ from scripts.engine.keys.keys import keys
 
 class Electric_Shooter(Particle_Shooter):
     def __init__(self, game):
-        super().__init__(game, cooldown_max=0.4)
-        self.range = 50
+        super().__init__(game, range=60, speed=1.7, cooldown_max=0.4, particle_type=Electric_Particle)
             
     def Shoot_Particles(self):
-        speed = 2
 
         electric_particle = self.Find_Particle()
         self.entity.Set_Attack_Direction()
@@ -23,22 +21,11 @@ class Electric_Shooter(Particle_Shooter):
         # Calculate the base angle using atan2(y, x)
         base_angle = math.atan2(self.entity.attack_direction[1], self.entity.attack_direction[0])
 
-        pos_x = math.cos(base_angle) * speed
-        pos_y = math.sin(base_angle) * speed
+        pos_x = math.cos(base_angle) * self.speed
+        pos_y = math.sin(base_angle) * self.speed
         direction = (pos_x, pos_y)
-        electric_particle.Set_Enabled(self.entity.rect(), speed, self.range, direction, self.entity, 100, self.base_damage)
+        electric_particle.Set_Enabled(self.entity.rect(), self.speed, self.range, direction, self.entity, 100, self.base_damage)
         
         
-        
-    # Append extra fire particle to the pool in case it runs out
-    def Create_Extra_Particle(self):
-        electric_particle = Electric_Particle(
-                self.game,
-                (-999, -999),
-                100
-            )
-        self.particle_pool.append(electric_particle)
-        return electric_particle
-
-
+  
         
