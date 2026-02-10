@@ -321,3 +321,11 @@ class Items():
     rarity_value = "rarity_value"
 
     amount = "amount"
+
+    sub_category = "sub_category"
+
+    picked_up = "picked_up"
+
+    inventory_type = "inventory_type"
+
+    inventory_index = "inventory_index"

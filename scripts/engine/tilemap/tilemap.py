@@ -264,7 +264,7 @@ class Tilemap:
 
     def Add_Entity_To_Tile(self, tile, entity):
         if not tile:
-            print("Error adding entity to  tile", entity.type)
+            print("Error adding entity to  tile", entity.type, entity.pos)
             return
         tile.Add_Entity(entity)
 
