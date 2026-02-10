@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Poison_Plume_Rune(Rune):
     def __init__(self, game, type, pos, rarity_value, amount):
-        super().__init__(game, keys.poison_plume_rune, pos, 2, 30)
+        super().__init__(game, keys.poison_plume_rune, pos, amount, rarity_value)
         self.poison_plume = Poison_Plume(self.game.player)
 
 

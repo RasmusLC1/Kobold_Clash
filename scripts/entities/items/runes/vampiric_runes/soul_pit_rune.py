@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Soul_Pit_Rune(Projectile_Rune):
     def __init__(self, game, type, pos, rarity_value, amount):
-        super().__init__(game, keys.soul_pit_rune, pos, 2, 30)
+        super().__init__(game, keys.soul_pit_rune, pos, amount, rarity_value)
 
 
     def Generate_Projectile(self):

@@ -5,7 +5,7 @@ from scripts.engine.keys.keys import keys
 # TODO: FInish rune
 class Freeze_Circle_Rune(Rune):
     def __init__(self, game, type, pos, rarity_value, amount):
-        super().__init__(game, keys.freeze_circle_rune , pos, 10, 10)
+        super().__init__(game, keys.freeze_circle_rune , pos, amount, rarity_value)
         self.clicked = False
 
 

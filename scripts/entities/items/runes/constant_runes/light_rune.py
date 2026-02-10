@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Light_Rune(Rune):
     def __init__(self, game, type, pos, rarity_value, amount):
-        super().__init__(game, keys.light_rune, pos, 7, 0)
+        super().__init__(game, keys.light_rune, pos, amount, rarity_value)
 
     def Update(self, delta_time):
         super().Update(delta_time)

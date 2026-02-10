@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Freeze_Spray_Rune(Projectile_Rune):
     def __init__(self, game, type, pos, rarity_value, amount):
-        super().__init__(game, keys.freeze_spray_rune, pos, 1, 20)
+        super().__init__(game, keys.freeze_spray_rune, pos, amount, rarity_value)
         self.ice_shooter = Ice_Shooter(self.game)
         self.activate_cooldown_max = 2
         self.damage = 12

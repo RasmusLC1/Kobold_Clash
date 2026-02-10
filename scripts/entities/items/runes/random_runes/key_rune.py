@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Key_Rune(Rune):
     def __init__(self, game, type, pos, rarity_value, amount):
-        super().__init__(game, keys.key_rune, pos, 0, 50)
+        super().__init__(game, keys.key_rune, pos, amount, rarity_value)
 
 
     def Activate(self):

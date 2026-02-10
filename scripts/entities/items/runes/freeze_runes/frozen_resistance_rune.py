@@ -4,4 +4,4 @@ from scripts.engine.keys.keys import keys
 
 class Frozen_Resistance_Rune(Rune):
     def __init__(self, game, type, pos, rarity_value, amount):
-        super().__init__(game, keys.frozen_resistance_rune, pos, 5, 15)
+        super().__init__(game, keys.frozen_resistance_rune, pos, amount, rarity_value)

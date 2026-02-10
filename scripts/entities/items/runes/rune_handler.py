@@ -66,8 +66,8 @@ class Rune_Handler(Loot_Types_Handler):
     # needs to be 3 random runes with a budget of 100 
     def Add_Runes_To_Inventory_TEST(self):
         test_runes = [keys.freeze_spray_rune, keys.fire_spray_rune, keys.electric_spray_rune]
-        for i in range(3):
-            rune = self.Loot_Spawner((999, 999), test_runes[i], 33)
+        for i in test_runes:
+            rune = self.Loot_Spawner((999, 999), i, 33)
             self.Add_Rune_To_Rune_Inventory(rune)
 
     def Load_Data(self, data):
@@ -135,6 +135,8 @@ class Rune_Handler(Loot_Types_Handler):
         return rune
 
     def Add_Rune_To_Rune_Inventory(self, rune):
+        if not rune:
+            return
         self.item_handler.Add_Item(rune)
         rune.Pick_Up()
         return rune

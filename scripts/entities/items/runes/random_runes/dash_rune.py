@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Dash_Rune(Projectile_Rune):
     def __init__(self, game, type, pos, rarity_value, amount):
-        super().__init__(game, keys.dash_rune, pos, 10, 10)
+        super().__init__(game, keys.dash_rune, pos, amount, rarity_value)
         self.effect = None
 
     def Generate_Projectile(self):

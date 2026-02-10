@@ -3,11 +3,11 @@ import pygame
 import math
 from scripts.entities.textbox.rune_textbox import Rune_Textbox
 from scripts.engine.keys.keys import keys
-
+import traceback
 
 
 class Rune(Item):
-    def __init__(self, game, type, pos, power, soul_cost, animation_time_max = 0.5, animation_size_max = 15):
+    def __init__(self, game, type, pos, soul_cost, power, animation_time_max = 0.5, animation_size_max = 15):
         self.player = game.player
         self.menu_pos = pos
         self.upgrade_cost = math.ceil(soul_cost / 3)
@@ -25,7 +25,7 @@ class Rune(Item):
         self.activate_cooldown = 0
         self.activate_cooldown_max = 5
         self.clicked = False # Used for projectiles
-        super().__init__(game,  type, keys.rune, pos, size=(16, 16), amount=1, max_amount=1, add_to_tile=False, durability=100, max_durability=100)
+        super().__init__(game,  type, keys.rune, pos, size=(16, 16), amount=1, max_amount=1, add_to_tile=False, rarity_value=soul_cost, durability=100, max_durability=100)
 
 
     def Save_Data(self):
@@ -184,7 +184,8 @@ class Rune(Item):
         self.game.symbols.Render_Symbol(surf, self.effect,  (self.player.pos[0] - offset[0] + 8 - inversed_animation_size, self.player.pos[1] - offset[1] - inversed_animation_size), inversed_animation_size)
 
     def Calculate_Value(self):
-        return self.value * self.current_power
+        print(self.value, self.current_power, self.original_soul_cost)
+        return math.ceil(self.value * self.current_power)
 
     def Place_Down(self):
         self.game.item_handler.Remove_Rune_From_Active_Runes(self)
