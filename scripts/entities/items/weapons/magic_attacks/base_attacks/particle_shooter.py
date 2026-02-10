@@ -53,10 +53,7 @@ class Particle_Shooter():
 
     def Shoot_Particles(self):
         pass
-    
-    # Append extra fire particle to the pool in case it runs out
-    def Create_Extra_Particle(self):
-        pass
+
     
     # Effect is ignored as this is a general weapons function
     def Set_Damage(self, effect, amount):

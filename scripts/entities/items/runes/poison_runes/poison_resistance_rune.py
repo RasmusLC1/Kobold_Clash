@@ -4,9 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Poison_Resistance_Rune(Rune):
     def __init__(self, game, pos):
-        super().__init__(game, keys.poison_resistance_rune, pos, 5, 15)
-        self.animation_time_max = 0.3
-        self.animation_size_max = 25
+        super().__init__(game, keys.poison_resistance_rune, pos, 5, 15, animation_time_max = 0.3, animation_size_max = 25)
 
 
         

@@ -7,7 +7,7 @@ from scripts.engine.keys.keys import keys
 
 
 class Rune(Item):
-    def __init__(self, game, type, pos, power, soul_cost):
+    def __init__(self, game, type, pos, power, soul_cost, animation_time_max = 0.5, animation_size_max = 15):
         self.player = game.player
         self.menu_pos = pos
         self.upgrade_cost = math.ceil(soul_cost / 3)
@@ -21,7 +21,6 @@ class Rune(Item):
         self.animation_size = 0
         self.animation_size_max = 0
         self.effect = type.replace('_rune', '')
-        # self.picked_up = True
         self.cost_to_buy = soul_cost // 2 * power // 2
         self.activate_cooldown = 0
         self.activate_cooldown_max = 5

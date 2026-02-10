@@ -5,9 +5,6 @@ from scripts.engine.keys.keys import keys
 class Freeze_Ball_Rune(Projectile_Rune):
     def __init__(self, game, pos):
         super().__init__(game, keys.freeze_ball_rune, pos, 1, 40)
-        self.animation_time_max = 0.5
-        self.animation_size_max = 15
-
 
 
     def Generate_Projectile(self):

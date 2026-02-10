@@ -5,8 +5,6 @@ from scripts.engine.keys.keys import keys
 class Soul_Reap_Rune(Projectile_Rune):
     def __init__(self, game, pos):
         super().__init__(game, keys.soul_reap_rune, pos, 1, 20)
-        self.animation_time_max = 0.5
-        self.animation_size_max = 5
         self.activate_cooldown_max = 2
         self.soul_reap_shooter = Soul_Reap_Shooter(game)
 

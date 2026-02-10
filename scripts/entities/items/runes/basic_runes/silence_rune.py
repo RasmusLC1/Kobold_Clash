@@ -5,6 +5,3 @@ from scripts.engine.keys.keys import keys
 class Silence_Rune(Rune):
     def __init__(self, game, pos):
         super().__init__(game, keys.silence_rune, pos, 3, 40)
-        self.animation_time_max = 0.5
-        self.animation_size_max = 15
-

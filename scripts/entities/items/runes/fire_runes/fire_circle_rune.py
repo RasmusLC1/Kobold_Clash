@@ -6,9 +6,6 @@ from scripts.engine.keys.keys import keys
 class Fire_Circle_Rune(Rune):
     def __init__(self, game, pos):
         super().__init__(game, keys.fire_cirlce_rune, pos, 10, 10)
-        self.animation_time_max = 0.5
-        self.animation_size_max = 15
-        self.clicked = False
 
 
     def Activate(self):

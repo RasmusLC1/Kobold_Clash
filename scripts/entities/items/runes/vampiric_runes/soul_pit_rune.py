@@ -5,9 +5,6 @@ from scripts.engine.keys.keys import keys
 class Soul_Pit_Rune(Projectile_Rune):
     def __init__(self, game, pos):
         super().__init__(game, keys.soul_pit_rune, pos, 2, 30)
-        self.animation_time_max = 0.5
-        self.animation_size_max = 15
-
 
 
     def Generate_Projectile(self):

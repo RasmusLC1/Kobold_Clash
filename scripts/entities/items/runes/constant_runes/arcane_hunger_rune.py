@@ -4,8 +4,6 @@ from scripts.engine.keys.keys import keys
 class Arcane_Hunger_Rune(Rune):
     def __init__(self, game, pos):
         super().__init__(game, keys.arcane_hunger_rune, pos, 1, 0)
-        self.animation_time_max = 0.5
-        self.animation_size_max = 15
 
     def Update(self, delta_time):
         if not self.game.player.effects.arcane_hunger.effect:

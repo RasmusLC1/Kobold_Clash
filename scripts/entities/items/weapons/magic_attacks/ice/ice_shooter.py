@@ -1,12 +1,10 @@
 from scripts.entities.items.weapons.magic_attacks.ice.ice_particle import Ice_Particle
 from scripts.entities.items.weapons.magic_attacks.base_attacks.particle_shooter import Particle_Shooter
 import math
-from scripts.engine.keys.keys import keys
 
 class Ice_Shooter(Particle_Shooter):
     def __init__(self, game):
         super().__init__(game, speed=1.4, range=80 ,cooldown_max=0.3, particle_type=Ice_Particle)
-
 
 
     def Shoot_Particles(self):
@@ -19,7 +17,7 @@ class Ice_Shooter(Particle_Shooter):
 
         self.entity.Set_Attack_Direction()
 
-    
+
         # Calculate the base angle using atan2(y, x)
         base_angle = math.atan2(self.entity.attack_direction[1], self.entity.attack_direction[0])
 
