@@ -32,9 +32,3 @@ class Revive_Loot_Handler(Loot_Types_Handler):
             keys.blood_pact : 30
         }
  
-    
-    def Get_Loot_Values(self):
-
-        return self.loot_types_cost
-
-

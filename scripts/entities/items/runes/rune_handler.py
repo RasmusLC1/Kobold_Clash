@@ -44,9 +44,8 @@ from scripts.entities.items.runes.constant_runes.arcane_hunger_rune import Arcan
 from scripts.entities.items.runes.constant_runes.manget_rune import Magnet_Rune
 from scripts.engine.keys.keys import keys
 from scripts.entities.items.loot.loot_types_handler import Loot_Types_Handler
+from scripts.engine.utility.luck_calculator import Luck_Calculator
 
-
-import math
 
 class Rune_Handler(Loot_Types_Handler):
     def __init__(self, game, item_handler):
@@ -58,7 +57,7 @@ class Rune_Handler(Loot_Types_Handler):
 
         
         # Pre-calculate min cost for the base class performance
-        self.min_cost = min(self.rune_values.values())
+        self.min_cost = min(self.loot_types_cost.values())
 
     # Function to initialise the runes at the start of game
     def Initialise_Runes(self):
@@ -66,9 +65,10 @@ class Rune_Handler(Loot_Types_Handler):
 
     # needs to be 3 random runes with a budget of 100 
     def Add_Runes_To_Inventory_TEST(self):
-        self.Add_Rune_To_Rune_Inventory(keys.freeze_spray_rune)
-        self.Add_Rune_To_Rune_Inventory(keys.fire_spray_rune)
-        self.Add_Rune_To_Rune_Inventory(keys.electric_spray_rune)
+        test_runes = [keys.freeze_spray_rune, keys.fire_spray_rune, keys.electric_spray_rune]
+        for i in range(3):
+            rune = self.Loot_Spawner((999, 999), test_runes[i], 33)
+            self.Add_Rune_To_Rune_Inventory(rune)
 
     def Load_Data(self, data):
         if not data:
@@ -78,16 +78,22 @@ class Rune_Handler(Loot_Types_Handler):
         if not rune_type:
             return None
 
-        rune = self.Add_Rune_To_Rune_Inventory(rune_type)
+        pos = data[keys.pos]
+        type = data[keys.type]
+        amount = data[keys.amount]
+        rarity_value = self.loot_types_cost.get(type)
+
+        rune = self.Loot_Spawner(pos, rune_type, rarity_value, amount)
         if rune:
             rune.Load_Data(data)
+
         return rune
     
     def Save_Rune_Data(self):
         self.saved_data.clear()
 
         for rune in self.active_runes:
-            self.saved_data[rune.type] = rune.Save_Data()
+            self.saved_data[rune.ID] = rune.Save_Data()
 
         return self.saved_data
 
@@ -121,20 +127,14 @@ class Rune_Handler(Loot_Types_Handler):
         return True
 
 
-    # MANDATORY OVERRIDE for Loot_Types_Handler
-    def Get_Loot_Values(self):
-        return self.rune_values
-
     # --- INVENTORY LOGIC ---
 
-    def Add_Rune_To_Rune_Inventory(self, rune_type):
-        rune_class = self.loot_map.get(rune_type)
-        if not rune_class:
-            return None
-        
-        rune = rune_class(self.game, (999, 999))
-        rune.active = True
+    def Loot_Spawner(self, pos, type = None, rarity_value = 0, amount = 1):
+        rune = super().Loot_Spawner(pos, type, rarity_value, amount)
         self.active_runes.append(rune)
+        return rune
+
+    def Add_Rune_To_Rune_Inventory(self, rune):
         self.item_handler.Add_Item(rune)
         rune.Pick_Up()
         return rune
@@ -201,7 +201,7 @@ class Rune_Handler(Loot_Types_Handler):
             keys.soul_pit_rune: Soul_Pit_Rune,
         }
 
-        self.rune_values = {
+        self.loot_types_cost = {
             # Utility & Movement
             keys.dash_rune : 10,                # Dash
             keys.key_rune : 15,                 # Door unlock

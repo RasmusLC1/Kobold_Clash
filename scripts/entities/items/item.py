@@ -55,7 +55,7 @@ class Item(PhysicsEntity):
         self.saved_data['durability'] = self.durability
         self.saved_data['picked_up'] = self.picked_up
         self.saved_data['inventory_type'] = self.inventory_type
-        self.saved_data['amount'] = self.amount
+        self.saved_data[keys.amount] = self.amount
         self.saved_data['inventory_index'] = self.inventory_index
 
     
@@ -66,7 +66,7 @@ class Item(PhysicsEntity):
         self.durability = data['durability']
         self.picked_up = data['picked_up']
         self.inventory_type = data['inventory_type']
-        self.amount = data['amount']
+        self.amount = data[keys.amount]
         self.inventory_index = data['inventory_index']
         self.Set_Description()
         

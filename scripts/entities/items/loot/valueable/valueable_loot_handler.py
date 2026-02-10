@@ -22,8 +22,3 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
     def Spawn_Hunter_Treasure(self, pos, amount = 0, type = None):
         loot = Hunter_Treasure(self.game, pos)
         return loot
-
-
-    def Get_Loot_Values(self):
-
-        return self.loot_types_cost

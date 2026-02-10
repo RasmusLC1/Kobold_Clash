@@ -38,9 +38,3 @@ class Key_Loot_Handler(Loot_Types_Handler):
             keys.lockpick: 10,
         }
 
-
-    def Get_Loot_Values(self):
-
-        return self.loot_types_cost
-
-

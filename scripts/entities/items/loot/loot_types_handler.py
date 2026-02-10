@@ -5,6 +5,7 @@ class Loot_Types_Handler():
     def __init__(self, game):
         self.game = game    
         self.loot_map = {}
+        self.loot_types_cost = {}
 
 
     def Loot_Spawner(self, pos, type = None, rarity_value = 0, amount = 1):
@@ -31,4 +32,4 @@ class Loot_Types_Handler():
 
 
     def Get_Loot_Values(self):
-        pass
+        return self.loot_types_cost

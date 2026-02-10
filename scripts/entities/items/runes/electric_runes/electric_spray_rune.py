@@ -3,7 +3,7 @@ from scripts.entities.items.weapons.magic_attacks.electric.electric_shooter impo
 from scripts.engine.keys.keys import keys
 
 class Electric_Spray_Rune(Projectile_Rune):
-    def __init__(self, game, pos):
+    def __init__(self, game, type, pos, rarity_value, amount):
         super().__init__(game, keys.electric_spray_rune, pos, 4, 20)
         self.electric_shooter = Electric_Shooter(self.game)
         self.activate_cooldown_max = 2

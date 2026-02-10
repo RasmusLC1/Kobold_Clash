@@ -2,7 +2,7 @@ from scripts.entities.items.runes.rune import Rune
 from scripts.engine.keys.keys import keys
 
 class Arcane_Hunger_Rune(Rune):
-    def __init__(self, game, pos):
+    def __init__(self, game, type, pos, rarity_value, amount):
         super().__init__(game, keys.arcane_hunger_rune, pos, 1, 0)
 
     def Update(self, delta_time):

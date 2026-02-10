@@ -23,8 +23,3 @@ class Bomb_Loot_Handler(Loot_Types_Handler):
             keys.poison_bomb : 15,
             keys.vampiric_bomb : 20,
         }
-
-
-    def Get_Loot_Values(self):
-
-        return self.loot_types_cost

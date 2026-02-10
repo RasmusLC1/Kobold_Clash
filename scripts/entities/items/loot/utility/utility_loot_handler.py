@@ -32,7 +32,3 @@ class Utility_Loot_Handler(Loot_Types_Handler):
             # Recall Parchment – Teleports the player back to the last shrine visited.
             keys.recall_scroll: 20,
         }
-
-    def Get_Loot_Values(self):
-
-        return self.loot_types_cost

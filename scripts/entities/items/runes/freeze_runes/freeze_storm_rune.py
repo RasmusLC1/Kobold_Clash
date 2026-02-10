@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 
 class Freeze_Storm_Rune(Rune):
-    def __init__(self, game, pos):
+    def __init__(self, game, type, pos, rarity_value, amount):
         super().__init__(game, keys.freeze_storm_rune, pos, 1, 30)
         self.ice_storm = None
 

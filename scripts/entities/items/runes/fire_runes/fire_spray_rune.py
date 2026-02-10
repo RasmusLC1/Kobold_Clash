@@ -3,7 +3,7 @@ from scripts.entities.items.weapons.magic_attacks.fire.flame_thrower import Flam
 from scripts.engine.keys.keys import keys
 
 class Fire_Spray_Rune(Projectile_Rune):
-    def __init__(self, game, pos):
+    def __init__(self, game, type, pos, rarity_value, amount):
         super().__init__(game, keys.fire_spray_rune, pos, 1, 20)
         self.fire_shooter = Flame_Thrower(self.game)
         self.activate_cooldown_max = 2

@@ -315,3 +315,9 @@ class Items():
 
     
     invulnerable_rune = "invulnerable_rune"
+
+# SAVE LOAD
+
+    rarity_value = "rarity_value"
+
+    amount = "amount"

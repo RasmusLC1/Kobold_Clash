@@ -3,7 +3,7 @@ from scripts.entities.items.weapons.magic_attacks.vampiric.soul_reap_shooter imp
 from scripts.engine.keys.keys import keys
 
 class Soul_Reap_Rune(Projectile_Rune):
-    def __init__(self, game, pos):
+    def __init__(self, game, type, pos, rarity_value, amount):
         super().__init__(game, keys.soul_reap_rune, pos, 1, 20)
         self.activate_cooldown_max = 2
         self.soul_reap_shooter = Soul_Reap_Shooter(game)

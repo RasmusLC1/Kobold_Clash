@@ -16,10 +16,10 @@ class Rune(Item):
         self.original_soul_cost = soul_cost
         self.current_soul_cost = soul_cost
         self.min_soul_cost = math.ceil(self.original_soul_cost / 10)
-        self.animation_time_max = 0.4
         self.animation_time = 0
+        self.animation_time_max = animation_time_max
         self.animation_size = 0
-        self.animation_size_max = 0
+        self.animation_size_max = animation_size_max
         self.effect = type.replace('_rune', '')
         self.cost_to_buy = soul_cost // 2 * power // 2
         self.activate_cooldown = 0

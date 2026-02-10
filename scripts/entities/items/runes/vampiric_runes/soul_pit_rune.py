@@ -3,7 +3,7 @@ from scripts.entities.items.weapons.magic_attacks.vampiric.vampiric_ball import 
 from scripts.engine.keys.keys import keys
 
 class Soul_Pit_Rune(Projectile_Rune):
-    def __init__(self, game, pos):
+    def __init__(self, game, type, pos, rarity_value, amount):
         super().__init__(game, keys.soul_pit_rune, pos, 2, 30)
 
 
