@@ -9,5 +9,10 @@ class Plinth(Display_Loot_Container):
         
 
     def Drop_Loot(self):
-        self.game.item_handler.Spawn_Rune((self.pos[0] + 3, self.pos[1]))
+        rarity_value = self.Calculate_Rarity()
+
+        if rarity_value == keys.nothing:
+                    return
+        
+        self.game.item_handler.Spawn_Rune((self.pos[0] + 3, self.pos[1]), rarity_value)
 

@@ -184,7 +184,6 @@ class Rune(Item):
         self.game.symbols.Render_Symbol(surf, self.effect,  (self.player.pos[0] - offset[0] + 8 - inversed_animation_size, self.player.pos[1] - offset[1] - inversed_animation_size), inversed_animation_size)
 
     def Calculate_Value(self):
-        print(self.value, self.current_power, self.original_soul_cost)
         return math.ceil(self.value * self.current_power)
 
     def Place_Down(self):

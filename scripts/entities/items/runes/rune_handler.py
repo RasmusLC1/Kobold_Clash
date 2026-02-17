@@ -131,7 +131,6 @@ class Rune_Handler(Loot_Types_Handler):
 
     def Loot_Spawner(self, pos, type = None, rarity_value = 0, amount = 1):
         rune = super().Loot_Spawner(pos, type, rarity_value, amount)
-        self.active_runes.append(rune)
         return rune
 
     def Add_Rune_To_Rune_Inventory(self, rune):
@@ -139,6 +138,7 @@ class Rune_Handler(Loot_Types_Handler):
             return
         self.item_handler.Add_Item(rune)
         rune.Pick_Up()
+        self.active_runes.append(rune)
         return rune
 
     def Find_Nearby_Runes(self, entity_pos, max_distance):
@@ -159,6 +159,9 @@ class Rune_Handler(Loot_Types_Handler):
 
     def Render_Animation(self, surf, offset=(0, 0)):
         for rune in self.active_runes:
+            if not rune:
+                print(self.active_runes)
+                return
             rune.Render_Animation(surf, offset)
 
     def Get_Active_Runes(self):

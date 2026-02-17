@@ -86,6 +86,7 @@ class Status_Effect_Handler:
                 print(f"Error loading {effect_id}: {e}")
 
 
+    # Retrieve the entire effect class
     def Get_Effect(self, effect_name):
         # Initial check if it's initalised
         if effect_name in self.instantiated_effects:
@@ -103,6 +104,7 @@ class Status_Effect_Handler:
 
         return new_effect
     
+    # Retrieve only the effect strength
     def Get_Effect_Strength(self, effect_name):
         effect = self.Get_Effect(effect_name)
 

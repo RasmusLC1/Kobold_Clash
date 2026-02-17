@@ -103,8 +103,12 @@ class Weapon_Handler():
     def Spawn_Gems_For_Weapon(self, rarity_value):
         iterations = 10 # Condition to prevent infinite loop
         gems = []
-        while rarity_value > 0 or iterations > 0:
+        while iterations > 0:
             iterations -= 1
+
+            if rarity_value <= 0:
+                break
+            
             gem_type, cost = self.item_handler.Get_Gems_For_Weapon(rarity_value)
 
             if gem_type:

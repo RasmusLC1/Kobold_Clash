@@ -2,7 +2,7 @@ from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.element
 from scripts.entities.items.weapons.magic_attacks.ice.ice_shooter import Ice_Shooter
 from scripts.engine.keys.keys import keys
 
-ICE_PROJECTILE_NUM = 3 * 20 # 20 for special attack
+ICE_PROJECTILE_NUM = 3
 
 class Ice_Spirit(Elemental):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
@@ -19,14 +19,8 @@ class Ice_Spirit(Elemental):
     def Update(self, tilemap, delta_time, movement = (0, 0)):
         super().Update(tilemap, delta_time, movement)
 
+        self.active_weapon.Update(delta_time)
 
-        if self.shooting_ice:
-            self.Shoot_Ice_Particle()
-
-        
-        if self.effects.frozen.effect:
-            self.Set_Effect(keys.healing, self.effects.frozen.effect)
-            self.Set_Effect(keys.frozen_resistance, 2)
         
         return True
 
@@ -38,12 +32,15 @@ class Ice_Spirit(Elemental):
         return super().Attack(delta_time)
     
     def Trigger_Attack(self):
-        if not self.shooting_ice:
-            self.shooting_ice = ICE_PROJECTILE_NUM
-
-    def Shoot_Ice_Particle(self):
         self.Set_Target(self.game.player.pos)
         self.Set_Attack_Direction()
-        self.shooting_ice = self.active_weapon.Particle_Creation(self, self.shooting_ice, self.ice_damage)
-        if not self.shooting_ice:
-            self.charge = 0
+        self.active_weapon.Initialise_Shooting(self, 2, self.ice_damage)
+
+    def Handle_Frozen(self):
+        frozen = self.effects.Get_Effect_Strength(keys.frozen)
+        if not self.effects.Get_Effect_Strength(keys.frozen):
+            return
+        
+        self.Set_Effect(keys.healing, frozen)
+        self.Set_Effect(keys.frozen_resistance, frozen)
+        

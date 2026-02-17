@@ -1,4 +1,5 @@
 import random
+import traceback
 
 class Luck_Calculator():
     def Get_Loot_Based_On_Rarity(rarity_value, loot_types_cost):
@@ -22,6 +23,10 @@ class Luck_Calculator():
     def Get_Valid_Items(rarity_value, loot_types_cost):
         
         if not loot_types_cost:
+            return None
+        
+        if not rarity_value:
+            print("RARITY VALUE NOT FOUND", loot_types_cost)
             return None
 
         # Filter valid items

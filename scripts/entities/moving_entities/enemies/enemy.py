@@ -159,9 +159,21 @@ class Enemy(Moving_Entity):
 
 
     def Trigger_Attack(self):
-        self.Set_Target(self.game.player.pos)
+        self.Set_Target()
         self.active_weapon.Set_Attack()
         self.Reset_Charge()
+
+    def Set_Target(self, pos = None):
+        if not pos:
+            pos = self.game.player.pos
+        return super().Set_Target(pos)
+    
+    def Check_Attack_Direction(self, attack_direction):
+        if not attack_direction:
+            self.Set_Target()
+            attack_direction = self.target
+
+        return attack_direction
 
     def Set_Attack_Direction(self):
         if not self.charge > 0:
