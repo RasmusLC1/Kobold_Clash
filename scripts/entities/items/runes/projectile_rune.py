@@ -4,8 +4,8 @@ import pygame
 from scripts.engine.keys.keys import keys
 
 class Projectile_Rune(Rune):
-    def __init__(self, game, type, pos, soul_cost, power, animation_time_max = 0.4, animation_size_max = 0):
-        super().__init__(game, type, pos, soul_cost, power, animation_time_max = 0.4, animation_size_max = 0)
+    def __init__(self, game, type, pos, power, soul_cost, animation_time_max = 0.4, animation_size_max = 0):
+        super().__init__(game, type, pos, power, soul_cost, animation_time_max = 0.4, animation_size_max = 0)
         self.effect = None
         self.charge = 0
 

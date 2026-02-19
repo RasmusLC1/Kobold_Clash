@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 
 class Poison_Ball_Rune(Projectile_Rune):
-    def __init__(self, game, type, pos, rarity_value, amount):
+    def __init__(self, game, type, pos, amount, rarity_value):
         super().__init__(game, keys.poison_ball_rune, pos, amount, rarity_value)
 
 

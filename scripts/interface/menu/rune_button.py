@@ -10,13 +10,10 @@ class Rune_Button(Button):
 
     def Activate(self, rune):
         if self.effect == keys.souls:
-            amount = -1 * math.ceil(rune.original_soul_cost / 10)
-            return rune.Modify_Souls_Cost(amount)
+            return rune.Upgrade_Souls_Cost()
 
         elif self.effect == keys.power:
-            # TODO: REWORK Original values no longer kept
-            amount = math.ceil(rune.original_power / 10)
-            return rune.Modify_Power(amount)
+            return rune.Upgrade_Power()
         
         elif self.effect == 'purchase':
             return True

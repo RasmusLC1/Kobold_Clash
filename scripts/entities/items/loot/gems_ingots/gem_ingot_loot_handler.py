@@ -67,13 +67,13 @@ class Gem_Ingot_Loot_Handler(Loot_Types_Handler):
     
     def Get_Random_Gem(self, rarity_value):
         gems = self.gem_values
-        gem_type, amount = Luck_Calculator.Get_Loot_Based_On_Rarity(rarity_value, gems)
-        return gem_type, gems.get(gem_type)
+        gem_type, amount, value = Luck_Calculator.Get_Loot_Based_On_Rarity(rarity_value, gems)
+        return gem_type, value
 
     def Loot_Spawner(self, pos, sub_type=None, rarity_value=0, amount=None):
         if not sub_type:
             # Pass all_values if no sub_type is provided
-            sub_type, amount = Luck_Calculator.Get_Loot_Based_On_Rarity(rarity_value, self.all_values)
+            sub_type, amount, rarity_value = Luck_Calculator.Get_Loot_Based_On_Rarity(rarity_value, self.all_values)
 
         loot_type = self.Get_Type(sub_type)
         if not loot_type:

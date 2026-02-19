@@ -3,43 +3,42 @@ import pygame
 import math
 from scripts.entities.textbox.rune_textbox import Rune_Textbox
 from scripts.engine.keys.keys import keys
-import traceback
+import random
 
 
 class Rune(Item):
-    def __init__(self, game, type, pos, soul_cost, power, animation_time_max = 0.5, animation_size_max = 15):
+    def __init__(self, game, type, pos, upgrades, soul_cost, animation_time_max = 0.5, animation_size_max = 15):
         self.player = game.player
         self.menu_pos = pos
-        self.upgrade_cost = math.ceil(soul_cost / 3)
-        self.Initialise_Upgrades(soul_cost, power)
+        self.Initialise_Upgrades(soul_cost, upgrades)
         self.animation_time = 0
         self.animation_time_max = animation_time_max
         self.animation_size = 0
         self.animation_size_max = animation_size_max
         self.effect = type.replace('_rune', '')
-        self.cost_to_buy = soul_cost // 2 * power // 2
         self.activate_cooldown = 0
         self.activate_cooldown_max = 5
         self.clicked = False # Used for projectiles
         super().__init__(game,  type, keys.rune, pos, size=(16, 16), amount=1, max_amount=1, add_to_tile=False, rarity_value=soul_cost, durability=100, max_durability=100)
+        print(f"{self.type}, Soul Cost: {self.soul_cost}, Power: {self.power} {self.value}", upgrades, self.total_upgrades, self.Get_Upgrade_Cost())
 
 
     def Save_Data(self):
         super().Save_Data()
         self.saved_data['effect'] = self.effect
-        self.saved_data['upgrade_cost'] = self.upgrade_cost
         self.saved_data['power'] = self.power
         self.saved_data['soul_cost'] = self.soul_cost
         self.saved_data['menu_pos'] = self.menu_pos
+        self.saved_data['total_upgrades'] = self.total_upgrades
         return self.saved_data
     
     def Load_Data(self, data):
         super().Load_Data(data)
         self.effect = data['effect'] 
-        self.upgrade_cost = data['upgrade_cost'] 
         self.power = data['power']
         self.soul_cost = data['soul_cost'] 
         self.menu_pos = data['menu_pos']
+        self.total_upgrades = data['total_upgrades']
 
     
     def Update(self, delta_time):
@@ -94,41 +93,43 @@ class Rune(Item):
         self.text_box = Rune_Textbox(self)
 
     # Used to initialise rune
-    def Initialise_Upgrades(self, soul_cost, power):
-        
-        self.power = power
+
+    def Initialise_Upgrades(self, soul_cost, upgrades):
+        self.total_upgrades = 0
+        self.power = 1
         self.soul_cost = soul_cost
+        for i in range(upgrades):
+            if random.random() < 0.5:
+                self.Upgrade_Power()
+            else:
+                self.Upgrade_Souls_Cost() 
 
-
+            
+    def Increase_Total_Upgrades(self):
+        self.total_upgrades += 1
 
     def Remove_Rune_From_Inventory(self):
         pass
 
-    def Modify_Souls_Cost(self, change):
-        min_soul_cost = 1 # Reprevent soul cost from going to 0
-        if self.player.Get_Total_Available_Souls() < self.upgrade_cost:
-            return False
-        if self.soul_cost + change < min_soul_cost:
-            return False
-        self.soul_cost += change
-        return True
+    def Upgrade_Souls_Cost(self):
+        # Calculate 10%, but ensure it is at least 1
+        reduction = max(1, math.ceil(self.soul_cost / 10))
+        
+        if self.soul_cost > 1 + reduction:
+            self.soul_cost -= reduction
+            self.Increase_Total_Upgrades()
+            return True
+        return False # Cost is already at the minimum
 
-    def Upgrade_Cost(self):
-        self.upgrade_cost = (5 * self.power**2) + (5 * self.power) + 30
-
+    def Upgrade_Power(self):
+        self.Increase_Total_Upgrades()
+        self.power += 1
         return True
     
-    def Modify_Power(self, change):
-        if self.player.Get_Total_Available_Souls() < self.upgrade_cost:
-            return False
-        self.Increase_Power(change)
-        return True
-    
-    def Increase_Power(self, amount):
-        for i in range(amount):
-            self.power += 1
-            self.Upgrade_Cost()
-            
+
+    def Get_Upgrade_Cost(self):
+        return math.floor(self.value * 1.2 + self.total_upgrades ** 2)
+
     
     def Update_Activate_Cooldown(self, delta_time):
         if self.activate_cooldown:

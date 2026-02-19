@@ -9,7 +9,6 @@ class Item(PhysicsEntity):
         super().__init__(game, type, keys.item, pos, size, sub_category)
         self.game = game
         self.sub_type = type
-        self.value = rarity_value
 
         self.picked_up = False
         self.clicked = False # Used for if the item is active
@@ -20,10 +19,11 @@ class Item(PhysicsEntity):
         self.inventory_size = (32,32) # Used to upscale item for inventory
         self.activate_cooldown = 0
         self.animation_cooldown = 0
-        self.amount = int(min(max_amount, int(amount))) # Cap the amount
         self.max_amount = max_amount
+        self.amount = int(min(max_amount, int(amount))) # Cap the amount
         self.max_animation = max_animation
         self.animation_cooldown_max = 0.8
+        self.value = rarity_value # Temporary value set correctly in Calculate_Rarity
         self.rarity = self.Calculate_Rarity() # rarity used for loot defaults to common
 
         self.animation = random.randint(0, self.max_animation)

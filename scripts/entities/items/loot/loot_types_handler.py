@@ -10,13 +10,14 @@ class Loot_Types_Handler():
 
     def Loot_Spawner(self, pos, type = None, rarity_value = 0, amount = 1):
         if not type:
-            type, amount = Luck_Calculator.Get_Loot_Based_On_Rarity(rarity_value, self.Get_Loot_Values())
+            type, amount, value = Luck_Calculator.Get_Loot_Based_On_Rarity(rarity_value, self.Get_Loot_Values())
+        else:
+            value = rarity_value
         loot_class = self.loot_map.get(type)
         if not loot_class:
             return None
         
         try:
-            value = int(rarity_value // amount)
             loot = loot_class(self.game, type, pos, amount, value)
             self.game.item_handler.Add_Item(loot)
         except Exception as e:

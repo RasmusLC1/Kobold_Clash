@@ -3,7 +3,7 @@ from scripts.entities.items.weapons.magic_attacks.poison.poison_plume import Poi
 from scripts.engine.keys.keys import keys
 
 class Poison_Plume_Rune(Rune):
-    def __init__(self, game, type, pos, rarity_value, amount):
+    def __init__(self, game, type, pos, amount, rarity_value):
         super().__init__(game, keys.poison_plume_rune, pos, amount, rarity_value)
         self.poison_plume = Poison_Plume(self.game.player)
 

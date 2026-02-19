@@ -3,7 +3,7 @@ from scripts.entities.items.weapons.magic_attacks.ice.ice_ball import Ice_Ball
 from scripts.engine.keys.keys import keys
 
 class Freeze_Ball_Rune(Projectile_Rune):
-    def __init__(self, game, type, pos, rarity_value, amount):
+    def __init__(self, game, type, pos, amount, rarity_value):
         super().__init__(game, keys.freeze_ball_rune, pos, amount, rarity_value)
 
 

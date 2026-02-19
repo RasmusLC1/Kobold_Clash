@@ -5,6 +5,8 @@ from scripts.interface.menu.menu import Menu
 from scripts.engine.keys.keys import keys
 import pygame
 
+# TODO: REWORK since runes have been changed
+
 class Rune_Shrine_Menu(Menu):
     def __init__(self, game) -> None:
         super().__init__(game)
@@ -59,7 +61,6 @@ class Rune_Shrine_Menu(Menu):
         if not self.active_rune:
             return
         for rune_button in self.rune_upgrade_buttons:
-            # TODO: REWORK Original values no longer kept
             # Don't update buttons if the rune cannot use that upgrade
             if self.active_rune.original_soul_cost == 0 and rune_button.effect == keys.souls:
                 continue
@@ -70,18 +71,21 @@ class Rune_Shrine_Menu(Menu):
             self.Rune_Button_Press(rune_button)
 
     def Rune_Button_Press(self, rune_button):
-        # Return True if successfully upgraded
-        if rune_button.Update(self.active_rune):
-            if rune_button.effect == 'purchase':
-                self.rune_bought = True
-            else:
-                self.Rune_Upgrade()
-
-    def Rune_Upgrade(self):
-        # Handle upgrading costs
-        self.game.player.Decrease_Souls(self.active_rune.upgrade_cost)
-        new_upgrade_cost = math.ceil(self.active_rune.upgrade_cost /  5)
-        self.active_rune.Modify_Upgrade_Cost(new_upgrade_cost)
+        
+        # Checks for button click
+        if not rune_button.Update(self.active_rune):
+            return
+        
+        if rune_button.effect == 'purchase':
+            self.rune_bought = True
+        else:
+            self.Upgrade_Rune()
+    
+    def Upgrade_Rune(self):
+        rune_cost = self.active_rune.Get_Upgrade_Cost()
+        if self.game.player.Get_Total_Available_Souls() < rune_cost:
+            return False
+        self.game.player.Decrease_Souls(rune_cost)
 
 
     def Rune_Interactions(self):
@@ -114,7 +118,7 @@ class Rune_Shrine_Menu(Menu):
         self.game.item_handler.Replace_Rune_In_Inventory(rune_to_replace, self.available_rune)
 
         # self.game.rune_handler.Add_Rune_To_Rune_Inventory(self.available_rune.type)
-        self.game.player.Decrease_Souls(self.available_rune.cost_to_buy)
+        self.game.player.Decrease_Souls(self.available_rune.Calculate_Value())
 
         self.Set_Active_Runes_Menu_Pos()
         self.available_rune = None
@@ -173,7 +177,7 @@ class Rune_Shrine_Menu(Menu):
         pos_y = rune_button.pos[1] + rune_button.size[1] // 2 - 8
         rune_button.Render(surf)
 
-        self.game.default_font.Render_Word(surf, str(self.active_rune.cost_to_buy), (pos_x, pos_y))
+        self.game.default_font.Render_Word(surf, str(self.active_rune.Calculate_Value()), (pos_x, pos_y))
         soul_symbol_x_pos_offset = 16 * len(str(self.active_rune.upgrade_cost))
 
         self.game.symbols.Render_Symbol(surf, 'soul', (pos_x + soul_symbol_x_pos_offset, pos_y - 2), 1.5)

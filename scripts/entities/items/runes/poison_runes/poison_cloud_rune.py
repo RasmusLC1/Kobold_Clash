@@ -3,7 +3,7 @@ from scripts.entities.items.weapons.magic_attacks.poison.poison_cloud import Poi
 from scripts.engine.keys.keys import keys
 
 class Poison_Cloud_Rune(Rune):
-    def __init__(self, game, type, pos, rarity_value, amount):
+    def __init__(self, game, type, pos, amount, rarity_value):
         super().__init__(game, keys.poison_cloud_rune, pos, amount, rarity_value)
         self.poison_cloud = None
 
