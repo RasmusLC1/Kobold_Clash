@@ -9,7 +9,7 @@ class Chain_Lightning_Rune(Projectile_Rune):
     def Generate_Projectile(self):
         damage = 3
         speed = 2
-        electric_ball = Chain_Lightning(self.game, self.game.player.pos, self.game.player, damage, speed, 100, 100, self.game.player.attack_direction, self.current_power)
+        electric_ball = Chain_Lightning(self.game, self.game.player.pos, self.game.player, damage, speed, 100, 100, self.game.player.attack_direction, self.power)
         self.game.item_handler.Add_Item(electric_ball)
         self.charge = 0
         return

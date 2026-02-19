@@ -40,9 +40,9 @@ class Freeze_Storm_Rune(Rune):
     def Trigger_Effect(self):
         self.Trigger_Rune()
         if self.ice_storm:
-            self.ice_storm.Set_Duration(self.current_power * 10)
+            self.ice_storm.Set_Duration(self.power * 10)
         else:
-            self.ice_storm = Ice_Storm(self.game, self.game.player, self.current_power)
+            self.ice_storm = Ice_Storm(self.game, self.game.player, self.power)
             self.game.entities_render.Add_Entity(self.ice_storm)
 
     def Render_Animation(self, surf, offset=(0, 0)):

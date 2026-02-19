@@ -7,7 +7,7 @@ class Arcane_Hunger_Rune(Rune):
 
     def Update(self, delta_time):
         if not self.game.player.effects.arcane_hunger.effect:
-            self.game.player.Set_Effect(self.effect, self.current_power)
+            self.game.player.Set_Effect(self.effect, self.power)
         return super().Update(delta_time)        
 
     def Remove_Rune_From_Inventory(self):

@@ -14,5 +14,5 @@ class Plinth(Display_Loot_Container):
         if rarity_value == keys.nothing:
                     return
         
-        self.game.item_handler.Spawn_Rune((self.pos[0] + 3, self.pos[1]), rarity_value)
+        self.game.item_handler.Spawn_Rune(pos = (self.pos[0] + 3, self.pos[1]), type = None, rarity_value = rarity_value)
 

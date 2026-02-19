@@ -17,7 +17,7 @@ class Poison_Plume_Rune(Rune):
         if not self.clicked:
             return
         
-        if not self.poison_plume.Update(self.current_power):
+        if not self.poison_plume.Update(self.power):
             self.clicked = False
 
     def Trigger_Effect(self):

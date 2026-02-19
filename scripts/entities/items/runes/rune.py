@@ -11,11 +11,7 @@ class Rune(Item):
         self.player = game.player
         self.menu_pos = pos
         self.upgrade_cost = math.ceil(soul_cost / 3)
-        self.original_power = power
-        self.current_power = power
-        self.original_soul_cost = soul_cost
-        self.current_soul_cost = soul_cost
-        self.min_soul_cost = math.ceil(self.original_soul_cost / 10)
+        self.Initialise_Upgrades(soul_cost, power)
         self.animation_time = 0
         self.animation_time_max = animation_time_max
         self.animation_size = 0
@@ -32,10 +28,8 @@ class Rune(Item):
         super().Save_Data()
         self.saved_data['effect'] = self.effect
         self.saved_data['upgrade_cost'] = self.upgrade_cost
-        self.saved_data['original_power'] = self.original_power
-        self.saved_data['current_power'] = self.current_power
-        self.saved_data['original_soul_cost'] = self.original_soul_cost
-        self.saved_data['current_soul_cost'] = self.current_soul_cost
+        self.saved_data['power'] = self.power
+        self.saved_data['soul_cost'] = self.soul_cost
         self.saved_data['menu_pos'] = self.menu_pos
         return self.saved_data
     
@@ -43,10 +37,8 @@ class Rune(Item):
         super().Load_Data(data)
         self.effect = data['effect'] 
         self.upgrade_cost = data['upgrade_cost'] 
-        self.original_power = data['original_power'] 
-        self.current_power = data['current_power']
-        self.original_soul_cost = data['original_soul_cost'] 
-        self.current_soul_cost = data['current_soul_cost'] 
+        self.power = data['power']
+        self.soul_cost = data['soul_cost'] 
         self.menu_pos = data['menu_pos']
 
     
@@ -62,7 +54,7 @@ class Rune(Item):
             return False
         if not super().Activate():
             return False
-        if self.player.Get_Total_Available_Souls() < self.current_soul_cost:
+        if self.player.Get_Total_Available_Souls() < self.soul_cost:
             return False
         self.Trigger_Effect()
 
@@ -71,7 +63,7 @@ class Rune(Item):
     # Add the player's current power level to the runes power and checks if it is
     # Valid. If yes then it triggers the rune and subtract the cost
     def Trigger_Effect(self):
-        if self.player.Set_Effect(self.effect, self.current_power + self.player.rune_power):
+        if self.player.Set_Effect(self.effect, self.power + self.player.rune_power):
             self.Trigger_Rune()
 
     # Trigger the rune, cost already verified as possible in activate
@@ -82,7 +74,7 @@ class Rune(Item):
         self.Set_Activate_Cooldown(self.activate_cooldown_max)
         self.player.weapon_handler.Set_Attack_Lock(True)
 
-        durability_damage = int(max(1, self.current_power // 2))
+        durability_damage = int(max(1, self.power // 2))
         self.Decrease_Durability(durability_damage)
         self.clicked = False
 
@@ -90,9 +82,9 @@ class Rune(Item):
     def Compute_Souls_Cost(self):
         arcane_effect = self.player.Get_Acane_Conduit()
         if arcane_effect:
-            self.player.Decrease_Souls(max(1, self.current_soul_cost - arcane_effect))
+            self.player.Decrease_Souls(max(1, self.soul_cost - arcane_effect))
         else:
-            self.player.Decrease_Souls(self.current_soul_cost)
+            self.player.Decrease_Souls(self.soul_cost)
 
     def Set_Menu_Pos(self, pos):
         self.menu_pos = pos
@@ -101,20 +93,28 @@ class Rune(Item):
     def Set_Text_Box(self):
         self.text_box = Rune_Textbox(self)
 
+    # Used to initialise rune
+    def Initialise_Upgrades(self, soul_cost, power):
+        
+        self.power = power
+        self.soul_cost = soul_cost
+
+
 
     def Remove_Rune_From_Inventory(self):
         pass
 
     def Modify_Souls_Cost(self, change):
+        min_soul_cost = 1 # Reprevent soul cost from going to 0
         if self.player.Get_Total_Available_Souls() < self.upgrade_cost:
             return False
-        if self.current_soul_cost + change < self.min_soul_cost:
+        if self.soul_cost + change < min_soul_cost:
             return False
-        self.current_soul_cost += change
+        self.soul_cost += change
         return True
 
     def Upgrade_Cost(self):
-        self.upgrade_cost = (5 * self.current_power**2) + (5 * self.current_power) + 30
+        self.upgrade_cost = (5 * self.power**2) + (5 * self.power) + 30
 
         return True
     
@@ -126,7 +126,7 @@ class Rune(Item):
     
     def Increase_Power(self, amount):
         for i in range(amount):
-            self.current_power += 1
+            self.power += 1
             self.Upgrade_Cost()
             
     
@@ -143,8 +143,8 @@ class Rune(Item):
     # Updated in rune inventory when player's power is modified
     def Set_Description(self):
         self.description = (
-                            f"{keys.souls} {self.current_soul_cost}\n"
-                            f"{keys.power} {self.current_power + self.player.rune_power}\n"
+                            f"{keys.souls} {self.soul_cost}\n"
+                            f"{keys.power} {self.power + self.player.rune_power}\n"
                             f"Dur {self.durability}/{self.max_durability}\n"
                             f"{self.Calculate_Value()} {keys.gold}\n"
                         )  
@@ -184,7 +184,7 @@ class Rune(Item):
         self.game.symbols.Render_Symbol(surf, self.effect,  (self.player.pos[0] - offset[0] + 8 - inversed_animation_size, self.player.pos[1] - offset[1] - inversed_animation_size), inversed_animation_size)
 
     def Calculate_Value(self):
-        return math.ceil(self.value * self.current_power)
+        return math.ceil(self.value * self.power)
 
     def Place_Down(self):
         self.game.item_handler.Remove_Rune_From_Active_Runes(self)

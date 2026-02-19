@@ -20,7 +20,7 @@ class Level_Loader():
         self.game = game
         self.initialised = False
         self.game.dungeon_type = None
-        self.game.depth = 1
+        self.game.depth = 7
         self.saved_data = {}
  
     # Load basic structural parts of the dungeon

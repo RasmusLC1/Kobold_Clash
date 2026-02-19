@@ -2,7 +2,7 @@ from scripts.interface.menu.button import Button
 import math
 from scripts.engine.keys.keys import keys
 
-
+# TODO: REWORK
 class Rune_Button(Button):
     def __init__(self, game, pos, size, text, effect, color = (0, 0, 0)) -> None:
         super().__init__(game, pos, size, text, 'None', False, color)
@@ -14,6 +14,7 @@ class Rune_Button(Button):
             return rune.Modify_Souls_Cost(amount)
 
         elif self.effect == keys.power:
+            # TODO: REWORK Original values no longer kept
             amount = math.ceil(rune.original_power / 10)
             return rune.Modify_Power(amount)
         

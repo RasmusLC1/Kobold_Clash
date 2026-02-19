@@ -10,7 +10,7 @@ class Soul_Reap_Rune(Projectile_Rune):
 
 
     def Generate_Projectile(self):
-        self.soul_reap_shooter.Spawn_Soul_Reap(self.game.player, self.current_power * 10)
+        self.soul_reap_shooter.Spawn_Soul_Reap(self.game.player, self.power * 10)
         self.Set_Activate_Cooldown(self.activate_cooldown_max)
         self.Reset_Charge()
         return

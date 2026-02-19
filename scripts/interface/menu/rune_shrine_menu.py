@@ -59,6 +59,7 @@ class Rune_Shrine_Menu(Menu):
         if not self.active_rune:
             return
         for rune_button in self.rune_upgrade_buttons:
+            # TODO: REWORK Original values no longer kept
             # Don't update buttons if the rune cannot use that upgrade
             if self.active_rune.original_soul_cost == 0 and rune_button.effect == keys.souls:
                 continue
@@ -186,8 +187,8 @@ class Rune_Shrine_Menu(Menu):
         if self.active_rune:
             surf.blit(self.rune_highlight, (self.active_rune.menu_pos[0] - 6, self.active_rune.menu_pos[1] - 6))
             self.game.default_font.Render_Word(surf, "Name:   " + self.active_rune.type, (20, 20))        
-            self.game.default_font.Render_Word(surf, "Souls Cost:   " + str(self.active_rune.current_soul_cost), (20, 44))        
-            self.game.default_font.Render_Word(surf, "Power:        " + str(self.active_rune.current_power), (20, 68))        
+            self.game.default_font.Render_Word(surf, "Souls Cost:   " + str(self.active_rune.soul_cost), (20, 44))        
+            self.game.default_font.Render_Word(surf, "Power:        " + str(self.active_rune.power), (20, 68))        
             self.game.default_font.Render_Word(surf, "Upgrade Cost: " + str(self.active_rune.upgrade_cost), (20, 92))
             soul_symbol_x_pos_offset = 240 + 10 * len(str(self.active_rune.upgrade_cost))
             self.game.symbols.Render_Symbol(surf, 'soul',  (soul_symbol_x_pos_offset, 90), 1.5)

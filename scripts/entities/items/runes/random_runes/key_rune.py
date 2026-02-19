@@ -23,7 +23,7 @@ class Key_Rune(Rune):
             
             door.Set_Highlight()
             door.Open()
-            self.game.player.Decrease_Souls(self.current_soul_cost)
+            self.game.player.Decrease_Souls(self.soul_cost)
             self.Set_Animation_Time()
             self.Reset_Animation_Size()
         return

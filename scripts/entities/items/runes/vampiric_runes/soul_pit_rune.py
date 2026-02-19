@@ -8,7 +8,7 @@ class Soul_Pit_Rune(Projectile_Rune):
 
 
     def Generate_Projectile(self):
-        vampiric_ball = Vampiric_Ball(self.game, self.game.player.pos, self.game.player, self.current_power, 2, 100, self.game.player.attack_direction)
+        vampiric_ball = Vampiric_Ball(self.game, self.game.player.pos, self.game.player, self.power, 2, 100, self.game.player.attack_direction)
         self.game.item_handler.Add_Item(vampiric_ball)
         self.charge = 0
         return

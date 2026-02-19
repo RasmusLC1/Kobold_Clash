@@ -9,7 +9,7 @@ class Electric_Ball_Rune(Projectile_Rune):
 
 
     def Generate_Projectile(self):
-        electric_ball = Electric_Ball(self.game, self.game.player.pos, self.game.player, self.current_power, 2, 100, self.game.player.attack_direction)
+        electric_ball = Electric_Ball(self.game, self.game.player.pos, self.game.player, self.power, 2, 100, self.game.player.attack_direction)
         self.game.item_handler.Add_Item(electric_ball)
         self.charge = 0
         return

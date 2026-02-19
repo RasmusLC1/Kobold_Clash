@@ -21,7 +21,7 @@ class Freeze_Circle_Rune(Rune):
         if self.game.mouse.left_click:
             if not self.game.player.movement_handler.Dash(self.game.render_scroll):
                 return
-            self.game.player.Decrease_Souls(self.current_soul_cost)
+            self.game.player.Decrease_Souls(self.soul_cost)
             self.clicked = False
         
         if self.game.mouse.right_click:

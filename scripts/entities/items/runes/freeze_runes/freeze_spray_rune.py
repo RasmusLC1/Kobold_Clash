@@ -16,5 +16,5 @@ class Freeze_Spray_Rune(Projectile_Rune):
         return super().Update(delta_time)
 
     def Set_Charge(self):
-        self.ice_shooter.Initialise_Shooting(self.player, self.current_power, self.damage)
+        self.ice_shooter.Initialise_Shooting(self.player, self.power, self.damage)
 
