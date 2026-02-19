@@ -27,13 +27,12 @@ class Elemental_Ball(Projectile):
         super().Shoot(delta_time)
 
     def Reset_Shot(self):
-        self.delete_countdown = 1
+        self.delete_countdown = 0.2
         return super().Reset_Shot()
 
 
         # Own render function since we don't need to compute light
     def Render(self, surf, offset=(0, 0)):
-        
         weapon_image = pygame.transform.rotate(self.weapon_image, self.rotate)
 
 

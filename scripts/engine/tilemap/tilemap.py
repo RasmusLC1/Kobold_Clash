@@ -4,7 +4,6 @@ from scripts.engine.tilemap.minimap import Minimap
 from scripts.engine.keys.keys import keys
 
 import random
-import json
 import pygame
 import math
 import copy

@@ -129,7 +129,7 @@ class Enemy_Handler():
     # Split the search, use tiles for short distance as it's faster, but distance for longer
     # as it has constant runtime
     def Find_Nearby_Enemies(self, entity, max_distance):
-        if max_distance <= 5:
+        if max_distance <= 10:
             return self.game.tilemap.Search_Nearby_Tiles(max_distance, entity.pos, keys.enemy, entity.ID)
         else:
             return self.Find_Nearby_Enemies_Long_Distance(entity, max_distance)

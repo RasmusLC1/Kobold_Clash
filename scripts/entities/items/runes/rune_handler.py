@@ -235,14 +235,14 @@ class Rune_Handler(Loot_Types_Handler):
             # Fire Runes
             keys.fire_resistance_rune : 10,     # Passive Fire Resistance
             keys.fire_cirlce_rune : 20,         # Fire wall, wall of fire that damage anything that tries to cross it
-            keys.fire_ball_rune : 25,           # Fireball, ball of fire that leads to fire explosion
+            keys.fire_ball_rune : 35,           # Fireball, ball of fire that leads to fire explosion
             keys.fire_spray_rune : 15,          # Fire spew, flamethrower attack
 
             # Frost Runes
             keys.freeze_circle_rune : 30,       # Area freeze effect
             keys.freeze_storm_rune : 30,        # Ice storm, Creates a tornado that shoots ice projectiles
             keys.freeze_spray_rune : 15,        # Ice projectiles, fast ice projectiles shot like a bullet
-            keys.freeze_ball_rune : 25,         # Iceball, ball that causes a freeze explosion
+            keys.freeze_ball_rune : 35,         # Iceball, ball that causes a freeze explosion
             keys.frozen_resistance_rune : 10,   # Passive Frost Resistance
 
             # Poison Runes
@@ -254,7 +254,7 @@ class Rune_Handler(Loot_Types_Handler):
             # Electric Runes
             keys.electric_ball_rune : 25,       # Electric ball that generates electric explosion
             keys.electric_spray_rune : 20,      # Electric homing particle, target nearest entity
-            keys.chain_lightning_rune : 30,     # Chain lightning, Lightning projectile that bounces
+            keys.chain_lightning_rune : 35,     # Chain lightning, Lightning projectile that bounces
 
             # Vampiric Runes
             keys.soul_reap_rune : 25,           # Soul reap, broad projectile that sucks health
