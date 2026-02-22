@@ -20,7 +20,6 @@ class Rune(Item):
         self.activate_cooldown_max = 5
         self.clicked = False # Used for projectiles
         super().__init__(game,  type, keys.rune, pos, size=(16, 16), amount=1, max_amount=1, add_to_tile=False, rarity_value=soul_cost, durability=100, max_durability=100)
-        print(f"{self.type}, Soul Cost: {self.soul_cost}, Power: {self.power} {self.value}", upgrades, self.total_upgrades, self.Get_Upgrade_Cost())
 
 
     def Save_Data(self):

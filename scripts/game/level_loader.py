@@ -52,6 +52,7 @@ class Level_Loader():
         data_file = open(file_name, "rb")
         data = pickle.load(data_file)
         return data
+        
 
     def Initialise_Level(self):
         self.game.depth += 1
@@ -104,7 +105,8 @@ class Level_Loader():
             self.Spawn_Player()
             
 
-
+    def Set_Initialised(self, state):
+        self.initialised = state
 
 
     def Initial_Setup(self):

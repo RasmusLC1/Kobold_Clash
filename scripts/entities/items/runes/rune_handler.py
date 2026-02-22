@@ -45,7 +45,7 @@ from scripts.entities.items.runes.constant_runes.manget_rune import Magnet_Rune
 from scripts.engine.keys.keys import keys
 from scripts.entities.items.loot.loot_types_handler import Loot_Types_Handler
 from scripts.engine.utility.luck_calculator import Luck_Calculator
-
+import random
 
 class Rune_Handler(Loot_Types_Handler):
     def __init__(self, game, item_handler):
@@ -60,17 +60,24 @@ class Rune_Handler(Loot_Types_Handler):
         self.min_cost = min(self.loot_types_cost.values())
 
     # Function to initialise the runes at the start of game
+    # Gets 3 random runes with a value less than 30, then adds upgrades to
+    # be roughly 100
     def Initialise_Runes(self):
-        self.Add_Runes_To_Inventory_TEST()
-
-    # needs to be 3 random runes with a budget of 100 
-    def Add_Runes_To_Inventory_TEST(self):
-        test_runes = [keys.freeze_spray_rune, keys.fire_spray_rune, keys.fire_ball_rune]
-        for i in test_runes:
-            value = self.loot_types_cost.get(i)
+        initial_runes = self.Get_Initial_Runes()
+        for rune in initial_runes:
+            value = self.loot_types_cost.get(rune)
             upgrades = 8
-            rune = self.Loot_Spawner((999, 999), i, value, upgrades)
+            rune = self.Loot_Spawner((999, 999), rune, value, upgrades)
             self.Add_Rune_To_Rune_Inventory(rune)
+
+
+    # Returns a list containing only the keys where cost < 30
+    def Get_Initial_Runes(self):
+        runes_under_30 = [rune for rune, cost in self.loot_types_cost.items() if cost < 30]
+        initial_runes = random.sample(runes_under_30, 3) # Select 3 random ones
+
+        return initial_runes
+            
 
     def Load_Data(self, data):
         if not data:

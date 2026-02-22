@@ -19,8 +19,8 @@ class Poison_Cloud(Elemental_Explosion):
 
 
 
-    def Update(self, update_pos = True):
+    def Update(self, delta_time, update_pos = True):
         if update_pos:
             self.pos = list(self.entity.rect().center)
         self.Poison_Entities()
-        return super().Update()
+        return super().Update(delta_time)

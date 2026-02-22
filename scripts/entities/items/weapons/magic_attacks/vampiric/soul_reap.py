@@ -3,11 +3,10 @@ from scripts.engine.keys.keys import keys
 
 class Soul_Reap(Projectile):
     def __init__(self, game, pos, damage, speed, shoot_distance, special_attack, direction, entity):
-        super().__init__(game, pos, keys.soul_reap, damage, speed, 1, 100, keys.particle, keys.vampiric, shoot_distance, keys.cut, (32, 32), False)
+        super().__init__(game, pos, keys.soul_reap, damage, speed, 1, 100, keys.particle, keys.vampiric, shoot_distance=shoot_distance, attack_types=keys.cut, size=(32, 32), add_to_tile=False, max_animation=0)
         self.special_attack = special_attack
         self.entity = entity
         self.direction = direction  # Store the direction vector
-        self.attack_animation_max = 0
         self.delete_countdown = 50
         self.attack_animation_time = 1000
    
