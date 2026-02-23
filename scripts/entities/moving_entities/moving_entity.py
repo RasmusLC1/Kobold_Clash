@@ -331,7 +331,8 @@ class Moving_Entity(PhysicsEntity):
             self.Push(direction, self.game.tilemap, damage)
         
         if effect[1] > 0 and not keys.vampiric in effect[0]:
-            self.effects.Set_Effect(effect[0], effect[1])
+            effect_strength = max(effect[1] // 10, 1)
+            self.effects.Set_Effect(effect[0], effect_strength)
 
         self.Check_If_Dead()
         return True
@@ -381,8 +382,12 @@ class Moving_Entity(PhysicsEntity):
 
 
     def Set_Attack_Direction(self, attack_direction=None):
+        attack_direction = self.Check_Attack_Direction(attack_direction)
+
         if not attack_direction:
-            attack_direction = self.target
+            print("ATTACK DIRECTION NOT FOUND", self.target, attack_direction, self.pos, self.type)
+            return
+
         self.attack_direction = pygame.math.Vector2(
             attack_direction[0] - self.pos[0],
             attack_direction[1] - self.pos[1]
@@ -391,9 +396,15 @@ class Moving_Entity(PhysicsEntity):
             return
         self.attack_direction.normalize_ip()
 
+    def Check_Attack_Direction(self, attack_direction):
+        if not attack_direction:
+            if not self.target:
+                return
+            attack_direction = self.target
+        return attack_direction
+
     def Reset_Attack_Direction(self):
         self.attack_direction = (0, 0)
-
 
 
     def Set_Frame_movement(self, movement):

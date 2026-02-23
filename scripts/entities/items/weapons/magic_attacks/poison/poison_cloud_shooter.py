@@ -5,8 +5,7 @@ from scripts.engine.keys.keys import keys
 
 class Poison_CLoud_Shooter(Particle_Shooter):
     def __init__(self, game):
-        super().__init__(game)
-        self.cloud_cooldown = 0
+        super().__init__(game, cooldown_max=0.6)
 
 
     def Shoot_Particles(self, entity, special_attack, damage):

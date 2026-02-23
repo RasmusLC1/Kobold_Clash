@@ -15,12 +15,7 @@ class Weapon_Textbox(Text_Box):
 
         return False
 
-    def Set_Y_Size(self):
-        self.y_size = 80
-
-    # def Set_X_Size(self, entity_name):
-    #     self.x_size = 150
-
+ 
     def Set_Text_Box_pos(self, offset):
         text_box_pos = (0,0)
         # Render entitybox different depending on if it's picked up or not

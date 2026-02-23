@@ -5,6 +5,8 @@ from scripts.interface.menu.menu import Menu
 from scripts.engine.keys.keys import keys
 import pygame
 
+# TODO: REWORK since runes have been changed
+
 class Rune_Shrine_Menu(Menu):
     def __init__(self, game) -> None:
         super().__init__(game)
@@ -69,18 +71,21 @@ class Rune_Shrine_Menu(Menu):
             self.Rune_Button_Press(rune_button)
 
     def Rune_Button_Press(self, rune_button):
-        # Return True if successfully upgraded
-        if rune_button.Update(self.active_rune):
-            if rune_button.effect == 'purchase':
-                self.rune_bought = True
-            else:
-                self.Rune_Upgrade()
-
-    def Rune_Upgrade(self):
-        # Handle upgrading costs
-        self.game.player.Decrease_Souls(self.active_rune.upgrade_cost)
-        new_upgrade_cost = math.ceil(self.active_rune.upgrade_cost /  5)
-        self.active_rune.Modify_Upgrade_Cost(new_upgrade_cost)
+        
+        # Checks for button click
+        if not rune_button.Update(self.active_rune):
+            return
+        
+        if rune_button.effect == 'purchase':
+            self.rune_bought = True
+        else:
+            self.Upgrade_Rune()
+    
+    def Upgrade_Rune(self):
+        rune_cost = self.active_rune.Get_Upgrade_Cost()
+        if self.game.player.Get_Total_Available_Souls() < rune_cost:
+            return False
+        self.game.player.Decrease_Souls(rune_cost)
 
 
     def Rune_Interactions(self):
@@ -110,10 +115,10 @@ class Rune_Shrine_Menu(Menu):
         clear_available_rune.fill((20,20,20)) # Gold color
 
         self.game.display.blit(clear_available_rune, (self.available_rune.menu_pos[0] - 5, self.available_rune.menu_pos[1] - 30))
-        self.game.rune_handler.Replace_Rune_In_Inventory(rune_to_replace, self.available_rune)
+        self.game.item_handler.Replace_Rune_In_Inventory(rune_to_replace, self.available_rune)
 
         # self.game.rune_handler.Add_Rune_To_Rune_Inventory(self.available_rune.type)
-        self.game.player.Decrease_Souls(self.available_rune.cost_to_buy)
+        self.game.player.Decrease_Souls(self.available_rune.Calculate_Value())
 
         self.Set_Active_Runes_Menu_Pos()
         self.available_rune = None
@@ -149,7 +154,7 @@ class Rune_Shrine_Menu(Menu):
 
     
     def Set_Active_Runes_Menu_Pos(self):
-        self.runes = self.game.rune_handler.active_runes
+        self.runes = self.game.item_handler.Get_Active_Runes()
         pos_x = 40
         pos_y = 130
         for rune in self.runes:
@@ -172,7 +177,7 @@ class Rune_Shrine_Menu(Menu):
         pos_y = rune_button.pos[1] + rune_button.size[1] // 2 - 8
         rune_button.Render(surf)
 
-        self.game.default_font.Render_Word(surf, str(self.active_rune.cost_to_buy), (pos_x, pos_y))
+        self.game.default_font.Render_Word(surf, str(self.active_rune.Calculate_Value()), (pos_x, pos_y))
         soul_symbol_x_pos_offset = 16 * len(str(self.active_rune.upgrade_cost))
 
         self.game.symbols.Render_Symbol(surf, 'soul', (pos_x + soul_symbol_x_pos_offset, pos_y - 2), 1.5)
@@ -186,8 +191,8 @@ class Rune_Shrine_Menu(Menu):
         if self.active_rune:
             surf.blit(self.rune_highlight, (self.active_rune.menu_pos[0] - 6, self.active_rune.menu_pos[1] - 6))
             self.game.default_font.Render_Word(surf, "Name:   " + self.active_rune.type, (20, 20))        
-            self.game.default_font.Render_Word(surf, "Souls Cost:   " + str(self.active_rune.current_soul_cost), (20, 44))        
-            self.game.default_font.Render_Word(surf, "Power:        " + str(self.active_rune.current_power), (20, 68))        
+            self.game.default_font.Render_Word(surf, "Souls Cost:   " + str(self.active_rune.soul_cost), (20, 44))        
+            self.game.default_font.Render_Word(surf, "Power:        " + str(self.active_rune.power), (20, 68))        
             self.game.default_font.Render_Word(surf, "Upgrade Cost: " + str(self.active_rune.upgrade_cost), (20, 92))
             soul_symbol_x_pos_offset = 240 + 10 * len(str(self.active_rune.upgrade_cost))
             self.game.symbols.Render_Symbol(surf, 'soul',  (soul_symbol_x_pos_offset, 90), 1.5)

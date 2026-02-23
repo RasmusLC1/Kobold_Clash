@@ -9,28 +9,10 @@ class Plinth(Display_Loot_Container):
         
 
     def Drop_Loot(self):
-        runes = {
-            keys.dash_rune : 0.2,
-            keys.healing_rune : 0.2,
-            keys.speed_rune : 0.2,
-            keys.increase_strength_rune : 0.2,
-            keys.vampiric_rune : 0.2,
+        rarity_value = self.Calculate_Rarity()
 
-            keys.arcane_hunger_rune : 0.2,
-            keys.light_rune : 0.4,
-            keys.magnet_rune : 0.2,
-
-            keys.fire_resistance_rune : 0.2,
-            keys.fire_spray_rune : 0.1,
-            keys.freeze_spray_rune : 0.1,
-            keys.poison_resistance_rune : 0.2,
-            keys.electric_spray_rune : 0.1,
-
-        }
-        rune_type = random.choices(
-                    population=list(runes.keys()),
-                    weights=list(runes.values()),
-                    k=1
-                )[0]
-        self.game.rune_handler.Spawn_Rune_Floor(rune_type, (self.pos[0] + 3, self.pos[1]))
+        if rarity_value == keys.nothing:
+                    return
+        
+        self.game.item_handler.Spawn_Rune(pos = (self.pos[0] + 3, self.pos[1]), type = None, rarity_value = rarity_value)
 

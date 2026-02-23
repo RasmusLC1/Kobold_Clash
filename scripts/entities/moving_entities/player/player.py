@@ -32,6 +32,7 @@ class Player(Moving_Entity):
         self.last_shrine_visited = None # used for teleporting and other shrine logic
         self.luck = 10 # player luck, can be upgraded from 0 -> 10
         self.rune_power = 0
+        self.arcane_conduit = 0
 
         self.weapons = []
         self.weapon_handler = Player_Weapon_Handler(self.game, self)
@@ -103,6 +104,13 @@ class Player(Moving_Entity):
     # Subtract the souls that are to be removed from total souls to get a correct souls count
     def Get_Total_Available_Souls(self):
         return self.souls - self.souls_to_remove
+    
+    # Returns acane conduit effect
+    def Get_Acane_Conduit(self):
+        return self.arcane_conduit
+    
+    def Set_Arcane_Conduit(self, amount):
+        self.arcane_conduit = amount
 
     def Update_Souls_To_Remove(self):
         if not self.souls_to_remove:

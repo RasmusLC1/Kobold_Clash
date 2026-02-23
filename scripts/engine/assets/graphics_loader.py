@@ -166,7 +166,7 @@ class Graphics_Loader:
        keys.poison_cloud : get_tiles_from_sheet('items/weapons/magic_attacks/poison/poison_cloud.png', 3, 0, 0, 0, 32, 32),
 
 
-       keys.electric_particle_attack : get_tiles_from_sheet('items/weapons/magic_attacks/electric/electric_particle.png', 0, 0, 0, 0, 16, 16),
+       keys.electric_particle_attack : get_tiles_from_sheet('items/weapons/magic_attacks/electric/electric_particle.png', 3, 0, 0, 0, 16, 16),
        keys.electric_ball : get_tiles_from_sheet('items/weapons/magic_attacks/electric/electric_ball.png', 0, 0, 0, 0, 16, 16),
        keys.electric_explosion : get_tiles_from_sheet('items/weapons/magic_attacks/electric/electric_explosion.png', 5, 0, 0, 0, 32, 32),
 

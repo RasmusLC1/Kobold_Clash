@@ -19,7 +19,6 @@ class Weapon(Item):
         self.entity = None # Entity that holds the weapon
         self.active_attack_type = '' # The currently active attack type
         self.attack_types = attack_types # Different kinds of attacks, like cutting and stabbing
-        self.in_inventory = False # Is the weapon in an inventory
         self.equipped = False # Is the weapon currently equipped and can be used to attack
 
         self.flip_x = False
@@ -62,7 +61,6 @@ class Weapon(Item):
         self.saved_data['damage'] = self.damage_handler.damage
         self.saved_data[keys.speed] = self.speed
         self.saved_data['range'] = self.range
-        self.saved_data['in_inventory'] = self.in_inventory
         self.saved_data['equipped'] = self.equipped
         self.saved_data['rotate'] = self.rotate
         self.saved_data['special_attack'] = self.special_attack
@@ -73,7 +71,6 @@ class Weapon(Item):
         super().Load_Data(data)
         self.speed = data[keys.speed]
         self.range = data['range']
-        self.in_inventory = data['in_inventory']
         self.equipped = data['equipped']
         self.rotate = data['rotate']
         self.special_attack = data['special_attack']
@@ -432,7 +429,6 @@ class Weapon(Item):
     # Used to reset weapon when equipped by enemy
     def Pickup_Reset_Weapon(self, entity):
         self.entity = entity
-        self.in_inventory = True
         self.picked_up = True
         self.rotate = 0
         self.light_level = 10

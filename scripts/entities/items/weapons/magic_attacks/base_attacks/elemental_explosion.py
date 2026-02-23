@@ -27,6 +27,9 @@ class Elemental_Explosion(Item):
         self.game.clatter.Generate_Clatter(self.pos, self.effect_strength * 100) # Generate clatter to alert nearby enemies
 
         self.Find_Nearby_Entities(self.power)
+        if not self.nearby_entities:
+            return
+        
         self.Check_Player_Distance()
         entity_ID = self.Get_Entity_ID()
         for entity in self.nearby_entities:
@@ -37,9 +40,10 @@ class Elemental_Explosion(Item):
             self.Compute_Damage(entity)
     
     def Compute_Damage(self, entity):
-        distance = self.Distance(self.pos, entity.pos)
-        damage = round(max(5, min(50, self.damage * 10 - distance)))
-        entity.Damage_Taken(damage, (self.effect_type, 0))
+        distance = self.Distance(self.pos, entity.pos) // 32 # 32 = tilesize
+        damage = round(max(5, min(self.power * 10, self.damage * 10 - distance)))
+
+        entity.Damage_Taken(damage, (self.effect_type, self.damage))
         if self.effect:
             entity.Set_Effect(self.effect, self.effect_strength)
 

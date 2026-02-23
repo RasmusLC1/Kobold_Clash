@@ -5,13 +5,10 @@ from scripts.entities.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 
 class Item(PhysicsEntity):
-    def __init__(self, game, type, sub_category, pos, size = (16, 16), amount = 1, add_to_tile = True, rarity_value = 100, max_amount=1, max_animation = 0, durability = 1, max_durability = 1):
+    def __init__(self, game, type, sub_category, pos, size = (16, 16), amount = 1, add_to_tile = True, rarity_value = 9999, max_amount=1, max_animation = 0, durability = 1, max_durability = 1):
         super().__init__(game, type, keys.item, pos, size, sub_category)
         self.game = game
         self.sub_type = type
-        self.value = rarity_value
-
-
 
         self.picked_up = False
         self.clicked = False # Used for if the item is active
@@ -22,10 +19,11 @@ class Item(PhysicsEntity):
         self.inventory_size = (32,32) # Used to upscale item for inventory
         self.activate_cooldown = 0
         self.animation_cooldown = 0
-        self.amount = int(min(max_amount, int(amount))) # Cap the amount
         self.max_amount = max_amount
+        self.amount = int(min(max_amount, int(amount))) # Cap the amount
         self.max_animation = max_animation
         self.animation_cooldown_max = 0.8
+        self.value = rarity_value # Temporary value set correctly in Calculate_Rarity
         self.rarity = self.Calculate_Rarity() # rarity used for loot defaults to common
 
         self.animation = random.randint(0, self.max_animation)
@@ -39,37 +37,32 @@ class Item(PhysicsEntity):
         self.durability_bar_image = None
         self.Update_Durability_Bar()
 
-
-
         self.is_projectile = False
         self.Set_Sprite()
         self.broken_rendering_counter = 0 # Counter if it hits 10, delete item since something is wrong
-        if add_to_tile:
-            if not self.tile:
-                self.Set_Tile()
-            self.game.tilemap.Add_Entity_To_Tile(self.tile, self)
-
+        self.Add_To_Tile(add_to_tile)
+        
 
     def Save_Data(self):
         super().Save_Data()
-        self.saved_data['sub_type'] = self.sub_type
-        self.saved_data['sub_category'] = self.sub_category
-        self.saved_data['durability'] = self.durability
-        self.saved_data['picked_up'] = self.picked_up
-        self.saved_data['inventory_type'] = self.inventory_type
-        self.saved_data['amount'] = self.amount
-        self.saved_data['inventory_index'] = self.inventory_index
+        self.saved_data[keys.sub_type] = self.sub_type
+        self.saved_data[keys.sub_category] = self.sub_category
+        self.saved_data[keys.durability] = self.durability
+        self.saved_data[keys.picked_up] = self.picked_up
+        self.saved_data[keys.inventory_type] = self.inventory_type
+        self.saved_data[keys.amount] = self.amount
+        self.saved_data[keys.inventory_index] = self.inventory_index
 
     
     def Load_Data(self, data):
         super().Load_Data(data)
-        self.sub_type = data['sub_type']
-        self.sub_category = data['sub_category']
-        self.durability = data['durability']
-        self.picked_up = data['picked_up']
-        self.inventory_type = data['inventory_type']
-        self.amount = data['amount']
-        self.inventory_index = data['inventory_index']
+        self.sub_type = data[keys.sub_type]
+        self.sub_category = data[keys.sub_category]
+        self.durability = data[keys.durability]
+        self.picked_up = data[keys.picked_up]
+        self.inventory_type = data[keys.inventory_type]
+        self.amount = data[keys.amount]
+        self.inventory_index = data[keys.inventory_index]
         self.Set_Description()
         
     def Update(self, delta_time):
@@ -126,7 +119,6 @@ class Item(PhysicsEntity):
         if self.game.decoration_handler.Check_Item_Collision(self):
             return False
         self.picked_up = False
-        self.in_inventory = False
         self.Set_Tile()
         self.Set_Size(self.floor_size) # Standard loot size on floor
         self.game.sound_handler.Play_Sound(keys.item_placedown, 0.2)
@@ -295,6 +287,15 @@ class Item(PhysicsEntity):
     # Destroy item when damaged
     def Damage_Taken(self, damage):
         self.game.item_handler.Remove_Item(self, True)
+
+    def Add_To_Tile(self, add_to_tile):
+        if not add_to_tile:
+            return
+        
+        if not self.tile:
+            self.Set_Tile()
+        self.game.tilemap.Add_Entity_To_Tile(self.tile, self)
+
     
     
 

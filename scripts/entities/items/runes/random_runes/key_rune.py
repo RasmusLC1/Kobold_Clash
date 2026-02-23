@@ -3,10 +3,8 @@ from scripts.engine.keys.keys import keys
 
 
 class Key_Rune(Rune):
-    def __init__(self, game, pos):
-        super().__init__(game, keys.key_rune, pos, 0, 50)
-        self.animation_time_max = 0.5
-        self.animation_size_max = 10
+    def __init__(self, game, type, pos, amount, rarity_value):
+        super().__init__(game, keys.key_rune, pos, amount, rarity_value)
 
 
     def Activate(self):
@@ -25,7 +23,7 @@ class Key_Rune(Rune):
             
             door.Set_Highlight()
             door.Open()
-            self.game.player.Decrease_Souls(self.current_soul_cost)
+            self.game.player.Decrease_Souls(self.soul_cost)
             self.Set_Animation_Time()
             self.Reset_Animation_Size()
         return

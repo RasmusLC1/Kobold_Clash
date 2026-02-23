@@ -1,7 +1,6 @@
 from scripts.entities.moving_entities.enemies.enemy import Enemy
 from scripts.engine.keys.keys import keys
 
-ICE_PROJECTILE_NUM = 3 * 20
 CRYSTAL_SCALE_HEALTH_COOLDOWN_MAX = 1 # heals 1 health every second
 
 class Elemental(Enemy):
@@ -25,10 +24,8 @@ class Elemental(Enemy):
         return super().Load_Data(data)
 
     def Update(self, tilemap, delta_time, movement = (0, 0)):
-        if not super().Update(tilemap, delta_time, movement):
-            return False
+        super().Update(tilemap, delta_time, movement)
         self.Heal_Crystal_Scale(delta_time)
-        return True
         
     
     def Heal_Crystal_Scale(self, delta_time):

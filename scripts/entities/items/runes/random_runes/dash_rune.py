@@ -3,11 +3,8 @@ from scripts.engine.keys.keys import keys
 
 
 class Dash_Rune(Projectile_Rune):
-    def __init__(self, game, pos):
-        super().__init__(game, keys.dash_rune, pos, 10, 10)
-        self.animation_time_max = 0.5
-        self.animation_size_max = 15
-        self.clicked = False
+    def __init__(self, game, type, pos, amount, rarity_value):
+        super().__init__(game, keys.dash_rune, pos, amount, rarity_value)
         self.effect = None
 
     def Generate_Projectile(self):

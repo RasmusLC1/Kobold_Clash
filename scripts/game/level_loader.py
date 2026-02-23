@@ -13,7 +13,6 @@ from scripts.engine.lights.light_handler import Light_Handler
 from scripts.interface.inventory.inventory_handler import Inventory_Handler
 
 
-from scripts.entities.items.runes.rune_handler import Rune_Handler
 
 
 class Level_Loader():
@@ -21,10 +20,10 @@ class Level_Loader():
         self.game = game
         self.initialised = False
         self.game.dungeon_type = None
-        self.game.depth = 1
+        self.game.depth = 7
         self.saved_data = {}
  
-
+    # Load basic structural parts of the dungeon
     def Load_Data(self, data):
         if not data:
             return
@@ -51,15 +50,14 @@ class Level_Loader():
             exit(0)
 
         data_file = open(file_name, "rb")
-        print(file_name)
         data = pickle.load(data_file)
         return data
+        
 
     def Initialise_Level(self):
         self.game.depth += 1
         self.game.item_handler.Initialise()
         self.game.enemy_handler.Initialise()
-        self.game.rune_handler.Initialise_Runes()
         self.game.decoration_handler.Initialise()
         self.game.trap_handler.Initialise()
         self.game.trap_handler.Spawn_Traps()
@@ -87,7 +85,6 @@ class Level_Loader():
         self.game.enemy_handler.Clear_Enemies()
         self.game.item_handler.Clear_Items()
         # self.game.particle_handler.
-        self.game.rune_handler.Clear_Runes()
         self.game.trap_handler.Clear_Traps()
         self.game.light_handler.Clear_Lights()
         self.game.decoration_handler.Clear_Decorations()
@@ -108,7 +105,8 @@ class Level_Loader():
             self.Spawn_Player()
             
 
-
+    def Set_Initialised(self, state):
+        self.initialised = state
 
 
     def Initial_Setup(self):
@@ -128,7 +126,6 @@ class Level_Loader():
         self.game.particle_handler = Particle_Handler(self.game)
         self.game.trap_handler = Trap_Handler(self.game)
         self.game.decoration_handler = Decoration_Handler(self.game)
-        self.game.rune_handler = Rune_Handler(self.game)
         self.initialised = True
 
     def Spawn_Player(self):

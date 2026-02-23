@@ -39,14 +39,14 @@ class Weapon_Handler():
 
         self.random_weapon_map = {
             Sword: 1,
-            # Halberd: 1,
             Spear: 1,
-            # Bow: 1,
+            Halberd: 1,
+            Bow: 1,
+            Arrow: 0.5,
             # Sceptre: 0.3,
             # Scythe: 0.3,
             # Staff: 0.2,
             # Crossbow: 0.5,
-            # Arrow: 0.5,
         }
 
 
@@ -57,7 +57,11 @@ class Weapon_Handler():
             return True  # or your specific logic for particles
 
         if keys.arrow in type:
-            weapon = Arrow(self.game, (pos_x, pos_y), 1)
+            if data:
+                add_to_tile = False
+            else:
+                add_to_tile = True
+            weapon = Arrow(self.game, (pos_x, pos_y), 1, add_arrow_to_tile=add_to_tile)
         else:
             # Lookup the class; return False if not found
             weapon_class = self.weapon_map.get(type)
@@ -99,8 +103,12 @@ class Weapon_Handler():
     def Spawn_Gems_For_Weapon(self, rarity_value):
         iterations = 10 # Condition to prevent infinite loop
         gems = []
-        while rarity_value > 0 or iterations > 0:
+        while iterations > 0:
             iterations -= 1
+
+            if rarity_value <= 0:
+                break
+            
             gem_type, cost = self.item_handler.Get_Gems_For_Weapon(rarity_value)
 
             if gem_type:

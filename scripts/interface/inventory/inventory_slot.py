@@ -47,6 +47,13 @@ class Inventory_Slot():
         self.Check_Item_Durability()
         return
     
+    def Activate_Item(self):
+        if not self.item:
+            return False
+        
+        self.item.Activate()
+        self.Update()
+    
     def Check_Item_Durability(self):
         if not self.item:
             return False

@@ -4,8 +4,8 @@ import random
 from scripts.engine.keys.keys import keys
 
 class Passive_Rune(Rune):
-    def __init__(self, game, type, pos, strength, timer_length_max, chance_to_trigger):
-        super().__init__(game, type, pos, strength, 0)
+    def __init__(self, game, type, pos, strength, timer_length_max, chance_to_trigger, rarity_value):
+        super().__init__(game, type, pos, strength, rarity_value)
         self.count_down = 0
         self.activate_effect = False
         # Chance to trigger from 0 to 100
@@ -41,7 +41,7 @@ class Passive_Rune(Rune):
         self.activate_effect = False
         trigger_value = random.randint(0, 100)
         if trigger_value < self.chance_to_trigger:
-            self.game.player.Set_Effect(self.effect, self.current_power)
+            self.game.player.Set_Effect(self.effect, self.power)
             self.Set_Animation_Time()
             self.Reset_Animation_Size()
 

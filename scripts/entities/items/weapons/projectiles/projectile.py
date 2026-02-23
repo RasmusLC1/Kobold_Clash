@@ -96,7 +96,6 @@ class Projectile(Weapon):
         self.shoot_speed = 0
         self.picked_up = False
         self.equipped = False
-        self.in_inventory = False
         self.Set_Entity(None)
         return True
 
@@ -121,7 +120,6 @@ class Projectile(Weapon):
             self.entity = entity
             self.game.inventory.Remove_Item(self)
             self.game.item_handler.Add_Item(self)
-        self.in_inventory = False
         self.picked_up = False
 
     def Pick_Up(self):

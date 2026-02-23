@@ -4,11 +4,8 @@ from scripts.engine.keys.keys import keys
 
 
 class Freeze_Storm_Rune(Rune):
-    def __init__(self, game, pos):
-        super().__init__(game, keys.freeze_storm_rune, pos, 1, 30)
-        self.animation_time_max = 0.5
-        self.animation_size_max = 15
-        self.clicked = False
+    def __init__(self, game, type, pos, amount, rarity_value):
+        super().__init__(game, keys.freeze_storm_rune, pos, amount, rarity_value)
         self.ice_storm = None
 
     def Save_Data(self):
@@ -43,9 +40,9 @@ class Freeze_Storm_Rune(Rune):
     def Trigger_Effect(self):
         self.Trigger_Rune()
         if self.ice_storm:
-            self.ice_storm.Set_Duration(self.current_power * 10)
+            self.ice_storm.Set_Duration(self.power * 10)
         else:
-            self.ice_storm = Ice_Storm(self.game, self.game.player, self.current_power)
+            self.ice_storm = Ice_Storm(self.game, self.game.player, self.power)
             self.game.entities_render.Add_Entity(self.ice_storm)
 
     def Render_Animation(self, surf, offset=(0, 0)):

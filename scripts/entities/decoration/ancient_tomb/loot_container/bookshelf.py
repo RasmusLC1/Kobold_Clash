@@ -44,7 +44,7 @@ class Bookshelf(Loot_Container):
         runes = self.Adjust_Rune_Weight()
 
         counter = 0
-        rune_handler = self.game.rune_handler
+        rune_handler = self.game.item_handler.rune_handler
         rune_type = None
         rune_active = False
         while not rune_active:
@@ -67,7 +67,7 @@ class Bookshelf(Loot_Container):
 
         
     def Spawn_Rune(self, rune_type):
-        self.game.rune_handler.Spawn_Rune_Floor(rune_type, self.Get_Pos())
+        self.game.item_handler.Spawn_Rune(rune_type, self.Get_Pos())
         return
     
 
@@ -118,7 +118,7 @@ class Bookshelf(Loot_Container):
             keys.soul_reap_rune,
         ]
 
-        if not self.game.rune_handler.Check_If_Player_Has_Damage_Runes():
+        if not self.game.item_handler.Check_For_Damage_Rune():
             for damage_rune in damage_runes:
                 if damage_rune in runes:
                     runes[damage_rune] += 0.1

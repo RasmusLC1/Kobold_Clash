@@ -1,11 +1,13 @@
 import random
+import traceback
 
 class Luck_Calculator():
+    @staticmethod
     def Get_Loot_Based_On_Rarity(rarity_value, loot_types_cost):
         valid_items  = Luck_Calculator.Get_Valid_Items(rarity_value, loot_types_cost)
 
         if not valid_items:
-            return None, 0
+            return None, 0, 0
 
         weights = Luck_Calculator.Set_Weights(valid_items)
 
@@ -13,7 +15,7 @@ class Luck_Calculator():
         chosen_loot_type, chosen_cost = random.choices(valid_items, weights=weights, k=1)[0]
 
         amount = rarity_value // chosen_cost
-        return chosen_loot_type, amount
+        return chosen_loot_type, amount, chosen_cost
         
     def Get_Loot_Values():
         pass
@@ -22,6 +24,10 @@ class Luck_Calculator():
     def Get_Valid_Items(rarity_value, loot_types_cost):
         
         if not loot_types_cost:
+            return None
+        
+        if not rarity_value:
+            print("RARITY VALUE NOT FOUND", loot_types_cost)
             return None
 
         # Filter valid items

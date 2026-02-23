@@ -20,7 +20,6 @@ class Arrow(Projectile):
         self.distance_from_player = 0
         self.entity = entity
         self.equipped = True
-        self.in_inventory = True
         self.picked_up = False
         self.attacking = 10
         self.special_attack = 100

@@ -4,10 +4,8 @@ from scripts.engine.keys.keys import keys
 
 class Particle(Projectile):
     def __init__(self, game, pos, type, damage, speed, range, max_charge_time, damage_type, shoot_distance):
-        super().__init__(game, pos, type, 0, speed, range, max_charge_time, keys.particle, damage_type, shoot_distance, keys.cut, (4, 4), False)
-        self.attack_animation_max = 3
+        super().__init__(game, pos, type, damage, speed, range, max_charge_time, keys.particle, damage_type, shoot_distance=shoot_distance, attack_types=keys.cut, size=(4, 4), add_to_tile=False, max_animation = 3)
         self.disabled = True
-        self.max_animation = 0
         self.animation = 0
         self.pickup_allowed = False
         self.damage_type = damage_type

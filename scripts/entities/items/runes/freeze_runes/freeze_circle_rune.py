@@ -4,10 +4,8 @@ from scripts.engine.keys.keys import keys
 
 # TODO: FInish rune
 class Freeze_Circle_Rune(Rune):
-    def __init__(self, game, pos):
-        super().__init__(game, keys.freeze_circle_rune , pos, 10, 10)
-        self.animation_time_max = 0.5
-        self.animation_size_max = 15
+    def __init__(self, game, type, pos, amount, rarity_value):
+        super().__init__(game, keys.freeze_circle_rune , pos, amount, rarity_value)
         self.clicked = False
 
 
@@ -23,7 +21,7 @@ class Freeze_Circle_Rune(Rune):
         if self.game.mouse.left_click:
             if not self.game.player.movement_handler.Dash(self.game.render_scroll):
                 return
-            self.game.player.Decrease_Souls(self.current_soul_cost)
+            self.game.player.Decrease_Souls(self.soul_cost)
             self.clicked = False
         
         if self.game.mouse.right_click:

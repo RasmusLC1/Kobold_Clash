@@ -20,9 +20,7 @@ class Utility_Loot_Handler(Loot_Types_Handler):
             keys.recall_scroll: Recall_Scroll,
         }
 
-
-    def Get_Loot_Values(self):
-        loot_types_cost = {
+        self.loot_types_cost = {
             # Echo Bell – Creates a noise at a targeted location to lure enemies away.
             keys.echo_bell: 20,
             # Faded Hourglass – Slows down nearby enemies movement.
@@ -34,5 +32,3 @@ class Utility_Loot_Handler(Loot_Types_Handler):
             # Recall Parchment – Teleports the player back to the last shrine visited.
             keys.recall_scroll: 20,
         }
-
-        return loot_types_cost

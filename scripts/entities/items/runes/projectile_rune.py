@@ -4,16 +4,19 @@ import pygame
 from scripts.engine.keys.keys import keys
 
 class Projectile_Rune(Rune):
-    def __init__(self, game, type, pos, power, soul_cost):
-        super().__init__(game, type, pos, power, soul_cost)
+    def __init__(self, game, type, pos, power, soul_cost, animation_time_max = 0.4, animation_size_max = 0):
+        super().__init__(game, type, pos, power, soul_cost, animation_time_max = 0.4, animation_size_max = 0)
         self.effect = None
         self.charge = 0
 
     
     def Activate(self):
+        if self.charge:
+            return False
         if not super().Activate():
-            return
+            return False
         self.clicked = True
+        return True
    
 
     def Update(self, delta_time):
@@ -34,11 +37,12 @@ class Projectile_Rune(Rune):
         
         # Handle intial setup
         if not self.charge:
-            if self.game.player.Get_Total_Available_Souls() < self.current_soul_cost:
+            if self.game.player.Get_Total_Available_Souls() < self.soul_cost:
                 return
             self.Set_Charge()
             self.Set_Activate_Cooldown(self.activate_cooldown_max )
             self.Compute_Souls_Cost()
+            self.clicked = False
         
         # Handle shooting
         if self.charge:

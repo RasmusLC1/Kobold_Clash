@@ -67,6 +67,8 @@ class State_Machine():
     
     
     def New_Game(self):
+        self.game.level = 1
+        self.game.level_loader.Set_Initialised(False)
         self.game.menu_handler.Loading_Menu_Reset()
         self.game.level_loader.Load_Level_New_Map(self.game.level)
 

@@ -40,16 +40,24 @@ class Loot_Container(Decoration):
         return True
 
     def Drop_Loot(self):
-        rarity_value = Luck_Calculator.Calculate_Rarity_Value(self.game, self.min_rarity_value, self.max_rarity_value)
-        affordable_loot_types = self.game.item_handler.Check_If_Loot_Is_Affordable(list(self.loot_weights.keys()), rarity_value)
-
-        weight_values = [self.loot_weights[loot_type] for loot_type in affordable_loot_types]
-        loot_type = random.choices(affordable_loot_types, weight_values, k=1)[0]
+        
+        rarity_value = self.Calculate_Rarity()
+        loot_type = self.Calculate_Loot_Type(rarity_value)
 
         if loot_type == keys.nothing:
             return
         
         self.Spawn_Loot(loot_type, self.Get_Pos(), rarity_value)
+
+    def Calculate_Rarity(self): 
+        rarity_value = Luck_Calculator.Calculate_Rarity_Value(self.game, self.min_rarity_value, self.max_rarity_value)
+        return rarity_value
+    
+    def Calculate_Loot_Type(self, rarity_value):
+        affordable_loot_types = self.game.item_handler.Check_If_Loot_Is_Affordable(list(self.loot_weights.keys()), rarity_value)
+        weight_values = [self.loot_weights[loot_type] for loot_type in affordable_loot_types]
+        loot_type = random.choices(affordable_loot_types, weight_values, k=1)[0]
+        return loot_type
     
     def Get_Pos(self):
         rand_pos_x = self.pos[0] + random.randint(-100, 100)/10

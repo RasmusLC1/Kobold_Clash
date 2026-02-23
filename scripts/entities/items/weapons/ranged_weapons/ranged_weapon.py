@@ -12,12 +12,12 @@ class Ranged_Weapon(Weapon):
         self.arrow = None
 
 
-    def Update(self, offset = (0,0)):
+    def Update(self, delta_time, offset = (0,0)):
         if self.arrow:
             self.arrow.Set_Active(self.active)
             self.arrow.Set_Light_Level(self.light_level)
         
-        return super().Update(offset)
+        return super().Update(delta_time, offset)
     
 
     

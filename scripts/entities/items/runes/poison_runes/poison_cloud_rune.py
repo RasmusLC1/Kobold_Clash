@@ -3,11 +3,8 @@ from scripts.entities.items.weapons.magic_attacks.poison.poison_cloud import Poi
 from scripts.engine.keys.keys import keys
 
 class Poison_Cloud_Rune(Rune):
-    def __init__(self, game, pos):
-        super().__init__(game, keys.poison_cloud_rune, pos, 10, 30)
-        self.animation_time_max = 0.5
-        self.animation_size_max = 15
-        self.clicked = False
+    def __init__(self, game, type, pos, amount, rarity_value):
+        super().__init__(game, keys.poison_cloud_rune, pos, amount, rarity_value)
         self.poison_cloud = None
 
     def Save_Data(self):
@@ -42,9 +39,9 @@ class Poison_Cloud_Rune(Rune):
     def Trigger_Effect(self):
         self.Trigger_Rune()
         if self.poison_cloud:
-            self.poison_cloud.Set_Duration(self.current_power)
+            self.poison_cloud.Set_Duration(self.power)
         else:
-            self.poison_cloud = Poison_Cloud(self.game, self.game.player.pos, self.current_power, self.game.player)
+            self.poison_cloud = Poison_Cloud(self.game, self.game.player.pos, self.power, self.game.player)
             self.game.entities_render.Add_Entity(self.poison_cloud)
 
     def Render_Animation(self, surf, offset=(0, 0)):

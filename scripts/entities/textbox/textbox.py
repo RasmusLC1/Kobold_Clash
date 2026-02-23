@@ -8,6 +8,8 @@ class Text_Box():
         self.x_size = 0
         self.y_size = 0
         self.Set_Headline_Font()
+        self.rectangle_surface = self.Set_Text_Box_Size()
+
         self.mixed_symbols = self.entity.game.mixed_symbols
 
     def Update(self, hitbox_1, hitbox_2):
@@ -36,9 +38,9 @@ class Text_Box():
         
         return text_box_pos
     
-    def Set_Text_Box_Size(self, entity_name):
+    def Set_Text_Box_Size(self):
         self.Set_Y_Size()
-        self.Set_X_Size(entity_name)
+        self.Set_X_Size()
         rectangle_surface = pygame.Surface((self.x_size, self.y_size), pygame.SRCALPHA)
         rectangle_color = (0, 0, 0, 200)  # Black with 50% transparency (128 out of 255)
         rectangle_surface.fill(rectangle_color)
@@ -49,22 +51,19 @@ class Text_Box():
 
     # Seperate function for size flexibility
     def Set_Y_Size(self):
-        self.y_size = 40
+        self.y_size = 80
 
-    def Set_X_Size(self, entity_name):
-        entity_name_len = len(entity_name)
-        self.x_size = 12 * entity_name_len 
-
+    def Set_X_Size(self):
+        self.x_size = 100
 
     def Text_Box_Setup(self, surf, entity_name, offset):
         # Scale the textbox to the name of the entity
         try:
-            rectangle_surface = self.Set_Text_Box_Size(entity_name)
             text_box_pos = self.Set_Text_Box_pos(offset)
 
-            surf.blit(rectangle_surface, text_box_pos)
+            surf.blit(self.rectangle_surface, text_box_pos)
         except TypeError as e:
-            print(f"Text_Box_Setup not valid: {e}", rectangle_surface, text_box_pos, surf, self.y_size, offset)
+            print(f"Text_Box_Setup not valid: {e}", self.rectangle_surface, text_box_pos, surf, self.y_size, offset)
         
         return text_box_pos
 

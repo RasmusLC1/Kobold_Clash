@@ -40,9 +40,6 @@ class Rune_Inventory(Base_Inventory):
                 continue
             item.Set_Description()
 
-
-
-    
     def Add_Item(self, item):
         for inventory_slot in self.inventory:
             if inventory_slot.item:

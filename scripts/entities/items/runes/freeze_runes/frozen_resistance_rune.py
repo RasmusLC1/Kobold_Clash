@@ -3,7 +3,5 @@ from scripts.engine.keys.keys import keys
 
 
 class Frozen_Resistance_Rune(Rune):
-    def __init__(self, game, pos):
-        super().__init__(game, keys.frozen_resistance_rune, pos, 5, 15)
-        self.animation_time_max = 0.3
-        self.animation_size_max = 25
+    def __init__(self, game, type, pos, amount, rarity_value):
+        super().__init__(game, keys.frozen_resistance_rune, pos, amount, rarity_value)

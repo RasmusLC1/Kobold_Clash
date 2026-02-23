@@ -4,7 +4,6 @@ from scripts.engine.tilemap.minimap import Minimap
 from scripts.engine.keys.keys import keys
 
 import random
-import json
 import pygame
 import math
 import copy
@@ -264,7 +263,7 @@ class Tilemap:
 
     def Add_Entity_To_Tile(self, tile, entity):
         if not tile:
-            print("Error adding entity to  tile", entity.type)
+            print("Error adding entity to  tile", entity.type, entity.pos)
             return
         tile.Add_Entity(entity)
 

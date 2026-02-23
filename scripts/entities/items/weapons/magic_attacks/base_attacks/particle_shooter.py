@@ -2,21 +2,58 @@ from scripts.engine.keys.keys import keys
 
 
 class Particle_Shooter():
-    def __init__(self, game):
+    def __init__(self, game, range, speed, cooldown_max, particle_type):
         self.game = game
         self.index = 0
         self.particle_pool = []
         self.base_damage = 0
+        self.range = range
+        self.speed = speed
+        self.cooldown = 0
+        self.cooldown_max = cooldown_max
+        self.charge = 0
+        self.entity = None
+        self.ready_to_shoot = False
+        self.particle_type = particle_type
 
-    def Particle_Creation(self, entity, special_attack):
-        pass
-            
-    def Shoot_Particles(self, entity, special_attack):
-        pass
+
+    def Update(self, delta_time):
+        if not self.charge:
+            return
+        
+        if not self.Handle_Cooldown(delta_time):
+            return False
+        
+        self.Generate_Projectile()
+
+    def Generate_Projectile(self):
+        self.Shoot_Particles()
+        self.ready_to_shoot = False
+        self.charge -= 1
+        return
     
-    # Append extra fire particle to the pool in case it runs out
-    def Create_Extra_Particle(self):
+    def Handle_Cooldown(self, delta_time):
+        if not self.charge:
+            return False
+        
+        if self.cooldown <= 0:
+            self.cooldown = self.cooldown_max
+            return True
+        
+        self.cooldown -= delta_time
+        return False
+    
+
+    def Initialise_Shooting(self, entity, charge, damage):
+        self.entity = entity
+        self.charge = charge
+        self.base_damage = damage
+        self.ready_to_shoot = True
+
+
+    def Shoot_Particles(self):
         pass
+
     
     # Effect is ignored as this is a general weapons function
     def Set_Damage(self, effect, amount):
@@ -45,3 +82,14 @@ class Particle_Shooter():
             return None
         
         return particle
+
+
+    # Append extra particle to the pool in case it runs out
+    def Create_Extra_Particle(self):
+        ice_particle = self.particle_type(
+                self.game,
+                (-999, -999),
+                100
+            )
+        self.particle_pool.append(ice_particle)
+        return ice_particle

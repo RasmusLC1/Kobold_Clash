@@ -14,16 +14,11 @@ class Valuable_Loot_Handler(Loot_Types_Handler):
             keys.hunter_treasure: self.Spawn_Hunter_Treasure
         }
 
+        self.loot_types_cost = {
+            keys.gold : 1,
+        }
 
 
     def Spawn_Hunter_Treasure(self, pos, amount = 0, type = None):
         loot = Hunter_Treasure(self.game, pos)
         return loot
-
-
-    def Get_Loot_Values(self):
-        loot_types_cost = {
-            keys.gold : 1,
-        }
-
-        return loot_types_cost
