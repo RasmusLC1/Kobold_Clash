@@ -18,6 +18,7 @@ class PhysicsEntity:
         self.sprite = None # The type of animation used
         self.entity_image = None # the full animation with animation frame
         self.rendered_image = None # the actual image being rendered to screen
+        self.saved_data = None
         self.render_needs_update = True
         self.pos = list(pos)
         self.size = size
@@ -26,13 +27,13 @@ class PhysicsEntity:
         self.render = True
         self.Set_Tile()
 
-        self.saved_data = {}
         self.Set_Text_Box()
         self.description = ''
         self.light_up_color = (255, 0, 0, 255)
 
 
     def Save_Data(self):
+        self.saved_data = {} # Initialise inside save function to prevent loading empty arrays for every entity
         self.saved_data['ID'] = self.ID
         self.saved_data['category'] = self.category
         self.saved_data[keys.type] = self.type

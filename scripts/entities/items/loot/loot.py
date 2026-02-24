@@ -9,9 +9,8 @@ class Loot(Item):
         self.Set_Description()
 
     def Save_Data(self):
-        # self.saved_data[keys.type] = self.type
-        self.saved_data[keys.loot_type] = self.loot_type
         super().Save_Data()
+        self.saved_data[keys.loot_type] = self.loot_type
 
     def Load_Data(self, data):
         # self.type = data[keys.type]

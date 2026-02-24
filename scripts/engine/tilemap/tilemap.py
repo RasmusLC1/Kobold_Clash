@@ -16,8 +16,8 @@ class Tilemap:
     def __init__(self, game, tile_size=32) -> None:
         self.game = game
         self.tile_size = 32
-        self.saved_data = {}
         self.tilemap = {}
+        self.saved_data = None
         self.tiles_not_touching_wall = {}
         self.offgrid_tiles = []
         self.update_timer = 0
@@ -29,6 +29,7 @@ class Tilemap:
         self.minimap = Minimap(game, self)
      
     def Save_data(self):
+        self.saved_data = {}
         self.saved_data['depth'] = self.game.depth
         self.saved_data['dungeon_type'] = self.game.dungeon_type
         self.saved_data['wall_tiles'] = []

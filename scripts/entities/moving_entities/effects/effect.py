@@ -17,9 +17,10 @@ class Effect():
         self.update_trigged = False
         self.cooldown_range = cooldown_range
         self.description = description
-        self.saved_data = {}
+        self.saved_data = None
 
     def Save_Data(self):
+        self.saved_data = {}
         self.saved_data['effect'] = self.effect
         self.saved_data['cooldown'] = self.cooldown
         self.saved_data['animation'] = self.animation

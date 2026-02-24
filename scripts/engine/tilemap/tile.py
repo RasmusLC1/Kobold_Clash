@@ -9,7 +9,7 @@ TILE_SIZE = 32
 class Tile():
     def __init__(self, game, type, sub_type, variant, pos, active, light_level, physics, translucent) -> None:
         self.game = game
-        self.saved_data = {}
+        self.saved_data = None
         self.type = type
         self.sub_type = sub_type
         self.variant = variant
@@ -46,6 +46,7 @@ class Tile():
             return
 
     def Save_Data(self):
+        self.saved_data = {}
         self.saved_data[keys.type] = self.type
         self.saved_data[keys.sub_type] = self.sub_type
         self.saved_data[keys.variant] = self.variant

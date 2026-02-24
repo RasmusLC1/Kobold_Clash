@@ -21,9 +21,9 @@ class Decoration(PhysicsEntity):
 
 
     def Save_Data(self):
+        super().Save_Data()
         self.saved_data['animation'] = self.animation
         self.saved_data['empty'] = self.empty
-        return super().Save_Data()
 
     def Load_Data(self, data):
         self.Set_Animation(data['animation'])

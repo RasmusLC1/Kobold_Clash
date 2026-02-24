@@ -13,8 +13,8 @@ class Brazier(Decoration):
         self.Add_Light()
 
     def Save_Data(self):
-        self.type = keys.brazier # Set brazier to default version to make loading easier
         super().Save_Data()
+        self.type = keys.brazier # Set brazier to default version to make loading easier
         self.saved_data['version'] = self.version
 
 

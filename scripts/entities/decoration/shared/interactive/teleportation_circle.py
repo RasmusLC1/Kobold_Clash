@@ -13,8 +13,8 @@ class Teleportation_Circle(Decoration):
 
 
     def Save_Data(self):
+        super().Save_Data()
         self.saved_data['linked_portal'] = self.linked_portal_ID
-        return super().Save_Data()
     
     def Load_Data(self, data):
         self.linked_portal_ID = data['linked_portal']

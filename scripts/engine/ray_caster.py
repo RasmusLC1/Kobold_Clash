@@ -13,9 +13,8 @@ INACTIVE_DISTANCE = 800 * 800
 class Ray_Caster():
     def __init__(self, game):
         self.tiles = []
-        self.saved_data = {}
         self.nearby_cooldown = 0
-        
+        self.saved_data = None
         self.game = game
 
         self.disable_distance_debugger = False
@@ -23,6 +22,7 @@ class Ray_Caster():
         self.angles = []
 
     def Save_Data(self):
+        self.saved_data = {}
         tilemap = self.game.tilemap
         for tile in self.tiles:
             # Get the string key for the dictionary

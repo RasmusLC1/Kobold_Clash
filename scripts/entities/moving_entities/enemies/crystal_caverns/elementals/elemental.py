@@ -14,9 +14,9 @@ class Elemental(Enemy):
 
 
     def Save_Data(self):
-        self.saved_data['crystal_scale'] = self.crystal_scale
+        super().Save_Data()
         self.saved_data['crystal_scale_max'] = self.crystal_scale_max
-        return super().Save_Data()
+        self.saved_data['crystal_scale'] = self.crystal_scale
     
     def Load_Data(self, data):
         self.crystal_scale = data['crystal_scale']

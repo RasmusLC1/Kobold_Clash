@@ -53,9 +53,9 @@ class Weapon(Item):
         super().__init__(game, type, keys.weapon, pos, size, amount=amount, max_amount=max_amount, add_to_tile=add_to_tile, max_animation = max_animation, durability=durability, max_durability=max_durability)
 
     def Save_Data(self):
-        if self.entity:
-            if self.entity.category == keys.enemy:
-                return
+        # if self.entity:
+        #     if self.entity.category == keys.enemy:
+        #         return
         super().Save_Data()
         
         self.saved_data['damage'] = self.damage_handler.damage
