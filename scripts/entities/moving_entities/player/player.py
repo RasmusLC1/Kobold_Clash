@@ -80,6 +80,13 @@ class Player(Moving_Entity):
         self.Spawn_Particles(delta_time)
         self.tile.Get_Distance_To_Player()
 
+    def Update_Tile(self, delta_time):
+        tile_updated = super().Update_Tile(delta_time)
+        if not tile_updated:
+            return False
+        
+        self.game.tilemap.Update_Tiles_Around_Player()
+        return True
 
     def Caclulate_View_Direction(self):
         self.view_direction = pygame.math.Vector2(self.target[0] - self.pos[0], self.target[1] - self.pos[1])

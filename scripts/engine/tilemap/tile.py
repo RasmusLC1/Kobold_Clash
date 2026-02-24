@@ -20,8 +20,8 @@ class Tile():
         self.light_level = light_level
         self.max_light = 0  # Cache the max light contribution
         self.physics = physics
+        self.touching_wall = False
         self.translucent = translucent
-        self.next_to_Wall = False
         self.entities = {}
         self.update_entity_cooldown = 0
         self.sprite = None
@@ -56,7 +56,7 @@ class Tile():
         self.saved_data["light_level"] = self.light_level
         self.saved_data["max_light"] = self.max_light
         self.saved_data["translucent"] = self.translucent
-        self.saved_data["next_to_Wall"] = self.next_to_Wall
+        self.saved_data["touching_wall"] = self.touching_wall
         self.saved_data["light_contributions"] = self.light_contributions
 
 
@@ -72,7 +72,7 @@ class Tile():
         self.light_level = data["light_level"] 
         self.max_light = data["max_light"] 
         self.translucent = data["translucent"] 
-        self.next_to_Wall = data["next_to_Wall"] 
+        self.touching_wall = data["touching_wall"] 
         self.light_contributions = data["light_contributions"]
         self.needs_redraw = True
         self.Set_Sprite()
@@ -111,6 +111,9 @@ class Tile():
     # Calculates distance to player after 0.5 second
     # return distance to player
     def Get_Distance_To_Player(self):
+        if self.physics or self.touching_wall:
+            return None
+        
         if self.game.total_time - self.last_distance_update_timestamp > 0.5:
             self.Calculate_Distance_To_Player()
 
@@ -150,6 +153,10 @@ class Tile():
     def Set_Type(self, new_type):
         self.type = new_type
 
+    def Set_Touching_Wall(self):
+        self.touching_wall = True
+
+
     def Set_Light_Level(self, new_light_level):
         self.light_level = new_light_level
 
@@ -158,8 +165,6 @@ class Tile():
             self.active = new_active_level
             self.needs_redraw = True
 
-    def Set_Next_To_Wall(self, state):
-        self.next_to_Wall = state
 
     def Set_Light_ID(self, light_id):
         self.light_ID = light_id

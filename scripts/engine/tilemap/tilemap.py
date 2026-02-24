@@ -18,8 +18,10 @@ class Tilemap:
         self.tile_size = 32
         self.tilemap = {}
         self.saved_data = None
-        self.tiles_not_touching_wall = {}
+        self.tiles_not_touching_wall = {} # Floor tiles not touching walls
         self.offgrid_tiles = []
+        self.tiles_around_player = {}
+        self.player_tile = None
         self.update_timer = 0
         self.min_x = 99999
         self.max_x = -99999
@@ -27,6 +29,7 @@ class Tilemap:
         self.max_y = -99999
         self.dungeon_type = None
         self.minimap = Minimap(game, self)
+
      
     def Save_data(self):
         self.saved_data = {}
@@ -91,6 +94,7 @@ class Tilemap:
         self.Find_Tiles_Not_Touching_Wall()
 
 
+
     def Generate_Tile(self, tile_pos, tile_values):
         type = tile_values[keys.type]
         sub_type = self.Set_Sub_Type(type)
@@ -149,7 +153,7 @@ class Tilemap:
             if not touching_wall:
                 self.tiles_not_touching_wall[tile_key] = tile
             else:
-                self.tilemap[tile_key].Set_Next_To_Wall(True)
+                self.tilemap[tile_key].Set_Touching_Wall()
 
 
 
@@ -237,6 +241,37 @@ class Tilemap:
 
         
         return entities
+
+    def Update_Tiles_Around_Player(self):
+        new_player_tile = self.game.player.tile
+        radius = 10
+
+        # Calculate the new bounds
+        new_min_x = new_player_tile.pos[0] - radius
+        new_max_x = new_player_tile.pos[0] + radius
+        new_min_y = new_player_tile.pos[1] - radius
+        new_max_y = new_player_tile.pos[1] + radius
+
+        # Find tiles in the old dict that are outside new bounds
+        # use list() because you can't mutate a dict while iterating over it
+        for loc in list(self.tiles_around_player.keys()):
+            tx, ty = loc
+            if not (new_min_x <= tx <= new_max_x and new_min_y <= ty <= new_max_y):
+                del self.tiles_around_player[loc]
+
+        get_floor_tile = self.tiles_not_touching_wall.get # Localise outside the for loop for performance
+        tiles_around_player = self.tiles_around_player
+        # Adding tiles to the player dictionary
+        for x in range(new_min_x, new_max_x + 1):
+            for y in range(new_min_y, new_max_y + 1):
+                loc = (x, y)
+                if loc not in self.tiles_around_player:
+                    # Check if exists and is floor tile not touching a wall
+                    tile = get_floor_tile(loc)
+                    if not tile:
+                        continue
+                    tiles_around_player[loc] = tile
+
 
 
     # return the entities on a tile           

@@ -160,32 +160,49 @@ class Moving_Entity(PhysicsEntity):
 
         self.last_frame_movement = self.frame_movement
     
+
+    # Returns False if tile update not needed, else True
     def Update_Tile(self, delta_time):
-        if self.update_tile_cooldown > 0:
-            self.update_tile_cooldown -= delta_time
-            return
+        if not self.Update_Tile_Cooldown(delta_time):
+            return False
 
-        self.update_tile_cooldown = TILE_COOLDOWN_MAX
-
-        # Error handling, if no tile is found teleport
-        if not self.tile:
-            new_tile = self.game.tilemap.Get_Random_Tile_With_Path_To_Player()
-            self.game.tilemap.Add_Entity_To_Tile(new_tile, self)
-            self.tile = new_tile
-            self.pos = list(self.tile.scaled_pos)
-
-            print("ERROR TILE NOT FOUND", self.type, self.pos, self.tile)
-            return
+        if not self.Check_If_Entity_Has_Tile():
+            return False
         
         pos = (int(self.pos[0]) // self.game.tilemap.tile_size, int(self.pos[1]) // self.game.tilemap.tile_size) 
-        if pos != self.tile.pos:
-            new_tile = self.game.tilemap.Current_Tile(pos)
-            if not new_tile:
-                return
-            self.game.tilemap.Remove_Entity_From_Tile(self.tile, self.ID)
-            self.game.tilemap.Add_Entity_To_Tile(new_tile, self)
-            self.tile = new_tile
-            
+        if pos == self.tile.pos:
+            return False
+        
+        new_tile = self.game.tilemap.Current_Tile(pos)
+        if not new_tile:
+            return False
+        self.game.tilemap.Remove_Entity_From_Tile(self.tile, self.ID)
+        self.game.tilemap.Add_Entity_To_Tile(new_tile, self)
+        self.tile = new_tile
+    
+        return True
+    
+    def Check_If_Entity_Has_Tile(self):
+        # Error handling, if no tile is found teleport
+        if self.tile:
+            return True
+        
+        new_tile = self.game.tilemap.Get_Random_Tile_With_Path_To_Player()
+        self.game.tilemap.Add_Entity_To_Tile(new_tile, self)
+        self.tile = new_tile
+        self.pos = list(self.tile.scaled_pos)
+
+        print("ERROR TILE NOT FOUND", self.type, self.pos, self.tile)
+        return False
+        
+    
+    def Update_Tile_Cooldown(self, delta_time):
+        if self.update_tile_cooldown > 0:
+            self.update_tile_cooldown -= delta_time
+            return False
+
+        self.update_tile_cooldown = TILE_COOLDOWN_MAX
+        return True
 
     def Set_Active(self, duration):
         # use hasattr to check if self.effects exists
