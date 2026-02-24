@@ -4,6 +4,8 @@ import pygame
 class Logic_Update():
     def __init__(self, game) -> None:
         self.game = game
+        self.game.total_time = 0
+
         self.freeze_frame = 0 # Used to freeze the game temporarily during attacks
 
 
@@ -22,9 +24,6 @@ class Logic_Update():
           self.game.entities_render.Update()
           self.game.trap_handler.Update(delta_time)
 
-
-
-
           keyboard = self.game.keyboard_handler
           movement = (
           keyboard.is_key_pressed(pygame.K_d) - keyboard.is_key_pressed(pygame.K_a),
@@ -40,6 +39,8 @@ class Logic_Update():
           self.game.noise_handler.Update()
 
           self.game.ui_handler.Update(delta_time)
+
+          self.game.total_time += delta_time # Track total time
 
 
     def Update_Freeze_Frame(self):

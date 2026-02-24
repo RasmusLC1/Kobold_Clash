@@ -113,7 +113,7 @@ class Level_Loader():
         # Setup handlers
         self.game.light_handler = Light_Handler(self.game)
         
-        
+        self.game.total_time = 0
         self.game.sparks = []
         self.game.scroll = [0, 0]
         # Spawn Player

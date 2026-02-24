@@ -78,6 +78,7 @@ class Player(Moving_Entity):
 
         self.Update_Souls_To_Remove()
         self.Spawn_Particles(delta_time)
+        self.tile.Get_Distance_To_Player()
 
 
     def Caclulate_View_Direction(self):

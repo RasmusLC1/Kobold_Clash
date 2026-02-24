@@ -31,6 +31,8 @@ class Tile():
         self.room = False # Flag to check if tile is part of room
         self.trap = False # Flag to check if tile contains trap
         self.minimap = False # Flag if the tile has been added to the minimap
+        self.distance_to_player = (999,999)
+        self.last_distance_update_timestamp = 0
         # Dictionary to hold each light's contribution
         # Key: light_id, Value: contributed_light_level
         self.light_contributions = {}
@@ -75,26 +77,7 @@ class Tile():
         self.Set_Sprite()
 
 
-    def Set_Type(self, new_type):
-        self.type = new_type
-
-
-    def Set_Light_Level(self, new_light_level):
-        self.light_level = new_light_level
-
-    def Set_Active(self, new_active_level):
-        if new_active_level != self.active:
-            self.active = new_active_level
-            self.needs_redraw = True
-
-    def Set_Next_To_Wall(self, state):
-        self.next_to_Wall = state
-
-    def Set_Light_ID(self, light_id):
-        self.light_ID = light_id
-
-
-    
+# ENTITY LOGIC    
     def Search_Entities(self, category, ID=0):
         return [entity for entity in self.entities.values()
             if entity.category in (category) and entity.ID != ID]
@@ -115,8 +98,8 @@ class Tile():
             entity.Update_Dark_Surface()
 
         self.update_entity_cooldown = 10
-        
-
+    
+    # Sets an entity based on the entity ID 
     def Add_Entity(self, entity):
         if not entity:
             return
@@ -126,6 +109,25 @@ class Tile():
     def Clear_Entity(self, entity_ID):
         self.entities.pop(entity_ID, None)
 
+    # Calculates distance to player after 0.5 second
+    # return distance to player
+    def Get_Distance_To_Player(self):
+        if self.game.total_time - self.last_distance_update_timestamp > 0.5:
+            self.Calculate_Distance_To_Player()
+
+        return self.distance_to_player
+
+    # Uses squared distance to palyer for optimisation
+    # Stores the time stamp of the calculation for comparison
+    def Calculate_Distance_To_Player(self):
+        player_pos = self.game.player.pos
+        dx = self.scaled_pos[0]  - player_pos[0]
+        dy = self.scaled_pos[1]  - player_pos[1]
+        self.distance_to_player = dx * dx + dy * dy
+        self.last_distance_update_timestamp = self.game.total_time
+
+  
+# SET FUNCTIONS
     def Set_Physics(self, state):
         self.physics = state
     
@@ -145,9 +147,25 @@ class Tile():
         
         self.minimap = True
         return True
+    
+    def Set_Type(self, new_type):
+        self.type = new_type
 
+    def Set_Light_Level(self, new_light_level):
+        self.light_level = new_light_level
 
+    def Set_Active(self, new_active_level):
+        if new_active_level != self.active:
+            self.active = new_active_level
+            self.needs_redraw = True
 
+    def Set_Next_To_Wall(self, state):
+        self.next_to_Wall = state
+
+    def Set_Light_ID(self, light_id):
+        self.light_ID = light_id
+
+# LIGHT LOGIC
     def Add_Light_Contribution(self, light_id, contribution):
         # Add/update light contribution
         self.light_contributions[light_id] = contribution
@@ -169,6 +187,12 @@ class Tile():
         
         # Ensure light level is also updated
         self.light_level = self.max_light
+
+
+    def Set_Contains_Decoration(self, state):
+        self.contains_decoration = state
+
+# RENDER LOGIC
 
     # Recalculates the tile's visual state and caches it 
     def Update_Tile_Surface(self):
@@ -198,8 +222,7 @@ class Tile():
 
         self.needs_redraw = False  # Reset flag
     
-    def Set_Contains_Decoration(self, state):
-        self.contains_decoration = state
+    
 
     # Only render active tiles from raycaster
     def Render(self, surf, offset = (0,0)):

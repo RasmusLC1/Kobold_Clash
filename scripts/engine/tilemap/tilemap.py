@@ -90,7 +90,6 @@ class Tilemap:
         self.Find_Tiles_Not_Touching_Wall()
 
 
-
     def Generate_Tile(self, tile_pos, tile_values):
         type = tile_values[keys.type]
         sub_type = self.Set_Sub_Type(type)
