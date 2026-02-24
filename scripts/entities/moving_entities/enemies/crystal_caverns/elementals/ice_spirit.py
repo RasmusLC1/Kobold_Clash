@@ -14,6 +14,7 @@ class Ice_Spirit(Elemental):
         self.shooting_ice = False
         self.ice_damage = 5
         self.minimum_distance = 50
+        self.attack_cooldown = 0
         self.active_weapon = Ice_Shooter(self.game)
 
     def Update(self, tilemap, delta_time, movement = (0, 0)):
@@ -29,12 +30,17 @@ class Ice_Spirit(Elemental):
         if self.distance_to_player < self.minimum_distance:
             self.charge = 0
             return False
+        if self.attack_cooldown > 0:
+            self.attack_cooldown -= delta_time
+            return False
+        
         return super().Attack(delta_time)
     
     def Trigger_Attack(self):
         self.Set_Target(self.game.player.pos)
         self.Set_Attack_Direction()
         self.active_weapon.Initialise_Shooting(self, 2, self.ice_damage)
+        self.attack_cooldown = 1
 
     def Handle_Frozen(self):
         frozen = self.effects.Get_Effect_Strength(keys.frozen)

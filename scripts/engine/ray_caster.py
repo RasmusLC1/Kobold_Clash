@@ -46,18 +46,18 @@ class Ray_Caster():
 
 
 
-    def Update(self):
+    def Update(self, delta_time):
         if self.disable_distance_debugger:
             return
         
         self.Check_Tile_Active()
 
-        self.Update_Entities()
+        self.Update_Entities(delta_time)
 
 
-    def Update_Entities(self):
+    def Update_Entities(self, delta_time):
         for tile in self.tiles:
-            tile.Set_Entity_Active()
+            tile.Set_Entity_Active(delta_time)
 
     # Handle tile activity degradation
     def Check_Tile_Active(self):

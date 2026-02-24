@@ -155,6 +155,11 @@ class PhysicsEntity:
     def Set_Description(self):
         pass
 
+    def Update_Active(self, state):
+        self.Set_Active(state)
+        self.render_needs_update = True
+        self.Update_Dark_Surface()
+
     def Update_Text_Box(self, hitbox_1, hitbox_2):
         if not self.text_box:
             return None

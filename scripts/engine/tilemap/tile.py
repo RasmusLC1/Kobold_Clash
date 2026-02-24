@@ -89,16 +89,14 @@ class Tile():
                 if entity.type == type and entity.ID != ID]
     
     # Update the dark level of nearby entities 
-    def Set_Entity_Active(self):
-        if self.update_entity_cooldown:
-            self.update_entity_cooldown -= 1
+    def Set_Entity_Active(self, delta_time):
+        if self.update_entity_cooldown > 0:
+            self.update_entity_cooldown -= delta_time
             return
         for entity in self.entities.values():
-            entity.Set_Active(self.active)
-            entity.render_needs_update = True
-            entity.Update_Dark_Surface()
+            entity.Update_Active(self.active)
 
-        self.update_entity_cooldown = 10
+        self.update_entity_cooldown = 0.1
     
     # Sets an entity based on the entity ID 
     def Add_Entity(self, entity):
