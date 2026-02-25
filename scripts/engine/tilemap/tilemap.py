@@ -20,7 +20,6 @@ class Tilemap:
         self.saved_data = None
         self.tiles_not_touching_wall = {} # Floor tiles not touching walls
         self.offgrid_tiles = []
-        self.tiles_around_player = {}
         self.player_tile = None
         self.update_timer = 0
         self.min_x = 99999
@@ -132,6 +131,7 @@ class Tilemap:
     # Runs one time when loading, but expensive to compute
     def Find_Tiles_Not_Touching_Wall(self):
         self.tiles_not_touching_wall.clear()
+        tilemap_get = self.tilemap.get
         for tile_key, tile in self.tilemap.items():
             if not tile or tile.type != keys.floor:
                 continue
@@ -142,11 +142,12 @@ class Tilemap:
                 nx, ny = x + offset[0], y + offset[1] # Get neigbour key
                 neighbor_key = (nx, ny)
 
-                if neighbor_key not in self.tilemap:
+                
+                neighbor_tile = tilemap_get(neighbor_key)
+                if not neighbor_tile:
                     continue
                 
-                neighbor_tile = self.tilemap[neighbor_key]
-                if neighbor_tile and neighbor_tile.physics:
+                if neighbor_tile.physics:
                     touching_wall = True
                     break
             
@@ -242,36 +243,23 @@ class Tilemap:
         
         return entities
 
-    def Update_Tiles_Around_Player(self):
-        new_player_tile = self.game.player.tile
-        radius = 10
+    def Calculate_Player_Distance_In_Surrounding_Tiles(self, tile):
+        x, y = tile.pos
+        tilemap_get = self.tilemap.get
+        neighbor_tiles_arr = []
+        for offset in NEIGHBOR_OFFSETS:
+            nx, ny = x + offset[0], y + offset[1] # Get neigbour key
+            neighbor_key = (nx, ny)
 
-        # Calculate the new bounds
-        new_min_x = new_player_tile.pos[0] - radius
-        new_max_x = new_player_tile.pos[0] + radius
-        new_min_y = new_player_tile.pos[1] - radius
-        new_max_y = new_player_tile.pos[1] + radius
+            neighbor_tile = tilemap_get(neighbor_key)
+            if not neighbor_tile or neighbor_tile.physics:
+                continue
+            
+            neighbor_tile.Get_Distance_To_Player()
+            neighbor_tiles_arr.append(neighbor_tile)
 
-        # Find tiles in the old dict that are outside new bounds
-        # use list() because you can't mutate a dict while iterating over it
-        for loc in list(self.tiles_around_player.keys()):
-            tx, ty = loc
-            if not (new_min_x <= tx <= new_max_x and new_min_y <= ty <= new_max_y):
-                del self.tiles_around_player[loc]
-
-        get_floor_tile = self.tiles_not_touching_wall.get # Localise outside the for loop for performance
-        tiles_around_player = self.tiles_around_player
-        # Adding tiles to the player dictionary
-        for x in range(new_min_x, new_max_x + 1):
-            for y in range(new_min_y, new_max_y + 1):
-                loc = (x, y)
-                if loc not in self.tiles_around_player:
-                    # Check if exists and is floor tile not touching a wall
-                    tile = get_floor_tile(loc)
-                    if not tile:
-                        continue
-                    tiles_around_player[loc] = tile
-
+        return neighbor_tiles_arr
+   
 
 
     # return the entities on a tile           
