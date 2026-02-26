@@ -11,54 +11,82 @@ class Attack_Stategies():
 
 
         self.player_found = 0
-        self.player_found_max = 400
+        self.player_found_max = 10 # 10 seconds
 
         self.direct_pathing_cooldown = 0
 
         self.tile_check_timestamp = 0
+        # None if no range needed
         self.attack_ranges = {
             keys.long_range: (200, 160),
             keys.medium_range: (120, 80),
             keys.short_range: (80, 60),
-            keys.keep_position: (0, 0),
+            keys.keep_position: None,
+            keys.idle: None,
+            keys.run_away: None
         }
 
 
         
-# OLD
+
     # Return True if pathing updated else false
-    def Attack_Strategy(self) -> bool:
+    def Attack_Strategy(self, delta_time) -> bool:
         if self.game.player.effects.invisibility.effect:
             return False
 
         if self.entity.distance_to_player > 300:
             return
         
-        self.Update_Player_Found()
+        self.Update_Player_Found(delta_time)
         attack_strategy = self.entity.attack_strategy 
+
         if attack_strategy == keys.direct: # charge the player
             return self.Direct_Pathing()
-        elif attack_strategy == keys.long_range: # keep long distance
-            return self.Keep_Distance(200, 160)
-        elif attack_strategy == keys.medium_range: # keep medium distance
-            return self.Keep_Distance(120, 80)
-        elif attack_strategy == keys.short_range:
-            return self.Keep_Distance(80, 60)
-        elif attack_strategy == keys.keep_position:
-            self.entity.direction = (0, 0)
-        elif attack_strategy == keys.idle:
+        
+        attack_range = self.attack_ranges.get(attack_strategy)
+
+        if not attack_range:
             return False
-        elif attack_strategy == keys.run_away:
-            return False
-        else:
-            return self.Direct_Pathing()
+
+        return self.Keep_Distance(attack_range, delta_time)
+
         
 
-    def Update_Player_Found(self):
-        if not self.player_found:
+    def Update_Player_Found(self, delta_time):
+        if self.player_found > 0:
             return False
-        self.player_found -= 1
+        self.player_found -= delta_time
         return True
+    
+    def Keep_Distance(self, ranges, delta_time):
+        max_range, closest_range = ranges
+        # Cooldown since the player's relative position does not need constant update
+        if self.Pathfinding_Cooldown(delta_time):
+            return True
+        
+        if self.entity.distance_to_player < max_range and self.entity.distance_to_player > closest_range:
+            
+            path = self.Find_Escape_Path()
+
+            self.direct_pathing_cooldown = 40
+            if not path:
+                return True
+            
+            self.entity.direction = pygame.math.Vector2(path[0], path[1])
+            self.entity.direction.normalize_ip()
+
+            return True
+        
+        if self.entity.distance_to_player > max_range :
+            return self.Charge_player(150)
+        
+        return self.Run_Away(60)
+    
+    def Pathfinding_Cooldown(self, delta_time):
+        if self.direct_pathing_cooldown > 0:
+            self.direct_pathing_cooldown -= delta_time
+            return True
+        return False
 
 # NEW METHOD
     def Find_Tile_To_Pathfind_To(self):
@@ -101,7 +129,7 @@ class Attack_Stategies():
         
         return tile_data
 
-    
+    # Returns the target position
     def Choose_Destination(self, entity_player_distance, max_range,
                            min_range, num_tiles, tile_data):
         if entity_player_distance > max_range:
@@ -121,9 +149,49 @@ class Attack_Stategies():
             mid = num_tiles // 2
             idx = random.randint(max(0, mid-1), min(num_tiles-1, mid+1))
             return tile_data[idx][1]
-        
 
-    def Keep_Distance(self, max_range, closest_range):
+# LINE OF SIGHT LOGIC
+    # Enemies check for line of sight and sets player found cooldown accordingly
+    def Handle_Line_Of_Sight(self):
+        if not self.Line_Of_Sight(self.game.player.pos):
+            if not self.player_found:
+                return False
+        else:
+            self.player_found = self.player_found_max
+            return True
+        
+    def Line_Of_Sight(self, target_pos):
+        tile_size = self.game.tilemap.tile_size
+        # Start and End in tile coords
+        x1, y1 = int(self.entity.pos[0] // tile_size), int(self.entity.pos[1] // tile_size)
+        x2, y2 = int(target_pos[0] // tile_size), int(target_pos[1] // tile_size)
+
+        dx, dy = abs(x2 - x1), abs(y2 - y1)
+        sx, sy = (1 if x1 < x2 else -1), (1 if y1 < y2 else -1)
+        err = dx - dy
+
+        while True:
+            # Don't check the very first tile (the enemy's own tile)
+            if (x1, y1) != (int(self.entity.pos[0] // tile_size), int(self.entity.pos[1] // tile_size)):
+                if not self.game.ray_caster.Check_Tile((x1, y1)):
+                    return False
+            
+            if x1 == x2 and y1 == y2:
+                break
+
+            e2 = 2 * err
+            if e2 > -dy:
+                err -= dy
+                x1 += sx
+            if e2 < dx:
+                err += dx
+                y1 += sy
+        return True
+    
+
+# OLD LOGIC
+    def Keep_Distance(self, ranges):
+        max_range, closest_range = ranges
         # Cooldown since the player's relative position does not need constant update
         if self.direct_pathing_cooldown:
             self.direct_pathing_cooldown = max(0, self.direct_pathing_cooldown - 1)
@@ -195,15 +263,7 @@ class Attack_Stategies():
         
         return False
 
-    # Enemies check for line of sight and sets player found cooldown accordingly
-    def Handle_Line_Of_Sight(self):
-        if not self.Line_Of_Sight(self.game.player.pos):
-            if not self.player_found:
-                return False
-        else:
-            self.player_found = self.player_found_max
-            return True
-
+    
     def Charge_player(self, distance):
         if self.entity.distance_to_player < distance or self.player_found:
             # Check if the enemy has 
@@ -225,55 +285,4 @@ class Attack_Stategies():
         return False
     
 
-    # Check for line of sight with target, returns true when found
-    def Line_Of_Sight(self, target_pos):
-        tile_size = self.game.tilemap.tile_size
-
-        # Convert enemy’s pixel position to tile coordinates
-        ex = int(self.entity.pos[0] // tile_size)
-        ey = int(self.entity.pos[1] // tile_size)
-        # Convert player’s pixel position to tile coordinates
-        px = int(target_pos[0] // tile_size)
-        py = int(target_pos[1] // tile_size)
-
-        # Generate the list of tiles along the line
-        line_tiles = self.bresenham_line((ex, ey), (px, py))
-
-        # Check each tile. If any tile is not see-through, return False
-        for (tx, ty) in line_tiles:
-            tile_key = (tx, ty)
-            # If your ray_caster.Check_Tile(tile_key) means "can see through" is True
-            # or "walkable" is True, adapt accordingly.
-            if not self.game.ray_caster.Check_Tile(tile_key):
-                return False
-
-        return True
-
-    # Returns all the tile coordinates on a line between `start` and `end`.
-    # start/end should be (x, y) tuples in tile coordinates (integer grid positions).    
-    def bresenham_line(self, start, end):
-
-        x1, y1 = start
-        x2, y2 = end
-
-        points = []
-        dx = abs(x2 - x1)
-        dy = abs(y2 - y1)
-        sx = 1 if x1 < x2 else -1
-        sy = 1 if y1 < y2 else -1
-        err = dx - dy
-
-        while True:
-            points.append((x1, y1))
-            if x1 == x2 and y1 == y2:
-                break
-
-            e2 = err * 2
-            if e2 > -dy:
-                err -= dy
-                x1 += sx
-            if e2 < dx:
-                err += dx
-                y1 += sy
-
-        return points
+    
