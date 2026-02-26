@@ -23,8 +23,44 @@ class Attack_Stategies():
             keys.keep_position: (0, 0),
         }
 
-    import random
 
+        
+# OLD
+    # Return True if pathing updated else false
+    def Attack_Strategy(self) -> bool:
+        if self.game.player.effects.invisibility.effect:
+            return False
+
+        if self.entity.distance_to_player > 300:
+            return
+        
+        self.Update_Player_Found()
+        attack_strategy = self.entity.attack_strategy 
+        if attack_strategy == keys.direct: # charge the player
+            return self.Direct_Pathing()
+        elif attack_strategy == keys.long_range: # keep long distance
+            return self.Keep_Distance(200, 160)
+        elif attack_strategy == keys.medium_range: # keep medium distance
+            return self.Keep_Distance(120, 80)
+        elif attack_strategy == keys.short_range:
+            return self.Keep_Distance(80, 60)
+        elif attack_strategy == keys.keep_position:
+            self.entity.direction = (0, 0)
+        elif attack_strategy == keys.idle:
+            return False
+        elif attack_strategy == keys.run_away:
+            return False
+        else:
+            return self.Direct_Pathing()
+        
+
+    def Update_Player_Found(self):
+        if not self.player_found:
+            return False
+        self.player_found -= 1
+        return True
+
+# NEW METHOD
     def Find_Tile_To_Pathfind_To(self):
         attack_strategy = self.entity.attack_strategy 
         max_range, min_range = self.attack_ranges.get(attack_strategy, (0, 0))
@@ -47,7 +83,8 @@ class Attack_Stategies():
 
     def Find_Tiles_In_Range(self, entity_player_distance, max_range,
                            min_range, tile_data):
-        surrounding_tiles = self.game.tilemap.Tiles_Around(self.entity.pos)
+        # Get surrounding tiles
+        surrounding_tiles = self.game.tilemap.Get_Floor_Tiles_Around(self.entity.pos)
         # If in range, 90% chance to stay put (return None)
         if min_range < entity_player_distance < max_range:
             if random.randint(1, 10) <= 9: # 90% chance to stand still
@@ -85,43 +122,6 @@ class Attack_Stategies():
             idx = random.randint(max(0, mid-1), min(num_tiles-1, mid+1))
             return tile_data[idx][1]
         
-        
-
-    # Return True if pathing updated else false
-    def Attack_Strategy(self) -> bool:
-        if self.game.player.effects.invisibility.effect:
-            return False
-
-        if self.entity.distance_to_player > 300:
-            return
-        
-        self.Update_Player_Found()
-        attack_strategy = self.entity.attack_strategy 
-        if attack_strategy == keys.direct: # charge the player
-            return self.Direct_Pathing()
-        elif attack_strategy == keys.long_range: # keep long distance
-            return self.Keep_Distance(200, 160)
-        elif attack_strategy == keys.medium_range: # keep medium distance
-            return self.Keep_Distance(120, 80)
-        elif attack_strategy == keys.short_range:
-            return self.Keep_Distance(80, 60)
-        elif attack_strategy == keys.keep_position:
-            self.entity.direction = (0, 0)
-        elif attack_strategy == keys.idle:
-            return False
-        elif attack_strategy == keys.run_away:
-            return False
-        else:
-            return self.Direct_Pathing()
-        
-
-    def Update_Player_Found(self):
-        if not self.player_found:
-            return False
-        self.player_found -= 1
-        return True
-
-
 
     def Keep_Distance(self, max_range, closest_range):
         # Cooldown since the player's relative position does not need constant update
@@ -215,7 +215,7 @@ class Attack_Stategies():
             if self.entity.direction[0] == 0 and self.entity.direction[1] == 0:
                 return False
             self.entity.direction.normalize_ip()
-            # Only update every 1000 ticks since you don't want
+            # Only update every 20 seconds since you don't want
             # the enemies to spam the ability and lag the game
             if not self.entity.alert_cooldown:
                 self.entity.Set_Alert_Cooldown(20)

@@ -277,14 +277,30 @@ class Tilemap:
         return positions
 
     # Get surrounding tiles
-    def Tiles_Around(self, pos):
+    def Get_Tiles_Around(self, pos):
         tiles = []
+        tilemap_get = self.tilemap.get
         tile_loc = (int(pos[0] // self.tile_size), int(pos[1] // self.tile_size))
         for offset in NEIGHBOR_OFFSETS:
             check_loc = (tile_loc[0] + offset[0], tile_loc[1] + offset[1])
-            if check_loc in self.tilemap:
-                tiles.append(self.tilemap[check_loc])
+            tile = tilemap_get(check_loc)
+            if tile:
+                tiles.append(tile)
         return tiles
+    
+    # Uses the check_
+    def Get_Floor_Tiles_Around(self, pos):
+        tile_loc = (int(pos[0] // self.tile_size), int(pos[1] // self.tile_size))
+        floor_tiles = []
+        tiles_not_touching_walls_get = self.tiles_not_touching_wall.get
+        for offset in NEIGHBOR_OFFSETS:
+            check_loc = (tile_loc[0] + offset[0], tile_loc[1] + offset[1])
+            # Direct lookup in your "Safe Tiles" pre-calculated dict
+            tile = tiles_not_touching_walls_get(check_loc)
+            if tile:
+                floor_tiles.append(tile)
+                
+        return floor_tiles
     
         
     # Check what tile type is in a given position
@@ -360,7 +376,7 @@ class Tilemap:
     # Check for physics tiles
     def physics_rects_around(self, pos):
         rects = []
-        for tile in self.Tiles_Around(pos):
+        for tile in self.Get_Tiles_Around(pos):
             if not tile:
                 print(tile, pos)
                 continue
@@ -379,7 +395,7 @@ class Tilemap:
     # Check for physics tiles
     def floor_rects_around(self, pos):
         rects = []
-        for tile in self.Tiles_Around(pos):
+        for tile in self.Get_Tiles_Around(pos):
             if not tile:
                 print(tile, pos)
                 continue
