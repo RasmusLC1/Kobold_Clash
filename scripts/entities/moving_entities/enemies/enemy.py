@@ -181,8 +181,8 @@ class Enemy(Moving_Entity):
             return
         super().Set_Attack_Direction()
         
-    def Attack_Strategy(self):
-        return self.attack_strategies.Attack_Strategy()
+    def Attack_Strategy(self, delta_time):
+        return self.attack_strategies.Attack_Strategy(delta_time)
 
 
     

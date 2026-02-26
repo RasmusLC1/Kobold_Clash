@@ -15,6 +15,78 @@ class Attack_Stategies():
 
         self.direct_pathing_cooldown = 0
 
+        self.tile_check_timestamp = 0
+        self.attack_ranges = {
+            keys.long_range: (200, 160),
+            keys.medium_range: (120, 80),
+            keys.short_range: (80, 60),
+            keys.keep_position: (0, 0),
+        }
+
+    import random
+
+    def Find_Tile_To_Pathfind_To(self):
+        attack_strategy = self.entity.attack_strategy 
+        max_range, min_range = self.attack_ranges.get(attack_strategy, (0, 0))
+        
+        if max_range == 0:
+            return None
+            
+        entity_player_distance = self.entity.distance_to_player
+        tile_data = self.Find_Tiles_In_Range(entity_player_distance, max_range,
+                           min_range, tile_data)
+        # Safety check: if no tiles found, exit
+        num_tiles = len(tile_data)
+        if num_tiles == 0:
+            return None
+
+        tile_data.sort(key=lambda x: x[0])
+
+        return self.Choose_Destination(entity_player_distance, max_range,
+                           min_range, num_tiles, tile_data)
+
+    def Find_Tiles_In_Range(self, entity_player_distance, max_range,
+                           min_range, tile_data):
+        surrounding_tiles = self.game.tilemap.Tiles_Around(self.entity.pos)
+        # If in range, 90% chance to stay put (return None)
+        if min_range < entity_player_distance < max_range:
+            if random.randint(1, 10) <= 9: # 90% chance to stand still
+                return None
+
+        tile_data = []
+        for tile in surrounding_tiles:
+            distance = tile.Get_Distance_To_Player()
+            if distance is None:
+                continue
+            # Store the TILE object, not just tile.pos
+            tile_data.append((distance, tile))
+
+        
+        return tile_data
+
+    
+    def Choose_Destination(self, entity_player_distance, max_range,
+                           min_range, num_tiles, tile_data):
+        if entity_player_distance > max_range:
+            # TOO FAR: Pick from the closest tiles (start of sorted list)
+            limit = min(3, num_tiles)
+            chosen_pair = tile_data[random.randint(0, limit - 1)]
+            return chosen_pair[1]
+            
+        elif entity_player_distance < min_range:
+            # TOO CLOSE: Pick from the furthest tiles (end of sorted list)
+            limit_idx = max(0, num_tiles - 3)
+            chosen_pair = tile_data[random.randint(limit_idx, num_tiles - 1)]
+            return chosen_pair[1]
+            
+        else:
+            # IN RANGE (The 10% chance): Shuffle around slightly
+            mid = num_tiles // 2
+            idx = random.randint(max(0, mid-1), min(num_tiles-1, mid+1))
+            return tile_data[idx][1]
+        
+        
+
     # Return True if pathing updated else false
     def Attack_Strategy(self) -> bool:
         if self.game.player.effects.invisibility.effect:
@@ -48,6 +120,8 @@ class Attack_Stategies():
             return False
         self.player_found -= 1
         return True
+
+
 
     def Keep_Distance(self, max_range, closest_range):
         # Cooldown since the player's relative position does not need constant update

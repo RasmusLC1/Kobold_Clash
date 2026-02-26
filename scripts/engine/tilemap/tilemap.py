@@ -92,8 +92,6 @@ class Tilemap:
         self.offgrid_tiles = offgrid_data
         self.Find_Tiles_Not_Touching_Wall()
 
-
-
     def Generate_Tile(self, tile_pos, tile_values):
         type = tile_values[keys.type]
         sub_type = self.Set_Sub_Type(type)
@@ -243,25 +241,6 @@ class Tilemap:
         
         return entities
 
-    def Calculate_Player_Distance_In_Surrounding_Tiles(self, tile):
-        x, y = tile.pos
-        tilemap_get = self.tilemap.get
-        neighbor_tiles_arr = []
-        for offset in NEIGHBOR_OFFSETS:
-            nx, ny = x + offset[0], y + offset[1] # Get neigbour key
-            neighbor_key = (nx, ny)
-
-            neighbor_tile = tilemap_get(neighbor_key)
-            if not neighbor_tile or neighbor_tile.physics:
-                continue
-            
-            neighbor_tile.Get_Distance_To_Player()
-            neighbor_tiles_arr.append(neighbor_tile)
-
-        return neighbor_tiles_arr
-   
-
-
     # return the entities on a tile           
     def Get_Tile_Entities(self, tile_key):
         tile = self.tilemap.get(tile_key)
@@ -298,7 +277,7 @@ class Tilemap:
         return positions
 
     # Get surrounding tiles
-    def tiles_around(self, pos):
+    def Tiles_Around(self, pos):
         tiles = []
         tile_loc = (int(pos[0] // self.tile_size), int(pos[1] // self.tile_size))
         for offset in NEIGHBOR_OFFSETS:
@@ -381,7 +360,7 @@ class Tilemap:
     # Check for physics tiles
     def physics_rects_around(self, pos):
         rects = []
-        for tile in self.tiles_around(pos):
+        for tile in self.Tiles_Around(pos):
             if not tile:
                 print(tile, pos)
                 continue
@@ -400,7 +379,7 @@ class Tilemap:
     # Check for physics tiles
     def floor_rects_around(self, pos):
         rects = []
-        for tile in self.tiles_around(pos):
+        for tile in self.Tiles_Around(pos):
             if not tile:
                 print(tile, pos)
                 continue
