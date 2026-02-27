@@ -13,6 +13,8 @@ class Attack_Stategies():
         self.player_found = 0
         self.player_found_max = 10 # 10 seconds
 
+        self.line_of_sight_cooldown = 0
+
         self.direct_pathing_cooldown = 0
 
         self.tile_check_timestamp = 0
@@ -37,7 +39,10 @@ class Attack_Stategies():
         if self.entity.distance_to_player > 300:
             return
         
-        self.Update_Player_Found(delta_time)
+        # Check if the enemy has line of sight
+        if not self.Handle_Line_Of_Sight(delta_time):
+            return False
+        
         attack_strategy = self.entity.attack_strategy 
 
         if attack_strategy == keys.direct: # charge the player
@@ -52,11 +57,6 @@ class Attack_Stategies():
 
         
 
-    def Update_Player_Found(self, delta_time):
-        if self.player_found > 0:
-            return False
-        self.player_found -= delta_time
-        return True
     
     def Keep_Distance(self, ranges, delta_time):
         max_range, closest_range = ranges
@@ -149,36 +149,63 @@ class Attack_Stategies():
             mid = num_tiles // 2
             idx = random.randint(max(0, mid-1), min(num_tiles-1, mid+1))
             return tile_data[idx][1]
+        
+    def Move_Enemy_Towards_Destination(self, target_pos):
+        dx = target_pos[0] - self.entity.pos[0]
+        dy = target_pos[1] - self.entity.pos[1]
+        self.entity.direction = pygame.math.Vector2(dx, dy)
+        if self.entity.direction[0] == 0 and self.entity.direction[1] == 0:
+            return False
+        self.entity.direction.normalize_ip()
+        
+        return True
 
 # LINE OF SIGHT LOGIC
     # Enemies check for line of sight and sets player found cooldown accordingly
-    def Handle_Line_Of_Sight(self):
-        if not self.Line_Of_Sight(self.game.player.pos):
-            if not self.player_found:
-                return False
+    def Handle_Line_Of_Sight(self, delta_time):
+        if not self.Line_Of_Sight_Cooldown(delta_time):
+            return False
+
+        if not self.Line_Of_Sight(self.game.player.pos): # Line of sight blocked
+            return False
         else:
-            self.player_found = self.player_found_max
+            self.Trigger_Player_Found(delta_time)
             return True
         
+    # Alert other nearby enemies
+    def Trigger_Player_Found(self):
+        # Check if entity has recently been triggered
+        if self.entity.alert_cooldown:
+            return False
+ 
+        self.entity.Set_Alert_Cooldown(20)
+        self.game.clatter.Generate_Clatter(self.entity.pos, 800) # Generate clatter to alert nearby enemies
+        return False
+
+    def Line_Of_Sight_Cooldown(self, delta_time):
+        if self.line_of_sight_cooldown > 0:
+            self.line_of_sight_cooldown -= delta_time
+            return False
+        
+        self.line_of_sight_cooldown = 1 # Check line of sight 1 time per second
+        return True
+
+    
+    # Returns true if line of sight to target, else false
     def Line_Of_Sight(self, target_pos):
         tile_size = self.game.tilemap.tile_size
-        # Start and End in tile coords
+        
+        # Current tile (Start)
         x1, y1 = int(self.entity.pos[0] // tile_size), int(self.entity.pos[1] // tile_size)
+        # Target tile (End)
         x2, y2 = int(target_pos[0] // tile_size), int(target_pos[1] // tile_size)
 
         dx, dy = abs(x2 - x1), abs(y2 - y1)
         sx, sy = (1 if x1 < x2 else -1), (1 if y1 < y2 else -1)
         err = dx - dy
 
-        while True:
-            # Don't check the very first tile (the enemy's own tile)
-            if (x1, y1) != (int(self.entity.pos[0] // tile_size), int(self.entity.pos[1] // tile_size)):
-                if not self.game.ray_caster.Check_Tile((x1, y1)):
-                    return False
-            
-            if x1 == x2 and y1 == y2:
-                break
-
+        # Loop until we reach the target tile
+        while (x1, y1) != (x2, y2):
             e2 = 2 * err
             if e2 > -dy:
                 err -= dy
@@ -186,6 +213,15 @@ class Attack_Stategies():
             if e2 < dx:
                 err += dx
                 y1 += sy
+                
+            # If we reach the target tile, we have a clear line of sight
+            if (x1, y1) == (x2, y2):
+                return True
+
+            # Check if the current tile is solid
+            if not self.game.ray_caster.Check_Tile((x1, y1)):
+                return False
+
         return True
     
 

@@ -153,7 +153,9 @@ class Enemy_Handler():
         self.pathfinding_handler.Sort_Pathfinding_Queue()
 
    
-    # Seperate low priority queue for patrol to prevent patrol from clogging the active pathfinding
+    # Patrol queue that makes enemies pathfind to random enemies
+    # Seperate low priority queue for patrol to prevent patrol
+    # from clogging the active pathfinding
     def Add_To_Patrol_Queue(self, enemy):
         self.pathfinding_handler.Add_To_Patrol_Queue(enemy)
 
