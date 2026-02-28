@@ -79,7 +79,8 @@ class Path_Finding():
 
     def Calculate_Path_Segment(self, target):
         target_pos = (target[0] * self.game.tilemap.tile_size, target[1] * self.game.tilemap.tile_size)
-        self.entity.direction = pygame.math.Vector2(target_pos[0] - self.entity.pos[0], target_pos[1] - self.entity.pos[1])
+        direction = pygame.math.Vector2(target_pos[0] - self.entity.pos[0], target_pos[1] - self.entity.pos[1])
+        self.entity.Set_Direction(direction, "CALCULATEPATH1") 
         if self.entity.direction.length() > 0:
             self.entity.direction.normalize_ip()
 
@@ -90,8 +91,8 @@ class Path_Finding():
         reach_threshold = self.game.tilemap.tile_size
         if math.hypot(self.entity.pos[0] - target[0] * self.game.tilemap.tile_size, self.entity.pos[1] - target[1] * self.game.tilemap.tile_size) > reach_threshold:
             return False
-
-        self.entity.direction = (0, 0)
+        direction = pygame.math.Vector2(0, 0)
+        self.entity.Set_Direction(direction, "CALCULATEPATH1") 
         self.path.pop(0)
         return True
 
@@ -140,14 +141,18 @@ class Path_Finding():
     
     def Moving_Random(self, delta_time):
         self.entity.Reduce_Movement(4)
-        self.entity.direction = (self.entity.direction_x, self.entity.direction_y)
+        direction = pygame.math.Vector2(self.entity.direction_x, self.entity.direction_y)
+        self.entity.Set_Direction(direction, "Moving_Random1") 
+
         if self.entity.random_movement_cooldown:
             self.entity.random_movement_cooldown -= delta_time
             return
         self.entity.direction_x = random.randint(-1, 1) 
         self.entity.direction_y = random.randint(-1, 1) 
         
-        self.entity.direction = (self.entity.direction_x, self.entity.direction_y)
+        direction = pygame.math.Vector2(self.entity.direction_x, self.entity.direction_y)
+        self.entity.Set_Direction(direction, "Moving_Random2") 
+
         self.entity.random_movement_cooldown = 2
 
         self.entity.Trap_Collision_Handler()

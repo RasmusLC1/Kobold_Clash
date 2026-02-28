@@ -19,6 +19,8 @@ class Attack_Stategies():
 
         self.target_tile_pos = None
 
+        self.in_range_cooldown = 0
+
         self.tile_check_timestamp = 0
         # None if no range needed
         self.attack_ranges = {
@@ -40,7 +42,7 @@ class Attack_Stategies():
             return False
 
         if self.entity.distance_to_player > 300:
-            return
+            return False
         
         # Check if the enemy has line of sight if not return
         # TODO: Go to players last known tile
@@ -53,38 +55,28 @@ class Attack_Stategies():
 
         if not attack_range:
             return False
+        
+        # Only update movement when the entity needs to move
+        # If entity in range, check less often
+        if self.in_range_cooldown <= 0:
+            self.Update_Movement_Logic(delta_time)
+        else:
+            self.in_range_cooldown -= delta_time
 
-        return self.Move_Towards_Player(attack_range, delta_time)
+        return True
+
+
 
     
-    def Move_Towards_Player(self, ranges, delta_time):
-        max_range, closest_range = ranges
-        # Cooldown since the player's relative position does not need constant update
-        if self.Pathfinding_Cooldown(delta_time):
-            return True
-        
-        if not self.Find_Tile_To_Pathfind_To():
+    def Update_Movement_Logic(self, delta_time):
+              
+        # Returns false if destination needs to be updated
+        if not self.Move_Enemy_Towards_Destination(): 
             return False
-        
-        print(self.target_tile_pos)
-        
-        if self.entity.distance_to_player < max_range and self.entity.distance_to_player > closest_range:
             
-            path = self.Find_Escape_Path()
 
-            self.direct_pathing_cooldown = 40
-            if not path:
-                return True
-            
-            self.entity.direction = pygame.math.Vector2(path[0], path[1])
-            self.entity.direction.normalize_ip()
-
-            return True
         
-        # if self.entity.distance_to_player > max_range :
-        #     return self.Charge_player(150)
         
-        # return self.Run_Away(60)
     
     def Pathfinding_Cooldown(self, delta_time):
         if self.direct_pathing_cooldown > 0:
@@ -162,23 +154,37 @@ class Attack_Stategies():
             # IN RANGE 10 % chance to move
             mid = num_tiles // 2
             idx = random.randint(max(0, mid-1), min(num_tiles-1, mid+1))
+            self.in_range_cooldown = 1 # 1 second cooldown, prevents extra calculations and jitters
             return tile_data[idx][1]
         
-    def Move_Enemy_Towards_Destination(self, target_pos):
-        dx = target_pos[0] - self.entity.pos[0]
-        dy = target_pos[1] - self.entity.pos[1]
-        self.entity.direction = pygame.math.Vector2(dx, dy)
-        if self.entity.direction[0] == 0 and self.entity.direction[1] == 0:
-            return False
-        self.entity.direction.normalize_ip()
+    def Move_Enemy_Towards_Destination(self):
+        
+        entity_pos = self.entity.pos
+        
+        # If no target tile exists find one
+        if not self.target_tile_pos:
+            if not self.Find_Tile_To_Pathfind_To():
+                return False
+            
+        dx = entity_pos[0] - self.target_tile_pos[0] 
+        dy = entity_pos[1] - self.target_tile_pos[1] 
+
+        # If the entity is close to the target, find new tile
+        if (abs(dx) + abs(dy) < 10):
+            if not self.Find_Tile_To_Pathfind_To(): # Try to find new tile
+                return False
+            
+        new_entity_direction = pygame.math.Vector2(dx, dy)
+        self.entity.Set_Direction(new_entity_direction, "MOVE TOWARDS ENEMY POS")
         
         return True
 
 # LINE OF SIGHT LOGIC
     # Enemies check for line of sight and sets player found cooldown accordingly
     def Handle_Line_Of_Sight(self, delta_time):
-        if not self.Line_Of_Sight_Cooldown(delta_time):
-            return False
+        # Return true if the enemy can already see the player
+        if not self.Line_Of_Sight_Cooldown(delta_time): 
+            return True
 
         if not self.Line_Of_Sight(self.game.player.pos): # Line of sight blocked
             return False
@@ -237,102 +243,6 @@ class Attack_Stategies():
                 return False
 
         return True
-    
-
-# # OLD LOGIC
-#     def Move_Towards_Player(self, ranges):
-#         max_range, closest_range = ranges
-#         # Cooldown since the player's relative position does not need constant update
-#         if self.direct_pathing_cooldown:
-#             self.direct_pathing_cooldown = max(0, self.direct_pathing_cooldown - 1)
-#             return True       
-        
-#         if self.entity.distance_to_player < max_range and self.entity.distance_to_player > closest_range:
-            
-#             path = self.Find_Escape_Path()
-
-#             self.direct_pathing_cooldown = 40
-#             if not path:
-#                 return True
-            
-#             self.entity.direction = pygame.math.Vector2(path[0], path[1])
-#             self.entity.direction.normalize_ip()
-
-#             return True
-        
-#         if self.entity.distance_to_player > max_range :
-#             return self.Charge_player(150)
-        
-#         return self.Run_Away(60)
-
-    # Find an escape path and ensure that there are no walls in the way
-    def Find_Escape_Path(self):
-        iterations = 0
-
-        speed_modifier = self.game.tilemap.tile_size * self.entity.agility * 2
-        while True:
-            random_x = (random.randint(1, 10) / 10) * random.choice([-1, 1])
-            random_y = (random.randint(1, 10) / 10) * random.choice([-1, 1])
-
-            # Check for tiles along the escape path
-            target_pos = (self.entity.pos[0] + random_x * speed_modifier, self.entity.pos[1] + random_y * speed_modifier)
-            if self.Line_Of_Sight(target_pos):
-                return (random_x, random_y)
-            iterations += 1
-            if iterations > 10:
-                break
-            
-        return None
-
-    def Direct_Pathing(self):
-        # Cooldown since the player's relative position does not need constant update
-        if self.direct_pathing_cooldown:
-            self.direct_pathing_cooldown = max(0, self.direct_pathing_cooldown - 1)
-            return True
-        return self.Charge_player(200)  
-        # Player is close, so the enemy charge directly
-        
-    def Run_Away(self, distance):
-        if self.entity.distance_to_player < distance or self.player_found:
-            # Check if the enemy has 
-            if not self.Handle_Line_Of_Sight():
-                return False
-
-            dx = (self.game.player.pos[0] - self.entity.pos[0]) * -1
-            dy = (self.game.player.pos[1] - self.entity.pos[1]) * -1
-            self.entity.direction = pygame.math.Vector2(dx, dy)
-            if self.entity.direction[0] == 0 and self.entity.direction[1] == 0:
-                return False
-            
-            self.entity.direction.normalize_ip()
-            if not self.entity.alert_cooldown:
-                self.entity.Set_Alert_Cooldown(7)
-                self.game.clatter.Generate_Clatter(self.entity.pos, 400) # Generate clatter to alert nearby enemies
-            self.direct_pathing_cooldown = 10
-            return True
-        
-        return False
-
-    
-    def Charge_player(self, distance):
-        if self.entity.distance_to_player < distance or self.player_found:
-            # Check if the enemy has 
-            if not self.Handle_Line_Of_Sight():
-                return False
-            dx = self.game.player.pos[0] - self.entity.pos[0]
-            dy = self.game.player.pos[1] - self.entity.pos[1]
-            self.entity.direction = pygame.math.Vector2(dx, dy)
-            if self.entity.direction[0] == 0 and self.entity.direction[1] == 0:
-                return False
-            self.entity.direction.normalize_ip()
-            # Only update every 20 seconds since you don't want
-            # the enemies to spam the ability and lag the game
-            if not self.entity.alert_cooldown:
-                self.entity.Set_Alert_Cooldown(20)
-                self.game.clatter.Generate_Clatter(self.entity.pos, 400) # Generate clatter to alert nearby enemies
-            self.direct_pathing_cooldown = 10
-            return True
-        return False
     
 
     

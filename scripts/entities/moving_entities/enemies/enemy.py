@@ -203,7 +203,12 @@ class Enemy(Moving_Entity):
         
         return True
 
-
+    def Set_Direction(self, direction, function):
+        if direction.length() > 0:
+            direction.normalize_ip()
+        self.direction = direction
+        # if self.distance_to_player < 300:
+        #     print(function)
 
 
     def Update_Locked_On_Target(self, delta_time):
