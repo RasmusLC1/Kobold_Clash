@@ -86,78 +86,67 @@ class Attack_Stategies():
             return True
         return False
 
-# NEW METHOD
+    # NEW METHOD
     def Find_Tile_To_Pathfind_To(self):
         attack_strategy = self.entity.attack_strategy 
         max_range, min_range = self.attack_ranges.get(attack_strategy, (0, 0))
         
-        if max_range == 0:
-            return None
+        if max_range == 0: return None
             
-        entity_player_distance = self.entity.distance_to_player
-        tiles_in_range = self.Find_Tiles_In_Range(entity_player_distance, max_range,
-                           min_range)
+  
+        entity_dist = self.entity.distance_to_player
         
-        if not tiles_in_range:
-            return None
-        # Safety check: if no tiles found, exit
-        num_tiles = len(tiles_in_range)
-        if num_tiles == 0:
+        valid_tiles = self.Find_Tiles_In_Range(max_range, min_range, entity_dist) 
+
+        if not valid_tiles:
             return None
 
-        tiles_in_range.sort(key=lambda x: x[0])
-
-        target_tile =  self.Choose_Destination(entity_player_distance, max_range,
-                           min_range, num_tiles, tiles_in_range)
-        
-        if not target_tile:
+        if not self.Check_In_Range(max_range, min_range, entity_dist):
             return None
-        
+
+        target_tile = random.choice(valid_tiles)
         self.target_tile_pos = target_tile.scaled_pos
-        
         return self.target_tile_pos
 
-    def Find_Tiles_In_Range(self, entity_player_distance, max_range,
-                           min_range):
-        # Get surrounding tiles
+
+    # Returns false if the enemy does not need to move
+    def Check_In_Range(self, max_range, min_range, entity_dist):
+        # For 'In Range' behavior
+        if min_range <= entity_dist <= max_range:
+            if random.random() < 0.95: # 95% chance to stay
+                self.in_range_cooldown = 1
+                return False
+            self.in_range_cooldown = 1
+
+        return True
+
+    # Returns an array of best tiles
+    def Find_Tiles_In_Range(self, max_range, min_range, entity_dist):
         surrounding_tiles = self.game.tilemap.Get_Floor_Tiles_Around(self.entity.pos)
-        # If in range, 90% chance to stay put (return None)
-        if min_range < entity_player_distance < max_range:
-            if random.randint(1, 10) <= 9: # 90% chance to stand still
-                return None
+        if not surrounding_tiles:
+            return []
 
-        tiles_in_range = []
-        for tile in surrounding_tiles:
-            distance = tile.Get_Distance_To_Player()
-            if distance is None:
-                continue
-            # Store the TILE object, not just tile.pos
-            tiles_in_range.append((distance, tile))
-
+        # Filter out tiles that don't have a player distance (walls/void)
+        valid_tiles = [tile for tile in surrounding_tiles if tile.Get_Distance_To_Player() is not None]
         
-        return tiles_in_range
+        if not valid_tiles:
+            return []
 
-    # Returns the target position
-    def Choose_Destination(self, entity_player_distance, max_range,
-                           min_range, num_tiles, tile_data):
-        if entity_player_distance > max_range:
-            # TOO FAR: Pick from the closest tiles (start of sorted list)
-            limit = min(3, num_tiles)
-            chosen_tile = tile_data[random.randint(0, limit - 1)]
-            return chosen_tile[1]
-            
-        elif entity_player_distance < min_range:
-            # TOO CLOSE: Pick from the furthest tiles (end of sorted list)
-            limit_idx = max(0, num_tiles - 3)
-            chosen_tile = tile_data[random.randint(limit_idx, num_tiles - 1)]
-            return chosen_tile[1]
-            
-        else:
-            # IN RANGE 10 % chance to move
-            mid = num_tiles // 2
-            idx = random.randint(max(0, mid-1), min(num_tiles-1, mid+1))
-            self.in_range_cooldown = 1 # 1 second cooldown, prevents extra calculations and jitters
-            return tile_data[idx][1]
+        # CASE 1: TOO FAR - Find the neighbor that gets us the CLOSEST to the player
+        if entity_dist > max_range:
+            # Pick best tile
+            best_tile = min(valid_tiles, key=lambda tile: tile.Get_Distance_To_Player())
+            return [best_tile] 
+
+        # CASE 2: TOO CLOSE - Find the neighbor that gets us FURTHEST from the player
+        elif entity_dist < min_range:
+            # Pick best tile
+            best_tile = max(valid_tiles, key=lambda tile: tile.Get_Distance_To_Player())
+            return [best_tile]
+
+        # CASE 3: IN RANGE - Return all neighbors so the enemy can "loiter" randomly
+        return valid_tiles
+
         
     def Move_Enemy_Towards_Destination(self):
         
