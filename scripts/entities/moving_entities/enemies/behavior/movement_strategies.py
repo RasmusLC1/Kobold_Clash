@@ -49,20 +49,12 @@ class Movement_Strategies():
         if not self.Handle_Line_Of_Sight(delta_time):
             return False
         
-        attack_strategy = self.entity.attack_strategy 
-
-        attack_range = self.attack_ranges.get(attack_strategy)
-
-        if not attack_range:
-            return False
-        
         # Only update movement when the entity needs to move
         # If entity in range, check less often
-        if self.in_range_cooldown <= 0:
-            self.Update_Movement_Logic()
-        else:
+        if self.in_range_cooldown > 0:
             self.in_range_cooldown -= delta_time
-
+        else:        
+            self.Update_Movement_Logic()
         return True
 
             
@@ -83,6 +75,7 @@ class Movement_Strategies():
   
         entity_dist = self.entity.distance_to_player
         
+        # Get tiles that fits best within range
         valid_tiles = self.Find_Tiles_In_Range(max_range, min_range, entity_dist) 
 
         if not valid_tiles:
@@ -100,10 +93,9 @@ class Movement_Strategies():
     def Check_In_Range(self, max_range, min_range, entity_dist):
         # For 'In Range' behavior
         if min_range <= entity_dist <= max_range:
-            if random.random() < 0.95: # 95% chance to stay
-                self.in_range_cooldown = 1
-                return False
             self.in_range_cooldown = 1
+            if random.random() < 0.95: # 95% chance to stay
+                return False
 
         return True
 
