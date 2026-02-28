@@ -17,12 +17,15 @@ class Attack_Stategies():
 
         self.direct_pathing_cooldown = 0
 
+        self.target_tile_pos = None
+
         self.tile_check_timestamp = 0
         # None if no range needed
         self.attack_ranges = {
             keys.long_range: (200, 160),
             keys.medium_range: (120, 80),
             keys.short_range: (80, 60),
+            keys.direct: (0, 20),
             keys.keep_position: None,
             keys.idle: None,
             keys.run_away: None
@@ -39,30 +42,31 @@ class Attack_Stategies():
         if self.entity.distance_to_player > 300:
             return
         
-        # Check if the enemy has line of sight
+        # Check if the enemy has line of sight if not return
+        # TODO: Go to players last known tile
         if not self.Handle_Line_Of_Sight(delta_time):
             return False
         
         attack_strategy = self.entity.attack_strategy 
 
-        if attack_strategy == keys.direct: # charge the player
-            return self.Direct_Pathing()
-        
         attack_range = self.attack_ranges.get(attack_strategy)
 
         if not attack_range:
             return False
 
-        return self.Keep_Distance(attack_range, delta_time)
-
-        
+        return self.Move_Towards_Player(attack_range, delta_time)
 
     
-    def Keep_Distance(self, ranges, delta_time):
+    def Move_Towards_Player(self, ranges, delta_time):
         max_range, closest_range = ranges
         # Cooldown since the player's relative position does not need constant update
         if self.Pathfinding_Cooldown(delta_time):
             return True
+        
+        if not self.Find_Tile_To_Pathfind_To():
+            return False
+        
+        print(self.target_tile_pos)
         
         if self.entity.distance_to_player < max_range and self.entity.distance_to_player > closest_range:
             
@@ -77,10 +81,10 @@ class Attack_Stategies():
 
             return True
         
-        if self.entity.distance_to_player > max_range :
-            return self.Charge_player(150)
+        # if self.entity.distance_to_player > max_range :
+        #     return self.Charge_player(150)
         
-        return self.Run_Away(60)
+        # return self.Run_Away(60)
     
     def Pathfinding_Cooldown(self, delta_time):
         if self.direct_pathing_cooldown > 0:
@@ -97,20 +101,30 @@ class Attack_Stategies():
             return None
             
         entity_player_distance = self.entity.distance_to_player
-        tile_data = self.Find_Tiles_In_Range(entity_player_distance, max_range,
-                           min_range, tile_data)
+        tiles_in_range = self.Find_Tiles_In_Range(entity_player_distance, max_range,
+                           min_range)
+        
+        if not tiles_in_range:
+            return None
         # Safety check: if no tiles found, exit
-        num_tiles = len(tile_data)
+        num_tiles = len(tiles_in_range)
         if num_tiles == 0:
             return None
 
-        tile_data.sort(key=lambda x: x[0])
+        tiles_in_range.sort(key=lambda x: x[0])
 
-        return self.Choose_Destination(entity_player_distance, max_range,
-                           min_range, num_tiles, tile_data)
+        target_tile =  self.Choose_Destination(entity_player_distance, max_range,
+                           min_range, num_tiles, tiles_in_range)
+        
+        if not target_tile:
+            return None
+        
+        self.target_tile_pos = target_tile.scaled_pos
+        
+        return self.target_tile_pos
 
     def Find_Tiles_In_Range(self, entity_player_distance, max_range,
-                           min_range, tile_data):
+                           min_range):
         # Get surrounding tiles
         surrounding_tiles = self.game.tilemap.Get_Floor_Tiles_Around(self.entity.pos)
         # If in range, 90% chance to stay put (return None)
@@ -118,16 +132,16 @@ class Attack_Stategies():
             if random.randint(1, 10) <= 9: # 90% chance to stand still
                 return None
 
-        tile_data = []
+        tiles_in_range = []
         for tile in surrounding_tiles:
             distance = tile.Get_Distance_To_Player()
             if distance is None:
                 continue
             # Store the TILE object, not just tile.pos
-            tile_data.append((distance, tile))
+            tiles_in_range.append((distance, tile))
 
         
-        return tile_data
+        return tiles_in_range
 
     # Returns the target position
     def Choose_Destination(self, entity_player_distance, max_range,
@@ -135,17 +149,17 @@ class Attack_Stategies():
         if entity_player_distance > max_range:
             # TOO FAR: Pick from the closest tiles (start of sorted list)
             limit = min(3, num_tiles)
-            chosen_pair = tile_data[random.randint(0, limit - 1)]
-            return chosen_pair[1]
+            chosen_tile = tile_data[random.randint(0, limit - 1)]
+            return chosen_tile[1]
             
         elif entity_player_distance < min_range:
             # TOO CLOSE: Pick from the furthest tiles (end of sorted list)
             limit_idx = max(0, num_tiles - 3)
-            chosen_pair = tile_data[random.randint(limit_idx, num_tiles - 1)]
-            return chosen_pair[1]
+            chosen_tile = tile_data[random.randint(limit_idx, num_tiles - 1)]
+            return chosen_tile[1]
             
         else:
-            # IN RANGE (The 10% chance): Shuffle around slightly
+            # IN RANGE 10 % chance to move
             mid = num_tiles // 2
             idx = random.randint(max(0, mid-1), min(num_tiles-1, mid+1))
             return tile_data[idx][1]
@@ -169,7 +183,7 @@ class Attack_Stategies():
         if not self.Line_Of_Sight(self.game.player.pos): # Line of sight blocked
             return False
         else:
-            self.Trigger_Player_Found(delta_time)
+            self.Trigger_Player_Found()
             return True
         
     # Alert other nearby enemies
@@ -225,31 +239,31 @@ class Attack_Stategies():
         return True
     
 
-# OLD LOGIC
-    def Keep_Distance(self, ranges):
-        max_range, closest_range = ranges
-        # Cooldown since the player's relative position does not need constant update
-        if self.direct_pathing_cooldown:
-            self.direct_pathing_cooldown = max(0, self.direct_pathing_cooldown - 1)
-            return True       
+# # OLD LOGIC
+#     def Move_Towards_Player(self, ranges):
+#         max_range, closest_range = ranges
+#         # Cooldown since the player's relative position does not need constant update
+#         if self.direct_pathing_cooldown:
+#             self.direct_pathing_cooldown = max(0, self.direct_pathing_cooldown - 1)
+#             return True       
         
-        if self.entity.distance_to_player < max_range and self.entity.distance_to_player > closest_range:
+#         if self.entity.distance_to_player < max_range and self.entity.distance_to_player > closest_range:
             
-            path = self.Find_Escape_Path()
+#             path = self.Find_Escape_Path()
 
-            self.direct_pathing_cooldown = 40
-            if not path:
-                return True
+#             self.direct_pathing_cooldown = 40
+#             if not path:
+#                 return True
             
-            self.entity.direction = pygame.math.Vector2(path[0], path[1])
-            self.entity.direction.normalize_ip()
+#             self.entity.direction = pygame.math.Vector2(path[0], path[1])
+#             self.entity.direction.normalize_ip()
 
-            return True
+#             return True
         
-        if self.entity.distance_to_player > max_range :
-            return self.Charge_player(150)
+#         if self.entity.distance_to_player > max_range :
+#             return self.Charge_player(150)
         
-        return self.Run_Away(60)
+#         return self.Run_Away(60)
 
     # Find an escape path and ensure that there are no walls in the way
     def Find_Escape_Path(self):
