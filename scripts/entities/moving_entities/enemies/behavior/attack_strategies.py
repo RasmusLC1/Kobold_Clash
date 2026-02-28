@@ -1,5 +1,7 @@
 import pygame
 import random
+import math
+
 from scripts.engine.keys.keys import keys
 
 
@@ -166,18 +168,30 @@ class Attack_Stategies():
             if not self.Find_Tile_To_Pathfind_To():
                 return False
             
-        dx = entity_pos[0] - self.target_tile_pos[0] 
-        dy = entity_pos[1] - self.target_tile_pos[1] 
 
         # If the entity is close to the target, find new tile
-        if (abs(dx) + abs(dy) < 10):
+        distance_to_tile = self.Get_Distance(entity_pos, self.target_tile_pos)
+
+        if distance_to_tile < 20:
             if not self.Find_Tile_To_Pathfind_To(): # Try to find new tile
                 return False
             
-        new_entity_direction = pygame.math.Vector2(dx, dy)
-        self.entity.Set_Direction(new_entity_direction, "MOVE TOWARDS ENEMY POS")
+        self.Calculate_Direction(entity_pos)
         
         return True
+
+    def Calculate_Direction(self, entity_pos):
+        dx = self.target_tile_pos[0] - entity_pos[0] 
+        dy = self.target_tile_pos[1] - entity_pos[1] 
+            
+        new_entity_direction = pygame.math.Vector2(dx, dy)
+        self.entity.Set_Direction(new_entity_direction, "MOVE TOWARDS ENEMY POS")
+
+    def Get_Distance(self, pos_a, pos_b):
+        """Calculates Euclidean distance between two (x, y) tuples."""
+        dx = pos_a[0] - pos_b[0]
+        dy = pos_a[1] - pos_b[1]
+        return math.sqrt(dx**2 + dy**2)
 
 # LINE OF SIGHT LOGIC
     # Enemies check for line of sight and sets player found cooldown accordingly

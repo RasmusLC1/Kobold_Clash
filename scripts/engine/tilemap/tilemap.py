@@ -299,7 +299,6 @@ class Tilemap:
             tile = tiles_not_touching_walls_get(check_loc)
             if tile:
                 floor_tiles.append(tile)
-                print(tile.scaled_pos, pos)    
                 
         return floor_tiles
     
