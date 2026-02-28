@@ -5,7 +5,7 @@ import math
 from scripts.engine.keys.keys import keys
 
 
-class Attack_Stategies():
+class Movement_Strategies():
 
     def __init__(self, game, entity) -> None:
         self.game = game
@@ -36,10 +36,8 @@ class Attack_Stategies():
         }
 
 
-        
-
     # Return True if pathing updated else false
-    def Attack_Strategy(self, delta_time) -> bool:
+    def Movement_Strategy(self, delta_time) -> bool:
         if self.game.player.effects.invisibility.effect:
             return False
 
@@ -61,18 +59,12 @@ class Attack_Stategies():
         # Only update movement when the entity needs to move
         # If entity in range, check less often
         if self.in_range_cooldown <= 0:
-            self.Update_Movement_Logic(delta_time)
+            self.Update_Movement_Logic()
         else:
             self.in_range_cooldown -= delta_time
 
         return True
 
-    
-    def Update_Movement_Logic(self, delta_time):
-              
-        # Returns false if destination needs to be updated
-        if not self.Move_Enemy_Towards_Destination(): 
-            return False
             
 
     def Pathfinding_Cooldown(self, delta_time):
@@ -143,7 +135,7 @@ class Attack_Stategies():
         return valid_tiles
 
         
-    def Move_Enemy_Towards_Destination(self):
+    def Update_Movement_Logic(self):
         
         entity_pos = self.entity.pos
         
@@ -156,7 +148,7 @@ class Attack_Stategies():
         # If the entity is close to the target, find new tile
         distance_to_tile = self.Get_Distance(entity_pos, self.target_tile_pos)
 
-        if distance_to_tile < 20:
+        if distance_to_tile < 10:
             if not self.Find_Tile_To_Pathfind_To(): # Try to find new tile
                 return False
             
@@ -171,8 +163,8 @@ class Attack_Stategies():
         new_entity_direction = pygame.math.Vector2(dx, dy)
         self.entity.Set_Direction(new_entity_direction, "MOVE TOWARDS ENEMY POS")
 
+    # Calculates distance between two tuples
     def Get_Distance(self, pos_a, pos_b):
-        """Calculates Euclidean distance between two (x, y) tuples."""
         dx = pos_a[0] - pos_b[0]
         dy = pos_a[1] - pos_b[1]
         return math.sqrt(dx**2 + dy**2)

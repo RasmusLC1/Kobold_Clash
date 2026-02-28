@@ -111,7 +111,7 @@ class Tile():
     # Calculates distance to player after 0.5 second
     # return distance to player
     def Get_Distance_To_Player(self):
-        if self.physics or self.touching_wall:
+        if self.physics or self.touching_wall or self.trap:
             return None
         
         if self.game.total_time - self.last_distance_update_timestamp > 0.5:

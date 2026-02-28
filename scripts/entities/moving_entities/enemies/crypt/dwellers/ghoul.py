@@ -64,7 +64,7 @@ class Ghoul(Dweller):
             
         self.locked_on_target = False
         self.game.enemy_handler.Add_To_Pathfinding_Queue(self, nearby_bones[0].pos)
-        self.Set_Attack_Strategy(keys.medium_range)
+        self.Set_Movement_Strategy(keys.medium_range)
         self.target_bones = nearby_bones[0]
 
 

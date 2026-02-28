@@ -34,7 +34,7 @@ class Path_Finding():
         self.Corner_Handling()
 
         # Pathfind towards the target
-        if self.entity.Attack_Strategy(delta_time):
+        if self.entity.Movement_Strategy(delta_time):
             self.entity.Trap_Collision_Handler()
 
             return
