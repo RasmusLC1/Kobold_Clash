@@ -125,7 +125,7 @@ class Tile():
         player_pos = self.game.player.pos
         dx = self.scaled_pos[0]  - player_pos[0]
         dy = self.scaled_pos[1]  - player_pos[1]
-        self.distance_to_player = dx * dx + dy * dy
+        self.distance_to_player = math.sqrt(dx**2 + dy**2)
         self.last_distance_update_timestamp = self.game.total_time
 
   

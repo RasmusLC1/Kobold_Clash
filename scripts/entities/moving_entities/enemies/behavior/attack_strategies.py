@@ -67,8 +67,6 @@ class Attack_Stategies():
 
         return True
 
-
-
     
     def Update_Movement_Logic(self, delta_time):
               
@@ -77,9 +75,6 @@ class Attack_Stategies():
             return False
             
 
-        
-        
-    
     def Pathfinding_Cooldown(self, delta_time):
         if self.direct_pathing_cooldown > 0:
             self.direct_pathing_cooldown -= delta_time

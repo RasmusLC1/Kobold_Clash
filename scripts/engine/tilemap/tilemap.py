@@ -288,7 +288,7 @@ class Tilemap:
                 tiles.append(tile)
         return tiles
     
-    # Uses the check_
+    # Gets floor tiles not touching a wall
     def Get_Floor_Tiles_Around(self, pos):
         tile_loc = (int(pos[0] // self.tile_size), int(pos[1] // self.tile_size))
         floor_tiles = []
