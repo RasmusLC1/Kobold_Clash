@@ -16,7 +16,7 @@ class Enemy(Moving_Entity):
     # Factory method
     intent_manager_class = Intent_Manager  # Default intent manager
 
-    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, sub_category, soul_value, idle_animation, run_animation, attack_animation, size = (32, 32)):
+    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, sub_category, soul_value, idle_animation, run_animation, attack_animation, size = (32, 32), attack_speed = (0.5, 0.8)):
 
         super().__init__(game, str(type), keys.enemy, pos, size, health, strength, max_speed, agility, intelligence, stamina, sub_category)
         self.animation_handler.Set_Animation_Num_Max(keys.run ,run_animation)
@@ -37,7 +37,7 @@ class Enemy(Moving_Entity):
         self.movement_strategy = keys.direct # Attack strategy that the enemy utalises
         self.path_finding_strategy = 'standard' # Maptype that is used for navigation
         
-        self.attack_distance  = self.size[0] * 3
+        self.attack_distance  = self.size[0] * 2
         self.distance_calculation_cooldown = 0
 
         self.max_weapon_charge = max_weapon_charge
@@ -48,7 +48,7 @@ class Enemy(Moving_Entity):
         self.attack_symbol_offset = 20
         self.health_bar = self.game.assets[keys.health_bar]
 
-        self.intent_manager = self.intent_manager_class(game, self)
+        self.intent_manager = self.intent_manager_class(game, self, attack_speed)
 
         self.Set_Description()
 
@@ -60,7 +60,6 @@ class Enemy(Moving_Entity):
         self.saved_data['random_movement_cooldown'] = self.random_movement_cooldown
         self.saved_data['distance_to_player'] = self.distance_to_player
         self.saved_data['charge'] = self.charge
-        self.saved_data['attack_strategy'] = self.attack_strategy
         self.saved_data['path_finding_strategy'] = self.path_finding_strategy
         self.saved_data['locked_on_target'] = self.locked_on_target
         self.saved_data['target'] = self.target
@@ -73,7 +72,6 @@ class Enemy(Moving_Entity):
         self.random_movement_cooldown = data['random_movement_cooldown']
         self.distance_to_player = data['distance_to_player']
         self.charge = data['charge']
-        self.movement_strategy = data['attack_strategy']
         self.path_finding_strategy = data['path_finding_strategy']
         self.locked_on_target = data['locked_on_target']
         self.target = data['target']

@@ -12,7 +12,7 @@ class Wight_King(Skeleton):
 
 
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.wight_king, health, strength, max_speed, agility, intelligence, stamina, 0.6, 50, 0, 4, 4, (40, 40))
+        super().__init__(game, pos, keys.wight_king, health, strength, max_speed, agility, intelligence, stamina, 0.6, 50, 0, 4, 4, (40, 40), attack_speed = (0.4, 0.6))
         self.Equip_Weapon(Claw(game, self.pos)) 
         self.active_weapon.Set_Damage(keys.slash, 10)
 

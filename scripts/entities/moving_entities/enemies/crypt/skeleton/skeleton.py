@@ -3,8 +3,8 @@ import random
 from scripts.engine.keys.keys import keys
 
 class Skeleton(Enemy):
-    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, soul_value, idle_animation = 0, run_animation = 6, attack_animation = 6, size = (32, 32)):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.skeleton, soul_value, run_animation, run_animation, attack_animation, size)
+    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, soul_value, idle_animation = 0, run_animation = 6, attack_animation = 6, size = (32, 32), attack_speed = (0.5, 0.8)):
+        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.skeleton, soul_value, run_animation, run_animation, attack_animation, size, attack_speed)
 
     def Set_Action(self,  movement = None):
         if self.charge:

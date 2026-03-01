@@ -2,7 +2,7 @@ import random
 from scripts.engine.keys.keys import keys
 
 class Intent_Manager():
-    def __init__(self, game, entity) -> None:
+    def __init__(self, game, entity, attack_speed) -> None:
         self.game = game
         self.entity = entity
 
@@ -13,7 +13,9 @@ class Intent_Manager():
         self.intent_cooldown = 0
         self.intent_cooldown_max = 2 # Lower value means faster response rate
         self.attack_cooldown = 0
-        self.attack_cooldown_max = self.entity.max_weapon_charge * 1.2
+        # TODO: Proper attack time calculation
+        self.attack_speed = attack_speed
+        self.attack_cooldown_max = attack_speed
         # Lookup for 
         self.base_cooldown = {
             keys.direct: self.intent_cooldown_max,
@@ -146,6 +148,7 @@ class Intent_Manager():
         if  self.entity.charge:
             self.entity.charge = 0
             self.attack_cooldown = 0
+            self.attack_cooldown_max = random.uniform(self.attack_speed[0], self.attack_speed[1])
 
         return True
 

@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Fire_Spirit(Elemental):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.fire_spirit, health, strength, max_speed, agility, intelligence, stamina, 1.2, 20, 3, 3, 3)
+        super().__init__(game, pos, keys.fire_spirit, health, strength, max_speed, agility, intelligence, stamina, 1.2, 20, 3, 3, 3, attack_speed = (2, 2.5))
 
         self.path_finding_strategy = 'ignore_lava'
         self.intent_manager.Set_Movement_Intent([keys.medium_range])
@@ -12,7 +12,7 @@ class Fire_Spirit(Elemental):
         self.minimum_distance = 30
 
         self.look_for_health_cooldown = 0
-        self.fire_damage = 3
+        self.fire_damage = 1
 
         self.active_weapon = Flame_Thrower(self.game)
 
