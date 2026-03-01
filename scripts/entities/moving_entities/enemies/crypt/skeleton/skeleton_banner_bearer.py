@@ -11,8 +11,7 @@ class Skeleton_Banner_Bearer(Skeleton):
         self.Equip_Weapon(Claw(self.game, self.pos))
         self.active_weapon.Set_Damage(keys.slash, 5)
         self.rally_cooldown = 0
-        self.attack_strategy = keys.medium_range
-        self.intent_manager.Set_Intent([keys.attack])
+        self.intent_manager.Set_Movement_Intent([keys.medium_range])
 
 
 

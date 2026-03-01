@@ -16,5 +16,5 @@ class Vampire(Dweller):
         self.animation_handler.Set_Attack_Animation_Num_Max(6)
         self.active_weapon.Set_Damage(keys.vampiric, 10)
 
-        self.intent_manager.Set_Intent([keys.direct, 'dash', keys.attack, keys.attack, keys.attack, keys.long_range, 'shoot_soul_reaper'])
+        self.intent_manager.Set_Movement_Intent([keys.direct, 'dash',    keys.long_range, 'shoot_soul_reaper'])
 

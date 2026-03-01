@@ -10,8 +10,7 @@ class Skeleton_Ranger(Skeleton):
         type = str(random.randint(1, 3))
         super().__init__(game, pos, keys.skeleton_ranger + '_' + type, health, strength, max_speed, agility, intelligence, stamina, 1.2, 10, 0, 3, 3)
         self.attack_distance  = 200
-        self.attack_strategy = keys.long_range
-        self.intent_manager.Set_Intent([ keys.attack])
+        self.intent_manager.Set_Movement_Intent([ keys.long_range])
 
         
         self.shooting_distance = False

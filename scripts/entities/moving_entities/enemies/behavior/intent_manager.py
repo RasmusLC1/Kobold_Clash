@@ -82,7 +82,7 @@ class Intent_Manager():
     # setting the player's attack strategy
     def Set_Movement_Strategy(self, strategy):
         self.entity.Set_Movement_Strategy(strategy)
-        self.Set_Intent_Cooldown()
+        self.Set_Movement_Intent_Cooldown()
         self.Increment_Intent()
 
     def Set_Idle(self):
@@ -93,7 +93,7 @@ class Intent_Manager():
         self.entity.path_finding.Find_Patrol_Path()
 
 
-    def Set_Intent(self, intent):
+    def Set_Movement_Intent(self, intent):
         self.intent = intent
         self.intent_length = len(self.intent)
         self.current_intent = 0
@@ -104,11 +104,11 @@ class Intent_Manager():
         if self.intent_index >= self.intent_length:
             self.intent_index = 0
 
-    def Set_Intent_Cooldown_Max(self, value):
+    def Set_Movement_Intent_Cooldown_Max(self, value):
         self.intent_cooldown_max = value
 
 
-    def Set_Intent_Cooldown(self):
+    def Set_Movement_Intent_Cooldown(self):
         max_cooldown = self.base_cooldown.get(self.intent[self.intent_index], self.intent_cooldown_max)
         
         if not max_cooldown:
@@ -127,7 +127,7 @@ class Intent_Manager():
         self.intent_cooldown = max(0, self.intent_cooldown - delta_time)
         return False
         
-    def Set_Intent_Index(self, index):
+    def Set_Movement_Intent_Index(self, index):
         if index >= self.intent_length:
             print("index exceed intent length", index, self.intent_length)
             return

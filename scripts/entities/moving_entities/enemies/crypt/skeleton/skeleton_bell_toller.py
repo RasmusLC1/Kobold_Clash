@@ -11,7 +11,7 @@ class Skeleton_Bell_Toller(Skeleton):
         super().__init__(game, pos, keys.skeleton_bell_toller + '_' + type, health, strength, max_speed, agility, intelligence, stamina, 1.2, 15)
         self.Equip_Weapon(Bell(self.game, self.pos))
         self.bell_ringing_cooldown = 0
-        self.intent_manager.Set_Intent([keys.direct, keys.attack, keys.attack, keys.medium_range])
+        self.intent_manager.Set_Movement_Intent([keys.direct,   keys.medium_range])
 
 
     def Update(self, tilemap, delta_time, movement=(0, 0)):

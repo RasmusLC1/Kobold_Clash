@@ -11,8 +11,7 @@ class Skeleton_Cleric(Skeleton):
         super().__init__(game, pos, keys.skeleton_cleric + '_' + type, health, strength, max_speed, agility, intelligence, stamina, 1.1, 15)
         self.Equip_Weapon(Sceptre(self.game, self.pos))
         self.healing_cooldown = 0
-        self.attack_strategy = keys.medium_range
-        self.intent_manager.Set_Intent([keys.attack])
+        self.intent_manager.Set_Movement_Intent([keys.medium_range])
 
 
 

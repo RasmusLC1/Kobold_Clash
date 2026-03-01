@@ -67,8 +67,8 @@ class Movement_Strategies():
 
     # NEW METHOD
     def Find_Tile_To_Pathfind_To(self):
-        attack_strategy = self.entity.attack_strategy 
-        max_range, min_range = self.attack_ranges.get(attack_strategy, (0, 0))
+        movement_strategy = self.entity.movement_strategy 
+        max_range, min_range = self.attack_ranges.get(movement_strategy, (0, 0))
         
         if max_range == 0: return None
             

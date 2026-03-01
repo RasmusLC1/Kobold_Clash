@@ -7,7 +7,7 @@ PLAYER_MAX_ATTACK_DISTANCE = 200
 class Electric_Elemental(Elemental):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
         super().__init__(game, pos, keys.electric_elemental, health, strength, max_speed, agility, intelligence, stamina, 2, 20, 3, 3, 3)
-        self.intent_manager.Set_Intent([keys.attack, keys.attack, keys.attack, keys.attack, keys.short_range])
+        self.intent_manager.Set_Movement_Intent([keys.short_range])
 
         # Equip the weapon
         self.Equip_Weapon(Claw(game, self.pos)) 

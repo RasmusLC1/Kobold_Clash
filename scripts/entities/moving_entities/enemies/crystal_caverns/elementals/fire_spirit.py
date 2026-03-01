@@ -7,8 +7,7 @@ class Fire_Spirit(Elemental):
         super().__init__(game, pos, keys.fire_spirit, health, strength, max_speed, agility, intelligence, stamina, 1.2, 20, 3, 3, 3)
 
         self.path_finding_strategy = 'ignore_lava'
-        self.attack_strategy = keys.medium_range
-        self.intent_manager.Set_Intent([keys.attack])
+        self.intent_manager.Set_Movement_Intent([keys.medium_range])
         self.attack_distance  = 120
         self.minimum_distance = 30
 

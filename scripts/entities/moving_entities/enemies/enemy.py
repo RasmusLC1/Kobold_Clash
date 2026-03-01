@@ -34,7 +34,7 @@ class Enemy(Moving_Entity):
 
         self.distance_to_player = 9999 # Distance to player
         self.charge = 0 # Determines when the enemy attacks
-        self.attack_strategy = keys.direct # Attack strategy that the enemy utalises
+        self.movement_strategy = keys.direct # Attack strategy that the enemy utalises
         self.path_finding_strategy = 'standard' # Maptype that is used for navigation
         
         self.attack_distance  = self.size[0] * 3
@@ -73,7 +73,7 @@ class Enemy(Moving_Entity):
         self.random_movement_cooldown = data['random_movement_cooldown']
         self.distance_to_player = data['distance_to_player']
         self.charge = data['charge']
-        self.attack_strategy = data['attack_strategy']
+        self.movement_strategy = data['attack_strategy']
         self.path_finding_strategy = data['path_finding_strategy']
         self.locked_on_target = data['locked_on_target']
         self.target = data['target']
@@ -96,7 +96,7 @@ class Enemy(Moving_Entity):
 
         
     def Set_Movement_Strategy(self, strategy):
-        self.attack_strategy = strategy
+        self.movement_strategy = strategy
 
 
     def Set_Direction_Holder(self):

@@ -8,13 +8,6 @@ import random
 class Skeleton_Warlock(Skeleton):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
         super().__init__(game, pos, keys.skeleton_warlock, health, strength, max_speed, agility, intelligence, stamina, 1, 25, 0, 3, 4)
-        self.attack_distance  = 200
-        self.min_attack_range = 50
-        self.attack_strategy = keys.long_range
-        self.intent_manager.Set_Intent([ keys.attack])
-
-
-        
         self.shooting_distance = False
         self.Equip_Weapon(Staff(self.game, self.pos))
         
@@ -24,7 +17,11 @@ class Skeleton_Warlock(Skeleton):
         if self.active_weapon.sub_type == keys.fire_staff:
             self.attack_distance  = 100
             self.min_attack_range = 30
-            self.attack_strategy = keys.medium_range
+            self.intent_manager.Set_Movement_Intent([keys.long_range])
+        else:
+            self.attack_distance  = 200
+            self.min_attack_range = 50
+            self.intent_manager.Set_Movement_Intent([keys.long_range])
 
     def Attack(self, delta_time):
         

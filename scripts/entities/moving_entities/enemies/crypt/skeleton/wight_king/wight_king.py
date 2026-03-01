@@ -16,7 +16,7 @@ class Wight_King(Skeleton):
         self.Equip_Weapon(Claw(game, self.pos)) 
         self.active_weapon.Set_Damage(keys.slash, 10)
 
-        self.intent_manager.Set_Intent([keys.keep_position, keys.direct, 'dash', keys.attack, keys.attack, keys.medium_range,])
-        self.intent_manager.Set_Intent_Cooldown_Max(120)
+        self.intent_manager.Set_Movement_Intent([keys.keep_position, keys.direct, 'dash',   keys.medium_range,])
+        self.intent_manager.Set_Movement_Intent_Cooldown_Max(120)
 
 

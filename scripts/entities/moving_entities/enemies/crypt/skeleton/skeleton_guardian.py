@@ -10,8 +10,7 @@ class Skeleton_Guardian(Skeleton):
         super().__init__(game, pos, keys.skeleton_guardian, health, strength, max_speed, agility, intelligence, stamina, 0.9, 15)
         self.Equip_Weapon(Claw(game, self.pos)) 
         self.active_weapon.Set_Damage(keys.blunt, 5)
-        self.intent_manager.Set_Intent([keys.direct, keys.attack, keys.attack, keys.attack, keys.attack, keys.attack, keys.medium_range])
-
+        self.intent_manager.Set_Movement_Intent([keys.direct, keys.medium_range])
 
 
     def Set_Max_Charge(self):

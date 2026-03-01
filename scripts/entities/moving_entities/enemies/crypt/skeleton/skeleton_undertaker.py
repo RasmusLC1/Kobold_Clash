@@ -14,7 +14,7 @@ class Skeleton_Undertaker(Skeleton):
         self.target_bones_collision_cooldown = 0
         self.target_bones = None
         self.active_weapon.Set_Damage(keys.vampiric, 3)
-        self.intent_manager.Set_Intent([keys.direct, keys.attack, keys.attack, keys.medium_range, keys.medium_range, keys.medium_range,])
+        self.intent_manager.Set_Movement_Intent([keys.direct,   keys.medium_range, keys.medium_range, keys.medium_range,])
 
     def Update(self, tilemap, delta_time, movement=(0, 0)):
         self.Update_Bones_Search_Cooldown(delta_time)
