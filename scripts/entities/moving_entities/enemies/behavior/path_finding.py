@@ -44,8 +44,7 @@ class Path_Finding():
                 self.player_found = False
                 self.entity.Set_Target(self.game.player.pos)
 
-        if not self.Navigate_Path():
-            self.Moving_Random(delta_time)
+        self.Navigate_Path()
 
     # Path to a random part of the dungeon
     # Path towards the position of a random enemy
@@ -139,23 +138,7 @@ class Path_Finding():
             self.pos_holder_timer = 3
 
     
-    def Moving_Random(self, delta_time):
-        self.entity.Reduce_Movement(4)
-        direction = pygame.math.Vector2(self.entity.direction_x, self.entity.direction_y)
-        self.entity.Set_Direction(direction, "Moving_Random1") 
 
-        if self.entity.random_movement_cooldown:
-            self.entity.random_movement_cooldown -= delta_time
-            return
-        self.entity.direction_x = random.randint(-1, 1) 
-        self.entity.direction_y = random.randint(-1, 1) 
-        
-        direction = pygame.math.Vector2(self.entity.direction_x, self.entity.direction_y)
-        self.entity.Set_Direction(direction, "Moving_Random2") 
-
-        self.entity.random_movement_cooldown = 2
-
-        self.entity.Trap_Collision_Handler()
 
     
     def Calculate_Position(self):
