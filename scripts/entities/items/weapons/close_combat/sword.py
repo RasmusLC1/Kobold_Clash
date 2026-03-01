@@ -6,7 +6,6 @@ class Sword(Weapon):
     def __init__(self, game, pos, effect = keys.slash):
         super().__init__(game, pos, keys.sword, 3, 6, 5, 50, 'one_handed_melee', effect)
 
-
         
     def Update_Attack(self, delta_time):
         if not super().Update_Attack(delta_time):

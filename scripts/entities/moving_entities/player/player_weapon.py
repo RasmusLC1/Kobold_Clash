@@ -68,6 +68,9 @@ class Player_Weapon_Handler():
         
         self.Remove_Active_Weapon()
         return True
+    
+    def Get_Active_Weapon(self):
+        return self.active_weapon
 
     def Check_If_Weapon_Is_Equipped(self, weapon):
         if not self.active_weapon:

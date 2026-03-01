@@ -34,7 +34,6 @@ class Player(Moving_Entity):
         self.rune_power = 0
         self.arcane_conduit = 0
 
-        self.weapons = []
         self.weapon_handler = Player_Weapon_Handler(self.game, self)
         self.movement_handler = Player_Movement(self.game, self)
 
@@ -225,6 +224,9 @@ class Player(Moving_Entity):
         # Reset the animation lock to overwrite current animation
         self.animation_handler.Set_Animation_Lock(False)
         return self.animation_handler.Set_Animation(keys.idle)
+    
+    def Get_Weapon(self):
+        return self.weapon_handler.Get_Active_Weapon()
 
     # Render player
     def Render(self, surf, offset=(0, 0)):

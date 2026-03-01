@@ -1,9 +1,8 @@
 
 import math
 import pygame
-import random
 
-
+# Responsible for navigating dungeon
 class Path_Finding():
     def __init__(self, game, entity) -> None:
         self.game = game
@@ -79,9 +78,7 @@ class Path_Finding():
     def Calculate_Path_Segment(self, target):
         target_pos = (target[0] * self.game.tilemap.tile_size, target[1] * self.game.tilemap.tile_size)
         direction = pygame.math.Vector2(target_pos[0] - self.entity.pos[0], target_pos[1] - self.entity.pos[1])
-        self.entity.Set_Direction(direction, "CALCULATEPATH1") 
-        if self.entity.direction.length() > 0:
-            self.entity.direction.normalize_ip()
+        self.entity.Set_Direction(direction) 
 
     # Check if enemy has reached target, pop the first element and set direction to 0
     def Path_Segment_Complete(self, target):
@@ -91,7 +88,7 @@ class Path_Finding():
         if math.hypot(self.entity.pos[0] - target[0] * self.game.tilemap.tile_size, self.entity.pos[1] - target[1] * self.game.tilemap.tile_size) > reach_threshold:
             return False
         direction = pygame.math.Vector2(0, 0)
-        self.entity.Set_Direction(direction, "CALCULATEPATH1") 
+        self.entity.Set_Direction(direction) 
         self.path.pop(0)
         return True
 
@@ -128,7 +125,6 @@ class Path_Finding():
 
 
 
-
     # Save the entity's position every 200 ticks
     def Set_Position_Holder(self, delta_time):
         if self.pos_holder_timer:
@@ -136,9 +132,6 @@ class Path_Finding():
         else:
             self.pos_holder = self.entity.pos.copy()
             self.pos_holder_timer = 3
-
-    
-
 
     
     def Calculate_Position(self):

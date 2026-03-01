@@ -153,7 +153,7 @@ class Movement_Strategies():
         dy = self.target_tile_pos[1] - entity_pos[1] 
             
         new_entity_direction = pygame.math.Vector2(dx, dy)
-        self.entity.Set_Direction(new_entity_direction, "MOVE TOWARDS ENEMY POS")
+        self.entity.Set_Direction(new_entity_direction)
 
     # Calculates distance between two tuples
     def Get_Distance(self, pos_a, pos_b):

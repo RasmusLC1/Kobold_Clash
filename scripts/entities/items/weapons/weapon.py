@@ -374,6 +374,8 @@ class Weapon(Item):
         return image_rect
     
     def Set_Animation(self, animation_num):
+        if animation_num > self.max_animation:
+            return
         self.animation = animation_num
         self.Set_Equipped_Sprite()
 
@@ -510,6 +512,8 @@ class Weapon(Item):
         self.Set_Description()
         self.range -= amount
 
+    def Reset_Animation(self):
+        self.animation = 0
 
     
     def Set_Text_Box(self):

@@ -6,9 +6,8 @@ from scripts.engine.keys.keys import keys
 
 class Torch(Weapon):
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.torch, 1, 2, 3, 100, 'one_handed_melee', keys.fire)
+        super().__init__(game, pos, keys.torch, 1, 2, 3, 100, 'one_handed_melee', keys.fire, max_animation=3)
         self.animation_cooldown_max = 0.5
-        self.max_animation = 7
         self.light_source = self.game.light_handler.Add_Light(self.pos, 8, self.tile)
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
         self.flame_thrower = Flame_Thrower(self.game)

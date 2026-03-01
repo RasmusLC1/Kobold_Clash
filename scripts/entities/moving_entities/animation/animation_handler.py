@@ -43,13 +43,13 @@ class Animation_Handler:
         if entity.charge > 0:
             self.Set_Animation(keys.attack)
         elif entity.frame_movement:
-            self.Set_Animation('running')
+            self.Set_Animation("running")
         else:
-            self.Set_Animation('idle')
+            self.Set_Animation(keys.idle)
 
     def Set_Animation(self, action):
         if self.animation_lock:
-            return
+            return False
 
         if action != self.action:
             self.action = action
@@ -58,6 +58,9 @@ class Animation_Handler:
             self.animation_value = 0
             self.Set_Sprite()
             self.Set_Animation_Lock(True)
+            return True
+        
+        return False
 
     def Reset_Animation_Values(self):
         for anim in self.animations.values():
