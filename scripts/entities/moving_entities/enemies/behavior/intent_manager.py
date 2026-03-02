@@ -1,6 +1,8 @@
 import random
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.enemies.behavior.path_finding import Path_Finding
+from scripts.entities.moving_entities.enemies.behavior.movement_strategies import Movement_Strategies
+
 
 class Intent_Manager():
     def __init__(self, game, entity, attack_speed, path_finding_strategy) -> None:
@@ -38,6 +40,8 @@ class Intent_Manager():
             keys.run_away:lambda: self.Set_Movement_Strategy(keys.run_away),
         }
         self.path_finding = Path_Finding(game, entity, path_finding_strategy) # Pathfinding logic for enemy
+        self.movement_strategies = Movement_Strategies(game, entity) # Pathfinding logic for enemy
+
 
 
 
@@ -168,3 +172,6 @@ class Intent_Manager():
             self.attack_cooldown_max = random.uniform(self.attack_speed[0], self.attack_speed[1])
 
         return True
+
+    def Movement_Strategy(self, delta_time):
+        return self.movement_strategies.Movement_Strategy(delta_time)

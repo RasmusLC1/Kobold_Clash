@@ -1,5 +1,4 @@
 from scripts.entities.moving_entities.moving_entity import Moving_Entity
-from scripts.entities.moving_entities.enemies.behavior.movement_strategies import Movement_Strategies
 from scripts.entities.textbox.enemy_textbox import Enemy_Textbox
 from scripts.entities.decoration.shared.bones.bones import Bones 
 from scripts.entities.moving_entities.enemies.behavior.intent_manager import Intent_Manager
@@ -28,7 +27,6 @@ class Enemy(Moving_Entity):
         self.target = self.game.player.pos # Default target is set to player
         self.soul_value = soul_value
 
-        self.movement_strategies = Movement_Strategies(game, self) # Pathfinding logic for enemy
 
         self.distance_to_player = 9999 # Distance to player
         self.charge = 0 # Determines when the enemy attacks
@@ -169,7 +167,7 @@ class Enemy(Moving_Entity):
         super().Set_Attack_Direction()
         
     def Movement_Strategy(self, delta_time):
-        return self.movement_strategies.Movement_Strategy(delta_time)
+        return self.intent_manager.Movement_Strategy(delta_time)
     
     
     def Set_Active_Weapon(self, weapon):

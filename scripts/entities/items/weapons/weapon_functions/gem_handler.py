@@ -47,12 +47,12 @@ class Gem_Handler():
             keys.arcane_hunger : self.Set_Entity_Effect_Gem,
             keys.halo : self.Set_Entity_Effect_Gem,
             keys.power : self.Set_Entity_Effect_Gem,
-            keys.strength : self.Set_Entity_Effect_Gem,
+            keys.increase_strength : self.Set_Entity_Effect_Gem,
         }
 
         gem_function = gem_effects.get(gem.effect)
         if not gem_function:
-            print(gem.sub_type, gem.effect)
+            print("FAILED TO FIND GEM FUNCTION", gem.sub_type, gem.effect)
             return False
         
         return gem_function(gem)
