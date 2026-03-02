@@ -35,7 +35,6 @@ class Intent_Manager():
             keys.short_range:  lambda: self.Set_Movement_Strategy(keys.short_range),
             keys.keep_position:lambda: self.Set_Movement_Strategy(keys.keep_position),
             keys.run_away:lambda: self.Set_Movement_Strategy(keys.run_away),
-            keys.attack: self.Update_Attack_Cooldown,
         }
         # self.Set_Movement_Strategy(entity.attack_strategy)
 
@@ -138,7 +137,6 @@ class Intent_Manager():
 
     # Handle the enemy attack logic
     def Handle_Attack(self, delta_time):
-        # self.Update_Attack_Cooldown()
         # increment the intent when enemy attacks
         if self.entity.distance_to_player < self.entity.attack_distance:
             self.entity.Attack(delta_time)
@@ -151,12 +149,3 @@ class Intent_Manager():
             self.attack_cooldown_max = random.uniform(self.attack_speed[0], self.attack_speed[1])
 
         return True
-
-    # Updates the attack intent independent of the enemy's success with attacking to prevent it getting stuck
-    def Update_Attack_Cooldown(self):
-        if self.attack_cooldown >= self.attack_cooldown_max:
-            self.Increment_Intent()
-            self.attack_cooldown = 0
-            return
-        
-        self.attack_cooldown += 1

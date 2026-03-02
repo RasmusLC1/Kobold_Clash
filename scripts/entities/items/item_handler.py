@@ -163,13 +163,14 @@ class Item_Handler():
         self.rune_handler.Update(delta_time)
         
 
-
-    
     # Shoot projectiles
     def Throw_Projectile(self, item, delta_time):
+        if not item.type:
+            return
         if not item.is_projectile:
             return
         if not item.special_attack:
+
             
             if not item.entity:
                 return
