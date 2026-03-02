@@ -29,7 +29,7 @@ class Movement_Strategies():
             keys.long_range: (200, 160),
             keys.medium_range: (120, 80),
             keys.short_range: (80, 60),
-            keys.direct: (0, 20),
+            keys.direct: (20, 0),
             keys.keep_position: None,
             keys.idle: None,
             keys.run_away: None

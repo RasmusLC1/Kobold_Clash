@@ -5,9 +5,8 @@ from scripts.engine.keys.keys import keys
 
 class Void_Spawn(Enemy):
     def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, soul_value, size = (32, 32), attack_speed=(0.4, 0.6)):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.void_spawn, soul_value, 4, 4, 5, size, attack_speed=attack_speed)
-        self.path_finding_strategy = keys.void_spawn
-        self.intent_manager.Set_Movement_Intent([ keys.direct,])
+        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.void_spawn, soul_value, 4, 4, 5, size, attack_speed=attack_speed, path_finding_strategy=keys.void_spawn)
+        self.intent_manager.Set_Movement_Intent([ keys.direct])
         self.Equip_Weapon(Claw(game, self.pos)) 
 
     def Tile_Map_Collision_Detection(self, tilemap):

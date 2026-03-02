@@ -1,8 +1,9 @@
 import random
 from scripts.engine.keys.keys import keys
+from scripts.entities.moving_entities.enemies.behavior.path_finding import Path_Finding
 
 class Intent_Manager():
-    def __init__(self, game, entity, attack_speed) -> None:
+    def __init__(self, game, entity, attack_speed, path_finding_strategy) -> None:
         self.game = game
         self.entity = entity
 
@@ -36,21 +37,32 @@ class Intent_Manager():
             keys.keep_position:lambda: self.Set_Movement_Strategy(keys.keep_position),
             keys.run_away:lambda: self.Set_Movement_Strategy(keys.run_away),
         }
-        # self.Set_Movement_Strategy(entity.attack_strategy)
+        self.path_finding = Path_Finding(game, entity, path_finding_strategy) # Pathfinding logic for enemy
+
 
 
     def Save_Data(self):
         self.entity.saved_data['intent_cooldown'] = self.intent_cooldown
         self.entity.saved_data['intent_index'] = self.intent_index
+        self.entity.saved_data['path_finding_strategy'] = self.path_finding.path_finding_strategy
+
 
 
     def Load_Data(self, data):
         self.intent_cooldown = data['intent_cooldown']
         self.intent_index = data['intent_index']
+        self.path_finding.path_finding_strategy = data['path_finding_strategy']
+
 
     
     # Update the entity's behavior
+    def Update_Intent(self, delta_time):
+        self.Update_Behavior(delta_time)
+        self.path_finding.Path_Finding(delta_time)
+
+
     def Update_Behavior(self, delta_time):
+        
         if self.entity.distance_to_player > 300:  # skip if out of range
             self.Set_Idle()
             return
@@ -68,6 +80,14 @@ class Intent_Manager():
             print(f"Intent '{self.current_intent}' missing or unrecognized.")
         return
     
+
+    def Find_New_Path(self):
+        if not self.path_finding.Find_Shortest_Path():
+            self.entity.target = None
+            return False
+        
+        return True
+
     def Set_Action(self, action):
         self.Set_Current_Intent(action)
         action_function = self.actions.get(action)
@@ -82,7 +102,6 @@ class Intent_Manager():
 
     # setting the player's attack strategy
     def Set_Movement_Strategy(self, strategy):
-        self.entity.Set_Movement_Strategy(strategy)
         self.Set_Movement_Intent_Cooldown()
         self.Increment_Intent()
 
@@ -91,7 +110,7 @@ class Intent_Manager():
             return
         self.Set_Current_Intent(keys.idle)
         self.intent_index = random.randint(0, self.intent_length - 1)
-        self.entity.path_finding.Find_Patrol_Path()
+        self.path_finding.Find_Patrol_Path()
 
 
     def Set_Movement_Intent(self, intent):

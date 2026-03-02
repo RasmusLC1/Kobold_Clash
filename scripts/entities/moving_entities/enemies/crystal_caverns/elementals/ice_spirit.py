@@ -6,7 +6,7 @@ ICE_PROJECTILE_NUM = 3
 
 class Ice_Spirit(Elemental):
     def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.ice_spirit, health, strength, max_speed, agility, intelligence, stamina, 1.6, 20, 3, 3, 3, attack_speed = (1.8, 2))
+        super().__init__(game, pos, keys.ice_spirit, health, strength, max_speed, agility, intelligence, stamina, 1.6, 20, 3, 3, 3, attack_speed = (1.8, 2), default_range = keys.long_range)
         self.path_finding_strategy = 'standard'
         self.intent_manager.Set_Movement_Intent([keys.long_range])
         self.attack_distance  = 250

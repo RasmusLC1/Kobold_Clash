@@ -1,5 +1,4 @@
 from scripts.entities.moving_entities.moving_entity import Moving_Entity
-from scripts.entities.moving_entities.enemies.behavior.path_finding import Path_Finding
 from scripts.entities.moving_entities.enemies.behavior.movement_strategies import Movement_Strategies
 from scripts.entities.textbox.enemy_textbox import Enemy_Textbox
 from scripts.entities.decoration.shared.bones.bones import Bones 
@@ -16,7 +15,7 @@ class Enemy(Moving_Entity):
     # Factory method
     intent_manager_class = Intent_Manager  # Default intent manager
 
-    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, sub_category, soul_value, idle_animation, run_animation, attack_animation, size = (32, 32), attack_speed = (0.5, 0.8)):
+    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, sub_category, soul_value, idle_animation, run_animation, attack_animation, size = (32, 32), attack_speed = (0.5, 0.8), path_finding_strategy = keys.standard, default_range = keys.direct):
 
         super().__init__(game, str(type), keys.enemy, pos, size, health, strength, max_speed, agility, intelligence, stamina, sub_category)
         self.animation_handler.Set_Animation_Num_Max(keys.run ,run_animation)
@@ -29,13 +28,11 @@ class Enemy(Moving_Entity):
         self.target = self.game.player.pos # Default target is set to player
         self.soul_value = soul_value
 
-        self.path_finding = Path_Finding(game, self) # Pathfinding logic for enemy
         self.movement_strategies = Movement_Strategies(game, self) # Pathfinding logic for enemy
 
         self.distance_to_player = 9999 # Distance to player
         self.charge = 0 # Determines when the enemy attacks
-        self.movement_strategy = keys.direct # Attack strategy that the enemy utalises
-        self.path_finding_strategy = 'standard' # Maptype that is used for navigation
+        self.movement_strategy = default_range # Attack strategy that the enemy utalises
         
         self.attack_distance  = self.size[0] * 2
         self.distance_calculation_cooldown = 0
@@ -48,7 +45,7 @@ class Enemy(Moving_Entity):
         self.attack_symbol_offset = 20
         self.health_bar = self.game.assets[keys.health_bar]
 
-        self.intent_manager = self.intent_manager_class(game, self, attack_speed)
+        self.intent_manager = self.intent_manager_class(game, self, attack_speed, path_finding_strategy)
 
         self.Set_Description()
 
@@ -60,7 +57,6 @@ class Enemy(Moving_Entity):
         self.saved_data['random_movement_cooldown'] = self.random_movement_cooldown
         self.saved_data['distance_to_player'] = self.distance_to_player
         self.saved_data['charge'] = self.charge
-        self.saved_data['path_finding_strategy'] = self.path_finding_strategy
         self.saved_data['locked_on_target'] = self.locked_on_target
         self.saved_data['target'] = self.target
 
@@ -72,7 +68,6 @@ class Enemy(Moving_Entity):
         self.random_movement_cooldown = data['random_movement_cooldown']
         self.distance_to_player = data['distance_to_player']
         self.charge = data['charge']
-        self.path_finding_strategy = data['path_finding_strategy']
         self.locked_on_target = data['locked_on_target']
         self.target = data['target']
 
@@ -81,8 +76,7 @@ class Enemy(Moving_Entity):
     def Update(self, tilemap, delta_time, movement=(0, 0)):
         self.Reset_Max_Speed()
         self.Calculate_Distance_To_Player(delta_time)
-        self.intent_manager.Update_Behavior(delta_time)
-        self.path_finding.Path_Finding(delta_time)
+        self.intent_manager.Update_Intent(delta_time)
         movement = self.direction
         super().Update(tilemap, delta_time, movement)
 
@@ -90,11 +84,6 @@ class Enemy(Moving_Entity):
 
         self.Update_Alert_Cooldown(delta_time)
         self.Update_Locked_On_Target(delta_time)
-
-
-        
-    def Set_Movement_Strategy(self, strategy):
-        self.movement_strategy = strategy
 
 
     def Set_Direction_Holder(self):
@@ -194,11 +183,7 @@ class Enemy(Moving_Entity):
         self.alert_cooldown = amount
 
     def Find_New_Path(self):
-        if not self.path_finding.Find_Shortest_Path():
-            self.target = None
-            return False
-        
-        return True
+        self.intent_manager.Find_New_Path()
 
     def Set_Direction(self, direction):
         if direction.length() > 0:

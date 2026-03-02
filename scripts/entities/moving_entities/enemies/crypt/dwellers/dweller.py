@@ -3,8 +3,8 @@ from scripts.entities.items.weapons.enemy_weapons.claw import Claw
 from scripts.engine.keys.keys import keys
 
 class Dweller(Enemy):
-    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, size = (32, 32), attack_speed = (0.5, 0.8)):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.dweller, size, attack_speed)
+    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, size = (32, 32), attack_speed = (0.5, 0.8), default_range=keys.direct):
+        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.dweller, size, attack_speed, default_range)
         self.animation_handler.Set_Animation_Num_Max(4)
         self.animation_handler.Set_Attack_Animation_Num_Max(5)
 

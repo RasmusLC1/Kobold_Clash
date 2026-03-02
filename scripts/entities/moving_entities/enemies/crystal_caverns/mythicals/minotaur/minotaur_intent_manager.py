@@ -3,8 +3,8 @@ from scripts.entities.moving_entities.enemies.attacks.Dash import Dash
 from scripts.engine.keys.keys import keys
 
 class Minotaur_Intent_Manager(Intent_Manager):
-    def __init__(self, game, entity):
-        super().__init__(game, entity)
+    def __init__(self, game, entity, attack_speed, path_finding_strategy):
+        super().__init__(game, entity, attack_speed, path_finding_strategy)
         self.dash = Dash(game, entity)
         self.actions['dash'] = self.Handle_Dash
         self.base_cooldown['dash'] = 0

@@ -4,11 +4,11 @@ import pygame
 
 # Responsible for navigating dungeon
 class Path_Finding():
-    def __init__(self, game, entity) -> None:
+    def __init__(self, game, entity, path_finding_strategy) -> None:
         self.game = game
         self.entity = entity
+        self.path_finding_strategy = path_finding_strategy # Maptype that is used for navigation
 
-        self.pos_holder = (0,0)
         self.path = [] # Path to destination
 
         # self.pos in self.game.tilemap.tile_size/self.game.tilemap.tile_size tileformat
@@ -28,10 +28,6 @@ class Path_Finding():
 
 
     def Path_Finding(self, delta_time):
-        self.Set_Position_Holder(delta_time)
-
-        self.Corner_Handling()
-
         # Pathfind towards the target
         if self.entity.Movement_Strategy(delta_time):
             self.entity.Trap_Collision_Handler()
@@ -41,7 +37,7 @@ class Path_Finding():
             # If enemy looses sight of player he will try to go to the last known location
             if self.player_found:
                 self.player_found = False
-                self.entity.Set_Target(self.game.player.pos)
+                self.entity.Set_Target()
 
         self.Navigate_Path()
 
@@ -98,7 +94,7 @@ class Path_Finding():
         self.path.clear()
         self.Calculate_Position()
         self.Calculate_Destination_Position(self.entity.target)
-        self.path = self.game.a_star.a_star_search([self.src_x, self.src_y], [self.des_x, self.des_y], self.entity.path_finding_strategy)
+        self.path = self.game.a_star.a_star_search([self.src_x, self.src_y], [self.des_x, self.des_y], self.path_finding_strategy)
         if not self.path:
             return False
         self.path = [(x + self.game.a_star.min_x, y + self.game.a_star.min_y) for (x, y) in self.path]
@@ -123,15 +119,6 @@ class Path_Finding():
             self.entity.Set_Frame_movement((direction_x, direction_y))
             self.entity.Tile_Map_Collision_Detection(self.game.tilemap)
 
-
-
-    # Save the entity's position every 200 ticks
-    def Set_Position_Holder(self, delta_time):
-        if self.pos_holder_timer:
-            self.pos_holder_timer -= delta_time
-        else:
-            self.pos_holder = self.entity.pos.copy()
-            self.pos_holder_timer = 3
 
     
     def Calculate_Position(self):
