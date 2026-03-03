@@ -2,10 +2,11 @@ import random
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.enemies.behavior.path_finding import Path_Finding
 from scripts.entities.moving_entities.enemies.behavior.movement_strategies import Movement_Strategies
+from scripts.entities.moving_entities.enemies.behavior.behavior_manager import Behavior_Manager
 
 
 class Intent_Manager():
-    def __init__(self, game, entity, attack_speed, path_finding_strategy) -> None:
+    def __init__(self, game, entity, attack_speed, path_finding_strategy, behavior = "Aggressive") -> None:
         self.game = game
         self.entity = entity
 
@@ -41,6 +42,7 @@ class Intent_Manager():
         }
         self.path_finding = Path_Finding(game, entity, path_finding_strategy) # Pathfinding logic for enemy
         self.movement_strategies = Movement_Strategies(game, entity) # Pathfinding logic for enemy
+        self.behavior_manager = Behavior_Manager(game, entity, behavior) 
 
 
 
