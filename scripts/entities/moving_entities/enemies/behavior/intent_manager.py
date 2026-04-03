@@ -31,15 +31,7 @@ class Intent_Manager():
             keys.keep_position: self.intent_cooldown_max,
             keys.run_away : self.intent_cooldown_max * 5,
         }
-        # Lambda stores the function to be called later
-        self.actions = {
-            keys.direct:       lambda: self.Set_Movement_Strategy(keys.direct),
-            keys.long_range:   lambda: self.Set_Movement_Strategy(keys.long_range),
-            keys.medium_range: lambda: self.Set_Movement_Strategy(keys.medium_range),
-            keys.short_range:  lambda: self.Set_Movement_Strategy(keys.short_range),
-            keys.keep_position:lambda: self.Set_Movement_Strategy(keys.keep_position),
-            keys.run_away:lambda: self.Set_Movement_Strategy(keys.run_away),
-        }
+ 
         self.path_finding = Path_Finding(game, entity, path_finding_strategy) # Pathfinding logic for enemy
         self.movement_strategies = Movement_Strategies(game, entity) # Pathfinding logic for enemy
         self.behavior_manager = Behavior_Manager(game, entity, behavior) 
@@ -79,11 +71,7 @@ class Intent_Manager():
             return
 
         self.Set_Current_Intent(self.intent[self.intent_index])
-        action_function = self.actions.get(self.current_intent)
-        if action_function:
-            action_function()
-        else:
-            print(f"Intent '{self.current_intent}' missing or unrecognized.")
+        self.Set_Movement_Strategy(self.current_intent)
         return
     
 
@@ -96,12 +84,8 @@ class Intent_Manager():
 
     def Set_Action(self, action):
         self.Set_Current_Intent(action)
-        action_function = self.actions.get(action)
         self.Set_Movement_Strategy(action)
-        if action_function:
-            action_function()
-        else:
-            print(f"Intent '{self.current_intent}' missing or unrecognized.")
+        return
 
     def Set_Current_Intent(self, intent):
         self.current_intent = intent 
