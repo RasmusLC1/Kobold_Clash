@@ -7,7 +7,7 @@ ENEMY_STATS = {
     keys.skeleton_ranger:         {keys.health: 40,  keys.souls: 15, keys.max_weapon_charge: 1.2, keys.aggression: 4,  keys.strength: 2, keys.speed: 4, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
     keys.skeleton_cleric:         {keys.health: 40,  keys.souls: 20, keys.max_weapon_charge: 1.1, keys.aggression: 2,  keys.strength: 1, keys.speed: 2, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
     keys.skeleton_bell_toller:    {keys.health: 60,  keys.souls: 15, keys.max_weapon_charge: 1.2, keys.aggression: 3,  keys.strength: 3, keys.speed: 3, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
-    keys.skeleton_undertaker:     {keys.health: 110, keys.souls: 0.8, keys.max_weapon_charge: 40,  keys.aggression: 5, keys.strength: 5, keys.speed: 2, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
+    keys.skeleton_undertaker:     {keys.health: 110, keys.souls: 40, keys.max_weapon_charge: 0.8,  keys.aggression: 5, keys.strength: 5, keys.speed: 2, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
     keys.skeleton_guardian:       {keys.health: 120, keys.souls: 15, keys.max_weapon_charge: 1.2, keys.aggression: 7,  keys.strength: 4, keys.speed: 1, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
     keys.skeleton_warlock:        {keys.health: 40,  keys.souls: 40, keys.max_weapon_charge: 1.0, keys.aggression: 6,  keys.strength: 1, keys.speed: 1, keys.agility: 2, keys.intelligence: 5, keys.stamina: 2},
     keys.wight_king:              {keys.health: 200, keys.souls: 55, keys.max_weapon_charge: 0.6, keys.aggression: 6,  keys.strength: 6, keys.speed: 4, keys.agility: 6, keys.intelligence: 5, keys.stamina: 5},
@@ -42,29 +42,36 @@ class Attribute_Distributor:
             
         return 999 # Default if enemy type is totally missing
 
+    @staticmethod
     def Get_Health(type):
         return Attribute_Distributor.Get_Stat(type, keys.health)
-    
+    @staticmethod    
     def Get_Strength(type):
         return Attribute_Distributor.Get_Stat(type, keys.strength)
-    
+    @staticmethod
     def Get_Speed(type):
         return Attribute_Distributor.Get_Stat(type, keys.speed)
     
+    @staticmethod
     def Get_Agility(type):
         return Attribute_Distributor.Get_Stat(type, keys.agility)
     
+    @staticmethod
     def Get_Intelligence(type):
         return Attribute_Distributor.Get_Stat(type, keys.intelligence)
     
+    @staticmethod
     def Get_Stamina(type):
         return Attribute_Distributor.Get_Stat(type, keys.stamina)
     
+    @staticmethod
     def Get_Soul_Value(type):
         return Attribute_Distributor.Get_Stat(type, keys.souls)
     
+    @staticmethod
     def Get_Max_Weapon_Charge(type):
         return Attribute_Distributor.Get_Stat(type, keys.max_weapon_charge)
     
+    @staticmethod
     def Get_Aggression(type):
         return Attribute_Distributor.Get_Stat(type, keys.aggression)
