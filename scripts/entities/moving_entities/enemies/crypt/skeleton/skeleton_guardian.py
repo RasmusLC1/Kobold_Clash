@@ -6,8 +6,8 @@ import random
 from scripts.engine.keys.keys import keys
 
 class Skeleton_Guardian(Skeleton):
-    def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.skeleton_guardian, health, strength, max_speed, agility, intelligence, stamina, 0.9, 15, attack_speed = (1, 1.3))
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.skeleton_guardian,  attack_speed = (1, 1.3))
         self.Equip_Weapon(Claw(game, self.pos)) 
         self.active_weapon.Set_Damage(keys.blunt, 5)
         self.intent_manager.Set_Movement_Intent([keys.direct, keys.medium_range])

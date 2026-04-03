@@ -22,7 +22,10 @@ class Animation_Handler:
         self.attack_frame = 0
 
     def Set_Sprite(self):
-        self.sprite = self.entity.game.assets[self.animation]
+        try:
+            self.sprite = self.entity.game.assets[self.animation]
+        except Exception as e:
+            print(f'Setting sprite went wrong {e}', self.sprite, self.animation_value, self.animation)
 
     def Set_Entity_Image(self):
         try:

@@ -9,4 +9,5 @@ class Enemy_Spawner():
     
 
     def Get_Spawn_Function(self, base_type):
-        return self.spawn_methods.get(base_type)
+        enemy_to_spawn = self.spawn_methods.get(base_type)
+        return enemy_to_spawn

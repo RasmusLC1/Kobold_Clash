@@ -3,8 +3,8 @@ from scripts.entities.items.weapons.magic_attacks.fire.flame_thrower import Flam
 from scripts.engine.keys.keys import keys
 
 class Fire_Spirit(Elemental):
-    def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.fire_spirit, health, strength, max_speed, agility, intelligence, stamina, 1.2, 20, 3, 3, 3, attack_speed = (2, 2.5), path_finding_strategy = 'ignore_lava', default_range = keys.short_range)
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.fire_spirit, 3, 3, 3, attack_speed = (2, 2.5), path_finding_strategy = 'ignore_lava', default_range = keys.short_range)
         self.intent_manager.Set_Movement_Intent([keys.medium_range])
         self.attack_distance  = 120
         self.minimum_distance = 30

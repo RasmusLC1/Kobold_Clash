@@ -3,6 +3,7 @@ from scripts.entities.textbox.enemy_textbox import Enemy_Textbox
 from scripts.entities.decoration.shared.bones.bones import Bones 
 from scripts.entities.moving_entities.enemies.behavior.intent_manager import Intent_Manager
 from scripts.engine.keys.keys import keys
+from scripts.entities.moving_entities.enemies.attribute_distributor import Attribute_Distributor
 
 import math
 import pygame
@@ -14,30 +15,35 @@ class Enemy(Moving_Entity):
     # Factory method
     intent_manager_class = Intent_Manager  # Default intent manager
 
-    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, sub_category, soul_value, idle_animation, run_animation, attack_animation, size = (32, 32), attack_speed = (0.5, 0.8), path_finding_strategy = keys.standard, default_range = keys.direct):
+    def __init__(self, game, pos, type, sub_category, idle_animation, run_animation, attack_animation, size = (32, 32), attack_speed = (0.5, 0.8), path_finding_strategy = keys.standard, default_range = keys.direct):
+        health = Attribute_Distributor.Get_Health(type)
+        strength = Attribute_Distributor.Get_Strength(type)
+        max_speed = Attribute_Distributor.Get_Speed(type)
+        agility = Attribute_Distributor.Get_Agility(type)
+        intelligence = Attribute_Distributor.Get_Intelligence(type)
+        stamina = Attribute_Distributor.Get_Stamina(type)
+        self.soul_value = Attribute_Distributor.Get_Soul_Value(type)
 
         super().__init__(game, str(type), keys.enemy, pos, size, health, strength, max_speed, agility, intelligence, stamina, sub_category)
         self.animation_handler.Set_Animation_Num_Max(keys.run ,run_animation)
         self.animation_handler.Set_Animation_Num_Max(keys.idle ,idle_animation)
         self.animation_handler.Set_Animation_Num_Max(keys.attack, attack_animation)
         self.animation_handler.Set_Animation('running')
-        self.random_movement_cooldown = 0
         self.alert_cooldown = 0
         self.active_weapon = None
         self.target = self.game.player.pos # Default target is set to player
-        self.soul_value = soul_value
 
 
         self.distance_to_player = 9999 # Distance to player
         self.charge = 0 # Determines when the enemy attacks
         self.movement_strategy = default_range # Attack strategy that the enemy utalises
         
-        self.attack_distance  = self.size[0] * 2
-        self.distance_calculation_cooldown = 0
+        self.aggression = Attribute_Distributor.Get_Aggression(type) # Determines how frequent the enemy attacks
+        self.attack_distance  = self.size[0] * 2 # Distance that the enemy can attack from
+        self.distance_calculation_cooldown = 0 # Time between checking target distance
 
-        self.max_weapon_charge = max_weapon_charge
 
-
+        self.max_weapon_charge = Attribute_Distributor.Get_Max_Weapon_Charge(type)
         self.locked_on_target = 0 # If the enemy is locked onto a target, then it will not switch based on clatter
 
         self.attack_symbol_offset = 20
@@ -52,7 +58,6 @@ class Enemy(Moving_Entity):
         super().Save_Data()
         self.intent_manager.Save_Data()
         self.saved_data['alert_cooldown'] = self.alert_cooldown
-        self.saved_data['random_movement_cooldown'] = self.random_movement_cooldown
         self.saved_data['distance_to_player'] = self.distance_to_player
         self.saved_data['charge'] = self.charge
         self.saved_data['locked_on_target'] = self.locked_on_target
@@ -63,7 +68,6 @@ class Enemy(Moving_Entity):
         super().Load_Data(data)
         self.intent_manager.Load_Data(data)
         self.alert_cooldown = data['alert_cooldown']
-        self.random_movement_cooldown = data['random_movement_cooldown']
         self.distance_to_player = data['distance_to_player']
         self.charge = data['charge']
         self.locked_on_target = data['locked_on_target']

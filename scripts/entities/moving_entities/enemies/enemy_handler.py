@@ -96,12 +96,12 @@ class Enemy_Handler():
             # Rebuild everything except the last part
             base_type = '_'.join(parts[:-1])
 
-        spawn_function = self.enemy_spawner.Get_Spawn_Function(base_type)
-        if not spawn_function:
+        enemy_to_spawn = self.enemy_spawner.Get_Spawn_Function(base_type)
+        if not enemy_to_spawn:
             print(f"Warning: Enemy type '{type}' not recognized. Enemyhandler Enemy_Spawner")
             return None
 
-        enemy = spawn_function(pos)
+        enemy = enemy_to_spawn(self.game, pos)
         if enemy:
             if data:
                 enemy.Load_Data(data)  # Load saved enemy data if available

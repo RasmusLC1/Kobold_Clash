@@ -12,8 +12,8 @@ class Medusa(Enemy):
 
     _animation_handler = Medusa_Animation_Handler 
 
-    def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.medusa, health, strength, max_speed, agility, intelligence, stamina, 0.9, keys.mythical, 100, 5, 3, 5, size = (64, 64))
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.medusa, keys.mythical, 5, 3, 5, size = (64, 64))
         self.intent_manager.Set_Movement_Intent([keys.direct, keys.medium_range])
         self.intent_manager.Set_Movement_Intent_Cooldown_Max(120)
         self.attack_type_cooldown = 0

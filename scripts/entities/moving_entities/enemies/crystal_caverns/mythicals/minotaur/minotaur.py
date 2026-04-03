@@ -11,8 +11,8 @@ CRYSTAL_SCALE_HEALTH_COOLDOWN_MAX = 1 # heals 1 health every second
 class Minotaur(Enemy):
     intent_manager_class = Minotaur_Intent_Manager
 
-    def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.minotaur, health, strength, max_speed, agility, intelligence, stamina, 0.9, keys.mythical, 100, 3, 3, 5, size = (64, 64), attack_speed=(0.6, 0.8))
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.minotaur,  keys.mythical, 3, 3, 5, size = (64, 64), attack_speed=(0.6, 0.8))
         self.intent_manager.Set_Movement_Intent([keys.keep_position, keys.direct, 'dash',    keys.medium_range,])
         self.intent_manager.Set_Movement_Intent_Cooldown_Max(120)
         self.last_health_index = self.Calculate_Health_Index(self.health)

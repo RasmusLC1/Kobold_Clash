@@ -6,8 +6,8 @@ import random
 # TODO: Implement intent with spider and make attacks into objects
 class Ghoul(Dweller):
 
-    def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.ghoul, health, strength, max_speed, agility, intelligence, stamina, 0.8, 15)
+    def __init__(self, game, pos,):
+        super().__init__(game, pos, keys.ghoul)
 
         self.intent_manager.Set_Movement_Intent([keys.direct,    keys.medium_range])
 

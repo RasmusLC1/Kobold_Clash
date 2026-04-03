@@ -69,7 +69,7 @@ class Level_Loader():
         self.load_level(clear_inventory)
         self.Initialise_Level()
 
-
+    # Set the dungeon type
     def Select_Dungeon_Type(self):
         dungeon_types = [
             # keys.ancient_crypt,

@@ -2,8 +2,8 @@ from scripts.entities.moving_entities.enemies.crypt.void_spawn.void_spawn import
 from scripts.engine.keys.keys import keys
 
 class Shade(Void_Spawn):
-    def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.shade, health, strength, max_speed, agility, intelligence, stamina, 1, 15)
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.shade)
         self.active_weapon.Set_Damage(keys.slash, 4)
 
 

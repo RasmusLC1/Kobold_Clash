@@ -4,8 +4,8 @@ from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.element
 
 
 class Earth_Elemental(Elemental):
-    def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.earth_elemental, health, strength, max_speed, agility, intelligence, stamina, 1.5, 20, 3, 3, 3, size=(48, 48), attack_speed=(0.7, 1))
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.earth_elemental, 3, 3, 3, size=(48, 48), attack_speed=(0.7, 1))
         self.intent_manager.Set_Movement_Intent([keys.direct, keys.short_range])
 
         # Equip the weapon

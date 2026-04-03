@@ -20,21 +20,21 @@ from scripts.engine.keys.keys import keys
 class Crypt_Spawn(Enemy_Spawner):
     def __init__(self, game):
         spawn_methods = {
-            keys.skeleton_warrior: self.Spawn_Skeleton_Warrior,
-            keys.skeleton_ranger : self.Spawn_Skeleton_Ranger,
-            keys.spider : self.Spawn_Spider,
-            keys.wight_king : self.Spawn_Wight_King,
-            keys.vampire : self.Spawn_Vampire,
-            keys.skeleton_bell_toller : self.Spawn_Skeleton_Bell_Toller,
-            keys.skeleton_cleric : self.Spawn_Skeleton_Cleric,
-            keys.skeleton_undertaker : self.Spawn_Skeleton_Undertaker,
-            keys.skeleton_warlock : self.Spawn_Skeleton_Warlock,
-            keys.skeleton_guardian : self.Spawn_Skeleton_Guardian,
-            keys.skeleton_banner_bearer : self.Spawn_Skeleton_Banner_Bearer,
-            keys.shade : self.Spawn_Shade,
-            keys.phantom : self.Spawn_Phantom,
-            keys.wraith : self.Spawn_Wraith,
-            keys.ghoul : self.Spawn_Ghoul,
+            keys.skeleton_warrior: Skeleton_Warrior,
+            keys.skeleton_ranger : Skeleton_Ranger,
+            keys.spider : Spider,
+            keys.wight_king : Wight_King,
+            keys.vampire : Vampire,
+            keys.skeleton_bell_toller : Skeleton_Bell_Toller,
+            keys.skeleton_cleric : Skeleton_Cleric,
+            keys.skeleton_undertaker : Skeleton_Undertaker,
+            keys.skeleton_warlock : Skeleton_Warlock,
+            keys.skeleton_guardian : Skeleton_Guardian,
+            keys.skeleton_banner_bearer : Skeleton_Banner_Bearer,
+            keys.shade : Shade,
+            keys.phantom : Phantom,
+            keys.wraith : Wraith,
+            keys.ghoul : Ghoul,
         }
 
         enemy_types = {
@@ -301,11 +301,5 @@ class Crypt_Spawn(Enemy_Spawner):
         intelligence = 5
         stamina = 2
         return Spider(self.game,
-                    pos, 
-                    health,
-                    strength,
-                    speed,
-                    agility,
-                    intelligence,
-                    stamina)
+                    pos, )
         

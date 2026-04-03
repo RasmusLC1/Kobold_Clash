@@ -4,8 +4,8 @@ from scripts.engine.keys.keys import keys
 CRYSTAL_SCALE_HEALTH_COOLDOWN_MAX = 1 # heals 1 health every second
 
 class Elemental(Enemy):
-    def __init__(self, game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, soul_value, idle_animation, run_animation, attack_animation, size = (32, 32), attack_speed = (0.5, 0.8), path_finding_strategy = keys.standard, default_range = keys.direct):
-        super().__init__(game, pos, type, health, strength, max_speed, agility, intelligence, stamina, max_weapon_charge, keys.elemental, soul_value, idle_animation, run_animation, attack_animation, size, attack_speed, path_finding_strategy, default_range)
+    def __init__(self, game, pos, type, idle_animation, run_animation, attack_animation, size = (32, 32), attack_speed = (0.5, 0.8), path_finding_strategy = keys.standard, default_range = keys.direct):
+        super().__init__(game, pos, type,  keys.elemental, idle_animation, run_animation, attack_animation, size, attack_speed, path_finding_strategy, default_range)
         self.crystal_scale_max = self.max_health // 2
         self.crystal_scale = self.crystal_scale_max
         self.crystal_scale_heal_cooldown = CRYSTAL_SCALE_HEALTH_COOLDOWN_MAX
