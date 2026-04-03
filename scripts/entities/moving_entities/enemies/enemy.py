@@ -15,18 +15,22 @@ class Enemy(Moving_Entity):
     # Factory method
     intent_manager_class = Intent_Manager  # Default intent manager
 
-    def __init__(self, game, pos, type, sub_category, idle_animation, run_animation, attack_animation, size = (32, 32), attack_speed = (0.5, 0.8), path_finding_strategy = keys.standard, default_range = keys.direct):
-        health = Attribute_Distributor.Get_Health(type)
-        strength = Attribute_Distributor.Get_Strength(type)
-        max_speed = Attribute_Distributor.Get_Speed(type)
-        agility = Attribute_Distributor.Get_Agility(type)
-        intelligence = Attribute_Distributor.Get_Intelligence(type)
-        stamina = Attribute_Distributor.Get_Stamina(type)
-        self.soul_value = Attribute_Distributor.Get_Soul_Value(type)
-        self.max_weapon_charge = Attribute_Distributor.Get_Max_Weapon_Charge(type)
-        self.aggression = Attribute_Distributor.Get_Aggression(type) # Determines how frequent the enemy attacks
+    def __init__(self, game, pos, type, sub_category, idle_animation, run_animation, attack_animation, size = (32, 32), attack_speed = (0.5, 0.8), path_finding_strategy = keys.standard, default_range = keys.direct, is_elite = False):
 
-        super().__init__(game, str(type), keys.enemy, pos, size, health, strength, max_speed, agility, intelligence, stamina, sub_category)
+        base_stats = Attribute_Distributor.Get_Enemy_Data(type, game.depth, is_elite)    
+        self.max_weapon_charge = base_stats.get(keys.max_weapon_charge)
+        self.soul_value = base_stats.get(keys.souls)
+        self.aggression = base_stats.get(keys.aggression)
+
+        super().__init__(game, str(type), keys.enemy, pos, size,
+                         base_stats.get(keys.health),
+                         base_stats.get(keys.strength),
+                         base_stats.get(keys.speed),
+                         base_stats.get(keys.agility),
+                         base_stats.get(keys.intelligence),
+                         base_stats.get(keys.stamina),
+                         sub_category)
+        
         self.animation_handler.Set_Animation_Num_Max(keys.run ,run_animation)
         self.animation_handler.Set_Animation_Num_Max(keys.idle ,idle_animation)
         self.animation_handler.Set_Animation_Num_Max(keys.attack, attack_animation)

@@ -115,7 +115,7 @@ class Status_Effect_Handler:
     
     # Allows access like handler.fire
     def __getattr__(self, name):
-        # Bridge: handler.magnet -> keys.magnet -> "magnet_id"
+        # Bridge: handler.magnet -> keys.magnet -> "magnet"
         key_value = getattr(keys, name, name) 
         
         if key_value in self.EFFECT_REGISTRY:
@@ -170,7 +170,8 @@ class Status_Effect_Handler:
     def Reset_Effects(self):
         for effect in self.active_effects:
             effect.Remove_Effect()
-            self.active_effects.remove(effect)
+
+        self.active_effects.clear()
 
     # Use list comprehension for performance, remove effect if effect has run out
     def Update_Status_Effects(self, delta_time):
@@ -182,9 +183,6 @@ class Status_Effect_Handler:
         if not effect:
             return None
         return effect.description
-
-
-
 
 
     def Damage_Dealt(self, damage):
