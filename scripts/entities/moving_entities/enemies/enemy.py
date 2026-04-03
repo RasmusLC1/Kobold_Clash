@@ -23,6 +23,8 @@ class Enemy(Moving_Entity):
         intelligence = Attribute_Distributor.Get_Intelligence(type)
         stamina = Attribute_Distributor.Get_Stamina(type)
         self.soul_value = Attribute_Distributor.Get_Soul_Value(type)
+        self.max_weapon_charge = Attribute_Distributor.Get_Max_Weapon_Charge(type)
+        self.aggression = Attribute_Distributor.Get_Aggression(type) # Determines how frequent the enemy attacks
 
         super().__init__(game, str(type), keys.enemy, pos, size, health, strength, max_speed, agility, intelligence, stamina, sub_category)
         self.animation_handler.Set_Animation_Num_Max(keys.run ,run_animation)
@@ -38,12 +40,10 @@ class Enemy(Moving_Entity):
         self.charge = 0 # Determines when the enemy attacks
         self.movement_strategy = default_range # Attack strategy that the enemy utalises
         
-        self.aggression = Attribute_Distributor.Get_Aggression(type) # Determines how frequent the enemy attacks
         self.attack_distance  = self.size[0] * 2 # Distance that the enemy can attack from
         self.distance_calculation_cooldown = 0 # Time between checking target distance
 
 
-        self.max_weapon_charge = Attribute_Distributor.Get_Max_Weapon_Charge(type)
         self.locked_on_target = 0 # If the enemy is locked onto a target, then it will not switch based on clatter
 
         self.attack_symbol_offset = 20

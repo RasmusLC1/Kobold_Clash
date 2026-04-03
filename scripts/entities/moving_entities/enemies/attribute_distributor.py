@@ -1,276 +1,70 @@
 from scripts.engine.keys.keys import keys
 
-class Attribute_Distributor():
+# 1. The Source of Truth - All stats in one place
+ENEMY_STATS = {
+    # [Undead / Crypt]
+    keys.skeleton_warrior:        {keys.health: 70,  keys.souls: 10, keys.max_weapon_charge: 0.8, keys.aggression: 7,  keys.strength: 3, keys.speed: 3, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
+    keys.skeleton_ranger:         {keys.health: 40,  keys.souls: 15, keys.max_weapon_charge: 1.2, keys.aggression: 4,  keys.strength: 2, keys.speed: 4, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
+    keys.skeleton_cleric:         {keys.health: 40,  keys.souls: 20, keys.max_weapon_charge: 1.1, keys.aggression: 2,  keys.strength: 1, keys.speed: 2, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
+    keys.skeleton_bell_toller:    {keys.health: 60,  keys.souls: 15, keys.max_weapon_charge: 1.2, keys.aggression: 3,  keys.strength: 3, keys.speed: 3, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
+    keys.skeleton_undertaker:     {keys.health: 110, keys.souls: 0.8, keys.max_weapon_charge: 40,  keys.aggression: 5, keys.strength: 5, keys.speed: 2, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
+    keys.skeleton_guardian:       {keys.health: 120, keys.souls: 15, keys.max_weapon_charge: 1.2, keys.aggression: 7,  keys.strength: 4, keys.speed: 1, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
+    keys.skeleton_warlock:        {keys.health: 40,  keys.souls: 40, keys.max_weapon_charge: 1.0, keys.aggression: 6,  keys.strength: 1, keys.speed: 1, keys.agility: 2, keys.intelligence: 5, keys.stamina: 2},
+    keys.wight_king:              {keys.health: 200, keys.souls: 55, keys.max_weapon_charge: 0.6, keys.aggression: 6,  keys.strength: 6, keys.speed: 4, keys.agility: 6, keys.intelligence: 5, keys.stamina: 5},
+    keys.skeleton_banner_bearer:  {keys.health: 50,  keys.souls: 15, keys.max_weapon_charge: 1.0, keys.aggression: 2,  keys.strength: 1, keys.speed: 2, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
+    keys.phantom:                 {keys.health: 20,  keys.souls: 30, keys.max_weapon_charge: 0.6, keys.aggression: 10, keys.strength: 5, keys.speed: 6, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
+    keys.wraith:                  {keys.health: 50,  keys.souls: 25, keys.max_weapon_charge: 1.0, keys.aggression: 8,  keys.strength: 3, keys.speed: 4, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
+    keys.shade:                   {keys.health: 50,  keys.souls: 20, keys.max_weapon_charge: 1.0, keys.aggression: 9,  keys.strength: 3, keys.speed: 1, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
+    keys.vampire:                 {keys.health: 150, keys.souls: 60, keys.max_weapon_charge: 0.5, keys.aggression: 6,  keys.strength: 4, keys.speed: 3, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2},
+    keys.ghoul:                   {keys.health: 80,  keys.souls: 20, keys.max_weapon_charge: 0.8, keys.aggression: 8,  keys.strength: 6, keys.speed: 6, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2},
+
+    # [Crystal Caverns]
+    keys.fire_spirit:             {keys.health: 40, keys.souls: 20, keys.max_weapon_charge: 1.4, keys.aggression: 7,  keys.strength: 4, keys.speed: 4, keys.agility: 4, keys.intelligence: 2, keys.stamina: 2},
+    keys.ice_spirit:              {keys.health: 50, keys.souls: 20, keys.max_weapon_charge: 1.6, keys.aggression: 5,  keys.strength: 7, keys.speed: 3, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2},
+    keys.earth_elemental:         {keys.health: 80, keys.souls: 30, keys.max_weapon_charge: 1.6, keys.aggression: 8,  keys.strength: 7, keys.speed: 2, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2},
+    keys.electric_elemental:      {keys.health: 50, keys.souls: 30, keys.max_weapon_charge: 3.0, keys.aggression: 3,  keys.strength: 4, keys.speed: 2, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2},
+    keys.poison_elemental:        {keys.health: 20, keys.souls: 10, keys.max_weapon_charge: 0.1, keys.aggression: 10, keys.strength: 4, keys.speed: 4, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2},
+    keys.medusa:                  {keys.health: 20, keys.souls: 60, keys.max_weapon_charge: 0.9, keys.aggression: 6,  keys.strength: 4, keys.speed: 4, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2},
+    keys.minotaur:                {keys.health: 20, keys.souls: 55, keys.max_weapon_charge: 0.7, keys.aggression: 8,  keys.strength: 4, keys.speed: 4, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2},
+    keys.spider:                  {keys.health: 60, keys.souls: 20, keys.max_weapon_charge: 0.9, keys.aggression: 1,  keys.strength: 4, keys.speed: 6, keys.agility: 3, keys.intelligence: 5, keys.stamina: 2},
+}
+
+class Attribute_Distributor:
+
+    @staticmethod
+    def Get_Stat(enemy_type, stat_key):
+        # Get the sub-dictionary for the specific enemy
+        enemy_data = ENEMY_STATS.get(enemy_type)
+        
+        if enemy_data:
+            # et the specific stat from that enemy's data
+            return enemy_data.get(stat_key, 1) # Default to 1 if stat missing
+            
+        return 999 # Default if enemy type is totally missing
 
     def Get_Health(type):
-        enemy_types = {
-            # [Undead / Crypt]
-            keys.skeleton_warrior : 70,
-            keys.skeleton_ranger : 40,
-            keys.skeleton_cleric : 40,
-            keys.skeleton_bell_toller: 60,
-            keys.skeleton_undertaker: 110,
-            keys.skeleton_guardian: 120,
-            keys.skeleton_warlock: 40,
-            keys.wight_king: 200,
-            keys.skeleton_banner_bearer: 50,
-            keys.phantom : 20,
-            keys.wraith: 50,
-            keys.shade: 50,
-            keys.vampire: 150,
-            keys.ghoul : 80,
-
-            # [Crystal Caverns]
-            keys.fire_spirit: 40,
-            keys.ice_spirit: 50,
-            keys.earth_elemental: 80,
-            keys.electric_elemental: 50,
-            keys.poison_elemental: 20,
-            keys.medusa: 20,
-            keys.minotaur: 20,
-            keys.spider: 60,
-        }
-        # Returns 1 as a safe default if type is not found
-        return enemy_types.get(type, 1)
-    
-    def Get_Soul_Value(type):
-        enemy_types = {
-            # [Undead / Crypt]
-            keys.skeleton_warrior : 10,
-            keys.skeleton_ranger : 15,
-            keys.skeleton_cleric : 20,
-            keys.skeleton_bell_toller: 15,
-            keys.skeleton_undertaker: 0.8,
-            keys.skeleton_guardian: 15,
-            keys.skeleton_warlock: 40,
-            keys.wight_king: 55,
-            keys.skeleton_banner_bearer: 15,
-            keys.phantom : 30,
-            keys.wraith: 25,
-            keys.shade: 20,
-            keys.vampire: 60,
-            keys.ghoul : 20,
-
-            # [Crystal Caverns]
-            keys.fire_spirit: 20,
-            keys.ice_spirit: 20,
-            keys.earth_elemental: 30,
-            keys.electric_elemental: 30,
-            keys.poison_elemental: 10,
-            keys.medusa: 60,
-            keys.minotaur: 55,
-            keys.spider: 20,
-        }
-        # Returns 1 as a safe default if type is not found
-        return enemy_types.get(type, 1)
-    
-    def Get_Max_Weapon_Charge(type):
-        enemy_types = {
-            # [Undead / Crypt]
-            keys.skeleton_warrior : 0.8,
-            keys.skeleton_ranger : 1.2,
-            keys.skeleton_cleric : 1.1,
-            keys.skeleton_bell_toller: 1.2,
-            keys.skeleton_undertaker: 40,
-            keys.skeleton_guardian: 1.2,
-            keys.skeleton_warlock: 1,
-            keys.wight_king: 0.6,
-            keys.skeleton_banner_bearer: 1,
-            keys.phantom : 0.6,
-            keys.wraith: 1,
-            keys.shade: 1,
-            keys.vampire: 0.5,
-            keys.ghoul : 0.8,
-
-            # [Crystal Caverns]
-            keys.fire_spirit: 1.4,
-            keys.ice_spirit: 1.6,
-            keys.earth_elemental: 1.6,
-            keys.electric_elemental: 3,
-            keys.poison_elemental: 0.1,
-            keys.medusa: 0.9,
-            keys.minotaur: 0.7,
-            keys.spider: 0.9,
-        }
-        # Returns 1 as a safe default if type is not found
-        return enemy_types.get(type, 1)
-
-    def Get_Aggression(type):
-        enemy_types = {
-        # [Undead / Crypt]
-        keys.skeleton_warrior : 7,
-        keys.skeleton_ranger : 4,
-        keys.skeleton_cleric : 2,
-        keys.skeleton_bell_toller: 3,
-        keys.skeleton_undertaker: 5,
-        keys.skeleton_guardian: 7,
-        keys.skeleton_warlock: 6,
-        keys.wight_king: 6,
-        keys.skeleton_banner_bearer: 2,
-        keys.phantom : 10,
-        keys.wraith: 8,
-        keys.shade: 9,
-        keys.vampire: 6,
-        keys.ghoul : 8,
-
-        # [Crystal Caverns]
-        keys.earth_elemental: 8,
-        keys.ice_spirit: 5,
-        keys.fire_spirit: 7,
-        keys.electric_elemental: 3,
-        keys.poison_elemental: 10,
-        keys.minotaur: 8,
-        keys.medusa: 6,
-        }
-
-        return enemy_types.get(type, 1)
+        return Attribute_Distributor.Get_Stat(type, keys.health)
     
     def Get_Strength(type):
-        enemy_types = {
-            # [Undead / Crypt]
-            keys.skeleton_warrior : 3,
-            keys.skeleton_ranger : 2,
-            keys.skeleton_cleric : 1,
-            keys.skeleton_bell_toller: 3,
-            keys.skeleton_undertaker: 5,
-            keys.skeleton_guardian: 4,
-            keys.skeleton_warlock: 1,
-            keys.wight_king: 6,
-            keys.skeleton_banner_bearer: 1,
-            keys.phantom : 5,
-            keys.wraith: 3,
-            keys.shade: 3,
-            keys.vampire: 4,
-            keys.ghoul : 6,
-
-            # [Crystal Caverns]
-            keys.fire_spirit: 4,
-            keys.ice_spirit: 7,
-            keys.earth_elemental: 7,
-            keys.electric_elemental: 4,
-            keys.poison_elemental: 4,
-            keys.medusa: 4,
-            keys.minotaur: 4,
-            keys.spider: 4,
-        }
-        return enemy_types.get(type, 1)
-
+        return Attribute_Distributor.Get_Stat(type, keys.strength)
+    
     def Get_Speed(type):
-        enemy_types = {
-            # [Undead / Crypt]
-            keys.skeleton_warrior : 3,
-            keys.skeleton_ranger : 4,
-            keys.skeleton_cleric : 2,
-            keys.skeleton_bell_toller: 3,
-            keys.skeleton_undertaker: 2,
-            keys.skeleton_guardian: 1,
-            keys.skeleton_warlock: 1,
-            keys.wight_king: 4,
-            keys.skeleton_banner_bearer: 2,
-            keys.phantom : 6,
-            keys.wraith: 4,
-            keys.shade: 1,
-            keys.vampire: 3,
-            keys.ghoul : 6,
-
-            # [Crystal Caverns]
-            keys.fire_spirit: 4,
-            keys.ice_spirit: 3,
-            keys.earth_elemental: 2,
-            keys.electric_elemental: 2,
-            keys.poison_elemental: 4,
-            keys.medusa: 4,
-            keys.minotaur: 4,
-            keys.spider: 6,
-        }
-        return enemy_types.get(type, 1)
-
+        return Attribute_Distributor.Get_Stat(type, keys.speed)
+    
     def Get_Agility(type):
-        enemy_types = {
-            # [Undead / Crypt]
-            keys.skeleton_warrior : 2,
-            keys.skeleton_ranger : 2,
-            keys.skeleton_cleric : 2,
-            keys.skeleton_bell_toller: 2,
-            keys.skeleton_undertaker: 2,
-            keys.skeleton_guardian: 2,
-            keys.skeleton_warlock: 2,
-            keys.wight_king: 6,
-            keys.skeleton_banner_bearer: 2,
-            keys.phantom : 2,
-            keys.wraith: 2,
-            keys.shade: 2,
-            keys.vampire: 3,
-            keys.ghoul : 2,
-
-            # [Crystal Caverns]
-            keys.fire_spirit: 4,
-            keys.ice_spirit: 3,
-            keys.earth_elemental: 3,
-            keys.electric_elemental: 3,
-            keys.poison_elemental: 3,
-            keys.medusa: 3,
-            keys.minotaur: 3,
-            keys.spider: 3,
-        }
-        return enemy_types.get(type, 1)
-
+        return Attribute_Distributor.Get_Stat(type, keys.agility)
+    
     def Get_Intelligence(type):
-        enemy_types = {
-            # [Undead / Crypt]
-            keys.skeleton_warrior : 2,
-            keys.skeleton_ranger : 2,
-            keys.skeleton_cleric : 2,
-            keys.skeleton_bell_toller: 2,
-            keys.skeleton_undertaker: 2,
-            keys.skeleton_guardian: 2,
-            keys.skeleton_warlock: 5,
-            keys.wight_king: 5,
-            keys.skeleton_banner_bearer: 2,
-            keys.phantom : 2,
-            keys.wraith: 2,
-            keys.shade: 2,
-            keys.vampire: 2,
-            keys.ghoul : 2,
-
-            # [Crystal Caverns]
-            keys.fire_spirit: 2,
-            keys.ice_spirit: 2,
-            keys.earth_elemental: 2,
-            keys.electric_elemental: 2,
-            keys.poison_elemental: 2,
-            keys.medusa: 2,
-            keys.minotaur: 2,
-            keys.spider: 5,
-        }
-        return enemy_types.get(type, 1)
-
+        return Attribute_Distributor.Get_Stat(type, keys.intelligence)
+    
     def Get_Stamina(type):
-        enemy_types = {
-            # [Undead / Crypt]
-            keys.skeleton_warrior : 2,
-            keys.skeleton_ranger : 2,
-            keys.skeleton_cleric : 2,
-            keys.skeleton_bell_toller: 2,
-            keys.skeleton_undertaker: 2,
-            keys.skeleton_guardian: 2,
-            keys.skeleton_warlock: 2,
-            keys.wight_king: 5,
-            keys.skeleton_banner_bearer: 2,
-            keys.phantom : 2,
-            keys.wraith: 2,
-            keys.shade: 2,
-            keys.vampire: 2,
-            keys.ghoul : 2,
-
-            # [Crystal Caverns]
-            keys.fire_spirit: 2,
-            keys.ice_spirit: 2,
-            keys.earth_elemental: 2,
-            keys.electric_elemental: 2,
-            keys.poison_elemental: 2,
-            keys.medusa: 2,
-            keys.minotaur: 2,
-            keys.spider: 2,
-        }
-        return enemy_types.get(type, 1)
+        return Attribute_Distributor.Get_Stat(type, keys.stamina)
+    
+    def Get_Soul_Value(type):
+        return Attribute_Distributor.Get_Stat(type, keys.souls)
+    
+    def Get_Max_Weapon_Charge(type):
+        return Attribute_Distributor.Get_Stat(type, keys.max_weapon_charge)
+    
+    def Get_Aggression(type):
+        return Attribute_Distributor.Get_Stat(type, keys.aggression)

@@ -50,7 +50,7 @@ class Medusa(Enemy):
     def Trigger_Ranged_Attack(self):
         self.Set_Target(self.game.player.pos)
         self.Set_Attack_Direction()
-        self.ranged_weapon.Particle_Creation(self, 100, self.electric_damage)
+        self.ranged_weapon.Initialise_Shooting(self, 100, self.electric_damage)
 
     def Trigger_Attack(self):
         if self.attack_type == keys.direct:

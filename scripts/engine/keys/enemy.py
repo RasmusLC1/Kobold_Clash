@@ -1,5 +1,15 @@
 class Enemy():
 
+# Stats
+
+    max_weapon_charge = "max_weapon_charge"
+
+    aggression = "aggression"
+
+    agility = "agility"
+
+    intelligence = "intelligence"
+
 # Enemy classes
     skeleton = "skeleton"
 
