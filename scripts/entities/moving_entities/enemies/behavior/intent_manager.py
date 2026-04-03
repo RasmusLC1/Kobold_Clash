@@ -20,6 +20,15 @@ class Intent_Manager():
         # TODO: Proper attack time calculation
         self.attack_speed = attack_speed
         self.attack_cooldown_max = attack_speed
+
+        self.actions = { # Dictionary with the diffierent intents, base is all the same but some enemies have unique patterns like dash
+            keys.direct:       lambda: self.Set_Movement_Strategy(keys.direct),
+            keys.long_range:   lambda: self.Set_Movement_Strategy(keys.long_range),
+            keys.medium_range: lambda: self.Set_Movement_Strategy(keys.medium_range),
+            keys.short_range:  lambda: self.Set_Movement_Strategy(keys.short_range),
+            keys.keep_position:lambda: self.Set_Movement_Strategy(keys.keep_position),
+            keys.run_away:lambda: self.Set_Movement_Strategy(keys.run_away),
+        }
         # Lookup for 
         self.base_cooldown = {
             keys.direct: self.intent_cooldown_max,
@@ -71,7 +80,11 @@ class Intent_Manager():
             return
 
         self.Set_Current_Intent(self.intent[self.intent_index])
-        self.Set_Movement_Strategy(self.current_intent)
+        action_function = self.actions.get(self.current_intent, )
+        if action_function:
+            action_function()
+        else:
+            print(f"Intent '{self.current_intent}' missing or unrecognized.")
         return
     
 
@@ -84,7 +97,11 @@ class Intent_Manager():
 
     def Set_Action(self, action):
         self.Set_Current_Intent(action)
-        self.Set_Movement_Strategy(action)
+        action_function = self.actions.get(action)
+        if action_function:
+            action_function()
+        else:
+            print(f"Intent '{self.current_intent}' missing or unrecognized.")
         return
 
     def Set_Current_Intent(self, intent):

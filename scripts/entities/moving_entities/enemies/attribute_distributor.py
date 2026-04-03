@@ -30,6 +30,12 @@ ENEMY_STATS = {
 }
 
 class Attribute_Distributor:
+    # --- Difficulty Tuning Constants ---
+    # 0.15 means +15% HP per floor, 0.10 means +10% Strength per floor
+    HP_GROWTH_PER_FLOOR = 0.15 
+    STR_GROWTH_PER_FLOOR = 0.10
+    SOUL_GROWTH_PER_FLOOR = 0.05  # Players appreciate more rewards for harder fights!
+    ELITE_MULTIPLIER = 2.0
 
     @staticmethod
     def Get_Stat(enemy_type, stat_key):
@@ -42,31 +48,63 @@ class Attribute_Distributor:
             
         return 999 # Default if enemy type is totally missing
 
+    # TODO: Add elite and depth level variance to the enemies
+    # For example if we are at level 1, it's the base values
     @staticmethod
-    def Get_Health(type):
-        return Attribute_Distributor.Get_Stat(type, keys.health)
-    @staticmethod    
-    def Get_Strength(type):
-        return Attribute_Distributor.Get_Stat(type, keys.strength)
+    def Get_Health(type, dungeon_depth=1, is_elite=False):
+        base_hp = Attribute_Distributor.Get_Stat(type, keys.health)
+        
+        # Formula: Base * (1 + (Growth * (Depth - 1)))
+        # Floor 1 = 100%, Floor 2 = 115%, Floor 3 = 130%...
+        scaled_hp = base_hp * (1 + (Attribute_Distributor.HP_GROWTH_PER_FLOOR * (dungeon_depth - 1)))
+        
+        if is_elite:
+            scaled_hp *= Attribute_Distributor.ELITE_MULTIPLIER
+            
+        return int(scaled_hp)
+
+    @staticmethod
+    def Get_Strength(type, dungeon_depth=1, is_elite=False):
+        base_str = Attribute_Distributor.Get_Stat(type, keys.strength)
+        
+        scaled_str = base_str * (1 + (Attribute_Distributor.STR_GROWTH_PER_FLOOR * (dungeon_depth - 1)))
+        
+        # Elites hit harder too
+        if is_elite:
+            scaled_str *= 1.5
+            
+        return int(scaled_str)
+
+    @staticmethod
+    def Get_Soul_Value(type, dungeon_depth=1, is_elite=False):
+        base_souls = Attribute_Distributor.Get_Stat(type, keys.souls)
+        
+        scaled_souls = base_souls * (1 + (Attribute_Distributor.SOUL_GROWTH_PER_FLOOR * (dungeon_depth - 1)))
+        
+        # Elites are worth way more
+        if is_elite:
+            scaled_souls *= Attribute_Distributor.ELITE_MULTIPLIER
+            
+        return int(scaled_souls)
+
+    # The methods below do not scale
+    @staticmethod
+    def Get_Stamina(type):
+        return Attribute_Distributor.Get_Stat(type, keys.stamina)
+
+    @staticmethod
+    def Get_Agility(type):
+        return Attribute_Distributor.Get_Stat(type, keys.agility)
+    
+
     @staticmethod
     def Get_Speed(type):
         return Attribute_Distributor.Get_Stat(type, keys.speed)
     
     @staticmethod
-    def Get_Agility(type):
-        return Attribute_Distributor.Get_Stat(type, keys.agility)
-    
-    @staticmethod
     def Get_Intelligence(type):
         return Attribute_Distributor.Get_Stat(type, keys.intelligence)
     
-    @staticmethod
-    def Get_Stamina(type):
-        return Attribute_Distributor.Get_Stat(type, keys.stamina)
-    
-    @staticmethod
-    def Get_Soul_Value(type):
-        return Attribute_Distributor.Get_Stat(type, keys.souls)
     
     @staticmethod
     def Get_Max_Weapon_Charge(type):
