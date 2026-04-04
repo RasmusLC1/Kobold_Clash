@@ -18,7 +18,6 @@ class Intent_Manager():
         self.intent_cooldown = 0
         self.intent_cooldown_max = self.Calculate_Intent_Cooldown() # Higher enemy intelligence means they respond faster
         self.attack_cooldown = 0
-        print(self.intent_cooldown_max, self.entity.intelligence)
 
         # TODO: Proper attack time calculation
         self.attack_speed = attack_speed

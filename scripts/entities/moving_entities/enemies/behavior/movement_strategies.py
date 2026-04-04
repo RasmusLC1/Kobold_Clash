@@ -200,11 +200,12 @@ class Movement_Strategies():
     # Returns true if line of sight to target, else false
     def Line_Of_Sight(self, target_pos):
         tile_size = self.game.tilemap.tile_size
+        entity_pos = self.entity.pos
         
         # Current tile (Start)
-        x1, y1 = int(self.entity.pos[0] // tile_size), int(self.entity.pos[1] // tile_size)
+        x1, y1 = entity_pos[0] // tile_size, entity_pos[1] // tile_size
         # Target tile (End)
-        x2, y2 = int(target_pos[0] // tile_size), int(target_pos[1] // tile_size)
+        x2, y2 = target_pos[0] // tile_size, target_pos[1] // tile_size
 
         dx, dy = abs(x2 - x1), abs(y2 - y1)
         sx, sy = (1 if x1 < x2 else -1), (1 if y1 < y2 else -1)

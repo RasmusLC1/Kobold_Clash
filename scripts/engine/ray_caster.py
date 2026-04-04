@@ -85,21 +85,20 @@ class Ray_Caster():
         tile.active = 0
         self.tiles.remove(tile)
 
+
     def Check_Tile(self, tile):
         tilemap = self.game.tilemap
         tile = tilemap.Current_Tile(tile)
-        if tile:
-            if not tile.active:
-                self.Add_Tile(tilemap, tile)
-            else:
-                tile.Set_Active(DEFAULT_ACTIVITY)
-                
-            # if not tile.type:
-            #     print("TILE DOES NOT HAVE TYPE", tile)
-            #     return False
-            
-            if not tile.translucent:
-                return False
+        if not tile:
+            return False
+        
+        if not tile.active:
+            self.Add_Tile(tilemap, tile)
+        else:
+            tile.Set_Active(DEFAULT_ACTIVITY)
+        
+        if not tile.translucent:
+            return False
             
             
         return True

@@ -8,7 +8,6 @@ class Behavior_Manager():
         self.Set_Behavior_Pattern()
 
     def Set_Behavior_Pattern(self):
-        behavior = self.Aggression_Interpreter()
         
         patterns = {
             keys.long_range: self.Long_Range,
