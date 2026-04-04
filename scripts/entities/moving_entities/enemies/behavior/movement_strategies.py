@@ -11,6 +11,8 @@ class Movement_Strategies():
         self.game = game
         self.entity = entity
 
+        self.movement_strategy = keys.direct # the movement strategy of the entity
+
 
         self.player_found = 0
         self.player_found_max = 10 # 10 seconds
@@ -67,8 +69,7 @@ class Movement_Strategies():
 
     # NEW METHOD
     def Find_Tile_To_Pathfind_To(self):
-        movement_strategy = self.entity.movement_strategy 
-        max_range, min_range = self.attack_ranges.get(movement_strategy, (0, 0))
+        max_range, min_range = self.attack_ranges.get(self.movement_strategy, (0, 0))
         
         if max_range == 0: return None
             
@@ -154,6 +155,9 @@ class Movement_Strategies():
             
         new_entity_direction = pygame.math.Vector2(dx, dy)
         self.entity.Set_Direction(new_entity_direction)
+
+    def Set_Movement_Strategy(self, strategy):
+        self.movement_strategy = strategy
 
     # Calculates distance between two tuples
     def Get_Distance(self, pos_a, pos_b):

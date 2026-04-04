@@ -6,17 +6,20 @@ from scripts.entities.moving_entities.enemies.behavior.behavior_manager import B
 
 
 class Intent_Manager():
-    def __init__(self, game, entity, attack_speed, path_finding_strategy, behavior = "Aggressive") -> None:
+    def __init__(self, game, entity, attack_speed, path_finding_strategy) -> None:
         self.game = game
         self.entity = entity
 
-        self.current_intent = ''
         self.intent = [] # Enemy's attack pattern and intent
         self.intent_index = 0
+        self.current_intent = ''
+
         self.intent_length = 0
         self.intent_cooldown = 0
-        self.intent_cooldown_max = 2 # Lower value means faster response rate
+        self.intent_cooldown_max = self.Calculate_Intent_Cooldown() # Higher enemy intelligence means they respond faster
         self.attack_cooldown = 0
+        print(self.intent_cooldown_max, self.entity.intelligence)
+
         # TODO: Proper attack time calculation
         self.attack_speed = attack_speed
         self.attack_cooldown_max = attack_speed
@@ -43,7 +46,7 @@ class Intent_Manager():
  
         self.path_finding = Path_Finding(game, entity, path_finding_strategy) # Pathfinding logic for enemy
         self.movement_strategies = Movement_Strategies(game, entity) # Pathfinding logic for enemy
-        self.behavior_manager = Behavior_Manager(game, entity, behavior) 
+        self.behavior_manager = Behavior_Manager(game, entity) 
 
 
 
@@ -54,13 +57,15 @@ class Intent_Manager():
         self.entity.saved_data['path_finding_strategy'] = self.path_finding.path_finding_strategy
 
 
-
     def Load_Data(self, data):
         self.intent_cooldown = data['intent_cooldown']
         self.intent_index = data['intent_index']
         self.path_finding.path_finding_strategy = data['path_finding_strategy']
 
 
+    # Takes the average between an enemy's agility and intelligence to set the reaction rate
+    def Calculate_Intent_Cooldown(self):
+        return max(0.3 ,(10 - self.entity.agility + self.entity.intelligence / 2) / 2) 
     
     # Update the entity's behavior
     def Update_Intent(self, delta_time):
@@ -80,7 +85,7 @@ class Intent_Manager():
             return
 
         self.Set_Current_Intent(self.intent[self.intent_index])
-        action_function = self.actions.get(self.current_intent, )
+        action_function = self.actions.get(self.current_intent)
         if action_function:
             action_function()
         else:
@@ -111,6 +116,7 @@ class Intent_Manager():
     def Set_Movement_Strategy(self, strategy):
         self.Set_Movement_Intent_Cooldown()
         self.Increment_Intent()
+        self.movement_strategies.Set_Movement_Strategy(strategy)
 
     def Set_Idle(self):
         if self.current_intent == keys.idle and not self.entity.target:
@@ -123,7 +129,6 @@ class Intent_Manager():
     def Set_Movement_Intent(self, intent):
         self.intent = intent
         self.intent_length = len(self.intent)
-        self.current_intent = 0
 
     def Increment_Intent(self):
         self.intent_index += 1

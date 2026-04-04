@@ -6,9 +6,24 @@ class Enemy():
 
     aggression = "aggression"
 
+    behavior = "behavior"
+
     agility = "agility"
 
     intelligence = "intelligence"
+
+    
+    keep_distance = "keep_distance"
+    
+    retreat_when_damaged = "retreat_when_damaged"
+    
+    direct_attack = "direct_attack"
+    
+    hit_and_run = "hit_and_run"
+
+    hybrid = "hybrid"
+
+    place_holder = "place_holder" 
 
 # Enemy classes
     skeleton = "skeleton"
