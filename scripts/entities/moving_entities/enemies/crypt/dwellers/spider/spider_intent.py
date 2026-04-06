@@ -4,8 +4,8 @@ from scripts.entities.moving_entities.enemies.attacks.Jump_Attack import Jump_At
 from scripts.engine.keys.keys import keys
 
 class Spider_Intent_Manager(Intent_Manager):
-    def __init__(self, game, entity):
-        super().__init__(game, entity)
+    def __init__(self, game, entity, attack_speed, path_finding_strategy, behavior):
+        super().__init__(self, game, entity, attack_speed, path_finding_strategy, behavior)
         self.shoot_spiderweb = Shoot_Spiderweb(self.game)
         self.jump_attack = Jump_Attack()
         self.actions['shoot_spiderweb'] = self.Shoot_Spiderweb

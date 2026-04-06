@@ -20,7 +20,7 @@ class Enemy(Moving_Entity):
         base_stats = Attribute_Distributor.Get_Enemy_Data(type, game.depth, is_elite)    
         self.max_weapon_charge = base_stats.get(keys.max_weapon_charge, 1)
         self.soul_value = base_stats.get(keys.souls, 1)
-        self.behavior = Attribute_Distributor.Convert_Behavior_To_String(base_stats.get(keys.behavior, 1))
+        behavior = Attribute_Distributor.Convert_Behavior_To_String(base_stats.get(keys.behavior, 1))
 
         super().__init__(game, str(type), keys.enemy, pos, size,
                          base_stats.get(keys.health, 1),
@@ -53,7 +53,7 @@ class Enemy(Moving_Entity):
         self.attack_symbol_offset = 20
         self.health_bar = self.game.assets[keys.health_bar]
 
-        self.intent_manager = self.intent_manager_class(game, self, attack_speed, path_finding_strategy)
+        self.intent_manager = self.intent_manager_class(game, self, attack_speed, path_finding_strategy, behavior)
 
         self.Set_Description()
 
