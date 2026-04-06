@@ -1,8 +1,8 @@
 from scripts.engine.keys.keys import keys
-import random
+from scripts.entities.moving_entities.enemies.behavior.attack_handler import Attack_Handler
 
 class Behavior_Manager():
-    def __init__(self, game, entity, behavior):
+    def __init__(self, game, entity, behavior, max_weapon_charge):
         self.game = game
         self.entity = entity
         self.behavior = None # The attack behavior of the enemy
@@ -10,13 +10,20 @@ class Behavior_Manager():
         self.movement_strategy = None # The movement strategy used for the attack pattern
         self.max_distance = 0 # The max distance that the enemy can detect the player
         self.Set_Behavior_Pattern(behavior)
+        self.attack_handler = Attack_Handler(game, entity, max_weapon_charge) 
 
 
-    def Update_Behavior(self):
+
+    def Update_Behavior(self, delta_time):
         if not self.Check_Player_Distance():
             return None
         
-        self.behavior_pattern_function()
+        # Returns False if attack is not trigged
+        if not self.attack_handler.Update_Attack(delta_time):
+            self.behavior_pattern_function()
+            return self.movement_strategy
+        
+
         return self.movement_strategy
 
 
@@ -25,10 +32,52 @@ class Behavior_Manager():
         if self.entity.distance_to_player < self.max_distance:  
             return True
         
-        self.Set_Idle() # Set idle if entity is outside range
+        # self.Set_Idle() # Set idle if entity is outside range
         return False
     
 
+    def Set_Idle(self):
+        if self.behavior == keys.idle and not self.entity.target:
+            return
+        self.Set_Behavior_Pattern(keys.idle)
+
+
+
+    def Short_Range(self):
+        pass
+
+    def Medium_Range(self):
+        pass
+
+    def Long_Range(self):
+        pass
+
+    def Retreat_When_Damaged(self):
+        pass
+
+    def Direct_Attack(self):
+        # increment the intent when enemy attacks
+        in_range = self.Check_Attack_Distance()
+        
+        self.attack_handler.Set_Attack_Triggered(in_range)
+        return in_range
+
+    def Hit_And_Run(self):
+        pass
+
+    def Idle(self):
+        pass
+
+    # Returns true if entity if in attack range
+    def Check_Attack_Distance(self):
+        # Check if the player is invisible, if yes no attack
+        if self.game.player.effects.Get_Effect_Strength(keys.invisibility):
+            return False
+        
+        return self.entity.distance_to_player < self.entity.attack_distance
+        
+
+    
     def Set_Behavior_Pattern(self, behavior_pattern):
         self.behavior = behavior_pattern
         
@@ -72,33 +121,10 @@ class Behavior_Manager():
             keys.run_away : keys.run_away
         }
         self.movement_strategy = attack_patterns.get(movement_behavior, keys.direct)
-      
 
 
-    def Set_Idle(self):
-        if self.behavior == keys.idle and not self.entity.target:
-            return
-        self.Set_Behavior_Pattern(keys.idle)
-
-
-
-    def Short_Range(self):
-        pass
-
-    def Medium_Range(self):
-        pass
-
-    def Long_Range(self):
-        pass
-
-    def Retreat_When_Damaged(self):
-        pass
-
-    def Direct_Attack(self):
-        pass
-
-    def Hit_And_Run(self):
-        pass
-
-    def Idle(self):
-        pass
+    def Get_Attack_Charge(self):
+        return self.attack_handler.Get_Attack_Charge()
+    
+    def Reset_Attack(self):
+        return self.attack_handler.Reset_Attack()

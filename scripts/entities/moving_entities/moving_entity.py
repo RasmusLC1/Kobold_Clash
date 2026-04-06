@@ -446,7 +446,7 @@ class Moving_Entity(PhysicsEntity):
         self.effects.Push(direction)
         self.Tile_Map_Collision_Detection(tilemap)
 
-    def Trigger_Attack(self):
+    def Set_Attack_Triggered(self):
         pass
 
 

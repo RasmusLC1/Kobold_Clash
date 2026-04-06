@@ -38,10 +38,11 @@ class Enemy(Moving_Entity):
         self.alert_cooldown = 0
         self.active_weapon = None
         self.target = self.game.player.pos # Default target is set to player
+        self.charge = 0
 
 
         self.distance_to_player = 9999 # Distance to player
-        self.charge = 0 # Determines when the enemy attacks
+       
         self.movement_strategy = default_range # Attack strategy that the enemy utalises
         
         self.attack_distance  = self.size[0] * 2 # Distance that the enemy can attack from
@@ -53,7 +54,7 @@ class Enemy(Moving_Entity):
         self.attack_symbol_offset = 20
         self.health_bar = self.game.assets[keys.health_bar]
 
-        self.intent_manager = self.intent_manager_class(game, self, attack_speed, path_finding_strategy, behavior)
+        self.intent_manager = self.intent_manager_class(game, self, attack_speed, path_finding_strategy, behavior, self.max_weapon_charge)
 
         self.Set_Description()
 
@@ -109,8 +110,11 @@ class Enemy(Moving_Entity):
         player_pos = self.game.player.pos
         self.distance_to_player = math.sqrt((player_pos[0] - self.pos[0]) ** 2 + (player_pos[1] - self.pos[1]) ** 2)
 
-    def Reset_Charge(self):
-        self.charge = 0
+    def Set_Attack(self):
+        if not self.active_weapon:
+            return
+        
+        self.active_weapon.Set_Attack()
 
     def Set_Charge_To_Max(self):
         self.charge = self.max_weapon_charge
@@ -141,38 +145,6 @@ class Enemy(Moving_Entity):
 
         return None
     
-    def Attack(self, delta_time):
-        # Check if the player is invisible
-        if self.game.player.effects.invisibility.effect:
-            return False
-        
-        self.charge = min(self.max_weapon_charge, self.charge + delta_time)
-
-        return True
-
-
-    def Trigger_Attack(self):
-        self.Set_Target()
-        self.active_weapon.Set_Attack()
-        self.Reset_Charge()
-
-    def Set_Target(self, pos = None):
-        if not pos:
-            pos = self.game.player.pos
-        return super().Set_Target(pos)
-    
-    def Check_Attack_Direction(self, attack_direction):
-        if not attack_direction:
-            self.Set_Target()
-            attack_direction = self.target
-
-        return attack_direction
-
-    def Set_Attack_Direction(self):
-        if not self.charge > 0:
-            self.attack_direction = (0, 0)
-            return
-        super().Set_Attack_Direction()
         
     def Movement_Strategy(self, delta_time):
         return self.intent_manager.Movement_Strategy(delta_time)
@@ -239,6 +211,11 @@ class Enemy(Moving_Entity):
         else:
             self.animation_handler.Set_Animation('idle')
 
+    def Set_Target(self, pos = None):
+        if not pos:
+            pos = self.game.player.pos
+        return super().Set_Target(pos)
+
 
     def Spawn_Damaged_Particles(self):
         self.game.particle_handler.Activate_Particles(10, keys.blood_particle, self.rect().center, random.uniform(0.2, 0.5))
@@ -300,6 +277,12 @@ class Enemy(Moving_Entity):
                     self.direction_y *= -1
                     self.direction = (self.direction_x, self.direction_y)
                     break
+    
+    def Set_Attack_Direction(self):
+        if not self.charge > 0:
+            self.attack_direction = (0, 0)
+            return
+        super().Set_Attack_Direction()
 
     def Improve_Weapon(self, effect, amount):
         if not self.active_weapon:
@@ -348,6 +331,15 @@ class Enemy(Moving_Entity):
         self.active_weapon.render = False
         del(weapon)
         return True
+    
+    def Trigger_Attack(self):
+        self.Set_Target()
+        self.Set_Attack()
+        self.intent_manager.Reset_Attack()
+    
+    # Updated by attack handler
+    def Set_Charge(self, charge):
+        self.charge = charge
     
 
     def Render_Attacking_Symbol(self, surf, offset = (0,0)):

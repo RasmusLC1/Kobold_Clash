@@ -25,7 +25,7 @@ class Electric_Elemental(Elemental):
 
 
 
-    def Trigger_Attack(self):
+    def Set_Attack_Triggered(self):
         self.Set_Target(self.game.player.pos)
         self.Reset_Charge()
         

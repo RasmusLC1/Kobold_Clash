@@ -6,7 +6,7 @@ from scripts.entities.moving_entities.enemies.behavior.behavior_manager import B
 
 
 class Intent_Manager():
-    def __init__(self, game, entity, attack_speed, path_finding_strategy, behavior) -> None:
+    def __init__(self, game, entity, attack_speed, path_finding_strategy, behavior, max_weapon_charge) -> None:
         self.game = game
         self.entity = entity
 
@@ -45,7 +45,7 @@ class Intent_Manager():
  
         self.path_finding = Path_Finding(game, entity, path_finding_strategy) # Pathfinding logic for enemy
         self.movement_strategies = Movement_Strategies(game, entity) # Pathfinding logic for enemy
-        self.behavior_manager = Behavior_Manager(game, entity, behavior) 
+        self.behavior_manager = Behavior_Manager(game, entity, behavior, max_weapon_charge) 
 
 
 
@@ -68,10 +68,10 @@ class Intent_Manager():
     
     # Update the entity's behavior
     def Update_Intent(self, delta_time):
-        self.Update_Behavior(delta_time)
+        # self.Update_Behavior(delta_time)
         self.path_finding.Path_Finding(delta_time)
-        self.behavior_manager.Update_Behavior()
-
+        movement_stategy = self.behavior_manager.Update_Behavior(delta_time)
+        self.movement_strategies.Set_Movement_Strategy(movement_stategy)
 
 
     def Update_Behavior(self, delta_time):
@@ -113,11 +113,6 @@ class Intent_Manager():
     def Set_Current_Intent(self, intent):
         self.current_intent = intent 
 
-    # setting the player's attack strategy
-    def Set_Movement_Strategy(self, strategy):
-        self.Set_Movement_Intent_Cooldown()
-        self.Increment_Intent()
-        self.movement_strategies.Set_Movement_Strategy(strategy)
 
     def Set_Idle(self):
         if self.current_intent == keys.idle and not self.entity.target:
@@ -184,3 +179,10 @@ class Intent_Manager():
 
     def Movement_Strategy(self, delta_time):
         return self.movement_strategies.Movement_Strategy(delta_time)
+    
+    def Get_Attack_Charge(self):
+        return self.behavior_manager.Get_Attack_Charge()
+    
+    def Reset_Attack(self):
+        return self.behavior_manager.Reset_Attack()
+    

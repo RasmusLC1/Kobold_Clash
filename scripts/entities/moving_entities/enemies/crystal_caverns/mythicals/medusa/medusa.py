@@ -52,9 +52,9 @@ class Medusa(Enemy):
         self.Set_Attack_Direction()
         self.ranged_weapon.Initialise_Shooting(self, 100, self.electric_damage)
 
-    def Trigger_Attack(self):
+    def Set_Attack_Triggered(self):
         if self.attack_type == keys.direct:
-            return super().Trigger_Attack()
+            return super().Set_Attack_Triggered()
         else:
             return self.Trigger_Ranged_Attack()
 

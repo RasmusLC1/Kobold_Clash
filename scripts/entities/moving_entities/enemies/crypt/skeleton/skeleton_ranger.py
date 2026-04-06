@@ -26,7 +26,7 @@ class Skeleton_Ranger(Skeleton):
         
         super().Attack(delta_time)
 
-    def Trigger_Attack(self):
+    def Set_Attack_Triggered(self):
         self.Set_Target(self.game.player.pos)
         self.active_weapon.Enemy_Shooting()
         self.Reset_Charge()

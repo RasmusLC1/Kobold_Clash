@@ -38,7 +38,7 @@ class Fire_Spirit(Elemental):
             return False
         return super().Attack(delta_time)
     
-    def Trigger_Attack(self):
+    def Set_Attack_Triggered(self):
         self.Set_Target(self.game.player.pos)
         self.Set_Attack_Direction()
         self.active_weapon.Initialise_Shooting(self, 2, self.fire_damage)
