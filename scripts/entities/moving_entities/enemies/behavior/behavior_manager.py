@@ -5,17 +5,18 @@ class Behavior_Manager():
     def __init__(self, game, entity, behavior):
         self.game = game
         self.entity = entity
-        self.behavior = behavior
+        self.behavior = None # The attack behavior of the enemy
         self.behavior_pattern_function = None # Calls the specific method used by the enemy AI, I.E Direct_Attack()
-        self.movement_strategy = None # 
-        self.max_distance = 0
-        self.Set_Behavior_Pattern()
+        self.movement_strategy = None # The movement strategy used for the attack pattern
+        self.max_distance = 0 # The max distance that the enemy can detect the player
+        self.Set_Behavior_Pattern(behavior)
 
 
     def Update_Behavior(self):
+        if not self.Check_Player_Distance():
+            return None
         
         self.behavior_pattern_function()
-
         return self.movement_strategy
 
 
@@ -24,10 +25,12 @@ class Behavior_Manager():
         if self.entity.distance_to_player < self.max_distance:  
             return True
         
-        self.Set_Idle()
+        self.Set_Idle() # Set idle if entity is outside range
         return False
+    
 
-    def Set_Behavior_Pattern(self):
+    def Set_Behavior_Pattern(self, behavior_pattern):
+        self.behavior = behavior_pattern
         
         attack_patterns = {
             keys.long_range: self.Long_Range,
@@ -36,29 +39,47 @@ class Behavior_Manager():
             keys.retreat_when_damaged: self.Retreat_When_Damaged,
             keys.direct_attack: self.Direct_Attack,
             keys.hit_and_run: self.Hit_And_Run,
+            keys.idle: self.Idle,
         }
         self.behavior_pattern_function = attack_patterns.get(self.behavior, self.Direct_Attack)
         self.Set_Max_Distance()
+        self.Set_Movement_Strategy(self.behavior)
 
-
+    # Distance that the enemy will search for the player in
     def Set_Max_Distance(self):
         attack_patterns = {
-            keys.long_range: 500,
-            keys.medium_range: 400,
-            keys.short_range: 350,
-            keys.retreat_when_damaged: 300,
-            keys.direct_attack: 300,
-            keys.hit_and_run: 300,
+            keys.long_range : 450,
+            keys.medium_range : 400,
+            keys.short_range : 350,
+            keys.retreat_when_damaged : 300,
+            keys.direct_attack : 300,
+            keys.hit_and_run : 300,
+            keys.idle : 300
         }
-        self.max_distance = attack_patterns.get(self.behavior, 300)        
+        self.max_distance = attack_patterns.get(self.behavior, 300)  
+
+    # The movement strategy which is applied to an attack pattern
+    # Uses a dictionary for special attacks where the attack does not align directly
+    # with the movement strategy, defence = stand still or something
+    def Set_Movement_Strategy(self, movement_behavior):
+        attack_patterns = {
+            keys.long_range : keys.long_range,
+            keys.medium_range : keys.medium_range,
+            keys.short_range : keys.short_range,
+            keys.direct_attack : keys.direct,
+            keys.retreat_when_damaged : keys.direct,
+            keys.hit_and_run : keys.direct,
+            keys.run_away : keys.run_away
+        }
+        self.movement_strategy = attack_patterns.get(movement_behavior, keys.direct)
+      
 
 
     def Set_Idle(self):
-        if self.current_intent == keys.idle and not self.entity.target:
+        if self.behavior == keys.idle and not self.entity.target:
             return
-        self.Set_Current_Intent(keys.idle)
-        self.intent_index = random.randint(0, self.intent_length - 1)
-        self.path_finding.Find_Patrol_Path()
+        self.Set_Behavior_Pattern(keys.idle)
+
 
 
     def Short_Range(self):
@@ -77,4 +98,7 @@ class Behavior_Manager():
         pass
 
     def Hit_And_Run(self):
+        pass
+
+    def Idle(self):
         pass

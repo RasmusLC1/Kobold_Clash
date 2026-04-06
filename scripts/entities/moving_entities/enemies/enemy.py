@@ -20,7 +20,7 @@ class Enemy(Moving_Entity):
         base_stats = Attribute_Distributor.Get_Enemy_Data(type, game.depth, is_elite)    
         self.max_weapon_charge = base_stats.get(keys.max_weapon_charge, 1)
         self.soul_value = base_stats.get(keys.souls, 1)
-        behavior = Attribute_Distributor.Convert_Behavior_To_String(base_stats.get(keys.behavior, 1))
+        behavior = Attribute_Distributor.Convert_Behavior_To_String(base_stats.get(keys.behavior, 1)) # Base stats gets an integer, which is then converted to string
 
         super().__init__(game, str(type), keys.enemy, pos, size,
                          base_stats.get(keys.health, 1),
