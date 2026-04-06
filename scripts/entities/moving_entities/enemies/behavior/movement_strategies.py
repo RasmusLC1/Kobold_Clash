@@ -40,7 +40,7 @@ class Movement_Strategies():
 
     # Return True if pathing updated else false
     def Movement_Strategy(self, delta_time) -> bool:
-        if self.game.player.effects.invisibility.effect:
+        if self.game.player.effects.Get_Effect_Strength(keys.invisibility):
             return False
 
         if self.entity.distance_to_player > 300:
@@ -67,13 +67,13 @@ class Movement_Strategies():
             return True
         return False
 
-    # NEW METHOD
+
+
     def Find_Tile_To_Pathfind_To(self):
         max_range, min_range = self.attack_ranges.get(self.movement_strategy, (0, 0))
         
         if max_range == 0: return None
             
-  
         entity_dist = self.entity.distance_to_player
         
         # Get tiles that fits best within range
@@ -157,6 +157,9 @@ class Movement_Strategies():
         self.entity.Set_Direction(new_entity_direction)
 
     def Set_Movement_Strategy(self, strategy):
+        if self.movement_strategy == strategy:
+            return
+        
         self.movement_strategy = strategy
 
     # Calculates distance between two tuples

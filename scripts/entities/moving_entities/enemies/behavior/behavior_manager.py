@@ -9,9 +9,9 @@ class Behavior_Manager():
         self.behavior_pattern_function = None # Calls the specific method used by the enemy AI, I.E Direct_Attack()
         self.movement_strategy = None # The movement strategy used for the attack pattern
         self.max_distance = 0 # The max distance that the enemy can detect the player
+        self.movement_behavior = None
         self.Set_Behavior_Pattern(behavior)
         self.attack_handler = Attack_Handler(game, entity, max_weapon_charge) 
-
 
 
     def Update_Behavior(self, delta_time):
@@ -44,7 +44,16 @@ class Behavior_Manager():
 
 
     def Short_Range(self):
-        pass
+        self.Set_Movement_Strategy(keys.short_range)
+        in_range = self.Check_Attack_Distance()
+
+        if not in_range:
+            return
+        
+        self.attack_handler.Set_Attack_Triggered(in_range)
+        self.Set_Movement_Strategy(keys.medium_range)
+        return False
+
 
     def Medium_Range(self):
         pass
@@ -54,7 +63,8 @@ class Behavior_Manager():
 
     def Retreat_When_Damaged(self):
         pass
-
+    
+    # Simple direct attack logic
     def Direct_Attack(self):
         # increment the intent when enemy attacks
         in_range = self.Check_Attack_Distance()
@@ -111,7 +121,10 @@ class Behavior_Manager():
     # Uses a dictionary for special attacks where the attack does not align directly
     # with the movement strategy, defence = stand still or something
     def Set_Movement_Strategy(self, movement_behavior):
-        attack_patterns = {
+        if self.movement_behavior == movement_behavior:
+            return
+        
+        movement_patterns = {
             keys.long_range : keys.long_range,
             keys.medium_range : keys.medium_range,
             keys.short_range : keys.short_range,
@@ -120,7 +133,8 @@ class Behavior_Manager():
             keys.hit_and_run : keys.direct,
             keys.run_away : keys.run_away
         }
-        self.movement_strategy = attack_patterns.get(movement_behavior, keys.direct)
+
+        self.movement_behavior = movement_patterns.get(movement_behavior, keys.direct)
 
 
     def Get_Attack_Charge(self):
@@ -128,3 +142,6 @@ class Behavior_Manager():
     
     def Reset_Attack(self):
         return self.attack_handler.Reset_Attack()
+    
+    def Get_Movement_Behavior(self):
+        return self.movement_behavior

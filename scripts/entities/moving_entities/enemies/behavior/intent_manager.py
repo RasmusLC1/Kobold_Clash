@@ -70,8 +70,8 @@ class Intent_Manager():
     def Update_Intent(self, delta_time):
         # self.Update_Behavior(delta_time)
         self.path_finding.Path_Finding(delta_time)
-        movement_stategy = self.behavior_manager.Update_Behavior(delta_time)
-        self.movement_strategies.Set_Movement_Strategy(movement_stategy)
+        self.behavior_manager.Update_Behavior(delta_time)
+        self.movement_strategies.Set_Movement_Strategy(self.behavior_manager.Get_Movement_Behavior())
 
 
     def Update_Behavior(self, delta_time):

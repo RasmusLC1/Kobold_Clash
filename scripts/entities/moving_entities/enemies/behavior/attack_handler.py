@@ -17,7 +17,7 @@ class Attack_Handler():
 
     def Trigger_Attack(self):
         self.entity.Set_Target()
-        self.entity.Set_Attack()
+        self.entity.Set_Attack_Triggered()
         self.Set_Charge(0)
         self.attack_triggered = False
 
@@ -48,3 +48,6 @@ class Attack_Handler():
     def Reset_Attack(self):
         self.Set_Charge(0)
         self.attack_triggered = False
+
+    def Get_Attack_Triggered(self):
+        return self.attack_triggered

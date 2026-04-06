@@ -104,13 +104,13 @@ class Enemy(Moving_Entity):
             self.distance_calculation_cooldown = max(0, self.distance_calculation_cooldown - delta_time)
             return
          
-        max_distance_cooldown = random.uniform(0.4, 0.6) # randomise time to prevent simulationious updates
+        max_distance_cooldown = random.uniform(0.2, 0.3) # randomise time to prevent simulationious updates
         self.distance_calculation_cooldown = max_distance_cooldown
         
         player_pos = self.game.player.pos
         self.distance_to_player = math.sqrt((player_pos[0] - self.pos[0]) ** 2 + (player_pos[1] - self.pos[1]) ** 2)
 
-    def Set_Attack(self):
+    def Set_Attack_Triggered(self):
         if not self.active_weapon:
             return
         
@@ -334,7 +334,7 @@ class Enemy(Moving_Entity):
     
     def Trigger_Attack(self):
         self.Set_Target()
-        self.Set_Attack()
+        self.Set_Attack_Triggered()
         self.intent_manager.Reset_Attack()
     
     # Updated by attack handler
