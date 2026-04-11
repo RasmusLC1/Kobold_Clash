@@ -26,6 +26,7 @@ class Player(Moving_Entity):
 
         self.light_cooldown = 0
         self.default_light_level = 6
+        
         self.light_source = self.game.light_handler.Add_Light(self.pos, self.default_light_level, self.tile)
         self.game.light_handler.Initialise_Light_Level(self.tile)
         self.player_particle_cooldown = 0
@@ -149,15 +150,19 @@ class Player(Moving_Entity):
 
     # Function to update the light around player
     def Update_Light(self):
-        if self.light_source:
-            # Update all the light's around the player
-            # Do it only when the player light has been activated to prevent lag
-            if not self.light_source.active:
-                self.game.light_handler.Remove_Light(self.light_source)
-                self.game.light_handler.Restore_Light(self.light_source)
-                self.Set_Light_State(True)
-            else:
-                self.game.light_handler.Move_Light(self.pos, self.light_source, self.tile)
+        
+        # Check if player has moved to new tile
+        if self.light_source.tile == self.tile:
+            return
+
+        if not self.light_source.active:
+            # If lights were off trigger new light
+            self.light_source.active = True
+            self.game.light_handler.Move_Light(self.pos, self.light_source, self.tile)
+            self.Set_Light_State(True)
+        else:
+            # Standard movement update
+            self.game.light_handler.Move_Light(self.pos, self.light_source, self.tile)
         
         
     def Mouse_Handler(self):
