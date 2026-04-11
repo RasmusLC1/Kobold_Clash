@@ -48,7 +48,6 @@ class Ray_Caster():
 
     def Update(self, delta_time):
         self.Check_Tile_Active()
-        print(len(self.tiles))
         self.Update_Entities(delta_time)
 
     def Update_Entities(self, delta_time):
