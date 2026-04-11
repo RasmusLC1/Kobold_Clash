@@ -17,8 +17,6 @@ class Ray_Caster():
         self.saved_data = None
         self.game = game
 
-        self.disable_distance_debugger = False
-
         self.angles = []
 
     def Save_Data(self):
@@ -47,8 +45,6 @@ class Ray_Caster():
 
 
     def Update(self, delta_time):
-        if self.disable_distance_debugger:
-            return
         
         self.Check_Tile_Active()
 

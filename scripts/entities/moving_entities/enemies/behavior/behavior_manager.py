@@ -44,22 +44,28 @@ class Behavior_Manager():
 
 
     def Short_Range(self):
-        self.Set_Movement_Strategy(keys.short_range)
-        in_range = self.Check_Attack_Distance()
+        return self.Ranged_Fallback_Behavior(keys.short_range, keys.medium_range)
 
-        if not in_range:
-            return
-        
-        self.attack_handler.Set_Attack_Triggered(in_range)
-        self.Set_Movement_Strategy(keys.medium_range)
-        return False
 
 
     def Medium_Range(self):
-        pass
+        return self.Ranged_Fallback_Behavior(keys.medium_range, keys.long_range)
+        
 
     def Long_Range(self):
-        pass
+        return self.Ranged_Fallback_Behavior(keys.long_range, keys.long_range)
+        
+
+    def Ranged_Fallback_Behavior(self, approaching_distance, escape_distance):
+        self.Set_Movement_Strategy(approaching_distance)
+        in_range = self.Check_Attack_Distance()
+
+        if not in_range:
+            return False
+        
+        self.attack_handler.Set_Attack_Triggered(in_range)
+        self.Set_Movement_Strategy(escape_distance)
+        return True
 
     def Retreat_When_Damaged(self):
         pass

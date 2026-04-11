@@ -27,7 +27,7 @@ class Electric_Elemental(Elemental):
 
     def Set_Attack_Triggered(self):
         self.Set_Target(self.game.player.pos)
-        self.Reset_Charge()
+        self.Set_Charge(0)
         
         if self.distance_to_player > PLAYER_MAX_ATTACK_DISTANCE:
             return False
