@@ -48,16 +48,16 @@ class Behavior_Manager():
     def Short_Range(self):
         options = [keys.short_range, keys.medium_range, keys.long_range]
         retreat_distance = self.Calculate_Fallback_Behavior(options)
-        return self.Set_Movement_Behavior(keys.short_range, retreat_distance)
+        return self.Engagement_Controller(keys.short_range, retreat_distance)
 
     def Medium_Range(self):
         options = [keys.medium_range, keys.long_range]
         retreat_distance = self.Calculate_Fallback_Behavior(options)
-        return self.Set_Movement_Behavior(keys.medium_range, retreat_distance)
+        return self.Engagement_Controller(keys.medium_range, retreat_distance)
         
 
     def Long_Range(self):
-        return self.Set_Movement_Behavior(keys.long_range, keys.long_range)
+        return self.Engagement_Controller(keys.long_range, keys.long_range)
 
     def Calculate_Fallback_Behavior(self, options):
         num_opts = len(options)
@@ -76,7 +76,7 @@ class Behavior_Manager():
         return random.choices(options, weights=weights, k=1)[0]
     
 
-    def Set_Movement_Behavior(self, approaching_distance, escape_distance):
+    def Engagement_Controller(self, approaching_distance, escape_distance):
         in_range = self.Check_Attack_Distance()
 
         if not in_range:
