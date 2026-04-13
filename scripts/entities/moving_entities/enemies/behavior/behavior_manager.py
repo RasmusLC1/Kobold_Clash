@@ -1,5 +1,7 @@
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.enemies.behavior.attack_handler import Attack_Handler
+import random
+
 
 class Behavior_Manager():
     def __init__(self, game, entity, behavior, max_weapon_charge):
@@ -44,23 +46,41 @@ class Behavior_Manager():
 
 
     def Short_Range(self):
-        return self.Ranged_Fallback_Behavior(keys.short_range, keys.medium_range)
-
-
+        options = [keys.short_range, keys.medium_range, keys.long_range]
+        retreat_distance = self.Calculate_Fallback_Behavior(options)
+        return self.Set_Movement_Behavior(keys.short_range, retreat_distance)
 
     def Medium_Range(self):
-        return self.Ranged_Fallback_Behavior(keys.medium_range, keys.long_range)
+        options = [keys.medium_range, keys.long_range]
+        retreat_distance = self.Calculate_Fallback_Behavior(options)
+        return self.Set_Movement_Behavior(keys.medium_range, retreat_distance)
         
 
     def Long_Range(self):
-        return self.Ranged_Fallback_Behavior(keys.long_range, keys.long_range)
-        
+        return self.Set_Movement_Behavior(keys.long_range, keys.long_range)
 
-    def Ranged_Fallback_Behavior(self, approaching_distance, escape_distance):
-        self.Set_Movement_Strategy(approaching_distance)
+    def Calculate_Fallback_Behavior(self, options):
+        num_opts = len(options)
+        if num_opts == 0: return None
+        if num_opts == 1: return options[0]
+
+        # Combine stats into a single factor (0.0 to 1.0)
+        combined_stat = (self.entity.intelligence + self.entity.agility) / 20.0
+        
+        target = combined_stat * (num_opts - 1)
+        
+        # Generate weights using list comprehension for performance
+        # use (abs(i - target) + 1) to avoid division by zero
+        weights = [1.0 / (abs(i - target) + 1.0) for i in range(num_opts)]
+
+        return random.choices(options, weights=weights, k=1)[0]
+    
+
+    def Set_Movement_Behavior(self, approaching_distance, escape_distance):
         in_range = self.Check_Attack_Distance()
 
         if not in_range:
+            self.Set_Movement_Strategy(approaching_distance)
             return False
         
         self.attack_handler.Set_Attack_Triggered(in_range)
