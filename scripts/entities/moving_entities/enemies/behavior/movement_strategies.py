@@ -159,7 +159,6 @@ class Movement_Strategies():
         if self.movement_strategy == strategy:
             return
         
-        print("NEW STRATEGY", strategy)
         self.movement_strategy = strategy
 
     # Calculates distance between two tuples

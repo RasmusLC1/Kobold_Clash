@@ -45,6 +45,7 @@ class Elemental(Enemy):
             absorbed = min(damage, self.crystal_scale)
             damage -= absorbed
             self.crystal_scale -= absorbed
+            self.Set_Damaged(True)
         if damage > 0:
             return super().Damage_Taken(damage, effect, direction)
         return True

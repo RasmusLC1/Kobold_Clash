@@ -39,6 +39,7 @@ class Enemy(Moving_Entity):
         self.active_weapon = None
         self.target = self.game.player.pos # Default target is set to player
         self.charge = 0
+        self.damaged = False # Used to determine if enemy has taken damage this tick
 
 
         self.distance_to_player = 9999 # Distance to player
@@ -91,6 +92,7 @@ class Enemy(Moving_Entity):
 
         self.Update_Alert_Cooldown(delta_time)
         self.Update_Locked_On_Target(delta_time)
+        self.Set_Damaged(False)
 
 
     def Set_Direction_Holder(self):
@@ -179,11 +181,15 @@ class Enemy(Moving_Entity):
         
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
         self.Spawn_Damaged_Particles()
+        self.Set_Damaged(True)
         if not super().Damage_Taken(damage, effect, direction):
             return False
         
         self.Delete()
         return True
+    
+    def Set_Damaged(self, state):
+        self.damaged = state
 
     
     def Delete(self, generate_soul = True):
