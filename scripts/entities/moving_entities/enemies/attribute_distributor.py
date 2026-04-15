@@ -33,7 +33,7 @@ ENEMY_STATS = {
     # [Crystal Caverns]
     keys.fire_spirit:             {keys.health: 40, keys.souls: 20, keys.max_weapon_charge: 1.4,  keys.strength: 4, keys.speed: 4, keys.agility: 4, keys.intelligence: 2, keys.stamina: 2, keys.behavior: SHORT_RANGE,},
     keys.ice_spirit:              {keys.health: 50, keys.souls: 20, keys.max_weapon_charge: 1.6,  keys.strength: 7, keys.speed: 3, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2, keys.behavior: MEDIUM_RANGE,},
-    keys.earth_elemental:         {keys.health: 80, keys.souls: 30, keys.max_weapon_charge: 2.0,  keys.strength: 7, keys.speed: 2, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2, keys.behavior: DIRECT_ATTACK,},
+    keys.earth_elemental:         {keys.health: 80, keys.souls: 30, keys.max_weapon_charge: 2.0,  keys.strength: 5, keys.speed: 2, keys.agility: 2, keys.intelligence: 6, keys.stamina: 2, keys.behavior: HIT_AND_RUN,},
     keys.electric_elemental:      {keys.health: 50, keys.souls: 30, keys.max_weapon_charge: 3.0,  keys.strength: 4, keys.speed: 2, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2, keys.behavior: MEDIUM_RANGE,},
     keys.poison_elemental:        {keys.health: 20, keys.souls: 10, keys.max_weapon_charge: 0.1, keys.strength: 4, keys.speed: 4, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2, keys.behavior: DIRECT_ATTACK, },
     keys.medusa:                  {keys.health: 20, keys.souls: 60, keys.max_weapon_charge: 0.9,  keys.strength: 4, keys.speed: 4, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2, keys.behavior: SHORT_RANGE,},

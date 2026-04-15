@@ -28,9 +28,9 @@ class Movement_Strategies():
         self.tile_check_timestamp = 0
         # None if no range needed
         self.attack_ranges = {
-            keys.long_range: (200, 160),
-            keys.medium_range: (120, 80),
-            keys.short_range: (80, 60),
+            keys.long_range: (250, 200),
+            keys.medium_range: (200, 150),
+            keys.short_range: (150, 100),
             keys.direct: (20, 0),
             keys.keep_position: None,
             keys.idle: None,
@@ -71,7 +71,7 @@ class Movement_Strategies():
 
     def Find_Tile_To_Pathfind_To(self):
         max_range, min_range = self.attack_ranges.get(self.movement_strategy, (0, 0))
-        
+        print(max_range, min_range, self.movement_strategy)
         if max_range == 0: return None
             
         entity_dist = self.entity.distance_to_player
@@ -160,6 +160,7 @@ class Movement_Strategies():
         if self.movement_strategy == strategy:
             return
         
+        print("NEW STRATEGY", strategy)
         self.movement_strategy = strategy
 
     # Calculates distance between two tuples

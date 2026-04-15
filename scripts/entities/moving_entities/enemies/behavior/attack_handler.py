@@ -4,6 +4,7 @@ class Attack_Handler():
         self.game = game
         self.entity = entity
         self.attack_triggered = False
+        self.entity_has_attacked = False
         self.max_weapon_charge = max_weapon_charge
         self.charge = 0 # Determines when the enemy attacks
 
@@ -20,10 +21,13 @@ class Attack_Handler():
         self.entity.Set_Attack_Triggered()
         self.Set_Charge(0)
         self.attack_triggered = False
+        self.Set_Entity_Has_Attacked(True)
 
     def Set_Attack_Triggered(self, state):
         self.attack_triggered = state
 
+    def Set_Entity_Has_Attacked(self, state):
+        self.entity_has_attacked = state
     
     def Check_Attack_Direction(self, attack_direction):
         if not attack_direction:
