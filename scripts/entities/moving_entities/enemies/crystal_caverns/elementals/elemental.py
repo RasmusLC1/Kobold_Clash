@@ -46,6 +46,8 @@ class Elemental(Enemy):
             damage -= absorbed
             self.crystal_scale -= absorbed
             self.Set_Damaged(True)
+            # TODO: ADD Special shield color text, currently using water as temp
+            self.game.text_box_handler.Spawn_Damage_Text(self.pos.copy(), keys.wet, str(absorbed))
         if damage > 0:
             return super().Damage_Taken(damage, effect, direction)
         return True
