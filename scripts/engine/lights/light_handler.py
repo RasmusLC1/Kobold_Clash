@@ -23,3 +23,6 @@ class Light_Handler():
         # simplified math for the same result
         level = max(50, min(255, tile.light_level * 25))
         return level
+    
+    def Clear_Lights(self):
+        self.lights.clear()

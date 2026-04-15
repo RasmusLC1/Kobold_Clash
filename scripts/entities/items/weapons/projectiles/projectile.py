@@ -74,7 +74,7 @@ class Projectile(Weapon):
         dir_x = self.pos[0] + self.attack_direction[0] * self.shoot_speed
         dir_y = self.pos[1] + self.attack_direction[1] * self.shoot_speed
 
-        self.Update_Tile(self.pos)
+        self.Update_Tile(delta_time)
         if not self.Check_Tile((dir_x, dir_y)):
             self.Reset_Shot()
             return None

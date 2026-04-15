@@ -3,7 +3,7 @@ from scripts.entities.items.runes.rune_handler import Rune_Handler
 from scripts.entities.items.loot.loot_handler import Loot_Handler
 import pygame
 from scripts.engine.keys.keys import keys
-
+import traceback
 
 class Item_Handler():
     def __init__(self, game):
@@ -182,6 +182,8 @@ class Item_Handler():
                 return
             item.Shoot(delta_time)
         except Exception as e:
+            # This prints the full stack trace to the console
+            traceback.print_exc() 
             print(f"Item is not throwable {e}", item.type, item.entity, item.tile, vars(item))
             if not item.type:
                 self.Remove_Item(item, True)

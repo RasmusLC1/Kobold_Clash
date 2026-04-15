@@ -4,6 +4,8 @@ from scripts.engine.keys.keys import keys
 
 MIN_LIGHT_LEVEL = 40
 LIGHT_ALPHA_SCALE = 30
+TILE_COOLDOWN_MAX = 0.5
+
 
 class PhysicsEntity:
     _id_counter = 0  # Class variable to generate unique IDs
@@ -20,6 +22,7 @@ class PhysicsEntity:
         self.rendered_image = None # the actual image being rendered to screen
         self.saved_data = None
         self.render_needs_update = True
+        self.update_tile_cooldown = 0
         self.pos = list(pos)
         self.size = size
         self.active = 0
@@ -106,10 +109,11 @@ class PhysicsEntity:
         pos = (int(self.pos[0]) // self.game.tilemap.tile_size, int(self.pos[1]) // self.game.tilemap.tile_size) 
         self.tile = self.game.tilemap.Current_Tile(pos)
         if not self.tile:
-            return
+            return False
         self.game.tilemap.Add_Entity_To_Tile(self.tile, self)
         
         self.tile.Add_Entity(self)
+        return True
 
     def Remove_Tile(self):
         if not self.tile:
@@ -167,6 +171,60 @@ class PhysicsEntity:
             return self
         else:
             return None
+        
+    def Update_Tile_Cooldown(self, delta_time):
+        if self.update_tile_cooldown > 0:
+            self.update_tile_cooldown -= delta_time
+            return False
+
+        self.update_tile_cooldown = TILE_COOLDOWN_MAX
+        return True
+        
+    def Update_Tile(self, delta_time):
+        # Cooldown check - prevents running heavy logic every frame
+        if not self.Update_Tile_Cooldown(delta_time):
+            return False
+
+        # Local variables for speed
+        t_size = self.game.tilemap.tile_size
+        nx, ny = int(self.pos[0]) // t_size, int(self.pos[1]) // t_size
+
+        if not self._Check_If_Tile():
+            return False    
+
+        # Optimization: Exit early if coordinates haven't changed tiles
+        if nx == self.tile.pos[0] and ny == self.tile.pos[1]:
+            return False
+
+        return self._Add_New_Tile(nx, ny)
+
+    
+    def _Add_New_Tile(self, nx, ny):
+        new_tile = self.game.tilemap.Current_Tile((nx, ny))
+        
+        if new_tile and new_tile != self.tile:
+            self.game.tilemap.Remove_Entity_From_Tile(self.tile, self.ID)
+            self.game.tilemap.Add_Entity_To_Tile(new_tile, self)
+            self.tile = new_tile
+            return True
+        
+        return False
+    
+    def _Check_If_Tile(self):
+        # 3. Recovery: If the entity has no tile, teleport it to a valid one
+        if self.tile:
+            return True
+        
+        print(f"ERROR TILE NOT FOUND: {self.type} at {self.pos}")
+        new_tile = self.game.tilemap.Get_Random_Tile_With_Path_To_Player()
+        if not new_tile:
+            self.Delete() # Delete if out of bounds
+            return False
+        
+        self.tile = new_tile
+        self.pos = list(self.tile.scaled_pos)
+        self.game.tilemap.Add_Entity_To_Tile(self.tile, self)
+        return True
         
     def Generate_Sound(self, sound_name, volume, clatter, pos = None):
         if not pos:

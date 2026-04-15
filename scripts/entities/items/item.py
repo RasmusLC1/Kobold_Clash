@@ -238,17 +238,6 @@ class Item(PhysicsEntity):
         self.value -= value
         self.Set_Description()
 
-    # TODO: OPTIMISE
-    def Update_Tile(self, new_pos):
-
-        pos = (int(new_pos[0]) // self.game.tilemap.tile_size, int(new_pos[1]) // self.game.tilemap.tile_size) 
-        new_tile = self.game.tilemap.Current_Tile(pos)
-        if not (new_tile, self.tile):
-            return
-        if pos != self.tile.pos:
-            self.game.tilemap.Remove_Entity_From_Tile(self.tile, self.ID)
-            self.game.tilemap.Add_Entity_To_Tile(new_tile, self)
-            self.tile = new_tile
 
     # Iterates over the thresholds until it finds one that passes
     def Calculate_Rarity(self):
