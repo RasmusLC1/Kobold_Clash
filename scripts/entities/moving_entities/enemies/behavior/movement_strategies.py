@@ -71,7 +71,6 @@ class Movement_Strategies():
 
     def Find_Tile_To_Pathfind_To(self):
         max_range, min_range = self.attack_ranges.get(self.movement_strategy, (0, 0))
-        print(max_range, min_range, self.movement_strategy)
         if max_range == 0: return None
             
         entity_dist = self.entity.distance_to_player

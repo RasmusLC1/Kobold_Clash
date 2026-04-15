@@ -16,18 +16,15 @@ class Attack_Handler():
 
         return True
 
-    def Trigger_Attack(self):
-        self.entity.Set_Target()
-        self.entity.Set_Attack_Triggered()
-        self.Set_Charge(0)
-        self.attack_triggered = False
-        self.Set_Entity_Has_Attacked(True)
 
     def Set_Attack_Triggered(self, state):
         self.attack_triggered = state
 
     def Set_Entity_Has_Attacked(self, state):
         self.entity_has_attacked = state
+
+    def Get_Entity_Has_Attacked(self):
+        return self.entity_has_attacked
     
     def Check_Attack_Direction(self, attack_direction):
         if not attack_direction:
@@ -52,6 +49,7 @@ class Attack_Handler():
     def Reset_Attack(self):
         self.Set_Charge(0)
         self.attack_triggered = False
+        self.Set_Entity_Has_Attacked(True)
 
     def Get_Attack_Triggered(self):
         return self.attack_triggered
