@@ -192,8 +192,8 @@ class PhysicsEntity:
         if not self._Check_If_Tile():
             return False    
 
-        # Optimization: Exit early if coordinates haven't changed tiles
-        if nx == self.tile.pos[0] and ny == self.tile.pos[1]:
+        # Exit early if coordinates haven't changed tiles
+        if (nx, ny) == self.tile.pos:
             return False
 
         return self._Add_New_Tile(nx, ny)
