@@ -72,6 +72,9 @@ class Enemy():
 
     run_away = "run_away"
 
+    dash = "dash"
+
+
 # Void Spawn
 
     shade = "shade"

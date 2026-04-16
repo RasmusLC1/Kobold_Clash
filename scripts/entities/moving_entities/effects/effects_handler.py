@@ -23,11 +23,10 @@ from scripts.entities.moving_entities.effects.electric.eletric import Electric
 from scripts.entities.moving_entities.effects.electric.electric_resistance import Electric_Resistance
 from scripts.entities.moving_entities.effects.general.resistance import Resistance
 from scripts.engine.keys.keys import keys
-import traceback
 
 
 class Status_Effect_Handler:
-
+    # Instantiate the effect registry outside as a class attribute for memory effieciency
     EFFECT_REGISTRY = {
         keys.fire: Fire,
         keys.poison: Poison,

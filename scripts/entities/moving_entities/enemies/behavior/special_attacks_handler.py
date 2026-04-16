@@ -1,40 +1,60 @@
 from scripts.entities.moving_entities.enemies.attacks.Dash import Dash
 from scripts.entities.moving_entities.enemies.attacks.Jump_Attack import Jump_Attack
-
 from scripts.engine.keys.keys import keys
 
 
 class Special_Attack_Handler():
+
+    ATTACK_REGISTRY = {
+        keys.dash: Dash,
+        keys.jump: Jump_Attack,
+    }
+
     def __init__(self, game, entity):
         self.game = game
         self.entity = entity
         self.special_attacks = {}
-        self.special_attacks_cooldown = 0 
+        self.cooldown = 0 
 
-    def Add_Special_Attack(self, key_trigger):
-        # Define the mapping of keys to Classes (not instances)
-        lookup = {
-            keys.Dash: Dash,
-            keys.jump: Jump_Attack
-        }
+    # Returns the instance if it exists, or creates it if it's in the registry.
+    def Get_Attack(self, attack_name):
+        if attack_name in self.special_attacks:
+            return self.special_attacks[attack_name]
+        
+        return self.Create_New_Attack(attack_name)
+    
+    # Create a new attack if it doesn't exist
+    def Create_New_Attack(self, attack_name):
+        attack_class = self.ATTACK_REGISTRY.get(attack_name)
+        if not attack_class:
+            return None
 
-        # Get the class based on the key passed
-        attack_class = lookup.get(key_trigger)
+        new_attack = attack_class(self.game, self.entity)
+        self.special_attacks[attack_name] = new_attack
+        return new_attack
+    
 
-        if attack_class:
-            # Instantiate the attack and store it with its key
-            self.special_attacks[key_trigger] = attack_class(self.game, self.entity)
-        else:
-            print(f"Attack for {key_trigger} not found.")
+    # Allows access like handler.dash instead of handler.Get_Attack('dash)
+    def __getattr__(self, name):
+        attack = self.Get_Attack(name)
+        if not attack:
+            raise AttributeError(f"'{type(self).__name__}' has no attack attribute '{name}'")
 
+        # Set the attribute so __getattr__ is never called for this name again
+        setattr(self, name, attack) 
+        return attack
+        
 
+    # Now self.dash works automatically via __getattr__
     def Handle_Dash(self):
-        if not self.dash.dashing:
-            self.dash.Dash()
+        
+        dash_effect = self.dash 
+        
+        if not dash_effect.dashing:
+            dash_effect.Dash()
 
-        self.dash.Dashing_Update()
+        dash_effect.Dashing_Update()
 
-        if self.dash.dashing == 1:
-            self.Increment_Intent()
+        # Check if the dash state is specifically at the 'finished' or 'impact' frame
+        if dash_effect.dashing == 1:
             self.entity.Set_Charge_To_Max()
-        return
