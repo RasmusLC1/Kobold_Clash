@@ -112,11 +112,7 @@ class Enemy(Moving_Entity):
         player_pos = self.game.player.pos
         self.distance_to_player = math.sqrt((player_pos[0] - self.pos[0]) ** 2 + (player_pos[1] - self.pos[1]) ** 2)
 
-    def Set_Attack_Triggered(self):
-        if not self.active_weapon:
-            return
-        
-        self.active_weapon.Set_Attack()
+
 
     def Set_Charge_To_Max(self):
         self.charge = self.max_weapon_charge
@@ -188,6 +184,7 @@ class Enemy(Moving_Entity):
         self.Delete()
         return True
     
+    # Used to check if enemy is damaged this tick
     def Set_Damaged(self, state):
         self.damaged = state
 
@@ -340,8 +337,14 @@ class Enemy(Moving_Entity):
     
     def Trigger_Attack(self):
         self.Set_Target()
-        self.Set_Attack_Triggered()
+        self.Trigger_Basic_Attack()
         self.intent_manager.Reset_Attack()
+
+    def Trigger_Basic_Attack(self):
+        if not self.active_weapon:
+            return
+        
+        self.active_weapon.Set_Attack()
     
     # Updated by attack handler
     def Set_Charge(self, charge):

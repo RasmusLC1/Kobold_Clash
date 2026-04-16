@@ -46,6 +46,7 @@ class Attack_Handler():
     def Get_Attack_Charge(self):
         return self.charge
     
+
     def Reset_Attack(self):
         self.Set_Charge(0)
         self.attack_triggered = False

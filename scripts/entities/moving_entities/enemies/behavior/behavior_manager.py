@@ -1,5 +1,6 @@
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.enemies.behavior.attack_handler import Attack_Handler
+from scripts.entities.moving_entities.enemies.behavior.special_attacks_handler import Special_Attack_Handler
 import random
 
 
@@ -17,6 +18,8 @@ class Behavior_Manager():
         self.Set_Behavior_Pattern(behavior)
         self.retreat_options = self.Set_Retreat_Options()
         self.attack_handler = Attack_Handler(game, entity, max_weapon_charge) 
+        self.special_attack_handler = Special_Attack_Handler(game, entity)
+
 
 
     def Update_Behavior(self, delta_time):
