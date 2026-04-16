@@ -7,7 +7,7 @@ class Spider_Intent_Manager(Intent_Manager):
     def __init__(self, game, entity, attack_speed, path_finding_strategy, behavior):
         super().__init__(self, game, entity, attack_speed, path_finding_strategy, behavior)
         self.shoot_spiderweb = Shoot_Spiderweb(self.game)
-        self.jump_attack = Jump_Attack()
+        self.jump_attack = Jump_Attack(game, entity)
         self.actions['shoot_spiderweb'] = self.Shoot_Spiderweb
         self.base_cooldown['shoot_spiderweb'] = 10
 

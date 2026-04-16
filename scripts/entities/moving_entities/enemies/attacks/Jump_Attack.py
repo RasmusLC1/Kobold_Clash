@@ -1,9 +1,9 @@
 import pygame
 from scripts.engine.keys.keys import keys
 
-
+# TODO: UPDATE AND IMPLEMENT properly similar to DASH
 class Jump_Attack():
-    def __init__(self):
+    def __init__(self, game, entity):
         self.attack_length = 0
     
     def Jump_Attack(self, entity):
