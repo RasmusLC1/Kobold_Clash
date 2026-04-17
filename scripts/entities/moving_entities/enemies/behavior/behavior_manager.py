@@ -1,6 +1,6 @@
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.enemies.behavior.attack_handler import Attack_Handler
-from scripts.entities.moving_entities.enemies.behavior.special_attacks_handler import Special_Attack_Handler
+from scripts.entities.moving_entities.enemies.behavior.special_attacks.special_attacks_handler import Special_Attack_Handler
 import random
 
 

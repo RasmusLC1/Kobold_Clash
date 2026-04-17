@@ -1,6 +1,6 @@
-from scripts.entities.moving_entities.enemies.attacks.shooting_functions.Shoot_Soul_Reaper import Shoot_Soul_Reaper
+from scripts.entities.moving_entities.enemies.behavior.attacks.shooting_functions.Shoot_Soul_Reaper import Shoot_Soul_Reaper
 from scripts.entities.moving_entities.enemies.behavior.intent_manager import Intent_Manager
-from scripts.entities.moving_entities.enemies.attacks.Dash import Dash
+from scripts.entities.moving_entities.enemies.behavior.attacks.Dash import Dash
 
 class Vampire_Intent_Manager(Intent_Manager):
     def __init__(self, game, entity):

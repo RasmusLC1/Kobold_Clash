@@ -1,13 +1,15 @@
-from scripts.entities.moving_entities.enemies.attacks.Dash import Dash
-from scripts.entities.moving_entities.enemies.attacks.Jump_Attack import Jump_Attack
+from scripts.entities.moving_entities.enemies.behavior.special_attacks.Dash import Dash
+from scripts.entities.moving_entities.enemies.behavior.special_attacks.Jump_Attack import Jump_Attack
+from scripts.entities.moving_entities.enemies.behavior.special_attacks.run_away import Run_Away
 from scripts.engine.keys.keys import keys
 
 
 class Special_Attack_Handler():
 
     ATTACK_REGISTRY = {
-        keys.dash: Dash,
-        keys.jump: Jump_Attack,
+        keys.dash : Dash,
+        keys.jump : Jump_Attack,
+        keys.run_away : Run_Away,
     }
 
     def __init__(self, game, entity):
