@@ -41,8 +41,6 @@ class Behavior_Manager():
         self.behavior_pattern_function(delta_time)
     
 
-
-
     # Check if player is in range, if not set to Idle
     def Check_Player_Distance(self):
         if self.entity.distance_to_player < self.max_distance:  

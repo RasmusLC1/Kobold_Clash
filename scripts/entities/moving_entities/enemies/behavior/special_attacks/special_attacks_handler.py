@@ -1,6 +1,9 @@
 from scripts.entities.moving_entities.enemies.behavior.special_attacks.Dash import Dash
 from scripts.entities.moving_entities.enemies.behavior.special_attacks.Jump_Attack import Jump_Attack
 from scripts.entities.moving_entities.enemies.behavior.special_attacks.run_away import Run_Away
+from scripts.entities.moving_entities.enemies.behavior.special_attacks.invincible import Invincible
+from scripts.entities.moving_entities.enemies.behavior.special_attacks.rage import Rage
+
 from scripts.engine.keys.keys import keys
 
 
@@ -60,3 +63,16 @@ class Special_Attack_Handler():
         # Check if the dash state is specifically at the 'finished' or 'impact' frame
         if dash_effect.dashing == 1:
             self.entity.Set_Charge_To_Max()
+
+
+    def Assign_Special_Attacks(self):
+        enemy_types = {
+            keys.earth_elemental : keys.invincible,
+            keys.ice_spirit : keys.run_away,
+            keys.minotaur : keys.rage,
+        }
+
+        special_attacks = enemy_types.get(self.entity.type)
+
+        for special_attack in special_attacks: 
+            self.Create_New_Attack(special_attack)

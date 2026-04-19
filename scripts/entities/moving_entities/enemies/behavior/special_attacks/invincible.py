@@ -1,9 +1,9 @@
-
 from scripts.entities.moving_entities.enemies.behavior.special_attacks.special_attack import Special_Attack
 from scripts.engine.keys.keys import keys
 
+
 COOLDOWN_TIME = 10
-class Run_Away():
+class Invincible():
 
     def __init__(self, game, entity):
         self.game = game

@@ -72,6 +72,8 @@ class Enemy():
 
     run_away = "run_away"
 
+    rage = "rage"
+
     dash = "dash"
 
 
