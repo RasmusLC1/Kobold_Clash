@@ -4,7 +4,9 @@ from scripts.engine.keys.keys import keys
 
 COOLDOWN_TIME = 10
 class Run_Away(Special_Attack):
-
+    def __init__(self, game, entity):
+        super().__init__(game, entity)
+        
     # Returns the cooldown time before another special attack 
     def Activate(self):
         if not super().Activate():

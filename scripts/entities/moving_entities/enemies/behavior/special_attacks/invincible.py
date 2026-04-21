@@ -3,11 +3,9 @@ from scripts.engine.keys.keys import keys
 
 
 COOLDOWN_TIME = 10
-class Invincible():
-
+class Invincible(Special_Attack):
     def __init__(self, game, entity):
-        self.game = game
-        self.entity = entity
+        super().__init__(game, entity)
         
     # Returns the cooldown time before another special attack 
     def Activate(self):

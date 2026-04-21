@@ -2,11 +2,9 @@ from scripts.entities.moving_entities.enemies.behavior.special_attacks.special_a
 from scripts.engine.keys.keys import keys
 
 COOLDOWN_TIME = 10
-class Rage():
-
+class Rage(Special_Attack):
     def __init__(self, game, entity):
-        self.game = game
-        self.entity = entity
+        super().__init__(game, entity)
         
     # Returns the cooldown time before another special attack 
     def Activate(self):

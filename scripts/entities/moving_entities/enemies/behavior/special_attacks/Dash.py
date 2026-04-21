@@ -1,12 +1,13 @@
+from scripts.entities.moving_entities.enemies.behavior.special_attacks.special_attack import Special_Attack
+
 import random
 import math
 import pygame
 from scripts.engine.keys.keys import keys
 
-class Dash():
+class Dash(Special_Attack):
     def __init__(self, game, entity):
-        self.game = game
-        self.entity = entity
+        super().__init__(game, entity)
         self.dashing = 0
         self.dash_direction = (0,0)
         self.dash_start = 60
