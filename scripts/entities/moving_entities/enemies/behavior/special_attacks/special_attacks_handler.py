@@ -13,13 +13,25 @@ class Special_Attack_Handler():
         keys.dash : Dash,
         keys.jump : Jump_Attack,
         keys.run_away : Run_Away,
+        keys.invincible : Invincible,
+        keys.rage : Rage,
     }
 
     def __init__(self, game, entity):
         self.game = game
         self.entity = entity
         self.special_attacks = {}
+        self.active_attack = None
         self.cooldown = 0 
+
+    def Update(self, delta_time):
+        if not self.active_attack:
+            return False
+        
+        if not self.active_attack.Update(delta_time):
+            self.Set_Active_Attack(None)
+
+        return True
 
     # Returns the instance if it exists, or creates it if it's in the registry.
     def Get_Attack(self, attack_name):
@@ -39,6 +51,21 @@ class Special_Attack_Handler():
         return new_attack
     
 
+    def Trigger_Attack(self, name):
+        special_attack = self.special_attacks.get(name, None)
+        if not special_attack:
+            return False
+        
+        if not special_attack.Activate():
+            return False
+
+        self.Set_Active_Attack(special_attack)
+        return True
+    
+
+    def Set_Active_Attack(self, attack):
+        self.active_attack = attack
+    
     # Allows access like handler.dash instead of handler.Get_Attack('dash)
     def __getattr__(self, name):
         attack = self.Get_Attack(name)
@@ -50,7 +77,19 @@ class Special_Attack_Handler():
         return attack
         
 
-    # Now self.dash works automatically via __getattr__
+    def Assign_Special_Attacks(self):
+        enemy_types = {
+            keys.earth_elemental : [keys.invincible],
+            keys.ice_spirit : [keys.run_away],
+            keys.minotaur : [keys.rage],
+        }
+
+        attacks_to_add = enemy_types.get(self.entity.type, [])
+
+        for attack_key in attacks_to_add: 
+            self.Create_New_Attack(attack_key)
+
+
     def Handle_Dash(self):
         
         dash_effect = self.dash 
@@ -63,16 +102,3 @@ class Special_Attack_Handler():
         # Check if the dash state is specifically at the 'finished' or 'impact' frame
         if dash_effect.dashing == 1:
             self.entity.Set_Charge_To_Max()
-
-
-    def Assign_Special_Attacks(self):
-        enemy_types = {
-            keys.earth_elemental : keys.invincible,
-            keys.ice_spirit : keys.run_away,
-            keys.minotaur : keys.rage,
-        }
-
-        special_attacks = enemy_types.get(self.entity.type)
-
-        for special_attack in special_attacks: 
-            self.Create_New_Attack(special_attack)

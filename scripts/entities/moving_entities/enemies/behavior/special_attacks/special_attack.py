@@ -10,11 +10,15 @@ class Special_Attack():
         
     # Returns the cooldown time before another special attack 
     def Activate(self):
+        if self.cooldown >= 0:
+            return False
+        
         self.Set_Cooldown()
+        return True
 
-    def Handle_After_Activated(self):
+
+    def Reset_Attack(self):
         pass
-
     
     def Set_Cooldown(self):
         self.cooldown = self.COOLDOWN_TIME
@@ -22,6 +26,7 @@ class Special_Attack():
 
     def Update_Cooldown(self, delta_time):
         if self.cooldown <= 0:
+            self.cooldown = 0
             return True
         
         self.cooldown -= delta_time
@@ -29,6 +34,7 @@ class Special_Attack():
 
     def Update(self, delta_time):
         if not self.Update_Cooldown(delta_time):
+            self.Reset_Attack()
             return False
         
         return True
