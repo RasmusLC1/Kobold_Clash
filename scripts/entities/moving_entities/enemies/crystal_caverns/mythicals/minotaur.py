@@ -1,6 +1,5 @@
 from scripts.entities.moving_entities.enemies.enemy import Enemy
 from scripts.entities.items.weapons.enemy_weapons.claw import Claw
-from scripts.entities.moving_entities.enemies.crystal_caverns.mythicals.minotaur.minotaur_intent_manager import Minotaur_Intent_Manager
 from scripts.engine.keys.keys import keys
 
 
@@ -9,7 +8,6 @@ CRYSTAL_SCALE_HEALTH_COOLDOWN_MAX = 1 # heals 1 health every second
 
 
 class Minotaur(Enemy):
-    intent_manager_class = Minotaur_Intent_Manager
 
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.minotaur,  keys.mythical, 3, 3, 5, size = (64, 64), attack_speed=(0.6, 0.8))

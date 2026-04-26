@@ -37,8 +37,8 @@ class Behavior_Manager():
         if self.attack_handler.Update_Attack(delta_time):
             return
         
-        self.Check_If_Entity_Has_Attacked()
         self.behavior_pattern_function(delta_time)
+        self.Check_If_Entity_Has_Attacked()
     
 
     # Check if player is in range, if not set to Idle
@@ -72,6 +72,10 @@ class Behavior_Manager():
 
     def Check_If_Entity_Has_Taken_Damage(self):
         return self.entity.damaged
+    
+
+    
+
 
     def Short_Range(self, delta_time):
         if not self.Update_Engagement_Cooldown(delta_time):
@@ -103,50 +107,64 @@ class Behavior_Manager():
         
         self.Set_Movement_Strategy(keys.long_range)
         return self.Engagement_Controller()
+    
+    def Retreat(self, delta_time):
+        if not self.Update_Engagement_Cooldown(delta_time):
+            return False
+        
+        self.Set_Movement_Strategy(keys.long_range)
 
+    
 
     def Hit_And_Run(self, delta_time):
         if not self.Update_Engagement_Cooldown(delta_time):
-            if self.Check_If_Entity_Has_Taken_Damage(): # Enemies will turn around and attack if damaged
-                self.Set_Movement_Strategy(keys.direct_attack)
             return False
         
         if not self.Engagement_Controller():
             self.Set_Movement_Strategy(keys.direct_attack)
             return False
         
+        if self.attack_handler.Get_Entity_Has_Attacked():
+            self.Set_Fallback_Behavior()
+
         return True
 
 
     # Calculates the fallback behavior to be dependent on the agility
     # and intelligence of enemy
     def Calculate_Fallback_Behavior(self):
-        retreat_options = self.retreat_options
+            retreat_options = self.retreat_options
+            if not retreat_options: return None
+            
+            num_opts = len(retreat_options)
+            if num_opts == 1: return retreat_options[0]
 
-        if not retreat_options:
-            return
-        
-        num_opts = len(retreat_options)
-        if num_opts == 0: return None
-        if num_opts == 1: return retreat_options[0]
+            # Normalize stats (Assuming max stat is 10, so combined max is 20)
+            combined_stat = (self.entity.intelligence + self.entity.agility) / 20.0
+            
+            # Determine the "Ideal" index for this entity
+            target = combined_stat * (num_opts - 1)
+            
+            # Use an exponent to sharpen the probability
+            # A power of 2 or 3 makes the 'target' much more dominant
+            power = 3 
+            weights = [1.0 / (abs(i - target) + 1.0)**power for i in range(num_opts)]
 
-        # Combine stats into a single factor (0.0 to 1.0)
-        combined_stat = (self.entity.intelligence + self.entity.agility) / 20.0
-        
-        target = combined_stat * (num_opts - 1)
-        
-        # Generate weights using list comprehension for performance
-        # use (abs(i - target) + 1) to avoid division by zero
-        weights = [1.0 / (abs(i - target) + 1.0) for i in range(num_opts)]
+            return random.choices(retreat_options, weights=weights, k=1)[0]
 
-        retreat_distance = random.choices(retreat_options, weights=weights, k=1)[0]
+
+    def Set_Fallback_Behavior(self, retreat_distance = None):
+        if not retreat_distance:
+            retreat_distance = self.Calculate_Fallback_Behavior()
+        
+        print(retreat_distance)
 
         self.Set_Retreat_Cooldown(retreat_distance)
         self.Set_Movement_Strategy(retreat_distance)
 
         return retreat_distance
     
-
+    # Returns true if enemy is within range
     def Engagement_Controller(self):
         in_range = self.Check_Attack_Distance()
 
@@ -156,16 +174,6 @@ class Behavior_Manager():
         self.attack_handler.Set_Attack_Triggered(in_range)
         return True
     
-    def Set_Retreat_Cooldown(self, retreat_distance):
-        cooldown_values = {
-            keys.long_range : random.randint(15, 20),
-            keys.medium_range : random.randint(10, 15),
-            keys.short_range : random.randint(4, 10),
-        }
-
-        self.engagement_cooldown = cooldown_values.get(retreat_distance, 1) 
-
-        return
 
     def Update_Engagement_Cooldown(self, delta_time):
         if self.engagement_cooldown <= 0:
@@ -177,7 +185,19 @@ class Behavior_Manager():
 
 
     def Retreat_When_Damaged(self, delta_time):
-        pass
+        if not self.Update_Engagement_Cooldown(delta_time):
+            if self.Check_If_Entity_Has_Taken_Damage(): # Enemies will turn around and attack if damaged
+                self.Set_Fallback_Behavior()
+            return False
+        
+        if not self.Engagement_Controller():
+            self.Set_Movement_Strategy(keys.direct_attack)
+            return False
+        
+        return True
+
+
+        
     
     # Simple direct attack logic
     def Direct_Attack(self, delta_time):
@@ -200,16 +220,29 @@ class Behavior_Manager():
         return self.entity.distance_to_player < self.entity.attack_distance
         
 
+    def Set_Retreat_Cooldown(self, retreat_distance):
+        cooldown_values = {
+            keys.retreat : random.randint(20, 30),
+            keys.long_range : random.randint(12, 16),
+            keys.medium_range : random.randint(8, 12),
+            keys.short_range : random.randint(4, 6),
+        }
+
+        self.engagement_cooldown = cooldown_values.get(retreat_distance, 1) 
+
+        return
+
     
     def Set_Behavior_Pattern(self, behavior_pattern):
         self.behavior = behavior_pattern
         
         attack_patterns = {
-            keys.long_range: self.Long_Range,
-            keys.medium_range: self.Medium_Range,
-            keys.short_range: self.Short_Range,
-            keys.retreat_when_damaged: self.Retreat_When_Damaged,
-            keys.direct_attack: self.Direct_Attack,
+            keys.retreat : self.Retreat,
+            keys.long_range : self.Long_Range,
+            keys.medium_range : self.Medium_Range,
+            keys.short_range : self.Short_Range,
+            keys.retreat_when_damaged : self.Retreat_When_Damaged,
+            keys.direct_attack : self.Direct_Attack,
             keys.hit_and_run: self.Hit_And_Run,
             keys.idle: self.Idle,
         }
@@ -219,6 +252,7 @@ class Behavior_Manager():
     # Distance that the enemy will search for the player in
     def Set_Max_Distance(self):
         attack_patterns = {
+            keys.retreat : 300,
             keys.long_range : 450,
             keys.medium_range : 400,
             keys.short_range : 350,
@@ -237,6 +271,7 @@ class Behavior_Manager():
             return
         
         movement_patterns = {
+            keys.retreat : keys.retreat,
             keys.long_range : keys.long_range,
             keys.medium_range : keys.medium_range,
             keys.short_range : keys.short_range,
@@ -251,12 +286,13 @@ class Behavior_Manager():
 
     def Set_Retreat_Options(self):
         movement_patterns = {
+            keys.retreat : None,
             keys.long_range : None,
             keys.medium_range : [keys.medium_range, keys.long_range],
             keys.short_range : [keys.short_range, keys.medium_range, keys.long_range],
             keys.direct_attack : None,
             keys.retreat_when_damaged : [keys.medium_range, keys.long_range],
-            keys.hit_and_run : [keys.direct_attack, keys.short_range, keys.medium_range, keys.long_range],
+            keys.hit_and_run : [keys.direct_attack, keys.short_range, keys.medium_range],
             keys.run_away : [keys.long_range]
         }
 

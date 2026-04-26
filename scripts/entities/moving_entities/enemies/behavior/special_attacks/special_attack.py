@@ -13,28 +13,32 @@ class Special_Attack():
         if self.cooldown >= 0:
             return False
         
-        self.Set_Cooldown()
+        self._Set_Cooldown()
         return True
 
 
-    def Reset_Attack(self):
+    def _Reset_Attack(self):
         pass
     
-    def Set_Cooldown(self):
+    def _Set_Cooldown(self):
         self.cooldown = self.COOLDOWN_TIME
 
 
-    def Update_Cooldown(self, delta_time):
+    def _Update_Cooldown(self, delta_time):
         if self.cooldown <= 0:
             self.cooldown = 0
-            return True
-        
-        self.cooldown -= delta_time
-        return False
-
-    def Update(self, delta_time):
-        if not self.Update_Cooldown(delta_time):
-            self.Reset_Attack()
             return False
         
+        self.cooldown -= delta_time
         return True
+
+    def Update(self, delta_time) -> bool:
+        if not self._Update_Cooldown(delta_time):
+            self._Reset_Attack()
+            return False
+        
+        return self._Check_If_Trigger() # Returns tre if attack should be triggered
+       
+    
+    def _Check_If_Trigger(self) -> bool:
+        pass

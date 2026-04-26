@@ -299,6 +299,7 @@ class Enemy(Moving_Entity):
         self.text_box = Enemy_Textbox(self)
 
 
+
     def Future_Rect(self, direction):
              return pygame.Rect(self.pos[0] + direction[0]*32, self.pos[1] + direction[1]*32, self.size[0], self.size[1])
 
@@ -350,6 +351,9 @@ class Enemy(Moving_Entity):
     # Updated by attack handler
     def Set_Charge(self, charge):
         self.charge = charge
+
+    def Set_Retreat(self):
+        return self.intent_manager.Set_Retreat()
     
 
     def Render_Attacking_Symbol(self, surf, offset = (0,0)):

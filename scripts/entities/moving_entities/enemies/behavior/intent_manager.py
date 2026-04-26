@@ -186,3 +186,5 @@ class Intent_Manager():
     def Reset_Attack(self):
         return self.behavior_manager.Reset_Attack()
     
+    def Set_Retreat(self):
+        return self.behavior_manager.Set_Fallback_Behavior(keys.retreat)

@@ -61,6 +61,8 @@ class Enemy():
     idle = "idle"
     
     jump = "jump"
+
+    retreat = "retreat"
     
     long_range = "long_range"
 
