@@ -1,5 +1,5 @@
 import pygame
-from scripts.entities.moving_entities.enemies.behavior.abilities.special_attack import Ability
+from scripts.entities.moving_entities.enemies.behavior.abilities.ability import Ability
 from scripts.engine.keys.keys import keys
 
 # TODO: UPDATE AND IMPLEMENT properly similar to DASH

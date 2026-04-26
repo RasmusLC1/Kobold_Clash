@@ -1,6 +1,6 @@
 from scripts.entities.moving_entities.enemies.behavior.intent_manager import Intent_Manager
 from scripts.entities.moving_entities.enemies.behavior.abilities.shooting_functions.Shoot_Spiderweb import Shoot_Spiderweb
-from scripts.entities.moving_entities.enemies.behavior.abilities.Jump_Attack import Jump_Attack
+from scripts.entities.moving_entities.enemies.behavior.abilities.jump_attack import Jump_Attack
 from scripts.engine.keys.keys import keys
 
 class Spider_Intent_Manager(Intent_Manager):

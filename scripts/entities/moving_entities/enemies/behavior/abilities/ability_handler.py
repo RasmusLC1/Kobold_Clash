@@ -1,5 +1,5 @@
-from scripts.entities.moving_entities.enemies.behavior.abilities.Dash import Dash
-from scripts.entities.moving_entities.enemies.behavior.abilities.Jump_Attack import Jump_Attack
+from scripts.entities.moving_entities.enemies.behavior.abilities.dash import Dash
+from scripts.entities.moving_entities.enemies.behavior.abilities.jump_attack import Jump_Attack
 from scripts.entities.moving_entities.enemies.behavior.abilities.run_away import Run_Away
 from scripts.entities.moving_entities.enemies.behavior.abilities.invincible import Invincible
 from scripts.entities.moving_entities.enemies.behavior.abilities.rage import Rage
@@ -9,7 +9,7 @@ from scripts.engine.keys.keys import keys
 
 class Ability_Handler():
 
-    ATTACK_REGISTRY = {
+    ABILITY_REGISTRY = {
         keys.dash : Dash,
         keys.jump : Jump_Attack,
         keys.run_away : Run_Away,
@@ -21,34 +21,35 @@ class Ability_Handler():
         self.game = game
         self.entity = entity
         self.abilities = {}
-        self.active_attack = None
+        self.active_abilities = None
         self.cooldown = 0 
+        self.Get_Ability(ability)
 
     def Update(self, delta_time):
-        if not self.active_attack:
+        if not self.active_abilities:
             return False
         
-        if not self.active_attack.Update(delta_time):
+        if not self.active_abilities.Update(delta_time):
             self.Set_Active_Attack(None)
 
         return True
 
     # Returns the instance if it exists, or creates it if it's in the registry.
-    def Get_Attack(self, attack_name):
-        if attack_name in self.abilities:
-            return self.abilities[attack_name]
+    def Get_Ability(self, ability):
+        if ability in self.abilities:
+            return self.abilities[ability]
         
-        return self.Create_New_Attack(attack_name)
+        return self.Create_New_Attack(ability)
     
-    # Create a new attack if it doesn't exist
-    def Create_New_Attack(self, attack_name):
-        attack_class = self.ATTACK_REGISTRY.get(attack_name)
-        if not attack_class:
+    # Create a new ability if it doesn't exist
+    def Create_New_Attack(self, ability_name):
+        ability_class = self.ABILITY_REGISTRY.get(ability_name)
+        if not ability_class:
             return None
 
-        new_attack = attack_class(self.game, self.entity)
-        self.abilities[attack_name] = new_attack
-        return new_attack
+        new_ability = ability_class(self.game, self.entity)
+        self.abilities[ability_name] = new_ability
+        return new_ability
     
 
     def Trigger_Attack(self, name):
@@ -63,31 +64,18 @@ class Ability_Handler():
         return True
     
 
-    def Set_Active_Attack(self, attack):
-        self.active_attack = attack
+    def Set_Active_Attack(self, ability):
+        self.active_abilities = ability
     
     # Allows access like handler.dash instead of handler.Get_Attack('dash)
     def __getattr__(self, name):
-        attack = self.Get_Attack(name)
-        if not attack:
-            raise AttributeError(f"'{type(self).__name__}' has no attack attribute '{name}'")
+        ability = self.Get_Ability(name)
+        if not ability:
+            raise AttributeError(f"'{type(self).__name__}' has no ability attribute '{name}'")
 
         # Set the attribute so __getattr__ is never called for this name again
-        setattr(self, name, attack) 
-        return attack
-        
-
-    def Assign_Special_Attacks(self):
-        enemy_types = {
-            keys.earth_elemental : [keys.invincible],
-            keys.ice_spirit : [keys.run_away],
-            keys.minotaur : [keys.rage],
-        }
-
-        attacks_to_add = enemy_types.get(self.entity.type, [])
-
-        for attack_key in attacks_to_add: 
-            self.Create_New_Attack(attack_key)
+        setattr(self, name, ability) 
+        return ability
 
 
     def Handle_Dash(self):
