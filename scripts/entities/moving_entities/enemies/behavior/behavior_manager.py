@@ -1,12 +1,12 @@
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.enemies.behavior.attack_handler import Attack_Handler
-from scripts.entities.moving_entities.enemies.behavior.special_attacks.special_attacks_handler import Special_Attack_Handler
+from scripts.entities.moving_entities.enemies.behavior.abilities.special_attacks_handler import Ability_Handler
 from scripts.entities.moving_entities.enemies.behavior.behavior_profile import Behavior_Profile
 import random
 
 
 class Behavior_Manager():
-    def __init__(self, game, entity, behavior, max_weapon_charge):
+    def __init__(self, game, entity, behavior, max_weapon_charge, ability = None):
         self.game = game
         self.entity = entity
         self.behavior = None # The attack behavior of the enemy
@@ -19,7 +19,6 @@ class Behavior_Manager():
             keys.hit_and_run: Behavior_Profile(self.Hit_And_Run, 300, keys.direct, (1, 1), [keys.direct_attack, keys.short_range, keys.medium_range]),
             keys.idle: Behavior_Profile(self.Idle, 300, keys.direct, (1, 1))
         }
-        self.Set_Behavior_Pattern(behavior)
 
         self.behavior_pattern_function = None # Calls the specific method used by the enemy AI, I.E Direct_Attack()
         self.movement_strategy = None # The movement strategy used for the attack pattern
@@ -29,7 +28,7 @@ class Behavior_Manager():
         self.stored_health = self.entity.health # Used to check if entity has taken damage 
         self.Set_Behavior_Pattern(behavior)
         self.attack_handler = Attack_Handler(game, entity, max_weapon_charge) 
-        self.special_attack_handler = Special_Attack_Handler(game, entity)
+        self.special_attack_handler = Ability_Handler(game, entity, ability)
         
 
 
@@ -166,7 +165,6 @@ class Behavior_Manager():
             retreat_distance = self.Calculate_Fallback_Behavior()
         
         self.movement_behavior = retreat_distance
-        print(self.movement_behavior)
         return retreat_distance
     
     # Returns true if enemy is within range

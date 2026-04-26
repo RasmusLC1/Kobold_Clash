@@ -13,7 +13,7 @@ class Battle_Axe(Weapon):
 
 
 
-    def Special_Attack(self):
+    def Ability(self):
         if not self.special_attack_active or not self.equipped:
             return
         

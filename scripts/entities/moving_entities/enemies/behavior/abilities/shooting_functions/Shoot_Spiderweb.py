@@ -1,5 +1,5 @@
 from scripts.entities.items.weapons.projectiles.spider_web_projectile import Spider_Web_Projectile
-from scripts.entities.moving_entities.enemies.behavior.special_attacks.shooting_functions.shooting_function import Shooting_Function
+from scripts.entities.moving_entities.enemies.behavior.abilities.shooting_functions.shooting_function import Shooting_Function
 
 import pygame
 from scripts.engine.keys.keys import keys

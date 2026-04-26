@@ -1,11 +1,11 @@
-from scripts.entities.moving_entities.enemies.behavior.special_attacks.special_attack import Special_Attack
+from scripts.entities.moving_entities.enemies.behavior.abilities.special_attack import Ability
 
 import random
 import math
 import pygame
 from scripts.engine.keys.keys import keys
 
-class Dash(Special_Attack):
+class Dash(Ability):
     def __init__(self, game, entity):
         super().__init__(game, entity)
         self.dashing = 0

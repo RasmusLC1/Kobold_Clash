@@ -1,9 +1,9 @@
 import pygame
-from scripts.entities.moving_entities.enemies.behavior.special_attacks.special_attack import Special_Attack
+from scripts.entities.moving_entities.enemies.behavior.abilities.special_attack import Ability
 from scripts.engine.keys.keys import keys
 
 # TODO: UPDATE AND IMPLEMENT properly similar to DASH
-class Jump_Attack(Special_Attack):
+class Jump_Attack(Ability):
     def __init__(self, game, entity):
         super().__init__(game, entity)
         self.attack_length = 0

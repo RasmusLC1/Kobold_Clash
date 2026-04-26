@@ -49,7 +49,7 @@ class Torch(Weapon):
             self.animation = random.randint(0,self.max_animation)
             self.Set_Entity_Image()
 
-    def Special_Attack(self):
+    def Ability(self):
         if self.special_attack <= 0 or not self.equipped:
             self.Reset_Special_Attack()
             return

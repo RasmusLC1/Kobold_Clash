@@ -78,7 +78,7 @@ class Weapon(Item):
     # General Update function, handles setting the attack and general logic
     def Update(self, delta_time, offset = (0,0)):
         super().Update(delta_time)
-        self.Special_Attack()
+        self.Ability()
         self.Update_Delete_Countdown()
         if not self.entity:
             return False
@@ -335,7 +335,7 @@ class Weapon(Item):
     def Set_Charge_Time(self, state):
         self.charge_time = state
 
-    def Special_Attack(self):
+    def Ability(self):
         pass
 
 

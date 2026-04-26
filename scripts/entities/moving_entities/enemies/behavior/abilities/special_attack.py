@@ -1,6 +1,6 @@
 from scripts.engine.keys.keys import keys
 
-class Special_Attack():
+class Ability():
     COOLDOWN_TIME = 10
     
     def __init__(self, game, entity):
@@ -40,5 +40,6 @@ class Special_Attack():
         return self._Check_If_Trigger() # Returns tre if attack should be triggered
        
     
+    # Check if the ability is triggered
     def _Check_If_Trigger(self) -> bool:
         pass

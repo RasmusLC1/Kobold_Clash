@@ -9,7 +9,7 @@ class Scythe(Weapon):
         self.soul_reap_shooter = Soul_Reap_Shooter(game)
 
     # Handle special attack charge
-    def Special_Attack(self):
+    def Ability(self):
         if not self.entity:
             return
         

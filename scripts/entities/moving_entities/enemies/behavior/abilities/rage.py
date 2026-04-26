@@ -1,8 +1,8 @@
-from scripts.entities.moving_entities.enemies.behavior.special_attacks.special_attack import Special_Attack
+from scripts.entities.moving_entities.enemies.behavior.abilities.special_attack import Ability
 from scripts.engine.keys.keys import keys
 
 COOLDOWN_TIME = 10
-class Rage(Special_Attack):
+class Rage(Ability):
     def __init__(self, game, entity):
         super().__init__(game, entity)
         

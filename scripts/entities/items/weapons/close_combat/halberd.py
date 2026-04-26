@@ -15,7 +15,7 @@ class Halberd(Weapon):
         
 
     # Handle special attack charge
-    def Special_Attack(self):
+    def Ability(self):
         if not self.entity:
             return
 

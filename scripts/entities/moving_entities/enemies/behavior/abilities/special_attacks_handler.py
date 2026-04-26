@@ -1,13 +1,13 @@
-from scripts.entities.moving_entities.enemies.behavior.special_attacks.Dash import Dash
-from scripts.entities.moving_entities.enemies.behavior.special_attacks.Jump_Attack import Jump_Attack
-from scripts.entities.moving_entities.enemies.behavior.special_attacks.run_away import Run_Away
-from scripts.entities.moving_entities.enemies.behavior.special_attacks.invincible import Invincible
-from scripts.entities.moving_entities.enemies.behavior.special_attacks.rage import Rage
+from scripts.entities.moving_entities.enemies.behavior.abilities.Dash import Dash
+from scripts.entities.moving_entities.enemies.behavior.abilities.Jump_Attack import Jump_Attack
+from scripts.entities.moving_entities.enemies.behavior.abilities.run_away import Run_Away
+from scripts.entities.moving_entities.enemies.behavior.abilities.invincible import Invincible
+from scripts.entities.moving_entities.enemies.behavior.abilities.rage import Rage
 
 from scripts.engine.keys.keys import keys
 
 
-class Special_Attack_Handler():
+class Ability_Handler():
 
     ATTACK_REGISTRY = {
         keys.dash : Dash,
@@ -17,10 +17,10 @@ class Special_Attack_Handler():
         keys.rage : Rage,
     }
 
-    def __init__(self, game, entity):
+    def __init__(self, game, entity, ability):
         self.game = game
         self.entity = entity
-        self.special_attacks = {}
+        self.abilities = {}
         self.active_attack = None
         self.cooldown = 0 
 
@@ -35,8 +35,8 @@ class Special_Attack_Handler():
 
     # Returns the instance if it exists, or creates it if it's in the registry.
     def Get_Attack(self, attack_name):
-        if attack_name in self.special_attacks:
-            return self.special_attacks[attack_name]
+        if attack_name in self.abilities:
+            return self.abilities[attack_name]
         
         return self.Create_New_Attack(attack_name)
     
@@ -47,19 +47,19 @@ class Special_Attack_Handler():
             return None
 
         new_attack = attack_class(self.game, self.entity)
-        self.special_attacks[attack_name] = new_attack
+        self.abilities[attack_name] = new_attack
         return new_attack
     
 
     def Trigger_Attack(self, name):
-        special_attack = self.special_attacks.get(name, None)
-        if not special_attack:
+        ability = self.abilities.get(name, None)
+        if not ability:
             return False
         
-        if not special_attack.Activate():
+        if not ability.Activate():
             return False
 
-        self.Set_Active_Attack(special_attack)
+        self.Set_Active_Attack(ability)
         return True
     
 
