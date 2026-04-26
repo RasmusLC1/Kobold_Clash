@@ -15,47 +15,57 @@ class Enemy(Moving_Entity):
     # Factory method
     intent_manager_class = Intent_Manager  # Default intent manager
 
-    def __init__(self, game, pos, type, sub_category, idle_animation, run_animation, attack_animation, size = (32, 32), attack_speed = (0.5, 0.8), path_finding_strategy = keys.standard, default_range = keys.direct, is_elite = False):
+    def __init__(self, game, pos, type, sub_category, idle_animation, run_animation, attack_animation, 
+                 size=(32, 32), attack_speed=(0.5, 0.8), path_finding_strategy=keys.standard, 
+                 default_range=keys.direct, is_elite=False):
 
-        base_stats = Attribute_Distributor.Get_Enemy_Data(type, game.depth, is_elite)    
-        self.max_weapon_charge = base_stats.get(keys.max_weapon_charge, 1)
-        self.soul_value = base_stats.get(keys.souls, 1)
-        behavior = Attribute_Distributor.Convert_Behavior_To_String(base_stats.get(keys.behavior, 1)) # Base stats gets an integer, which is then converted to string
-
-        super().__init__(game, str(type), keys.enemy, pos, size,
-                         base_stats.get(keys.health, 1),
-                         base_stats.get(keys.strength, 1),
-                         base_stats.get(keys.speed, 1),
-                         base_stats.get(keys.agility, 1),
-                         base_stats.get(keys.intelligence, 1),
-                         base_stats.get(keys.stamina, 1),
-                         sub_category)
+        # 1. Fetch the Profile object (already scaled by depth and elite status)
+        stats = Attribute_Distributor.Get_Enemy_Profile(type, game.depth, is_elite)
         
-        self.animation_handler.Set_Animation_Num_Max(keys.run ,run_animation)
-        self.animation_handler.Set_Animation_Num_Max(keys.idle ,idle_animation)
+        # 2. Extract specific enemy values directly from the object attributes
+        self.max_weapon_charge = stats.max_weapon_charge
+        self.soul_value = stats.souls
+        
+        # 3. Call super().__init__ using the object attributes
+        # No more .get() or integer conversions!
+        super().__init__(
+            game, str(type), keys.enemy, pos, size,
+            stats.health,
+            stats.strength,
+            stats.speed,
+            stats.agility,
+            stats.intelligence,
+            stats.stamina,
+            sub_category
+        )
+        
+        # --- Animation Setup ---
+        self.animation_handler.Set_Animation_Num_Max(keys.run, run_animation)
+        self.animation_handler.Set_Animation_Num_Max(keys.idle, idle_animation)
         self.animation_handler.Set_Animation_Num_Max(keys.attack, attack_animation)
         self.animation_handler.Set_Animation('running')
+
+        # --- Combat & AI State ---
         self.alert_cooldown = 0
         self.active_weapon = None
-        self.target = self.game.player.pos # Default target is set to player
+        self.target = self.game.player.pos
         self.charge = 0
-        self.damaged = False # Used to determine if enemy has taken damage this tick
+        self.damaged = False 
 
+        self.distance_to_player = 9999
+        self.movement_strategy = default_range 
+        self.attack_distance = self.size[0] * 2 
+        self.distance_calculation_cooldown = 0 
 
-        self.distance_to_player = 9999 # Distance to player
-       
-        self.movement_strategy = default_range # Attack strategy that the enemy utalises
-        
-        self.attack_distance  = self.size[0] * 2 # Distance that the enemy can attack from
-        self.distance_calculation_cooldown = 0 # Time between checking target distance
-
-
-        self.locked_on_target = 0 # If the enemy is locked onto a target, then it will not switch based on clatter
-
+        self.locked_on_target = 0 
         self.attack_symbol_offset = 20
         self.health_bar = self.game.assets[keys.health_bar]
 
-        self.intent_manager = self.intent_manager_class(game, self, attack_speed, path_finding_strategy, behavior, self.max_weapon_charge)
+        # 4. Initialize Intent Manager using the clean behavior and ability strings
+        self.intent_manager = self.intent_manager_class(
+            game, self, attack_speed, path_finding_strategy, 
+            stats.behavior, self.max_weapon_charge, stats.ability
+        )
 
         self.Set_Description()
 

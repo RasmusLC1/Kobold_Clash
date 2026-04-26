@@ -6,7 +6,7 @@ from scripts.entities.moving_entities.enemies.behavior.behavior_manager import B
 
 
 class Intent_Manager():
-    def __init__(self, game, entity, attack_speed, path_finding_strategy, behavior, max_weapon_charge) -> None:
+    def __init__(self, game, entity, attack_speed, path_finding_strategy, behavior, max_weapon_charge, ability = None) -> None:
         self.game = game
         self.entity = entity
 
@@ -45,7 +45,7 @@ class Intent_Manager():
  
         self.path_finding = Path_Finding(game, entity, path_finding_strategy) # Pathfinding logic for enemy
         self.movement_strategies = Movement_Strategies(game, entity) # Pathfinding logic for enemy
-        self.behavior_manager = Behavior_Manager(game, entity, behavior, max_weapon_charge) 
+        self.behavior_manager = Behavior_Manager(game, entity, behavior, max_weapon_charge, ability) 
 
 
 

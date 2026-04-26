@@ -12,6 +12,8 @@ class Enemy():
 
     intelligence = "intelligence"
 
+    ability = "ability"
+
     
     keep_distance = "keep_distance"
     

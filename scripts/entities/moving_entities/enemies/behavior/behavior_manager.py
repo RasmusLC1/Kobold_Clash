@@ -6,7 +6,7 @@ import random
 
 
 class Behavior_Manager():
-    def __init__(self, game, entity, behavior, max_weapon_charge, ability = None):
+    def __init__(self, game, entity, behavior, max_weapon_charge, ability):
         self.game = game
         self.entity = entity
         self.behavior = None # The attack behavior of the enemy
