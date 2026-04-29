@@ -32,9 +32,9 @@ class Movement_Strategies():
             keys.medium_range: (200, 150),
             keys.short_range: (150, 100),
             keys.direct: (20, 0),
-            keys.keep_position: None,
-            keys.idle: None,
-            keys.run_away: None
+            keys.keep_position: (0, 0), 
+            keys.idle: (0, 0),          
+            keys.run_away: (1000, 999)    
         }
 
 

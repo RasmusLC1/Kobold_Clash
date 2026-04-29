@@ -4,8 +4,8 @@ from scripts.engine.keys.keys import keys
 
 # TODO: UPDATE AND IMPLEMENT properly similar to DASH
 class Jump_Attack(Ability):
-    def __init__(self, game, entity):
-        super().__init__(game, entity)
+    def __init__(self, game, entity, name):
+        super().__init__(game, entity, name)
         self.attack_length = 0
     
     def Jump_Attack(self, entity):

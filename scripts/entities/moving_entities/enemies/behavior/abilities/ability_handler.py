@@ -21,18 +21,29 @@ class Ability_Handler():
         self.game = game
         self.entity = entity
         self.abilities = {}
-        self.active_abilities = None
+        self.active_ability = None
         self.cooldown = 0 
         self.Get_Ability(ability)
 
     def Update(self, delta_time):
-        if not self.active_abilities:
-            return False
+        if not self.active_ability:
+            return self._Check_If_Abilities_Can_Be_Triggered()
         
-        if not self.active_abilities.Update(delta_time):
+        if self.active_ability.Get_Cooldown() <= 0:
             self.Set_Active_Attack(None)
 
         return True
+    
+    # Returns true if any abilities can be triggerd
+    def _Check_If_Abilities_Can_Be_Triggered(self):
+        for ability in self.abilities.values():
+            if not ability.Check_If_Trigger():
+                continue
+
+            self.Trigger_Attack(ability.name)
+            return True
+        
+        return False
 
     # Returns the instance if it exists, or creates it if it's in the registry.
     def Get_Ability(self, ability):
@@ -47,7 +58,7 @@ class Ability_Handler():
         if not ability_class:
             return None
 
-        new_ability = ability_class(self.game, self.entity)
+        new_ability = ability_class(self.game, self.entity, ability_name)
         self.abilities[ability_name] = new_ability
         return new_ability
     
@@ -59,13 +70,12 @@ class Ability_Handler():
         
         if not ability.Activate():
             return False
-
         self.Set_Active_Attack(ability)
         return True
     
 
     def Set_Active_Attack(self, ability):
-        self.active_abilities = ability
+        self.active_ability = ability
     
     # Allows access like handler.dash instead of handler.Get_Attack('dash)
     def __getattr__(self, name):
@@ -76,6 +86,12 @@ class Ability_Handler():
         # Set the attribute so __getattr__ is never called for this name again
         setattr(self, name, ability) 
         return ability
+    
+    def Check_If_Attack_Allowed(self):
+        if not self.active_ability:
+            return True
+        
+        return self.active_ability.Check_If_Attack_Allowed()
 
 
     def Handle_Dash(self):
@@ -90,3 +106,6 @@ class Ability_Handler():
         # Check if the dash state is specifically at the 'finished' or 'impact' frame
         if dash_effect.dashing == 1:
             self.entity.Set_Charge_To_Max()
+
+
+    

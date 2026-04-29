@@ -6,8 +6,8 @@ import pygame
 from scripts.engine.keys.keys import keys
 
 class Dash(Ability):
-    def __init__(self, game, entity):
-        super().__init__(game, entity)
+    def __init__(self, game, entity, name):
+        super().__init__(game, entity, name)
         self.dashing = 0
         self.dash_direction = (0,0)
         self.dash_start = 60

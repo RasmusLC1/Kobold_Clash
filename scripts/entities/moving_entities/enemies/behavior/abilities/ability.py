@@ -3,14 +3,16 @@ from scripts.engine.keys.keys import keys
 class Ability():
     COOLDOWN_TIME = 10
     
-    def __init__(self, game, entity):
+    def __init__(self, game, entity, name, can_attack_while_triggered = False):
         self.game = game
         self.entity = entity
+        self.name = name
         self.cooldown = 0
+        self.can_attack_while_triggered = can_attack_while_triggered
         
     # Returns the cooldown time before another special attack 
     def Activate(self):
-        if self.cooldown >= 0:
+        if self.cooldown > 0:
             return False
         
         self._Set_Cooldown()
@@ -22,6 +24,9 @@ class Ability():
     
     def _Set_Cooldown(self):
         self.cooldown = self.COOLDOWN_TIME
+
+    def Get_Cooldown(self):
+        return self.cooldown
 
 
     def _Update_Cooldown(self, delta_time):
@@ -37,9 +42,14 @@ class Ability():
             self._Reset_Attack()
             return False
         
-        return self._Check_If_Trigger() # Returns tre if attack should be triggered
-       
+        # Returns tre if attack should be triggered
+        return True
+
     
     # Check if the ability is triggered
-    def _Check_If_Trigger(self) -> bool:
+    def Check_If_Trigger(self) -> bool:
         pass
+
+    # Returns True if attacking while triggered allowed, if not if cooldown is greater than 0
+    def Check_If_Attack_Allowed(self):
+        return self.can_attack_while_triggered

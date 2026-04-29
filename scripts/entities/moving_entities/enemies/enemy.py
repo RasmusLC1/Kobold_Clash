@@ -126,6 +126,7 @@ class Enemy(Moving_Entity):
 
     def Set_Charge_To_Max(self):
         self.charge = self.max_weapon_charge
+        
     
     def Entity_Collision_Detection(self, tilemap):
         colliding_entity = super().Entity_Collision_Detection(tilemap)
@@ -175,6 +176,7 @@ class Enemy(Moving_Entity):
         if direction.length() > 0:
             direction.normalize_ip()
         self.direction = direction
+        
 
 
     def Update_Locked_On_Target(self, delta_time):
@@ -362,6 +364,7 @@ class Enemy(Moving_Entity):
     def Set_Charge(self, charge):
         self.charge = charge
 
+    # Causes the enemy to run away
     def Set_Retreat(self):
         return self.intent_manager.Set_Retreat()
     
