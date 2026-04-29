@@ -14,6 +14,7 @@ class Run_Away(Ability):
         
         self.entity.Set_Effect(keys.speed, 3)
         self.entity.Set_Retreat()
+        self._Set_Cooldown()
         return True
     
     # Returns true if entity is damaged

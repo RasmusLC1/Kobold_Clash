@@ -6,14 +6,14 @@ class Attack_Handler():
         self.attack_triggered = False
         self.entity_has_attacked = False
         self.max_weapon_charge = max_weapon_charge
+        self.max_weapon_charge_holder = max_weapon_charge
         self.charge = 0 # Determines when the enemy attacks
 
     def Update_Attack(self, delta_time):
         if not self.attack_triggered:
             return False
         
-        self.Set_Charge(min(self.max_weapon_charge, self.charge + delta_time))
-
+        self.Update_Charge(delta_time)
         return True
 
 
@@ -37,6 +37,23 @@ class Attack_Handler():
     # TODO: USED FOR DASH ATTACKS, not implemented yet, migrated from enemies class
     def Set_Charge_To_Max(self):
         self.charge = self.max_weapon_charge
+
+    def Set_Max_Weapon_Charge(self, amount):
+        self.max_weapon_charge = amount
+        self.entity.Set_Max_Weapon_Charge(amount)
+        return True
+
+
+    def Reset_Max_Weapon_Charge(self):
+        self.max_weapon_charge = self.max_weapon_charge_holder
+        self.entity.Set_Max_Weapon_Charge(self.max_weapon_charge_holder)
+        return True
+
+
+
+    def Update_Charge(self, delta_time):
+        charge = min(self.max_weapon_charge, self.charge + delta_time)
+        self.Set_Charge(charge)
 
 
     def Set_Charge(self, amount):

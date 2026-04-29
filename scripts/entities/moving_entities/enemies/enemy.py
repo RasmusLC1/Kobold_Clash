@@ -128,32 +128,6 @@ class Enemy(Moving_Entity):
         self.charge = self.max_weapon_charge
         
     
-    def Entity_Collision_Detection(self, tilemap):
-        colliding_entity = super().Entity_Collision_Detection(tilemap)
-
-        if colliding_entity:
-            if colliding_entity.type == 'player':
-                # Prevent further movement towards the player by stopping the enemy's movement
-                self.direction = (0, 0)
-                return colliding_entity
-
-            # Collision logic for other entities
-            collision_vector = pygame.math.Vector2(self.pos[0] - colliding_entity.pos[0],
-                                                self.pos[1] - colliding_entity.pos[1])
-            if collision_vector.length() > 0:
-                collision_vector = collision_vector.normalize()
-                direction_vector = pygame.math.Vector2(self.direction)
-                reflected_direction = direction_vector.reflect(collision_vector)
-
-                if self.Future_Rect(reflected_direction).colliderect(self.game.player.rect()):
-                    self.direction = (0, 0)
-
-                    return self.game.player
-
-                self.direction = (reflected_direction.x, reflected_direction.y)
-
-        return None
-    
         
     def Movement_Strategy(self, delta_time):
         return self.intent_manager.Movement_Strategy(delta_time)
@@ -270,6 +244,34 @@ class Enemy(Moving_Entity):
                             f"speed {self.agility}\n"
                         )
 
+    
+    def Entity_Collision_Detection(self, tilemap):
+        colliding_entity = super().Entity_Collision_Detection(tilemap)
+
+        if colliding_entity:
+            if colliding_entity.type == 'player':
+                # Prevent further movement towards the player by stopping the enemy's movement
+                self.direction = (0, 0)
+                return colliding_entity
+
+            # Collision logic for other entities
+            collision_vector = pygame.math.Vector2(self.pos[0] - colliding_entity.pos[0],
+                                                self.pos[1] - colliding_entity.pos[1])
+            if collision_vector.length() > 0:
+                collision_vector = collision_vector.normalize()
+                direction_vector = pygame.math.Vector2(self.direction)
+                reflected_direction = direction_vector.reflect(collision_vector)
+
+                if self.Future_Rect(reflected_direction).colliderect(self.game.player.rect()):
+                    self.direction = (0, 0)
+
+                    return self.game.player
+
+                self.direction = (reflected_direction.x, reflected_direction.y)
+
+        return None
+    
+
     def Trap_Collision_Handler(self):
         for trap in self.nearby_traps:
             if self.rect().colliderect(trap.rect()):
@@ -324,15 +326,19 @@ class Enemy(Moving_Entity):
         self.Render_Attacking_Symbol(surf, offset)
 
     
-
-    def Render_Health_Bar(self, surf, offset = (0,0)):
+    def Get_Health_Index(self):
+        # Correct potential rounding issues at full health
+        if self.health == self.max_health:
+            return 0
         health_fraction = self.health / self.max_health
 
         # Map the fraction to an index from 0 to 9 (assuming 10 total images)
         health_index = max(-1, min(int((1 - health_fraction) * 9), 9))  # Invert fraction and scale to index range
-        # Correct potential rounding issues at full health
-        if self.health == self.max_health:
-            health_index = 0
+
+        return health_index
+
+    def Render_Health_Bar(self, surf, offset = (0,0)):
+        health_index = self.Get_Health_Index()
 
         health_bar = self.health_bar[health_index]
         surf.blit(health_bar, (self.rect().left - offset[0], self.rect().bottom - offset[1] - self.size[1] // 2 + 4))
@@ -364,9 +370,26 @@ class Enemy(Moving_Entity):
     def Set_Charge(self, charge):
         self.charge = charge
 
+# Ability functions
+
     # Causes the enemy to run away
     def Set_Retreat(self):
         return self.intent_manager.Set_Retreat()
+    
+    def Trigger_Instant_Attack(self):
+        return self.intent_manager.Trigger_Instant_Attack()
+    
+    def Reset_Attack_Speed(self):
+        return self.intent_manager.Reset_Attack_Speed()
+    
+    def Set_Behavior_Pattern(self, pattern):
+        return self.intent_manager.Set_Behavior_Pattern(pattern)
+    
+    def Set_Max_Weapon_Charge(self, amount):
+        self.max_weapon_charge = amount
+
+    def Reset_Behavior(self):
+        self.intent_manager.Reset_Behavior()
     
 
     def Render_Attacking_Symbol(self, surf, offset = (0,0)):

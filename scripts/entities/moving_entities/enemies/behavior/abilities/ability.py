@@ -37,13 +37,13 @@ class Ability():
         self.cooldown -= delta_time
         return True
 
+    # Returns the cooldown for now, maybe children can do more with it
     def Update(self, delta_time) -> bool:
-        if not self._Update_Cooldown(delta_time):
-            self._Reset_Attack()
-            return False
+        if not self.cooldown:
+            return True
         
-        # Returns tre if attack should be triggered
-        return True
+        return self._Update_Cooldown(delta_time)
+             
 
     
     # Check if the ability is triggered

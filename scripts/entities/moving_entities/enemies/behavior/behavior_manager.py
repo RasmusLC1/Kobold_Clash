@@ -28,6 +28,7 @@ class Behavior_Manager():
         self.engagement_cooldown = 0
         self.stored_health = self.entity.health # Used to check if entity has taken damage 
         self.Set_Behavior_Pattern(behavior)
+        self.behavior_holder = self.behavior
         self.attack_handler = Attack_Handler(game, entity, max_weapon_charge) 
         self.ability_handler = Ability_Handler(game, entity, ability)
         
@@ -173,14 +174,23 @@ class Behavior_Manager():
     
     # Returns true if enemy is within range
     def Engagement_Controller(self):
+        if self.attack_handler.Get_Attack_Triggered():
+            return False
+        
         in_range = self.Check_Attack_Distance()
-
         if not in_range:
             return False
         
         self.attack_handler.Set_Attack_Triggered(in_range)
         return True
     
+    def Trigger_Instant_Attack(self):
+        value = self.attack_handler.Set_Max_Weapon_Charge(self.attack_handler.max_weapon_charge / 4)
+        return value
+    
+    def Reset_Attack_Speed(self):
+        return self.attack_handler.Reset_Max_Weapon_Charge()
+
 
     def Update_Engagement_Cooldown(self, delta_time):
         if self.engagement_cooldown <= 0:
@@ -226,6 +236,9 @@ class Behavior_Manager():
 
     def Idle(self, delta_time):
         pass
+
+    def Reset_Behavior(self):
+        self.Set_Behavior_Pattern(self.behavior_holder)
 
     # Returns true if entity if in attack range
     def Check_Attack_Distance(self):

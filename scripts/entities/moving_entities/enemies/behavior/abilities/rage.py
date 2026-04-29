@@ -1,12 +1,44 @@
 from scripts.entities.moving_entities.enemies.behavior.abilities.ability import Ability
 from scripts.engine.keys.keys import keys
 
-COOLDOWN_TIME = 10
+COOLDOWN_TIME = 30
+
 class Rage(Ability):
     def __init__(self, game, entity, name):
-        super().__init__(game, entity, name)
-        
-    # Returns the cooldown time before another special attack 
+        super().__init__(game, entity, name, can_attack_while_triggered=True)
+        self.rage_time = 0
+        self.rage_strength_bonus = 3
+
     def Activate(self):
-        self.entity.Set_Effect(keys.speed, 4)
+        if not super().Activate():
+            return False
+        self.entity.Set_Behavior_Pattern(keys.direct)
+        self.entity.Trigger_Instant_Attack()
+        self.entity.Set_Effect(keys.increase_strength, self.rage_strength_bonus)
+        self.rage_time = 5 # 10 seconds of rage
+        return True
+
+    def Update(self, delta_time):
+        if self.rage_time:
+            self.Update_Rage_Timer(delta_time)
+
+        return super().Update(delta_time)    
+    
+    def Update_Rage_Timer(self, delta_time):
+        if self.rage_time <= 0:
+            self._Reset_Attack()
+            return False
         
+        self.rage_time -= delta_time
+        return True
+
+    def _Reset_Attack(self):
+        self.rage_time = 0
+        self.entity.Reset_Attack_Speed()
+        self.entity.Reset_Behavior()
+        
+        # Returns true if entity is damaged
+    def Check_If_Trigger(self):
+        index = self.entity.Get_Health_Index()
+        return index > 5
+            

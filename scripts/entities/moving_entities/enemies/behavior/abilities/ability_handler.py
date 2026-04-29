@@ -27,16 +27,19 @@ class Ability_Handler():
 
     def Update(self, delta_time):
         if not self.active_ability:
-            return self._Check_If_Abilities_Can_Be_Triggered()
+            return self._Update_Abilities(delta_time)
         
-        if self.active_ability.Get_Cooldown() <= 0:
+        if self.active_ability.Get_Cooldown() > 0:
             self.Set_Active_Attack(None)
 
         return True
     
     # Returns true if any abilities can be triggerd
-    def _Check_If_Abilities_Can_Be_Triggered(self):
+    def _Update_Abilities(self, delta_time):
         for ability in self.abilities.values():
+            if not ability.Update(delta_time):
+                continue
+
             if not ability.Check_If_Trigger():
                 continue
 
@@ -70,6 +73,7 @@ class Ability_Handler():
         
         if not ability.Activate():
             return False
+        
         self.Set_Active_Attack(ability)
         return True
     
