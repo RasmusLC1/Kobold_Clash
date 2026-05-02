@@ -287,6 +287,9 @@ class Moving_Entity(PhysicsEntity):
         if self.health <= 0:
             return False
         
+        if self.effects.Check_Invulnerable(): # Cannot take damage if invulnerable
+            return False
+        
         if self.Check_Blocking_Direction(direction) or self.damage_cooldown > 0:
             return False
         

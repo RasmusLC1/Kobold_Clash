@@ -40,12 +40,17 @@ class Movement_Strategies():
 
     # Return True if pathing updated else false
     def Movement_Strategy(self, delta_time) -> bool:
-        if self.game.player.effects.Get_Effect_Strength(keys.invisibility):
-            return False
-
         if self.entity.distance_to_player > 300:
             return False
         
+        if self.game.player.effects.Get_Effect_Strength(keys.invisibility):
+            return False
+        
+
+        # Entity cannot move if invulnerable
+        if self.entity.effects.Get_Effect_Strength(keys.invulnerable):
+            return False
+
         # Check if the enemy has line of sight if not return
         # TODO: Go to players last known tile
         if not self.Handle_Line_Of_Sight(delta_time):
