@@ -48,7 +48,7 @@ class Movement_Strategies():
         
 
         # Entity cannot move if invulnerable
-        if self.entity.effects.Get_Effect_Strength(keys.invulnerable):
+        if self.entity.active_ability == keys.invulnerable:
             return False
 
         # Check if the enemy has line of sight if not return

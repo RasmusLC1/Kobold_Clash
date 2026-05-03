@@ -40,11 +40,11 @@ class Effect():
     # set effect, defualt is not permanent
     # If permanent is enabled it sets a lower boundary for effect
     def Set_Effect(self, effect_time, permanent = False):
-        if permanent:
-            self.Set_Permanent(effect_time)
-
         if self.effect >= self.effect_max:
             return False
+
+        if permanent:
+            self.Set_Permanent(effect_time)
         
         self.effect = min(effect_time + self.effect, self.effect_max)
         self.Set_Cooldown()

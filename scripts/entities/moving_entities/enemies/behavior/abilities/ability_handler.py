@@ -1,7 +1,7 @@
 from scripts.entities.moving_entities.enemies.behavior.abilities.dash import Dash
 from scripts.entities.moving_entities.enemies.behavior.abilities.jump_attack import Jump_Attack
 from scripts.entities.moving_entities.enemies.behavior.abilities.run_away import Run_Away
-from scripts.entities.moving_entities.enemies.behavior.abilities.invincible import Invincible
+from scripts.entities.moving_entities.enemies.behavior.abilities.invulnerable import Invulnerable
 from scripts.entities.moving_entities.enemies.behavior.abilities.rage import Rage
 
 from scripts.engine.keys.keys import keys
@@ -13,7 +13,7 @@ class Ability_Handler():
         keys.dash : Dash,
         keys.jump : Jump_Attack,
         keys.run_away : Run_Away,
-        keys.invincible : Invincible,
+        keys.invulnerable : Invulnerable,
         keys.rage : Rage,
     }
 
@@ -30,7 +30,7 @@ class Ability_Handler():
             return self._Update_Abilities(delta_time)
         
         if self.active_ability.Get_Cooldown() > 0:
-            self.Set_Active_Attack(None)
+            self.Remove_Active_Ability()
 
         return True
     
@@ -38,6 +38,9 @@ class Ability_Handler():
     def _Update_Abilities(self, delta_time):
         for ability in self.abilities.values():
             if not ability.Update(delta_time):
+                continue
+
+            if self.entity.active_ability:
                 continue
 
             if not ability.Check_If_Trigger():
@@ -73,6 +76,9 @@ class Ability_Handler():
         
         if not ability.Activate():
             return False
+
+        if not self.entity.Set_Active_Ability(name):
+            return False
         
         self.Set_Active_Attack(ability)
         return True
@@ -80,6 +86,10 @@ class Ability_Handler():
 
     def Set_Active_Attack(self, ability):
         self.active_ability = ability
+
+    def Remove_Active_Ability(self):
+        self.active_ability = None
+        self.entity.Remove_Active_Ability()
     
     # Allows access like handler.dash instead of handler.Get_Attack('dash)
     def __getattr__(self, name):

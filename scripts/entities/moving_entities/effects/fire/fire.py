@@ -22,12 +22,7 @@ class Fire(Effect):
         if not self.effect:
             return False
         
-        # Check for resistances
-        if self.entity.effects.fire_resistance.effect or self.entity.effects.wet.effect:
-            self.effect = 0
-            self.cooldown = 0
-            if self.entity.effects.wet.effect:
-                self.entity.effects.wet.Decrease_Effect()
+        if self.Check_Resistance():
             return False
         
         if self.Update_Cooldown(delta_time):
@@ -37,6 +32,17 @@ class Fire(Effect):
 
         self.Effect_Animation_Cooldown(delta_time)
         return True
+    
+    def Check_Resistance(self):
+         # Check for resistances
+        if self.entity.effects.fire_resistance.effect or self.entity.effects.wet.effect:
+            self.effect = 0
+            self.cooldown = 0
+            if self.entity.effects.wet.effect:
+                self.entity.effects.wet.Decrease_Effect()
+            return True
+        
+        return False
     
     def Damage_Taken(self, damage):
         self.entity.Set_Health(self.entity.health - max(1, damage // 2))

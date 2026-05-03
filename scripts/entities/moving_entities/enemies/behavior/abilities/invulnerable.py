@@ -3,7 +3,7 @@ from scripts.engine.keys.keys import keys
 
 
 COOLDOWN_TIME = 50
-class Invincible(Ability):
+class Invulnerable(Ability):
     def __init__(self, game, entity, name):
         super().__init__(game, entity, name)
         

@@ -145,7 +145,7 @@ class Graphics_Loader:
             keys.wet : get_tiles_from_sheet('particles/effects/wet.png', 2, 0, 0, 0, 32, 32),
             keys.regen : get_tiles_from_sheet('particles/effects/regen.png', 2, 1, 0, 0, 32, 32),
             keys.electric : get_tiles_from_sheet('particles/effects/electric.png', 5, 0, 0, 0, 32, 32),
-            keys.invincible : get_tiles_from_sheet('particles/effects/invincible.png', 6, 0, 0, 0, 32, 32),
+            keys.invulnerable : get_tiles_from_sheet('particles/effects/invincible.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(effect_assets)
     

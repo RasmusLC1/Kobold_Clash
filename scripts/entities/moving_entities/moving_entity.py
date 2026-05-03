@@ -31,6 +31,7 @@ class Moving_Entity(PhysicsEntity):
         self.direction_y_holder = 0
         self.attack_direction = (0,0)
         self.target = (0,0)
+        self.active_ability = None
         
         self.damage_cooldown = 0
         
@@ -280,14 +281,13 @@ class Moving_Entity(PhysicsEntity):
         self.damage_cooldown = DAMAGE_COOLDOWN_MAX
         
             
-            
     # Damage = Total damage, effect = (effect, effect strength) 
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
         # Prevent aditional damage if entity is already dead
         if self.health <= 0:
             return False
         
-        if self.effects.Check_Invulnerable(): # Cannot take damage if invulnerable
+        if self.active_ability == keys.invulnerable: # Cannot take damage if invulnerable
             return False
         
         if self.Check_Blocking_Direction(direction) or self.damage_cooldown > 0:
@@ -389,6 +389,16 @@ class Moving_Entity(PhysicsEntity):
 
     def Set_Target(self, pos):
         self.target = pos
+
+    # Returns True if there is no active ability, can only be one active at a time
+    def Set_Active_Ability(self, ability):
+        if self.active_ability:
+            return self.active_ability == ability # Returns true if the active ability is the same as the one being triggered                
+        self.active_ability = ability
+        return True
+    
+    def Remove_Active_Ability(self):
+        self.active_ability = None
 
     def Set_Health(self, amount):
         self.health = amount

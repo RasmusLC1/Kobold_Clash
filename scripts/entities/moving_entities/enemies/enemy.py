@@ -55,7 +55,7 @@ class Enemy(Moving_Entity):
         self.distance_to_player = 9999
         self.movement_strategy = default_range 
         self.attack_distance = self.size[0] * 2 
-        self.distance_calculation_cooldown = 0 
+        self.distance_calculation_cooldown = 0
 
         self.locked_on_target = 0 
         self.attack_symbol_offset = 20

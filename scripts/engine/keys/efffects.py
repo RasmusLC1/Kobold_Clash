@@ -2,8 +2,6 @@ class Effects():
 
 # Effects
     invulnerable = "invulnerable"
-
-    invincible = "invincible"
     
     thorns = "thorns"
 
