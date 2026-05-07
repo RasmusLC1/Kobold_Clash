@@ -122,10 +122,10 @@ class Player(Moving_Entity):
         self.game.particle_handler.Activate_Particles(1, keys.soul_particle, self.rect().center, time = random.uniform(1.5, 2))
 
 
-    def Entity_Collision_Detection(self, tilemap):
+    def Entity_Collision_Detection(self):
         if self.movement_handler.dashing > 40:
             return None
-        return super().Entity_Collision_Detection(tilemap)
+        return super().Entity_Collision_Detection()
     
     def Remove_Active_Weapon(self):
         self.weapon_handler.Remove_Active_Weapon()

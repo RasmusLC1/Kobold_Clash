@@ -370,6 +370,15 @@ class Enemy(Moving_Entity):
     def Set_Charge(self, charge):
         self.charge = charge
 
+    def Entity_Collision_Detection(self):
+        future_pos = super().Entity_Collision_Detection()
+        player = self.game.player
+        # Handle collision with the player
+        if player.rect().colliderect(self.rect_future(future_pos)):
+            self.pushed_entities.append(player)
+        
+        return future_pos
+
 # Ability functions
 
     # Causes the enemy to run away

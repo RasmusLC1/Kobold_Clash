@@ -32,6 +32,7 @@ class Moving_Entity(PhysicsEntity):
         self.attack_direction = (0,0)
         self.target = (0,0)
         self.active_ability = None
+        self.pushed_entities = []
         
         self.damage_cooldown = 0
         
@@ -151,8 +152,8 @@ class Moving_Entity(PhysicsEntity):
 
     # Movement handling
     def Movement(self, tilemap):
-        if self.Entity_Collision_Detection(tilemap):
-            return  
+        self.Entity_Collision_Detection()
+        self.Apply_Repulsion(tilemap)
         
         self.Tile_Map_Collision_Detection(tilemap)
 
@@ -201,40 +202,37 @@ class Moving_Entity(PhysicsEntity):
                 self.pos[1] = entity_rect.y
 
 
-    def Entity_Collision_Detection(self, tilemap):
+    def Entity_Collision_Detection(self):
+        self.pushed_entities.clear()
         future_pos = (self.pos[0] + self.frame_movement[0], self.pos[1] + self.frame_movement[1])
         for enemy in self.nearby_enemies:
             if enemy != self and enemy.rect().colliderect(self.rect_future(future_pos)):
-                self.Apply_Repulsion(enemy, tilemap)
-                return enemy
-        
-        # Handle collision with the player
-        if self.type != 'player' and self.game.player.rect().colliderect(self.rect_future(future_pos)):
-            self.Apply_Repulsion(self.game.player, tilemap)
-            return self.game.player
+                self.pushed_entities.append(enemy)
                 
-        return None
+        return future_pos
 
-    def Apply_Repulsion(self, other_entity, tilemap) -> None:
-        if not other_entity:
+    def Apply_Repulsion(self, tilemap) -> None:
+        if not self.pushed_entities:
             return
-        # Check if entity is stronger than the other, if no then simply return as it cannot push it
-        if self.strength < other_entity.strength:
-            return
+        
+        for entity in self.pushed_entities:
+            # Check if entity is stronger than the other, if no then simply return as it cannot push it
+            if self.strength < entity.strength:
+                return
 
-        # Calculate repulsion strength based on strength
-        repulsion_strength = 1 + (self.strength - other_entity.strength) / 10
+            # Calculate repulsion strength based on strength
+            repulsion_strength = 1 + (self.strength - entity.strength) / 10
 
-        direction_vector = pygame.math.Vector2(self.pos) - pygame.math.Vector2(other_entity.pos)
-        if direction_vector.length() < 0:
-            return
-        if direction_vector:
-            direction_vector.normalize_ip()
+            direction_vector = pygame.math.Vector2(self.pos) - pygame.math.Vector2(entity.pos)
+            if direction_vector.length() < 0:
+                return
+            if direction_vector:
+                direction_vector.normalize_ip()
 
-        direction_vector *= repulsion_strength
+            direction_vector *= repulsion_strength
 
-        # Push the other entity backwards
-        other_entity.Push(direction_vector, tilemap)
+            # Push the other entity backwards
+            entity.Push(direction_vector, tilemap)
     
 
     def rect_future(self, future_pos):
