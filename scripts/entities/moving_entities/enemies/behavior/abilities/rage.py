@@ -10,13 +10,11 @@ class Rage(Ability):
         self.rage_strength_bonus = 3
 
     def Activate(self):
-        if not super().Activate():
-            return False
         self.entity.Set_Behavior_Pattern(keys.direct)
         self.entity.Trigger_Instant_Attack()
         self.entity.Set_Effect(keys.increase_strength, self.rage_strength_bonus)
         self.rage_time = 5 # 10 seconds of rage
-        return True
+        return COOLDOWN_TIME
 
     def Update(self, delta_time):
         if self.rage_time:

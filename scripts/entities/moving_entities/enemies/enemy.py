@@ -92,7 +92,7 @@ class Enemy(Moving_Entity):
 
 
     def Update(self, tilemap, delta_time, movement=(0, 0)):
-        self.Reset_Max_Speed()
+
         self.Calculate_Distance_To_Player(delta_time)
         self.intent_manager.Update_Intent(delta_time)
         movement = self.direction
@@ -103,6 +103,7 @@ class Enemy(Moving_Entity):
         self.Update_Alert_Cooldown(delta_time)
         self.Update_Locked_On_Target(delta_time)
         self.Set_Damaged(False)
+        self.Reset_Max_Speed()
 
 
     def Set_Direction_Holder(self):
@@ -126,9 +127,7 @@ class Enemy(Moving_Entity):
 
     def Set_Charge_To_Max(self):
         self.charge = self.max_weapon_charge
-        
     
-        
     def Movement_Strategy(self, delta_time):
         return self.intent_manager.Movement_Strategy(delta_time)
     
@@ -359,6 +358,7 @@ class Enemy(Moving_Entity):
         self.Set_Target()
         self.Trigger_Basic_Attack()
         self.intent_manager.Reset_Attack()
+
 
     def Trigger_Basic_Attack(self):
         if not self.active_weapon:

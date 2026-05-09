@@ -59,7 +59,7 @@ class Moving_Entity(PhysicsEntity):
         self.friction_holder = self.friction # Holder for friction to reset it
         self.acceleration = agility * 1000
         self.acceleration_holder = self.acceleration # accelarition holder to reset it
-        self.max_speed = max_speed  * 100  # Max speed of the entity
+        self.max_speed = max_speed  * 100  # Max speed of the entity measured in 100s
         self.max_speed_holder = self.max_speed # Max speed holder to reset it
 
         # Handle Blocking
@@ -387,6 +387,7 @@ class Moving_Entity(PhysicsEntity):
 
     def Set_Target(self, pos):
         self.target = pos
+
 
     # Returns True if there is no active ability, can only be one active at a time
     def Set_Active_Ability(self, ability):

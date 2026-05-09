@@ -19,7 +19,7 @@ class Speed(Effect):
         if not self.effect or self.entity.effects.frozen.effect:
             return False
 
-        self.entity.max_speed = min(14, self.entity.max_speed * 2)
+        self.entity.max_speed = min(4000, self.entity.max_speed * self.effect)
         
         self.Update_Cooldown(delta_time)
 

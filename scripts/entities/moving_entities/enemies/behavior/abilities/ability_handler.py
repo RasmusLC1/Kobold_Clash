@@ -25,14 +25,21 @@ class Ability_Handler():
         self.cooldown = 0 
         self.Get_Ability(ability)
 
+    
     def Update(self, delta_time):
+        # Always update the active ability if it exists
         if not self.active_ability:
+            # Only look for new abilities if none are active
             return self._Update_Abilities(delta_time)
         
-        if self.active_ability.Get_Cooldown() > 0:
+        self.active_ability.Update(delta_time)
+        
+        # If the ability has finished or cooled down, clear it
+        # Note: You might want a specific 'is_finished' flag instead of just cooldown
+        if self.active_ability.Get_Cooldown() <= 0: 
             self.Remove_Active_Ability()
-
         return True
+
     
     # Returns true if any abilities can be triggerd
     def _Update_Abilities(self, delta_time):
