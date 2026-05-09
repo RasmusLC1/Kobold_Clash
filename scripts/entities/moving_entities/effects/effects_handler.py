@@ -112,13 +112,16 @@ class Status_Effect_Handler:
         
         return effect.effect
     
-    # Allows access like effects.fire
-    def __getattr__(self, effect_name):
-        print(effect_name, self.entity.type)
-        if effect_name in self.EFFECT_REGISTRY:
-            return self.Get_Effect(effect_name)
-            
-        raise AttributeError(f"'{type(self).__name__}' object has no attribute '{effect_name}'")
+    
+    # This only runs if 'self.name' doesn't exist yet
+    def __getattr__(self, name):
+        if name not in self.EFFECT_REGISTRY:
+            raise AttributeError(f"'{type(self).__name__}' has no attribute '{name}'")
+        
+        print(name)
+        effect = self.Get_Effect(name)
+        setattr(self, name, effect) # Future calls bypass __getattr__ entirely
+        return effect
 
 
     # Set the effect of the entity
