@@ -55,6 +55,7 @@ class Effect():
             return False
         
         self.Update_Cooldown(delta_time)
+        
         return True
 
     def Remove_Effect(self, reduce_permanent = 0):

@@ -112,15 +112,13 @@ class Status_Effect_Handler:
         
         return effect.effect
     
-    # Allows access like handler.fire
-    def __getattr__(self, name):
-        # Bridge: handler.magnet -> keys.magnet -> "magnet"
-        key_value = getattr(keys, name, name) 
-        
-        if key_value in self.EFFECT_REGISTRY:
-            return self.Get_Effect(key_value)
+    # Allows access like effects.fire
+    def __getattr__(self, effect_name):
+        print(effect_name, self.entity.type)
+        if effect_name in self.EFFECT_REGISTRY:
+            return self.Get_Effect(effect_name)
             
-        raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
+        raise AttributeError(f"'{type(self).__name__}' object has no attribute '{effect_name}'")
 
 
     # Set the effect of the entity
@@ -174,7 +172,13 @@ class Status_Effect_Handler:
 
     # Use list comprehension for performance, remove effect if effect has run out
     def Update_Status_Effects(self, delta_time):
-        self.active_effects = [effect for effect in self.active_effects if effect.Update_Effect(delta_time)]
+        def process_effect(effect): # Helper function to process the function
+            is_alive = effect.Update_Effect(delta_time)
+            if not is_alive:
+                effect.Remove_Effect()
+            return is_alive
+
+        self.active_effects = [effect for effect in self.active_effects if process_effect(effect)]
 
 
     def Get_Effect_Description(self, effect):

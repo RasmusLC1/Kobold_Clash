@@ -11,33 +11,35 @@ class Invulnerable(Effect):
     
     #set Fire effect
     def Set_Effect(self, effect_time, permanent = False):
-        # Treat invulnerable as an ability as it affects movement and damage
-        if not self.entity.Set_Active_Ability(keys.invulnerable):
-            return False
         
         if not super().Set_Effect(effect_time, permanent):
             return False
         
+        # Treat invulnerable as an ability as it affects movement and damage
+        self.entity.Set_Active_Ability(keys.invulnerable)
         self.entity_health_holder = self.entity.health
-        self.entity.effects.Set_Effect(keys.snare, self.cooldown)
 
         return True
     
     def Update_Effect(self, delta_time):
-        if not self.effect:
+        if not super().Update_Effect(delta_time):
             return False
         
-        self.Update_Cooldown(delta_time)
-
+        self.entity.frame_movement = (0, 0)
         return True
+
     
     def Remove_Effect(self, reduce_permanent=0):
-        state = super().Remove_Effect(reduce_permanent)
-        if state:
-            self.entity.effects.Set_Effect(keys.snare, -10)
+        disable_invulnerable = super().Remove_Effect(reduce_permanent)
+        if disable_invulnerable:
             self.entity.Remove_Active_Ability()
 
-        return state
+        return disable_invulnerable
+
+
     
     def Damage_Taken(self, damage):
         self.entity.Set_Health(self.entity_health_holder)
+
+    def Push(self, direction):
+        self.entity.Set_Frame_movement((0, 0)) # Cancel frame movementaw

@@ -1,4 +1,5 @@
 from scripts.engine.awakening.awakening import Awakening
+from scripts.engine.keys.keys import keys
 
 class Clatter():
     def __init__(self, game) -> None:
@@ -34,7 +35,7 @@ class Clatter():
         return self.awakening.awakening_level
 
     def Calculate_Silence_Modifier(self, clatter_range):
-        if self.game.player.effects.silence.effect:
+        if self.game.player.active_ability == keys.silence:
             clatter_range = max(1, clatter_range - self.game.player.effects.silence.effect * 100)
 
         return clatter_range

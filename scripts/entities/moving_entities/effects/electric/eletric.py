@@ -33,7 +33,6 @@ class Electric(Effect):
         if self.Update_Cooldown(delta_time):
             damage = 1
             self.entity.Damage_Taken(damage, (self.effect_type, 0))
-        
 
         self.Effect_Animation_Cooldown(delta_time)
         if self.snare_time > 0:

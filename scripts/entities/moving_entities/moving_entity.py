@@ -164,7 +164,7 @@ class Moving_Entity(PhysicsEntity):
     def Set_Active(self, duration):
         # use hasattr to check if self.effects exists
         if hasattr(self, "effects"):
-            if self.effects.invisibility.effect:
+            if self.active_ability == keys.invisibility:
                 return
         return super().Set_Active(duration)
     

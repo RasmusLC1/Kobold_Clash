@@ -243,7 +243,7 @@ class Behavior_Manager():
     # Returns true if entity if in attack range
     def Check_Attack_Distance(self):
         # Check if the player is invisible, if yes no attack
-        if self.game.player.effects.Get_Effect_Strength(keys.invisibility):
+        if self.game.player.active_ability == keys.invisibility:
             return False
         
         return self.entity.distance_to_player < self.entity.attack_distance

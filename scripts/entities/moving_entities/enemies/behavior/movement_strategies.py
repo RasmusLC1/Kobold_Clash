@@ -43,7 +43,7 @@ class Movement_Strategies():
         if self.entity.distance_to_player > 300:
             return False
         
-        if self.game.player.effects.Get_Effect_Strength(keys.invisibility):
+        if self.game.player.active_ability == keys.invisibility:
             return False
         
 
