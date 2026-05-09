@@ -453,8 +453,12 @@ class Moving_Entity(PhysicsEntity):
     def Increase_Max_Health(self, value):
         self.max_health += value
 
+    # Used for animations
     def Set_Action(self, movement = None):
         pass
+
+    def Get_Pushed_Entities(self):
+        return self.pushed_entities
 
 
 

@@ -118,7 +118,6 @@ class Status_Effect_Handler:
         if name not in self.EFFECT_REGISTRY:
             raise AttributeError(f"'{type(self).__name__}' has no attribute '{name}'")
         
-        print(name)
         effect = self.Get_Effect(name)
         setattr(self, name, effect) # Future calls bypass __getattr__ entirely
         return effect

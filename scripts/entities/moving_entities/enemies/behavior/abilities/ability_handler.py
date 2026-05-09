@@ -40,6 +40,9 @@ class Ability_Handler():
             if not ability.Update(delta_time):
                 continue
 
+            if not ability.Check_Trigger_Cooldown(delta_time):
+                continue
+
             if self.entity.active_ability:
                 continue
 

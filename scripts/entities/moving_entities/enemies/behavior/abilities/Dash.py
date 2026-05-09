@@ -1,62 +1,37 @@
 from scripts.entities.moving_entities.enemies.behavior.abilities.ability import Ability
-
-import random
-import math
-import pygame
 from scripts.engine.keys.keys import keys
+import math
 
 class Dash(Ability):
     def __init__(self, game, entity, name):
         super().__init__(game, entity, name)
-        self.dashing = 0
-        self.dash_direction = (0,0)
-        self.dash_start = 60
-        self.dash_mid = 50
+        self.target = None
 
-    def Dashing_Update(self):
-        if not self.dashing:
-            return
-            
+    def Update(self, delta_time):
+        if self.target:
+            self.entity.max_speed = min(20, self.entity.max_speed * 10)
+            if self._Check_Distance(self.target) < 10:
+                self._Reset_Attack()
 
+        return super().Update(delta_time)    
 
-        if abs(self.dashing) in {self.dash_start, self.dash_mid}:
-            for i in range(20):
-                angle = random.random() * math.pi * 2
-                speed = random.random() * 0.5 + 0.5
-                self.game.particle_handler.Activate_Particles(1, keys.dash_particle, self.entity.rect().center, random.uniform(0.5, 1))
-
-        if self.dashing > 0:
-            self.dashing = max(0, self.dashing - 1)
-
-
-        if self.dashing > self.dash_mid:
-            
-            # Temporarily set friction to 1 to avoid deceleration during dash
-            self.entity.friction = 1
-            self.entity.max_speed = 40  # Adjust max speed speed for dashing distance
-
-
-            # Set the velocity directly based on dash without friction interference
-            self.entity.velocity[0] = self.dash_direction[0] * self.dashing 
-            self.entity.velocity[1] = self.dash_direction[1] * self.dashing 
-
-            if abs(self.dashing) == self.dash_mid+1:
-                self.entity.velocity[0] *= 0.1
-                self.entity.velocity[1] *= 0.1
-
-            self.game.particle_handler.Activate_Particles(1, keys.dash_particle, self.entity.rect().center, random.uniform(0.5, 1))
-
-    def Dash(self):
-        if self.dashing:
+    # Returns the cooldown time before another special attack 
+    def Activate(self):
+        if not super().Activate():
             return False
-        self.Set_Dash_Direction()
-        self.dashing = 60
+        self.target = self.entity.target
+        self.entity.Set_Behavior_Pattern(keys.direct)
         return True
-    
-    def Set_Dash_Direction(self):
-        self.entity.Set_Target(self.game.player.pos)
 
-        self.dash_direction = pygame.math.Vector2(self.entity.target[0] - self.entity.pos[0], self.entity.target[1] - self.entity.pos[1])
-        if not self.dash_direction:
-            return
-        self.dash_direction.normalize_ip()
+    def _Check_Distance(self, target):
+        distance = math.sqrt((self.entity.pos[0] - target[0]) ** 2 + (self.entity.pos[1] - target[1]) ** 2)
+        return distance
+            
+    def _Reset_Attack(self):
+        self.target = None
+        self.entity.Reset_Behavior()
+
+    # Returns true if player is between 150 and 250 after
+    def Check_If_Trigger(self):
+        distance_to_player = self._Check_Distance(self.game.player.pos)
+        return  distance_to_player > 150 and distance_to_player < 300

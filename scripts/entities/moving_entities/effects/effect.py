@@ -117,14 +117,13 @@ class Effect():
         pass
    
     def Render_Effect(self, surf, offset=(0, 0)):
-        if not self.effect:
-            return
+        pass
+        # if not self.effect:
+        #     return
         
-        if self.animation_max == 0:
-            return
-        image = self.entity.game.assets[self.effect_type][self.animation].convert_alpha()
-        # Set the opacity to 70%
-        image.set_alpha(179)
-        surf.blit(pygame.transform.flip(image, self.entity.animation_handler.flip[0], False), (self.entity.pos[0] - offset[0], self.entity.pos[1] - offset[1] - 5))
-
-
+        # if self.animation_max == 0:
+        #     return
+        # image = self.entity.game.assets[self.effect_type][self.animation].convert_alpha()
+        # # Set the opacity to 70%
+        # image.set_alpha(179)
+        # surf.blit(pygame.transform.flip(image, self.entity.animation_handler.flip[0], False), (self.entity.pos[0] - offset[0], self.entity.pos[1] - offset[1] - 5))

@@ -8,6 +8,7 @@ class Ability():
         self.entity = entity
         self.name = name
         self.cooldown = 0
+        self.trigger_cooldown = 0
         self.can_attack_while_triggered = can_attack_while_triggered
         
     # Returns the cooldown time before another special attack 
@@ -32,20 +33,26 @@ class Ability():
     def _Update_Cooldown(self, delta_time):
         if self.cooldown <= 0:
             self.cooldown = 0
-            return False
+            return True
         
         self.cooldown -= delta_time
-        return True
+        return False
+    
+
+    # Preents constant trigger checks
+    def Check_Trigger_Cooldown(self, delta_time):
+        if self.trigger_cooldown <= 0:
+            self.trigger_cooldown = 1
+            return True
+        
+        self.trigger_cooldown -= delta_time
+        return False
+
 
     # Returns the cooldown for now, maybe children can do more with it
     def Update(self, delta_time) -> bool:
-        if not self.cooldown:
-            return True
-        
         return self._Update_Cooldown(delta_time)
              
-
-    
     # Check if the ability is triggered
     def Check_If_Trigger(self) -> bool:
         pass
