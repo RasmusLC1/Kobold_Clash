@@ -27,19 +27,22 @@ class Ability_Handler():
         self.active_ability = None
         self.Get_Ability(ability)
 
+
     
     def Update(self, delta_time):
-        # Check if any abilities are on cooldown. If yes end the update here
-        if not self.Update_Abilities_Cooldown(delta_time):
-            return
+
+        no_cooldowns_active = self.Update_Abilities_Cooldown(delta_time)
         
-        # Always update the active ability if it exists
-        if not self.active_ability:
-            # Only look for new abilities if none are active
+        # Update any active cooldowns
+        if self.active_ability:
+            self.Update_Active_Ability(delta_time)
+            return True 
+
+        # If nothing is active AND no cooldowns are running, look for something new.
+        if no_cooldowns_active:
             return self._Update_Abilities(delta_time)
         
-        self.Update_Active_Ability(delta_time)
-        return True
+        return False
 
 
     def Update_Active_Ability(self, delta_time):
