@@ -21,32 +21,34 @@ class Ability_Handler():
         self.game = game
         self.entity = entity
         self.abilities = {}
+        self.abilities_on_cooldown = []
         self.active_ability = None
-        self.cooldown = 0 
         self.Get_Ability(ability)
 
     
     def Update(self, delta_time):
+        # Check if any abilities are on cooldown. If yes end the update here
+        if not self.Update_Abilities_Cooldown(delta_time):
+            return
+        
         # Always update the active ability if it exists
         if not self.active_ability:
             # Only look for new abilities if none are active
             return self._Update_Abilities(delta_time)
         
-        self.active_ability.Update(delta_time)
-        
-        # If the ability has finished or cooled down, clear it
-        # Note: You might want a specific 'is_finished' flag instead of just cooldown
-        if self.active_ability.Get_Cooldown() <= 0: 
-            self.Remove_Active_Ability()
+        self.Update_Active_Ability(delta_time)
         return True
 
+
+    def Update_Active_Ability(self, delta_time):
+        self.active_ability.Update(delta_time)
+
+        if self.active_ability.Get_Cooldown() > 0: 
+            self.Remove_Active_Ability()
     
     # Returns true if any abilities can be triggerd
     def _Update_Abilities(self, delta_time):
         for ability in self.abilities.values():
-            if not ability.Update(delta_time):
-                continue
-
             if not ability.Check_Trigger_Cooldown(delta_time):
                 continue
 
@@ -56,10 +58,19 @@ class Ability_Handler():
             if not ability.Check_If_Trigger():
                 continue
 
-            self.Trigger_Attack(ability.name)
+            self.Trigger_Ability(ability)
             return True
         
         return False
+    
+    def Update_Abilities_Cooldown(self, delta_time):
+        for ability in self.abilities_on_cooldown:
+            if ability.Update_Cooldown(delta_time):
+                self.abilities_on_cooldown.remove(ability)
+
+        # Return true if empty
+        return not self.abilities_on_cooldown
+
 
     # Returns the instance if it exists, or creates it if it's in the registry.
     def Get_Ability(self, ability):
@@ -79,15 +90,14 @@ class Ability_Handler():
         return new_ability
     
 
-    def Trigger_Attack(self, name):
-        ability = self.abilities.get(name, None)
+    def Trigger_Ability(self, ability):
         if not ability:
             return False
         
         if not ability.Activate():
             return False
 
-        if not self.entity.Set_Active_Ability(name):
+        if not self.entity.Set_Active_Ability(ability.name):
             return False
         
         self.Set_Active_Attack(ability)
@@ -98,6 +108,7 @@ class Ability_Handler():
         self.active_ability = ability
 
     def Remove_Active_Ability(self):
+        self.abilities_on_cooldown.append(self.active_ability)
         self.active_ability = None
         self.entity.Remove_Active_Ability()
     

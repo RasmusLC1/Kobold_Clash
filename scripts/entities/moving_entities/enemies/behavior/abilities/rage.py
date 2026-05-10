@@ -14,7 +14,7 @@ class Rage(Ability):
         self.entity.Trigger_Instant_Attack()
         self.entity.Set_Effect(keys.increase_strength, self.rage_strength_bonus)
         self.rage_time = 5 # 10 seconds of rage
-        return COOLDOWN_TIME
+        return True
 
     def Update(self, delta_time):
         if self.rage_time:
@@ -34,6 +34,7 @@ class Rage(Ability):
         self.rage_time = 0
         self.entity.Reset_Attack_Speed()
         self.entity.Reset_Behavior()
+        self._Set_Cooldown()
         
         # Returns true if entity is damaged
     def Check_If_Trigger(self):

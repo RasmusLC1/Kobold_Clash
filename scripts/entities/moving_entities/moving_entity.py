@@ -124,7 +124,7 @@ class Moving_Entity(PhysicsEntity):
         # Apply acceleration (units/sec^2 → velocity in units/sec)
         self.velocity[0] += movement[0] * self.acceleration * delta_time
         self.velocity[1] += movement[1] * self.acceleration * delta_time
-
+        
         # Clamp velocity (velocity is units/sec, so max_speed must also be units/sec)
         self.velocity[0] = max(-self.max_speed, min(self.velocity[0], self.max_speed))
         self.velocity[1] = max(-self.max_speed, min(self.velocity[1], self.max_speed))
@@ -146,8 +146,6 @@ class Moving_Entity(PhysicsEntity):
             (self.velocity[0] * delta_time) / self.game.render_scale,
             (self.velocity[1] * delta_time) / self.game.render_scale
         ))
-
-
 
 
     # Movement handling
@@ -404,6 +402,9 @@ class Moving_Entity(PhysicsEntity):
 
     def Reduce_Movement(self, factor):
         self.max_speed = self.max_speed // factor
+
+    def Increase_Max_Speed(self, factor):
+        self.max_speed *= factor
 
     def Reset_Max_Speed(self):
         self.max_speed = self.max_speed_holder

@@ -13,15 +13,11 @@ class Ability():
         
     # Returns the cooldown time before another special attack 
     def Activate(self):
-        if self.cooldown > 0:
-            return False
-        
-        self._Set_Cooldown()
-        return True
+        pass
 
 
     def _Reset_Attack(self):
-        pass
+        self._Set_Cooldown()
     
     def _Set_Cooldown(self):
         self.cooldown = self.COOLDOWN_TIME
@@ -30,7 +26,7 @@ class Ability():
         return self.cooldown
 
 
-    def _Update_Cooldown(self, delta_time):
+    def Update_Cooldown(self, delta_time):
         if self.cooldown <= 0:
             self.cooldown = 0
             return True
@@ -51,8 +47,9 @@ class Ability():
 
     # Returns the cooldown for now, maybe children can do more with it
     def Update(self, delta_time) -> bool:
-        return self._Update_Cooldown(delta_time)
-             
+        pass
+
+
     # Check if the ability is triggered
     def Check_If_Trigger(self) -> bool:
         pass

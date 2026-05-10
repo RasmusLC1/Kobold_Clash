@@ -72,7 +72,6 @@ class Behavior_Manager():
     def Check_If_Entity_Has_Attacked(self):
         if not self.attack_handler.Get_Entity_Has_Attacked():
             return False
-
         self.attack_handler.Set_Entity_Has_Attacked(False)
         self.Set_Fallback_Behavior()
         self.Set_Stored_Health()

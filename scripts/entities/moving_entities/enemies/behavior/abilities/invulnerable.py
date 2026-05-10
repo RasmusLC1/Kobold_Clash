@@ -10,7 +10,12 @@ class Invulnerable(Ability):
     # Returns the cooldown time before another special attack 
     def Activate(self):
         self.entity.Set_Effect(keys.invulnerable, 5)
-        return COOLDOWN_TIME
+        return True
+    
+    def Update(self, delta_time):
+        if self.entity.active_ability != keys.invulnerable:
+            self._Reset_Attack()
+        return super().Update(delta_time)
         
     # Returns true if entity is damaged 30% of health
     def Check_If_Trigger(self):

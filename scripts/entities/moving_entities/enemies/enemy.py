@@ -94,8 +94,8 @@ class Enemy(Moving_Entity):
     def Update(self, tilemap, delta_time, movement=(0, 0)):
 
         self.Calculate_Distance_To_Player(delta_time)
-        self.intent_manager.Update_Intent(delta_time)
         movement = self.direction
+        self.intent_manager.Update_Intent(delta_time)
         super().Update(tilemap, delta_time, movement)
 
         self.Set_Direction_Holder()
@@ -358,6 +358,7 @@ class Enemy(Moving_Entity):
         self.Set_Target()
         self.Trigger_Basic_Attack()
         self.intent_manager.Reset_Attack()
+
 
 
     def Trigger_Basic_Attack(self):
