@@ -53,6 +53,7 @@ class Moving_Entity(PhysicsEntity):
         self.health = health
         self.healing_enabled = True
         self.max_health = self.health
+        self.touching_ground = False # Check if the entity is touching the ground
         
         # Movement variables
         self.friction = 0.0001 # Friction, set to the renderscale
@@ -146,6 +147,9 @@ class Moving_Entity(PhysicsEntity):
             (self.velocity[0] * delta_time) / self.game.render_scale,
             (self.velocity[1] * delta_time) / self.game.render_scale
         ))
+
+    def Reset_Velocity(self):
+        self.velocity = [0, 0]
 
 
     # Movement handling
@@ -454,6 +458,9 @@ class Moving_Entity(PhysicsEntity):
 
     def Increase_Max_Health(self, value):
         self.max_health += value
+
+    def Set_Touching_Ground(self, state):
+        self.touching_ground = state
 
     # Used for animations
     def Set_Action(self, movement = None):

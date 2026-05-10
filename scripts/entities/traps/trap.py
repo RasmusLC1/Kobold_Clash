@@ -84,6 +84,8 @@ class Trap(PhysicsEntity):
     def Update_Trapped_Entities(self):
         self.Find_Nearby_Entities()
         for entity in self.entities:
+            if not entity.touching_ground:
+                continue
             if entity.ID in self.damaged_entities: # Check if enemy is in damage cooldown
                 continue
             if entity.ID == self.ID:

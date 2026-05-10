@@ -1,58 +1,35 @@
-import pygame
-from scripts.entities.moving_entities.enemies.behavior.abilities.ability import Ability
+from scripts.entities.moving_entities.enemies.behavior.abilities.dash import Dash
 from scripts.engine.keys.keys import keys
 
-# TODO: UPDATE AND IMPLEMENT properly similar to DASH
-class Jump_Attack(Ability):
+class Jump_Attack(Dash):
     def __init__(self, game, entity, name):
-        super().__init__(game, entity, name)
-        self.attack_length = 0
-    
-    def Jump_Attack(self, entity):
-        # Return true and end the attack if attack is complete
-        if self.Update_Attack_Length():
-            return True
-        
-        attack_direction = self.Set_Attack_Direction(entity)
-        entity.attack_direction = attack_direction
-        if not attack_direction:
+        super().__init__(game, entity, name, min_distance=100, max_distance=200, speed_factor=13)
+        self.wait_before_jump_cooldown = 0
+
+
+    def Update(self, delta_time):
+        if self.Update_Wait_Before_Jumping(delta_time):
             return
         
-        
-        entity.Set_Frame_movement((attack_direction[0], attack_direction[1]))
-        entity.Tile_Map_Collision_Detection(entity.game.tilemap)
-        entity.max_speed *= 15
-        entity.friction = 0
-        entity.charge = entity.max_weapon_charge
-
-        if entity.Attack(entity.game.delta_time):
-            return True
-        else:
-            return False
-
-    def Set_Attack_Length(self, attack_length):
-        if self.attack_length:
-            return
-        self.attack_length = attack_length
-
-    def Update_Attack_Length(self):
-        if not self.attack_length:
-            return False
-        
-        self.attack_length = max(0, self.attack_length - 1)
-        if not self.attack_length:
-            return True
-        
-        return False
+        return super().Update(delta_time)
     
 
-    def Set_Attack_Direction(self, entity):
-            if not entity.target:
-                return (0, 0)
-            
-            attack_direction = pygame.math.Vector2(entity.target[0] - entity.pos[0], entity.target[1] - entity.pos[1])
-            if not attack_direction:
-                return (0, 0)
-            attack_direction.normalize_ip()
+    def Update_Wait_Before_Jumping(self, delta_time):
+        if self.wait_before_jump_cooldown <= 0:
+            self.wait_before_jump_cooldown = 0
+            return False
+        
+        self.wait_before_jump_cooldown -= delta_time
+        self.entity.Reduce_Movement(10000) # Prevents the enemy from moving while jump charges
+        return True
 
-            return attack_direction
+
+
+    def Activate(self):
+        self.wait_before_jump_cooldown = (10 - self.entity.agility) / 5  # wait time before jumping
+        self.entity.Set_Touching_Ground(False)
+        return super().Activate()
+    
+    def _Reset_Attack(self):
+        self.entity.Set_Touching_Ground(True)
+        return super()._Reset_Attack()
