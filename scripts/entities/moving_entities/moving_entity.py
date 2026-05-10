@@ -443,8 +443,8 @@ class Moving_Entity(PhysicsEntity):
     def Set_Effect(self, effect, duration, permanent = False):
         return self.effects.Set_Effect(effect, duration, permanent)
     
-    def Remove_Effect(self, effect, permanent = 0):
-        return self.effects.Remove_Effect(effect, permanent)
+    def Remove_Effect(self, effect, reduce_permanent = 0):
+        return self.effects.Remove_Effect(effect, reduce_permanent)
 
     def Set_Block_Direction(self, direction):
         self.block_direction = direction

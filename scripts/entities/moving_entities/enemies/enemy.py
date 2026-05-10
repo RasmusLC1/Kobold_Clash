@@ -320,9 +320,14 @@ class Enemy(Moving_Entity):
 # RENDER FUNCTIONS
     def Render(self, surf, offset = (0,0)):
         if not super().Render(surf, offset):
-            return
+            return False
+        
+        if self.active <= 100: # Invisibility has lower limit of 100 active for level 1
+            return False
+        
         self.Render_Health_Bar(surf, offset)
         self.Render_Attacking_Symbol(surf, offset)
+        return True
 
     
     def Get_Health_Index(self):

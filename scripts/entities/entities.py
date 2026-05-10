@@ -26,7 +26,7 @@ class PhysicsEntity:
         self.pos = list(pos)
         self.size = size
         self.active = 0
-        self.light_level = 0
+        self.light_level = 0 # Range from 0 to 255, 0 being low
         self.render = True
         self.Set_Tile()
 

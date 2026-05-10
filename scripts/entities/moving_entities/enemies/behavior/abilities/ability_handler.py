@@ -2,6 +2,7 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.dash import Das
 from scripts.entities.moving_entities.enemies.behavior.abilities.jump_attack import Jump_Attack
 from scripts.entities.moving_entities.enemies.behavior.abilities.run_away import Run_Away
 from scripts.entities.moving_entities.enemies.behavior.abilities.invulnerable import Invulnerable
+from scripts.entities.moving_entities.enemies.behavior.abilities.invisibility import Invisibility
 from scripts.entities.moving_entities.enemies.behavior.abilities.rage import Rage
 
 from scripts.engine.keys.keys import keys
@@ -15,6 +16,7 @@ class Ability_Handler():
         keys.run_away : Run_Away,
         keys.invulnerable : Invulnerable,
         keys.rage : Rage,
+        keys.invisibility : Invisibility,
     }
 
     def __init__(self, game, entity, ability):
