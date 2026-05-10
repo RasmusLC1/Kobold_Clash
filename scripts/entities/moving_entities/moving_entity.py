@@ -32,7 +32,7 @@ class Moving_Entity(PhysicsEntity):
         self.attack_direction = (0,0)
         self.target = (0,0)
         self.active_ability = None
-        self.pushed_entities = []
+        self.pushed_entities = set()
         
         self.damage_cooldown = 0
         
@@ -205,7 +205,7 @@ class Moving_Entity(PhysicsEntity):
         future_pos = (self.pos[0] + self.frame_movement[0], self.pos[1] + self.frame_movement[1])
         for enemy in self.nearby_enemies:
             if enemy != self and enemy.rect().colliderect(self.rect_future(future_pos)):
-                self.pushed_entities.append(enemy)
+                self.pushed_entities.add(enemy)
                 
         return future_pos
 

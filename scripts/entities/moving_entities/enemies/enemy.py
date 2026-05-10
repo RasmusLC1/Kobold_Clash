@@ -376,7 +376,7 @@ class Enemy(Moving_Entity):
         player = self.game.player
         # Handle collision with the player
         if player.rect().colliderect(self.rect_future(future_pos)):
-            self.pushed_entities.append(player)
+            self.pushed_entities.add(player)
         
         return future_pos
 
