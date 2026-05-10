@@ -16,6 +16,11 @@ class Dash(Ability):
         self.Set_Cooldown_Time()
 
     def Activate(self):
+        self.entity.Set_Active_Ability(self.name)
+        self.Calculate_Direction()
+        return True
+
+    def Calculate_Direction(self):
         self.target_pos = list(self.game.player.pos)
         
         direction = pygame.math.Vector2(
@@ -26,8 +31,6 @@ class Dash(Ability):
         if direction.length() > 0:
             self.dash_velocity = direction.normalize() * self.speed_factor # The 'Force' of the dash
         
-        self.entity.Set_Active_Ability(self.name)
-        return True
 
     def Update(self, delta_time):
         # Check pushed entities first to prevent duplicate damage as
