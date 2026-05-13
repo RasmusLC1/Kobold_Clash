@@ -8,7 +8,7 @@ import random
 class Skeleton_Ranger(Skeleton):
     def __init__(self, game, pos):
         type = str(random.randint(1, 3))
-        super().__init__(game, pos, keys.skeleton_ranger + '_' + type,  0, 3, 3)
+        super().__init__(game, pos, keys.skeleton_ranger + '_' + type)
         self.Equip_Weapon(Bow(self.game, self.pos))
         
 

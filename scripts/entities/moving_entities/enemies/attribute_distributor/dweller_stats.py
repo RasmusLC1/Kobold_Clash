@@ -1,0 +1,58 @@
+from scripts.engine.keys.keys import keys
+from scripts.entities.moving_entities.enemies.attribute_distributor.enemy_base_state import Enemy_Base_State
+
+DWELLER_STATS = {
+    keys.vampire: Enemy_Base_State(
+        health=150,
+        souls=60,
+        size=(32, 32),
+        max_weapon_charge=0.5,
+        strength=4,
+        speed=3,
+        agility=3,
+        intelligence=2,
+        stamina=2,
+        behavior=keys.retreat_when_damaged,
+        sub_category=keys.dweller,
+        ability=keys.dash,
+        idle_animation=0,
+        run_animation=3,
+        attack_animation=6,
+    ),
+
+    keys.ghoul: Enemy_Base_State(
+        health=80,
+        souls=20,
+        size=(32, 32),
+        max_weapon_charge=0.8,
+        strength=6,
+        speed=6,
+        agility=2,
+        intelligence=2,
+        stamina=2,
+        behavior=keys.hit_and_run,
+        sub_category=keys.dweller,
+        ability=keys.dash,
+        idle_animation=0,
+        run_animation=4,
+        attack_animation=5,
+    ),
+
+    keys.spider: Enemy_Base_State(
+        health=60,
+        souls=20,
+        size=(32, 32),
+        max_weapon_charge=0.9,
+        strength=4,
+        speed=6,
+        agility=3,
+        intelligence=5,
+        stamina=2,
+        behavior=keys.hit_and_run,
+        sub_category=keys.dweller,
+        ability=keys.jump,
+        idle_animation=3,
+        run_animation=3,
+        attack_animation=3,
+    ),
+}

@@ -6,7 +6,7 @@ PLAYER_MAX_ATTACK_DISTANCE = 200
 
 class Electric_Elemental(Elemental):
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.electric_elemental, 3, 3, 3)
+        super().__init__(game, pos, keys.electric_elemental)
 
         # Equip the weapon
         self.Equip_Weapon(Claw(game, self.pos)) 

@@ -7,7 +7,7 @@ from scripts.entities.items.weapons.magic_attacks.poison.poison_explosion import
 
 class Poison_Elemental(Elemental):
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.poison_elemental, 3, 3, 3)
+        super().__init__(game, pos, keys.poison_elemental)
         self.explosion_strength = 2
 
     def Increase_Explosion_Strength(self):

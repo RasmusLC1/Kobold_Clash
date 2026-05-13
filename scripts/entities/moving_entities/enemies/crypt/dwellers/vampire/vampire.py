@@ -11,9 +11,6 @@ class Vampire(Dweller):
 
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.vampire)
-
-        self.animation_handler.Set_Animation_Num_Max(3)
-        self.animation_handler.Set_Attack_Animation_Num_Max(6)
         self.active_weapon.Set_Damage(keys.vampiric, 10)
 
 

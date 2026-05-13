@@ -7,8 +7,7 @@ import random
 
 class Skeleton_Warlock(Skeleton):
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.skeleton_warlock, 0, 3, 4)
-        self.shooting_distance = False
+        super().__init__(game, pos, keys.skeleton_warlock)
         self.Equip_Weapon(Staff(self.game, self.pos))
         
     def Equip_Weapon(self, weapon):

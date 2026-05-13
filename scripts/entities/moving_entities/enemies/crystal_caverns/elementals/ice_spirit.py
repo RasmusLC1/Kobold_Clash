@@ -6,7 +6,7 @@ ICE_PROJECTILE_NUM = 3
 
 class Ice_Spirit(Elemental):
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.ice_spirit, 3, 3, 3)
+        super().__init__(game, pos, keys.ice_spirit)
         # self.shooting_ice = False
         self.ice_damage = 5
         self.active_weapon = Ice_Shooter(self.game, self)

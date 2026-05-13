@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Fire_Spirit(Elemental):
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.fire_spirit, 3, 3, 3, path_finding_strategy = 'ignore_lava')
+        super().__init__(game, pos, keys.fire_spirit)
         self.look_for_health_cooldown = 0
         self.fire_damage = 1
 

@@ -5,7 +5,7 @@ from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.element
 
 class Earth_Elemental(Elemental):
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.earth_elemental, 3, 3, 3, size=(48, 48))
+        super().__init__(game, pos, keys.earth_elemental)
         # Equip the weapon
         self.Equip_Weapon(Claw(game, self.pos)) 
         self.active_weapon.Set_Damage(keys.blunt, 5)

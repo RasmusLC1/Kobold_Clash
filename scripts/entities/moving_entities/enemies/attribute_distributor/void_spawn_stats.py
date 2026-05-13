@@ -1,0 +1,58 @@
+from scripts.engine.keys.keys import keys
+from scripts.entities.moving_entities.enemies.attribute_distributor.enemy_base_state import Enemy_Base_State
+
+VOID_SPAWN_STATS = {
+    keys.phantom: Enemy_Base_State(
+        health=20,
+        souls=30,
+        size=(32, 32),
+        max_weapon_charge=0.6,
+        strength=5,
+        speed=6,
+        agility=2,
+        intelligence=2,
+        stamina=2,
+        behavior=keys.direct_attack,
+        sub_category=keys.void_spawn,
+        ability=keys.dash,
+        idle_animation=4,
+        run_animation=4,
+        attack_animation=5,
+    ),
+
+    keys.wraith: Enemy_Base_State(
+        health=50,
+        souls=25,
+        size=(32, 32),
+        max_weapon_charge=1.0,
+        strength=3,
+        speed=4,
+        agility=2,
+        intelligence=2,
+        stamina=2,
+        behavior=keys.direct_attack,
+        sub_category=keys.void_spawn,
+        ability=keys.dash,
+        idle_animation=4,
+        run_animation=4,
+        attack_animation=5,
+    ),
+
+    keys.shade: Enemy_Base_State(
+        health=50,
+        souls=20,
+        size=(32, 32),
+        max_weapon_charge=1.0,
+        strength=3,
+        speed=1,
+        agility=2,
+        intelligence=2,
+        stamina=2,
+        behavior=keys.direct_attack,
+        sub_category=keys.void_spawn,
+        ability=keys.dash,
+        idle_animation=4,
+        run_animation=4,
+        attack_animation=5,
+    ),
+}

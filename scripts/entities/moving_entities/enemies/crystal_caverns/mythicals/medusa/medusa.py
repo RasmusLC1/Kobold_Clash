@@ -13,7 +13,7 @@ class Medusa(Enemy):
     _animation_handler = Medusa_Animation_Handler 
 
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.medusa, keys.mythical, 5, 3, 5, size = (64, 64))
+        super().__init__(game, pos, keys.medusa)
         self.attack_type = keys.range
         # Equip the weapon
         self.Equip_Weapon(Claw(game, self.pos)) 

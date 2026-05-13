@@ -3,8 +3,8 @@ from scripts.entities.items.weapons.enemy_weapons.claw import Claw
 from scripts.engine.keys.keys import keys
 
 class Dweller(Enemy):
-    def __init__(self, game, pos, type, size = (32, 32)):
-        super().__init__(game, pos, type, keys.dweller, size)
+    def __init__(self, game, pos, type):
+        super().__init__(game, pos, type)
 
         # Dwellers get increased strength in dark
         self.light_level_holder = 999

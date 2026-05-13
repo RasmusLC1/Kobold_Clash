@@ -14,7 +14,8 @@ class Enemy():
 
     ability = "ability"
 
-    
+    path_finding_strategy = "path_finding_strategy"
+
     keep_distance = "keep_distance"
     
     retreat_when_damaged = "retreat_when_damaged"

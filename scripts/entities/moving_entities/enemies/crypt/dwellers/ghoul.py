@@ -8,8 +8,6 @@ class Ghoul(Dweller):
 
     def __init__(self, game, pos,):
         super().__init__(game, pos, keys.ghoul)
-
-
         self.bones_search_cooldown = 0
         self.target_bones_collision_cooldown = 0
         self.target_bones = None

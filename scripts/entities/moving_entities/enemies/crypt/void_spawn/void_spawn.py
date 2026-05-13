@@ -4,8 +4,8 @@ import random
 from scripts.engine.keys.keys import keys
 
 class Void_Spawn(Enemy):
-    def __init__(self, game, pos, type, size = (32, 32),):
-        super().__init__(game, pos, type,  keys.void_spawn, 4, 4, 5, size, path_finding_strategy=keys.void_spawn)
+    def __init__(self, game, pos, type):
+        super().__init__(game, pos, type)
         self.Equip_Weapon(Claw(game, self.pos)) 
 
     def Tile_Map_Collision_Detection(self, tilemap):

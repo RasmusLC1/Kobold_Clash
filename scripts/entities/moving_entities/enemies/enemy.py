@@ -3,7 +3,7 @@ from scripts.entities.textbox.enemy_textbox import Enemy_Textbox
 from scripts.entities.decoration.shared.bones.bones import Bones 
 from scripts.entities.moving_entities.enemies.behavior.intent_manager import Intent_Manager
 from scripts.engine.keys.keys import keys
-from scripts.entities.moving_entities.enemies.attribute_distributor import Attribute_Distributor
+from scripts.entities.moving_entities.enemies.attribute_distributor.attribute_distributor import Attribute_Distributor
 
 import math
 import pygame
@@ -13,7 +13,7 @@ import random
 class Enemy(Moving_Entity):
     intent_manager_class = Intent_Manager 
 
-    def __init__(self, game, pos, type, sub_category, is_elite=False):
+    def __init__(self, game, pos, type, is_elite=False):
 
         # 1. Fetch the Profile (Contains scaled stats AND animation info)
         stats = Attribute_Distributor.Get_Enemy_Profile(type, game.depth, is_elite)
@@ -30,7 +30,7 @@ class Enemy(Moving_Entity):
             stats.agility,
             stats.intelligence,
             stats.stamina,
-            sub_category
+            stats.sub_category
         )
         
         self.Set_Description()
