@@ -9,6 +9,17 @@ class Rage(Ability):
         self.rage_time = 0
         self.rage_strength_bonus = 3
 
+    def Save_Data(self):
+        super().Save_Data()
+        self.entity.saved_data['rage_time'] = self.rage_time
+        self.entity.saved_data['rage_strength_bonus'] = self.rage_strength_bonus
+
+    def Load_Data(self, data):
+        self.rage_time = data['rage_time']
+        self.rage_strength_bonus = data['rage_strength_bonus']
+        super().Load_Data(data)
+
+
     def Activate(self):
         self.entity.Set_Behavior_Pattern(keys.direct)
         self.entity.Trigger_Instant_Attack()

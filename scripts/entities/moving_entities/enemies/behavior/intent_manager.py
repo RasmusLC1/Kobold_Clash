@@ -18,11 +18,15 @@ class Intent_Manager():
 
 
     def Save_Data(self):
-        pass
+        self.path_finding.Save_Data()
+        self.behavior_manager.Save_Data()
+        self.movement_strategies.Save_Data()
 
 
     def Load_Data(self, data):
-        pass
+        self.path_finding.Load_Data(data)
+        self.behavior_manager.Load_Data(data)
+        self.movement_strategies.Load_Data(data)
 
     # Update the entity's behavior
     def Update_Intent(self, delta_time):

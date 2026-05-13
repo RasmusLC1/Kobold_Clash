@@ -32,6 +32,30 @@ class Behavior_Manager():
         self.attack_handler = Attack_Handler(game, entity, max_weapon_charge) 
         self.ability_handler = Ability_Handler(game, entity, ability)
         
+    
+    def Save_Data(self):
+        self.entity.saved_data['behavior'] = self.behavior
+        self.entity.saved_data['movement_strategy'] = self.movement_strategy
+        self.entity.saved_data['max_distance'] = self.max_distance
+        self.entity.saved_data['movement_behavior'] = self.movement_behavior
+        self.entity.saved_data['stored_health'] = self.stored_health
+        self.entity.saved_data['engagement_cooldown'] = self.engagement_cooldown
+        # self.attack_handler.Save_Data()
+        # self.ability_handler.Save_Data()
+
+
+    def Load_Data(self, data):
+        self.behavior = data['behavior']
+        self.movement_strategy = data['movement_strategy']
+        self.max_distance = data['max_distance']
+        self.movement_behavior = data['movement_behavior']
+        self.stored_health = data['stored_health']
+        self.engagement_cooldown = data['engagement_cooldown']
+        self.Set_Behavior_Pattern(self.behavior) # Used to reset the behavior
+        self.engagement_cooldown = data['engagement_cooldown']
+        # self.attack_handler.Load_Data(data)
+        # self.ability_handler.Load_Data(data)
+
 
     def Update_Behavior(self, delta_time):
         if not self.Check_Player_Distance():

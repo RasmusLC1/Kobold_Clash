@@ -7,6 +7,16 @@ class Jump_Attack(Dash):
         self.wait_before_jump_cooldown = 0
         self.jump_trigged = False
 
+    def Save_Data(self):
+        super().Save_Data()
+        self.entity.saved_data['wait_before_jump_cooldown'] = self.wait_before_jump_cooldown
+        self.entity.saved_data['jump_trigged'] = self.jump_trigged
+
+    def Load_Data(self, data):
+        self.wait_before_jump_cooldown = data['wait_before_jump_cooldown']
+        self.jump_trigged = data['jump_trigged']
+        super().Load_Data(data)
+
 
     def Update(self, delta_time):
         if self.Update_Wait_Before_Jumping(delta_time):

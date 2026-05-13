@@ -15,6 +15,17 @@ class Dash(Ability):
         self.pushed_entities = set()
         self.Set_Cooldown_Time()
 
+    def Save_Data(self):
+        super().Save_Data()
+        self.entity.saved_data['dash_velocity'] = self.dash_velocity
+        self.entity.saved_data['target_pos'] = self.target_pos
+
+    def Load_Data(self, data):
+        self.dash_velocity = data['dash_velocity']
+        self.target_pos = data['target_pos']
+        super().Load_Data(data)
+
+
     def Activate(self):
         self.entity.Set_Active_Ability(self.name)
         self.Calculate_Direction()

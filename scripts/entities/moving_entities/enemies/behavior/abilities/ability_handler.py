@@ -28,6 +28,29 @@ class Ability_Handler():
         self.Get_Ability(ability)
 
 
+    def Save_Data(self):
+        self.entity.saved_data['abilities_keys'] = list(self.abilities.keys())
+        self.entity.saved_data['cooldown_keys'] = [a.name for a in self.abilities_on_cooldown]
+        self.entity.saved_data['active_ability_key'] = self.active_ability.name if self.active_ability else None
+        
+        for ability in self.abilities.values():
+            ability.Save_Data()
+
+    def Load_Data(self, data):
+        saved_keys = data.get('abilities_keys', [])
+        self.abilities = {}
+        for key in saved_keys:
+            self.Get_Ability(key) # This uses your existing logic to instantiate classes
+
+        cooldown_keys = data.get('cooldown_keys', [])
+        self.abilities_on_cooldown = [self.abilities[k] for k in cooldown_keys if k in self.abilities]
+
+        active_key = data.get('active_ability_key')
+        self.active_ability = self.abilities.get(active_key) if active_key else None
+
+        for ability in self.abilities.values():
+            ability.Load_Data(data)
+
     
     def Update(self, delta_time):
 

@@ -10,7 +10,17 @@ class Ability():
         self.cooldown = 0
         self.trigger_cooldown = 0
         self.can_attack_while_triggered = can_attack_while_triggered
-        
+    
+
+    def Save_Data(self):
+        self.entity.saved_data['cooldown'] = self.cooldown
+        self.entity.saved_data['trigger_cooldown'] = self.trigger_cooldown
+
+
+    def Load_Data(self, data):
+        self.cooldown = data['cooldown']
+        self.trigger_cooldown = data['trigger_cooldown']
+
     # Returns the cooldown time before another special attack 
     def Activate(self):
         pass

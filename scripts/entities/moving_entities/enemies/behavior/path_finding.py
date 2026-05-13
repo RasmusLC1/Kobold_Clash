@@ -26,6 +26,24 @@ class Path_Finding():
         self.direct_pathing_cooldown = 0
 
 
+    def Save_Data(self):
+        self.entity.saved_data['path'] = self.path
+        self.entity.saved_data['src_x'] = self.src_x
+        self.entity.saved_data['src_y'] = self.src_y
+        self.entity.saved_data['des_x'] = self.des_x
+        self.entity.saved_data['des_y'] = self.des_y
+        self.entity.saved_data['player_found'] = self.player_found
+
+
+    def Load_Data(self, data):
+        self.path = data['path']
+        self.src_x = data['src_x']
+        self.src_y = data['src_y']
+        self.des_x = data['des_x']
+        self.des_y = data['des_y']
+        self.player_found = data['player_found']
+
+
 
     def Path_Finding(self, delta_time):
         # Pathfind towards the target

@@ -9,6 +9,20 @@ class Attack_Handler():
         self.max_weapon_charge_holder = max_weapon_charge
         self.charge = 0 # Determines when the enemy attacks
 
+    def Save_Data(self):
+        self.entity.saved_data['attack_triggered'] = self.attack_triggered
+        self.entity.saved_data['entity_has_attacked'] = self.entity_has_attacked
+        self.entity.saved_data['max_weapon_charge'] = self.max_weapon_charge
+        self.entity.saved_data['charge'] = self.charge
+
+
+    def Load_Data(self, data):
+        self.attack_triggered = data['attack_triggered']
+        self.entity_has_attacked = data['entity_has_attacked']
+        self.max_weapon_charge = data['max_weapon_charge']
+        self.charge = data['charge']
+
+
     def Update_Attack(self, delta_time):
         if not self.attack_triggered:
             return False

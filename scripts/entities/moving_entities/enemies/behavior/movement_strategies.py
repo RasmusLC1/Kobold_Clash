@@ -37,6 +37,17 @@ class Movement_Strategies():
             keys.run_away: (1000, 999) # Enemies are always to close and try to get away
         }
 
+    def Save_Data(self):
+        self.entity.saved_data['target_tile_pos'] = self.target_tile_pos
+        self.entity.saved_data['movement_strategy'] = self.movement_strategy
+        self.entity.saved_data['player_found'] = self.player_found
+
+
+    def Load_Data(self, data):
+        self.target_tile_pos = data['target_tile_pos']
+        self.movement_strategy = data['movement_strategy']
+        self.player_found = data['player_found']
+
 
     # Return True if pathing updated else false
     def Movement_Strategy(self, delta_time) -> bool:
