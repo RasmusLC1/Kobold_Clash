@@ -14,7 +14,7 @@ class Ice_Storm(PhysicsEntity):
         self.duration = 0
         self.animation = 0
         self.animation_max = 9
-        self.ice_shooter = Ice_Shooter(game)
+        self.ice_shooter = Ice_Shooter(game, entity)
         self.Set_Duration(duration * 10)
 
     def Update(self, delta_time):

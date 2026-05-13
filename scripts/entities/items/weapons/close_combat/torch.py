@@ -10,7 +10,7 @@ class Torch(Weapon):
         self.animation_cooldown_max = 0.5
         self.light_source = self.game.light_handler.Add_Light(self.pos, 8, self.tile)
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
-        self.flame_thrower = Flame_Thrower(self.game)
+        self.flame_thrower = Flame_Thrower(self.game, None)
         self.fire_charge_max = 2
 
     def Update(self, delta_time, offset=None):
@@ -24,6 +24,10 @@ class Torch(Weapon):
         if not super().Pick_Up():
             return
         self.game.light_handler.Remove_Light(self.light_source)
+    
+    def Set_Entity(self, entity):
+        self.flame_thrower.Set_Entity(entity)
+        return super().Set_Entity(entity)
 
     def Spawn_Fire_Particle(self):
         self.game.particle_handler.Activate_Particles(random.randint(1, 3), keys.fire_particle, self.rect().center)

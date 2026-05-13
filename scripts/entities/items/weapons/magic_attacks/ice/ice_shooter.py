@@ -3,8 +3,8 @@ from scripts.entities.items.weapons.magic_attacks.base_attacks.particle_shooter 
 import math
 
 class Ice_Shooter(Particle_Shooter):
-    def __init__(self, game):
-        super().__init__(game, speed=1.4, range=80 ,cooldown_max=0.3, particle_type=Ice_Particle)
+    def __init__(self, game, entity):
+        super().__init__(game, entity, speed=1.4, range=80 ,cooldown_max=0.3, particle_type=Ice_Particle)
 
 
     def Shoot_Particles(self):
@@ -28,4 +28,6 @@ class Ice_Shooter(Particle_Shooter):
         ice_particle.Set_Enabled(self.entity.rect(), self.speed, self.range, direction, self.entity, 100, self.base_damage)
         
     
- 
+    # Interpreter for enemy attacks
+    def Set_Attack(self):
+        self.Shoot_Particles()

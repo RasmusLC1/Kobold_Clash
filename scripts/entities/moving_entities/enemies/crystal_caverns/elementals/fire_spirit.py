@@ -5,14 +5,10 @@ from scripts.engine.keys.keys import keys
 class Fire_Spirit(Elemental):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.fire_spirit, 3, 3, 3, attack_speed = (2, 2.5), path_finding_strategy = 'ignore_lava', default_range = keys.short_range)
-        self.intent_manager.Set_Movement_Intent([keys.medium_range])
-        self.attack_distance  = 120
-        self.minimum_distance = 30
-
         self.look_for_health_cooldown = 0
         self.fire_damage = 1
 
-        self.active_weapon = Flame_Thrower(self.game)
+        self.active_weapon = Flame_Thrower(self.game, self)
 
     def Update(self, tilemap, delta_time, movement = (0, 0)):
         super().Update(tilemap, delta_time, movement)

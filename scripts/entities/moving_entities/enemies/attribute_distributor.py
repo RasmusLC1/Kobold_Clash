@@ -21,13 +21,13 @@ ENEMY_STATS = {
     keys.ghoul:                   {keys.health: 80,  keys.souls: 20, keys.max_weapon_charge: 0.8,  keys.strength: 6, keys.speed: 6, keys.agility: 2, keys.intelligence: 2, keys.stamina: 2, keys.behavior: keys.hit_and_run, keys.ability: keys.dash},
 
     # [Crystal Caverns]
-    keys.fire_spirit:             {keys.health: 40, keys.souls: 20, keys.max_weapon_charge: 1.4,  keys.strength: 4, keys.speed: 4, keys.agility: 4, keys.intelligence: 2, keys.stamina: 2, keys.behavior: keys.short_range, keys.ability: None},
-    keys.ice_spirit:              {keys.health: 50, keys.souls: 20, keys.max_weapon_charge: 1.6,  keys.strength: 7, keys.speed: 3, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2, keys.behavior: keys.medium_range, keys.ability: None},
+    keys.fire_spirit:             {keys.health: 40, keys.souls: 20, keys.max_weapon_charge: 0.8,  keys.strength: 4, keys.speed: 4, keys.agility: 4, keys.intelligence: 2, keys.stamina: 2, keys.behavior: keys.short_range, keys.ability: None},
+    keys.ice_spirit:              {keys.health: 50, keys.souls: 20, keys.max_weapon_charge: 0.9,  keys.strength: 7, keys.speed: 3, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2, keys.behavior: keys.medium_range, keys.ability: None},
 
     keys.earth_elemental:         {keys.health: 40, keys.souls: 30, keys.max_weapon_charge: 2.0,  keys.strength: 5, keys.speed: 2, keys.agility: 4, keys.intelligence: 7, keys.stamina: 2, keys.behavior: keys.hit_and_run, keys.ability: keys.invisibility},
 
     keys.electric_elemental:      {keys.health: 50, keys.souls: 30, keys.max_weapon_charge: 3.0,  keys.strength: 4, keys.speed: 2, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2, keys.behavior: keys.medium_range, keys.ability: None},
-    keys.poison_elemental:        {keys.health: 20, keys.souls: 10, keys.max_weapon_charge: 0.1, keys.strength: 4, keys.speed: 4, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2, keys.behavior: keys.direct_attack, keys.ability: None},
+    keys.poison_elemental:        {keys.health: 20, keys.souls: 10, keys.max_weapon_charge: 0.1,  keys.strength: 4, keys.speed: 4, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2, keys.behavior: keys.direct_attack, keys.ability: None},
     keys.medusa:                  {keys.health: 20, keys.souls: 60, keys.max_weapon_charge: 0.9,  keys.strength: 4, keys.speed: 4, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2, keys.behavior: keys.short_range, keys.ability: None},
     keys.minotaur:                {keys.health: 20, keys.souls: 55, keys.max_weapon_charge: 0.7,  keys.strength: 4, keys.speed: 4, keys.agility: 3, keys.intelligence: 2, keys.stamina: 2, keys.behavior: keys.hybrid, keys.ability: keys.rage},
     keys.spider:                  {keys.health: 60, keys.souls: 20, keys.max_weapon_charge: 0.9,  keys.strength: 4, keys.speed: 6, keys.agility: 3, keys.intelligence: 5, keys.stamina: 2, keys.behavior: keys.hit_and_run, keys.ability: keys.jump},

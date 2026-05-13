@@ -12,7 +12,6 @@ class Electric_Elemental(Elemental):
         # Equip the weapon
         self.Equip_Weapon(Claw(game, self.pos)) 
         self.active_weapon.Set_Damage(keys.electric, 2)
-        self.attack_distance = 250
 
     def Update(self, tilemap, delta_time, movement=...):
         super().Update(tilemap, delta_time, movement)

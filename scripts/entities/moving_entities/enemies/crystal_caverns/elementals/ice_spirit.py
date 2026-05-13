@@ -7,14 +7,9 @@ ICE_PROJECTILE_NUM = 3
 class Ice_Spirit(Elemental):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.ice_spirit, 3, 3, 3, attack_speed = (1.8, 2), default_range = keys.long_range)
-        self.path_finding_strategy = 'standard'
-        self.intent_manager.Set_Movement_Intent([keys.long_range])
-        self.attack_distance  = 250
-        self.shooting_ice = False
+        # self.shooting_ice = False
         self.ice_damage = 5
-        self.minimum_distance = 50
-        self.attack_cooldown = 0
-        self.active_weapon = Ice_Shooter(self.game)
+        self.active_weapon = Ice_Shooter(self.game, self)
 
     def Update(self, tilemap, delta_time, movement = (0, 0)):
         super().Update(tilemap, delta_time, movement)

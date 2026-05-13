@@ -48,7 +48,6 @@ class Attack_Handler():
         return attack_direction
 
 
-    # TODO: USED FOR DASH ATTACKS, not implemented yet, migrated from enemies class
     def Set_Charge_To_Max(self):
         self.charge = self.max_weapon_charge
 
