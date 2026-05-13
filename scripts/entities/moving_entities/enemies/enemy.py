@@ -11,25 +11,19 @@ import random
 
 
 class Enemy(Moving_Entity):
+    intent_manager_class = Intent_Manager 
 
-    # Factory method
-    intent_manager_class = Intent_Manager  # Default intent manager
+    def __init__(self, game, pos, type, sub_category, is_elite=False):
 
-    def __init__(self, game, pos, type, sub_category, idle_animation, run_animation, attack_animation, 
-                 size=(32, 32), path_finding_strategy=keys.standard, 
-                 is_elite=False):
-
-        # 1. Fetch the Profile object (already scaled by depth and elite status)
+        # 1. Fetch the Profile (Contains scaled stats AND animation info)
         stats = Attribute_Distributor.Get_Enemy_Profile(type, game.depth, is_elite)
-        print(stats, type)
-        # 2. Extract specific enemy values directly from the object attributes
+        
         self.max_weapon_charge = stats.max_weapon_charge
         self.soul_value = stats.souls
         
-        # 3. Call super().__init__ using the object attributes
-        # No more .get() or integer conversions!
+        # 2. Call super().__init__ using the clean attributes
         super().__init__(
-            game, str(type), keys.enemy, pos, size,
+            game, str(type), keys.enemy, pos, stats.size,
             stats.health,
             stats.strength,
             stats.speed,
@@ -39,11 +33,14 @@ class Enemy(Moving_Entity):
             sub_category
         )
         
+        self.Set_Description()
+        
         # --- Animation Setup ---
-        self.animation_handler.Set_Animation_Num_Max(keys.run, run_animation)
-        self.animation_handler.Set_Animation_Num_Max(keys.idle, idle_animation)
-        self.animation_handler.Set_Animation_Num_Max(keys.attack, attack_animation)
+        self.animation_handler.Set_Animation_Num_Max(keys.run, stats.run_animation)
+        self.animation_handler.Set_Animation_Num_Max(keys.idle, stats.idle_animation)
+        self.animation_handler.Set_Animation_Num_Max(keys.attack, stats.attack_animation)
         self.animation_handler.Set_Animation('running')
+
 
         # --- Combat & AI State ---
         self.alert_cooldown = 0
@@ -62,7 +59,7 @@ class Enemy(Moving_Entity):
 
         # 4. Initialize Intent Manager using the clean behavior and ability strings
         self.intent_manager = self.intent_manager_class(
-            game, self, path_finding_strategy, 
+            game, self, stats.path_finding_strategy, 
             stats.behavior, self.max_weapon_charge, stats.ability
         )
 
