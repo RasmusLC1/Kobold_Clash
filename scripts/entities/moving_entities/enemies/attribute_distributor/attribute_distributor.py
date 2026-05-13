@@ -6,9 +6,7 @@ from scripts.entities.moving_entities.enemies.attribute_distributor.dweller_stat
 from scripts.entities.moving_entities.enemies.attribute_distributor.elemental_stats import ELEMENTAL_STATS
 from scripts.entities.moving_entities.enemies.attribute_distributor.mythicals_stats import MYTHICALS_STATS
 
-
-
-# 1. The Source of Truth - All stats in one place
+# All enemy stats drawn from these dictionaries, using Enemy_Base_State
 ENEMY_STATS = {
         **SKELETON_STATS,
         **VOID_SPAWN_STATS,

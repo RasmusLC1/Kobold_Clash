@@ -251,7 +251,7 @@ class Behavior_Manager():
 
     
     # Simple direct attack logic
-    def Direct_Attack(self, delta_time):
+    def Direct_Attack(self):
         # increment the intent when enemy attacks
         in_range = self.Check_Attack_Distance()
         
@@ -259,7 +259,7 @@ class Behavior_Manager():
         return in_range
 
 
-    def Idle(self, delta_time):
+    def Idle(self):
         pass
 
     def Reset_Behavior(self):
