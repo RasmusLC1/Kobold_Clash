@@ -11,7 +11,7 @@ class Minotaur(Enemy):
 
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.minotaur,  keys.mythical, 3, 3, 5, size = (64, 64), attack_speed=(0.6, 0.8))
-        self.intent_manager.Set_Movement_Intent([keys.keep_position, keys.direct, 'dash',    keys.medium_range,])
+        self.intent_manager.Set_Movement_Intent([keys.keep_position, keys.direct, 'dash', keys.medium_range,])
         self.intent_manager.Set_Movement_Intent_Cooldown_Max(120)
         self.last_health_index = self.Calculate_Health_Index(self.health)
         # Equip the weapon

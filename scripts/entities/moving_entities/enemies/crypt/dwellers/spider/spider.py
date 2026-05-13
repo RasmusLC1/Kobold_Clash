@@ -11,21 +11,19 @@ class Spider(Dweller):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.spider)
 
-        self.animation = keys.spider + '_' + keys.idle
+        # self.animation = keys.spider + '_' + keys.idle
 
-        self.intent_manager.Set_Movement_Intent([keys.medium_range, keys.keep_position, 'shoot_spiderweb', 'jump_attack'])
+        # self.animation_num_max = 3 # running and idle animation
+        # self.animation_num_cooldown_max = 100
 
-        self.animation_num_max = 3 # running and idle animation
-        self.animation_num_cooldown_max = 100
+        # self.attack_animation_num_max = 3 # Standard attack and shoot spider web
+        # self.attack_animation_num_cooldown_max = 200
 
-        self.attack_animation_num_max = 3 # Standard attack and shoot spider web
-        self.attack_animation_num_cooldown_max = 200
+        # self.jumping_animation_num_max = 8 # Jumping attack
+        # self.jumping_animation_num = 0
+        # self.jumping_animation_num_cooldown_max = 5
+        # self.attack_symbol_offset = 10
 
-        self.jumping_animation_num_max = 8 # Jumping attack
-        self.jumping_animation_num = 0
-        self.jumping_animation_num_cooldown_max = 5
-
-        self.attack_symbol_offset = 10
         self.active_weapon.Set_Damage(keys.poison, 5)
 
 
