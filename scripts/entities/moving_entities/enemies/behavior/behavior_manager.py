@@ -42,8 +42,8 @@ class Behavior_Manager():
         self.entity.saved_data['movement_behavior'] = self.movement_behavior
         self.entity.saved_data['stored_health'] = self.stored_health
         self.entity.saved_data['engagement_cooldown'] = self.engagement_cooldown
-        # self.attack_handler.Save_Data()
-        # self.ability_handler.Save_Data()
+        self.attack_handler.Save_Data()
+        self.ability_handler.Save_Data()
 
 
     def Load_Data(self, data):
@@ -55,8 +55,8 @@ class Behavior_Manager():
         self.engagement_cooldown = data['engagement_cooldown']
         self.Set_Behavior_Pattern(self.behavior) # Used to reset the behavior
         self.engagement_cooldown = data['engagement_cooldown']
-        # self.attack_handler.Load_Data(data)
-        # self.ability_handler.Load_Data(data)
+        self.attack_handler.Load_Data(data)
+        self.ability_handler.Load_Data(data)
 
 
     def Update_Behavior(self, delta_time):

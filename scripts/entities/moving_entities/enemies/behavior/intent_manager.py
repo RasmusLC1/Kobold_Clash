@@ -6,7 +6,7 @@ from scripts.entities.moving_entities.enemies.behavior.behavior_manager import B
 
 
 class Intent_Manager():
-    def __init__(self, game, entity, attack_speed, path_finding_strategy, behavior, max_weapon_charge, ability = None) -> None:
+    def __init__(self, game, entity, path_finding_strategy, behavior, max_weapon_charge, ability = None) -> None:
         self.game = game
         self.entity = entity
 

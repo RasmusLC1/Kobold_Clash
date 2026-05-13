@@ -3,10 +3,8 @@ from scripts.entities.items.weapons.enemy_weapons.claw import Claw
 from scripts.engine.keys.keys import keys
 
 class Dweller(Enemy):
-    def __init__(self, game, pos, size = (32, 32), attack_speed = (0.5, 0.8), default_range=keys.direct):
-        super().__init__(game, pos, type, keys.dweller, size, attack_speed, default_range)
-        self.animation_handler.Set_Animation_Num_Max(4)
-        self.animation_handler.Set_Attack_Animation_Num_Max(5)
+    def __init__(self, game, pos, type, size = (32, 32)):
+        super().__init__(game, pos, type, keys.dweller, size)
 
         # Dwellers get increased strength in dark
         self.light_level_holder = 999
@@ -16,7 +14,6 @@ class Dweller(Enemy):
         self.light_speed = self.max_speed_holder
         self.dark_speed = self.max_speed_holder * 2
 
-        self.intent_manager.Set_Movement_Intent([keys.direct])
         self.Equip_Weapon(Claw(game, self.pos)) 
 
     def Update(self, tilemap, delta_time, movement=(0, 0)):

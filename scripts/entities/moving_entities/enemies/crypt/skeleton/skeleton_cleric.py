@@ -8,10 +8,9 @@ import random
 class Skeleton_Cleric(Skeleton):
     def __init__(self, game, pos):
         type = str(random.randint(1, 1))
-        super().__init__(game, pos, keys.skeleton_cleric + '_' + type, default_range=keys.medium_range)
+        super().__init__(game, pos, keys.skeleton_cleric + '_' + type)
         self.Equip_Weapon(Sceptre(self.game, self.pos))
         self.healing_cooldown = 0
-        self.intent_manager.Set_Movement_Intent([keys.medium_range])
 
 
 

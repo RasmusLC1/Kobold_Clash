@@ -8,12 +8,7 @@ import random
 class Skeleton_Ranger(Skeleton):
     def __init__(self, game, pos):
         type = str(random.randint(1, 3))
-        super().__init__(game, pos, keys.skeleton_ranger + '_' + type,  0, 3, 3, attack_speed = (0.9, 1.2), default_range=keys.long_range)
-        self.attack_distance  = 200
-        self.intent_manager.Set_Movement_Intent([ keys.long_range])
-
-        
-        self.shooting_distance = False
+        super().__init__(game, pos, keys.skeleton_ranger + '_' + type,  0, 3, 3)
         self.Equip_Weapon(Bow(self.game, self.pos))
         
 

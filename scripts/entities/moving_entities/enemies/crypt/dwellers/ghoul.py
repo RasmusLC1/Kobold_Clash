@@ -9,10 +9,7 @@ class Ghoul(Dweller):
     def __init__(self, game, pos,):
         super().__init__(game, pos, keys.ghoul)
 
-        self.intent_manager.Set_Movement_Intent([keys.direct,    keys.medium_range])
 
-        self.animation_handler.Set_Animation_Num_Max(4)
-        self.animation_handler.Set_Attack_Animation_Num_Max(5)
         self.bones_search_cooldown = 0
         self.target_bones_collision_cooldown = 0
         self.target_bones = None

@@ -14,9 +14,6 @@ class Medusa(Enemy):
 
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.medusa, keys.mythical, 5, 3, 5, size = (64, 64))
-        self.intent_manager.Set_Movement_Intent([keys.direct, keys.medium_range])
-        self.intent_manager.Set_Movement_Intent_Cooldown_Max(120)
-        self.attack_type_cooldown = 0
         self.attack_type = keys.range
         # Equip the weapon
         self.Equip_Weapon(Claw(game, self.pos)) 

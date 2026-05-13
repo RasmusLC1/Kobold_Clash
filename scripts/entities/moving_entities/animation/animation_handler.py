@@ -83,7 +83,6 @@ class Animation_Handler:
 
         animation[keys.cooldown] = animation[keys.cooldown_max]
         animation[keys.num] += 1
-
         if animation[keys.num] > animation[keys.num_max]:
             animation[keys.num] = 0
             self.Set_Animation_Lock(False)

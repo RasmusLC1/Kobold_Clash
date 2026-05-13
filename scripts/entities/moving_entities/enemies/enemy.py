@@ -16,12 +16,12 @@ class Enemy(Moving_Entity):
     intent_manager_class = Intent_Manager  # Default intent manager
 
     def __init__(self, game, pos, type, sub_category, idle_animation, run_animation, attack_animation, 
-                 size=(32, 32), attack_speed=(0.5, 0.8), path_finding_strategy=keys.standard, 
-                 default_range=keys.direct, is_elite=False):
+                 size=(32, 32), path_finding_strategy=keys.standard, 
+                 is_elite=False):
 
         # 1. Fetch the Profile object (already scaled by depth and elite status)
         stats = Attribute_Distributor.Get_Enemy_Profile(type, game.depth, is_elite)
-        
+        print(stats, type)
         # 2. Extract specific enemy values directly from the object attributes
         self.max_weapon_charge = stats.max_weapon_charge
         self.soul_value = stats.souls
@@ -53,7 +53,6 @@ class Enemy(Moving_Entity):
         self.damaged = False 
 
         self.distance_to_player = 9999
-        self.movement_strategy = default_range 
         self.attack_distance = self.size[0] * 2 
         self.distance_calculation_cooldown = 0
 
@@ -63,7 +62,7 @@ class Enemy(Moving_Entity):
 
         # 4. Initialize Intent Manager using the clean behavior and ability strings
         self.intent_manager = self.intent_manager_class(
-            game, self, attack_speed, path_finding_strategy, 
+            game, self, path_finding_strategy, 
             stats.behavior, self.max_weapon_charge, stats.ability
         )
 

@@ -10,9 +10,7 @@ CRYSTAL_SCALE_HEALTH_COOLDOWN_MAX = 1 # heals 1 health every second
 class Minotaur(Enemy):
 
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.minotaur,  keys.mythical, 3, 3, 5, size = (64, 64), attack_speed=(0.6, 0.8))
-        self.intent_manager.Set_Movement_Intent([keys.keep_position, keys.direct, 'dash', keys.medium_range,])
-        self.intent_manager.Set_Movement_Intent_Cooldown_Max(120)
+        super().__init__(game, pos, keys.minotaur,  keys.mythical, 3, 3, 5, size = (64, 64))
         self.last_health_index = self.Calculate_Health_Index(self.health)
         # Equip the weapon
         self.Equip_Weapon(Claw(game, self.pos)) 
@@ -23,7 +21,7 @@ class Minotaur(Enemy):
         self.Enrage()
         return super().Update(tilemap, delta_time, movement)
 
-
+    # TODO: Move enrage to ability
     def Enrage(self):
         current_index = self.Calculate_Health_Index(self.health)
         if current_index < self.last_health_index:

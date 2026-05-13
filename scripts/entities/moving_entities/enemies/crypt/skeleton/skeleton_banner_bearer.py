@@ -7,11 +7,10 @@ import random
 
 class Skeleton_Banner_Bearer(Skeleton):
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.skeleton_banner_bearer, default_range=keys.medium_range)
+        super().__init__(game, pos, keys.skeleton_banner_bearer)
         self.Equip_Weapon(Claw(self.game, self.pos))
         self.active_weapon.Set_Damage(keys.slash, 5)
         self.rally_cooldown = 0
-        self.intent_manager.Set_Movement_Intent([keys.medium_range])
 
 
 
