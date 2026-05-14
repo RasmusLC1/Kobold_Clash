@@ -9,7 +9,7 @@ class Charge(Ability):
         
     # Returns the cooldown time before another special attack 
     def Activate(self):
-        self.entity.Set_Effect(keys.speed, 5)
+        self.entity.Set_Effect(keys.speed, self.entity.agility)
         return True
         
     # Returns true if entity is damaged 30% of health

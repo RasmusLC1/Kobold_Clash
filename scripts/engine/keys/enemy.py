@@ -85,6 +85,8 @@ class Enemy():
 
     invisibility = "invisibility"
 
+    charge = "charge"
+
 # Void Spawn
 
     shade = "shade"

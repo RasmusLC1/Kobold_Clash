@@ -4,6 +4,7 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.run_away import
 from scripts.entities.moving_entities.enemies.behavior.abilities.invulnerable import Invulnerable
 from scripts.entities.moving_entities.enemies.behavior.abilities.invisibility import Invisibility
 from scripts.entities.moving_entities.enemies.behavior.abilities.rage import Rage
+from scripts.entities.moving_entities.enemies.behavior.abilities.charge import Charge
 
 from scripts.engine.keys.keys import keys
 
@@ -17,6 +18,7 @@ class Ability_Handler():
         keys.invulnerable : Invulnerable,
         keys.rage : Rage,
         keys.invisibility : Invisibility,
+        keys.charge : Charge
     }
 
     def __init__(self, game, entity, ability):
