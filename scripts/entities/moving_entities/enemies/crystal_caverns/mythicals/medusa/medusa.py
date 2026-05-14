@@ -19,12 +19,12 @@ class Medusa(Enemy):
         self.Equip_Weapon(Claw(game, self.pos)) 
         self.active_weapon.Set_Damage(keys.slash, 5)
         self.electric_damage = 15
-        self.ranged_weapon = Electric_Shooter(self.game)
+        self.ranged_weapon = Electric_Shooter(self.game, self)
 
 
 
     def Update(self, tilemap, delta_time, movement=...):
-        self.Set_Attack_Type(delta_time)
+        # self.Set_Attack_Type(delta_time)
         return super().Update(tilemap, delta_time, movement)
 
     # Set the attack type based on player distance

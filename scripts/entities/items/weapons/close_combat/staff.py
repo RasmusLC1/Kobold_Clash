@@ -80,7 +80,7 @@ class Staff(Weapon):
         }
 
         shooter_class = types.get(self.sub_type)
-        self.shooter = shooter_class(game)
+        self.shooter = shooter_class(game, self.entity)
         self.Set_Particle_Damage()        
 
     def Set_Particle_Damage(self):

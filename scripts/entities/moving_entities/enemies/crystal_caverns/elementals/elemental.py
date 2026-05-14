@@ -10,6 +10,7 @@ class Elemental(Enemy):
         self.crystal_scale = self.crystal_scale_max
         self.crystal_scale_heal_cooldown = CRYSTAL_SCALE_HEALTH_COOLDOWN_MAX
         self.crystal_scale_holder = 9999
+        self.touching_ground = False
         self.crystal_scale_bar = self.game.assets[keys.crystal_scale_bar]
 
 

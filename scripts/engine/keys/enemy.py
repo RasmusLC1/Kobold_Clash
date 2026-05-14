@@ -77,10 +77,13 @@ class Enemy():
 
     run_away = "run_away"
 
+
+# Abilities
     rage = "rage"
 
     dash = "dash"
 
+    invisibility = "invisibility"
 
 # Void Spawn
 

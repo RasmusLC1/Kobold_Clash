@@ -13,9 +13,18 @@ class Poison_Elemental(Elemental):
     def Increase_Explosion_Strength(self):
         self.explosion_strength += 1
 
+    def Update(self, tilemap, delta_time, movement=...):
+        self.Explode_On_Impact()
+        return super().Update(tilemap, delta_time, movement)
+
     # Returns true on succesful attack
-    def Attack(self, delta_time):
-        if self.distance_to_player > self.size[0] * 1.5:
+    def Explode_On_Impact(self):
+        # Skips the rest of the logic if not near the player
+        if self.distance_to_player > 60:
+            return False
+        
+        # Returns false if no entities have been pushed
+        if not self.pushed_entities:
             return False
         
         self.health = 0

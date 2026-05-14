@@ -5,8 +5,8 @@ import math
 from scripts.engine.keys.keys import keys
 
 class Electric_Shooter(Particle_Shooter):
-    def __init__(self, game):
-        super().__init__(game, range=60, speed=1.7, cooldown_max=0.4, particle_type=Electric_Particle)
+    def __init__(self, game, entity):
+        super().__init__(game, entity, range=60, speed=1.7, cooldown_max=0.4, particle_type=Electric_Particle)
             
     def Shoot_Particles(self):
 

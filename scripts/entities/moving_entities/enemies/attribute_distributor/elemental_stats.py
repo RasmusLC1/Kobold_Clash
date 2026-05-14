@@ -1,8 +1,8 @@
-from scripts.engine.keys.keys import keys
+from scripts.engine.keys.enemy import Enemy as enemy_keys
 from scripts.entities.moving_entities.enemies.attribute_distributor.enemy_base_state import Enemy_Base_State
 
 ELEMENTAL_STATS = {
-    keys.fire_spirit: Enemy_Base_State(
+    enemy_keys.fire_spirit: Enemy_Base_State(
         health=40,
         souls=20,
         size=(32, 32),
@@ -12,8 +12,8 @@ ELEMENTAL_STATS = {
         agility=4,
         intelligence=2,
         stamina=2,
-        behavior=keys.short_range,
-        sub_category=keys.elemental,
+        behavior=enemy_keys.short_range,
+        sub_category=enemy_keys.elemental,
         ability=None,
         path_finding_strategy='ignore_lava',
         idle_animation=3,
@@ -21,7 +21,7 @@ ELEMENTAL_STATS = {
         attack_animation=3,
     ),
 
-    keys.ice_spirit: Enemy_Base_State(
+    enemy_keys.ice_spirit: Enemy_Base_State(
         health=50,
         souls=20,
         size=(32, 32),
@@ -31,15 +31,15 @@ ELEMENTAL_STATS = {
         agility=3,
         intelligence=2,
         stamina=2,
-        behavior=keys.medium_range,
-        sub_category=keys.elemental,
+        behavior=enemy_keys.medium_range,
+        sub_category=enemy_keys.elemental,
         ability=None,
         idle_animation=3,
         run_animation=3,
         attack_animation=3,
     ),
 
-    keys.earth_elemental: Enemy_Base_State(
+    enemy_keys.earth_elemental: Enemy_Base_State(
         health=40,
         souls=30,
         size=(48, 48),
@@ -49,15 +49,15 @@ ELEMENTAL_STATS = {
         agility=4,
         intelligence=7,
         stamina=2,
-        behavior=keys.hit_and_run,
-        sub_category=keys.elemental,
-        ability=keys.invisibility,
+        behavior=enemy_keys.hit_and_run,
+        sub_category=enemy_keys.elemental,
+        ability=enemy_keys.invisibility,
         idle_animation=3,
         run_animation=3,
         attack_animation=3,
     ),
 
-    keys.electric_elemental: Enemy_Base_State(
+    enemy_keys.electric_elemental: Enemy_Base_State(
         health=50,
         souls=30,
         size=(32, 32),
@@ -67,15 +67,15 @@ ELEMENTAL_STATS = {
         agility=3,
         intelligence=2,
         stamina=2,
-        behavior=keys.medium_range,
-        sub_category=keys.elemental,
+        behavior=enemy_keys.medium_range,
+        sub_category=enemy_keys.elemental,
         ability=None,
         idle_animation=3,
         run_animation=3,
         attack_animation=3,
     ),
 
-    keys.poison_elemental: Enemy_Base_State(
+    enemy_keys.poison_elemental: Enemy_Base_State(
         health=20,
         souls=10,
         size=(32, 32),
@@ -85,8 +85,8 @@ ELEMENTAL_STATS = {
         agility=3,
         intelligence=2,
         stamina=2,
-        behavior=keys.direct_attack,
-        sub_category=keys.elemental,
+        behavior=enemy_keys.direct_attack,
+        sub_category=enemy_keys.elemental,
         ability=None,
         idle_animation=3,
         run_animation=3,

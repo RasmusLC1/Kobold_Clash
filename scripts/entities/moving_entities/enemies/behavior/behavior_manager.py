@@ -13,9 +13,9 @@ class Behavior_Manager():
         self.behavior = None # The attack behavior of the enemy
 
         self._config = { # Config for all the different behaviors, used for open closed principle
-            keys.long_range: Behavior_Profile(self.Long_Range, 450, keys.long_range, (7, 9), self.Calculate_Ranged_Attack_Distance(250)),
-            keys.medium_range: Behavior_Profile(self.Medium_Range, 400, keys.medium_range, (5, 7), self.Calculate_Ranged_Attack_Distance(200), [keys.medium_range, keys.long_range]),
-            keys.short_range: Behavior_Profile(self.Short_Range, 350, keys.short_range, (3, 5), self.Calculate_Ranged_Attack_Distance(150), [keys.short_range, keys.medium_range, keys.long_range]),
+            keys.long_range: Behavior_Profile(self.Long_Range, 450, keys.long_range, (5, 7), self.Calculate_Ranged_Attack_Distance(250)),
+            keys.medium_range: Behavior_Profile(self.Medium_Range, 400, keys.medium_range, (3, 5), self.Calculate_Ranged_Attack_Distance(200), [keys.medium_range, keys.long_range]),
+            keys.short_range: Behavior_Profile(self.Short_Range, 350, keys.short_range, (2, 4), self.Calculate_Ranged_Attack_Distance(150), [keys.short_range, keys.medium_range, keys.long_range]),
             keys.direct_attack: Behavior_Profile(self.Direct_Attack, 300, keys.direct, (1, 1), self.Calculate_Close_Ranged_Attack_Distance()),
             keys.hit_and_run: Behavior_Profile(self.Hit_And_Run, 300, keys.direct, (1, 1), self.Calculate_Close_Ranged_Attack_Distance(), [keys.direct_attack, keys.short_range, keys.medium_range]),
             keys.idle: Behavior_Profile(self.Idle, 300, keys.direct, (1, 1), self.Calculate_Close_Ranged_Attack_Distance()),
@@ -60,7 +60,9 @@ class Behavior_Manager():
 
 
     def Update_Behavior(self, delta_time):
-        if not self.Check_Player_Distance():
+        self.entity.Set_Player_Spotted(self.Check_Player_Distance())
+
+        if not self.entity.player_spotted:
             return None
         
         # Returns False if attack is not trigged
@@ -301,7 +303,6 @@ class Behavior_Manager():
     def Check_If_Entity_Has_Taken_Damage(self):
         return self.entity.damaged
     
-
 
     def Get_Attack_Charge(self):
         return self.attack_handler.Get_Attack_Charge()

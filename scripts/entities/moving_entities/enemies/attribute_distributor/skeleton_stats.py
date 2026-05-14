@@ -1,8 +1,8 @@
-from scripts.engine.keys.keys import keys
+from scripts.engine.keys.enemy import Enemy as enemy_keys
 from scripts.entities.moving_entities.enemies.attribute_distributor.enemy_base_state import Enemy_Base_State
 
 SKELETON_STATS = {
-    keys.skeleton_warrior: Enemy_Base_State(
+    enemy_keys.skeleton_warrior: Enemy_Base_State(
         health=70,
         souls=10,
         size=(32, 32),
@@ -12,15 +12,15 @@ SKELETON_STATS = {
         agility=2,
         intelligence=2,
         stamina=2,
-        behavior=keys.direct_attack,
-        sub_category=keys.skeleton,
-        ability=keys.dash,
+        behavior=enemy_keys.direct_attack,
+        sub_category=enemy_keys.skeleton,
+        ability=enemy_keys.dash,
         idle_animation=0,
         run_animation=6,
         attack_animation=6,
     ),
 
-    keys.skeleton_ranger: Enemy_Base_State(
+    enemy_keys.skeleton_ranger: Enemy_Base_State(
         health=40,
         souls=15,
         size=(32, 32),
@@ -30,15 +30,15 @@ SKELETON_STATS = {
         agility=2,
         intelligence=2,
         stamina=2,
-        behavior=keys.long_range,
-        sub_category=keys.skeleton,
-        ability=keys.dash,
+        behavior=enemy_keys.long_range,
+        sub_category=enemy_keys.skeleton,
+        ability=enemy_keys.dash,
         idle_animation=0,
         run_animation=3,
         attack_animation=3,
     ),
 
-    keys.skeleton_cleric: Enemy_Base_State(
+    enemy_keys.skeleton_cleric: Enemy_Base_State(
         health=40,
         souls=20,
         size=(32, 32),
@@ -48,15 +48,15 @@ SKELETON_STATS = {
         agility=2,
         intelligence=2,
         stamina=2,
-        behavior=keys.medium_range,
-        sub_category=keys.skeleton,
-        ability=keys.dash,
+        behavior=enemy_keys.medium_range,
+        sub_category=enemy_keys.skeleton,
+        ability=enemy_keys.dash,
         idle_animation=0,
         run_animation=6,
         attack_animation=6,
     ),
 
-    keys.skeleton_bell_toller: Enemy_Base_State(
+    enemy_keys.skeleton_bell_toller: Enemy_Base_State(
         health=60,
         souls=15,
         size=(32, 32),
@@ -66,15 +66,15 @@ SKELETON_STATS = {
         agility=2,
         intelligence=2,
         stamina=2,
-        behavior=keys.short_range,
-        sub_category=keys.skeleton,
-        ability=keys.dash,
+        behavior=enemy_keys.short_range,
+        sub_category=enemy_keys.skeleton,
+        ability=enemy_keys.dash,
         idle_animation=0,
         run_animation=6,
         attack_animation=6,
     ),
 
-    keys.skeleton_undertaker: Enemy_Base_State(
+    enemy_keys.skeleton_undertaker: Enemy_Base_State(
         health=110,
         souls=40,
         size=(32, 32),
@@ -84,15 +84,15 @@ SKELETON_STATS = {
         agility=2,
         intelligence=2,
         stamina=2,
-        behavior=keys.short_range,
-        sub_category=keys.skeleton,
-        ability=keys.dash,
+        behavior=enemy_keys.short_range,
+        sub_category=enemy_keys.skeleton,
+        ability=enemy_keys.dash,
         idle_animation=0,
         run_animation=6,
         attack_animation=6,
     ),
 
-    keys.skeleton_guardian: Enemy_Base_State(
+    enemy_keys.skeleton_guardian: Enemy_Base_State(
         health=120,
         souls=15,
         size=(32, 32),
@@ -102,15 +102,15 @@ SKELETON_STATS = {
         agility=2,
         intelligence=2,
         stamina=2,
-        behavior=keys.direct_attack,
-        sub_category=keys.skeleton,
-        ability=keys.dash,
+        behavior=enemy_keys.direct_attack,
+        sub_category=enemy_keys.skeleton,
+        ability=enemy_keys.dash,
         idle_animation=0,
         run_animation=6,
         attack_animation=6,
     ),
 
-    keys.skeleton_warlock: Enemy_Base_State(
+    enemy_keys.skeleton_warlock: Enemy_Base_State(
         health=40,
         souls=40,
         size=(32, 32),
@@ -120,15 +120,15 @@ SKELETON_STATS = {
         agility=2,
         intelligence=5,
         stamina=2,
-        behavior=keys.medium_range,
-        sub_category=keys.skeleton,
-        ability=keys.dash,
+        behavior=enemy_keys.medium_range,
+        sub_category=enemy_keys.skeleton,
+        ability=enemy_keys.dash,
         idle_animation=0,
         run_animation=3,
         attack_animation=4,
     ),
 
-    keys.wight_king: Enemy_Base_State(
+    enemy_keys.wight_king: Enemy_Base_State(
         health=200,
         souls=55,
         size=(40, 40),
@@ -138,15 +138,15 @@ SKELETON_STATS = {
         agility=6,
         intelligence=5,
         stamina=5,
-        behavior=keys.hit_and_run,
-        sub_category=keys.skeleton,
-        ability=keys.dash,
+        behavior=enemy_keys.hit_and_run,
+        sub_category=enemy_keys.skeleton,
+        ability=enemy_keys.dash,
         idle_animation=0,
         run_animation=4,
         attack_animation=4,
     ),
 
-    keys.skeleton_banner_bearer: Enemy_Base_State(
+    enemy_keys.skeleton_banner_bearer: Enemy_Base_State(
         health=50,
         souls=15,
         size=(32, 32),
@@ -156,9 +156,9 @@ SKELETON_STATS = {
         agility=2,
         intelligence=2,
         stamina=2,
-        behavior=keys.medium_range,
-        sub_category=keys.skeleton,
-        ability=keys.dash,
+        behavior=enemy_keys.medium_range,
+        sub_category=enemy_keys.skeleton,
+        ability=enemy_keys.dash,
         idle_animation=0,
         run_animation=6,
         attack_animation=6,

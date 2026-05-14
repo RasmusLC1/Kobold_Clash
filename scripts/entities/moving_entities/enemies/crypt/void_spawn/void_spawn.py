@@ -7,6 +7,8 @@ class Void_Spawn(Enemy):
     def __init__(self, game, pos, type):
         super().__init__(game, pos, type)
         self.Equip_Weapon(Claw(game, self.pos)) 
+        self.touching_ground = False
+
 
     def Tile_Map_Collision_Detection(self, tilemap):
         self.pos[0] += self.frame_movement[0]

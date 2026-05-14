@@ -50,6 +50,7 @@ class Enemy(Moving_Entity):
         self.damaged = False 
 
         self.distance_to_player = 9999
+        self.player_spotted = False
         self.attack_distance = self.size[0] * 2 
         self.distance_calculation_cooldown = 0
 
@@ -398,6 +399,9 @@ class Enemy(Moving_Entity):
     
     def Set_Max_Weapon_Charge(self, amount):
         self.max_weapon_charge = amount
+
+    def Set_Player_Spotted(self, state):
+        self.player_spotted = state
 
     def Reset_Behavior(self):
         self.intent_manager.Reset_Behavior()

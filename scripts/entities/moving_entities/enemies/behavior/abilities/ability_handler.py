@@ -54,7 +54,7 @@ class Ability_Handler():
     
     def Update(self, delta_time):
 
-        no_cooldowns_active = self.Update_Abilities_Cooldown(delta_time)
+        no_cooldowns_active = self.Update_Abilities_Cooldown()
         
         # Update any active cooldowns
         if self.active_ability:
@@ -92,10 +92,10 @@ class Ability_Handler():
         return False
     
     # Filters out any abilities that are off cooldown, returns empty array if none are on cooldown
-    def Update_Abilities_Cooldown(self, delta_time):
+    def Update_Abilities_Cooldown(self):
         self.abilities_on_cooldown = [
-            a for a in self.abilities_on_cooldown 
-            if not a.Update_Cooldown(delta_time)
+            ability for ability in self.abilities_on_cooldown 
+            if not ability.Update_Cooldown()
         ]
         return not self.abilities_on_cooldown
 

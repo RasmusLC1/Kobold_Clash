@@ -1,4 +1,5 @@
 from scripts.engine.keys.keys import keys
+import time
 
 class Ability():
     COOLDOWN_TIME = 10
@@ -8,6 +9,7 @@ class Ability():
         self.entity = entity
         self.name = name
         self.cooldown = 0
+        self.last_cooldown_update = time.time()
         self.trigger_cooldown = 0
         self.can_attack_while_triggered = can_attack_while_triggered
     
@@ -35,14 +37,20 @@ class Ability():
     def Get_Cooldown(self):
         return self.cooldown
 
+    
+    def Update_Cooldown(self):
+        current_time = time.time()
+        elapsed = current_time - self.last_cooldown_update
+        self.last_cooldown_update = current_time
 
-    def Update_Cooldown(self, delta_time):
+        if self.cooldown > 0:
+            self.cooldown -= elapsed
+
         if self.cooldown <= 0:
-            self.cooldown = 0
-            return True
+            self.cooldown = 0 
+            return True      
         
-        self.cooldown -= delta_time
-        return False
+        return False      
     
 
     # Preents constant trigger checks

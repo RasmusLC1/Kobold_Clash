@@ -53,7 +53,7 @@ class Moving_Entity(PhysicsEntity):
         self.health = health
         self.healing_enabled = True
         self.max_health = self.health
-        self.touching_ground = False # Check if the entity is touching the ground
+        self.touching_ground = True # Check if the entity is touching the ground
         
         # Movement variables
         self.friction = 0.0001 # Friction, set to the renderscale
