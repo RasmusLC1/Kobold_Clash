@@ -7,6 +7,7 @@ class Electric_Charge(Effect):
         description = 'Shocks the attacker'
         super().__init__(entity, keys.electric_charge, 0, 0, (3, 4), description)
 
+    # If entity has 10 electric_charge strength, attacking enemy gets 5 electric
     def Damage_Taken(self, damage, attacker):
-        attacker.Set_Effect()
+        attacker.Set_Effect(keys.electric, self.effect // 2)
         return super().Damage_Taken(damage)
