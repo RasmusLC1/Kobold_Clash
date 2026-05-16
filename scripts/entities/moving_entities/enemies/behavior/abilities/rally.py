@@ -5,7 +5,7 @@ COOLDOWN_TIME = 10
 # Increases strength of nearby enemies
 class Rally(Ability):
     def __init__(self, game, entity, name):
-        super().__init__(game, entity, name)
+        super().__init__(game, entity, name, can_attack_while_triggered=True)
         
     # Returns the cooldown time before another special attack 
     def Activate(self):

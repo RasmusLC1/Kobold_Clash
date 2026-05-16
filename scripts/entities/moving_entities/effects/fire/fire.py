@@ -47,7 +47,7 @@ class Fire(Effect):
     # Takes up to 50% additional damage
     def Damage_Taken(self, damage, attacker):
         # Scale the bonus damage: lower damage gets closer to a 1.5x multiplier.
-        scaling_factor = (10 - damage) / 10  # Example scaling logic
+        scaling_factor = (10 - self.effect) / 10  
         bonus_percent = max(0.0, min(0.5, scaling_factor * 0.5))
         damage_multiplier = 1.0 + bonus_percent
         

@@ -16,11 +16,11 @@ class Void_Spawn(Enemy):
 
 
     # Void spawn cannot be damaged by material damage
-    def Damage_Taken(self, damage, effect= (keys.slash, 0), direction = (0, 0)):
+    def Damage_Taken(self, damage, effect= (keys.slash, 0), direction = (0, 0), attacker = None):
         if effect[0] == keys.slash or effect[0] == keys.blunt:
             damage = 0
         
-        return super().Damage_Taken(damage, effect, direction)
+        return super().Damage_Taken(damage, effect, direction, attacker)
 
 
     

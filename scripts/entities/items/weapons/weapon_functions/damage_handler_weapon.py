@@ -20,10 +20,7 @@ class Damage_Handler_Weapon():
             damage_sum += damage
             effect = self.Check_Effects(damage_type)
             knockback_direction = self.Calculate_Damage_Direction(entity)
-            entity.Damage_Taken(damage, effect, knockback_direction)
-
-            if entity.effects.thorns.effect:
-                weapon_entity.Damage_Taken(entity.effects.thorns.effect)
+            entity.Damage_Taken(damage, effect, knockback_direction, weapon_entity)
 
         entity.Set_Damage_Cooldown()
         self.weapon.entity.effects.Damage_Dealt(damage_sum)

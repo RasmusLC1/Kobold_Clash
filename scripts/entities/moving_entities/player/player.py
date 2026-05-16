@@ -61,9 +61,6 @@ class Player(Moving_Entity):
         # Resets luck and rune power
         self.Update_Luck(-self.luck)
         self.Update_Rune_Power(-self.rune_power)
-
-        if self.game.keyboard_handler.is_key_pressed(pygame.K_p):
-            self.Damage_Taken(self.health)
         super().Update(tilemap, delta_time, movement=movement)
 
 

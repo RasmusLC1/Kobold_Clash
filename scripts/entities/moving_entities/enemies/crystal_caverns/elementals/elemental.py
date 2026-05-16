@@ -41,17 +41,23 @@ class Elemental(Enemy):
         self.crystal_scale_heal_cooldown -= delta_time
 
 
-    def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
-        if self.crystal_scale > 0:
-            absorbed = min(damage, self.crystal_scale)
-            damage -= absorbed
-            self.crystal_scale -= absorbed
-            self.Set_Damaged(True)
-            # TODO: ADD Special shield color text, currently using water as temp
-            self.game.text_box_handler.Spawn_Damage_Text(self.pos.copy(), keys.wet, str(absorbed))
+    def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0), attacker = None):
+        damage = self.Check_Crystal_Scale(damage)
         if damage > 0:
-            return super().Damage_Taken(damage, effect, direction)
+            return super().Damage_Taken(damage, effect, direction, attacker)
         return True
+    
+    def Check_Crystal_Scale(self, damage):
+        if self.crystal_scale < 0:
+            return damage
+        
+        absorbed = min(damage, self.crystal_scale)
+        damage -= absorbed
+        self.crystal_scale -= absorbed
+        self.Set_Damaged(True)
+        # TODO: ADD Special shield color text, currently using water as temp
+        self.game.text_box_handler.Spawn_Damage_Text(self.pos.copy(), keys.wet, str(absorbed))
+        return damage
 
         
     def Render_Health_Bar(self, surf, offset = (0,0)):

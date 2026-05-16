@@ -8,4 +8,5 @@ class Electric_Charge(Effect):
         super().__init__(entity, keys.electric_charge, 0, 0, (3, 4), description)
 
     def Damage_Taken(self, damage, attacker):
+        attacker.Set_Effect()
         return super().Damage_Taken(damage)

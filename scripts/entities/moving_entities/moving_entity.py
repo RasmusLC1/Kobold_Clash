@@ -282,7 +282,7 @@ class Moving_Entity(PhysicsEntity):
         
             
     # Damage = Total damage, effect = (effect, effect strength) 
-    def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0)):
+    def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0), attacker = None):
         # Prevent aditional damage if entity is already dead
         if self.health <= 0:
             return False
@@ -301,9 +301,12 @@ class Moving_Entity(PhysicsEntity):
         self.Set_Description()
         
         # Check if any active effects affect damage
-        self.effects.Damage_Taken(damage)
+        self.effects.Damage_Taken(damage, attacker)
         if direction:
-            self.Push(direction, self.game.tilemap, damage)
+            strength_multiplier = 1
+            if attacker:
+                strength_multiplier =  attacker.strength * 0.2
+            self.Push(direction, self.game.tilemap, damage * strength_multiplier)
         
         if effect[1] > 0 and not keys.vampiric in effect[0]:
             effect_strength = max(effect[1] // 10, 1)

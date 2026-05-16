@@ -11,3 +11,11 @@ class Thorns(Effect):
 
     def Set_Type(self, type):
         self.type = type
+
+    def Damage_Taken(self, damage, attacker=None):
+        scaling_factor = (10 - self.effect) / 10  
+        bonus_percent = max(0.0, min(0.5, scaling_factor * 0.5))
+        damage_multiplier = 1.0 + bonus_percent
+        
+        final_damage = max(1, int(damage * damage_multiplier))
+        attacker.Damage_Taken(final_damage, self.entity.attack_direction)

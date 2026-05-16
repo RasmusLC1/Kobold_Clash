@@ -80,7 +80,7 @@ class Dash(Ability):
             
     def Set_Damage(self, entity):
         damage = (self.entity.strength * abs(self.entity.velocity[0] + self.entity.velocity[1]) // 100) // 4 # Average velicty and strength
-        entity.Damage_Taken(damage, (keys.blunt, 0))
+        entity.Damage_Taken(damage, (keys.blunt, 0), self.entity)
         
 
     def _Reset_Attack(self):
