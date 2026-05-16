@@ -19,7 +19,7 @@ class Resistance(Effect):
         self.entity_health_holder = self.entity.health
         return True
     
-    def Damage_Taken(self, damage):
+    def Damage_Taken(self, damage, attacker):
         entity = self.entity
         # entity always take at least 2 damage
         new_health = min(entity.health + self.effect, self.entity_health_holder - 2)

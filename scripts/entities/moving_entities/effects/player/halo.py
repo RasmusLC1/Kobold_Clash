@@ -10,8 +10,7 @@ class Halo(Effect):
         self.entity_health_holder = entity.health
 
 
-    def Damage_Taken(self, damage):
-
+    def Damage_Taken(self, damage, attacker):
         damage_saved = random.randint(1, 10 - self.effect)
         entity = self.entity
         if damage_saved == 1:

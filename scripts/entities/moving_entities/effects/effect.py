@@ -110,7 +110,7 @@ class Effect():
     def Entity_Dead(self):
         pass
 
-    def Damage_Taken(self, damage):
+    def Damage_Taken(self, damage, attacker = None):
         pass
 
     def Push(self, direction):

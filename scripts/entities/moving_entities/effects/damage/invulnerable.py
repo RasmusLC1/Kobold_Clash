@@ -38,7 +38,7 @@ class Invulnerable(Effect):
 
 
     
-    def Damage_Taken(self, damage):
+    def Damage_Taken(self, damage, attacker):
         self.entity.Set_Health(self.entity_health_holder)
 
     def Push(self, direction):

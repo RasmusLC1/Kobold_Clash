@@ -194,9 +194,9 @@ class Status_Effect_Handler:
         for effect in self.active_effects:
             effect.Damage_Dealt(damage)
 
-    def Damage_Taken(self, damage):
+    def Damage_Taken(self, damage, attacker = None):
         for effect in self.active_effects:
-            effect.Damage_Taken(damage)
+            effect.Damage_Taken(damage, attacker)
 
     def Push(self, direction):
         for effect in self.active_effects:

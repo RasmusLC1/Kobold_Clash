@@ -14,7 +14,7 @@ class Black_Coin(Effect):
         return True
 
 
-    def Damage_Taken(self, damage):
+    def Damage_Taken(self, damage, attacker):
         # Scale: Level 1 = +5% damage, Level 10 = +50% damage
         scaling_factor = 1 + (self.effect * 0.05)
         total_damage = round(damage * scaling_factor)

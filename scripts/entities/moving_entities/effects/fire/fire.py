@@ -44,5 +44,13 @@ class Fire(Effect):
         
         return False
     
-    def Damage_Taken(self, damage):
-        self.entity.Set_Health(self.entity.health - max(1, damage // 2))
+    # Takes up to 50% additional damage
+    def Damage_Taken(self, damage, attacker):
+        # Scale the bonus damage: lower damage gets closer to a 1.5x multiplier.
+        scaling_factor = (10 - damage) / 10  # Example scaling logic
+        bonus_percent = max(0.0, min(0.5, scaling_factor * 0.5))
+        damage_multiplier = 1.0 + bonus_percent
+        
+        final_damage = max(1, int(damage * damage_multiplier))
+        
+        self.entity.Set_Health(self.entity.health - final_damage)

@@ -445,8 +445,8 @@ Upgrade weapons
     # Fire spirit, high speeds shoot flamethrower at close range and retreats
     # Electric Elemental, damages the player indirectly if in range
     # Poison Elemental, creates poison plumes around the player and explodes when damaged
-    Minotaur, boss mob, charges and breaks envoirement, high damage, low defence
-    Medusa, shoots electric projetiles and fast but very low health, will switch to melee if player is to close, chance to stun player if player mouse is closer to medusa than player
+    # Minotaur, boss mob, charges and breaks envoirement, high damage, low defence
+    # Medusa, shoots electric projetiles and fast but very low health, will switch to melee if player is to close, chance to stun player if player mouse is closer to medusa than player
     Clicker, blind but good hearing, loud because of clicks
     Echo stalker, becomes visible for 60 seconds when clatter is generated
     Shard Wraith, teleports close to clatter source when clatter is generated
