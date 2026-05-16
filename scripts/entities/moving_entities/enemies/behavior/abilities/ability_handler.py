@@ -6,6 +6,7 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.invisibility im
 from scripts.entities.moving_entities.enemies.behavior.abilities.rage import Rage
 from scripts.entities.moving_entities.enemies.behavior.abilities.charge import Charge
 from scripts.entities.moving_entities.enemies.behavior.abilities.rally import Rally
+from scripts.entities.moving_entities.enemies.behavior.abilities.electrify import Electrify
 
 from scripts.engine.keys.keys import keys
 
@@ -20,7 +21,8 @@ class Ability_Handler():
         keys.rage : Rage,
         keys.invisibility : Invisibility,
         keys.charge : Charge,
-        keys.rally : Rally
+        keys.rally : Rally,
+        keys.electrify : Electrify,
     }
 
     def __init__(self, game, entity, ability):

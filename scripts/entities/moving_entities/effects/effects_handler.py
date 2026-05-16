@@ -21,6 +21,7 @@ from scripts.entities.moving_entities.effects.damage.vulnerable import Vulnerabl
 from scripts.entities.moving_entities.effects.damage.thorns import Thorns
 from scripts.entities.moving_entities.effects.electric.eletric import Electric
 from scripts.entities.moving_entities.effects.electric.electric_resistance import Electric_Resistance
+from scripts.entities.moving_entities.effects.electric.electric_charge import Electric_Charge
 from scripts.entities.moving_entities.effects.general.resistance import Resistance
 from scripts.engine.keys.keys import keys
 
@@ -52,6 +53,7 @@ class Status_Effect_Handler:
         keys.thorns: Thorns,
         keys.electric: Electric,
         keys.electric_resistance: Electric_Resistance,
+        keys.electric_charge: Electric_Charge,
     }
 
     def __init__(self, entity):
@@ -124,12 +126,12 @@ class Status_Effect_Handler:
 
 
     # Set the effect of the entity
-    def Set_Effect(self, effect, duration, permanent = False):
+    def Set_Effect(self, effect_name, duration, permanent = False):
         # Check if entity is invulnerable
         if self.Check_Invulnerable():
             return False
 
-        effect = self.Get_Effect(effect)
+        effect = self.Get_Effect(effect_name)
         if not effect:
             return False
         

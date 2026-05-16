@@ -476,7 +476,7 @@ class Weapon(Item):
 
 
     def Spawn_Spark(self):
-        self.game.particle_handler.Activate_Particles(random.randint(2, 5), keys.spark_particle, self.rect().center, random.uniform(1, 1.5))
+        self.game.particle_handler.Activate_Particles(random.randint(2, 5), keys.electric_particle, self.rect().center, random.uniform(1, 1.5))
 
 
     def Add_Gem_Slot(self, amount):

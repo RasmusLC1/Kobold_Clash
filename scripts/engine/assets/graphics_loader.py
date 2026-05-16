@@ -122,7 +122,7 @@ class Graphics_Loader:
         effect_assets = {
             keys.dash_particle : get_tiles_from_sheet('particles/general/dash.png', 5, 0, 0, 0, 5, 5),
             keys.fire_particle : get_tiles_from_sheet('particles/general/fire.png', 5, 0, 0, 0, 3, 3),
-            keys.spark_particle : get_tiles_from_sheet('particles/general/spark.png', 5, 0, 0, 0, 3, 3),
+            keys.electric_particle : get_tiles_from_sheet('particles/general/spark.png', 5, 0, 0, 0, 3, 3),
             keys.blood_particle : get_tiles_from_sheet('particles/general/blood.png', 5, 0, 0, 0, 3, 3),
             keys.bone_particle : get_tiles_from_sheet('particles/general/bone.png', 5, 0, 0, 0, 3, 3),
             keys.electric_particle : get_tiles_from_sheet('particles/general/electric.png', 5, 0, 0, 0, 3, 3),

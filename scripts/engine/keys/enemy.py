@@ -89,6 +89,8 @@ class Enemy():
 
     rally = "rally"
 
+    electrify = "electrify"
+
 # Void Spawn
 
     shade = "shade"

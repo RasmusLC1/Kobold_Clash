@@ -2,20 +2,22 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.ability import 
 from scripts.engine.keys.keys import keys
 
 COOLDOWN_TIME = 10
-# Increases strength of nearby enemies
+# Base class ability for buffing nearby enemies 
 class Support_Nearby_Entities(Ability):
-    def __init__(self, game, entity, name, effect_name):
+    def __init__(self, game, entity, name, effect_name, particle_name):
         super().__init__(game, entity, name, can_attack_while_triggered=True)
-        self.effect = effect_name
+        self.effect_name = effect_name
+        self.particle_name = particle_name
         
     # Returns the cooldown time before another special attack 
     def Activate(self):
         nearby_enemies = self.game.enemy_handler.Find_Nearby_Enemies(self.entity, 150)
-        if not nearby_enemies:
-            return
+        if not nearby_enemies: # If no nearby entities just return
+            return True
         effect_strength = self.entity.intelligence // 2
-        self.game.particle_handler.Activate_Particles(10, keys.strength_particle, self.entity.rect().center)
+        self.game.particle_handler.Activate_Particles(effect_strength * 3, self.particle_name , self.entity.rect().center)
         for enemy in nearby_enemies:
+            print("SET EFFECT")
             enemy.effects.Set_Effect(self.effect_name, effect_strength)
 
 

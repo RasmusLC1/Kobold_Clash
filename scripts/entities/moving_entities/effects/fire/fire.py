@@ -53,4 +53,5 @@ class Fire(Effect):
         
         final_damage = max(1, int(damage * damage_multiplier))
         
-        self.entity.Set_Health(self.entity.health - final_damage)
+        # Set health directly to avoid infinite damage loop
+        self.entity.Set_Health(self.entity.health - final_damage) 

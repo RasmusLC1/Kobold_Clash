@@ -43,9 +43,7 @@ class Elemental(Enemy):
 
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0), attacker = None):
         damage = self.Check_Crystal_Scale(damage)
-        if damage > 0:
-            return super().Damage_Taken(damage, effect, direction, attacker)
-        return True
+        return super().Damage_Taken(damage, effect, direction, attacker)
     
     def Check_Crystal_Scale(self, damage):
         if self.crystal_scale < 0:
