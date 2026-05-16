@@ -38,20 +38,36 @@ class Crystal_Scale(Passive_Ability):
         self.crystal_scale_heal_cooldown -= delta_time
 
     def Damage_Taken(self, damage, effect, direction, attacker):
-        damage = self.Check_Crystal_Scale(damage)
+        damage = self.Check_Crystal_Scale(damage, effect)
         return damage
     
-    def Check_Crystal_Scale(self, damage):
-        if self.crystal_scale < 0:
+    def Check_Crystal_Scale(self, damage, effect):
+        if self.crystal_scale <= 0:  # Safer guard check
             return damage
         
-        absorbed = min(damage, self.crystal_scale)
-        damage -= absorbed
-        self.crystal_scale -= absorbed
-        # TODO: ADD Special shield color text, currently using water as temp
-        self.game.text_box_handler.Spawn_Damage_Text(self.entity.pos.copy(), keys.wet, str(absorbed))
-        return damage
+        # 1. Apply modifier to a localized variable
+        incoming_force = damage * 2 if effect == keys.blunt else damage
 
+        # 2. Determine how much shield force is actually consumed
+        absorbed_force = min(incoming_force, self.crystal_scale)
+        self.crystal_scale -= absorbed_force
+        
+        # Spawn text based on the visual shield value depleted
+        self.game.text_box_handler.Spawn_Damage_Text(
+            self.entity.pos.copy(), keys.wet, str(absorbed_force)
+        )
+        
+        # 3. Calculate actual breakthrough damage
+        # If it was blunt, we divide the unabsorbed force back by 2 to get real health damage
+        unabsorbed_force = incoming_force - absorbed_force
+        
+        if effect == keys.blunt:
+            return max(0, unabsorbed_force // 2) # Use integer division for clean health numbers
+        
+        return max(0, unabsorbed_force)
+    
+
+    
     def Update_Crystal_Fraction(self):
         if self.crystal_scale == self.crystal_scale_holder:
             return
