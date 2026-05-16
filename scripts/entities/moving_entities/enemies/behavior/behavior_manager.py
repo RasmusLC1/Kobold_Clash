@@ -312,3 +312,6 @@ class Behavior_Manager():
     
     def Get_Movement_Behavior(self):
         return self.movement_behavior
+    
+    def Render_Abilities(self, surf, offset):
+        self.ability_handler.Render_Abilities(surf, offset)

@@ -1,9 +1,9 @@
-from scripts.entities.moving_entities.enemies.behavior.abilities.ability import Ability
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.active_ability import Active_Ability
 from scripts.engine.keys.keys import keys
 
 COOLDOWN_TIME = 10
 # Base class ability for buffing nearby enemies 
-class Support_Nearby_Entities(Ability):
+class Support_Nearby_Entities(Active_Ability):
     def __init__(self, game, entity, name, effect_name, particle_name):
         super().__init__(game, entity, name, can_attack_while_triggered=True)
         self.effect_name = effect_name

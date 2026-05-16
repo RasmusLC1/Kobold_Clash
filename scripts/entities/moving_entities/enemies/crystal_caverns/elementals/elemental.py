@@ -57,6 +57,19 @@ class Elemental(Enemy):
         self.game.text_box_handler.Spawn_Damage_Text(self.pos.copy(), keys.wet, str(absorbed))
         return damage
 
+    def Update_Crystal_Fraction(self):
+        if self.crystal_scale == self.crystal_scale_holder:
+            return
+        # Correct potential rounding issues at full health
+        if self.crystal_scale == self.crystal_scale_max:
+            self.crystal_scale_index = 0
+
+        self.crystal_scale_holder = self.crystal_scale
+        crystal_scale_fraction = self.crystal_scale / self.crystal_scale_max
+
+        # Map the fraction to an index from 0 to 9 (assuming 10 total images)
+        self.crystal_scale_index = max(-1, min(int((1 - crystal_scale_fraction) * 9), 9))  # Invert fraction and scale to index range
+
         
     def Render_Health_Bar(self, surf, offset = (0,0)):
         super().Render_Health_Bar(surf, offset)
@@ -71,17 +84,3 @@ class Elemental(Enemy):
 
         crystal_scale_bar = self.crystal_scale_bar[self.crystal_scale_index]
         surf.blit(crystal_scale_bar, (self.rect().left - offset[0], self.rect().bottom - offset[1] - self.size[1] // 2 + 10))
-
-    def Update_Crystal_Fraction(self):
-        if self.crystal_scale == self.crystal_scale_holder:
-            return
-        # Correct potential rounding issues at full health
-        if self.crystal_scale == self.crystal_scale_max:
-            self.crystal_scale_index = 0
-
-        self.crystal_scale_holder = self.crystal_scale
-        crystal_scale_fraction = self.crystal_scale / self.crystal_scale_max
-
-        # Map the fraction to an index from 0 to 9 (assuming 10 total images)
-        self.crystal_scale_index = max(-1, min(int((1 - crystal_scale_fraction) * 9), 9))  # Invert fraction and scale to index range
-

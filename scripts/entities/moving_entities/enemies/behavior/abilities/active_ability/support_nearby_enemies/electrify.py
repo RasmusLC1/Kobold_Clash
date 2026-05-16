@@ -1,4 +1,4 @@
-from scripts.entities.moving_entities.enemies.behavior.abilities.support_nearby_entities import Support_Nearby_Entities
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.support_nearby_entities import Support_Nearby_Entities
 from scripts.engine.keys.keys import keys
 
 COOLDOWN_TIME = 10

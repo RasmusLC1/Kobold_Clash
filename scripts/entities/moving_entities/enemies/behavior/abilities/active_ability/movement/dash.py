@@ -1,11 +1,11 @@
-from scripts.entities.moving_entities.enemies.behavior.abilities.ability import Ability
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.active_ability import Active_Ability
 from scripts.engine.keys.keys import keys
 import pygame
 import math
 
-class Dash(Ability):
+class Dash(Active_Ability):
     def __init__(self, game, entity, name, min_distance = 70, max_distance = 250, speed_factor = 10):
-        super().__init__(game, entity, name)
+        super().__init__(game, entity, name, can_attack_while_triggered=True)
         self.target_pos = None
         self.dash_velocity = pygame.math.Vector2(0, 0)
         self.stored_distance = 9999

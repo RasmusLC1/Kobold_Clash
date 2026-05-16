@@ -1,7 +1,7 @@
-from scripts.entities.moving_entities.enemies.behavior.abilities.ability import Ability
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.active_ability import Active_Ability
 from scripts.engine.keys.keys import keys
 
-class Invisibility(Ability):
+class Invisibility(Active_Ability):
     def __init__(self, game, entity, name):
         super().__init__(game, entity, name)
         self.Apply_Intelligence_Mod()

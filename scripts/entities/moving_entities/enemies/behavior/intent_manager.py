@@ -64,3 +64,6 @@ class Intent_Manager():
     
     def Reset_Behavior(self):
         return self.behavior_manager.Reset_Behavior()
+    
+    def Render_Abilities(self, surf, offset):
+        self.behavior_manager.Render_Abilities(surf, offset)

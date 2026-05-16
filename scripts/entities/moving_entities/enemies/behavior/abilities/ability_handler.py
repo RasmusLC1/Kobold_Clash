@@ -1,12 +1,12 @@
-from scripts.entities.moving_entities.enemies.behavior.abilities.dash import Dash
-from scripts.entities.moving_entities.enemies.behavior.abilities.jump_attack import Jump_Attack
-from scripts.entities.moving_entities.enemies.behavior.abilities.run_away import Run_Away
-from scripts.entities.moving_entities.enemies.behavior.abilities.invulnerable import Invulnerable
-from scripts.entities.moving_entities.enemies.behavior.abilities.invisibility import Invisibility
-from scripts.entities.moving_entities.enemies.behavior.abilities.rage import Rage
-from scripts.entities.moving_entities.enemies.behavior.abilities.charge import Charge
-from scripts.entities.moving_entities.enemies.behavior.abilities.rally import Rally
-from scripts.entities.moving_entities.enemies.behavior.abilities.electrify import Electrify
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.dash import Dash
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.jump_attack import Jump_Attack
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.run_away import Run_Away
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.effects.invulnerable import Invulnerable
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.effects.invisibility import Invisibility
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.effects.rage import Rage
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.charge import Charge
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.rally import Rally
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.electrify import Electrify
 
 from scripts.engine.keys.keys import keys
 
@@ -28,61 +28,85 @@ class Ability_Handler():
     def __init__(self, game, entity, ability):
         self.game = game
         self.entity = entity
-        self.abilities = {}
+        self.passive_abilities = {}
+        self.active_abilities = {}
         self.abilities_on_cooldown = []
         self.active_ability = None
         self.Get_Ability(ability)
 
 
     def Save_Data(self):
-        self.entity.saved_data['abilities_keys'] = list(self.abilities.keys())
+        self.entity.saved_data['active_abilities_keys'] = list(self.active_abilities.keys())
+        self.entity.saved_data['passive_abilities_keys'] = list(self.passive_abilities.keys())
         self.entity.saved_data['cooldown_keys'] = [a.name for a in self.abilities_on_cooldown]
         self.entity.saved_data['active_ability_key'] = self.active_ability.name if self.active_ability else None
         
-        for ability in self.abilities.values():
+        for ability in self.active_abilities.values():
             ability.Save_Data()
 
-    def Load_Data(self, data):
-        saved_keys = data.get('abilities_keys', [])
-        self.abilities = {}
-        for key in saved_keys:
-            self.Get_Ability(key) # This uses your existing logic to instantiate classes
+        for ability in self.passive_abilities.values():
+            ability.Save_Data()
+            
 
+    def Load_Data(self, data):
+        self._Load_Active_Abilities(data)
+        self._Load_Passive_Abilities(data)
         cooldown_keys = data.get('cooldown_keys', [])
-        self.abilities_on_cooldown = [self.abilities[k] for k in cooldown_keys if k in self.abilities]
+        self.abilities_on_cooldown = [self.active_abilities[k] for k in cooldown_keys if k in self.active_abilities]
 
         active_key = data.get('active_ability_key')
-        self.active_ability = self.abilities.get(active_key) if active_key else None
+        self.active_ability = self.active_abilities.get(active_key) if active_key else None
 
-        for ability in self.abilities.values():
+        for ability in self.active_abilities.values():
             ability.Load_Data(data)
+
+    def _Load_Active_Abilities(self, data):
+        saved_active_keys = data.get('active_abilities_keys', [])
+        self.active_abilities = {}
+        for key in saved_active_keys:
+            self.Get_Ability(key)
+
+    def _Load_Passive_Abilities(self, data):
+        saved_active_keys = data.get('passive_abilities_keys', [])
+        self.passive_abilities = {}
+        for key in saved_active_keys:
+            self.Get_Ability(key)
 
     
     def Update(self, delta_time):
+        self._Update_Passive_Abilities(delta_time) # Passive abilities are always updated
 
         no_cooldowns_active = self.Update_Abilities_Cooldown()
         
         # Update any active cooldowns
         if self.active_ability:
-            self.Update_Active_Ability(delta_time)
+            self._Update_Active_Ability(delta_time)
             return True 
 
         # If nothing is active AND no cooldowns are running, look for something new.
         if no_cooldowns_active:
-            return self._Update_Abilities(delta_time)
+            return self._Update_Active_Abilities(delta_time)
         
         return False
 
 
-    def Update_Active_Ability(self, delta_time):
+    def _Update_Active_Ability(self, delta_time):
         self.active_ability.Update(delta_time)
 
         if self.active_ability.Get_Cooldown() > 0: 
             self.Remove_Active_Ability()
+
+    def _Update_Passive_Abilities(self, delta_time):
+        if not self.passive_abilities:
+            return
+        
+        for ability in self.passive_abilities.values():
+            ability.Update(delta_time)
+
     
     # Returns true if any abilities can be triggerd
-    def _Update_Abilities(self, delta_time):
-        for ability in self.abilities.values():
+    def _Update_Active_Abilities(self, delta_time):
+        for ability in self.active_abilities.values():
             if not ability.Check_Trigger_Cooldown(delta_time):
                 continue
 
@@ -108,20 +132,31 @@ class Ability_Handler():
 
     # Returns the instance if it exists, or creates it if it's in the registry.
     def Get_Ability(self, ability):
-        if ability in self.abilities:
-            return self.abilities[ability]
+        if ability in self.active_abilities: # Check active abilities
+            return self.active_abilities[ability]
         
-        return self.Create_New_Attack(ability)
+        if ability in self.passive_abilities: # Check passive abilities
+            return self.passive_abilities[ability]
+        
+        return self.Create_New_Ability(ability)
     
     # Create a new ability if it doesn't exist
-    def Create_New_Attack(self, ability_name):
+    def Create_New_Ability(self, ability_name):
         ability_class = self.ABILITY_REGISTRY.get(ability_name)
         if not ability_class:
             return None
 
         new_ability = ability_class(self.game, self.entity, ability_name)
-        self.abilities[ability_name] = new_ability
+        self.Assign_Ability(new_ability, ability_name)
         return new_ability
+    
+    # Assign the ability to either passive or active dictionary
+    def Assign_Ability(self, ability, ability_name):
+        if ability.is_passive:
+            self.passive_abilities[ability_name] = ability
+        else:
+            self.active_abilities[ability_name] = ability
+
     
 
     def Trigger_Ability(self, ability):
@@ -163,18 +198,14 @@ class Ability_Handler():
         return self.active_ability.Check_If_Attack_Allowed()
 
 
-    def Handle_Dash(self):
-        
-        dash_effect = self.dash 
-        
-        if not dash_effect.dashing:
-            dash_effect.Dash()
+    def Render_Abilities(self, surf, offset):
+        for ability in self.passive_abilities.values():
+            self._Render_Ability(ability, surf, offset)
 
-        dash_effect.Dashing_Update()
+        for ability in self.active_abilities.values():
+            self._Render_Ability(ability, surf, offset)
 
-        # Check if the dash state is specifically at the 'finished' or 'impact' frame
-        if dash_effect.dashing == 1:
-            self.entity.Set_Charge_To_Max()
+    def _Render_Ability(self, ability, surf, offset):
+        ability.Render_Symbol(surf, offset)
+        ability.Render(surf, offset)
 
-
-    

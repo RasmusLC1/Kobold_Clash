@@ -324,6 +324,7 @@ class Enemy(Moving_Entity):
         
         self.Render_Health_Bar(surf, offset)
         self.Render_Attacking_Symbol(surf, offset)
+        self.intent_manager.Render_Abilities(surf, offset) # Function to render all passive abilities
         return True
 
     

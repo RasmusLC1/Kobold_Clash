@@ -1,11 +1,11 @@
 
-from scripts.entities.moving_entities.enemies.behavior.abilities.ability import Ability
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.active_ability import Active_Ability
 from scripts.engine.keys.keys import keys
 
 COOLDOWN_TIME = 10
-class Run_Away(Ability):
+class Run_Away(Active_Ability):
     def __init__(self, game, entity, name):
-        super().__init__(game, entity, name)
+        super().__init__(game, entity, name, can_attack_while_triggered=True)
         
     # Returns the cooldown time before another special attack 
     def Activate(self):
