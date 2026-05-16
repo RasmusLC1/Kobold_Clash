@@ -61,8 +61,10 @@ class Enemy(Moving_Entity):
         # 4. Initialize Intent Manager using the clean behavior and ability strings
         self.intent_manager = self.intent_manager_class(
             game, self, stats.path_finding_strategy, 
-            stats.behavior, self.max_weapon_charge, stats.ability
+            stats.behavior, self.max_weapon_charge
         )
+
+        self.Set_Ability(stats.ability)
 
         self.Set_Description()
 
@@ -158,13 +160,18 @@ class Enemy(Moving_Entity):
         self.locked_on_target = value
         
     def Damage_Taken(self, damage, effect = (keys.slash, 0), direction = (0, 0), attacker = None):
-        self.Spawn_Damaged_Particles()
-        self.Set_Damaged(True)
+        # Adjusts damage taken based on abilities
+        final_damage = self.intent_manager.Damage_Taken(damage, effect, direction, attacker)
         
-        if not super().Damage_Taken(damage, effect, direction, attacker):
-            return False
+        if final_damage > 0:
+            self.Spawn_Damaged_Particles()
+            self.Set_Damaged(True)
         
-        self.Delete()
+        # Pass final modified damage downward to subtract from entity HP
+        if not super().Damage_Taken(final_damage, effect, direction, attacker):
+            return False # Entity survived
+        
+        self.Delete() # Entity died
         return True
     
     # Used to check if enemy is damaged this tick
@@ -386,6 +393,9 @@ class Enemy(Moving_Entity):
 # Ability functions
 
     # Causes the enemy to run away
+    def Set_Ability(self, ability_name):
+        self.intent_manager.Set_Ability(ability_name)
+
     def Set_Retreat(self):
         return self.intent_manager.Set_Retreat()
     

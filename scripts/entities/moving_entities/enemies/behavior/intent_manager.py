@@ -6,13 +6,13 @@ from scripts.entities.moving_entities.enemies.behavior.behavior_manager import B
 
 
 class Intent_Manager():
-    def __init__(self, game, entity, path_finding_strategy, behavior, max_weapon_charge, ability = None) -> None:
+    def __init__(self, game, entity, path_finding_strategy, behavior, max_weapon_charge) -> None:
         self.game = game
         self.entity = entity
 
         self.path_finding = Path_Finding(game, entity, path_finding_strategy) # Pathfinding logic for enemy
         self.movement_strategies = Movement_Strategies(game, entity) # Pathfinding logic for enemy
-        self.behavior_manager = Behavior_Manager(game, entity, behavior, max_weapon_charge, ability) 
+        self.behavior_manager = Behavior_Manager(game, entity, behavior, max_weapon_charge) 
 
 
 
@@ -62,8 +62,14 @@ class Intent_Manager():
     def Set_Behavior_Pattern(self, pattern):
         return self.behavior_manager.Set_Behavior_Pattern(pattern)
     
+    def Damage_Taken(self, damage, effect, direction, attacker):
+        return self.behavior_manager.Damage_Taken(damage, effect, direction, attacker)
+    
     def Reset_Behavior(self):
         return self.behavior_manager.Reset_Behavior()
+    
+    def Set_Ability(self, ability_name):
+        return self.behavior_manager.Set_Ability(ability_name)
     
     def Render_Abilities(self, surf, offset):
         self.behavior_manager.Render_Abilities(surf, offset)

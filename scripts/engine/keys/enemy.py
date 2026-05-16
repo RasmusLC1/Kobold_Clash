@@ -91,6 +91,8 @@ class Enemy():
 
     electrify = "electrify"
 
+    crystal_scale = "crystal_scale"
+
 # Void Spawn
 
     shade = "shade"

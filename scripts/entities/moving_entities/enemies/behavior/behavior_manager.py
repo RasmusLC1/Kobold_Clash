@@ -7,7 +7,7 @@ import time
 
 
 class Behavior_Manager():
-    def __init__(self, game, entity, behavior, max_weapon_charge, ability):
+    def __init__(self, game, entity, behavior, max_weapon_charge):
         self.game = game
         self.entity = entity
         self.behavior = None # The attack behavior of the enemy
@@ -32,7 +32,7 @@ class Behavior_Manager():
         self.Set_Behavior_Pattern(behavior)
         self.behavior_holder = self.behavior
         self.attack_handler = Attack_Handler(game, entity, max_weapon_charge) 
-        self.ability_handler = Ability_Handler(game, entity, ability)
+        self.ability_handler = Ability_Handler(game, entity)
         
     
     def Save_Data(self):
@@ -303,9 +303,14 @@ class Behavior_Manager():
     def Check_If_Entity_Has_Taken_Damage(self):
         return self.entity.damaged
     
+    def Damage_Taken(self, damage, effect, direction, attacker):
+        return self.ability_handler.Damage_Taken(damage, effect, direction, attacker)
 
     def Get_Attack_Charge(self):
         return self.attack_handler.Get_Attack_Charge()
+    
+    def Set_Ability(self, ability_name):
+        return self.ability_handler.Get_Ability(ability_name)
     
     def Reset_Attack(self):
         return self.attack_handler.Reset_Attack()

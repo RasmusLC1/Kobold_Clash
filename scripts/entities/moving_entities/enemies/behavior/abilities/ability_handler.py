@@ -7,6 +7,8 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.charge import Charge
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.rally import Rally
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.electrify import Electrify
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.crystal_scale import Crystal_Scale
+
 
 from scripts.engine.keys.keys import keys
 
@@ -23,16 +25,16 @@ class Ability_Handler():
         keys.charge : Charge,
         keys.rally : Rally,
         keys.electrify : Electrify,
+        keys.crystal_scale : Crystal_Scale,
     }
 
-    def __init__(self, game, entity, ability):
+    def __init__(self, game, entity):
         self.game = game
         self.entity = entity
         self.passive_abilities = {}
         self.active_abilities = {}
         self.abilities_on_cooldown = []
         self.active_ability = None
-        self.Get_Ability(ability)
 
 
     def Save_Data(self):
@@ -128,19 +130,20 @@ class Ability_Handler():
 
 
     # Returns the instance if it exists, or creates it if it's in the registry.
-    def Get_Ability(self, ability):
-        if ability in self.active_abilities: # Check active abilities
-            return self.active_abilities[ability]
+    def Get_Ability(self, ability_name):
+        if ability_name in self.active_abilities: # Check active abilities
+            return self.active_abilities[ability_name]
         
-        if ability in self.passive_abilities: # Check passive abilities
-            return self.passive_abilities[ability]
+        if ability_name in self.passive_abilities: # Check passive abilities
+            return self.passive_abilities[ability_name]
         
-        return self.Create_New_Ability(ability)
+        return self.Create_New_Ability(ability_name)
     
     # Create a new ability if it doesn't exist
     def Create_New_Ability(self, ability_name):
         ability_class = self.ABILITY_REGISTRY.get(ability_name)
         if not ability_class:
+            print("ABILITY CLASS NOT FOUND: ", ability_name)
             return None
 
         new_ability = ability_class(self.game, self.entity, ability_name)
@@ -193,6 +196,15 @@ class Ability_Handler():
             return True
         
         return self.active_ability.Check_If_Attack_Allowed()
+    
+    def Damage_Taken(self, damage, effect, direction, attacker):
+        for ability in self.passive_abilities.values():
+            damage = ability.Damage_Taken(damage, effect, direction, attacker)
+
+        if self.active_ability:
+            damage = self.active_ability.Damage_Taken(damage, effect, direction, attacker)
+        
+        return damage
 
 
     def Render_Abilities(self, surf, offset):
