@@ -17,7 +17,6 @@ class Support_Nearby_Entities(Active_Ability):
         effect_strength = self.entity.intelligence // 2
         self.game.particle_handler.Activate_Particles(effect_strength * 3, self.particle_name , self.entity.rect().center)
         for enemy in nearby_enemies:
-            print("SET EFFECT")
             enemy.effects.Set_Effect(self.effect_name, effect_strength)
 
 

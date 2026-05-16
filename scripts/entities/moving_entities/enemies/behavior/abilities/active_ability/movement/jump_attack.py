@@ -1,4 +1,4 @@
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.dash_attacks.dash import Dash
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.dash import Dash
 from scripts.engine.keys.keys import keys
 
 class Jump_Attack(Dash):

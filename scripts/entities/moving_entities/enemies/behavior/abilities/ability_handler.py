@@ -46,19 +46,16 @@ class Ability_Handler():
 
         for ability in self.passive_abilities.values():
             ability.Save_Data()
-            
+
 
     def Load_Data(self, data):
         self._Load_Active_Abilities(data)
         self._Load_Passive_Abilities(data)
         cooldown_keys = data.get('cooldown_keys', [])
-        self.abilities_on_cooldown = [self.active_abilities[k] for k in cooldown_keys if k in self.active_abilities]
+        self.abilities_on_cooldown = [
+            self.active_abilities[k] for k in cooldown_keys if k in self.active_abilities
+        ]
 
-        active_key = data.get('active_ability_key')
-        self.active_ability = self.active_abilities.get(active_key) if active_key else None
-
-        for ability in self.active_abilities.values():
-            ability.Load_Data(data)
 
     def _Load_Active_Abilities(self, data):
         saved_active_keys = data.get('active_abilities_keys', [])
@@ -66,28 +63,35 @@ class Ability_Handler():
         for key in saved_active_keys:
             self.Get_Ability(key)
 
+        for ability in self.active_abilities.values():
+            ability.Load_Data(data)
+
     def _Load_Passive_Abilities(self, data):
         saved_active_keys = data.get('passive_abilities_keys', [])
         self.passive_abilities = {}
         for key in saved_active_keys:
             self.Get_Ability(key)
 
-    
-    def Update(self, delta_time):
-        self._Update_Passive_Abilities(delta_time) # Passive abilities are always updated
+        for ability in self.active_abilities.values():
+            ability.Load_Data(data)
 
-        no_cooldowns_active = self.Update_Abilities_Cooldown()
-        
-        # Update any active cooldowns
+    def Update(self, delta_time):
+        # Passives remain decoupled and tick unconditionally every frame
+        for ability in self.passive_abilities.values():
+            ability.Update(delta_time)
+
+        # Handle active ability execution state
         if self.active_ability:
             self._Update_Active_Ability(delta_time)
             return True 
 
-        # If nothing is active AND no cooldowns are running, look for something new.
+        # Only process background tick cooldowns if the entity is free to move/act
+        no_cooldowns_active = self.Update_Abilities_Cooldown()
         if no_cooldowns_active:
             return self._Update_Active_Abilities(delta_time)
         
         return False
+
 
 
     def _Update_Active_Ability(self, delta_time):
@@ -96,14 +100,7 @@ class Ability_Handler():
         if self.active_ability.Get_Cooldown() > 0: 
             self.Remove_Active_Ability()
 
-    def _Update_Passive_Abilities(self, delta_time):
-        if not self.passive_abilities:
-            return
-        
-        for ability in self.passive_abilities.values():
-            ability.Update(delta_time)
 
-    
     # Returns true if any abilities can be triggerd
     def _Update_Active_Abilities(self, delta_time):
         for ability in self.active_abilities.values():
