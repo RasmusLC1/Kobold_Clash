@@ -9,6 +9,6 @@ class Vampiric(Effect):
 
 
     def Damage_Dealt(self, damage):
-        modifier = 10 - self.effect
+        modifier = 10 - self.effect_strength
         damage_heal = max(1, damage // modifier)
         self.entity.Set_Effect(keys.healing, damage_heal)

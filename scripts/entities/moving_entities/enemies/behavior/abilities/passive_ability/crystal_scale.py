@@ -58,7 +58,7 @@ class Crystal_Scale(Passive_Ability):
         )
         
         # 3. Calculate actual breakthrough damage
-        # If it was blunt, we divide the unabsorbed force back by 2 to get real health damage
+        # If it was blunt, divide the unabsorbed force back by 2 to get real health damage
         unabsorbed_force = incoming_force - absorbed_force
         
         if effect == keys.blunt:
@@ -67,7 +67,7 @@ class Crystal_Scale(Passive_Ability):
         return max(0, unabsorbed_force)
     
 
-    
+
     def Update_Crystal_Fraction(self):
         if self.crystal_scale == self.crystal_scale_holder:
             return

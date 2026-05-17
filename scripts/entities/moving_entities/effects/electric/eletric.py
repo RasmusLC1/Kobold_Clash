@@ -12,21 +12,21 @@ class Electric(Effect):
     
     #set Fire effect
     def Set_Effect(self, effect_time, permanent = False):
-        if self.entity.effects.electric_resistance.effect:
+        if self.Get_Entity_Effect_Strength(keys.electric_resistance):
             return False
         
-        if self.entity.effects.wet.effect:
+        if self.Get_Entity_Effect_Strength(keys.wet):
             effect_time *= 2
 
         self.entity.Damage_Taken(effect_time, (self.effect_type, 0))
         
         return super().Set_Effect(effect_time, permanent)
-    
+
     def Update_Effect(self, delta_time):
-        if not self.effect:
+        if not self.effect_strength:
             return False
         
-        if self.entity.effects.electric_resistance.effect:
+        if self.Get_Entity_Effect_Strength(keys.electric_resistance):
             self.Remove_Effect()
             return False
                 
@@ -46,6 +46,6 @@ class Electric(Effect):
         cooldown_state = super().Update_Cooldown(delta_time)
         if cooldown_state:
             if random.randint(1, 4) == 4:
-                self.snare_time = self.effect / 10
+                self.snare_time = self.effect_strength / 10
 
         return cooldown_state

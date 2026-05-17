@@ -12,8 +12,8 @@ class Forsaken_Grimoire(Effect):
         if not super().Update_Effect(delta_time):
             return False
         
-        self.entity.strength = max(0, min(20, self.entity.strength - max(1, self.effect // 2)))
-        self.entity.Update_Rune_Power(self.effect) 
+        self.entity.strength = max(0, min(20, self.entity.strength - max(1, self.effect_strength // 2)))
+        self.entity.Update_Rune_Power(self.effect_strength) 
 
         if self.update_trigged:
             self.entity.game.inventory.rune_inventory.Set_Descriptions()

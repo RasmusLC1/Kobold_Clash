@@ -10,13 +10,13 @@ class Black_Coin(Effect):
     def Update_Effect(self, delta_time):
         if not super().Update_Effect(delta_time):
             return False
-        self.entity.Update_Luck(self.effect * 2) # Set the player's luck to the effect value * 2
+        self.entity.Update_Luck(self.effect_strength * 2) # Set the player's luck to the effect value * 2
         return True
 
 
     def Damage_Taken(self, damage, attacker):
         # Scale: Level 1 = +5% damage, Level 10 = +50% damage
-        scaling_factor = 1 + (self.effect * 0.05)
+        scaling_factor = 1 + (self.effect_strength * 0.05)
         total_damage = round(damage * scaling_factor)
         
         self.entity.Set_Health(self.entity.health - total_damage)

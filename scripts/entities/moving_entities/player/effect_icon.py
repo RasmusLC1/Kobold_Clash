@@ -29,7 +29,7 @@ class Effect_Icon():
     
     def Update_Effect_Text(self):
         if self.effect:
-            self.icon_text = f"{self.effect.effect_type} {self.effect.effect}" 
+            self.icon_text = f"{self.effect.effect_type} {self.effect.effect_strength}" 
         else:
             self.icon_text = None
 

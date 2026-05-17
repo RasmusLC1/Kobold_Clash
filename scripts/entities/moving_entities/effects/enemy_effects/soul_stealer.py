@@ -9,4 +9,4 @@ class Soul_Stealer(Effect):
 
     
     def Damage_Dealt(self, damage):
-        self.entity.game.player.Decrease_Souls(self.effect)
+        self.entity.game.player.Decrease_Souls(self.effect_strength)

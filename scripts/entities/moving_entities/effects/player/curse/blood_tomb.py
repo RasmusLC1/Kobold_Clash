@@ -9,4 +9,4 @@ class Blood_Tomb(Effect):
 
 
     def Damage_Taken(self, damage, attacker):
-        self.entity.Increase_Souls(damage * self.effect * 2)
+        self.entity.Increase_Souls(damage * self.effect_strength * 2)

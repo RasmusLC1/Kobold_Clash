@@ -17,15 +17,6 @@ class Fire_Spirit(Elemental):
         
         self.active_weapon.Update(delta_time)
 
-        
-    def Check_If_On_Fire(self):
-        fire = self.effects.Get_Effect_Strength(keys.fire)
-        if not fire:
-            return False
-        
-        self.Set_Effect(keys.healing, self.effects.frozen.effect)
-        self.Set_Effect(keys.fire_resistance, 2)
-        return True
     
     def Attack(self, delta_time):
         # If Player is to close, then ice spirit cannot shoot
@@ -38,7 +29,7 @@ class Fire_Spirit(Elemental):
         self.Set_Target(self.game.player.pos)
         self.Set_Attack_Direction()
         self.active_weapon.Initialise_Shooting(self, 2, self.fire_damage)
-    
+
     
     # TODO: IMPLEMENT
     def Look_For_Health(self, delta_time):

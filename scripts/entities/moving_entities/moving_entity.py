@@ -426,7 +426,12 @@ class Moving_Entity(PhysicsEntity):
     def Set_Attack_Triggered(self):
         pass
 
+    
+    def Get_Effect(self, effect_name):
+        return self.effects.Get_Effect(effect_name)
 
+    def Get_Effect_Strength(self, effect_name):
+        return self.effects.Get_Effect_Strength(effect_name)
 
     # Ice mechanic, lower friction and acceleration to simulate ice
     def On_Ice(self, effect):

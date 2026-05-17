@@ -8,7 +8,7 @@ class Effect():
         self.effect_type = effect_type
         self.effect_max = 10
         self.permanent = False
-        self.effect = 0
+        self.effect_strength = 0
         self.cooldown = 0
         self.animation = 0
         self.animation_max = animation_max
@@ -21,7 +21,7 @@ class Effect():
 
     def Save_Data(self):
         self.saved_data = {}
-        self.saved_data['effect'] = self.effect
+        self.saved_data['effect'] = self.effect_strength
         self.saved_data['cooldown'] = self.cooldown
         self.saved_data['animation'] = self.animation
         self.saved_data['animation_cooldown'] = self.animation_cooldown
@@ -30,7 +30,7 @@ class Effect():
 
 
     def Load_Data(self, data):
-        self.effect = data['effect']
+        self.effect_strength = data['effect']
         self.cooldown = data['cooldown']
         self.animation = data['animation']
         self.animation_cooldown = data['animation_cooldown']
@@ -40,18 +40,18 @@ class Effect():
     # set effect, defualt is not permanent
     # If permanent is enabled it sets a lower boundary for effect
     def Set_Effect(self, effect_time, permanent = False):
-        if self.effect >= self.effect_max:
+        if self.effect_strength >= self.effect_max:
             return False
 
         if permanent:
             self.Set_Permanent(effect_time)
         
-        self.effect = min(effect_time + self.effect, self.effect_max)
+        self.effect_strength = min(effect_time + self.effect_strength, self.effect_max)
         self.Set_Cooldown()
         return True
     
     def Update_Effect(self, delta_time):
-        if not self.effect:
+        if not self.effect_strength:
             return False
         
         self.Update_Cooldown(delta_time)
@@ -61,9 +61,9 @@ class Effect():
     def Remove_Effect(self, reduce_permanent = 0):
          self.Set_Permanent(-reduce_permanent)
          if self.permanent > 0:
-             self.effect = max(0, self.effect - reduce_permanent)
+             self.effect_strength = max(0, self.effect_strength - reduce_permanent)
              return False
-         self.effect = 0
+         self.effect_strength = 0
          self.animation = 0
          self.cooldown = 0
          self.animation_cooldown = 0
@@ -73,7 +73,7 @@ class Effect():
         self.permanent += amount
 
     def Decrease_Effect(self):
-        self.effect = max(self.effect - 1, 0)
+        self.effect_strength = max(self.effect_strength - 1, 0)
 
     def Update_Cooldown(self, delta_time) -> bool:
             
@@ -82,9 +82,9 @@ class Effect():
             return False
         
         self.Set_Cooldown()
-        if self.permanent >= self.effect:
+        if self.permanent >= self.effect_strength:
             return False
-        self.effect -= 1
+        self.effect_strength -= 1
         self.entity.Set_Description()
         
         return True
@@ -115,7 +115,17 @@ class Effect():
 
     def Push(self, direction):
         pass
-   
+
+    def Get_Entity_Effect_Strength(self, effect_name):
+        return self.entity.Get_Effect_Strength(effect_name)
+    
+    def Get_Entity_Effect(self, effect_name):
+        return self.entity.Get_Effect(effect_name)
+    
+    def Decrease_Other_Effect(self, effect_name, amount = None):
+        return self.entity.Remove_Effect(effect_name, amount)
+
+
     def Render_Effect(self, surf, offset=(0, 0)):
         pass
         # if not self.effect:

@@ -16,8 +16,9 @@ class Lava(Trap):
         
 
     def Apply_Entity_Effect(self, entity):
-        if entity.effects.wet.effect:
-            entity.effects.wet.Decrease_Effect()
+        wet_effect = entity.Get_Effect(keys.wet)
+        if wet_effect.effect_strength:
+            wet_effect.Decrease_Effect()
             return
         entity.Damage_Taken(5, (keys.fire, 3))
 

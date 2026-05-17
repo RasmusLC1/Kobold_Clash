@@ -15,7 +15,7 @@ class Thorns(Effect):
     def Damage_Taken(self, damage, attacker=None):
         if not attacker:
             return
-        scaling_factor = (10 - self.effect) / 10  
+        scaling_factor = (10 - self.effect_strength) / 10  
         bonus_percent = max(0.0, min(0.5, scaling_factor * 0.5))
         damage_multiplier = 1.0 + bonus_percent
         

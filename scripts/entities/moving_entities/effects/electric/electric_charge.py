@@ -11,4 +11,4 @@ class Electric_Charge(Effect):
     def Damage_Taken(self, damage, attacker):
         if not attacker:
             return
-        attacker.Set_Effect(keys.electric, self.effect // 2)
+        attacker.Set_Effect(keys.electric, self.effect_strength // 2)

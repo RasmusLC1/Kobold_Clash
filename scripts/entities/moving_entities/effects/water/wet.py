@@ -9,21 +9,23 @@ class Wet(Effect):
 
     
     def Set_Effect(self, effect_time, permanent = False):
-        if self.entity.effects.fire.effect:
-            self.effects.fire.Remove_Effect()
+        fire_effect = self.Get_Entity_Effect(keys.fire)
+        if fire_effect.effect_strength:
+            self.Decrease_Other_Effect(keys.fire, fire_effect.effect_strength)
 
-        if self.entity.effects.frozen:
-            self.entity.effects.frozen.Decrease_Effect()
+        if self.Get_Entity_Effect_Strength(keys.frozen):
+            self.Decrease_Other_Effect(keys.frozen, self.effect_strength)
             
         return super().Set_Effect(effect_time, permanent)
 
     
     def Update_Effect(self, delta_time):
-        if not self.effect:
+        if not self.effect_strength:
             return False
         
-        if self.entity.effects.fire.effect:
-            self.entity.effects.fire.Remove_Effect()
+        fire_effect = self.Get_Entity_Effect(keys.fire)
+        if fire_effect.effect_strength:
+            self.Decrease_Other_Effect(keys.fire, fire_effect.effect_strength)
             
         self.Update_Cooldown(delta_time)
         

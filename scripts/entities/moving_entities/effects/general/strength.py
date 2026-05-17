@@ -9,15 +9,15 @@ class Increase_Strength(Effect):
     
     #set Fire effect
     def Set_Effect(self, effect_time, permanent = False):
-        if self.entity.effects.poison.effect:
+        if self.Get_Entity_Effect_Strength(keys.poison):
             return False
         return super().Set_Effect(effect_time, permanent)
 
 
     def Update_Effect(self, delta_time):
-        if not self.effect or self.entity.effects.poison.effect:
+        if not self.effect_strength or self.Get_Entity_Effect_Strength(keys.poison):
             return False
-        self.entity.strength = min(20, self.entity.strength + self.effect)
+        self.entity.strength = min(20, self.entity.strength + self.effect_strength)
 
         self.Update_Cooldown(delta_time)
 

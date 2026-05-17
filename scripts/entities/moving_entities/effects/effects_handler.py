@@ -112,7 +112,7 @@ class Status_Effect_Handler:
         if not effect:
             return None
         
-        return effect.effect
+        return effect.effect_strength
     
     
     # This only runs if 'self.name' doesn't exist yet
@@ -161,9 +161,9 @@ class Status_Effect_Handler:
                 print(f"Wrong effect input{e} EFFECT NAME", effect)
 
     def Check_Invulnerable(self):
-        invulnerable_check = self.Get_Effect(keys.invulnerable)
+        invulnerable_check = self.Get_Effect_Strength(keys.invulnerable)
 
-        if invulnerable_check and invulnerable_check.effect:
+        if invulnerable_check:
             return True
         
         return False

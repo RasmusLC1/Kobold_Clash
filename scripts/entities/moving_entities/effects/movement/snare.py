@@ -12,11 +12,11 @@ class Snare(Effect):
     # Set effect so that it picks the highest effect time, but does not stack them
     # to prevent permanent being stuck
     def Set_Effect(self, effect_time, permanent = False):
-        self.effect = max(self.effect, min(effect_time, 10))
+        self.effect_strength = max(self.effect_strength, min(effect_time, 10))
         return True
     
     def Update_Effect(self, delta_time):
-        if not self.effect:
+        if not self.effect_strength:
             return False
         
         self.Update_Cooldown(delta_time)

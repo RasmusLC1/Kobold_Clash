@@ -9,12 +9,12 @@ class Blood_Ring(Effect):
 
 
     def Damage_Dealt(self, damage):
-        modifier = 10 - self.effect
+        modifier = 10 - self.effect_strength
         damage_heal = max(1, damage // modifier) * 3 # 3 times as efficient 
         self.entity.Set_Effect(keys.healing, damage_heal)
     
     def Damage_Entity(self):
-        self.entity.Damage_Taken(self.effect, (keys.vampiric, 1))
+        self.entity.Damage_Taken(self.effect_strength, (keys.vampiric, 1))
 
     def Update_Effect(self, delta_time):
         if not super().Update_Effect(delta_time):

@@ -7,5 +7,3 @@ class Elemental(Enemy):
         super().__init__(game, pos, type)
         self.touching_ground = False
         self.Set_Ability(keys.crystal_scale)
-
-    

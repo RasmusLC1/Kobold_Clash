@@ -22,7 +22,7 @@ class Invisibility(Effect):
             return False
         
         # Use direct call instead of Set_Active since Set_Active is locked when invisible
-        self.entity.active = (max(0, 110 - self.effect * 10))
+        self.entity.active = (max(0, 110 - self.effect_strength * 10))
         self.entity.render_needs_update = True
         return True
     

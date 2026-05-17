@@ -18,7 +18,7 @@ class Regen(Effect):
     
 
     def Heal_Entity(self, delta_time):
-        self.entity.effects.Set_Effect(keys.healing, random.randint(3, 5))
+        self.entity.Set_Effect(keys.healing, random.randint(3, 5))
         self.Effect_Animation_Cooldown(delta_time)
 
 
@@ -26,7 +26,7 @@ class Regen(Effect):
         if not super().Update_Effect(delta_time):
             return False
                   
-        if self.entity.effects.poison.effect:
+        if self.Get_Entity_Effect_Strength(keys.poison):
             return False
         
         if self.update_trigged:
