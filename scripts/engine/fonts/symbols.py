@@ -12,7 +12,7 @@ class Symbols():
                 keys.souls, keys.invisibility,
                 keys.slash, keys.blunt, keys.electric,
                 keys.resistance, keys.regen, keys.silence,
-                keys.luck, keys.vampiric, keys.fire,
+                keys.jump, keys.vampiric, keys.fire,
                 keys.frozen, keys.poison, keys.wet,
                 keys.block, keys.fire_resistance,
                 keys.frozen_resistance, keys.poison_resistance,

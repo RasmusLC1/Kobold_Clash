@@ -8,7 +8,7 @@ class Magnet_Rune(Rune):
 
 
     def Update(self, delta_time):
-        if not self.game.player.effects.arcane_conduit.effect:
+        if not self.game.player.Get_Effect_Power(keys.arcane_conduit):
             self.game.player.Set_Effect(self.effect, self.power)
         return super().Update(delta_time)        
 
