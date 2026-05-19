@@ -16,10 +16,12 @@ class Crystal_Scale(Passive_Ability):
         super().Save_Data()
         self.entity.saved_data['crystal_scale_max'] = self.crystal_scale_max
         self.entity.saved_data['crystal_scale'] = self.crystal_scale
+        self.entity.saved_data['crystal_scale_heal_cooldown'] = self.crystal_scale_heal_cooldown
     
     def Load_Data(self, data):
         self.crystal_scale = data['crystal_scale']
         self.crystal_scale_max = data['crystal_scale_max']
+        self.crystal_scale_heal_cooldown = data['crystal_scale_heal_cooldown']
         return super().Load_Data(data)
 
     def Update(self, delta_time):

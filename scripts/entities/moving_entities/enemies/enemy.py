@@ -93,22 +93,16 @@ class Enemy(Moving_Entity):
     def Update(self, tilemap, delta_time, movement=(0, 0)):
 
         self.Calculate_Distance_To_Player(delta_time)
-        movement = self.direction
+        movement = self.movement.direction
         self.intent_manager.Update_Intent(delta_time)
         super().Update(tilemap, delta_time, movement)
 
-        self.Set_Direction_Holder()
+        self.movement.Set_Direction_Holder()
 
         self.Update_Alert_Cooldown(delta_time)
         self.Update_Locked_On_Target(delta_time)
         self.Set_Damaged(False)
         self.Reset_Max_Speed()
-
-
-    def Set_Direction_Holder(self):
-        if self.direction_x or self.direction_y:
-            self.direction_x_holder = self.direction_x
-            self.direction_y_holder = self.direction_y
 
 
     def Calculate_Distance_To_Player(self, delta_time):
@@ -145,9 +139,7 @@ class Enemy(Moving_Entity):
         self.intent_manager.Find_New_Path()
 
     def Set_Direction(self, direction):
-        if direction.length() > 0:
-            direction.normalize_ip()
-        self.direction = direction
+        self.movement.Set_Direction(direction)
         
 
 
