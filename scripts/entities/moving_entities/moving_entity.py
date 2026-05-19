@@ -101,10 +101,7 @@ class Moving_Entity(PhysicsEntity):
     @property
     def acceleration_holder(self): return self.movement.acceleration_holder
 
-    @property
-    def direction_x(self): return self.movement.direction_x
-    @property
-    def direction_y(self): return self.movement.direction_y
+
     @property
     def pushed_entities(self): return self.movement.pushed_entities
 

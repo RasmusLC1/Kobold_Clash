@@ -65,7 +65,6 @@ class Enemy(Moving_Entity):
         )
 
         self.Set_Ability(stats.ability)
-
         self.Set_Description()
 
     
@@ -89,16 +88,21 @@ class Enemy(Moving_Entity):
         self.target = data['target']
 
 
-
     def Update(self, tilemap, delta_time, movement=(0, 0)):
-
+        # 1. Calculate player distance states
         self.Calculate_Distance_To_Player(delta_time)
-        movement = self.movement.direction
+        
+        # 2. Run AI logic FIRST (This updates self.movement.direction via Calculate_Path_Segment)
         self.intent_manager.Update_Intent(delta_time)
+        
+        # 3. Grab the freshly calculated AI direction vector
+        movement = self.movement.direction
+        
+        # 4. Pass it down to the engine physics/movement handlers
         super().Update(tilemap, delta_time, movement)
 
+        # 5. Handle post-movement updates
         self.movement.Set_Direction_Holder()
-
         self.Update_Alert_Cooldown(delta_time)
         self.Update_Locked_On_Target(delta_time)
         self.Set_Damaged(False)
@@ -110,12 +114,11 @@ class Enemy(Moving_Entity):
             self.distance_calculation_cooldown = max(0, self.distance_calculation_cooldown - delta_time)
             return
          
-        max_distance_cooldown = random.uniform(0.2, 0.3) # randomise time to prevent simulationious updates
+        max_distance_cooldown = random.uniform(0.2, 0.3) # randomise time to prevent simultaneous updates
         self.distance_calculation_cooldown = max_distance_cooldown
         
         player_pos = self.game.player.pos
         self.distance_to_player = math.sqrt((player_pos[0] - self.pos[0]) ** 2 + (player_pos[1] - self.pos[1]) ** 2)
-
 
 
     def Set_Charge_To_Max(self):
@@ -123,7 +126,6 @@ class Enemy(Moving_Entity):
     
     def Movement_Strategy(self, delta_time):
         return self.intent_manager.Movement_Strategy(delta_time)
-    
     
     def Set_Active_Weapon(self, weapon):
         self.active_weapon = weapon
@@ -141,7 +143,6 @@ class Enemy(Moving_Entity):
     def Set_Direction(self, direction):
         self.movement.Set_Direction(direction)
         
-
 
     def Update_Locked_On_Target(self, delta_time):
         if not self.locked_on_target:
@@ -185,13 +186,13 @@ class Enemy(Moving_Entity):
         return True
 
 
-    def Set_Action(self,  movement = None):
+    def Set_Action(self, movement = None):
         if self.distance_to_player > 300 :
             return
         
         if self.charge > 0:
             self.animation_handler.Set_Animation(keys.attack)
-        elif self.frame_movement:
+        elif self.movement.frame_movement:  # Updated to look inside movement component
             self.animation_handler.Set_Animation('running')
         else:
             self.animation_handler.Set_Animation('idle')
@@ -240,29 +241,29 @@ class Enemy(Moving_Entity):
                         )
 
     
-    def Entity_Collision_Detection(self, tilemap):
+    # NOTE: This version of the method is currently overwritten by the one below it in Python.
+    # It has been updated to be vector-compatible just in case you plan to rename or merge it.
+    def Entity_Collision_Detection_With_Tilemap(self, tilemap):
         colliding_entity = super().Entity_Collision_Detection(tilemap)
 
         if colliding_entity:
             if colliding_entity.type == 'player':
-                # Prevent further movement towards the player by stopping the enemy's movement
-                self.direction = (0, 0)
+                self.movement.direction.update(0, 0)
                 return colliding_entity
 
             # Collision logic for other entities
             collision_vector = pygame.math.Vector2(self.pos[0] - colliding_entity.pos[0],
-                                                self.pos[1] - colliding_entity.pos[1])
-            if collision_vector.length() > 0:
+                                                   self.pos[1] - colliding_entity.pos[1])
+            if collision_vector.length_squared() > 0:
                 collision_vector = collision_vector.normalize()
-                direction_vector = pygame.math.Vector2(self.direction)
+                direction_vector = pygame.math.Vector2(self.movement.direction)
                 reflected_direction = direction_vector.reflect(collision_vector)
 
                 if self.Future_Rect(reflected_direction).colliderect(self.game.player.rect()):
-                    self.direction = (0, 0)
-
+                    self.movement.direction.update(0, 0)
                     return self.game.player
 
-                self.direction = (reflected_direction.x, reflected_direction.y)
+                self.movement.direction.update(reflected_direction.x, reflected_direction.y)
 
         return None
     
@@ -270,25 +271,16 @@ class Enemy(Moving_Entity):
     def Trap_Collision_Handler(self):
         for trap in self.nearby_traps:
             if self.rect().colliderect(trap.rect()):
-                # Run away in in the same direction the enemy was moving previously
-                # Use min and max to prevent it teleporting
-                if self.direction_x_holder < 0:
-                    self.direction_x = max(-0.4, self.direction_x_holder * 4)
-                else:
-                    self.direction_x = min(0.4, self.direction_x_holder * 4)
-
-                if self.direction_y_holder < 0:
-                    self.direction_y = max(-0.4, self.direction_y_holder * 4)
-                else:
-                    self.direction_y = min(0.4, self.direction_y_holder * 4)
-
-                self.direction = (self.direction_x, self.direction_y)
+                # Run away in the same direction the enemy was moving previously
+                # Utilizes the updated Vector2 holder properties (.x and .y)
+                dir_x = max(-0.4, self.movement.direction_holder.x * 4) if self.movement.direction_holder.x < 0 else min(0.4, self.movement.direction_holder.x * 4)
+                dir_y = max(-0.4, self.movement.direction_holder.y * 4) if self.movement.direction_holder.y < 0 else min(0.4, self.movement.direction_holder.y * 4)
+                
+                self.movement.direction.update(dir_x, dir_y)
             else:
                 # Check if the enemy will collide soon, if yes redirect in the opposite direction
-                if self.Future_Rect(self.direction).colliderect(trap.rect()):
-                    self.direction_x *= -1
-                    self.direction_y *= -1
-                    self.direction = (self.direction_x, self.direction_y)
+                if self.Future_Rect(self.movement.direction).colliderect(trap.rect()):
+                    self.movement.direction *= -1
                     break
     
     def Set_Attack_Direction(self):
@@ -308,12 +300,11 @@ class Enemy(Moving_Entity):
         self.text_box = Enemy_Textbox(self)
 
 
-
     def Future_Rect(self, direction):
-             return pygame.Rect(self.pos[0] + direction[0]*32, self.pos[1] + direction[1]*32, self.size[0], self.size[1])
+         return pygame.Rect(self.pos[0] + direction[0]*32, self.pos[1] + direction[1]*32, self.size[0], self.size[1])
 
     
-# RENDER FUNCTIONS
+    # RENDER FUNCTIONS
     def Render(self, surf, offset = (0,0)):
         if not super().Render(surf, offset):
             return False
@@ -328,21 +319,18 @@ class Enemy(Moving_Entity):
 
     
     def Get_Health_Index(self):
-        # Correct potential rounding issues at full health
         if self.health == self.max_health:
             return 0
         health_fraction = self.health / self.max_health
-
-        # Map the fraction to an index from 0 to 9 (assuming 10 total images)
-        health_index = max(-1, min(int((1 - health_fraction) * 9), 9))  # Invert fraction and scale to index range
-
+        health_index = max(-1, min(int((1 - health_fraction) * 9), 9))
         return health_index
+
 
     def Render_Health_Bar(self, surf, offset = (0,0)):
         health_index = self.Get_Health_Index()
-
         health_bar = self.health_bar[health_index]
         surf.blit(health_bar, (self.rect().left - offset[0], self.rect().bottom - offset[1] - self.size[1] // 2 + 4))
+
 
     def Equip_Weapon(self, weapon):
         if not weapon:
@@ -356,11 +344,11 @@ class Enemy(Moving_Entity):
         del(weapon)
         return True
     
+
     def Trigger_Attack(self):
         self.Set_Target()
         self.Trigger_Basic_Attack()
         self.intent_manager.Reset_Attack()
-
 
 
     def Trigger_Basic_Attack(self):
@@ -369,22 +357,23 @@ class Enemy(Moving_Entity):
         
         self.active_weapon.Set_Attack()
     
-    # Updated by attack handler
+
     def Set_Charge(self, charge):
         self.charge = charge
 
+
+    # This is the active collision method overriding the tilemap signature variant above
     def Entity_Collision_Detection(self):
         future_pos = super().Entity_Collision_Detection()
         player = self.game.player
-        # Handle collision with the player
+        
+        # Handle collision with the player using the component set
         if player.rect().colliderect(self.rect_future(future_pos)):
-            self.pushed_entities.add(player)
+            self.movement.pushed_entities.add(player)
         
         return future_pos
 
-# Ability functions
 
-    # Causes the enemy to run away
     def Set_Ability(self, ability_name):
         self.intent_manager.Set_Ability(ability_name)
 
@@ -420,4 +409,3 @@ class Enemy(Moving_Entity):
 
         exclamation_mark.set_alpha(alpha_value)
         surf.blit(exclamation_mark, (self.rect().left - offset[0], self.rect().top - offset[1] - self.attack_symbol_offset))
-

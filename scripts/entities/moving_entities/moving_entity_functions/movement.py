@@ -7,11 +7,9 @@ class Movement:
         self.velocity = [0, 0]
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False}
 
-        self.direction = (0, 0)
-        self.direction_x = 0
-        self.direction_y = 0
-        self.direction_x_holder = 0
-        self.direction_y_holder = 0
+        # Consolidated direction handling
+        self.direction = pygame.math.Vector2(0, 0)
+        self.direction_holder = pygame.math.Vector2(0, 0)
         
         self.frame_movement = (0.0, 0.0)
         self.last_frame_movement = (0.0, 0.0)
@@ -46,8 +44,8 @@ class Movement:
         else:
             self.velocity[1] = 0
 
-        self.direction_x = movement[0]
-        self.direction_y = movement[1]
+        # Sync the unified direction vector with current movement input
+        self.direction.update(movement[0], movement[1])
         
         # Apply velocity to movement calculations
         self.frame_movement = (
@@ -140,13 +138,16 @@ class Movement:
         self.friction = max(0.1, self.friction * effect)
         self.acceleration = max(0.3, self.acceleration / effect / 10)
 
-
     def Set_Direction(self, direction):
-        if direction.length() > 0:
+        # Type check to prevent crashes if a tuple is accidentally passed
+        if not isinstance(direction, pygame.math.Vector2):
+            direction = pygame.math.Vector2(direction)
+            
+        if direction.length_squared() > 0:
             direction.normalize_ip()
         self.direction = direction
 
     def Set_Direction_Holder(self):
-        if self.direction_x or self.direction_y:
-            self.direction_x_holder = self.direction_x
-            self.direction_y_holder = self.direction_y
+        # Cache the current direction in the holder vector if it's non-zero
+        if self.direction.length_squared() > 0:
+            self.direction_holder.update(self.direction.x, self.direction.y)
