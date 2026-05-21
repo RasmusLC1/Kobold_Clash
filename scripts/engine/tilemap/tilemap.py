@@ -91,6 +91,7 @@ class Tilemap:
 
         self.offgrid_tiles = offgrid_data
         self.Find_Tiles_Not_Touching_Wall()
+        self.Cache_All_Tile_Neighbors()
 
     def Generate_Tile(self, tile_pos, tile_values):
         type = tile_values[keys.type]
@@ -278,15 +279,15 @@ class Tilemap:
 
     # Get surrounding tiles
     def Get_Tiles_Around(self, pos):
-        tiles = []
-        tilemap_get = self.tilemap.get
         tile_loc = (int(pos[0] // self.tile_size), int(pos[1] // self.tile_size))
-        for offset in NEIGHBOR_OFFSETS:
-            check_loc = (tile_loc[0] + offset[0], tile_loc[1] + offset[1])
-            tile = tilemap_get(check_loc)
-            if tile:
-                tiles.append(tile)
-        return tiles
+        current_tile = self.tilemap.get(tile_loc)
+        return current_tile.neighbor_tiles if current_tile else []
+
+    # O(1) Collision Check
+    def physics_rects_around(self, pos):
+        tile_loc = (int(pos[0] // self.tile_size), int(pos[1] // self.tile_size))
+        current_tile = self.tilemap.get(tile_loc)
+        return current_tile.neighbor_physics_rects if current_tile else []
     
     # Gets floor tiles not touching a wall
     def Get_Floor_Tiles_Around(self, pos):
@@ -454,6 +455,25 @@ class Tilemap:
         self.tilemap.clear()
         self.offgrid_tiles.clear()
         self.minimap.Clear()
+
+    # Runs ONCE after map generation to link tiles to their neighbors permanently.
+    def Cache_All_Tile_Neighbors(self):
+        tilemap_get = self.tilemap.get
+        
+        for tile in self.tilemap.values():
+            tx, ty = tile.pos
+            
+            # Clear any old references if reloading a save file
+            tile.neighbor_tiles.clear()
+            tile.neighbor_physics_rects.clear()
+            
+            for ox, oy in NEIGHBOR_OFFSETS:
+                neighbor = tilemap_get((tx + ox, ty + oy))
+                if neighbor:
+                    tile.neighbor_tiles.append(neighbor)
+                    # Go a step further: Cache the static physics hitboxes right here!
+                    if neighbor.hitbox:
+                        tile.neighbor_physics_rects.append(neighbor.hitbox)
 
     
     # Render function that shows the entire screen

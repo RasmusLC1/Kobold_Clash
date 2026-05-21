@@ -19,10 +19,14 @@ class Tile():
         self.active = active
         self.light_level = light_level
         self.max_light = 0  # Cache the max light contribution
-        self.physics = physics
+        self.Set_Physics(physics)
         self.touching_wall = False
         self.translucent = translucent
         self.entities = {}
+
+        self.neighbor_tiles = []        # All surrounding tiles
+        self.neighbor_physics_rects = [] # Pre-filtered solid Hitboxes
+
         self.update_entity_cooldown = 0
         self.sprite = None
         self.needs_redraw = True  # Add flag to track if we need to redraw
@@ -176,6 +180,8 @@ class Tile():
 
     def Set_Light_ID(self, light_id):
         self.light_ID = light_id
+
+    
 
 # LIGHT LOGIC
     def Add_Light_Contribution(self, light_id, contribution):
