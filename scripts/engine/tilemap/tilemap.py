@@ -376,13 +376,11 @@ class Tilemap:
     # Check for physics tiles
     def physics_rects_around(self, pos):
         rects = []
-        for tile in self.Get_Tiles_Around(pos):
-            if not tile:
-                print(tile, pos)
-                continue
-            if tile.physics:
-                rects.append(pygame.Rect(tile.scaled_pos[0], tile.scaled_pos[1], self.tile_size, self.tile_size))
-        return rects
+
+        for tile in self.Get_Tiles_Around(pos): 
+            if tile and tile.hitbox:
+                rects.append(tile.hitbox) # Use cached hitbox
+        return rects #
     
     def Get_Floor_Tiles(self):
         floor_tiles = {}
@@ -391,18 +389,6 @@ class Tilemap:
                 floor_tiles[tile_key] = tile 
 
         return floor_tiles
-
-    # Check for physics tiles
-    def floor_rects_around(self, pos):
-        rects = []
-        for tile in self.Get_Tiles_Around(pos):
-            if not tile:
-                print(tile, pos)
-                continue
-            if tile.type == keys.floor:
-                rects.append(pygame.Rect(tile.scaled_pos[0], tile.scaled_pos[1], self.tile_size, self.tile_size))
-        return rects
-    
 
     def Set_Light_Level(self, tile, new_light_level):
         tile.Set_Light_Level(new_light_level)

@@ -132,6 +132,14 @@ class Tile():
 # SET FUNCTIONS
     def Set_Physics(self, state):
         self.physics = state
+        self.Set_Hitbox()
+    
+    def Set_Hitbox(self):
+        # --- CACHE HITBOX FOR PHYSICS OPTIMIZATION ---
+        if self.physics:
+            self.hitbox = pygame.Rect(self.scaled_pos[0], self.scaled_pos[1], TILE_SIZE, TILE_SIZE)
+        else:
+            self.hitbox = None
     
     def Set_Translucent(self, state):
         self.translucent = state
