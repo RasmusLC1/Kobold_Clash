@@ -62,10 +62,6 @@ class Moving_Entity(PhysicsEntity):
     @velocity.setter
     def velocity(self, val): self.movement.velocity = val
 
-    @property
-    def collisions(self): return self.movement.collisions
-    @collisions.setter
-    def collisions(self, val): self.movement.collisions = val
 
     @property
     def frame_movement(self): return self.movement.frame_movement
@@ -136,8 +132,6 @@ class Moving_Entity(PhysicsEntity):
 
     # --- Core Engine Cycle ---
     def Update(self, tilemap, delta_time, movement=(0, 0)):
-        self.movement.collisions = {'up': False, 'down': False, 'right': False, 'left': False}
-
         self.movement.Update_Movement(movement, delta_time)
         self.animation_handler.Update_Animation(movement, delta_time)
         self.Update_Status_Effects(delta_time)

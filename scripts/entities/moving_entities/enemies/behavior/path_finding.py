@@ -119,24 +119,6 @@ class Path_Finding():
 
         
         return True
-    
-
-    # Move the entity if they're to close to a wall
-    def Corner_Handling(self):        
-        direction_x = 0
-        direction_y = 0
-        if self.entity.collisions['up']:
-            direction_y = -2
-        if self.entity.collisions['down']:
-            direction_y = 2
-        if self.entity.collisions['left']:
-            direction_x = 2
-        if self.entity.collisions['right']:
-            direction_x = -2
-        if direction_x or direction_y:
-            self.entity.Set_Frame_movement((direction_x, direction_y))
-            self.entity.Tile_Map_Collision_Detection(self.game.tilemap)
-
 
     
     def Calculate_Position(self):
