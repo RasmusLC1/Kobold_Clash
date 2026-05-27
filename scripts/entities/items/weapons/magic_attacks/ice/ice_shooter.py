@@ -25,7 +25,7 @@ class Ice_Shooter(Particle_Shooter):
         pos_y = math.sin(base_angle) * self.speed
         direction = (pos_x, pos_y)
 
-        ice_particle.Set_Enabled(self.entity.rect(), self.speed, self.range, direction, self.entity, 100, self.base_damage)
+        ice_particle.Set_Enabled(self.entity.pos, self.speed, self.range, direction, self.entity, 100, self.base_damage)
         
     
     # Interpreter for enemy attacks

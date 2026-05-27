@@ -34,7 +34,7 @@ class Flame_Thrower(Particle_Shooter):
             pos_y = math.sin(angle) * self.speed
             direction = (pos_x, pos_y)
             
-            fire_particle.Set_Enabled(entity.rect(), self.speed, self.range, direction, entity, 50, self.base_damage)
+            fire_particle.Set_Enabled(entity.pos, self.speed, self.range, direction, entity, 50, self.base_damage)
 
     # Interpreter for enemy attacks
     def Set_Attack(self):
