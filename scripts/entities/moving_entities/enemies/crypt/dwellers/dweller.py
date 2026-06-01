@@ -5,38 +5,11 @@ from scripts.engine.keys.keys import keys
 class Dweller(Enemy):
     def __init__(self, game, pos, type):
         super().__init__(game, pos, type)
-
-        # Dwellers get increased strength in dark
-        self.light_level_holder = 999
-        self.light_strength = self.strength
-        self.dark_strength = self.strength * 2
-
-        self.light_speed = self.max_speed_holder
-        self.dark_speed = self.max_speed_holder * 2
-
         self.Equip_Weapon(Claw(game, self.pos)) 
-
-    def Update(self, tilemap, delta_time, movement=(0, 0)):
-        super().Update(tilemap, delta_time, movement)
-        self.Darkness_Buff()
-
-
-    def Darkness_Buff(self):
-        threshold = 150
-        # Only run if light level crossed the threshold
-        if (self.light_level < threshold) != (self.light_level_holder < threshold):
-            if self.light_level < threshold:
-                self.strength = self.dark_strength
-                self.max_speed = self.dark_speed * 2
-            else:
-                self.strength = self.light_strength
-                self.max_speed_holder = self.light_speed
-
-            self.Set_Description()
-
-        self.light_level_holder = self.light_level
+        self.Set_Ability(keys.gloom_stalker)
 
     
 
     def Spawn_Damaged_Particles(self):
+        self.Set_Max
         self.game.particle_handler.Activate_Particles(10, keys.bone_particle, self.rect().center)

@@ -93,6 +93,8 @@ class Enemy():
 
     crystal_scale = "crystal_scale"
 
+    gloom_stalker = "gloom_stalker" 
+
 # Void Spawn
 
     shade = "shade"

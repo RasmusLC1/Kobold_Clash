@@ -18,8 +18,8 @@ class Speed(Effect):
 
         if not self.effect_strength or self.Get_Entity_Effect_Strength(keys.frozen):
             return False
-
-        self.entity.max_speed = min(4000, self.entity.max_speed * self.effect_strength)
+        new_speed =  min(4000, self.entity.max_speed * self.effect_strength)
+        self.entity.Set_Max_Speed(new_speed)
         
         self.Update_Cooldown(delta_time)
 

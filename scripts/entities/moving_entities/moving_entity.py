@@ -332,6 +332,9 @@ class Moving_Entity(PhysicsEntity):
 
     def Set_Strength(self, strength):
         self.strength = strength
+
+    def Set_Max_Speed(self, speed):
+        self.max_speed = speed
     
     def Set_Effect(self, effect, duration, permanent = False):
         return self.effects.Set_Effect(effect, duration, permanent)
@@ -357,6 +360,9 @@ class Moving_Entity(PhysicsEntity):
 
     def Set_Action(self, movement = None):
         pass
+
+    def Set_Ethereal(self, state):
+        self.movement.Set_Ethereal(state)
 
     # --- Graphics Rendering ---
     def Render(self, surf, offset=(0, 0)):

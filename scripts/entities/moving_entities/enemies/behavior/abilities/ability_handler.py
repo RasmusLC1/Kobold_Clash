@@ -8,6 +8,7 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.rally import Rally
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.electrify import Electrify
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.crystal_scale import Crystal_Scale
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.gloom_stalker import Gloom_Stalker
 
 
 from scripts.engine.keys.keys import keys
@@ -26,6 +27,7 @@ class Ability_Handler():
         keys.rally : Rally,
         keys.electrify : Electrify,
         keys.crystal_scale : Crystal_Scale,
+        keys.gloom_stalker : Gloom_Stalker,
     }
 
     def __init__(self, game, entity):
