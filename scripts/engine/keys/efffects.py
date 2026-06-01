@@ -78,3 +78,5 @@ class Effects():
     soul_stealer = "soul_stealer"
 
     soul_drained = "soul_drained"
+
+    noisy_attacker = "noisy_attacker"

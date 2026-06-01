@@ -23,6 +23,7 @@ from scripts.entities.moving_entities.effects.electric.eletric import Electric
 from scripts.entities.moving_entities.effects.electric.electric_resistance import Electric_Resistance
 from scripts.entities.moving_entities.effects.electric.electric_charge import Electric_Charge
 from scripts.entities.moving_entities.effects.general.resistance import Resistance
+from scripts.entities.moving_entities.effects.general.noisy_attacker import Noisy_Attacker
 from scripts.engine.keys.keys import keys
 
 
@@ -54,6 +55,7 @@ class Status_Effect_Handler:
         keys.electric: Electric,
         keys.electric_resistance: Electric_Resistance,
         keys.electric_charge: Electric_Charge,
+        keys.noisy_attacker: Noisy_Attacker,
     }
 
     def __init__(self, entity):

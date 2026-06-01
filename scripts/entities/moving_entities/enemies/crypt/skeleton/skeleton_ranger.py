@@ -12,15 +12,6 @@ class Skeleton_Ranger(Skeleton):
         self.Equip_Weapon(Bow(self.game, self.pos))
         
 
-
-    def Attack(self, delta_time):
-        # If Player is to close, then archer cannot shoot
-        if self.distance_to_player < 50:
-            self.charge = 0
-            return False
-        
-        super().Attack(delta_time)
-
     def Set_Attack_Triggered(self):
         self.Set_Target(self.game.player.pos)
         self.active_weapon.Enemy_Shooting()

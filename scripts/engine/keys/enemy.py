@@ -95,6 +95,8 @@ class Enemy():
 
     gloom_stalker = "gloom_stalker" 
 
+    fire_born = "fire_born"
+
 # Void Spawn
 
     shade = "shade"

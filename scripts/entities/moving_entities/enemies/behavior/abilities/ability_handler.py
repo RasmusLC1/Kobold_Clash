@@ -9,6 +9,7 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.electrify import Electrify
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.crystal_scale import Crystal_Scale
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.gloom_stalker import Gloom_Stalker
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.fire_born import Fire_Born
 
 
 from scripts.engine.keys.keys import keys
@@ -28,6 +29,7 @@ class Ability_Handler():
         keys.electrify : Electrify,
         keys.crystal_scale : Crystal_Scale,
         keys.gloom_stalker : Gloom_Stalker,
+        keys.fire_born : Fire_Born
     }
 
     def __init__(self, game, entity):
@@ -207,6 +209,7 @@ class Ability_Handler():
             damage = self.active_ability.Damage_Taken(damage, effect, direction, attacker)
         
         return damage
+  
 
 
     def Render_Abilities(self, surf, offset):

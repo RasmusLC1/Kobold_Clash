@@ -17,16 +17,6 @@ class Skeleton_Warlock(Skeleton):
         else:
             self.Set_Behavior_Pattern(keys.long_range)
 
-    def Attack(self, delta_time):
-        
-        # If Player is to close, then archer cannot shoot
-        if self.distance_to_player < self.min_attack_range:
-            self.charge = 0
-            return False
-        self.active_weapon.Set_Charging_Enemy()
-        return super().Attack(delta_time)
-
-
     def Set_Attack_Triggered(self):
         self.Set_Target(self.game.player.pos)
         self.game.particle_handler.Activate_Particles(random.randint(5, 10), keys.gold_particle, self.rect().center)

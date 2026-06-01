@@ -28,6 +28,7 @@ class Ability():
     def Activate(self):
         pass
 
+
     def _Reset_Attack(self):
         pass
     

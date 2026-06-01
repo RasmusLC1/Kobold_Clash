@@ -19,16 +19,6 @@ class Ice_Spirit(Elemental):
         
         return True
 
-    def Attack(self, delta_time):
-        # If Player is to close, then ice spirit cannot shoot
-        if self.distance_to_player < self.minimum_distance:
-            self.charge = 0
-            return False
-        if self.attack_cooldown > 0:
-            self.attack_cooldown -= delta_time
-            return False
-        
-        return super().Attack(delta_time)
     
     def Set_Attack_Triggered(self):
         self.Set_Target(self.game.player.pos)

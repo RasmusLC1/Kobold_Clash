@@ -5,6 +5,7 @@ from scripts.engine.keys.keys import keys
 class Fire_Spirit(Elemental):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.fire_spirit)
+        self.Set_Ability(keys.fire_born)
         self.look_for_health_cooldown = 0
         self.fire_damage = 1
 
@@ -12,18 +13,9 @@ class Fire_Spirit(Elemental):
 
     def Update(self, tilemap, delta_time, movement = (0, 0)):
         super().Update(tilemap, delta_time, movement)
-
-        self.Check_If_On_Fire()
-        
         self.active_weapon.Update(delta_time)
 
-    
-    def Attack(self, delta_time):
-        # If Player is to close, then ice spirit cannot shoot
-        if self.distance_to_player < self.minimum_distance:
-            self.charge = 0
-            return False
-        return super().Attack(delta_time)
+
     
     def Set_Attack_Triggered(self):
         self.Set_Target(self.game.player.pos)
