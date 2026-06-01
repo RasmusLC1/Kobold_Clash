@@ -11,6 +11,3 @@ class Skeleton_Bell_Toller(Skeleton):
         super().__init__(game, pos, keys.skeleton_bell_toller + '_' + type)
         self.Equip_Weapon(Bell(self.game, self.pos))
         self.Set_Effect(keys.noisy_attacker, 10, True)
-
-
-

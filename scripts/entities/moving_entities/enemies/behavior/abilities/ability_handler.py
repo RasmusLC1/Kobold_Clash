@@ -9,11 +9,12 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.electrify import Electrify
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.crystal_scale import Crystal_Scale
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.gloom_stalker import Gloom_Stalker
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_eater import Bone_Eater
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_ressurector import Bone_Resurrector
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.ethereal import Ethereal
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.fire_born import Fire_Born
 
-
 from scripts.engine.keys.keys import keys
-
 
 class Ability_Handler():
 
@@ -29,7 +30,10 @@ class Ability_Handler():
         keys.electrify : Electrify,
         keys.crystal_scale : Crystal_Scale,
         keys.gloom_stalker : Gloom_Stalker,
-        keys.fire_born : Fire_Born
+        keys.fire_born : Fire_Born,
+        keys.bone_eater : Bone_Eater,
+        keys.bone_ressurector : Bone_Resurrector,
+        keys.ethereal : Ethereal, 
     }
 
     def __init__(self, game, entity):
@@ -39,7 +43,6 @@ class Ability_Handler():
         self.active_abilities = {}
         self.abilities_on_cooldown = []
         self.active_ability = None
-
 
     def Save_Data(self):
         self.entity.saved_data['active_abilities_keys'] = list(self.active_abilities.keys())
@@ -53,15 +56,19 @@ class Ability_Handler():
         for ability in self.passive_abilities.values():
             ability.Save_Data()
 
-
     def Load_Data(self, data):
         self._Load_Active_Abilities(data)
         self._Load_Passive_Abilities(data)
+        
         cooldown_keys = data.get('cooldown_keys', [])
         self.abilities_on_cooldown = [
             self.active_abilities[k] for k in cooldown_keys if k in self.active_abilities
         ]
-
+        
+        # Restore active execution reference state if applicable
+        active_key = data.get('active_ability_key')
+        if active_key and active_key in self.active_abilities:
+            self.active_ability = self.active_abilities[active_key]
 
     def _Load_Active_Abilities(self, data):
         saved_active_keys = data.get('active_abilities_keys', [])
@@ -73,41 +80,36 @@ class Ability_Handler():
             ability.Load_Data(data)
 
     def _Load_Passive_Abilities(self, data):
-        saved_active_keys = data.get('passive_abilities_keys', [])
+        saved_passive_keys = data.get('passive_abilities_keys', [])
         self.passive_abilities = {}
-        for key in saved_active_keys:
+        for key in saved_passive_keys:
             self.Get_Ability(key)
 
-        for ability in self.active_abilities.values():
+        # FIXED: Now looping through passive components instead of active ones
+        for ability in self.passive_abilities.values():
             ability.Load_Data(data)
 
     def Update(self, delta_time):
-        # Passives remain decoupled and tick unconditionally every frame
+        # Passives process completely independently
         for ability in self.passive_abilities.values():
             ability.Update(delta_time)
 
-        # Handle active ability execution state
+        # Handle active execution state machines
         if self.active_ability:
             self._Update_Active_Ability(delta_time)
             return True 
 
-        # Only process background tick cooldowns if the entity is free to move/act
         no_cooldowns_active = self.Update_Abilities_Cooldown()
         if no_cooldowns_active:
             return self._Update_Active_Abilities(delta_time)
         
         return False
 
-
-
     def _Update_Active_Ability(self, delta_time):
         self.active_ability.Update(delta_time)
-
         if self.active_ability.Get_Cooldown() > 0: 
             self.Remove_Active_Ability()
 
-
-    # Returns true if any abilities can be triggerd
     def _Update_Active_Abilities(self, delta_time):
         for ability in self.active_abilities.values():
             if not ability.Check_Trigger_Cooldown(delta_time):
@@ -124,7 +126,6 @@ class Ability_Handler():
         
         return False
     
-    # Filters out any abilities that are off cooldown, returns empty array if none are on cooldown
     def Update_Abilities_Cooldown(self):
         self.abilities_on_cooldown = [
             ability for ability in self.abilities_on_cooldown 
@@ -132,42 +133,32 @@ class Ability_Handler():
         ]
         return not self.abilities_on_cooldown
 
-
-    # Returns the instance if it exists, or creates it if it's in the registry.
     def Get_Ability(self, ability_name):
-        if ability_name in self.active_abilities: # Check active abilities
+        if ability_name in self.active_abilities:
             return self.active_abilities[ability_name]
         
-        if ability_name in self.passive_abilities: # Check passive abilities
+        if ability_name in self.passive_abilities:
             return self.passive_abilities[ability_name]
         
         return self.Create_New_Ability(ability_name)
     
-    # Create a new ability if it doesn't exist
     def Create_New_Ability(self, ability_name):
         ability_class = self.ABILITY_REGISTRY.get(ability_name)
         if not ability_class:
-            print("ABILITY CLASS NOT FOUND: ", ability_name)
             return None
 
         new_ability = ability_class(self.game, self.entity, ability_name)
         self.Assign_Ability(new_ability, ability_name)
         return new_ability
     
-    # Assign the ability to either passive or active dictionary
     def Assign_Ability(self, ability, ability_name):
         if ability.is_passive:
             self.passive_abilities[ability_name] = ability
         else:
             self.active_abilities[ability_name] = ability
 
-    
-
     def Trigger_Ability(self, ability):
-        if not ability:
-            return False
-        
-        if not ability.Activate():
+        if not ability or not ability.Activate():
             return False
 
         if not self.entity.Set_Active_Ability(ability.name):
@@ -175,30 +166,27 @@ class Ability_Handler():
         
         self.Set_Active_Attack(ability)
         return True
-    
 
     def Set_Active_Attack(self, ability):
         self.active_ability = ability
 
     def Remove_Active_Ability(self):
-        self.abilities_on_cooldown.append(self.active_ability)
+        if self.active_ability not in self.abilities_on_cooldown:
+            self.abilities_on_cooldown.append(self.active_ability)
         self.active_ability = None
         self.entity.Remove_Active_Ability()
     
-    # Allows access like handler.dash instead of handler.Get_Attack('dash)
     def __getattr__(self, name):
-        ability = self.Get_Ability(name)
-        if not ability:
-            raise AttributeError(f"'{type(self).__name__}' has no ability attribute '{name}'")
-
-        # Set the attribute so __getattr__ is never called for this name again
-        setattr(self, name, ability) 
-        return ability
+        # Safety Check: Prevent hasattr or reflective searches from spawning abilities out of thin air
+        if name in self.ABILITY_REGISTRY:
+            ability = self.Get_Ability(name)
+            setattr(self, name, ability) 
+            return ability
+        raise AttributeError(f"'{type(self).__name__}' has no registry or attribute mapping for '{name}'")
     
     def Check_If_Attack_Allowed(self):
         if not self.active_ability:
             return True
-        
         return self.active_ability.Check_If_Attack_Allowed()
     
     def Damage_Taken(self, damage, effect, direction, attacker):
@@ -209,8 +197,6 @@ class Ability_Handler():
             damage = self.active_ability.Damage_Taken(damage, effect, direction, attacker)
         
         return damage
-  
-
 
     def Render_Abilities(self, surf, offset):
         for ability in self.passive_abilities.values():
@@ -222,4 +208,3 @@ class Ability_Handler():
     def _Render_Ability(self, ability, surf, offset):
         ability.Render_Symbol(surf, offset)
         ability.Render(surf, offset)
-

@@ -97,6 +97,12 @@ class Enemy():
 
     fire_born = "fire_born"
 
+    bone_eater = "bone_eater"
+
+    bone_ressurector = "bone_ressurector"
+
+    ethereal = "ethereal"
+
 # Void Spawn
 
     shade = "shade"

@@ -7,20 +7,8 @@ class Void_Spawn(Enemy):
     def __init__(self, game, pos, type):
         super().__init__(game, pos, type)
         self.Equip_Weapon(Claw(game, self.pos)) 
+        self.Set_Active_Ability(keys.ethereal)
         self.touching_ground = False
-
-
-    def Tile_Map_Collision_Detection(self, tilemap):
-        self.pos[0] += self.frame_movement[0]
-        self.pos[1] += self.frame_movement[1]
-
-
-    # Void spawn cannot be damaged by material damage
-    def Damage_Taken(self, damage, effect= (keys.slash, 0), direction = (0, 0), attacker = None):
-        if effect[0] == keys.slash or effect[0] == keys.blunt:
-            damage = 0
-        
-        return super().Damage_Taken(damage, effect, direction, attacker)
 
 
     
