@@ -8,8 +8,8 @@ import random
 
 class Staff(Weapon):
     def __init__(self, game, pos):
+        super().__init__(game, pos, keys.staff, 2, 4, 7, 50, 'two_handed_melee', keys.blunt)
         self.Set_Random_Type(game)
-        super().__init__(game, pos, self.sub_type, 2, 4, 7, 50, 'two_handed_melee', keys.blunt)
 
         self.cooldown = 0
         self.max_cooldown = 10
@@ -67,7 +67,8 @@ class Staff(Weapon):
             keys.vampiric_staff: Soul_Reap_Shooter,
         }
         self.sub_type, shooter_class = random.choice(list(types.items()))
-        self.shooter = shooter_class(game)
+        self.type = self.sub_type
+        self.shooter = shooter_class(game, self.entity)
         self.Set_Particle_Damage()
 
 

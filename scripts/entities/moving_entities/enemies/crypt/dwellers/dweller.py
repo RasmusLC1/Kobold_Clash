@@ -11,5 +11,4 @@ class Dweller(Enemy):
     
 
     def Spawn_Damaged_Particles(self):
-        self.Set_Max
         self.game.particle_handler.Activate_Particles(10, keys.bone_particle, self.rect().center)

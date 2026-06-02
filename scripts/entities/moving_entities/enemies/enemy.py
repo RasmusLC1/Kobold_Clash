@@ -17,7 +17,7 @@ class Enemy(Moving_Entity):
 
         # 1. Fetch the Profile (Contains scaled stats AND animation info)
         stats = Attribute_Distributor.Get_Enemy_Profile(type, game.depth, is_elite)
-        
+
         self.max_weapon_charge = stats.max_weapon_charge
         self.soul_value = stats.souls
         

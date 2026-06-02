@@ -1,4 +1,5 @@
 from scripts.engine.keys.keys import keys
+import re
 from dataclasses import replace
 from scripts.entities.moving_entities.enemies.attribute_distributor.skeleton_stats import SKELETON_STATS
 from scripts.entities.moving_entities.enemies.attribute_distributor.void_spawn_stats import VOID_SPAWN_STATS
@@ -23,6 +24,7 @@ class Attribute_Distributor:
     
     @staticmethod
     def Get_Enemy_Profile(enemy_type, depth=1, is_elite=False):
+        enemy_type = Attribute_Distributor.Strip_Type_End(enemy_type)
         base_state = ENEMY_STATS.get(enemy_type)
         if not base_state:
             return None
@@ -39,6 +41,12 @@ class Attribute_Distributor:
             strength=scaled_strength, 
             souls=scaled_souls
         )
+    
+    @staticmethod
+    def Strip_Type_End(enemy_type: str) -> str:
+        # \_\d+$ matches an underscore followed by one or more digits at the end of the string
+        return re.sub(r'_\d+$', '', enemy_type)
+
 
     @staticmethod
     def Calculate_Health(base_state, depth, is_elite):
