@@ -12,11 +12,12 @@ class Healing_From_Damage_Type(Passive_Ability):
     
 
     def Check_If_On_Fire(self):
-        effect = self.entity.Get_Effect(self.effect_name)
+        entity = self.entity
+        effect = entity.Get_Effect(self.effect_name)
         if not effect:
             return False
         
-        self.Set_Effect(keys.healing, effect.effect_strength)
-        self.Set_Effect(self.effect_name + '_resistance', 2)
+        entity.Set_Effect(keys.healing, effect.effect_strength)
+        entity.Set_Effect(self.effect_name + '_resistance', 2)
         return True
     

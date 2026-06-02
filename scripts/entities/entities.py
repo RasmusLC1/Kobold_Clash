@@ -63,7 +63,7 @@ class PhysicsEntity:
         self.saved_data['ID'] = self.ID
         self.saved_data['category'] = self.category
         self.saved_data[keys.type] = self.type
-        self.saved_data[keys.pos] = [self.pos.x, self.pos.y]  # Exported as list for standard JSON/Data serialization
+        self.saved_data[keys.pos] = [self.pos[0], self.pos[1]]  # Exported as list for standard JSON/Data serialization
         self.saved_data['size'] = self.size
         self.saved_data['active'] = self.active
         self.saved_data['light_level'] = self.light_level
@@ -118,8 +118,8 @@ class PhysicsEntity:
         self.Remove_Tile()  # Clear existing positions cleanly first
         
         tile_size = self.game.tilemap.tile_size
-        tx = int(self.pos.x) // tile_size
-        ty = int(self.pos.y) // tile_size
+        tx = int(self.pos[0]) // tile_size
+        ty = int(self.pos[1]) // tile_size
         
         new_tile = self.game.tilemap.Current_Tile((tx, ty))
         if not new_tile:
@@ -192,7 +192,7 @@ class PhysicsEntity:
             return False    
 
         t_size = self.game.tilemap.tile_size
-        nx, ny = int(self.pos.x) // t_size, int(self.pos.y) // t_size
+        nx, ny = int(self.pos[0]) // t_size, int(self.pos[1]) // t_size
 
         # Exit early if coordinates haven't changed tiles
         if (nx, ny) == self.tile.pos:
