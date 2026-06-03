@@ -25,7 +25,8 @@ class Symbols():
                 keys.anchor, keys.blood_tomb, keys.halo,
                 keys.demonic_bargain, keys.temptress_embrace,
                 keys.slow, keys.soul_drained, keys.health, keys.blood_ring,
-                keys.forsaken_grimoire, keys.black_coin, keys.charge,          
+                keys.forsaken_grimoire, keys.black_coin, keys.charge,
+                keys.run_away  
             ])
         }
 
