@@ -7,6 +7,7 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.charge import Charge
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.rally import Rally
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.electrify import Electrify
+from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.healer import Healer
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.crystal_scale import Crystal_Scale
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.gloom_stalker import Gloom_Stalker
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_eater import Bone_Eater
@@ -28,6 +29,7 @@ class Ability_Handler():
         keys.charge : Charge,
         keys.rally : Rally,
         keys.electrify : Electrify,
+        keys.healer : Healer,
         keys.crystal_scale : Crystal_Scale,
         keys.gloom_stalker : Gloom_Stalker,
         keys.fire_born : Fire_Born,
@@ -195,11 +197,11 @@ class Ability_Handler():
         for ability in self.passive_abilities.values():
             ability.Render(surf, offset)
 
-        self._Render_Active_Ability(surf, offset)
+        self._Render_Running_Ability(surf, offset)
 
-    def _Render_Active_Ability(self, surf, offset):
-        if not self.active_ability:
-            return
+    def _Render_Running_Ability(self, surf, offset):
+        if not self.is_running_ability:
+            return 
         self.active_ability.Render(surf, offset)
         entity_pos = self.entity.pos
         self.game.mixed_symbols.Render_Mixed_Text(surf, self.active_ability.name, (entity_pos[0] - offset[0], entity_pos[1] - self.entity.size[1] - offset[1]))

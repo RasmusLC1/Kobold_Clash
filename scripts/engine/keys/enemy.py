@@ -85,11 +85,15 @@ class Enemy():
 
     invisibility = "invisibility"
 
+    invulnerable = "invulnerable"
+
     charge = "charge"
 
     rally = "rally"
 
     electrify = "electrify"
+
+    healer = "healer"
 
     crystal_scale = "crystal_scale"
 

@@ -38,7 +38,7 @@ class Player_Weapon_Handler():
         if not self.active_weapon:
             return
 
-        self.active_weapon.Set_Equipped_Position(self.player.direction_y_holder)
+        self.active_weapon.Set_Equipped_Position(self.player.view_direction[1])
         # Set the attack lock above the update to prevent attacks
         if self.attack_lock:
             return
