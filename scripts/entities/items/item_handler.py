@@ -167,22 +167,35 @@ class Item_Handler():
 
 
     # Sub-component proxy passes
-    def Spawn_Rune(self, pos, type=None, rarity_value=None): return self.rune_handler.Loot_Spawner(pos, type, rarity_value)
+    def Spawn_Rune(self, pos, type=None, rarity_value=None):
+        return self.rune_handler.Loot_Spawner(pos, type, rarity_value)
     
-    def Remove_Rune_From_Active_Runes(self, rune): return self.rune_handler.Remove_Rune_From_Active_Runes(rune)
+    def Remove_Rune_From_Active_Runes(self, rune): 
+        return self.rune_handler.Remove_Rune_From_Active_Runes(rune)
     
-    def Get_Active_Runes(self): return self.rune_handler.Get_Active_Runes()
+    def Get_Active_Runes(self): 
+        return self.rune_handler.Get_Active_Runes()
     
-    def Replace_Rune_In_Inventory(self, r, n): return self.rune_handler.Replace_Rune_In_Inventory(r, n)
+    def Replace_Rune_In_Inventory(self, r, n): 
+        return self.rune_handler.Replace_Rune_In_Inventory(r, n)
     
-    def Check_For_Damage_Rune(self): return self.rune_handler.Check_If_Player_Has_Damage_Runes()
+    def Check_For_Damage_Rune(self):
+        return self.rune_handler.Check_If_Player_Has_Damage_Runes()
     
-    def Spawn_Weapon(self, pos, type=None): return self.weapon_handler.Weapon_Spawner(type, pos[0], pos[1]) if type else self.weapon_handler.Spawn_Random_Weapon(pos)
+    def Spawn_Weapon(self, pos, type=None):
+        if type:
+            return self.weapon_handler.Weapon_Spawner(type, pos[0], pos[1])
+        else:
+            return self.weapon_handler.Spawn_Random_Weapon(pos)
     
-    def Spawn_Arrow_For_Trap(self, pos): return self.weapon_handler.Spawn_Arrow_For_Trap(pos)
+    def Spawn_Arrow_For_Trap(self, pos):
+        return self.weapon_handler.Spawn_Arrow_For_Trap(pos)
     
-    def Get_Gems_For_Weapon(self, value): return self.loot_handler.Get_Gems_For_Weapon(value)
+    def Get_Gems_For_Weapon(self, value):
+        return self.loot_handler.Get_Gems_For_Weapon(value)
     
-    def Check_If_Loot_Is_Affordable(self, t, r): return self.loot_handler.Check_If_Loot_Is_Affordable(t, r)
+    def Check_If_Loot_Is_Affordable(self, item_types, rarity_value):
+        return self.loot_handler.Check_If_Loot_Is_Affordable(item_types, rarity_value)
     
-    def Spawn_Item_By_Type(self, cat, pos, type=None, rarity=0): self.loot_handler.Spawn_Loot_Type(cat, pos, type=type, rarity_value=rarity)
+    def Spawn_Item_By_Type(self, cat, pos, type=None, rarity=0):
+        return self.loot_handler.Spawn_Loot_Type(cat, pos, type=type, rarity_value=rarity)
