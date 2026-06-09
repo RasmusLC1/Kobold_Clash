@@ -6,10 +6,10 @@ class Mixed_Symbols:
         self.game = game
         self.font = font
         self.symbols = symbols
-        self._build_regex_pattern()
+        self._Build_Regex_Pattern()
 
-    def _build_regex_pattern(self):
-        """Compiles the matching regex pattern using keys directly from the registry."""
+    # Compiles the matching regex pattern using keys directly from the registry
+    def _Build_Regex_Pattern(self):
         # Pull sanitized string keys directly from your SymbolRegistry dictionary
         all_symbol_names = [str(name) for name in self.symbols._symbols.keys() if name is not None]
         # Sort descending by length to prevent partial word matches (e.g., 'fire' matching before 'fire_resistance')
@@ -19,40 +19,50 @@ class Mixed_Symbols:
         symbol_re = "|".join(map(re.escape, all_symbol_names))
         self.token_pattern = re.compile(f"(\\n|\\s+|{symbol_re})", re.IGNORECASE)
 
-    def parse_mixed_elements(self, input_str):
-        """Splits the string into individual words, whitespace chunks, and symbol tags."""
+
+
+    # Splits the string into individual words, whitespace chunks, and symbol tags.
+    def Parse_Mixed_Elements(self, input_str):
         parts = self.token_pattern.split(input_str)
         elements = []
         
         for part in parts:
             if not part:
                 continue
-                
-            if part == '\n':
-                elements.append({'type': 'newline'})
-            elif part.isspace():
-                elements.append({'type': 'whitespace', 'content': part})
-            elif self.symbols.exists(part):
-                elements.append({'type': 'symbol', 'content': part.lower()})
-            else:
-                elements.append({'type': 'text', 'content': part})
+
+            token = self._Create_Token(part)
+            elements.append(token)
                 
         return elements
     
-    def get_font_style(self, scale):
-        """Resolves the appropriate asset font key based on rendering scale."""
+    # Factory to handle string slices
+    def _Create_Token(self, part):
+        if part == '\n':
+            return {'type': 'newline'}
+            
+        if part.isspace():
+            return {'type': 'whitespace', 'content': part}
+            
+        if self.symbols.exists(part):
+            return {'type': 'symbol', 'content': part.lower()}
+            
+        # Fallback to standard text chunk
+        return {'type': 'text', 'content': part}
+
+    # Resolves the appropriate asset font key based on rendering scale
+    def Get_Font_Style(self, scale):
         return keys.font_small if scale < 1 else keys.font
 
+    # Facilitator method that coordinates parsing, layout calculations, and drawing
     def Render_Mixed_Text(self, surf, input_str, pos, max_width=200, scale=1, font_style=None):
-        """Facilitator method that coordinates parsing, layout calculations, and drawing."""
         if not font_style:
-            font_style = self.get_font_style(scale)
+            font_style = self.Get_Font_Style(scale)
             
         char_w, char_h = self.font.Find_Font_Size(font_style)
         symbol_size = int(16 * scale)
 
         # 1. Parsing Phase
-        elements = self.parse_mixed_elements(input_str)
+        elements = self.Parse_Mixed_Elements(input_str)
         
         # 2. Layout Phase (Pure math/position generation)
         layout_plan = self._Calculate_Layout(elements, pos, max_width, char_w, char_h, symbol_size)
@@ -62,8 +72,8 @@ class Mixed_Symbols:
 
     # --- PRIVATE LAYOUT HELPERS ---
 
+    # Processes elements and assigns concrete (x, y) coordinates to renderable tokens
     def _Calculate_Layout(self, elements, start_pos, max_width, char_w, char_h, symbol_size):
-        """Processes elements and assigns concrete (x, y) coordinates to renderable tokens."""
         start_x, start_y = start_pos
         current_x, current_y = start_x, start_y
         line_spacing = max(char_h, symbol_size) + 2
@@ -99,8 +109,8 @@ class Mixed_Symbols:
 
         return layout_plan
 
+    # Calculates the precise width of an element based on its structural type
     def _Get_Element_Width(self, element, char_w, symbol_size):
-        """Calculates the precise width of an element based on its structural type."""
         el_type = element['type']
         if el_type in ('text', 'whitespace'):
             return len(element['content']) * char_w
@@ -110,13 +120,13 @@ class Mixed_Symbols:
 
     # --- PRIVATE DRAWING HELPERS ---
 
+    # Iterates over a pre-calculated layout list and executes surface blits
     def _Draw_Layout(self, surf, layout_plan, font_style, scale):
-        """Iterates over a pre-calculated layout list and executes surface blits."""
         for token in layout_plan:
             self._Draw_Token(surf, token, font_style, scale)
 
+    # Draws a single layout token based on its specific rendering instructions
     def _Draw_Token(self, surf, token, font_style, scale):
-        """Draws a single layout token based on its specific rendering instructions."""
         el_type = token['type']
         pos = token['pos']
         content = token['content']

@@ -41,10 +41,10 @@ class SymbolRegistry:
     # Finds a symbol by its string key and renders it if it exists
     def Render_Symbol_By_Key(self, surf, key, pos, scale=1.0):
         symbol = self.get(key)
-        if symbol:
-            symbol.render(surf, pos, scale)
-        else:
+        if not symbol:
             print(f"Warning: No symbol icon registered for key: '{key}'")
+            return
+        symbol.render(surf, pos, scale)
 
     # Get the symbol
     def get(self, key: str) -> Symbol:

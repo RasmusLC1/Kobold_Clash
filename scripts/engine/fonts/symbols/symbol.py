@@ -4,7 +4,6 @@ class Symbol:
     def __init__(self, key, sprite, group="effect"):
         self.key = key          # keys.healing, keys.fire_resistance etc
         self.image = sprite     # Pre-extracted or pre-scaled pygame.Surface
-        self.group = group      # "effect", "element", "stat", "utility" etc
 
     def render(self, surf, pos, scale=1.0):
         if scale != 1.0:
