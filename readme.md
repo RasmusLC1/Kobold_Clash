@@ -69,16 +69,24 @@ Instead of relying on high-level commercial engines, this project implements cor
   * **Adaptive Pacing & Loot Economy:** Implements an evaluation scanner (`Adjust_Weights`) that queries the player's inventory cache in real time. It dynamically warps drops based on current state coefficients—such as dropping key drop rates to 0% if one is already carried, or spiking key drops to 50% if the player is stuck.
   * **The Facade Pattern:** `Item_Handler` exposes a single, unified interface for spatial proximity checks, item clearing, and loading sequences, abstracting away the complex internal logic of `Rune_Handler`, `Weapon_Handler`, and `Loot_Handler`.
   * **Proximity Scan Throttling:** Features a delta-time cooldown gate (`Update_Nearby_Items_Cooldown`) that limits expensive spatial tile queries to fixed 0.5-second intervals, preserving CPU cycles during intense combat phases.
-
+  
+### 9. Flyweight Grid Matrix & Cellular Extraction Engine (`Tilemap` & `Tile`)
+* **The Problem:** Naively instantiating a unique high-level object for every individual tile in a massive game world rapidly degrades memory performance. Additionally, parsing entire map grids to extract specific entities (e.g., finding all gold or spawn points during initialization) causes heavy performance bottlenecks.
+* **The Solution:** A high-performance spatial grid system that treats static structural cells as lightweight, multi-layered data points, paired with a specialized entity extraction lookup pipeline.
+* **Technical Details:**
+  * **The Flyweight Pattern for Grid Maps:** Separates structural layout definitions from variable runtime objects. Instead of bloating every coordinate cell with duplicate graphic references or texture matrices, tiles retain localized index vectors mapped against a centralized tile dictionary layout.
+  * **Layered Key Filtering & Token Extraction (`extract`):** Bypasses blind nested loops across grid dimensions via a optimized lookup array mechanism. Subsystems pass unique signature tokens (e.g., `[(keys.gold, 0)]`) to extract matching elements dynamically while clearing structural tiles simultaneously, avoiding duplicate tracking registries.
+  * **Spatial Entity Dereferencing:** Features explicit entity tracking registers tied directly to the cell grid structure (`Remove_Entity_From_Tile`). This ensures that physics layers, item drops, and raycasting systems can execute focused, localized tile searches rather than scanning broad, scene-wide coordinate lists.
+  
 ## 🏗️ Architectural Blueprint & Design Patterns
 
 The engineering foundation of this engine relies on a strictly decoupled, composition-over-inheritance architectural philosophy. By isolating distinct execution domains, the system achieves predictable state mutation, straightforward maintainability, and horizontal scalability.
 
 ### 1. Object Pool & Manager Pattern (`Enemy_Handler`)
 * **Context:** Creating, garbage collecting, and destroying high-level Python class instances frequently during runtime triggers costly memory overhead and unpredictable garbage collection spikes.
-* **Implementation:** The `Enemy_Handler` acts as a centralized object repository and lifecycle hub. 
+* **Implementation:** The `Handler` classes acts as a centralized object repository and lifecycle hub. 
 * **Design Advantage:** * Instantiates entities inside a controlled, reusable list pool.
-  * Completely decouples entity lifecycles from system handlers. When an entity dies, the manager cleanly unlinks it across all tracking layers simultaneously (rendering pipelines, pathfinding queues, and spatial indices), preventing dangling references, ghost execution updates, and memory leaks.
+  * Completely decouples entity lifecycles from system handlers. When an entity dies, used or otherwise deleted, the manager cleanly unlinks it across all tracking layers simultaneously (rendering pipelines, pathfinding queues, and spatial indices), preventing dangling references, ghost execution updates, and memory leaks.
 
 ### 2. Polymorphic Spawner Factory Method (`Set_Spawner_Type`)
 * **Context:** Hardcoding environmental configurations or map-specific generation rules creates tight coupling, breaking the *Open-Closed Principle* and forcing sweeping codebase updates whenever a new level tier or biome is developed.
