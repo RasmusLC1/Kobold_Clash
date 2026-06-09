@@ -7,6 +7,17 @@ TILE_SIZE = 32
 
 # Use dictionary keyed to pos in tilemap
 class Tile():
+    # Pre configure all variables for Tile class to optimise memory performance
+    __slots__ = [
+        'game', 'saved_data', 'type', 'sub_type', 'variant', 'pos', 'scaled_pos',
+        'size', 'active', 'light_level', 'max_light', 'physics', 'touching_wall',
+        'translucent', 'entities', 'neighbor_tiles', 'neighbor_physics_rects',
+        'update_entity_cooldown', 'sprite', 'needs_redraw', 'rendered_surface',
+        'contains_decoration', 'room', 'trap', 'minimap', 'distance_to_player',
+        'last_distance_update_timestamp', 'light_contributions', 'hitbox', 
+        'render_x', 'render_y', 'light_ID'
+    ]
+
     def __init__(self, game, type, sub_type, variant, pos, active, light_level, physics, translucent) -> None:
         self.game = game
         self.saved_data = None
@@ -35,8 +46,13 @@ class Tile():
         self.room = False # Flag to check if tile is part of room
         self.trap = False # Flag to check if tile contains trap
         self.minimap = False # Flag if the tile has been added to the minimap
-        self.distance_to_player = (999,999)
-        self.last_distance_update_timestamp = 0
+        # Initialize as float to match math.sqrt outputs smoothly
+        self.distance_to_player = 999.0  
+        self.last_distance_update_timestamp = -1.0 # Force immediate update on first check
+        
+        # Pre-calculate drawing positions to eliminate inline multiplication in Render()
+        self.render_x = self.pos[0] * self.size
+        self.render_y = self.pos[1] * self.size
         # Dictionary to hold each light's contribution
         # Key: light_id, Value: contributed_light_level
         self.light_contributions = {}
@@ -248,8 +264,7 @@ class Tile():
             return
         if self.needs_redraw:
             self.Update_Tile_Surface() 
-        # Blit the darkened tile surface onto the main surface
-        surf.blit(self.rendered_surface, (self.pos[0] * self.size - offset[0], self.pos[1] * self.size - offset[1]))
+        surf.blit(self.rendered_surface, (self.render_x - offset[0], self.render_y - offset[1]))
 
     # Used to render the minimap
     def Render_Minimap(self, surf, minimap_pos):

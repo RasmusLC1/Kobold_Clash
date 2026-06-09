@@ -24,7 +24,7 @@ class Font:
         return font_assets
 
     # Returns the dimensions (width, height) of a single character slot
-    def _Find_Font_Size(self, font_style):
+    def Find_Font_Size(self, font_style):
         style_lower = font_style.lower() if font_style else ""
         if "small" in style_lower:
             return (7, 8)
@@ -42,7 +42,7 @@ class Font:
             print("FONT NOT FOUND", font_style)
             return
             
-        char_w, _ = self._Find_Font_Size(font_style)
+        char_w, _ = self.Find_Font_Size(font_style)
         current_x, current_y = pos
 
         # Process characters directly without splitting internal strings

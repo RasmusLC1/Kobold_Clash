@@ -158,29 +158,62 @@ class Tilemap:
 
 
 
-    # Takes an ID an looks for matches in tilemap and offgrid tiles
+    # Takes an ID and looks for matches in tilemap and offgrid tiles
     def extract(self, id_pairs, keep=False):
         matches = []
-        to_remove = []
+        
+        # Pass by reference modifies 'matches' cleanly in place
+        self.Process_Offgrid_Tiles(id_pairs, keep, matches)
+        self.Process_Grid_Tiles(id_pairs, keep, matches)
+        
+        return matches
+    
+    def Process_Offgrid_Tiles(self, id_pairs, keep, matches):
+        # O(1) optimization if we don't need to delete anything
+        if keep:
+            for tile in self.offgrid_tiles:
+                if (tile[keys.type], tile[keys.variant]) in id_pairs:
+                    matches.append(copy.copy(tile))
+            return
 
-        for offgrid_tile in self.offgrid_tiles:
-            if (offgrid_tile[keys.type], offgrid_tile[keys.variant]) in id_pairs:
-                matches.append(copy.copy(offgrid_tile))
-                if not keep:
-                    to_remove.append(offgrid_tile)
+        # O(N) Linear Reconstruction: Separates kept items from extracted items
+        remaining_offgrid = []
+        for tile in self.offgrid_tiles:
+            if (tile[keys.type], tile[keys.variant]) in id_pairs:
+                matches.append(copy.copy(tile))
+            else:
+                remaining_offgrid.append(tile)
+                
+        self.offgrid_tiles = remaining_offgrid
 
-        for tile in to_remove:
-            self.offgrid_tiles.remove(tile)
-
+    def Process_Grid_Tiles(self, id_pairs, keep, matches):
+        # Iterating over list(self.tilemap) remains safe from mutation errors
         for loc in list(self.tilemap):
             tile = self.tilemap[loc]
-            if (tile.type, tile.variant) in id_pairs:
-                matches.append(copy.copy(tile))
-                matches[-1].pos = (matches[-1].pos[0] * self.tile_size, matches[-1].pos[1] * self.tile_size)
-                if not keep:
-                    del self.tilemap[loc]
-
-        return matches
+            
+            if (tile.type, tile.variant) not in id_pairs:
+                continue
+            
+            match_copy = copy.copy(tile)
+            match_copy.pos = (tile.pos[0] * self.tile_size, tile.pos[1] * self.tile_size)
+            
+            # Decouple shared object structures from the live game world
+            match_copy.entities = {}
+            match_copy.neighbor_tiles = []
+            match_copy.neighbor_physics_rects = []
+            matches.append(match_copy)
+            
+            if keep:
+                continue
+                
+            del self.tilemap[loc]
+            
+            # Untangle structural node pathways
+            for neighbor in tile.neighbor_tiles:
+                if tile in neighbor.neighbor_tiles:
+                    neighbor.neighbor_tiles.remove(tile)
+                if tile.hitbox in neighbor.neighbor_physics_rects:
+                    neighbor.neighbor_physics_rects.remove(tile.hitbox)
 
     def Search_Nearby_Tiles(self, max_distance, pos, category, ID = 0):
         pos = (pos[0] // self.tile_size, pos[1] // self.tile_size)
