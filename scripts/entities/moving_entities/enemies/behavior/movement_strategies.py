@@ -4,6 +4,7 @@ import math
 
 from scripts.engine.keys.keys import keys
 
+PLAYER_FOUND_MAX = 5
 
 class Movement_Strategies():
 
@@ -36,6 +37,7 @@ class Movement_Strategies():
             keys.idle: (0, 0),          
             keys.run_away: (1000, 999) # Enemies are always to close and try to get away
         }
+
 
     def Save_Data(self):
         self.entity.saved_data['target_tile_pos'] = self.target_tile_pos
@@ -186,15 +188,23 @@ class Movement_Strategies():
 # LINE OF SIGHT LOGIC
     # Enemies check for line of sight and sets player found cooldown accordingly
     def Handle_Line_Of_Sight(self, delta_time):
-        # Return true if the enemy can already see the player
-        if not self.Line_Of_Sight_Cooldown(delta_time): 
-            return True
-
-        if not self.Line_Of_Sight(self.game.player.pos): # Line of sight blocked
-            return False
+        # 1. Decrement the sensor polling cooldown
+        if self.line_of_sight_cooldown > 0:
+            self.line_of_sight_cooldown -= delta_time
         else:
-            self.Trigger_Player_Found()
-            return True
+            # Time to poll the expensive raycast sensor!
+            self.line_of_sight_cooldown = 1.0  # Reset sensor clock
+            
+            if self.Line_Of_Sight(self.game.player.pos):
+                self.player_found = PLAYER_FOUND_MAX
+                self.Trigger_Player_Found()
+            
+        # 2. Process the memory decay independently of the sensor clock
+        if self.player_found > 0:
+            self.player_found -= delta_time
+            return True  # Enemy remembers the player; keep moving/attacking!
+            
+        return False  # No memory, no sight. Stop moving.
         
     # Alert other nearby enemies
     def Trigger_Player_Found(self):

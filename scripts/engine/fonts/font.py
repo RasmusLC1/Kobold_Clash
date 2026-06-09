@@ -15,8 +15,8 @@ class Font:
         lookup = self.font_lookup_table
         return [lookup[char] for char in input_string.lower() if char in lookup]
 
+    # Safely fetches the requested font sprite array from assets
     def _Find_Font(self, font_style):
-        """Safely fetches the requested font sprite array from assets."""
         font_style = font_style or keys.font
         font_assets = self.game.assets.get(font_style)
         if not font_assets:
