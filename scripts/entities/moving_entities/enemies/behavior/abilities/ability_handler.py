@@ -206,4 +206,5 @@ class Ability_Handler():
         self.active_ability.Render(surf, offset)
         
         entity_pos = self.entity.pos
-        self.game.mixed_symbols.Render_Mixed_Text(surf, self.active_ability.name, (entity_pos[0] - offset[0], entity_pos[1] - offset[1]))
+        render_position = (entity_pos[0] - offset[0], entity_pos[1] - offset[1])
+        self.game.mixed_symbols.Render_Mixed_Text(surf, self.active_ability.name, render_position)

@@ -153,6 +153,18 @@ class Item_Handler():
             return False
         self.nearby_item_cooldown = 0.5
         return True
+    
+    def Pick_Up_All_Nearby_Items(self, distance) -> bool:
+        nearby_items = self.Find_Nearby_Item(self.game.player.pos, distance)
+        if not nearby_items:
+            return False
+
+        for item in nearby_items:
+            if item.type == 'torch':
+                continue
+            item.Pick_Up()
+        return True
+
 
     # Sub-component proxy passes
     def Spawn_Rune(self, pos, type=None, rarity_value=None): return self.rune_handler.Loot_Spawner(pos, type, rarity_value)
