@@ -70,18 +70,28 @@ class Text_Box():
     def Render(self, surf, offset=(0, 0)):
         if not self.render:
             return
+            
         entity_name = self.Edit_Entity_Name()
-
         text_box_pos = self.Text_Box_Setup(surf, entity_name, offset)
         if not text_box_pos:
             return
 
         self.Render_Headline(surf, entity_name, text_box_pos)
 
-        # Render the description of the entity
-        self.mixed_symbols.Render_Mixed_Text(surf, self.entity.description, (text_box_pos[0], text_box_pos[1] + 20), 0.5)
+        # Calculate content margins relative to your surface width
+        margin = 8
+        render_x = text_box_pos[0] + margin
+        render_y = text_box_pos[1] + 24
+        usable_width = self.x_size - (margin * 2)
 
-        return 
+        # Render description with fully automated word wrapping!
+        self.mixed_symbols.Render_Mixed_Text(
+            surf=surf, 
+            input_str=self.entity.description, 
+            pos=(render_x, render_y), 
+            max_width=usable_width, 
+            scale=0.5
+        )
     
  
     def Render_Headline(self, surf, entity_name, text_box_pos):

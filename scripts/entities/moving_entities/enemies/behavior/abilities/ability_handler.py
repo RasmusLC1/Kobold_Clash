@@ -202,6 +202,8 @@ class Ability_Handler():
     def _Render_Running_Ability(self, surf, offset):
         if not self.is_running_ability:
             return 
+            
         self.active_ability.Render(surf, offset)
+        
         entity_pos = self.entity.pos
         self.game.mixed_symbols.Render_Mixed_Text(surf, self.active_ability.name, (entity_pos[0] - offset[0], entity_pos[1] - offset[1]))

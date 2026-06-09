@@ -19,10 +19,11 @@ class Light_Handler():
         light_source.Delete_Light()
 
     def Initialise_Light_Level(self, tile):
-        if not tile: return 50
-        # simplified math for the same result
-        level = max(50, min(255, tile.light_level * 25))
-        return level
+        if not tile: 
+            return 50
+        return max(50, min(255, tile.light_level * 25))
     
     def Clear_Lights(self):
+        for light in self.lights:
+            light.Delete_Light()
         self.lights.clear()

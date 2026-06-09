@@ -8,9 +8,11 @@ class Light():
         self.light_level = light_level 
         self.pos = list(pos)
         self.tile = tile 
-        self.tiles = [] # Now stored as a list of unique tiles
+        self.tiles = [] 
         self.active = True
-        self.number_rays = 80 
+        
+        # Increased ray density slightly to support sub-stepping smoothly
+        self.number_rays = 120 
         self.field_of_view = 360
 
         self.id = Light._id_counter
@@ -21,49 +23,51 @@ class Light():
 
     def Compute_Angles(self):
         step = self.field_of_view / self.number_rays
-        # Localizing math.radians for a tiny speed boost during setup
         rad = math.radians
         angles = [rad(i * step) for i in range(self.number_rays)]
-        self.angle_cosines = [math.cos(a) for a in angles]
-        self.angle_sines = [math.sin(a) for a in angles]
+        
+        # Sub-step optimization: scale vectors down by half to double the sampling precision
+        self.angle_cosines = [math.cos(a) * 0.5 for a in angles]
+        self.angle_sines = [math.sin(a) * 0.5 for a in angles]
 
     def Setup_Tile_Light(self):
-        # Use a temporary set to ensure we don't track the same tile multiple times
         affected_tiles = set()
         
-        # Localize variables for the hot loop
         tile_size = self.game.tilemap.tile_size
-        scaled_x = self.pos[0] // tile_size
-        scaled_y = self.pos[1] // tile_size
+        scaled_x = self.pos[0] / tile_size
+        scaled_y = self.pos[1] / tile_size
         
         get_tile = self.game.tilemap.Current_Tile
         light_id = self.id
         base_level = self.light_level
 
-        # Handle Base Tile
         if self.tile and self.tile.translucent:
             if base_level > self.tile.light_level:
                 self.tile.Add_Light_Contribution(light_id, base_level)
                 affected_tiles.add(self.tile)
 
-        # Raycasting
+        # Loop processing using sub-stepping vectors
         for j in range(self.number_rays):
             cos_a = self.angle_cosines[j]
             sin_a = self.angle_sines[j]
-
-            for i in range(1, base_level + 1):
-                tx = scaled_x + cos_a * i
-                ty = scaled_y + sin_a * i
+            
+            # Run at double density (two steps per tile unit thickness)
+            for step in range(1, (base_level * 2) + 1):
+                tx = scaled_x + cos_a * step
+                ty = scaled_y + sin_a * step
                 
-                tile = get_tile((tx, ty))
+                tile = get_tile((int(tx), int(ty)))
                 
-                # Check if light is blocked
                 if not tile or not tile.translucent:
-                    break
-
-                new_level = base_level - i
+                    break  # Solid barrier hit safely, stopping light leak
                 
-                # Only update if this light is actually contributing something brighter
+                # True Euclidean Distance Radial Decay Formula
+                distance = math.hypot(tx - scaled_x, ty - scaled_y)
+                new_level = int(base_level - distance)
+                
+                if new_level <= 0:
+                    break
+                
                 if new_level > tile.light_level:
                     tile.Add_Light_Contribution(light_id, new_level)
                     affected_tiles.add(tile)
@@ -78,7 +82,6 @@ class Light():
         self.tiles.clear()
         return True
 
-    # Moves and updates only this light
     def Move_Light(self, pos, tile):
         self.pos = list(pos)
         self.tile = tile

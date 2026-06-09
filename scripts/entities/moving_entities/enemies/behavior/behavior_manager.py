@@ -147,6 +147,8 @@ class Behavior_Manager():
 
     def Set_Movement_Strategy(self):
         profile = self._config.get(self.behavior)
+        if not profile:
+            print("MOVEMENT PROFILE NOT FOUND: ", self.behavior)
         self.movement_behavior = profile.movement
 
     def Hit_And_Run(self):
@@ -226,17 +228,6 @@ class Behavior_Manager():
         self.engagement_cooldown -= elapsed
         return False
     
-    def Retreat(self, delta_time):
-        # If the cooldown is active, we are still in "retreat mode"
-        if not self.Update_Engagement_Cooldown(delta_time):
-            self.Set_Movement_Strategy()
-            return False # Not attacking
-        
-        # Once cooldown expires, pick a new attack behavior
-        # This prevents the enemy from being stuck in retreat forever
-        self.Set_Behavior_Pattern(keys.short_range) # Or whatever your default is
-        return True
-        
 
 
     def Retreat_When_Damaged(self, delta_time):
