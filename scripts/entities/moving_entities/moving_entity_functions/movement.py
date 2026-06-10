@@ -58,7 +58,11 @@ class Movement:
 
     def Resolve_Movement(self, tilemap):
         self.Entity_Collision_Detection()
-        self.Apply_Repulsion(tilemap)
+        
+        if self.Apply_Repulsion(tilemap):
+            self.last_frame_movement = self.frame_movement
+            return  
+            
         self.Tile_Map_Collision_Detection(tilemap)
         self.last_frame_movement = self.frame_movement
 
@@ -131,39 +135,57 @@ class Movement:
     def Entity_Collision_Detection(self):
         self.pushed_entities.clear()
         future_pos = (self.entity.pos[0] + self.frame_movement[0], self.entity.pos[1] + self.frame_movement[1])
+        
         for enemy in self.entity.nearby_enemies:
             if enemy != self.entity and enemy.rect().colliderect(self.Rect_Future(future_pos)):
                 self.pushed_entities.add(enemy)
                 
-        return future_pos
+        # Also check collision with the player explicitly if this isn't the player
+        if self.entity.type != 'player' and self.entity.game.player.rect().colliderect(self.Rect_Future(future_pos)):
+            self.pushed_entities.add(self.entity.game.player)
+                
+        return self.pushed_entities
 
-    def Apply_Repulsion(self, tilemap) -> None:
+    def Apply_Repulsion(self, tilemap) -> bool:
         if not self.pushed_entities:
-            return
+            return False
         
-        for entity in self.pushed_entities:
-            if self.entity.strength < entity.strength:
-                return
+        collided = False
+        for entity in list(self.pushed_entities):
+            if self.entity.strength <= entity.strength:
+                continue
 
+            collided = True
             repulsion_strength = 1 + (self.entity.strength - entity.strength) / 10
-            direction_vector = pygame.math.Vector2(self.entity.pos) - pygame.math.Vector2(entity.pos)
+            
+            # Point vector from PUSHER -> PUSHED entity
+            direction_vector = pygame.math.Vector2(entity.pos) - pygame.math.Vector2(self.entity.pos)
             
             if direction_vector.length_squared() == 0:
-                return
+                continue
                 
             direction_vector.normalize_ip()
-            direction_vector *= repulsion_strength
-            entity.Push(direction_vector, tilemap)
+
+            # Pass positive strength value explicitly
+            entity.Push(direction_vector, tilemap, push_strength=repulsion_strength)
+            
+        return collided
 
     def Rect_Future(self, future_pos):
         return pygame.Rect(future_pos[0], future_pos[1], self.entity.size[0], self.entity.size[1])     
 
-    def Push(self, direction, tilemap, push_strength=-1):
+    def Push(self, direction, tilemap, push_strength=1.0):
         if direction is None:
             return  
-        self.frame_movement = (direction[0] * push_strength, direction[1] * push_strength)
+        
+        # Ensure push_strength behaves as a positive force multiplier
+        push_strength = abs(push_strength)
+        
+        # Modify the internal component velocity directly
+        self.velocity[0] += direction[0] * push_strength * 500
+        self.velocity[1] += direction[1] * push_strength * 500
+
         self.entity.effects.Push(direction)
-        self.Tile_Map_Collision_Detection(tilemap)
 
     def Reduce_Movement(self, factor):
         self.max_speed = self.max_speed // factor

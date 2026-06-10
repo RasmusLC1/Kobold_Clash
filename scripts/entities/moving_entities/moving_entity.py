@@ -147,7 +147,7 @@ class Moving_Entity(PhysicsEntity):
     def Reset_Velocity(self):
         self.movement.Reset_Velocity()
 
-    def Push(self, direction, tilemap, push_strength=-1):
+    def Push(self, direction, tilemap, push_strength=1):
         self.movement.Push(direction, tilemap, push_strength)
 
     def Reduce_Movement(self, factor):

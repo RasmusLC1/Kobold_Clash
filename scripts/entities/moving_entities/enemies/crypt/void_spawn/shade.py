@@ -8,5 +8,5 @@ class Shade(Void_Spawn):
 
 
     
-    def Set_Target(self, pos):
+    def Set_Target(self, pos = None):
         self.target = self.game.player.pos
