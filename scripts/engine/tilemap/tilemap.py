@@ -279,8 +279,8 @@ class Tilemap:
     def Add_Tile(self, type, variant, pos, physics, active = 0, light_level = 0, translucent = True):
         sub_type = self.Set_Sub_Type(type)
         tile = Tile(self.game, type, sub_type, variant, pos, active, light_level, physics, translucent)
-        if pos in self.tilemap and self.tilemap[pos]:
-            self.game.ray_caster.Remove_Tile(self.tilemap[pos]) 
+        self.game.ray_caster.Remove_Tile(self.tilemap[pos]) # Remove old tile from renderer 
+        self.tilemap[pos] = None
         self.tilemap[pos] = tile
         
     def Current_Tile(self, tile_pos):
@@ -379,9 +379,9 @@ class Tilemap:
 
     def Render_Tiles(self, tiles, surf, offset=(0, 0)):
         for tile in tiles:
+            print(tile.scaled_pos, self.game.player.pos)
             if not tile:
                 continue
-
             tile.Render(surf, offset)
 
     def Add_Tile_To_Minimap(self, tile):

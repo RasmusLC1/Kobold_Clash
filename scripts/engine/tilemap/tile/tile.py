@@ -134,7 +134,7 @@ class Tile:
             self.active = clamped_val
             self.needs_redraw = True
 
-    def Render(self, surf, offset=(0,0)):
+    def Render(self, surf, offset = (0,0)):
         self.renderer.Render(surf, offset)
 
     def Render_Minimap(self, surf, minimap_pos):
@@ -155,7 +155,6 @@ class Tile:
 
         return self.navigation.distance_to_player
 
-    # --- Serialization Bridge ---
     def Save_Data(self):
         self.saved_data = {
             keys.type: self.type,

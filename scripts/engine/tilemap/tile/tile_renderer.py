@@ -14,37 +14,36 @@ class Tile_Renderer:
 
     def Set_Sprite(self):
         try:
-            # Fetch base asset safely
-            base_asset = self.tile.game.assets[self.tile.sub_type][self.tile.variant]
-            # FORCE standard assets to support alpha channels cleanly in memory
-            self.sprite = base_asset.convert_alpha()
-            self.rendered_surface = self.sprite.copy()
-        except Exception:
-            self.sprite = None
-            self.rendered_surface = None
+            self.sprite = self.game.assets[self.sub_type][self.variant].copy()
+        except Exception as e:
+            return
 
     def Update_Surface(self):
         if not self.sprite:
             return
-            
-        self.rendered_surface = self.sprite.copy()
-        
-        # Scale variables down cleanly within the matching 0-255 range
-        tile_activeness = max(0, min(255, self.tile.active))
-        light = self.tile.lighting.light_level
-        
-        # Calculate smooth visibility steps
-        tile_darken_factor = min(255, (255 * (1.0 - math.exp(-tile_activeness / 64.0))))
-        light_level = min(255, light * 25) if light > 0 else 0
-        
-        final_alpha = max(0, min(255, 220 - tile_darken_factor + light_level))
-        inverted_alpha = max(0, min(220, 220 - final_alpha))
 
-        darkening_surface = pygame.Surface(self.rendered_surface.get_size(), flags=pygame.SRCALPHA)
-        darkening_surface.fill((0, 0, 0, int(inverted_alpha)))
+        # Get the tile surface from the assets
+        self.rendered_surface = self.sprite.copy()
+        # Adjust the tile activeness calculation
+        tile_activeness = max(0, min(255, 700 - self.active))
         
+        # Apply a non-linear scaling for a smoother transition
+        tile_darken_factor = min(255, (255 * (1 - math.exp(-tile_activeness / 255)) + 150))
+        light_level = self.tile.lightlevel
+        if light_level > 0:
+            light_level = min(255, light_level * 25)
+        else:
+            light_level = 1
+        tile_darken_factor = max(0, min(220, tile_darken_factor - light_level))
+
+        # Create a darkening surface with an alpha channel
+        darkening_surface = pygame.Surface(self.rendered_surface.get_size(), flags=pygame.SRCALPHA)
+        darkening_surface.fill((0, 0, 0, int(tile_darken_factor)))
+        
+        # Blit the darkening surface onto the tile surface
         self.rendered_surface.blit(darkening_surface, (0, 0))
-        self.tile.needs_redraw = False
+
+        self.tile.needs_redraw = False  # Reset flag
         
     def Render(self, surf, offset):
         if not self.sprite or self.rendered_surface is None:
@@ -54,5 +53,4 @@ class Tile_Renderer:
             self.Update_Surface()
 
         render_pos = (self.render_x - offset[0], self.render_y - offset[1])
-        print(render_pos)
         surf.blit(self.rendered_surface, render_pos)
