@@ -13,6 +13,7 @@ class Tile_Lighting:
         if contribution > self.max_light:
             self.max_light = contribution
         self.light_level = max(self.light_level, contribution)
+        # Force redraw whenever illumination profiles update
         self.tile.needs_redraw = True
 
     def Remove_Contribution(self, light_id):
@@ -23,4 +24,5 @@ class Tile_Lighting:
         if was_max:
             self.max_light = max(self.light_contributions.values(), default=0)
         self.light_level = self.max_light
+        # Force redraw to remove lighting artifact shadows
         self.tile.needs_redraw = True

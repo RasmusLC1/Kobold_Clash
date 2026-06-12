@@ -116,18 +116,11 @@ class Trap(PhysicsEntity):
             self.entities = []
 
         # Fetch entities from nearby tiles (this returns a clean list)
-        enemies = self.game.tilemap.Search_Nearby_Tiles(
-            max_distance=self.trigger_radius, 
-            pos=self.pos, 
-            category="enemy"
-        )
-        
-        # FIXED: Safely merge the results based on the object container type
-        if isinstance(self.entities, dict):
-            for enemy in enemies:
-                self.entities[enemy.ID] = enemy
-        else:
-            self.entities.extend(enemies)
+        entities = self.tile.entities.values()
+        for entity in entities:
+            if entity.category == keys.enemy:
+                self.entities[entity.ID] = entity
+
 
     def Set_Active(self, duration):
         self.active = duration
