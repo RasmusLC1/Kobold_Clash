@@ -3,7 +3,7 @@ import pygame
 from scripts.entities.moving_entities.effects.effects_handler import Status_Effect_Handler
 from scripts.entities.moving_entities.animation.animation_handler import Animation_Handler
 from scripts.entities.moving_entities.moving_entity_functions.movement import Movement
-from scripts.entities.entities import PhysicsEntity
+from scripts.entities.physics_entity.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 
 # Cooldown in seconds

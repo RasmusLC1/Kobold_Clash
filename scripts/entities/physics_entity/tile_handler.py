@@ -1,8 +1,7 @@
-MIN_LIGHT_LEVEL = 40
 LIGHT_ALPHA_SCALE = 30
 TILE_COOLDOWN_MAX = 0.5
 
-class TileHandler:
+class Tile_Handler:
     def __init__(self, entity):
         self.entity = entity
         self.game = entity.game
@@ -23,6 +22,7 @@ class TileHandler:
         self.tile = new_tile
         self.game.tilemap.Add_Entity_To_Tile(self.tile, self.entity)
         
+        # Flawlessly interfaces with your cleaned Tile or legacy structures
         if hasattr(self.tile, 'Add_Entity'):
             self.tile.Add_Entity(self.entity)
         return True
@@ -37,14 +37,14 @@ class TileHandler:
         if not self.tile:
             return True
 
-        new_light_level = min(255, self.tile.light_level * LIGHT_ALPHA_SCALE)
+        # Target light bound determined by spatial lighting configuration
+        target_light = min(255, self.tile.light_level * LIGHT_ALPHA_SCALE)
 
-        if self.entity.light_level < new_light_level:
+        # Smooth interpolation step matching original mechanics safely
+        if self.entity.light_level < target_light:
             self.entity.Set_Light_Level(self.entity.light_level + 5)
-            self.entity.render_needs_update = True
-        elif self.entity.light_level > new_light_level:
+        elif self.entity.light_level > target_light:
             self.entity.Set_Light_Level(self.entity.light_level - 5)
-            self.entity.render_needs_update = True
         
         return self.entity.light_level > self.entity.min_light_level
 
@@ -95,7 +95,8 @@ class TileHandler:
             return False
         
         self.tile = new_tile
-        self.entity.pos = pygame.Vector2(self.tile.scaled_pos)
+        # Fixed alignment updates: Sets positions via clean assignments
+        self.entity.Set_Position(self.tile.scaled_pos)
         self.game.tilemap.Add_Entity_To_Tile(self.tile, self.entity)
         if hasattr(self.tile, 'Add_Entity'):
             self.tile.Add_Entity(self.entity)

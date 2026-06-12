@@ -1,7 +1,7 @@
 import random
 import math
 import pygame
-from scripts.entities.entities import PhysicsEntity
+from scripts.entities.physics_entity.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 
 class Item(PhysicsEntity):

@@ -1,6 +1,6 @@
 from scripts.entities.items.weapons.magic_attacks.ice.ice_particle import Ice_Particle
 from scripts.entities.items.weapons.magic_attacks.ice.ice_shooter import Ice_Shooter
-from scripts.entities.entities import PhysicsEntity
+from scripts.entities.physics_entity.entities import PhysicsEntity
 import math
 import random
 from scripts.engine.keys.keys import keys

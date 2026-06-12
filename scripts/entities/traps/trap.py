@@ -1,4 +1,4 @@
-from scripts.entities.entities import PhysicsEntity
+from scripts.entities.physics_entity.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 
 import math
@@ -17,7 +17,8 @@ class Trap(PhysicsEntity):
         self.animation_max = 0
         self.entity_check_cooldown = 0
         self.entities = {}
-        self.tile.Set_Trap(self)
+        if self.tile:
+            self.tile.Set_Trap(self)
         self.damaged_entities = {}
 
 
@@ -108,13 +109,25 @@ class Trap(PhysicsEntity):
         pass
 
     def Find_Nearby_Entities(self):
-        self.entities.clear()
-        enemies = self.game.tilemap.Search_Nearby_Tiles(2, self.pos, keys.player, self.ID)
-        if enemies:
+        # Clear out previous frames targets safely depending on its structure
+        if isinstance(self.entities, dict):
+            self.entities.clear()
+        else:
+            self.entities = []
+
+        # Fetch entities from nearby tiles (this returns a clean list)
+        enemies = self.game.tilemap.Search_Nearby_Tiles(
+            max_distance=self.trigger_radius, 
+            pos=self.pos, 
+            category="enemy"
+        )
+        
+        # FIXED: Safely merge the results based on the object container type
+        if isinstance(self.entities, dict):
+            for enemy in enemies:
+                self.entities[enemy.ID] = enemy
+        else:
             self.entities.extend(enemies)
-        player = self.game.tilemap.Search_Nearby_Tiles(2, self.pos, keys.enemy, self.ID)
-        if player:
-            self.entities.extend(player)
 
     def Set_Active(self, duration):
         self.active = duration

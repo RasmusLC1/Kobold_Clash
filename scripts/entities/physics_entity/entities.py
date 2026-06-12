@@ -1,12 +1,7 @@
 from collections import deque
 import pygame
 from scripts.engine.keys.keys import keys
-from scripts.entities.entity_functions.tile_handler import TileHandler
-
-# --- Configuration Constants ---
-LIGHT_ALPHA_SCALE = 30
-TILE_COOLDOWN_MAX = 0.5
-
+from .tile_handler import Tile_Handler
 
 class PhysicsEntity:
     _id_counter = 0
@@ -44,18 +39,25 @@ class PhysicsEntity:
         self.light_level = 0
         
         # Tile Handling Component Injection
-        self.tile_handler = TileHandler(self)
+        self.tile_handler = Tile_Handler(self)
         self.tile_handler.Set_Tile()
         
         self.Set_Text_Box()
         self.description = ''
         self.light_up_color = (255, 0, 0, 255)
 
+    # --- Properties for Backward Compatibility ---
     @property
-    # Helper property to keep backward compatibility with existing code reading entity.tile
     def tile(self):
+        """Allows legacy external logic to access entity.tile directly."""
         return self.tile_handler.tile
 
+    @tile.setter
+    def tile(self, new_tile):
+        """Allows direct mutation alignment transfers."""
+        self.tile_handler.tile = new_tile
+
+    # --- Structural Identity Core ---
     def Set_ID(self):
         if PhysicsEntity._available_IDs:
             self.ID = PhysicsEntity._available_IDs.popleft()
@@ -63,40 +65,36 @@ class PhysicsEntity:
             self.ID = PhysicsEntity._id_counter
             PhysicsEntity._id_counter += 1
 
-    def Save_Data(self):
-        self.saved_data = {} 
-        self.saved_data['ID'] = self.ID
-        self.saved_data['category'] = self.category
-        self.saved_data[keys.type] = self.type
-        self.saved_data[keys.pos] = [self.pos[0], self.pos[1]]
-        self.saved_data['size'] = self.size
-        self.saved_data['active'] = self.active
-        self.saved_data['light_level'] = self.light_level
-        self.saved_data['render'] = self.render
+    # --- Delegated Spatial API Pipelines ---
+    def Remove_Tile(self):
+        self.tile_handler.Remove_Tile()
 
-    def Load_Data(self, data):
-        self.ID = data['ID']
-        self.category = data['category']
-        self.type = data[keys.type]
-        self.pos = pygame.Vector2(data[keys.pos])
-        self.size = data['size']
-        self.active = data['active']
-        self.light_level = data['light_level']
-        self.render = data['render']
-        
+    def Set_Tile(self):
         self.tile_handler.Set_Tile()
         
-        if self.ID >= PhysicsEntity._id_counter:
-            PhysicsEntity._id_counter = self.ID + 1
+    def Update_Tile(self, delta_time):
+        return self.tile_handler.Update_Tile(delta_time)
 
-    def Delete(self):
-        self.tile_handler.Remove_Tile()
-        if hasattr(self, "ID") and self.ID not in PhysicsEntity._available_IDs:
-            PhysicsEntity._available_IDs.append(self.ID)
+    def Update_Light_Level(self):
+        return self.tile_handler.Update_Light_Level()
+
+    # --- Core Transform API ---
+    def Set_Position(self, position):
+        try:
+            self.pos = pygame.Vector2(position)
+        except Exception as e:
+            print(f"WRONG POSITION FORMAT: {e}", position)
+
+    def Set_Size(self, size):
+        self.size = list(size)
+        self._cached_dark_surface = pygame.Surface(self.size, pygame.SRCALPHA).convert_alpha()
+        self._cached_light_surface = pygame.Surface(self.size, pygame.SRCALPHA).convert_alpha()
+        self.Set_Sprite()
 
     def rect(self):
         return pygame.Rect(self.pos, self.size)
 
+    # --- Stateful Logic Engine ---
     def Set_Active(self, duration):
         if duration == self.active:
             return
@@ -107,37 +105,25 @@ class PhysicsEntity:
 
     def Reduce_Active(self):
         self.Set_Active(self.active - 1)
-        
-    def Set_Size(self, size):
-        self.size = list(size)
-        self._cached_dark_surface = pygame.Surface(self.size, pygame.SRCALPHA).convert_alpha()
-        self._cached_light_surface = pygame.Surface(self.size, pygame.SRCALPHA).convert_alpha()
-        self.Set_Sprite()
 
-    def Set_Position(self, position):
-        try:
-            self.pos = pygame.Vector2(position)
-        except Exception as e:
-            print(f"WRONG POSITION FORMAT: {e}", position)
-
-    def Set_Light_Level(self, value):
-        self.light_level = max(self.min_light_level, 255 - abs(value - 255))
-
-    def Update_Light_Level(self):
-        return self.tile_handler.Update_Light_Level()
-        
-    def Update_Tile(self, delta_time):
-        return self.tile_handler.Update_Tile(delta_time)
-        
     def Update_Active(self, state):
         self.Set_Active(state)
         self.Update_Dark_Surface()
 
+    def Set_Light_Level(self, value):
+        # Clamps values flawlessly within color array safety channels
+        self.light_level = max(self.min_light_level, min(255, value))
+        self.render_needs_update = True
+
+    # --- Interactivity & Feedback Routines ---
     def Update_Text_Box(self, hitbox_1, hitbox_2):
         if not self.text_box:
             return None
         return self if self.text_box.Update(hitbox_1, hitbox_2) else None
-        
+
+    def Set_Text_Box(self):
+        self.text_box = None
+
     def Generate_Sound(self, sound_name, volume, clatter, pos=None):
         sound_pos = pos if pos else self.pos
         self.game.sound_handler.Play_Sound(sound_name, volume)
@@ -145,9 +131,7 @@ class PhysicsEntity:
         if clatter:
             self.game.clatter.Generate_Clatter(sound_pos, clatter)
 
-    def Set_Text_Box(self):
-        self.text_box = None
-
+    # --- Visual Graphics Pipeline ---
     def Update_Dark_Surface(self):
         if not self.render_needs_update or not self.entity_image:
             return False
@@ -173,7 +157,40 @@ class PhysicsEntity:
         self._cached_light_surface.fill(self.light_up_color)
         entity_image.blit(self._cached_light_surface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
 
-    # --- Stubs for Child Extensions ---
+    # --- Life Cycle Data Persistence ---
+    def Save_Data(self):
+        self.saved_data = {
+            'ID': self.ID,
+            'category': self.category,
+            keys.type: self.type,
+            keys.pos: [self.pos[0], self.pos[1]],
+            'size': self.size,
+            'active': self.active,
+            'light_level': self.light_level,
+            'render': self.render
+        }
+        return self.saved_data
+
+    def Load_Data(self, data):
+        self.ID = data['ID']
+        self.category = data['category']
+        self.type = data[keys.type]
+        self.pos = pygame.Vector2(data[keys.pos])
+        self.size = data['size']
+        self.active = data['active']
+        self.light_level = data['light_level']
+        self.render = data['render']
+        
+        self.tile_handler.Set_Tile()
+        if self.ID >= PhysicsEntity._id_counter:
+            PhysicsEntity._id_counter = self.ID + 1
+
+    def Delete(self):
+        self.tile_handler.Remove_Tile()
+        if hasattr(self, "ID") and self.ID not in PhysicsEntity._available_IDs:
+            PhysicsEntity._available_IDs.append(self.ID)
+
+    # --- Subclass Extension Hooks ---
     def Update(self, delta_time): pass
     def Damage_Taken(self, damage): pass
     def Set_Effect(self, effect, duration, permanent=False): pass
