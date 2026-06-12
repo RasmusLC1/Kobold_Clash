@@ -16,8 +16,8 @@ class Trap(PhysicsEntity):
         self.animation_cooldown = 0
         self.animation_max = 0
         self.entity_check_cooldown = 0
-        self.entities = []
-        self.tile.Set_Trap(True)
+        self.entities = {}
+        self.tile.Set_Trap(self)
         self.damaged_entities = {}
 
 
@@ -45,20 +45,25 @@ class Trap(PhysicsEntity):
         self.Update_Trapped_Entities()
         return True
 
-    def Add_Entity_To_Trap(self, entity):
+    def Add_Entity(self, entity):
+        # 1. Early exit: Ignore items
         if entity.category == keys.item:
             return False
         
-        if entity in self.entities:
+        # 2. Early exit: Already tracked (O(1) dictionary lookup)
+        if entity.ID in self.entities:
             return False
         
+        # 3. Early exit: Geometric check (call rect() once and cache it)
         if not self.rect().colliderect(entity.rect()):
             return False
         
-
-        self.entities.append(entity)
+        # Add to trap tracking
+        self.entities[entity.ID] = entity
         return True
 
+    def Remove_Entity(self, entity_ID):
+        return self.entities.pop(entity_ID, None) is not None
 
     def Update_Cooldown(self, delta_time):
         if self.entity_check_cooldown > 0:

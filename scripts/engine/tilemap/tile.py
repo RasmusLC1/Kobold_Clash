@@ -44,7 +44,7 @@ class Tile():
         self.rendered_surface = None  # Cached surface
         self.contains_decoration = False # Flag to prevent spawning multiple decorations
         self.room = False # Flag to check if tile is part of room
-        self.trap = False # Flag to check if tile contains trap
+        self.trap = None # Flag to check if tile contains trap
         self.minimap = False # Flag if the tile has been added to the minimap
         # Initialize as float to match math.sqrt outputs smoothly
         self.distance_to_player = 999.0  
@@ -124,9 +124,20 @@ class Tile():
             return
         self.entities[entity.ID] = entity
         entity.Set_Active(self.active)
+        self._Add_Entity_To_Trap(entity)
 
-    def Clear_Entity(self, entity_ID):
+    def _Add_Entity_To_Trap(self, entity):
+        if self.trap:
+            self.trap.Add_Entity(entity)
+
+    def _Remove_Entity_From_Trap(self, entity_ID):
+        if self.trap:
+            self.trap.Remove_Entity(entity_ID)
+
+    def Remove_Entity(self, entity_ID):
         self.entities.pop(entity_ID, None)
+        self._Remove_Entity_From_Trap(entity_ID)
+        
 
     # Calculates distance to player after 0.5 second
     # return distance to player
@@ -167,8 +178,8 @@ class Tile():
     def Set_Room(self, state):
         self.room = state
 
-    def Set_Trap(self, state):
-        self.trap = state
+    def Set_Trap(self, trap):
+        self.trap = trap
 
     def Add_To_Minimap(self):
         # If already added to minimap return false

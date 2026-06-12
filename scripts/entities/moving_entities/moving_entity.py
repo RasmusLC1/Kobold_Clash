@@ -183,7 +183,7 @@ class Moving_Entity(PhysicsEntity):
         if not self.Find_Nearby_Traps(3, delta_time):
             return
         for trap in self.nearby_traps:
-            trap.Add_Entity_To_Trap(self)
+            trap.Add_Entity(self)
 
     def Find_Nearby_Traps(self, distance, delta_time) -> bool:
         if self.nearby_traps_cooldown > 0:
@@ -242,7 +242,7 @@ class Moving_Entity(PhysicsEntity):
         if self.health > 0:
             return False
         if self.tile:
-            self.tile.Clear_Entity(self.ID)
+            self.tile.Remove_Entity(self.ID)
         self.game.enemy_handler.Delete_Enemy(self)
         self.effects.Reset_Effects()
         self.Update_Status_Effects(self.game.delta_time)

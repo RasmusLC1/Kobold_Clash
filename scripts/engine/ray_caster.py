@@ -100,7 +100,7 @@ class Ray_Caster():
 
     def Clear_Entity_From_Tiles(self, entity_ID):
         for tile in self.tiles:
-            tile.Clear_Entity(entity_ID)
+            tile.Remove_Entity(entity_ID)
  
     def Ray_Caster(self):
         player_tile_pos = self.game.player.tile.pos

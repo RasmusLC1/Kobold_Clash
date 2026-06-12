@@ -295,7 +295,7 @@ class Tilemap:
         if not tile:
             print("Error removing entity from  tile")
             return
-        tile.Clear_Entity(entity_ID)
+        tile.Remove_Entity(entity_ID)
 
     def Add_Entity_To_Tile(self, tile, entity):
         if not tile:
