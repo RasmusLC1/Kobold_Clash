@@ -124,19 +124,15 @@ class Tile():
             return
         self.entities[entity.ID] = entity
         entity.Set_Active(self.active)
-        self._Add_Entity_To_Trap(entity)
-
-    def _Add_Entity_To_Trap(self, entity):
         if self.trap:
             self.trap.Add_Entity(entity)
 
-    def _Remove_Entity_From_Trap(self, entity_ID):
-        if self.trap:
-            self.trap.Remove_Entity(entity_ID)
+
 
     def Remove_Entity(self, entity_ID):
         self.entities.pop(entity_ID, None)
-        self._Remove_Entity_From_Trap(entity_ID)
+        if self.trap:
+            self.trap.Remove_Entity(entity_ID)
         
 
     # Calculates distance to player after 0.5 second
