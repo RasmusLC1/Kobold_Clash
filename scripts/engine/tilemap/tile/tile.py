@@ -9,7 +9,8 @@ import math
 TILE_SIZE = 32
 
 class Tile:
-    # Optimized slots — completely cleared of outsourced variables & property collisions
+    # REMOVED: 'light_level', 'max_light', 'distance_to_player', 'entities'
+    # These must be managed purely by property decorators!
     __slots__ = [
         'game', 'saved_data', 'type', 'sub_type', 'variant', 'pos', 'scaled_pos',
         'size', 'active', 'physics', 'touching_wall', 'translucent',
@@ -126,8 +127,11 @@ class Tile:
         self.hitbox = pygame.Rect(self.scaled_pos[0], self.scaled_pos[1], TILE_SIZE, TILE_SIZE) if state else None
 
     def Set_Active(self, new_active_level):
-        if new_active_level != self.active:
-            self.active = new_active_level
+        # Clamp the incoming value to your rendering max ceiling (e.g., 255)
+        clamped_val = min(255, max(0, int(new_active_level)))
+        
+        if clamped_val != self.active:
+            self.active = clamped_val
             self.needs_redraw = True
 
     def Render(self, surf, offset=(0,0)):

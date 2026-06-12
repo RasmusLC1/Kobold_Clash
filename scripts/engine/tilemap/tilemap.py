@@ -377,19 +377,12 @@ class Tilemap:
                     if neighbor.hitbox:
                         tile.neighbor_physics_rects.append(neighbor.hitbox)
 
-    def Render(self, surf, offset=(0, 0)):
-        for tile in self.tilemap.values():
-            surf.blit(self.game.assets[tile.type][tile.variant], (tile.scaled_pos[0] - offset[0], tile.scaled_pos[1] - offset[1]))
-
-        for tile in self.offgrid_tiles:
-            if 'Room' in tile.type:
-                continue
-            surf.blit(self.game.assets[tile.type][tile.variant], (tile.pos[0] - offset[0], tile.pos[1] - offset[1]))
-
     def Render_Tiles(self, tiles, surf, offset=(0, 0)):
         for tile in tiles:
-            if tile:
-                tile.Render(surf, offset)
+            if not tile:
+                continue
+
+            tile.Render(surf, offset)
 
     def Add_Tile_To_Minimap(self, tile):
         if not tile.Add_To_Minimap():

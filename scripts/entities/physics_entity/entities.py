@@ -73,6 +73,8 @@ class PhysicsEntity:
         self.tile_handler.Set_Tile()
         
     def Update_Tile(self, delta_time):
+        # if self.tile:
+        #     print({slot: getattr(self.tile, slot) for slot in self.tile.__slots__ if hasattr(self.tile, slot)})
         return self.tile_handler.Update_Tile(delta_time)
 
     def Update_Light_Level(self):

@@ -1,3 +1,5 @@
+import pygame
+
 LIGHT_ALPHA_SCALE = 30
 TILE_COOLDOWN_MAX = 0.5
 
@@ -17,30 +19,33 @@ class Tile_Handler:
         
         new_tile = self.game.tilemap.Current_Tile((tx, ty))
         if not new_tile:
-            return False
+            # If the specific target tile doesn't exist yet, try finding an absolute structural tile link 
+            return self._Check_If_Tile()
             
         self.tile = new_tile
-        self.game.tilemap.Add_Entity_To_Tile(self.tile, self.entity)
         
-        # Flawlessly interfaces with your cleaned Tile or legacy structures
+        # Route safely into the unified components API
         if hasattr(self.tile, 'Add_Entity'):
             self.tile.Add_Entity(self.entity)
+        else:
+            self.game.tilemap.Add_Entity_To_Tile(self.tile, self.entity)
         return True
 
     def Remove_Tile(self):
         if not self.tile:
             return
-        self.tile.Remove_Entity(self.entity.ID)
+        if hasattr(self.tile, 'Remove_Entity'):
+            self.tile.Remove_Entity(self.entity.ID)
+        else:
+            self.game.tilemap.Remove_Entity_From_Tile(self.tile, self.entity.ID)
         self.tile = None
 
     def Update_Light_Level(self):
         if not self.tile:
             return True
 
-        # Target light bound determined by spatial lighting configuration
         target_light = min(255, self.tile.light_level * LIGHT_ALPHA_SCALE)
 
-        # Smooth interpolation step matching original mechanics safely
         if self.entity.light_level < target_light:
             self.entity.Set_Light_Level(self.entity.light_level + 5)
         elif self.entity.light_level > target_light:
@@ -77,9 +82,10 @@ class Tile_Handler:
         if new_tile and new_tile != self.tile:
             self.Remove_Tile()
             self.tile = new_tile
-            self.game.tilemap.Add_Entity_To_Tile(self.tile, self.entity)
             if hasattr(self.tile, 'Add_Entity'):
                 self.tile.Add_Entity(self.entity)
+            else:
+                self.game.tilemap.Add_Entity_To_Tile(self.tile, self.entity)
             return True
         
         return False
@@ -88,16 +94,14 @@ class Tile_Handler:
         if self.tile:
             return True
         
-        print(f"ERROR TILE NOT FOUND: {self.entity.type} at {self.entity.pos}")
+        # Pull a safe floor backup position vector
         new_tile = self.game.tilemap.Get_Random_Tile_With_Path_To_Player()
         if not new_tile:
             self.entity.Delete()
             return False
         
         self.tile = new_tile
-        # Fixed alignment updates: Sets positions via clean assignments
         self.entity.Set_Position(self.tile.scaled_pos)
-        self.game.tilemap.Add_Entity_To_Tile(self.tile, self.entity)
-        if hasattr(self.tile, 'Add_Entity'):
-            self.tile.Add_Entity(self.entity)
+        
+        self.tile.Add_Entity(self.entity)
         return True
