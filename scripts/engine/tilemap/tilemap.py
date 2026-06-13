@@ -1,5 +1,5 @@
 from scripts.engine.utility.helper_functions import Helper_Functions
-from scripts.engine.tilemap.tile import Tile
+from scripts.engine.tilemap.tile.tile import Tile
 from scripts.engine.tilemap.minimap import Minimap
 from scripts.engine.keys.keys import keys
 
@@ -198,7 +198,7 @@ class Tilemap:
             match_copy.pos = (tile.pos[0] * self.tile_size, tile.pos[1] * self.tile_size)
             
             # Decouple shared object structures from the live game world
-            match_copy.entities = {}
+            match_copy.entities.clear()
             match_copy.neighbor_tiles = []
             match_copy.neighbor_physics_rects = []
             matches.append(match_copy)
@@ -510,17 +510,6 @@ class Tilemap:
                         tile.neighbor_physics_rects.append(neighbor.hitbox)
 
     
-    # Render function that shows the entire screen
-    # Not really used
-    def Render(self, surf, offset=(0, 0)):
-        for tile in self.tilemap.values():
-            surf.blit(self.game.assets[tile.type][tile.variant], (tile.scaled_pos[0] - offset[0], tile.scaled_pos[1] - offset[1]))
-
-        for tile in self.offgrid_tiles:
-            if 'Room' in tile.type:
-                continue
-            surf.blit(self.game.assets[tile.type][tile.variant], (tile.pos[0] - offset[0], tile.pos[1] - offset[1]))
-
 
     # Render function that only renders the tiles in the tiles array
     def Render_Tiles(self, tiles, surf, offset=(0, 0)):
