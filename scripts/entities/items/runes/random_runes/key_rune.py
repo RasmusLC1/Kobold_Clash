@@ -11,7 +11,7 @@ class Key_Rune(Rune):
         if not super().Activate():
             return
         
-        nearby_decorations = self.game.decoration_handler.Find_Nearby_Decorations(self.game.player.pos, 4)
+        nearby_decorations = self.game.decoration_handler.Find_Nearby_Decorations()
 
         # Filter for doors
         doors = [decoration for decoration in nearby_decorations if 'door' in decoration.type]

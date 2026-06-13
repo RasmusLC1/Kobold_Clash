@@ -102,28 +102,21 @@ class Decoration_Handler():
             self.game.keyboard_handler.Set_E_Key(False)
 
     def Check_Decorations(self):
-        nearby_decorations = self.Find_Nearby_Decorations(self.game.player.pos, 2)
+        nearby_decorations = self.Find_Nearby_Decorations()
         if not nearby_decorations:
             return False
         self.Open_Decoration(nearby_decorations)
         return True
 
     
-    def Find_Nearby_Decorations(self, player_pos, max_distance):
+    def Find_Nearby_Decorations(self):
+        player_tile = self.game.player.tile
         nearby_decorations = []
-        if max_distance <= 5:
-            nearby_decorations = self.game.tilemap.Search_Nearby_Tiles(max_distance, player_pos, 'decoration')
-        else:
-            nearby_decorations = self.Find_Nearby_Decorations_Long_Distance(player_pos, max_distance)
+        nearby_decorations = player_tile.Search_Entities(keys.decoration)
+        for tile in player_tile.neighbor_tiles:
+            nearby_decorations.extend(tile.Search_Entities(keys.decoration))
         return nearby_decorations
 
-    def Find_Nearby_Decorations_Long_Distance(self, player_pos, max_distance):
-        nearby_decorations = []
-        for decoration in self.decorations:
-            distance = self.Calculate_Distance(decoration)
-            if distance < max_distance:
-                nearby_decorations.append(decoration)
-        return nearby_decorations
 
     def Open_Decoration(self, decorations):
         open_decorations = []      

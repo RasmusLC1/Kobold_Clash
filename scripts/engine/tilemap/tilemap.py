@@ -217,10 +217,10 @@ class Tilemap:
 
     def Search_Nearby_Tiles(self, max_distance, pos, category, ID = 0):
         pos = (pos[0] // self.tile_size, pos[1] // self.tile_size)
-        grid_distance = max_distance // self.tile_size # Normalize it!
-        entities = []
         
-        for x in range(math.floor(pos[0] - grid_distance), math.floor(pos[0] + grid_distance)):
+        
+        entities = []
+        for x in range(math.floor(pos[0] - max_distance), math.floor(pos[0] + max_distance)):
             for y in range(math.floor(pos[1] - max_distance), math.floor(pos[1] + max_distance)):
                 if x <= self.min_x or y <= self.min_y:
                     continue

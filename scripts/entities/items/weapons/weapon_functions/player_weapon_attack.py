@@ -39,7 +39,7 @@ class Player_Weapon_Attack():
         # Compute attack each time to account for changing player agility level
         self.Set_Attacking()
         self.nearby_enemies = self.game.enemy_handler.Find_Nearby_Enemies(self.player, 3) # Find nearby enemies to attack
-        self.nearby_decoration = self.game.decoration_handler.Find_Nearby_Decorations(self.player.pos, 3)
+        self.nearby_decoration = self.game.decoration_handler.Find_Nearby_Decorations()
         self.player.Trigger_Attack_Animation()
         return True
     

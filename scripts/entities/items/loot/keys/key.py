@@ -15,7 +15,7 @@ class Key(Interactive_Loot):
         
     
     def Check_If_Doors_Can_Open(self):
-        nearby_decorations = self.game.decoration_handler.Find_Nearby_Decorations(self.game.player.pos, 4)
+        nearby_decorations = self.game.decoration_handler.Find_Nearby_Decorations()
 
         # Filter for doors
         doors = [decoration for decoration in nearby_decorations if 'door' in decoration.type]
