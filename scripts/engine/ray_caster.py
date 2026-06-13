@@ -64,6 +64,7 @@ class Ray_Caster():
     def _process_tile_activity(self, tile, player_pos):
         if tile.active:
             tile.active -= 1
+        
         dx = player_pos[0] - tile.scaled_pos[0]
         dy = player_pos[1] - tile.scaled_pos[1]
         

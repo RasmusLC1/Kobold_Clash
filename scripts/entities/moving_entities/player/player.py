@@ -63,7 +63,6 @@ class Player(Moving_Entity):
         self.Update_Rune_Power(-self.rune_power)
         super().Update(tilemap, delta_time, movement=movement)
 
-
         self.Mouse_Handler()
         self.movement_handler.Update()
 
@@ -75,7 +74,7 @@ class Player(Moving_Entity):
 
         self.Update_Souls_To_Remove()
         self.Spawn_Particles(delta_time)
-        self.tile.distance_to_player
+        self.tile.Get_Distance_To_Player()
 
 
     def Caclulate_View_Direction(self):

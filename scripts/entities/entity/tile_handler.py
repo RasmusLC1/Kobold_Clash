@@ -1,7 +1,6 @@
-import pygame
-
+MIN_LIGHT_LEVEL = 40
 LIGHT_ALPHA_SCALE = 30
-TILE_COOLDOWN_MAX = 0.5
+TILE_COOLDOWN_MAX = 0.1
 
 class Tile_Handler:
     def __init__(self, entity):
@@ -14,42 +13,41 @@ class Tile_Handler:
         self.Remove_Tile()
         
         tile_size = self.game.tilemap.tile_size
-        tx = int(self.entity.pos[0]) // tile_size
-        ty = int(self.entity.pos[1]) // tile_size
+        feet_x = self.entity.rect().midtop[0]
+        feet_y = self.entity.rect().midtop[1]
+
+        tile_x = int(feet_x // tile_size)
+        tile_y = int(feet_y // tile_size)
         
-        new_tile = self.game.tilemap.Current_Tile((tx, ty))
+        new_tile = self.game.tilemap.Current_Tile((tile_x, tile_y))
         if not new_tile:
-            # If the specific target tile doesn't exist yet, try finding an absolute structural tile link 
-            return self._Check_If_Tile()
+            return False
             
         self.tile = new_tile
+        self.game.tilemap.Add_Entity_To_Tile(self.tile, self.entity)
         
-        # Route safely into the unified components API
         if hasattr(self.tile, 'Add_Entity'):
             self.tile.Add_Entity(self.entity)
-        else:
-            self.game.tilemap.Add_Entity_To_Tile(self.tile, self.entity)
         return True
 
     def Remove_Tile(self):
         if not self.tile:
             return
-        if hasattr(self.tile, 'Remove_Entity'):
-            self.tile.Remove_Entity(self.entity.ID)
-        else:
-            self.game.tilemap.Remove_Entity_From_Tile(self.tile, self.entity.ID)
+        self.tile.Remove_Entity(self.entity.ID)
         self.tile = None
 
     def Update_Light_Level(self):
         if not self.tile:
             return True
 
-        target_light = min(255, self.tile.light_level * LIGHT_ALPHA_SCALE)
+        new_light_level = min(255, self.tile.light_level * LIGHT_ALPHA_SCALE)
 
-        if self.entity.light_level < target_light:
+        if self.entity.light_level < new_light_level:
             self.entity.Set_Light_Level(self.entity.light_level + 5)
-        elif self.entity.light_level > target_light:
+            self.entity.render_needs_update = True
+        elif self.entity.light_level > new_light_level:
             self.entity.Set_Light_Level(self.entity.light_level - 5)
+            self.entity.render_needs_update = True
         
         return self.entity.light_level > self.entity.min_light_level
 
@@ -82,10 +80,9 @@ class Tile_Handler:
         if new_tile and new_tile != self.tile:
             self.Remove_Tile()
             self.tile = new_tile
+            self.game.tilemap.Add_Entity_To_Tile(self.tile, self.entity)
             if hasattr(self.tile, 'Add_Entity'):
                 self.tile.Add_Entity(self.entity)
-            else:
-                self.game.tilemap.Add_Entity_To_Tile(self.tile, self.entity)
             return True
         
         return False
@@ -94,14 +91,15 @@ class Tile_Handler:
         if self.tile:
             return True
         
-        # Pull a safe floor backup position vector
+        print(f"ERROR TILE NOT FOUND: {self.entity.type} at {self.entity.pos}")
         new_tile = self.game.tilemap.Get_Random_Tile_With_Path_To_Player()
         if not new_tile:
             self.entity.Delete()
             return False
         
         self.tile = new_tile
-        self.entity.Set_Position(self.tile.scaled_pos)
-        
-        self.tile.Add_Entity(self.entity)
+        self.entity.pos = pygame.Vector2(self.tile.scaled_pos)
+        self.game.tilemap.Add_Entity_To_Tile(self.tile, self.entity)
+        if hasattr(self.tile, 'Add_Entity'):
+            self.tile.Add_Entity(self.entity)
         return True

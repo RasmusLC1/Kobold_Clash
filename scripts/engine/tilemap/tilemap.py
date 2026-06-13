@@ -1,11 +1,13 @@
 from scripts.engine.utility.helper_functions import Helper_Functions
-from scripts.engine.tilemap.tile.tile import Tile
+from scripts.engine.tilemap.tile import Tile
 from scripts.engine.tilemap.minimap import Minimap
 from scripts.engine.keys.keys import keys
 
 import random
+import pygame
 import math
 import copy
+
 
 # Tiles that are checked for physics
 NEIGHBOR_OFFSETS = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 0), (-1, 1), (0, 1), (1, 1)]
@@ -13,7 +15,7 @@ NEIGHBOR_OFFSETS = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 0), (-1, 1)
 class Tilemap:
     def __init__(self, game, tile_size=32) -> None:
         self.game = game
-        self.tile_size = tile_size
+        self.tile_size = 32
         self.tilemap = {}
         self.saved_data = None
         self.tiles_not_touching_wall = {} # Floor tiles not touching walls
@@ -27,6 +29,7 @@ class Tilemap:
         self.dungeon_type = None
         self.minimap = Minimap(game, self)
 
+     
     def Save_data(self):
         self.saved_data = {}
         self.saved_data['depth'] = self.game.depth
@@ -41,12 +44,13 @@ class Tilemap:
             tile_key = self.Convert_Tile_Pos_To_Key(tile.pos)
             self.saved_data['tiles'][tile_key] = tile.saved_data
     
-        minimap_tiles = self.minimap.Get_Tiles()
+        minimap_tiles =  self.minimap.Get_Tiles()
         self.saved_data['minimap'] = []
         for tile_pos in minimap_tiles:
             self.saved_data['minimap'].append(self.Convert_Tile_Pos_To_Key(tile_pos))
 
     def Load_Data(self, data = None):
+        # Set the dungeon information
         if data:
             self.game.depth = data['depth']
             self.game.dungeon_type = data['dungeon_type']
@@ -74,7 +78,8 @@ class Tilemap:
 
     def Tuple_From_String(self, tile_key):
         x, y = map(int, tile_key.split(';'))
-        return (x, y)
+        tile_pos = (x, y)
+        return tile_pos
 
     def Convert_Tile_Pos_To_Key(self, pos):
         return f"{pos[0]};{pos[1]}"
@@ -117,9 +122,12 @@ class Tilemap:
         }
         self.dungeon_type = dungeon_types.get(self.game.dungeon_type)
 
+
+
     def Set_Sub_Type(self, type):
         return self.dungeon_type + type
 
+    # Runs one time when loading, but expensive to compute
     def Find_Tiles_Not_Touching_Wall(self):
         self.tiles_not_touching_wall.clear()
         tilemap_get = self.tilemap.get
@@ -130,8 +138,11 @@ class Tilemap:
             touching_wall = False
 
             for offset in NEIGHBOR_OFFSETS:
-                nx, ny = x + offset[0], y + offset[1]
-                neighbor_tile = tilemap_get((nx, ny))
+                nx, ny = x + offset[0], y + offset[1] # Get neigbour key
+                neighbor_key = (nx, ny)
+
+                
+                neighbor_tile = tilemap_get(neighbor_key)
                 if not neighbor_tile:
                     continue
                 
@@ -144,19 +155,28 @@ class Tilemap:
             else:
                 self.tilemap[tile_key].Set_Touching_Wall()
 
+
+
+
+    # Takes an ID and looks for matches in tilemap and offgrid tiles
     def extract(self, id_pairs, keep=False):
         matches = []
+        
+        # Pass by reference modifies 'matches' cleanly in place
         self.Process_Offgrid_Tiles(id_pairs, keep, matches)
         self.Process_Grid_Tiles(id_pairs, keep, matches)
+        
         return matches
     
     def Process_Offgrid_Tiles(self, id_pairs, keep, matches):
+        # O(1) optimization if we don't need to delete anything
         if keep:
             for tile in self.offgrid_tiles:
                 if (tile[keys.type], tile[keys.variant]) in id_pairs:
                     matches.append(copy.copy(tile))
             return
 
+        # O(N) Linear Reconstruction: Separates kept items from extracted items
         remaining_offgrid = []
         for tile in self.offgrid_tiles:
             if (tile[keys.type], tile[keys.variant]) in id_pairs:
@@ -167,6 +187,7 @@ class Tilemap:
         self.offgrid_tiles = remaining_offgrid
 
     def Process_Grid_Tiles(self, id_pairs, keep, matches):
+        # Iterating over list(self.tilemap) remains safe from mutation errors
         for loc in list(self.tilemap):
             tile = self.tilemap[loc]
             
@@ -176,10 +197,8 @@ class Tilemap:
             match_copy = copy.copy(tile)
             match_copy.pos = (tile.pos[0] * self.tile_size, tile.pos[1] * self.tile_size)
             
-            # FIXED: Clear entities through the proper subcomponent handler safely
-            if hasattr(match_copy, 'entity_handler') and match_copy.entity_handler:
-                match_copy.entity_handler.entities = {}
-                
+            # Decouple shared object structures from the live game world
+            match_copy.entities = {}
             match_copy.neighbor_tiles = []
             match_copy.neighbor_physics_rects = []
             matches.append(match_copy)
@@ -189,6 +208,7 @@ class Tilemap:
                 
             del self.tilemap[loc]
             
+            # Untangle structural node pathways
             for neighbor in tile.neighbor_tiles:
                 if tile in neighbor.neighbor_tiles:
                     neighbor.neighbor_tiles.remove(tile)
@@ -197,84 +217,132 @@ class Tilemap:
 
     def Search_Nearby_Tiles(self, max_distance, pos, category, ID = 0):
         pos = (pos[0] // self.tile_size, pos[1] // self.tile_size)
+        grid_distance = max_distance // self.tile_size # Normalize it!
         entities = []
-        for x in range(math.floor(pos[0] - max_distance), math.floor(pos[0] + max_distance)):
+        
+        for x in range(math.floor(pos[0] - grid_distance), math.floor(pos[0] + grid_distance)):
             for y in range(math.floor(pos[1] - max_distance), math.floor(pos[1] + max_distance)):
-                if x <= self.min_x or y <= self.min_y or x >= self.max_x or y >= self.max_y:
+                if x <= self.min_x or y <= self.min_y:
                     continue
 
-                tile = self.tilemap.get((x, y))
-                if not tile or not tile.entities:
+                if x >= self.max_x or y >= self.max_y:
+                    continue
+
+                tile_key = (x, y)
+                tile = self.tilemap[tile_key]
+                if not tile:
+                    continue
+
+                if not tile.entities:
                     continue
 
                 new_entities = tile.Search_Entities(category, ID)
-                if new_entities:
-                    entities.extend(new_entities)
+                if not new_entities:
+                    continue
+                        
+                entities.extend(new_entities)
+
+        
         return entities
 
     def Search_Nearby_Tiles_For_Type(self, max_distance, pos, type, ID = 0):
         pos = (pos[0] // self.tile_size, pos[1] // self.tile_size)
+        
+        
         entities = []
         for x in range(math.floor(pos[0] - max_distance), math.floor(pos[0] + max_distance)):
             for y in range(math.floor(pos[1] - max_distance), math.floor(pos[1] + max_distance)):
-                if x <= self.min_x or y <= self.min_y or x >= self.max_x or y >= self.max_y:
+                if x <= self.min_x or y <= self.min_y:
                     continue
 
-                tile = self.tilemap.get((x, y))
-                if not tile or not tile.entities:
+                if x >= self.max_x or y >= self.max_y:
+                    continue
+
+                tile_key = (x, y)
+                tile = self.tilemap[tile_key]
+                if not tile:
+                    continue
+
+                if not tile.entities:
                     continue
 
                 new_entities = tile.Search_Type(type, ID)
-                if new_entities:
-                    entities.extend(new_entities)
+                if not new_entities:
+                    continue
+                        
+                entities.extend(new_entities)
+
+        
         return entities
 
+    # return the entities on a tile           
     def Get_Tile_Entities(self, tile_key):
         tile = self.tilemap.get(tile_key)
-        return tile.entities if tile else None
+        
+        if not tile:
+            return None
+        
+        return tile.entities
     
     def Get_Tile(self, tile_key):
-        return self.tilemap.get(tile_key)
+        tile = self.tilemap.get(tile_key)
+        return tile
 
+
+
+    # Add an remove entities from tiles dynamically as needed
     def Remove_Entity_From_Tile(self, tile, entity_ID):
         if not tile:
-            print("Error removing entity from tile")
+            print("Error removing entity from  tile")
             return
         tile.Remove_Entity(entity_ID)
 
     def Add_Entity_To_Tile(self, tile, entity):
         if not tile:
-            print("Error adding entity to tile", entity.type, entity.pos)
+            print("Error adding entity to  tile", entity.type, entity.pos)
             return
         tile.Add_Entity(entity)
 
+    # Get the position of tiles in the tilemap
     def Get_Pos(self):
-        return [tile.pos for tile in self.tilemap.values()]
+        positions = []
+        for tile in self.tilemap.values():
+            positions.append(tile.pos)
+        return positions
 
+    # Get surrounding tiles
     def Get_Tiles_Around(self, pos):
         tile_loc = (int(pos[0] // self.tile_size), int(pos[1] // self.tile_size))
         current_tile = self.tilemap.get(tile_loc)
         return current_tile.neighbor_tiles if current_tile else []
 
+    # O(1) Collision Check
     def physics_rects_around(self, pos):
-        """Optimized O(1) Collision Check using cached hitboxes."""
         tile_loc = (int(pos[0] // self.tile_size), int(pos[1] // self.tile_size))
         current_tile = self.tilemap.get(tile_loc)
         return current_tile.neighbor_physics_rects if current_tile else []
     
+    # Gets floor tiles not touching a wall
     def Get_Floor_Tiles_Around(self, pos):
         tile_loc = (int(pos[0] // self.tile_size), int(pos[1] // self.tile_size))
         floor_tiles = []
         tiles_not_touching_walls_get = self.tiles_not_touching_wall.get
         for offset in NEIGHBOR_OFFSETS:
             check_loc = (tile_loc[0] + offset[0], tile_loc[1] + offset[1])
+            # Direct lookup in your "Safe Tiles" pre-calculated dict
             tile = tiles_not_touching_walls_get(check_loc)
             if tile:
                 floor_tiles.append(tile)
+                
         return floor_tiles
+    
         
+    # Check what tile type is in a given position
     def Current_Tile_Type_Without_Offset(self, pos):
-        return self.tilemap[pos].type if pos in self.tilemap else None
+        if pos in self.tilemap:
+            return self.tilemap[pos].type
+        else:
+            return None
     
     def Add_Tile(self, type, variant, pos, physics, active = 0, light_level = 0, translucent = True):
         sub_type = self.Set_Sub_Type(type)
@@ -283,19 +351,28 @@ class Tilemap:
         self.tilemap[pos] = None
         self.tilemap[pos] = tile
         
+    # Check what tile is in a given position and return the full tile
     def Current_Tile(self, tile_pos):
         try:
             tile_key = (round(tile_pos[0]), round(tile_pos[1]))
-            return self.tilemap.get(tile_key)
         except Exception as e:
             print("CAN'T FIND TILEKEY", e, tile_pos)
+            return
+        tile = self.tilemap.get(tile_key)
+        if not tile:
             return None
+        
+        return tile
 
+
+    # Finds nearby tiles 
     def Find_Nearby_Tiles(self, pos, max_distance):
         tile_loc = (int(pos[0] // self.tile_size), int(pos[1] // self.tile_size))
         normalised_max_distance = max_distance // self.tile_size
         nearby_tiles = []
-        for tile in self.tilemap.values():
+        for tile_key in self.tilemap:
+            tile = self.tilemap[tile_key]
+            # Calculate the Euclidean distance
             distance = Helper_Functions.Abs_Distance_Float(tile_loc, tile.pos)
             if distance < normalised_max_distance:
                 nearby_tiles.append(tile)
@@ -303,70 +380,124 @@ class Tilemap:
     
     def Update_Tile_Type(self, tile, new_type):
         tile.Set_Type(new_type)
-        if hasattr(tile.renderer, 'Set_Sprite'):
-            tile.renderer.Set_Sprite()
+        tile.Set_Sprite()
 
+
+    # Check for collision on relevant tile
     def Collision_Check(self, pos):
-        tile = self.Current_Tile((pos[0] // self.tile_size, pos[1] // self.tile_size))
-        return not tile.physics if tile else False
+        tile = self.Current_Tile_Type(pos)
+        if not tile:
+            return False
+        return not tile.physics
 
+    
+    # Check for collision with solid tiles
+    # Returns tile if there is collision
     def solid_check(self, pos):
         tile_loc = (pos[0] // self.tile_size, pos[1] // self.tile_size)
-        tile = self.tilemap.get(tile_loc)
-        return tile if tile and tile.physics else None
+        if not tile_loc in self.tilemap:
+            return None
+        if self.tilemap[tile_loc].physics:
+            return self.tilemap[tile_loc]
     
-    def Solid_Check_Tile(self, tile_pos):
-        tile = self.tilemap.get(tile_pos)
-        return tile if tile and tile.physics else None
+    # Check for collision with solid tiles
+    def Solid_Check_Tile(self, tile):
+        if not tile in self.tilemap:
+            return
+        if self.tilemap[tile].physics:
+            return self.tilemap[tile]
+    
+    # Check for physics tiles
+    def physics_rects_around(self, pos):
+        rects = []
+
+        for tile in self.Get_Tiles_Around(pos): 
+            if tile and tile.hitbox:
+                rects.append(tile.hitbox) # Use cached hitbox
+        return rects #
     
     def Get_Floor_Tiles(self):
-        return {k: v for k, v in self.tilemap.items() if v.type == keys.floor}
+        floor_tiles = {}
+        for tile_key, tile in self.tilemap.items():
+            if tile.type == keys.floor:
+                floor_tiles[tile_key] = tile 
+
+        return floor_tiles
 
     def Set_Light_Level(self, tile, new_light_level):
-        # FIXED: Interfaces seamlessly with properties now
-        tile.light_level = new_light_level
+        tile.Set_Light_Level(new_light_level)
+
 
     def Get_Random_Tile_With_Path_To_Player(self):
-        tiles = [t for t in self.tiles_not_touching_wall.values() if t.type == keys.floor]
+        tiles = []
+        for tile in self.tiles_not_touching_wall.values():
+            if tile.type != keys.floor:
+                continue
+
+            tiles.append(tile)
         if not tiles:
-            return None
-        
+            print("TILES NOT FOUND", self.tiles_not_touching_wall)
+            for tile in self.tiles_not_touching_wall.values():
+                print(tile.sub_type, tile.type)
+            return
+        tile_found = False
+        random_tile = None
         player = self.game.player
         fail = 0
 
-        while fail <= 40:
+        while not tile_found:
             random_tile = random.choice(tiles)
             tile_pos = (random_tile.pos[0] - self.game.a_star.min_x, random_tile.pos[1] - self.game.a_star.min_y)
             player_pos = (round(player.tile.pos[0]) - self.game.a_star.min_x, round(player.tile.pos[1]) - self.game.a_star.min_y)
             path = self.game.a_star.a_star_search([tile_pos[0], tile_pos[1]], [player_pos[0], player_pos[1]])
             if path:
-                return random_tile
+                tile_found = True
+                break
+
             fail += 1
 
-        return random.choice(tiles)
+            if fail > 40:
+                return random.choice(tiles)
+        return random_tile
 
     def Get_Random_Tile_With_Path_Tile(self, target_tile):
-        tiles = [t for t in self.tiles_not_touching_wall.values() if t.type == keys.floor]
+        tiles = []
+        for tile in self.tiles_not_touching_wall.values():
+            if tile.type != keys.floor:
+                continue
+
+            tiles.append(tile)
+        tile_found = False
+        random_tile = None
         fail = 0
-        while fail <= 40:
+        while not tile_found:
             random_tile = random.choice(tiles)
             tile_pos = (random_tile.pos[0] - self.game.a_star.min_x, random_tile.pos[1] - self.game.a_star.min_y)
             target_tile_pos = (target_tile.pos[0] - self.game.a_star.min_x, target_tile.pos[1] - self.game.a_star.min_y)
             path = self.game.a_star.a_star_search([tile_pos[0], tile_pos[1]], [target_tile_pos[0], target_tile_pos[1]])
             if path:
-                return random_tile
+                tile_found = True
+                break
+
             fail += 1
-        return None
+
+            if fail > 40:
+                return None
+        return random_tile
     
     def Clear_Tilemap(self):
         self.tilemap.clear()
         self.offgrid_tiles.clear()
         self.minimap.Clear()
 
+    # Runs ONCE after map generation to link tiles to their neighbors permanently.
     def Cache_All_Tile_Neighbors(self):
         tilemap_get = self.tilemap.get
+        
         for tile in self.tilemap.values():
             tx, ty = tile.pos
+            
+            # Clear any old references if reloading a save file
             tile.neighbor_tiles.clear()
             tile.neighbor_physics_rects.clear()
             
@@ -374,19 +505,36 @@ class Tilemap:
                 neighbor = tilemap_get((tx + ox, ty + oy))
                 if neighbor:
                     tile.neighbor_tiles.append(neighbor)
+                    # Go a step further: Cache the static physics hitboxes right here!
                     if neighbor.hitbox:
                         tile.neighbor_physics_rects.append(neighbor.hitbox)
 
+    
+    # Render function that shows the entire screen
+    # Not really used
+    def Render(self, surf, offset=(0, 0)):
+        for tile in self.tilemap.values():
+            surf.blit(self.game.assets[tile.type][tile.variant], (tile.scaled_pos[0] - offset[0], tile.scaled_pos[1] - offset[1]))
+
+        for tile in self.offgrid_tiles:
+            if 'Room' in tile.type:
+                continue
+            surf.blit(self.game.assets[tile.type][tile.variant], (tile.pos[0] - offset[0], tile.pos[1] - offset[1]))
+
+
+    # Render function that only renders the tiles in the tiles array
     def Render_Tiles(self, tiles, surf, offset=(0, 0)):
         for tile in tiles:
-            print(tile.scaled_pos, self.game.player.pos)
             if not tile:
                 continue
             tile.Render(surf, offset)
 
+
+
     def Add_Tile_To_Minimap(self, tile):
         if not tile.Add_To_Minimap():
             return False
+        
         self.minimap.Add_Tile_To_Minimap(tile)
         return True
 

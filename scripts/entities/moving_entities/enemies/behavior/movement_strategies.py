@@ -124,7 +124,7 @@ class Movement_Strategies():
             return []
 
         # Filter out tiles that don't have a player distance (walls/void)
-        valid_tiles = [tile for tile in surrounding_tiles if tile.distance_to_player is not None]
+        valid_tiles = [tile for tile in surrounding_tiles if tile.Get_Distance_To_Player() is not None]
         
         if not valid_tiles:
             return []
@@ -132,13 +132,13 @@ class Movement_Strategies():
         # CASE 1: TOO FAR - Find the neighbor that gets us the CLOSEST to the player
         if entity_dist > max_range:
             # Pick best tile
-            best_tile = min(valid_tiles, key=lambda tile: tile.distance_to_player)
+            best_tile = min(valid_tiles, key=lambda tile: tile.Get_Distance_To_Player())
             return [best_tile] 
 
         # CASE 2: TOO CLOSE - Find the neighbor that gets us FURTHEST from the player
         elif entity_dist < min_range:
             # Pick best tile
-            best_tile = max(valid_tiles, key=lambda tile: tile.distance_to_player)
+            best_tile = max(valid_tiles, key=lambda tile: tile.Get_Distance_To_Player())
             return [best_tile]
 
         # CASE 3: IN RANGE - Return all neighbors so the enemy can "loiter" randomly

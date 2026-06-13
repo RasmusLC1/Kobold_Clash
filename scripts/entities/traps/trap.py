@@ -1,4 +1,4 @@
-from scripts.entities.physics_entity.entities import PhysicsEntity
+from scripts.entities.entity.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 
 import math
@@ -50,7 +50,7 @@ class Trap(PhysicsEntity):
         # 1. Early exit: Ignore items
         if entity.category == keys.item:
             return False
-        
+    
         # 2. Early exit: Already tracked (O(1) dictionary lookup)
         if entity.ID in self.entities:
             return False
@@ -88,8 +88,7 @@ class Trap(PhysicsEntity):
 
     
     def Update_Trapped_Entities(self):
-        self.Find_Nearby_Entities()
-        for entity in self.entities:
+        for entity in self.entities.values():
             if not entity.touching_ground:
                 continue
             if entity.ID in self.damaged_entities: # Check if enemy is in damage cooldown
@@ -107,19 +106,6 @@ class Trap(PhysicsEntity):
 
     def Animation_Update(self, delta_time):
         pass
-
-    def Find_Nearby_Entities(self):
-        # Clear out previous frames targets safely depending on its structure
-        if isinstance(self.entities, dict):
-            self.entities.clear()
-        else:
-            self.entities = []
-
-        # Fetch entities from nearby tiles (this returns a clean list)
-        entities = self.tile.entities.values()
-        for entity in entities:
-            if entity.category == keys.enemy:
-                self.entities[entity.ID] = entity
 
 
     def Set_Active(self, duration):
