@@ -28,6 +28,12 @@ class Attack_Handler():
             return False
         
         self.Update_Charge(delta_time)
+        # Check if the weapon is fully charged and ready to execute
+        if self.charge >= self.max_weapon_charge:
+            # Trigger the actual attack sequence on the enemy instance
+            self.entity.Trigger_Attack() 
+            return False # Return False so the behavior flow knows charging is complete
+            
         return True
 
 
@@ -68,10 +74,10 @@ class Attack_Handler():
         charge = min(self.max_weapon_charge, self.charge + delta_time)
         self.Set_Charge(charge)
 
-
+    # Sets the charge of the enemy, when it reaches a 
     def Set_Charge(self, amount):
         self.charge = amount
-        self.entity.Set_Charge(amount) # Sync the player charge for animation purpose
+        self.entity.Set_Charge(amount) # Sync the charge for animation purpose
 
     def Get_Attack_Charge(self):
         return self.charge

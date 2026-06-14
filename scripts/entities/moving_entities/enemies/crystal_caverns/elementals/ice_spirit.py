@@ -19,12 +19,6 @@ class Ice_Spirit(Elemental):
         
         return True
 
-    
-    def Set_Attack_Triggered(self):
-        self.Set_Target(self.game.player.pos)
-        self.Set_Attack_Direction()
-        self.active_weapon.Initialise_Shooting(self, 2, self.ice_damage)
-        self.attack_cooldown = 1
 
     def Handle_Frozen(self):
         frozen = self.effects.Get_Effect_Strength(keys.frozen)

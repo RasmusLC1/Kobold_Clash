@@ -61,7 +61,6 @@ class Behavior_Manager():
 
     def Update_Behavior(self, delta_time):
         self.entity.Set_Player_Spotted(self.Check_Player_Distance())
-
         if not self.entity.player_spotted:
             return None
         
@@ -78,7 +77,6 @@ class Behavior_Manager():
             return
         if self.attack_handler.Update_Attack(delta_time):
             return
-        
         self.behavior_pattern_function()
         self.Check_If_Entity_Has_Attacked()
     

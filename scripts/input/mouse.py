@@ -55,6 +55,8 @@ class Mouse_Handler:
                 self.right_click = False
 
             if key_press.button in {4, 5}:  # Scroll wheel click
+                if not self.game.inventory:
+                    return
                 self.game.inventory.Increment_Weapon_Inventory()
 
 

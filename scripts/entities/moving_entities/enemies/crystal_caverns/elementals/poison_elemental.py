@@ -32,8 +32,6 @@ class Poison_Elemental(Elemental):
         
         return True
     
-    def Set_Attack_Triggered(self):
-        pass
 
     def Improve_Weapon(self, effect, amount):
         return False

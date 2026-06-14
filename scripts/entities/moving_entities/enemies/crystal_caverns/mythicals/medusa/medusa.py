@@ -49,12 +49,6 @@ class Medusa(Enemy):
         self.Set_Attack_Direction()
         self.ranged_weapon.Initialise_Shooting(self, 100, self.electric_damage)
 
-    def Set_Attack_Triggered(self):
-        if self.attack_type == keys.direct:
-            return super().Set_Attack_Triggered()
-        else:
-            return self.Trigger_Ranged_Attack()
-
     # Custom render function to account for large attack animations
     def Render(self, surf, offset=(0, 0)):
         if not self.active or not self.Update_Light_Level():

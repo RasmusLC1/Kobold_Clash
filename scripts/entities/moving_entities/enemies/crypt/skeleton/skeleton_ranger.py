@@ -11,9 +11,3 @@ class Skeleton_Ranger(Skeleton):
         super().__init__(game, pos, keys.skeleton_ranger + '_' + type)
         self.Equip_Weapon(Bow(self.game, self.pos))
         
-
-    def Set_Attack_Triggered(self):
-        self.Set_Target(self.game.player.pos)
-        self.active_weapon.Enemy_Shooting()
-        self.Reset_Charge()
-        return True

@@ -315,9 +315,6 @@ class Moving_Entity(PhysicsEntity):
     def Set_Health(self, amount):
         self.health = amount
 
-    def Set_Attack_Triggered(self):
-        pass
-
     def Get_Effect(self, effect_name):
         return self.effects.Get_Effect(effect_name)
 

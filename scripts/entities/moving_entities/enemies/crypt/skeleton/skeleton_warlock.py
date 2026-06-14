@@ -16,11 +16,3 @@ class Skeleton_Warlock(Skeleton):
             self.Set_Behavior_Pattern(keys.medium_range)
         else:
             self.Set_Behavior_Pattern(keys.long_range)
-
-    def Set_Attack_Triggered(self):
-        self.Set_Target(self.game.player.pos)
-        self.game.particle_handler.Activate_Particles(random.randint(5, 10), keys.gold_particle, self.rect().center)
-        self.active_weapon.Shoot_Projectiles()
-        self.Reset_Charge()
-        
-        return True

@@ -121,7 +121,7 @@ class Tile:
         self.minimap = True
         return True
 
-    # --- Core Mechanics API ---
+# --- Core Mechanics API ---
     def Set_Physics(self, state):
         self.physics = state
         self.hitbox = pygame.Rect(self.scaled_pos[0], self.scaled_pos[1], TILE_SIZE, TILE_SIZE) if state else None
@@ -140,7 +140,6 @@ class Tile:
         pygame.draw.rect(surf, color, (minimap_pos[0], minimap_pos[1], 2, 2))
 
     def Get_Distance(self):
-        # Fixed: Updated references from self.tile back to self 
         if self.physics or self.touching_wall or self.trap:
             return None
         

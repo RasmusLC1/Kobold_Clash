@@ -15,14 +15,6 @@ class Fire_Spirit(Elemental):
         super().Update(tilemap, delta_time, movement)
         self.active_weapon.Update(delta_time)
 
-
-    
-    def Set_Attack_Triggered(self):
-        self.Set_Target(self.game.player.pos)
-        self.Set_Attack_Direction()
-        self.active_weapon.Initialise_Shooting(self, 2, self.fire_damage)
-
-    
     # TODO: IMPLEMENT
     def Look_For_Health(self, delta_time):
         if self.look_for_health_cooldown:
