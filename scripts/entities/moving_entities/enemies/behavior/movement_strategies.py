@@ -32,10 +32,10 @@ class Movement_Strategies():
             keys.long_range: (200, 160),
             keys.medium_range: (160, 120),
             keys.short_range: (120, 80),
-            keys.direct: (20, 0),
+            keys.direct: (48, 0),
             keys.keep_position: (0, 0), 
             keys.idle: (0, 0),          
-            keys.run_away: (1000, 999) # Enemies are always to close and try to get away
+            keys.run_away: (1000, 999) 
         }
 
 

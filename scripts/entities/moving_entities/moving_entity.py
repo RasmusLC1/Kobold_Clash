@@ -274,7 +274,7 @@ class Moving_Entity(PhysicsEntity):
     def Set_Attack_Direction(self, attack_direction=None):
         attack_direction = self.Check_Attack_Direction(attack_direction)
         if not attack_direction:
-            self.Set_Target(self.game.player.pos)
+            self.Set_Target()
             self.Set_Attack_Direction(self.target)
             print("ATTACK DIRECTION NOT FOUND", self.target, attack_direction, self.pos, self.type)
             return

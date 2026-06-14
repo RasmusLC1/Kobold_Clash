@@ -14,6 +14,10 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_ressurector import Bone_Resurrector
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.ethereal import Ethereal
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.fire_born import Fire_Born
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.glacial_core import Glacial_Core
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.toxicosis import Toxicosis
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.galvanic_skin import Galvanic_Skin
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.sanguine_lord import Sanguine_Lord
 
 from scripts.engine.keys.keys import keys
 
@@ -33,6 +37,10 @@ class Ability_Handler():
         keys.crystal_scale : Crystal_Scale,
         keys.gloom_stalker : Gloom_Stalker,
         keys.fire_born : Fire_Born,
+        keys.glacial_core : Glacial_Core,
+        keys.toxicosis : Toxicosis,
+        keys.galvanic_skin : Galvanic_Skin,
+        keys.sanguine_lord : Sanguine_Lord,
         keys.bone_eater : Bone_Eater,
         keys.bone_ressurector : Bone_Resurrector,
         keys.ethereal : Ethereal, 

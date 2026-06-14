@@ -19,7 +19,6 @@ class Particle(Projectile):
             return
         
         entity = self.Shoot(delta_time)
-        print(vars(self))
         # 2. Let the base items engine manage rendering setup 
         return super().Update(offset)
     

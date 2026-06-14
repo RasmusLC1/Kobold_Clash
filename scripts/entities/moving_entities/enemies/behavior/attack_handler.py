@@ -48,7 +48,7 @@ class Attack_Handler():
     
     def Check_Attack_Direction(self, attack_direction):
         if not attack_direction:
-            self.Set_Target()
+            self.entity.Set_Target()
             attack_direction = self.target
 
         return attack_direction

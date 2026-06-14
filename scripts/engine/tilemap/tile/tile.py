@@ -139,18 +139,6 @@ class Tile:
         color = (200, 200, 200) if self.physics else (100, 100, 100)
         pygame.draw.rect(surf, color, (minimap_pos[0], minimap_pos[1], 2, 2))
 
-    def Get_Distance(self):
-        if self.physics or self.touching_wall or self.trap:
-            return None
-        
-        if self.game.total_time - self.navigation.last_distance_update_timestamp > 0.5:
-            player_pos = self.game.player.pos
-            dx = self.scaled_pos[0] - player_pos[0]
-            dy = self.scaled_pos[1] - player_pos[1]
-            self.navigation.distance_to_player = math.sqrt(dx**2 + dy**2)
-            self.navigation.last_distance_update_timestamp = self.game.total_time
-
-        return self.navigation.distance_to_player
 
     def Save_Data(self):
         self.saved_data = {

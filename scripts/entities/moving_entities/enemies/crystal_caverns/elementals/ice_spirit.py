@@ -10,21 +10,9 @@ class Ice_Spirit(Elemental):
         # self.shooting_ice = False
         self.ice_damage = 5
         self.active_weapon = Ice_Shooter(self.game, self)
+        self.Set_Ability(keys.glacial_core)
+
 
     def Update(self, tilemap, delta_time, movement = (0, 0)):
         super().Update(tilemap, delta_time, movement)
-
         self.active_weapon.Update(delta_time)
-
-        
-        return True
-
-
-    def Handle_Frozen(self):
-        frozen = self.effects.Get_Effect_Strength(keys.frozen)
-        if not self.effects.Get_Effect_Strength(keys.frozen):
-            return
-        
-        self.Set_Effect(keys.healing, frozen)
-        self.Set_Effect(keys.frozen_resistance, frozen)
-        

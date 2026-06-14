@@ -101,6 +101,14 @@ class Enemy():
 
     fire_born = "fire_born"
 
+    glacial_core = "glacial_core"
+
+    toxicosis = "toxicosis"
+
+    galvanic_skin = "galvanic_skin"
+
+    sanguine_lord = "sanguine_lord"
+
     bone_eater = "bone_eater"
 
     bone_ressurector = "bone_ressurector"

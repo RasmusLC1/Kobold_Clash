@@ -43,8 +43,6 @@ class Path_Finding():
         self.des_y = data['des_y']
         self.player_found = data['player_found']
 
-
-
     def Path_Finding(self, delta_time):
         # Pathfind towards the target
         if self.entity.Movement_Strategy(delta_time):
@@ -128,4 +126,3 @@ class Path_Finding():
     def Calculate_Destination_Position(self, destination):
         self.des_x = round(destination[0] // self.game.tilemap.tile_size) - self.game.a_star.min_x 
         self.des_y = round(destination[1] // self.game.tilemap.tile_size) - self.game.a_star.min_y 
-

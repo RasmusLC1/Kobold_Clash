@@ -45,7 +45,7 @@ class Medusa(Enemy):
 
 
     def Trigger_Ranged_Attack(self):
-        self.Set_Target(self.game.player.pos)
+        self.Set_Target()
         self.Set_Attack_Direction()
         self.ranged_weapon.Initialise_Shooting(self, 100, self.electric_damage)
 
