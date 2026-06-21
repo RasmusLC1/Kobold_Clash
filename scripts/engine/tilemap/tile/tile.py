@@ -85,7 +85,12 @@ class Tile:
 
     def Search_Type(self, type, ID=0):
         return self.entity_handler.Search_Type(type, ID)
-    
+        
+    def Get_Distance_To_Player(self):
+        if self.physics or self.touching_wall or self.trap:
+            return None
+        return self.navigation.Get_Distance_To_Player()
+
     # --- Delegated Lighting API ---
     def Add_Light_Contribution(self, light_id, contribution):
         self.lighting.Add_Contribution(light_id, contribution)
