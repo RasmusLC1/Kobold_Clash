@@ -25,6 +25,7 @@ class Moving_Entity(PhysicsEntity):
 
         self.attack_direction = (0,0)
         self.target = (0,0)
+        self.distance_to_player = 0
         self.active_ability = None
         
         self.damage_cooldown = 0
