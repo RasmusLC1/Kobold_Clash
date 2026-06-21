@@ -15,7 +15,7 @@ class Hammer(Projectile):
 
         super().Shoot(delta_time)
 
-    def Special_Attack(self):
+    def Ability(self):
         if not self.special_attack or not self.equipped:
             return
         self.Drop_Weapon_After_Shot()

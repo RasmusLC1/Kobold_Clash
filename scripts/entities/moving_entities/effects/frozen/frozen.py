@@ -10,10 +10,10 @@ class Frozen(Effect):
 
     
     def Set_Effect(self, effect_time, permanent = False):
-        if self.entity.effects.fire.effect or self.entity.effects.frozen_resistance.effect:
+        if self.Get_Entity_Effect_Strength(keys.fire) or self.Get_Entity_Effect_Strength(keys.frozen_resistance):
             return False
         
-        if self.entity.effects.wet.effect:
+        if self.Get_Entity_Effect_Strength(keys.wet):
             effect_time *= 2
             self.wet = 0
 
@@ -21,11 +21,11 @@ class Frozen(Effect):
         return super().Set_Effect(effect_time, permanent)
     
     def Update_Effect(self, delta_time):
-        if not self.effect:
+        if not self.effect_strength:
             return False
         
 
-        if self.entity.effects.frozen_resistance.effect:
+        if self.Get_Entity_Effect_Strength(keys.frozen_resistance):
             self.Remove_Effect()
             return False
         
@@ -34,9 +34,9 @@ class Frozen(Effect):
             self.entity.Damage_Taken(damage, (self.effect_type, 0))
         
         try:
-            self.entity.max_speed = max(0.1, self.entity.max_speed / max( 1.1, self.effect // 2))
+            self.entity.max_speed = max(0.1, self.entity.max_speed / max( 1.1, self.effect_strength // 2))
         except ZeroDivisionError as e:
-            print(f"SLOWDOWN FAILED: {e}", self.entity.max_speed, self.effect)
+            print(f"SLOWDOWN FAILED: {e}", self.entity.max_speed, self.effect_strength)
         
 
         self.Effect_Animation_Cooldown(delta_time)

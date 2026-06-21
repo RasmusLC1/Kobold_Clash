@@ -10,10 +10,10 @@ class Player_Movement_Invunerable(Effect):
     
     #set Fire effect
     def Set_Effect(self, effect_time, permanent = False):
-        if self.effect:
+        if self.effect_strength:
             return
         self.entity_health_holder = self.entity.health
-        self.effect = effect_time
+        self.effect_strength = effect_time
     
     def Update_Effect(self, delta_time):
         if not super().Update_Effect(delta_time):

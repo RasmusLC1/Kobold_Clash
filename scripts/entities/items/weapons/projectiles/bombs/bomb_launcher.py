@@ -33,7 +33,7 @@ class Bomb_Launcher():
             angle = base_angle if num_lines == 1 else start_angle + j * math.radians(angle_increment)
             
             direction = (math.cos(angle) * speed, math.sin(angle) * speed)
-            bomb.Set_Enabled(entity.rect(), speed, special_attack, direction, target, entity, bomb_type, 120)
+            bomb.Set_Enabled(entity.pos, speed, special_attack, direction, target, entity, bomb_type, 120)
 
     
     # Append extra fire bomb to the pool in case it runs out

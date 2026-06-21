@@ -11,23 +11,19 @@ class Fire(Effect):
     
     #set Fire effect
     def Set_Effect(self, effect_time, permanent = False):
-        if self.entity.effects.wet.effect or self.entity.effects.fire_resistance.effect:
+        if self.Get_Entity_Effect_Strength(keys.wet) or self.Get_Entity_Effect_Strength(keys.fire_resistance):
             return False
-        if self.entity.effects.frozen.effect:
-            self.entity.effects.frozen.Remove_Effect()
+        frozen_effect = self.entity.Get_Effect(keys.frozen)
+        if frozen_effect:
+            frozen_effect.Remove_Effect()
             
         return super().Set_Effect(effect_time, permanent)
     
     def Update_Effect(self, delta_time):
-        if not self.effect:
+        if not self.effect_strength:
             return False
         
-        # Check for resistances
-        if self.entity.effects.fire_resistance.effect or self.entity.effects.wet.effect:
-            self.effect = 0
-            self.cooldown = 0
-            if self.entity.effects.wet.effect:
-                self.entity.effects.wet.Decrease_Effect()
+        if self.Check_Resistance():
             return False
         
         if self.Update_Cooldown(delta_time):
@@ -38,5 +34,26 @@ class Fire(Effect):
         self.Effect_Animation_Cooldown(delta_time)
         return True
     
-    def Damage_Taken(self, damage):
-        self.entity.Set_Health(self.entity.health - max(1, damage // 2))
+    def Check_Resistance(self):
+         # Check for resistances
+        wet_effect = self.entity.Get_Effect(keys.wet)
+        if self.Get_Entity_Effect_Strength(keys.fire_resistance) or wet_effect.effect_strength:
+            self.effect_strength = 0
+            self.cooldown = 0
+            if wet_effect:
+                wet_effect.Decrease_Effect()
+            return True
+        
+        return False
+    
+    # Takes up to 50% additional damage
+    def Damage_Taken(self, damage, attacker):
+        # Scale the bonus damage: lower damage gets closer to a 1.5x multiplier.
+        scaling_factor = (10 - self.effect_strength) / 10  
+        bonus_percent = max(0.0, min(0.5, scaling_factor * 0.5))
+        damage_multiplier = 1.0 + bonus_percent
+        
+        final_damage = max(1, int(damage * damage_multiplier))
+        
+        # Set health directly to avoid infinite damage loop
+        self.entity.Set_Health(self.entity.health - final_damage) 

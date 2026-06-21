@@ -122,7 +122,7 @@ class Graphics_Loader:
         effect_assets = {
             keys.dash_particle : get_tiles_from_sheet('particles/general/dash.png', 5, 0, 0, 0, 5, 5),
             keys.fire_particle : get_tiles_from_sheet('particles/general/fire.png', 5, 0, 0, 0, 3, 3),
-            keys.spark_particle : get_tiles_from_sheet('particles/general/spark.png', 5, 0, 0, 0, 3, 3),
+            keys.electric_particle : get_tiles_from_sheet('particles/general/spark.png', 5, 0, 0, 0, 3, 3),
             keys.blood_particle : get_tiles_from_sheet('particles/general/blood.png', 5, 0, 0, 0, 3, 3),
             keys.bone_particle : get_tiles_from_sheet('particles/general/bone.png', 5, 0, 0, 0, 3, 3),
             keys.electric_particle : get_tiles_from_sheet('particles/general/electric.png', 5, 0, 0, 0, 3, 3),
@@ -145,7 +145,7 @@ class Graphics_Loader:
             keys.wet : get_tiles_from_sheet('particles/effects/wet.png', 2, 0, 0, 0, 32, 32),
             keys.regen : get_tiles_from_sheet('particles/effects/regen.png', 2, 1, 0, 0, 32, 32),
             keys.electric : get_tiles_from_sheet('particles/effects/electric.png', 5, 0, 0, 0, 32, 32),
-            keys.invincible : get_tiles_from_sheet('particles/effects/invincible.png', 6, 0, 0, 0, 32, 32),
+            keys.invulnerable : get_tiles_from_sheet('particles/effects/invincible.png', 6, 0, 0, 0, 32, 32),
         }
         self.assets.update(effect_assets)
     

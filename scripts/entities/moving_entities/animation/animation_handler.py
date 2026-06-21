@@ -22,7 +22,10 @@ class Animation_Handler:
         self.attack_frame = 0
 
     def Set_Sprite(self):
-        self.sprite = self.entity.game.assets[self.animation]
+        try:
+            self.sprite = self.entity.game.assets[self.animation]
+        except Exception as e:
+            print(f'Setting sprite went wrong {e}', self.sprite, self.animation_value, self.animation)
 
     def Set_Entity_Image(self):
         try:
@@ -43,13 +46,13 @@ class Animation_Handler:
         if entity.charge > 0:
             self.Set_Animation(keys.attack)
         elif entity.frame_movement:
-            self.Set_Animation('running')
+            self.Set_Animation("running")
         else:
-            self.Set_Animation('idle')
+            self.Set_Animation(keys.idle)
 
     def Set_Animation(self, action):
         if self.animation_lock:
-            return
+            return False
 
         if action != self.action:
             self.action = action
@@ -58,6 +61,9 @@ class Animation_Handler:
             self.animation_value = 0
             self.Set_Sprite()
             self.Set_Animation_Lock(True)
+            return True
+        
+        return False
 
     def Reset_Animation_Values(self):
         for anim in self.animations.values():
@@ -77,7 +83,6 @@ class Animation_Handler:
 
         animation[keys.cooldown] = animation[keys.cooldown_max]
         animation[keys.num] += 1
-
         if animation[keys.num] > animation[keys.num_max]:
             animation[keys.num] = 0
             self.Set_Animation_Lock(False)

@@ -10,13 +10,13 @@ class Arcane_Conduit(Effect):
     
     #set Fire effect
     def Set_Effect(self, effect_time, permanent = False):
-        self.effect = effect_time
-        self.entity.Set_Arcane_Conduit(self.effect)
+        self.effect_strength = effect_time
+        self.entity.Set_Arcane_Conduit(self.effect_strength)
         return True
     
     def Remove_Effect(self, reduce_permanent=0):
         value =  super().Remove_Effect(reduce_permanent)
-        self.entity.Set_Arcane_Conduit(self.effect)
+        self.entity.Set_Arcane_Conduit(self.effect_strength)
         return value
     
     

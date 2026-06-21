@@ -1,4 +1,5 @@
 import pygame
+from scripts.engine.keys.keys import keys
 
 class Sound_Handler():
     def __init__(self, game) -> None:
@@ -20,9 +21,9 @@ class Sound_Handler():
 
 
     def Mute_Volume_Silence(self, volume):
-        silence = self.game.player.effects.silence.effect
+        silence = self.game.player.Get_Effect(keys.silence)
         if silence:
-            normalised_silence = min(silence / 10, 1)       # normalize
+            normalised_silence = min(silence.effect_strength / 10, 1)       # normalize
             smooth = normalised_silence * normalised_silence * (3 - 2 * normalised_silence)   # SmoothStep 0→1
             volume *= (1 - 0.8 * smooth) # 100% at max, 20% at min
         

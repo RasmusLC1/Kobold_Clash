@@ -1,5 +1,33 @@
 class Enemy():
 
+# Stats
+
+    max_weapon_charge = "max_weapon_charge"
+
+    aggression = "aggression"
+
+    behavior = "behavior"
+
+    agility = "agility"
+
+    intelligence = "intelligence"
+
+    ability = "ability"
+
+    path_finding_strategy = "path_finding_strategy"
+
+    keep_distance = "keep_distance"
+    
+    retreat_when_damaged = "retreat_when_damaged"
+    
+    direct_attack = "direct_attack"
+    
+    hit_and_run = "hit_and_run"
+
+    hybrid = "hybrid"
+
+    place_holder = "place_holder" 
+
 # Enemy classes
     skeleton = "skeleton"
 
@@ -36,6 +64,8 @@ class Enemy():
     idle = "idle"
     
     jump = "jump"
+
+    retreat = "retreat"
     
     long_range = "long_range"
 
@@ -46,6 +76,44 @@ class Enemy():
     keep_position = "keep_position"
 
     run_away = "run_away"
+
+
+# Abilities
+    rage = "rage"
+
+    dash = "dash"
+
+    invisibility = "invisibility"
+
+    invulnerable = "invulnerable"
+
+    charge = "charge"
+
+    rally = "rally"
+
+    electrify = "electrify"
+
+    healer = "healer"
+
+    crystal_scale = "crystal_scale"
+
+    gloom_stalker = "gloom_stalker" 
+
+    fire_born = "fire_born"
+
+    glacial_core = "glacial_core"
+
+    toxicosis = "toxicosis"
+
+    galvanic_skin = "galvanic_skin"
+
+    sanguine_lord = "sanguine_lord"
+
+    bone_eater = "bone_eater"
+
+    bone_ressurector = "bone_ressurector"
+
+    ethereal = "ethereal"
 
 # Void Spawn
 

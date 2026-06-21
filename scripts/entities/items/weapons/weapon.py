@@ -53,9 +53,9 @@ class Weapon(Item):
         super().__init__(game, type, keys.weapon, pos, size, amount=amount, max_amount=max_amount, add_to_tile=add_to_tile, max_animation = max_animation, durability=durability, max_durability=max_durability)
 
     def Save_Data(self):
-        if self.entity:
-            if self.entity.category == keys.enemy:
-                return
+        # if self.entity:
+        #     if self.entity.category == keys.enemy:
+        #         return
         super().Save_Data()
         
         self.saved_data['damage'] = self.damage_handler.damage
@@ -78,7 +78,7 @@ class Weapon(Item):
     # General Update function, handles setting the attack and general logic
     def Update(self, delta_time, offset = (0,0)):
         super().Update(delta_time)
-        self.Special_Attack()
+        self.Ability()
         self.Update_Delete_Countdown()
         if not self.entity:
             return False
@@ -335,7 +335,7 @@ class Weapon(Item):
     def Set_Charge_Time(self, state):
         self.charge_time = state
 
-    def Special_Attack(self):
+    def Ability(self):
         pass
 
 
@@ -374,6 +374,8 @@ class Weapon(Item):
         return image_rect
     
     def Set_Animation(self, animation_num):
+        if animation_num > self.max_animation:
+            return
         self.animation = animation_num
         self.Set_Equipped_Sprite()
 
@@ -474,7 +476,7 @@ class Weapon(Item):
 
 
     def Spawn_Spark(self):
-        self.game.particle_handler.Activate_Particles(random.randint(2, 5), keys.spark_particle, self.rect().center, random.uniform(1, 1.5))
+        self.game.particle_handler.Activate_Particles(random.randint(2, 5), keys.electric_particle, self.rect().center, random.uniform(1, 1.5))
 
 
     def Add_Gem_Slot(self, amount):
@@ -510,6 +512,8 @@ class Weapon(Item):
         self.Set_Description()
         self.range -= amount
 
+    def Reset_Animation(self):
+        self.animation = 0
 
     
     def Set_Text_Box(self):

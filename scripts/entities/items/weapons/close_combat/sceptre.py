@@ -11,7 +11,7 @@ class Sceptre(Weapon):
         return super().Update(offset)
 
     # Handle special attack charge
-    def Special_Attack(self):
+    def Ability(self):
         if not self.entity:
             return
         
@@ -28,6 +28,6 @@ class Sceptre(Weapon):
     
     # Initialise the charge logic
     def Heal_Entity(self):
-        self.entity.effects.Set_Effect(keys.healing, 5)
-        self.heal_cooldown = 2000
+        self.entity.Set_Effect(keys.healing, 5) # Heal for 5 HP
+        self.heal_cooldown = 20
         self.special_attack = 0

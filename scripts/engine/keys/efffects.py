@@ -2,8 +2,6 @@ class Effects():
 
 # Effects
     invulnerable = "invulnerable"
-
-    invincible = "invincible"
     
     thorns = "thorns"
 
@@ -75,6 +73,10 @@ class Effects():
 
     electric_resistance = "electric_resistance"
 
+    electric_charge = "electric_charge"
+
     soul_stealer = "soul_stealer"
 
     soul_drained = "soul_drained"
+
+    noisy_attacker = "noisy_attacker"

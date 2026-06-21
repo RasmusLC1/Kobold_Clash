@@ -12,5 +12,5 @@ class Luck(Effect):
     def Update_Effect(self, delta_time):
         if not super().Update_Effect(delta_time):
             return False
-        self.entity.Update_Luck(self.effect) # Set the player's luck to the effect value
+        self.entity.Update_Luck(self.effect_strength) # Set the player's luck to the effect value
         return True

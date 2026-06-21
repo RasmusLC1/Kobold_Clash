@@ -14,15 +14,15 @@ class Resistance(Effect):
             return False
         
         if self.entity.health < self.entity_health_holder:
-            self.entity.health = min(self.entity.health + self.effect, self.entity_health_holder - 2)
+            self.entity.health = min(self.entity.health + self.effect_strength, self.entity_health_holder - 2)
         
         self.entity_health_holder = self.entity.health
         return True
     
-    def Damage_Taken(self, damage):
+    def Damage_Taken(self, damage, attacker):
         entity = self.entity
         # entity always take at least 2 damage
-        new_health = min(entity.health + self.effect, self.entity_health_holder - 2)
+        new_health = min(entity.health + self.effect_strength, self.entity_health_holder - 2)
         entity.Set_Health(new_health)
         self.entity_health_holder = entity.health
     

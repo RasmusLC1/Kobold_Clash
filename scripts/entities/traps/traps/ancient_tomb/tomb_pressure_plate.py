@@ -27,7 +27,7 @@ class Tomb_Pressure_Plate(Trap):
         self.activated = data['activated']
 
     def Spawn_Tombs(self):
-        pos_scaled = list((self.pos[0] // TILESIZE, self.pos[1] // TILESIZE))
+        pos_scaled = [int(self.pos[0] // TILESIZE), int(self.pos[1] // TILESIZE)]
         tomb_spawned = 0
         fail = 0
         while tomb_spawned < TOMB_AMOUNT:

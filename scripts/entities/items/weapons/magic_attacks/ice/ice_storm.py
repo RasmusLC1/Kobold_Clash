@@ -1,6 +1,6 @@
 from scripts.entities.items.weapons.magic_attacks.ice.ice_particle import Ice_Particle
 from scripts.entities.items.weapons.magic_attacks.ice.ice_shooter import Ice_Shooter
-from scripts.entities.entities import PhysicsEntity
+from scripts.entities.entity.entities import PhysicsEntity
 import math
 import random
 from scripts.engine.keys.keys import keys
@@ -14,7 +14,7 @@ class Ice_Storm(PhysicsEntity):
         self.duration = 0
         self.animation = 0
         self.animation_max = 9
-        self.ice_shooter = Ice_Shooter(game)
+        self.ice_shooter = Ice_Shooter(game, entity)
         self.Set_Duration(duration * 10)
 
     def Update(self, delta_time):

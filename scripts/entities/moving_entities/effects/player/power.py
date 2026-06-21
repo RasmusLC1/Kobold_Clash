@@ -12,7 +12,7 @@ class Power(Effect):
             return False
         
         
-        self.entity.Update_Rune_Power(self.effect) # Set the player's rune power to the effect value
+        self.entity.Update_Rune_Power(self.effect_strength) # Set the player's rune power to the effect value
 
         if  self.update_trigged:
             self.entity.game.inventory.rune_inventory.Set_Descriptions()

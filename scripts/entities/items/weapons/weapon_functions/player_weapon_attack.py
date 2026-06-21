@@ -10,7 +10,7 @@ class Player_Weapon_Attack():
         self.attacking = 0
         self.attack_hitbox_size = (10, 10)
         self.attack_hitbox = pygame.Rect(self.weapon.pos[0], self.weapon.pos[1], self.attack_hitbox_size[0], self.attack_hitbox_size[1])
-        self.entities_hit = [] # Enemies which have been hit by an attack
+        self.entities_hit = set() # Enemies which have been hit by an attack
         self.nearby_enemies = [] # Nearby enemies that the weapon can interact with
         self.nearby_decoration = [] # Nearby decoration that the weapon can interact with
         self.player = self.game.player
@@ -39,7 +39,7 @@ class Player_Weapon_Attack():
         # Compute attack each time to account for changing player agility level
         self.Set_Attacking()
         self.nearby_enemies = self.game.enemy_handler.Find_Nearby_Enemies(self.player, 3) # Find nearby enemies to attack
-        self.nearby_decoration = self.game.decoration_handler.Find_Nearby_Decorations(self.player.pos, 3)
+        self.nearby_decoration = self.game.decoration_handler.Find_Nearby_Decorations()
         self.player.Trigger_Attack_Animation()
         return True
     
@@ -57,22 +57,19 @@ class Player_Weapon_Attack():
     
 
     def Enemy_Collision(self):
+        hit_anything = None
         for enemy in self.nearby_enemies:
-            # Prevent from hitting enemy multiple times
             if enemy in self.entities_hit:
                 continue
-            # Check for collision with enemy
-            if self.attack_hitbox.colliderect(enemy.rect()):
-                self.weapon.Entity_Hit(enemy)
-                self.entities_hit.append(enemy)
-
-                self.Check_Durability(1)
-                
-
-                # Return enemy in case further effects need to be added such as knockback
-                return enemy
             
-        return None
+            if not self.attack_hitbox.colliderect(enemy.rect()):
+                continue
+
+            self.weapon.Entity_Hit(enemy)
+            self.entities_hit.add(enemy)
+            self.Check_Durability(1)
+            hit_anything = enemy # Store the hit but keep looping
+        return hit_anything
     
     # Subtracts durability and sets flag for if the weapon needs to be deleted
     def Check_Durability(self, damage):
@@ -86,19 +83,14 @@ class Player_Weapon_Attack():
 
     def Decoration_Collision(self):
         for decoration in self.nearby_decoration:
-            # Check if the decoration can be damaged
-            if not decoration.destructable:
+            if not decoration.destructable or decoration in self.entities_hit:
                 continue
-            # Prevent from hitting decoration multiple times
-            if decoration in self.entities_hit:
-                continue
-            # Check for collision with enemy
+                
             if self.attack_hitbox.colliderect(decoration.rect()):
                 self.weapon.Decoration_Hit(decoration)
                 self.Check_Durability(2)
-                self.entities_hit.append(decoration)
+                self.entities_hit.add(decoration) # Use .add()
                 return decoration
-        
         return None
     
         # Return False if player weapon cooldown is not off

@@ -140,5 +140,5 @@ class Arrow_Trap(Trap):
         pass
 
     
-    def Add_Entity_To_Trap(self, entity):
+    def Add_Entity(self, entity):
         pass

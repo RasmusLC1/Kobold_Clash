@@ -14,13 +14,13 @@ class Slow(Effect):
 
     def Update_Effect(self, delta_time):
 
-        if not self.effect:
+        if not self.effect_strength:
             return False
 
         try:
-            self.entity.max_speed = max(0.1, self.entity.max_speed / self.effect)
+            self.entity.max_speed = max(0.1, self.entity.max_speed / self.effect_strength)
         except ZeroDivisionError as e:
-            print(f"SLOWDOWN: {e}", self.entity.max_speed, self.effect)
+            print(f"SLOWDOWN: {e}", self.entity.max_speed, self.effect_strength)
         self.Update_Cooldown(delta_time)
 
         return True

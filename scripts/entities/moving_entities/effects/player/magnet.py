@@ -12,5 +12,5 @@ class Magnet(Effect):
     def Update_Effect(self, delta_time):
         if not super().Update_Effect(delta_time):
             return False
-        self.entity.game.item_handler.Pick_Up_All_Nearby_Items(self.effect)
+        self.entity.game.item_handler.Pick_Up_All_Nearby_Items(self.effect_strength)
         return True

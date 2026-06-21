@@ -6,17 +6,25 @@ from scripts.entities.items.weapons.magic_attacks.poison.poison_explosion import
 
 
 class Poison_Elemental(Elemental):
-    def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.poison_elemental, health, strength, max_speed, agility, intelligence, stamina, 0.1, 20, 3, 3, 3, (32, 32))
-        self.intent_manager.Set_Intent([keys.direct, keys.attack])
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.poison_elemental)
         self.explosion_strength = 2
 
     def Increase_Explosion_Strength(self):
         self.explosion_strength += 1
 
+    def Update(self, tilemap, delta_time, movement=...):
+        self.Explode_On_Impact()
+        return super().Update(tilemap, delta_time, movement)
+
     # Returns true on succesful attack
-    def Attack(self, delta_time):
-        if self.distance_to_player > self.size[0] * 1.5:
+    def Explode_On_Impact(self):
+        # Skips the rest of the logic if not near the player
+        if self.distance_to_player > 60:
+            return False
+        
+        # Returns false if no entities have been pushed
+        if not self.pushed_entities:
             return False
         
         self.health = 0
@@ -24,8 +32,6 @@ class Poison_Elemental(Elemental):
         
         return True
     
-    def Trigger_Attack(self):
-        pass
 
     def Improve_Weapon(self, effect, amount):
         return False

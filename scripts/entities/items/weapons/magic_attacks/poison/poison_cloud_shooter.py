@@ -4,8 +4,8 @@ import math
 from scripts.engine.keys.keys import keys
 
 class Poison_CLoud_Shooter(Particle_Shooter):
-    def __init__(self, game):
-        super().__init__(game, cooldown_max=0.6)
+    def __init__(self, game, entity):
+        super().__init__(game, entity, cooldown_max=0.6)
 
 
     def Shoot_Particles(self, entity, special_attack, damage):
@@ -31,7 +31,7 @@ class Poison_CLoud_Shooter(Particle_Shooter):
             pos_x = math.cos(angle) * speed
             pos_y = math.sin(angle) * speed
             
-            poison_particle.Set_Enabled(entity.rect(), speed, special_attack,  entity, 50, damage + self.base_damage)
+            poison_particle.Set_Enabled(entity.pos, speed, special_attack,  entity, 50, damage + self.base_damage)
 
     
     # Append extra fire particle to the pool in case it runs out

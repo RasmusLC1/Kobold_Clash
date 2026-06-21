@@ -21,13 +21,14 @@ from scripts.entities.moving_entities.effects.damage.vulnerable import Vulnerabl
 from scripts.entities.moving_entities.effects.damage.thorns import Thorns
 from scripts.entities.moving_entities.effects.electric.eletric import Electric
 from scripts.entities.moving_entities.effects.electric.electric_resistance import Electric_Resistance
+from scripts.entities.moving_entities.effects.electric.electric_charge import Electric_Charge
 from scripts.entities.moving_entities.effects.general.resistance import Resistance
+from scripts.entities.moving_entities.effects.general.noisy_attacker import Noisy_Attacker
 from scripts.engine.keys.keys import keys
-import traceback
 
 
 class Status_Effect_Handler:
-
+    # Instantiate the effect registry outside as a class attribute for memory effieciency
     EFFECT_REGISTRY = {
         keys.fire: Fire,
         keys.poison: Poison,
@@ -53,6 +54,8 @@ class Status_Effect_Handler:
         keys.thorns: Thorns,
         keys.electric: Electric,
         keys.electric_resistance: Electric_Resistance,
+        keys.electric_charge: Electric_Charge,
+        keys.noisy_attacker: Noisy_Attacker,
     }
 
     def __init__(self, entity):
@@ -111,26 +114,26 @@ class Status_Effect_Handler:
         if not effect:
             return None
         
-        return effect.effect
+        return effect.effect_strength
     
-    # Allows access like handler.fire
+    
+    # This only runs if 'self.name' doesn't exist yet
     def __getattr__(self, name):
-        # Bridge: handler.magnet -> keys.magnet -> "magnet_id"
-        key_value = getattr(keys, name, name) 
+        if name not in self.EFFECT_REGISTRY:
+            raise AttributeError(f"'{type(self).__name__}' has no attribute '{name}'")
         
-        if key_value in self.EFFECT_REGISTRY:
-            return self.Get_Effect(key_value)
-            
-        raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
+        effect = self.Get_Effect(name)
+        setattr(self, name, effect) # Future calls bypass __getattr__ entirely
+        return effect
 
 
     # Set the effect of the entity
-    def Set_Effect(self, effect, duration, permanent = False):
+    def Set_Effect(self, effect_name, duration, permanent = False):
         # Check if entity is invulnerable
         if self.Check_Invulnerable():
             return False
 
-        effect = self.Get_Effect(effect)
+        effect = self.Get_Effect(effect_name)
         if not effect:
             return False
         
@@ -160,9 +163,9 @@ class Status_Effect_Handler:
                 print(f"Wrong effect input{e} EFFECT NAME", effect)
 
     def Check_Invulnerable(self):
-        invulnerable_check = self.Get_Effect(keys.invulnerable)
+        invulnerable_check = self.Get_Effect_Strength(keys.invulnerable)
 
-        if invulnerable_check and invulnerable_check.effect:
+        if invulnerable_check:
             return True
         
         return False
@@ -170,11 +173,18 @@ class Status_Effect_Handler:
     def Reset_Effects(self):
         for effect in self.active_effects:
             effect.Remove_Effect()
-            self.active_effects.remove(effect)
+
+        self.active_effects.clear()
 
     # Use list comprehension for performance, remove effect if effect has run out
     def Update_Status_Effects(self, delta_time):
-        self.active_effects = [effect for effect in self.active_effects if effect.Update_Effect(delta_time)]
+        def process_effect(effect): # Helper function to process the function
+            is_alive = effect.Update_Effect(delta_time)
+            if not is_alive:
+                effect.Remove_Effect()
+            return is_alive
+
+        self.active_effects = [effect for effect in self.active_effects if process_effect(effect)]
 
 
     def Get_Effect_Description(self, effect):
@@ -184,16 +194,13 @@ class Status_Effect_Handler:
         return effect.description
 
 
-
-
-
     def Damage_Dealt(self, damage):
         for effect in self.active_effects:
             effect.Damage_Dealt(damage)
 
-    def Damage_Taken(self, damage):
+    def Damage_Taken(self, damage, attacker = None):
         for effect in self.active_effects:
-            effect.Damage_Taken(damage)
+            effect.Damage_Taken(damage, attacker)
 
     def Push(self, direction):
         for effect in self.active_effects:

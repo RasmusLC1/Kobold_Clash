@@ -6,17 +6,23 @@ class Scythe(Weapon):
     def __init__(self, game, pos, damage_type = 'slash'):
         super().__init__(game, pos, keys.scythe, 4, 2, 6, 100, 'two_handed_melee', damage_type)
 
-        self.soul_reap_shooter = Soul_Reap_Shooter(game)
+        self.soul_reap_shooter = Soul_Reap_Shooter(game, self.entity)
 
     # Handle special attack charge
-    def Special_Attack(self):
+    def Ability(self):
         if not self.entity:
             return
         
         if self.special_attack <= 0 or not self.equipped:
             return
         self.Spawn_Soul_Reap()
-        
+    
+    def Pick_Up(self):
+        state = super().Pick_Up()
+        if state:
+            self.soul_reap_shooter.Set_Entity(self.entity)
+
+        return state
 
     # Initialise the charge logic
     def Spawn_Soul_Reap(self):

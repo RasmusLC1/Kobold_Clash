@@ -4,138 +4,122 @@ from scripts.engine.keys.keys import keys
 
 # Basic raycasting attributes
 DEFAULT_ACTIVITY = 700
-NUM_LINES = 100 # Define the number of lines and the spread angle (in degrees)
-SPREAD_ANGLE = 360  # Total spread of the fan (in degrees)
-ANGLE_INCREMENT = SPREAD_ANGLE / (NUM_LINES - 1) # Calculate the angle increment between each line
+NUM_LINES = 100 
+SPREAD_ANGLE = 360  
+ANGLE_INCREMENT = SPREAD_ANGLE / (NUM_LINES - 1) if NUM_LINES > 1 else 0
 TILE_SIZE = 32
-INACTIVE_DISTANCE = 800 * 800
+INACTIVE_DISTANCE = 800 * 800 
 
 class Ray_Caster():
     def __init__(self, game):
-        self.tiles = []
-        self.saved_data = {}
-        self.nearby_cooldown = 0
-        
         self.game = game
+        self.tiles = []
+        self.saved_data = None
+        
+        # Pre-calculate ray vectors to save math during runtime
+        self.ray_vectors = []
+        self._generate_ray_vectors()
 
-        self.disable_distance_debugger = False
-
-        self.angles = []
+    # Pre-calculates unit vectors for the rays.
+    def _generate_ray_vectors(self):
+        self.ray_vectors = []
+        start_rad = math.radians(-SPREAD_ANGLE / 2)
+        inc_rad = math.radians(ANGLE_INCREMENT)
+        
+        for j in range(NUM_LINES):
+            angle = start_rad + (j * inc_rad)
+            self.ray_vectors.append((math.cos(angle), math.sin(angle)))
 
     def Save_Data(self):
+        self.saved_data = {}
         tilemap = self.game.tilemap
         for tile in self.tiles:
-            # Get the string key for the dictionary
             tile_key = tilemap.Convert_Tile_Pos_To_Key(tile.pos)
-            # Store the position. Note: JSON will turn this tuple into a list [x, y]
             self.saved_data[tile_key] = tile.pos
 
     def Load_Data(self, data):
-        # data is a dict where values are like [109, 104]
         for pos_data in data.values():
-            # Ensure the position is a tuple, not a list
             tile_key = tuple(pos_data) 
-            
             tile = self.game.tilemap.Get_Tile(tile_key)
-            
-            if not tile:
+            if tile:
+                self.tiles.append(tile)
+            else:
                 print(f"RAYCASTER TILE NOT FOUND AT {tile_key}")
-                continue
-                
-            self.tiles.append(tile)
 
-
-
-    def Update(self):
-        if self.disable_distance_debugger:
-            return
-        
+    def Update(self, delta_time):
         self.Check_Tile_Active()
+        self.Update_Entities(delta_time)
 
-        self.Update_Entities()
-
-
-    def Update_Entities(self):
+    def Update_Entities(self, delta_time):
         for tile in self.tiles:
-            tile.Set_Entity_Active()
+            tile.Set_Entity_Active(delta_time)
 
-    # Handle tile activity degradation
+    # Optimized filtering using list comprehension
     def Check_Tile_Active(self):
-        player_pos = self.game.player.pos
-        for tile in self.tiles:
-            if tile.active:
-                tile.active -= 1
-            # Find distance from player and if it's greater than 300, delete it
-            # distance = math.sqrt((self.game.player.pos[0] - tile.scaled_pos[0]) ** 2 + (self.game.player.pos[1] - tile.scaled_pos[1]) ** 2)
-            distance = self.Calculate_Distance(player_pos, tile)
-            
-            if distance > INACTIVE_DISTANCE:
-                tile.active = 0
-                self.tiles.remove(tile)
-    
-    def Calculate_Distance(self, player_pos, tile):
+        p_pos = self.game.player.pos
+        # Rebuild list only with active tiles that are within distance
+        self.tiles = [tile for tile in self.tiles if self._process_tile_activity(tile, p_pos)]
+
+    # Helper to handle individual tile logic during filter
+    def _process_tile_activity(self, tile, player_pos):
+        if tile.active:
+            tile.active -= 1
+        
         dx = player_pos[0] - tile.scaled_pos[0]
         dy = player_pos[1] - tile.scaled_pos[1]
-        distance = dx * dx + dy * dy
-        return distance
-
-    def Remove_Tile(self, tile):
-        if tile not in self.tiles:
-            return
-        tile.active = 0
-        self.tiles.remove(tile)
-
-    def Check_Tile(self, tile):
-        tilemap = self.game.tilemap
-        tile = tilemap.Current_Tile(tile)
-        if tile:
-            if not tile.active:
-                self.Add_Tile(tilemap, tile)
-            else:
-                tile.Set_Active(DEFAULT_ACTIVITY)
-                
-            # if not tile.type:
-            #     print("TILE DOES NOT HAVE TYPE", tile)
-            #     return False
-            
-            if not tile.translucent:
-                return False
-            
-            
+        
+        if (dx * dx + dy * dy) > INACTIVE_DISTANCE:
+            tile.active = 0
+            return False
         return True
 
-    # Logic for adding tile to the active tiles
+    def Remove_Tile(self, tile):
+        if tile in self.tiles:
+            tile.active = 0
+            self.tiles.remove(tile)
+
+    def Check_Tile(self, tile_pos):
+        tilemap = self.game.tilemap
+        tile = tilemap.Current_Tile(tile_pos)
+        
+        if not tile:
+            return False
+        
+        # If tile is already active, we just refresh it and skip the heavy Add_Tile logic
+        if tile.active:
+            tile.Set_Active(DEFAULT_ACTIVITY)
+        else:
+            self.Add_Tile(tilemap, tile)
+        
+        return tile.translucent
+
     def Add_Tile(self, tilemap, tile):
         tile.Set_Active(DEFAULT_ACTIVITY)
         self.tiles.append(tile)
-        tilemap.Add_Tile_To_Minimap(tile) # Try to add tile
+        tilemap.Add_Tile_To_Minimap(tile)
 
     def Clear_Entity_From_Tiles(self, entity_ID):
         for tile in self.tiles:
-            tile.Clear_Entity(entity_ID)
+            tile.Remove_Entity(entity_ID)
  
     def Ray_Caster(self):
+        player_tile_pos = self.game.player.tile.pos
+        px, py = player_tile_pos
         
-        player = self.game.player
-        player_tile_pos = player.tile.pos
-
-        # Calculate the starting angle
-        base_angle = math.atan2(0, 0)
-        start_angle = base_angle - math.radians(SPREAD_ANGLE / 2)
-        self.Check_Tile(player_tile_pos)
-        # Look for tiles that hit the rays
-        for j in range(NUM_LINES):
-            angle = start_angle + j * math.radians(ANGLE_INCREMENT)
-            for i in range(1, round(8 * self.game.render_scale)):
-                pos_x = player_tile_pos[0] + math.cos(angle) * i
-                pos_y = player_tile_pos[1] + math.sin(angle) * i
-                if not self.Check_Tile((pos_x, pos_y)):
+        # Localize functions/variables to speed up lookups inside the loop
+        check_func = self.Check_Tile
+        max_steps = round(8 * self.game.render_scale)
+        vectors = self.ray_vectors
+        
+        # Check origin tile
+        check_func(player_tile_pos)
+        
+        # Cast rays
+        for dx, dy in vectors:
+            for i in range(1, max_steps):
+                # Step along the vector
+                if not check_func((px + dx * i, py + dy * i)):
                     break
-    
 
     def rect(self, pos):
         return pygame.Rect(pos[0], pos[1], 10, 10)
-    
-
-    def Set_Disable_Distance_Debugger(self, state):
-        self.disable_distance_debugger = state

@@ -2,7 +2,7 @@ from scripts.engine.keys.keys import keys
 
 
 class Particle_Shooter():
-    def __init__(self, game, range, speed, cooldown_max, particle_type):
+    def __init__(self, game, entity, range, speed, cooldown_max, particle_type):
         self.game = game
         self.index = 0
         self.particle_pool = []
@@ -12,7 +12,7 @@ class Particle_Shooter():
         self.cooldown = 0
         self.cooldown_max = cooldown_max
         self.charge = 0
-        self.entity = None
+        self.entity = entity
         self.ready_to_shoot = False
         self.particle_type = particle_type
 
@@ -53,6 +53,9 @@ class Particle_Shooter():
 
     def Shoot_Particles(self):
         pass
+
+    def Set_Entity(self, entity):
+        self.entity = entity
 
     
     # Effect is ignored as this is a general weapons function

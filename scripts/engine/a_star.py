@@ -121,59 +121,46 @@ class A_Star:
         self.width = max_x - self.min_x + 1
         self.height = max_y - self.min_y + 1
 
-    def Build_Standard_Map(self, game):
-        """
-        Create a 2D list standard_map[x][y].
-        Mark passable tiles with 0 and blocked tiles with 1.
-        """
-        # Initialize everything as blocked = 1
-        self.standard_map = [[1 for _ in range(self.height)] for _ in range(self.width)]
-
-        # Fill passable tiles
+    def _Build_Generic_Map(self, game, passability_func):
+        """Internal helper to build a 2D map based on a specific rule."""
+        # Initialize as blocked (1)
+        new_map = [[1 for _ in range(self.height)] for _ in range(self.width)]
+        
         all_positions = game.tilemap.Get_Pos()
         for (x, y) in all_positions:
             map_x = x - self.min_x
             map_y = y - self.min_y
+            
             if 0 <= map_x < self.width and 0 <= map_y < self.height:
-                tile = game.tilemap.Current_Tile((x,y))
+                tile = game.tilemap.Current_Tile((x, y))
                 if not tile:
                     continue
+                
+                # Apply the specific rule passed in
+                if passability_func(tile):
+                    new_map[map_x][map_y] = 0
+                    
+        return new_map
 
-                tile_type = tile.sub_type
-                if tile_type == keys.floor and not tile.trap:
-                    self.standard_map[map_x][map_y] = 0
-
-        
+# Create a specific rule and pass it onto the generic map
+    def Build_Standard_Map(self, game):
+        def rule(t):
+            return t.sub_type == keys.floor and not t.trap and not t.touching_wall
+        self.standard_map = self._Build_Generic_Map(game, rule)
 
     def Build_IgnoreLava_Map(self, game):
-        """
-        Similar to Build_Standard_Map but ignoring Lava/Fire as blocked.
-        """
-        self.ignore_lava_map = [[1 for _ in range(self.height)] for _ in range(self.width)]
-
-        all_positions = game.tilemap.Get_Pos()
-        for (x, y) in all_positions:
-            map_x = x - self.min_x
-            map_y = y - self.min_y
-            if 0 <= map_x < self.width and 0 <= map_y < self.height:
-                tile_type = game.tilemap.Current_Tile_Type_Without_Offset((x, y))
-                if tile_type and (tile_type == keys.floor or keys.lava_env in tile_type or keys.fire in tile_type):
-                    self.ignore_lava_map[map_x][map_y] = 0
+        
+        def rule(t):
+            if t.touching_wall: return False
+            return (t.type == keys.floor or 
+                    keys.lava_env in t.type or 
+                    keys.fire in t.type)
+        
+        self.ignore_lava_map = self._Build_Generic_Map(game, rule)
 
     def Build_Void_Spawn_Map(self, game):
-        """
-        Similar to Build_Standard_Map but ignoring Lava/Fire as blocked.
-        """
-        self.void_spawn_map = [[1 for _ in range(self.height)] for _ in range(self.width)]
-
-        all_positions = game.tilemap.Get_Pos()
-        for (x, y) in all_positions:
-            map_x = x - self.min_x
-            map_y = y - self.min_y
-            if 0 <= map_x < self.width and 0 <= map_y < self.height:
-                tile_type = game.tilemap.Current_Tile_Type_Without_Offset((x, y))
-                if tile_type:
-                    self.void_spawn_map[map_x][map_y] = 0
+        # This one seems to allow everything as long as the tile exists
+        self.void_spawn_map = self._Build_Generic_Map(game, lambda t: t.type is not None)
 
     # ========== UTILITY CHECKS ==========
 

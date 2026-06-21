@@ -33,7 +33,7 @@ class Entity_Renderer():
         if not tile:
             return
         
-        tile.Clear_Entity(entity.ID)
+        tile.Remove_Entity(entity.ID)
         self.entities.remove(entity)
 
 

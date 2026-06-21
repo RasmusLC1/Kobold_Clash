@@ -1,4 +1,4 @@
-from scripts.entities.entities import PhysicsEntity
+from scripts.entities.entity.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 
 import math
@@ -16,8 +16,9 @@ class Trap(PhysicsEntity):
         self.animation_cooldown = 0
         self.animation_max = 0
         self.entity_check_cooldown = 0
-        self.entities = []
-        self.tile.Set_Trap(True)
+        self.entities = {}
+        if self.tile:
+            self.tile.Set_Trap(self)
         self.damaged_entities = {}
 
 
@@ -45,20 +46,25 @@ class Trap(PhysicsEntity):
         self.Update_Trapped_Entities()
         return True
 
-    def Add_Entity_To_Trap(self, entity):
+    def Add_Entity(self, entity):
+        # 1. Early exit: Ignore items
         if entity.category == keys.item:
             return False
-        
-        if entity in self.entities:
+    
+        # 2. Early exit: Already tracked (O(1) dictionary lookup)
+        if entity.ID in self.entities:
             return False
         
+        # 3. Early exit: Geometric check (call rect() once and cache it)
         if not self.rect().colliderect(entity.rect()):
             return False
         
-
-        self.entities.append(entity)
+        # Add to trap tracking
+        self.entities[entity.ID] = entity
         return True
 
+    def Remove_Entity(self, entity_ID):
+        return self.entities.pop(entity_ID, None) is not None
 
     def Update_Cooldown(self, delta_time):
         if self.entity_check_cooldown > 0:
@@ -82,8 +88,9 @@ class Trap(PhysicsEntity):
 
     
     def Update_Trapped_Entities(self):
-        self.Find_Nearby_Entities()
-        for entity in self.entities:
+        for entity in self.entities.values():
+            if not entity.touching_ground:
+                continue
             if entity.ID in self.damaged_entities: # Check if enemy is in damage cooldown
                 continue
             if entity.ID == self.ID:
@@ -100,14 +107,6 @@ class Trap(PhysicsEntity):
     def Animation_Update(self, delta_time):
         pass
 
-    def Find_Nearby_Entities(self):
-        self.entities.clear()
-        enemies = self.game.tilemap.Search_Nearby_Tiles(2, self.pos, keys.player, self.ID)
-        if enemies:
-            self.entities.extend(enemies)
-        player = self.game.tilemap.Search_Nearby_Tiles(2, self.pos, keys.enemy, self.ID)
-        if player:
-            self.entities.extend(player)
 
     def Set_Active(self, duration):
         self.active = duration

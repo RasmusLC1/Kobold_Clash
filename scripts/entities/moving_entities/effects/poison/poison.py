@@ -11,7 +11,7 @@ class Poison(Effect):
     
     #set Fire effect
     def Set_Effect(self, effect_time, permanent = False):
-        if self.entity.effects.poison_resistance.effect:
+        if self.Get_Entity_Effect_Strength(keys.poison_resistance):
             return False
         
         if not super().Set_Effect(effect_time, permanent):
@@ -30,20 +30,20 @@ class Poison(Effect):
 
     def Update_Effect(self, delta_time):
         # Enable healing when poison expires
-        if not self.effect:
+        if not self.effect_strength:
             self.entity.Set_Healing_Enabled(True)
             return False
         self.entity.Set_Strength(self.strength_holder // 2)
 
-        if self.entity.effects.poison_resistance.effect:
-            self.effect = 0
+        if self.Get_Entity_Effect_Strength(keys.poison_resistance):
+            self.effect_strength = 0
             self.cooldown = 0
             self.entity.Set_Healing_Enabled(True)
             return False
         
 
         if self.Update_Cooldown(delta_time):
-            self.entity.Damage_Taken(self.effect, (self.effect_type, 0))
+            self.entity.Damage_Taken(self.effect_strength, (self.effect_type, 0))
 
         self.Effect_Animation_Cooldown(delta_time)
         return True

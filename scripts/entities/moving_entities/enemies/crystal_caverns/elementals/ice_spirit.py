@@ -5,42 +5,14 @@ from scripts.engine.keys.keys import keys
 ICE_PROJECTILE_NUM = 3
 
 class Ice_Spirit(Elemental):
-    def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.ice_spirit, health, strength, max_speed, agility, intelligence, stamina, 1.6, 20, 3, 3, 3)
-        self.path_finding_strategy = 'standard'
-        self.attack_strategy = keys.long_range
-        self.intent_manager.Set_Intent([keys.attack])
-        self.attack_distance  = 250
-        self.shooting_ice = False
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.ice_spirit)
+        # self.shooting_ice = False
         self.ice_damage = 5
-        self.minimum_distance = 50
-        self.active_weapon = Ice_Shooter(self.game)
+        self.active_weapon = Ice_Shooter(self.game, self)
+        self.Set_Ability(keys.glacial_core)
+
 
     def Update(self, tilemap, delta_time, movement = (0, 0)):
         super().Update(tilemap, delta_time, movement)
-
         self.active_weapon.Update(delta_time)
-
-        
-        return True
-
-    def Attack(self, delta_time):
-        # If Player is to close, then ice spirit cannot shoot
-        if self.distance_to_player < self.minimum_distance:
-            self.charge = 0
-            return False
-        return super().Attack(delta_time)
-    
-    def Trigger_Attack(self):
-        self.Set_Target(self.game.player.pos)
-        self.Set_Attack_Direction()
-        self.active_weapon.Initialise_Shooting(self, 2, self.ice_damage)
-
-    def Handle_Frozen(self):
-        frozen = self.effects.Get_Effect_Strength(keys.frozen)
-        if not self.effects.Get_Effect_Strength(keys.frozen):
-            return
-        
-        self.Set_Effect(keys.healing, frozen)
-        self.Set_Effect(keys.frozen_resistance, frozen)
-        

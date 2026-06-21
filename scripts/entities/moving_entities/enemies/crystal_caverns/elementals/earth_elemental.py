@@ -4,10 +4,8 @@ from scripts.entities.moving_entities.enemies.crystal_caverns.elementals.element
 
 
 class Earth_Elemental(Elemental):
-    def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.earth_elemental, health, strength, max_speed, agility, intelligence, stamina, 1.5, 20, 3, 3, 3, (48, 48))
-        self.intent_manager.Set_Intent([keys.direct, keys.attack, keys.attack, keys.attack, keys.attack, keys.short_range])
-
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.earth_elemental)
         # Equip the weapon
         self.Equip_Weapon(Claw(game, self.pos)) 
         self.active_weapon.Set_Damage(keys.blunt, 5)

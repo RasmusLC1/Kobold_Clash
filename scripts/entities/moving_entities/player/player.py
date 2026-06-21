@@ -26,6 +26,7 @@ class Player(Moving_Entity):
 
         self.light_cooldown = 0
         self.default_light_level = 6
+        
         self.light_source = self.game.light_handler.Add_Light(self.pos, self.default_light_level, self.tile)
         self.game.light_handler.Initialise_Light_Level(self.tile)
         self.player_particle_cooldown = 0
@@ -34,7 +35,6 @@ class Player(Moving_Entity):
         self.rune_power = 0
         self.arcane_conduit = 0
 
-        self.weapons = []
         self.weapon_handler = Player_Weapon_Handler(self.game, self)
         self.movement_handler = Player_Movement(self.game, self)
 
@@ -61,11 +61,7 @@ class Player(Moving_Entity):
         # Resets luck and rune power
         self.Update_Luck(-self.luck)
         self.Update_Rune_Power(-self.rune_power)
-
-        if self.game.keyboard_handler.is_key_pressed(pygame.K_p):
-            self.Damage_Taken(self.health)
         super().Update(tilemap, delta_time, movement=movement)
-
 
         self.Mouse_Handler()
         self.movement_handler.Update()
@@ -78,6 +74,7 @@ class Player(Moving_Entity):
 
         self.Update_Souls_To_Remove()
         self.Spawn_Particles(delta_time)
+        self.tile.distance_to_player
 
 
     def Caclulate_View_Direction(self):
@@ -89,8 +86,9 @@ class Player(Moving_Entity):
         self.souls = souls
 
     def Increase_Souls(self, added_soul):
-        if self.effects.arcane_hunger.effect:
-            added_soul += self.effects.arcane_hunger.effect
+        arcane_hunger_strength = self.Get_Effect_Strength(keys.arcane_hunger)
+        if arcane_hunger_strength:
+            added_soul += arcane_hunger_strength
         self.souls += added_soul
 
     def Decrease_Souls(self, subtract_soul):
@@ -121,10 +119,10 @@ class Player(Moving_Entity):
         self.game.particle_handler.Activate_Particles(1, keys.soul_particle, self.rect().center, time = random.uniform(1.5, 2))
 
 
-    def Entity_Collision_Detection(self, tilemap):
+    def Entity_Collision_Detection(self):
         if self.movement_handler.dashing > 40:
             return None
-        return super().Entity_Collision_Detection(tilemap)
+        return super().Entity_Collision_Detection()
     
     def Remove_Active_Weapon(self):
         self.weapon_handler.Remove_Active_Weapon()
@@ -149,15 +147,19 @@ class Player(Moving_Entity):
 
     # Function to update the light around player
     def Update_Light(self):
-        if self.light_source:
-            # Update all the light's around the player
-            # Do it only when the player light has been activated to prevent lag
-            if not self.light_source.active:
-                self.game.light_handler.Remove_Light(self.light_source)
-                self.game.light_handler.Restore_Light(self.light_source)
-                self.Set_Light_State(True)
-            else:
-                self.game.light_handler.Move_Light(self.pos, self.light_source, self.tile)
+        
+        # Check if player has moved to new tile
+        if self.light_source.tile == self.tile:
+            return
+
+        if not self.light_source.active:
+            # If lights were off trigger new light
+            self.light_source.active = True
+            self.game.light_handler.Move_Light(self.pos, self.light_source, self.tile)
+            self.Set_Light_State(True)
+        else:
+            # Standard movement update
+            self.game.light_handler.Move_Light(self.pos, self.light_source, self.tile)
         
         
     def Mouse_Handler(self):
@@ -224,6 +226,9 @@ class Player(Moving_Entity):
         # Reset the animation lock to overwrite current animation
         self.animation_handler.Set_Animation_Lock(False)
         return self.animation_handler.Set_Animation(keys.idle)
+    
+    def Get_Weapon(self):
+        return self.weapon_handler.Get_Active_Weapon()
 
     # Render player
     def Render(self, surf, offset=(0, 0)):

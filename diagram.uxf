@@ -164,7 +164,7 @@ Responsibilities
 - void Update_Attack(self)
 - void Set_Attack(self)
 - void Set_Damage(self, damage)
-- void Special_Attack(self)
+- void Ability(self)
 - void Charge_Attack(self, offset=(0,0))
 - void Set_Special_Attack(self, offset=(0,0))
 - void Set_Charging_Player(self)

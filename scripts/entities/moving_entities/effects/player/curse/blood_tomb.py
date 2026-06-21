@@ -8,5 +8,5 @@ class Blood_Tomb(Effect):
         super().__init__(entity, keys.blood_tomb, 0, 0, (2, 3), description)
 
 
-    def Damage_Taken(self, damage):
-        self.entity.Increase_Souls(damage * self.effect * 2)
+    def Damage_Taken(self, damage, attacker):
+        self.entity.Increase_Souls(damage * self.effect_strength * 2)

@@ -7,10 +7,6 @@ class Particles():
     
     fire_particle = "fire_particle"
     
-    
-    spark_particle = "spark_particle"
-    
-    
     blood_particle = "blood_particle"
     
     

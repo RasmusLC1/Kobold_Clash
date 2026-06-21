@@ -74,8 +74,8 @@ class Rune_Handler(Loot_Types_Handler):
     # Returns a list containing only the keys where cost < 30
     def Get_Initial_Runes(self):
         runes_under_30 = [rune for rune, cost in self.loot_types_cost.items() if cost < 30]
-        initial_runes = random.sample(runes_under_30, 3) # Select 3 random ones
-
+        initial_runes = random.sample(runes_under_30, 2) # Select 3 random ones
+        initial_runes.append(keys.freeze_spray_rune)
         return initial_runes
             
 

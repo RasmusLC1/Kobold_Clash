@@ -6,40 +6,13 @@ import random
 
 
 class Skeleton_Warlock(Skeleton):
-    def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.skeleton_warlock, health, strength, max_speed, agility, intelligence, stamina, 1, 25, 0, 3, 4)
-        self.attack_distance  = 200
-        self.min_attack_range = 50
-        self.attack_strategy = keys.long_range
-        self.intent_manager.Set_Intent([ keys.attack])
-
-
-        
-        self.shooting_distance = False
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.skeleton_warlock)
         self.Equip_Weapon(Staff(self.game, self.pos))
         
     def Equip_Weapon(self, weapon):
         super().Equip_Weapon(weapon)
-
         if self.active_weapon.sub_type == keys.fire_staff:
-            self.attack_distance  = 100
-            self.min_attack_range = 30
-            self.attack_strategy = keys.medium_range
-
-    def Attack(self, delta_time):
-        
-        # If Player is to close, then archer cannot shoot
-        if self.distance_to_player < self.min_attack_range:
-            self.charge = 0
-            return False
-        self.active_weapon.Set_Charging_Enemy()
-        return super().Attack(delta_time)
-
-
-    def Trigger_Attack(self):
-        self.Set_Target(self.game.player.pos)
-        self.game.particle_handler.Activate_Particles(random.randint(5, 10), keys.gold_particle, self.rect().center)
-        self.active_weapon.Shoot_Projectiles()
-        self.Reset_Charge()
-        
-        return True
+            self.Set_Behavior_Pattern(keys.medium_range)
+        else:
+            self.Set_Behavior_Pattern(keys.long_range)

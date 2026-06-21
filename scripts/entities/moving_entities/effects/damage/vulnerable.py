@@ -8,5 +8,5 @@ class Vulnerable(Effect):
         super().__init__(entity, 'vulnerable', 0, 0, (2, 3), description)
 
     
-    def Damage_Taken(self, damage):
+    def Damage_Taken(self, damage, attacker):
         self.entity.Set_Health(self.entity.health - damage // 2)

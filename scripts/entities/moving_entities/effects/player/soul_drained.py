@@ -8,7 +8,7 @@ class Soul_Drained(Effect):
         super().__init__(entity, keys.soul_drained, 0, 0, (2, 3), description)
 
     def Update_Effect(self, delta_time):
-        if not self.effect:
+        if not self.effect_strength:
             return False
         
         self.Update_Cooldown(delta_time)

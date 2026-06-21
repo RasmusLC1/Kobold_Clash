@@ -24,16 +24,16 @@ class Player_Animation_Handler(Animation_Handler):
 
 
         self.keyboard = self.entity.game.keyboard_handler
-        self.running_animation = 5
-        self.max_idle_animation = 3
-        self.max_attack_animation = 4
 
-        # Add player-specific animations to unified handler
+        self.Set_Animation_Values()
+
+    
+    # Add player-specific animations to unified handler self.animations
+    def Set_Animation_Values(self):
         self.animations.update({
             keys.roll: {keys.num: 0, keys.num_max: 4, keys.cooldown: 0, keys.cooldown_max: 0.2},
             keys.backstep: {keys.num: 0, keys.num_max: 4, keys.cooldown: 0, keys.cooldown_max: 0.2},
         })
-
         # Player animation timings
         self.Set_Animation_Num_Max(keys.idle, 3)
         self.Set_Animation_Cooldown_Max(keys.idle, 0.2)
@@ -66,7 +66,7 @@ class Player_Animation_Handler(Animation_Handler):
     def Check_Movement(self):
         keyboard = self.keyboard
         if not keyboard.Check_If_Movement_Enabled():
-            self.Set_Animation('idle')
+            self.Set_Animation(keys.idle)
             return False
 
         if keyboard.is_key_pressed(pygame.K_w):
@@ -108,6 +108,15 @@ class Player_Animation_Handler(Animation_Handler):
         self.entity.weapon_handler.Update_Weapon_Animation(anim[keys.num])
         return True
     
+    def Set_Animation(self, action):
+        if not super().Set_Animation(action):
+            return False
+        
+        weapon = self.entity.Get_Weapon()
+        if weapon:
+            weapon.Reset_Animation()
+        
+        return True
 
     def Get_Attack_Animation_Type(self):
         weapon_type = self.entity.weapon_handler.Get_Weapon_Type()

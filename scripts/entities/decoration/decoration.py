@@ -1,5 +1,5 @@
 import pygame
-from scripts.entities.entities import PhysicsEntity
+from scripts.entities.entity.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
 import random
 
@@ -21,9 +21,9 @@ class Decoration(PhysicsEntity):
 
 
     def Save_Data(self):
+        super().Save_Data()
         self.saved_data['animation'] = self.animation
         self.saved_data['empty'] = self.empty
-        return super().Save_Data()
 
     def Load_Data(self, data):
         self.Set_Animation(data['animation'])

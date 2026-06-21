@@ -13,7 +13,6 @@ class Potion(Loot):
     
 
     def Save_Data(self):
-
         super().Save_Data()
         self.saved_data['effect'] = self.effect
         self.saved_data['strength'] = self.strength

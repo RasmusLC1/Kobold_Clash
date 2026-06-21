@@ -1,31 +1,13 @@
 from scripts.entities.moving_entities.enemies.crypt.dwellers.dweller import Dweller
-from scripts.entities.moving_entities.enemies.crypt.dwellers.spider.spider_intent import Spider_Intent_Manager
 from scripts.engine.keys.keys import keys
 
 
 # TODO: Implement intent with spider and make attacks into objects
 class Spider(Dweller):
 
-    intent_manager_class = Spider_Intent_Manager
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.spider)
 
-    def __init__(self, game, pos, health, strength, max_speed, agility, intelligence, stamina):
-        super().__init__(game, pos, keys.spider, health, strength, max_speed, agility, intelligence, stamina, 0.8, 10)
-
-        self.animation = keys.spider + '_' + keys.idle
-
-        self.intent_manager.Set_Intent([keys.medium_range, keys.keep_position, 'shoot_spiderweb', 'jump_attack'])
-
-        self.animation_num_max = 3 # running and idle animation
-        self.animation_num_cooldown_max = 100
-
-        self.attack_animation_num_max = 3 # Standard attack and shoot spider web
-        self.attack_animation_num_cooldown_max = 200
-
-        self.jumping_animation_num_max = 8 # Jumping attack
-        self.jumping_animation_num = 0
-        self.jumping_animation_num_cooldown_max = 5
-
-        self.attack_symbol_offset = 10
         self.active_weapon.Set_Damage(keys.poison, 5)
 
 

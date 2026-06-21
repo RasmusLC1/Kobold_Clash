@@ -14,7 +14,7 @@ class Particle_Handler:
          self.particle_movement_patterns = {
              keys.dash_particle : Particle_Patterns.Dash_Particle,
              keys.fire_particle : Particle_Patterns.Fire_Particle,
-             keys.spark_particle : Particle_Patterns.Spark_Particle,
+             keys.electric_particle : Particle_Patterns.Spark_Particle,
              keys.blood_particle : Particle_Patterns.Spark_Particle,
              keys.gold_particle : Particle_Patterns.Spark_Particle,
              keys.loot_particle : Particle_Patterns.Spark_Particle,

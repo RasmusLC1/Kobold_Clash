@@ -12,14 +12,14 @@ class Weakness(Effect):
     #set Fire effect
     def Set_Effect(self, effect_time, permanent = False):
         # Double the effect if poisoned
-        if self.entity.effects.poison.effect:
+        if self.Get_Entity_Effect_Strength(keys.poison):
             effect_time *= 2
         return super().Set_Effect(effect_time, permanent)
 
 
     def Update_Effect(self, delta_time):
 
-        if not self.effect:
+        if not self.effect_strength:
             return False
         
         self.entity.strength = min(20, self.entity.strength // 2)
