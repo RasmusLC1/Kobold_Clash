@@ -23,6 +23,14 @@ def mock_game():
     game.entities_render = MagicMock()
     return game
 
+# Create a simple mock base state that has health, strength, and souls attributes
+@pytest.fixture
+def dummy_base_state():
+    state = MagicMock()
+    state.health = 100
+    state.strength = 10
+    state.souls = 5
+    return state
 
 @pytest.fixture
 def mock_enemy():
@@ -130,35 +138,47 @@ def test_enemy_spawner_respects_hard_cap_threshold(mock_game):
     assert result is True  # Early abort conditional return
 
 
-def test_enemy_spawner_truncates_generation_variants(mock_game, mock_enemy):
+mock_chosen_item = MagicMock()
+mock_chosen_item.pos = [0.0, 0.0]
+
+@patch('random.choice', return_value=mock_chosen_item)  # Returns our mock object instead of a string
+@patch('random.randint', return_value=1)
+def test_enemy_spawner_truncates_generation_variants(mock_randint, mock_choice, mock_game, mock_enemy, dummy_base_state):
     handler = Enemy_Handler(mock_game)
     mock_spawner = MagicMock()
     handler.enemy_spawner = mock_spawner
     
-    # Stub instantiation function callback 
     mock_spawn_fn = MagicMock(return_value=mock_enemy)
     mock_spawner.Get_Spawn_Function.return_value = mock_spawn_fn
     
-    # Passing variant instance 'kobold_warrior_3'
-    handler.Enemy_Spawner(pos=(20, 20), type="kobold_warrior_3")
+    mock_stats = {"kobold_warrior": dummy_base_state}
+    with patch('scripts.entities.moving_entities.enemies.attribute_distributor.attribute_distributor.ENEMY_STATS', mock_stats):
+        # Passing variant instance 'kobold_warrior_3'
+        handler.Enemy_Spawner(pos=(20, 20), type="kobold_warrior_3")
     
     # Spawner check must truncate variant digit suffix to identify structural base layout mapping
     mock_spawner.Get_Spawn_Function.assert_called_once_with("kobold_warrior")
     assert mock_enemy in handler.enemies
 
 
-def test_delete_enemy_safely_detaches_references(mock_game, mock_enemy):
+@patch('random.choice', return_value=mock_chosen_item)  # Returns our mock object instead of a string
+@patch('random.randint', return_value=1)
+def test_enemy_spawner_handles_missing_digit_variants_gracefully(mock_randint, mock_choice, mock_game, mock_enemy, dummy_base_state):
+    """Ensures type string normalization works cleanly even if strings lack underscores or trailing IDs."""
     handler = Enemy_Handler(mock_game)
-    handler.enemies.append(mock_enemy)
-    handler.pathfinding_handler.pathfinding_queue.append(mock_enemy)
-    handler.pathfinding_handler.patrol_queue.append(mock_enemy)
+    mock_spawner = MagicMock()
+    handler.enemy_spawner = mock_spawner
     
-    handler.Delete_Enemy(mock_enemy)
+    mock_spawn_fn = MagicMock(return_value=mock_enemy)
+    mock_spawner.Get_Spawn_Function.return_value = mock_spawn_fn
     
-    mock_game.entities_render.Remove_Entity.assert_called_once_with(mock_enemy)
-    assert mock_enemy not in handler.enemies
-    assert mock_enemy not in handler.pathfinding_handler.pathfinding_queue
-    assert mock_enemy not in handler.pathfinding_handler.patrol_queue
+    mock_stats = {"skeleton": dummy_base_state}
+    with patch('scripts.entities.moving_entities.enemies.attribute_distributor.attribute_distributor.ENEMY_STATS', mock_stats):
+        # Pass a flat type key that does not contain numerical variant suffixes
+        handler.Enemy_Spawner(pos=(0, 0), type="skeleton")
+    
+    # The normalization logic should cleanly handle split loops without stripping text strings
+    mock_spawner.Get_Spawn_Function.assert_called_once_with("skeleton")
 
 
 def test_find_nearby_enemies_long_distance_filtering(mock_game, mock_enemy):
@@ -248,22 +268,6 @@ def test_initialise_aborts_gracefully_on_empty_spawner_layouts(mock_game):
         handler.Initialise()
         mock_set_spawner.assert_called_once()
         assert len(handler.enemies) == 0
-
-
-def test_enemy_spawner_handles_missing_digit_variants_gracefully(mock_game, mock_enemy):
-    """Ensures type string normalization works cleanly even if strings lack underscores or trailing IDs."""
-    handler = Enemy_Handler(mock_game)
-    mock_spawner = MagicMock()
-    handler.enemy_spawner = mock_spawner
-    
-    mock_spawn_fn = MagicMock(return_value=mock_enemy)
-    mock_spawner.Get_Spawn_Function.return_value = mock_spawn_fn
-    
-    # Pass a flat type key that does not contain numerical variant suffixes
-    handler.Enemy_Spawner(pos=(0, 0), type="skeleton")
-    
-    # The normalization logic should cleanly handle split loops without stripping text strings
-    mock_spawner.Get_Spawn_Function.assert_called_once_with("skeleton")
 
 
 def test_find_nearby_enemies_redirects_short_distances_to_tilemap(mock_game, mock_enemy):

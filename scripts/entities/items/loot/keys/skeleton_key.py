@@ -13,7 +13,7 @@ class Skeleton_Key(Key):
 
     def Open_Door(self):
         self.Decrease_Amount(1)
-        self.game.clatter.Disable_Clatter()
+        self.game.clatter.Set_Clatter_Cooldown()
         if self.amount > 0: # If more than 1 exists return true
             return True
         self.game.inventory.Remove_Item(self)

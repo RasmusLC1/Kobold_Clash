@@ -32,7 +32,7 @@ class Logic_Update():
           self.game.player.Update(self.game.tilemap, delta_time, movement, self.game.render_scroll)
           
           self.game.ray_caster.Update(delta_time)
-          self.game.clatter.Update()
+          self.game.clatter.Update(delta_time)
 
           self.game.mouse.Mouse_Update()
           self.game.text_box_handler.Update(delta_time)

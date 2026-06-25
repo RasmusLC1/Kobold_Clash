@@ -112,14 +112,19 @@ class Enemy_Handler():
             self.pathfinding_handler.patrol_queue.remove(enemy)
 
     def Update(self, delta_time):
-        # Sort at most once per frame tick instead of on every element insertion
+        self.Update_Pathfinding(delta_time)
+
+
+        for enemy in self.enemies:
+            enemy.Update(self.game.tilemap, delta_time)      
+
+    # Sort at most once per frame tick instead of on every element insertion
+    def Update_Pathfinding(self, delta_time):
         if self.should_sort_queue:
             self.pathfinding_handler.Sort_Pathfinding_Queue()
             self.should_sort_queue = False
 
         self.pathfinding_handler.Update(delta_time)
-        for enemy in self.enemies:
-            enemy.Update(self.game.tilemap, delta_time)      
 
     def Get_Number_Of_Enemies(self):
         return len(self.enemies)

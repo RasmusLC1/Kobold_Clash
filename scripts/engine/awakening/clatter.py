@@ -2,20 +2,33 @@ from scripts.engine.awakening.awakening import Awakening
 from scripts.engine.keys.keys import keys
 
 SILENCE_MULTIPLIER = 100
+CLATTER_COOLDOWN = 0.5
 
 class Clatter():
     def __init__(self, game) -> None:
         self.game = game
-        self.temp_disable_clatter = False # Used to temporarily disable clatter
         self.awakening = Awakening(game)
+        self.clatter_position = None
+        self.clatter_cooldown = 0
 
-    def Update(self):
+    def Update(self, delta_time):
         self.awakening.Update()
+        self.Update_Clatter_Cooldown(delta_time)
+
+    def Update_Clatter_Cooldown(self, delta_time):
+        if self.clatter_cooldown <= 0:
+            return True
+        
+        self.clatter_cooldown -= delta_time
+        return False
+
 
     def Generate_Clatter(self, center, clatter_range):
-        if self.temp_disable_clatter:
-            self.temp_disable_clatter = False
+        if self.clatter_cooldown > 0:
             return
+
+        self.clatter_position = center
+        self.Set_Clatter_Cooldown()
 
         clatter_range = self.Calculate_Silence_Modifier(clatter_range)
         self.awakening.Trigger_Awakening()
@@ -28,7 +41,9 @@ class Clatter():
         for enemy in nearby_enemies:
             # Add enemy to pathfinding queue
             self.game.enemy_handler.Add_To_Pathfinding_Queue(enemy, center)
-        
+    
+    def Set_Clatter_Cooldown(self):
+        self.clatter_cooldown = CLATTER_COOLDOWN
 
     def Increase_Awakening(self):
         self.awakening.Set_Awakening_Level(self.awakening.awakening_level + 1)
@@ -42,9 +57,7 @@ class Clatter():
             clatter_range = max(1, clatter_range - silence_effect.effect_strength * SILENCE_MULTIPLIER)
 
         return clatter_range
-    
-    def Disable_Clatter(self):
-        self.temp_disable_clatter = True
+
 
     # Sets awakening level to 0
     def Reset_Awakening_Level(self):
