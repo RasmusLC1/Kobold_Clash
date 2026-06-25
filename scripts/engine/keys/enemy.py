@@ -339,7 +339,7 @@ class Enemy():
 
     minotaur_running = "minotaur_running"
 
-# Minotaur
+# Medusa
     
     medusa = "medusa"
     
@@ -348,6 +348,15 @@ class Enemy():
     medusa_attack_ranged = "medusa_attack_ranged"
 
     medusa_running = "medusa_running"
+
+
+# Clicker
+    
+    clicker = "clicker"
+    
+    clicker_attack = "clicker_attack"
+
+    clicker_running = "clicker_running"
 
 
 # Wight King

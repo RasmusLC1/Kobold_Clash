@@ -41,6 +41,9 @@ class Clatter():
         for enemy in nearby_enemies:
             # Add enemy to pathfinding queue
             self.game.enemy_handler.Add_To_Pathfinding_Queue(enemy, center)
+
+    def Check_Clatter_Cooldown(self):
+        return self.clatter_cooldown > 0
     
     def Set_Clatter_Cooldown(self):
         self.clatter_cooldown = CLATTER_COOLDOWN

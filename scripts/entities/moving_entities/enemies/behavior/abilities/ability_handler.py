@@ -55,6 +55,7 @@ class Ability_Handler():
         self.active_ability = None  # Holds the single assigned active ability (or None)
         self.abilities_on_cooldown = []
         self.is_running_ability = False  # Track execution state separately from assignment
+        self.echo_linger_timer = 0  # Timer to track if player has moved, used by echo location distance
         self.Set_Player_Distance(keys.standard)
 
     def Save_Data(self):
@@ -195,9 +196,9 @@ class Ability_Handler():
             return True
         return self.active_ability.Check_If_Attack_Allowed()
     
-    def Check_Player_Distance(self, max_distance):
+    def Check_Player_Distance(self, max_distance, delta_time):
         # Execute the active strategy function pointer, passing self context
-        return self.player_distance_check_fn(self, max_distance)
+        return self.player_distance_check_fn(self, max_distance, delta_time)
 
     def Set_Player_Distance(self, type_key):
         # Fetch function from registry, fall back to standard if not found

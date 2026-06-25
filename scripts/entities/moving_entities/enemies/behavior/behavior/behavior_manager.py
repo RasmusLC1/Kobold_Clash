@@ -56,7 +56,7 @@ class Behavior_Manager():
         self.current_behavior.Enter()
 
     def Update_Behavior(self, delta_time):
-        self.entity.Set_Player_Spotted(self.Check_Player_Distance())
+        self.entity.Set_Player_Spotted(self.Check_Player_Distance(delta_time))
         if not self.entity.player_spotted:
             return None
         
@@ -78,8 +78,8 @@ class Behavior_Manager():
         self.current_behavior.Execute()
         self.Check_If_Entity_Has_Attacked()
 
-    def Check_Player_Distance(self):
-        return self.ability_handler.Check_Player_Distance(self.max_distance)
+    def Check_Player_Distance(self, delta_time):
+        return self.ability_handler.Check_Player_Distance(self.max_distance, delta_time)
         
 
     def Check_Attack_Distance(self):

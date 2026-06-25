@@ -8,7 +8,7 @@ class Sound_Handler():
         pygame.mixer.init()
 
     def Play_Sound(self, sound_name, volume = 1):
-        if self.game.clatter.temp_disable_clatter:
+        if self.game.clatter.Check_Clatter_Cooldown():
             return
         
         volume = self.Mute_Volume_Silence(volume)

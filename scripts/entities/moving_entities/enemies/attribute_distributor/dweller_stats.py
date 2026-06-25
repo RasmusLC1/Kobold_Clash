@@ -55,4 +55,22 @@ DWELLER_STATS = {
         run_animation=3,
         attack_animation=3,
     ),
+
+    enemy_keys.clicker: Enemy_Base_State(
+        health=60,
+        souls=20,
+        size=(32, 32),
+        max_weapon_charge=0.9,
+        strength=4,
+        speed=6,
+        agility=3,
+        intelligence=5,
+        stamina=2,
+        behavior=enemy_keys.direct,
+        sub_category=enemy_keys.dweller,
+        ability=None,
+        idle_animation=3,
+        run_animation=3,
+        attack_animation=3,
+    ),
 }

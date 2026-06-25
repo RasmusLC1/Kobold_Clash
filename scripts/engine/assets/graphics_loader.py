@@ -50,6 +50,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_vampire_List(self)
         Graphics_Loader.Asset_minotaur_List(self)
         Graphics_Loader.Asset_medusa_List(self)
+        Graphics_Loader.Asset_Clicker_List(self)
     
     def Asset_Background_List(self):
         background_assets = {'background': load_image('background.png'),}
@@ -325,6 +326,13 @@ class Graphics_Loader:
             keys.medusa_running: get_tiles_from_sheet('entities/enemies/mythical/medusa/MOVE.png', 3, 0, 0, 0, 150, 150),
             keys.medusa_attack_direct: get_tiles_from_sheet('entities/enemies/mythical/medusa/ATTACK1.png', 5, 0, 0, 0, 150, 150),
             keys.medusa_attack_ranged: get_tiles_from_sheet('entities/enemies/mythical/medusa/ATTACK2.png', 5, 0, 0, 0, 150, 150),
+        }
+        self.assets.update(entities_assets)
+
+    def Asset_Clicker_List(self):
+        entities_assets = {
+            keys.clicker_running: get_tiles_from_sheet('entities/enemies/dwellers/ghoul/ghoul.png', 4, 0, 0, 0, 32, 32),
+            keys.clicker_attack: get_tiles_from_sheet('entities/enemies/dwellers/ghoul/ghoul_attack.png', 5, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
