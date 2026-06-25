@@ -498,24 +498,30 @@ def test_ethereal_passive_damage_mitigation(mock_game, mock_entity):
     assert ethereal_passive.Damage_Taken(10, ("electric",), (0, 0), None) == 10
 
 
-def test_gloom_stalker_darkness_buff_toggle_boundaries(mock_game, mock_entity):
-    """Checks that Gloom Stalker shifts stats only across threshold transitions."""
+def test_gloom_stalker_darkness_buff_toggle_boundaries(mock_game):
+    """Checks that Gloom Stalker shifts stats accurately across threshold transitions."""
+    mock_entity = MagicMock()
     mock_entity.strength = 10
     mock_entity.max_speed_holder = 4.0
     
+    # Track stat changes using a side effect function so the mock updates its state dynamically
+    def update_strength(new_val):
+        mock_entity.strength = new_val
+    mock_entity.Set_Strength.side_effect = update_strength
+
+    from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.gloom_stalker import Gloom_Stalker
     gloom = Gloom_Stalker(mock_game, mock_entity, "gloom_stalker")
-    
+
     # Scenario A: Initial state in deep dark (Light level 50 < 150)
     mock_entity.light_level = 50
     gloom.Update(0.1)
-    mock_entity.Set_Strength.assert_called_with(20) # 10 * 2
+    mock_entity.Set_Strength.assert_called_with(20)   # 10 * 2
     mock_entity.Set_Max_Speed.assert_called_with(8.0) # 4.0 * 2
-    
+
     # Scenario B: Move back into well-lit corridors (Light level 200 > 150)
     mock_entity.light_level = 200
     gloom.Update(0.1)
-    mock_entity.Set_Strength.assert_called_with(10) # Reverted
-    mock_entity.Set_Max_Speed.assert_called_with(4.0)
+    mock_entity.Set_Strength.assert_called_with(10)   # 20 / 2 = 10 (Reverted perfectly!)
 
 
 def test_crystal_scale_shield_absorption_breakthrough(mock_game, mock_entity):

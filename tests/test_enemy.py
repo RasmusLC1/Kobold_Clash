@@ -7,7 +7,11 @@ from scripts.entities.moving_entities.enemies.enemy_spawner import Enemy_Spawner
 from scripts.entities.moving_entities.enemies.enemy_pathfinding_handler import Enemy_Pathfinding_Handler
 from scripts.entities.moving_entities.enemies.enemy_handler import Enemy_Handler
 from scripts.engine.keys.keys import keys
-
+from scripts.entities.moving_entities.enemies.behavior.abilities.ability_handler import (
+    Ability_Handler, 
+    DISTANCE_REGISTRY,
+    Distance_Functions
+)
 # ==============================================================================
 # FIXTURES & MOCKING CONTEXTS
 # ==============================================================================
@@ -22,6 +26,18 @@ def mock_game():
     game.dungeon_type = keys.ancient_crypt
     game.entities_render = MagicMock()
     return game
+
+@pytest.fixture
+def mock_game_and_entity():
+    """Sets up a paired mock game and mock entity context for distance strategy tests."""
+    game = MagicMock()
+    entity = MagicMock()
+    
+    # Initialize basic structural metrics needed for distance checks
+    entity.distance_to_player = 200
+    game.player.velocity = [0.0, 0.0]
+    
+    return game, entity
 
 # Create a simple mock base state that has health, strength, and souls attributes
 @pytest.fixture
@@ -300,3 +316,64 @@ def test_find_nearby_enemies_long_distance_ignores_self(mock_game, mock_enemy):
     
     # Even though position matches perfectly, matching ID must filter it out
     assert len(found) == 0
+
+def test_standard_distance_check_within_range(mock_game_and_entity):
+    game, entity = mock_game_and_entity
+    handler = Ability_Handler(game, entity)
+    
+    # Standard check: inside max_distance (200 < 300) -> Should be True
+    assert handler.Check_Player_Distance(max_distance=300) is True
+
+
+def test_standard_distance_check_out_of_range(mock_game_and_entity):
+    game, entity = mock_game_and_entity
+    handler = Ability_Handler(game, entity)
+    
+    # Standard check: outside max_distance (200 > 150) -> Should be False
+    assert handler.Check_Player_Distance(max_distance=150) is False
+
+
+def test_echo_location_player_perfectly_still(mock_game_and_entity):
+    game, entity = mock_game_and_entity
+    handler = Ability_Handler(game, entity)
+    
+    # Pivot strategy pointer to echo location
+    handler.Set_Player_Distance(keys.echo_location)
+    
+    # Player is close (200 < 300) but stationary ([0,0]) -> Should lose target (False)
+    game.player.velocity = [0.0, 0.0]
+    assert handler.Check_Player_Distance(max_distance=300) is False
+
+
+def test_echo_location_player_moving(mock_game_and_entity):
+    game, entity = mock_game_and_entity
+    handler = Ability_Handler(game, entity)
+    
+    # Pivot strategy pointer to echo location
+    handler.Set_Player_Distance(keys.echo_location)
+    
+    # Player is close (200 < 300) AND moving -> Should detect player (True)
+    game.player.velocity = [1.5, 0.0]
+    assert handler.Check_Player_Distance(max_distance=300) is True
+
+
+def test_echo_location_player_moving_but_out_of_range(mock_game_and_entity):
+    game, entity = mock_game_and_entity
+    handler = Ability_Handler(game, entity)
+    
+    handler.Set_Player_Distance(keys.echo_location)
+    
+    # Player is moving, but physically too far away (200 > 100) -> Should be False
+    game.player.velocity = [5.0, 5.0]
+    assert handler.Check_Player_Distance(max_distance=100) is False
+
+
+def test_fallback_to_standard_on_invalid_key(mock_game_and_entity):
+    game, entity = mock_game_and_entity
+    handler = Ability_Handler(game, entity)
+    
+    # Pass a non-existent tracking key type string
+    handler.Set_Player_Distance("invalid_sensory_key_type")
+    
+    # It should safely degrade to using the standard distance function layout pointer
+    assert handler.player_distance_check_fn == DISTANCE_REGISTRY[keys.standard]

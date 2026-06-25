@@ -19,7 +19,7 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.toxicosis import Toxicosis
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.galvanic_skin import Galvanic_Skin
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.sanguine_lord import Sanguine_Lord
-from scripts.entities.moving_entities.enemies.behavior.abilities.distance_functions import Distance_Functions
+from scripts.entities.moving_entities.enemies.behavior.abilities.distance_functions import Distance_Functions, DISTANCE_REGISTRY
 from scripts.engine.keys.keys import keys
 
 class Ability_Handler():
@@ -201,8 +201,8 @@ class Ability_Handler():
 
     def Set_Player_Distance(self, type_key):
         # Fetch function from registry, fall back to standard if not found
-        self.player_distance_check_fn = Distance_Functions.DISTANCE_REGISTRY.get(type_key,
-                                            Distance_Functions.DISTANCE_REGISTRY[keys.standard])
+        self.player_distance_check_fn = DISTANCE_REGISTRY.get(type_key,
+                                            DISTANCE_REGISTRY[keys.standard])
 
 
     def Damage_Taken(self, damage, effect, direction, attacker):
