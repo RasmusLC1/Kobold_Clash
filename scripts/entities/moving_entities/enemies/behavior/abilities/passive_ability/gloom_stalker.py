@@ -15,6 +15,8 @@ class Gloom_Stalker(Passive_Ability):
 
     def Update(self, delta_time):
         self.Darkness_Buff()
+        return super().Update(delta_time)
+
 
     def Darkness_Buff(self):
         threshold = 150
@@ -25,15 +27,17 @@ class Gloom_Stalker(Passive_Ability):
         
         self.light_level_holder = entity_light_level
 
-        # Only run if the state actually changed
         if is_dark == was_dark:
             return
         
+        # Calculate relative to whatever the entity's strength currently is
         if is_dark:
-            self.entity.Set_Strength(self.dark_strength)
-            self.entity.Set_Max_Speed(self.dark_speed)
+            # If entering dark, double its current baseline stats
+            self.entity.Set_Strength(self.entity.strength * 2)
+            self.entity.Set_Max_Speed(self.entity.max_speed_holder * 2)
         else:
-            self.entity.Set_Strength(self.light_strength)
-            self.entity.Set_Max_Speed(self.light_speed)
+            # If entering light, reduce them back down safely
+            self.entity.Set_Strength(int(self.entity.strength / 2))
+            self.entity.Set_Max_Speed(int(self.entity.max_speed_holder / 2))
 
         self.entity.Set_Description()

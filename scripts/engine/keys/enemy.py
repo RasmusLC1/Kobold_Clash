@@ -99,6 +99,8 @@ class Enemy():
 
     gloom_stalker = "gloom_stalker" 
 
+    echo_location = "echo_location" 
+
     fire_born = "fire_born"
 
     glacial_core = "glacial_core"

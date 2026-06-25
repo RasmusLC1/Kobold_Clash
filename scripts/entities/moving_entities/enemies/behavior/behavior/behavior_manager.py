@@ -79,7 +79,8 @@ class Behavior_Manager():
         self.Check_If_Entity_Has_Attacked()
 
     def Check_Player_Distance(self):
-        return self.entity.distance_to_player < self.max_distance
+        return self.ability_handler.Check_Player_Distance(self.max_distance)
+        
 
     def Check_Attack_Distance(self):
         if self.game.player.active_ability == keys.invisibility:

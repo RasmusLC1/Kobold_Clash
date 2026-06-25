@@ -13,12 +13,13 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_eater import Bone_Eater
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_ressurector import Bone_Resurrector
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.ethereal import Ethereal
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.hearing.echo_location import Echo_Location
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.fire_born import Fire_Born
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.glacial_core import Glacial_Core
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.toxicosis import Toxicosis
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.galvanic_skin import Galvanic_Skin
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.sanguine_lord import Sanguine_Lord
-
+from scripts.entities.moving_entities.enemies.behavior.abilities.distance_functions import Distance_Functions
 from scripts.engine.keys.keys import keys
 
 class Ability_Handler():
@@ -44,6 +45,7 @@ class Ability_Handler():
         keys.bone_eater : Bone_Eater,
         keys.bone_ressurector : Bone_Resurrector,
         keys.ethereal : Ethereal, 
+        keys.echo_location : Echo_Location, 
     }
 
     def __init__(self, game, entity):
@@ -53,6 +55,7 @@ class Ability_Handler():
         self.active_ability = None  # Holds the single assigned active ability (or None)
         self.abilities_on_cooldown = []
         self.is_running_ability = False  # Track execution state separately from assignment
+        self.Set_Player_Distance(keys.standard)
 
     def Save_Data(self):
         self.entity.saved_data['active_ability_key'] = self.active_ability.name if self.active_ability else None
@@ -192,6 +195,16 @@ class Ability_Handler():
             return True
         return self.active_ability.Check_If_Attack_Allowed()
     
+    def Check_Player_Distance(self, max_distance):
+        # Execute the active strategy function pointer, passing self context
+        return self.player_distance_check_fn(self, max_distance)
+
+    def Set_Player_Distance(self, type_key):
+        # Fetch function from registry, fall back to standard if not found
+        self.player_distance_check_fn = Distance_Functions.DISTANCE_REGISTRY.get(type_key,
+                                            Distance_Functions.DISTANCE_REGISTRY[keys.standard])
+
+
     def Damage_Taken(self, damage, effect, direction, attacker):
         for ability in self.passive_abilities.values():
             damage = ability.Damage_Taken(damage, effect, direction, attacker)

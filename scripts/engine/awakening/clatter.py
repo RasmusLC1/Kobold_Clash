@@ -58,6 +58,11 @@ class Clatter():
 
         return clatter_range
 
+    def Check_If_Noise_Generated(self):
+        if self.clatter_cooldown <= 0:
+            return None
+        
+        return self.clatter_position
 
     # Sets awakening level to 0
     def Reset_Awakening_Level(self):
