@@ -208,28 +208,32 @@ class Tilemap:
                 
             del self.tilemap[loc]
             
-            # Untangle structural node pathways
-            for neighbor in tile.neighbor_tiles:
+            # Untangle structural node pathways securely using a shallow copy slice [:] (Shallow copy of list)
+            for neighbor in tile.neighbor_tiles[:]: 
                 if tile in neighbor.neighbor_tiles:
                     neighbor.neighbor_tiles.remove(tile)
                 if tile.hitbox in neighbor.neighbor_physics_rects:
                     neighbor.neighbor_physics_rects.remove(tile.hitbox)
 
+           
+
+    # Finds nearby tiles 
     def Search_Nearby_Tiles(self, max_distance, pos, category, ID = 0):
         pos = (pos[0] // self.tile_size, pos[1] // self.tile_size)
-        
         
         entities = []
         for x in range(math.floor(pos[0] - max_distance), math.floor(pos[0] + max_distance)):
             for y in range(math.floor(pos[1] - max_distance), math.floor(pos[1] + max_distance)):
-                if x <= self.min_x or y <= self.min_y:
+                # Correct boundary skips (Using strict inequalities)
+                if x < self.min_x or y < self.min_y:
                     continue
 
-                if x >= self.max_x or y >= self.max_y:
+                if x > self.max_x or y > self.max_y:
                     continue
 
                 tile_key = (x, y)
-                tile = self.tilemap[tile_key]
+                # FIX: Use safe dict lookup instead of self.tilemap[tile_key]
+                tile = self.tilemap.get(tile_key)
                 if not tile:
                     continue
 
@@ -242,24 +246,24 @@ class Tilemap:
                         
                 entities.extend(new_entities)
 
-        
         return entities
 
     def Search_Nearby_Tiles_For_Type(self, max_distance, pos, type, ID = 0):
         pos = (pos[0] // self.tile_size, pos[1] // self.tile_size)
         
-        
         entities = []
         for x in range(math.floor(pos[0] - max_distance), math.floor(pos[0] + max_distance)):
             for y in range(math.floor(pos[1] - max_distance), math.floor(pos[1] + max_distance)):
-                if x <= self.min_x or y <= self.min_y:
+                # Correct boundary skips (Using strict inequalities)
+                if x < self.min_x or y < self.min_y:
                     continue
 
-                if x >= self.max_x or y >= self.max_y:
+                if x > self.max_x or y > self.max_y:
                     continue
 
                 tile_key = (x, y)
-                tile = self.tilemap[tile_key]
+                # FIX: Use safe dict lookup instead of self.tilemap[tile_key]
+                tile = self.tilemap.get(tile_key)
                 if not tile:
                     continue
 
@@ -272,7 +276,6 @@ class Tilemap:
                         
                 entities.extend(new_entities)
 
-        
         return entities
 
     # return the entities on a tile           

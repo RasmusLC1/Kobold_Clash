@@ -20,15 +20,17 @@ class Wet(Effect):
 
     
     def Update_Effect(self, delta_time):
+        # 1. First, check if the effect is still active
         if not self.effect_strength:
             return False
         
+        # 2. Logic to suppress fire
         fire_effect = self.Get_Entity_Effect(keys.fire)
-        if fire_effect.effect_strength:
+        if fire_effect and fire_effect.effect_strength:
             self.Decrease_Other_Effect(keys.fire, fire_effect.effect_strength)
             
+        # 3. Update internal timers
         self.Update_Cooldown(delta_time)
-        
         self.Effect_Animation_Cooldown(delta_time)
-        return False
-    
+        
+        return True

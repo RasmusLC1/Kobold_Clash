@@ -249,7 +249,3 @@ class Player(Moving_Entity):
             self.weapon_handler.Render_Weapons(surf, offset)
             return
    
-  
-  
-
-
