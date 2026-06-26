@@ -1,7 +1,11 @@
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.active_ability import Active_Ability
+from scripts.entities.moving_entities.enemies.behavior.abilities.registry import register_ability
 from scripts.engine.keys.keys import keys
 import pygame
 import math
+
+
+@register_ability(keys.dash) # add ability to registry
 
 class Dash(Active_Ability):
     def __init__(self, game, entity, name, min_distance = 70, max_distance = 250, speed_factor = 10):

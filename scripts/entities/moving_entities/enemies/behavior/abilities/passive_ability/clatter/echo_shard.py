@@ -1,9 +1,12 @@
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.passive_ability import Passive_Ability
 from scripts.engine.keys.keys import keys
+from scripts.entities.moving_entities.enemies.behavior.abilities.registry import register_ability
 
 INVISIBILITY_FACTOR = 6
 CLATTERCOOLDOWN_MAX = 10.0
 
+
+@register_ability(keys.echo_shard) # add ability to registry
 class Echo_Shard(Passive_Ability):
     def __init__(self, game, entity, name):
         super().__init__(game, entity, name)

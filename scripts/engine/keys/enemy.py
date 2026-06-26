@@ -121,6 +121,7 @@ class Enemy():
 
     ethereal = "ethereal"
 
+    anti_magic = "anti_magic"
 # Void Spawn
 
     shade = "shade"

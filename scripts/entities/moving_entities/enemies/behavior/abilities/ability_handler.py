@@ -1,56 +1,10 @@
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.dash import Dash
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.jump_attack import Jump_Attack
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.run_away import Run_Away
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.effects.invulnerable import Invulnerable
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.effects.invisibility import Invisibility
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.effects.rage import Rage
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.charge import Charge
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.rally import Rally
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.electrify import Electrify
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.healer import Healer
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.crystal_scale import Crystal_Scale
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.gloom_stalker import Gloom_Stalker
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_eater import Bone_Eater
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_ressurector import Bone_Resurrector
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.damage_reduction.ethereal import Ethereal
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.clatter.echo_location import Echo_Location
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.clatter.echo_teleport import Echo_Teleport
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.clatter.echo_shard import Echo_Shard
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.fire_born import Fire_Born
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.glacial_core import Glacial_Core
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.toxicosis import Toxicosis
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.galvanic_skin import Galvanic_Skin
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.sanguine_lord import Sanguine_Lord
+from scripts.entities.moving_entities.enemies.behavior.abilities.registry import ABILITY_REGISTRY
 from scripts.entities.moving_entities.enemies.behavior.abilities.distance_functions import DISTANCE_REGISTRY
 from scripts.engine.keys.keys import keys
 
 class Ability_Handler():
-
-    ABILITY_REGISTRY = {
-        keys.dash : Dash,
-        keys.jump : Jump_Attack,
-        keys.run_away : Run_Away,
-        keys.invulnerable : Invulnerable,
-        keys.rage : Rage,
-        keys.invisibility : Invisibility,
-        keys.charge : Charge,
-        keys.rally : Rally,
-        keys.electrify : Electrify,
-        keys.healer : Healer,
-        keys.crystal_scale : Crystal_Scale,
-        keys.gloom_stalker : Gloom_Stalker,
-        keys.fire_born : Fire_Born,
-        keys.glacial_core : Glacial_Core,
-        keys.toxicosis : Toxicosis,
-        keys.galvanic_skin : Galvanic_Skin,
-        keys.sanguine_lord : Sanguine_Lord,
-        keys.bone_eater : Bone_Eater,
-        keys.bone_ressurector : Bone_Resurrector,
-        keys.ethereal : Ethereal, 
-        keys.echo_location : Echo_Location, 
-        keys.echo_shard : Echo_Shard, 
-        keys.echo_teleport : Echo_Teleport
-    }
+    # It just references the dynamically built dictionary!
+    ABILITY_REGISTRY = ABILITY_REGISTRY
 
     def __init__(self, game, entity):
         self.game = game

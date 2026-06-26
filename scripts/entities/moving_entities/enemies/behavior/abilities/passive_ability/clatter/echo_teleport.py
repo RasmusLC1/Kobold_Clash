@@ -1,6 +1,10 @@
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.passive_ability import Passive_Ability
 import random
+from scripts.entities.moving_entities.enemies.behavior.abilities.registry import register_ability
+from scripts.engine.keys.keys import keys
 
+
+@register_ability(keys.echo_teleport) # add ability to registry
 class Echo_Teleport(Passive_Ability):
     def __init__(self, game, entity, name):
         super().__init__(game, entity, name)

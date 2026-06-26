@@ -1,8 +1,11 @@
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.passive_ability import Passive_Ability
+from scripts.entities.moving_entities.enemies.behavior.abilities.registry import register_ability
 from scripts.engine.keys.keys import keys
+
 
 CRYSTAL_SCALE_HEALTH_COOLDOWN_MAX = 1 # heals 1 health every second
 
+@register_ability(keys.crystal_scale)
 class Crystal_Scale(Passive_Ability):
     def __init__(self, game, entity, name):
         super().__init__(game, entity, name)

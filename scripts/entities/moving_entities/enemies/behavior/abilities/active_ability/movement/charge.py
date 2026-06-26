@@ -1,8 +1,11 @@
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.active_ability import Active_Ability
 from scripts.engine.keys.keys import keys
+from scripts.entities.moving_entities.enemies.behavior.abilities.registry import register_ability
+
 
 COOLDOWN_TIME = 50
 # Increases speed when enemy spots the player
+@register_ability(keys.charge) # add ability to registry
 class Charge(Active_Ability):
     def __init__(self, game, entity, name):
         super().__init__(game, entity, name, can_attack_while_triggered=True)

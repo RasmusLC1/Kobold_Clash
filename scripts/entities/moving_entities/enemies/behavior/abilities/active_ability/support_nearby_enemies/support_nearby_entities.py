@@ -1,5 +1,4 @@
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.active_ability import Active_Ability
-from scripts.engine.keys.keys import keys
 
 COOLDOWN_TIME = 10
 # Base class ability for buffing nearby enemies 

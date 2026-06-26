@@ -1,5 +1,10 @@
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.passive_ability import Passive_Ability
+from scripts.entities.moving_entities.enemies.behavior.abilities.registry import register_ability
+from scripts.engine.keys.keys import keys
 
+
+
+@register_ability(keys.echo_location) # add ability to registry
 class Echo_Location(Passive_Ability):
     def __init__(self, game, entity, name):
         super().__init__(game, entity, name)
