@@ -4,17 +4,20 @@ import random
 class Echo_Teleport(Passive_Ability):
     def __init__(self, game, entity, name):
         super().__init__(game, entity, name)
+        # Subscribe to active sound events
+        self.game.enemy_handler.clatter_subscription.Subscribe_To_Acoustics(self.entity)
 
-    # Always registrer noises and path towards them
-    def Update(self, delta_time):
-        super().Update(delta_time)
-        if self.entity.locked_on_target:
+
+    def On_Clatter_Heard(self, clatter_pos):
+        if not self.Check_If_Trigger():
             return
         
-        clatter_pos = self.game.clatter.Check_If_Noise_Generated()
+        pos_x = clatter_pos[0] + random.randint(-100, 100)
+        pos_y = clatter_pos[1] + random.randint(-100, 100)
         
-        # Only act on the precise frame the noise is created
-        if clatter_pos:
-            pos_x = clatter_pos[0] + random.randint(-100, 100)
-            pos_y = clatter_pos[1] + random.randint(-100, 100)
-            self.entity.Set_Position((pos_x, pos_y))
+        self.entity.Set_Position((pos_x, pos_y))
+
+    def Check_If_Trigger(self) -> bool:
+        if self.entity.locked_on_target:
+            return False
+        return True

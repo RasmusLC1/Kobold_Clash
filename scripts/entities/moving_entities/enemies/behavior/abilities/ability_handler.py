@@ -200,6 +200,11 @@ class Ability_Handler():
             return True
         return self.active_ability.Check_If_Attack_Allowed()
     
+    def On_Clatter_Heard(self, clatter_pos):
+        for ability in self.passive_abilities:
+            ability.On_Clatter_Heard(clatter_pos)
+
+    
     def Check_Player_Distance(self, max_distance, delta_time):
         # Execute the active strategy function pointer, passing self context
         return self.player_distance_check_fn(self, max_distance, delta_time)

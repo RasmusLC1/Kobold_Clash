@@ -41,6 +41,9 @@ class Ability():
     def Update_Cooldown(self):
         return True
     
+    def On_Clatter_Heard(self, clatter_pos):
+        pass
+    
     # Preents constant trigger checks
     def Check_Trigger_Cooldown(self, delta_time):
         return True

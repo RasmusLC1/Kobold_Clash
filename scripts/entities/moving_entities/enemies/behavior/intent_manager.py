@@ -69,5 +69,8 @@ class Intent_Manager():
     def Set_Ability(self, ability_name):
         return self.behavior_manager.Set_Ability(ability_name)
     
+    def On_Clatter_Heard(self, clatter_pos):
+        self.behavior_manager.On_Clatter_Heard(clatter_pos)
+    
     def Render_Abilities(self, surf, offset):
         self.behavior_manager.Render_Abilities(surf, offset)

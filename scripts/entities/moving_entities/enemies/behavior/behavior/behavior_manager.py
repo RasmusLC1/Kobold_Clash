@@ -193,3 +193,6 @@ class Behavior_Manager():
     
     def Reset_Attack_Speed(self):
         return self.attack_handler.Reset_Max_Weapon_Charge()
+    
+    def On_Clatter_Heard(self, clatter_pos):
+        self.ability_handler.On_Clatter_Heard(clatter_pos)

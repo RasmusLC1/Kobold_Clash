@@ -63,7 +63,6 @@ class Enemy(Moving_Entity):
             game, self, stats.path_finding_strategy, 
             stats.behavior, self.max_weapon_charge
         )
-
         self.Set_Ability(stats.ability)
         self.Set_Description()
 
@@ -108,6 +107,10 @@ class Enemy(Moving_Entity):
         self.Set_Damaged(False)
         self.Reset_Max_Speed()
 
+    
+    def On_Clatter_Heard(self, clatter_pos):
+        self.intent_manager.On_Clatter_Heard(clatter_pos)
+    
 
     def Calculate_Distance_To_Player(self, delta_time):
         if self.distance_calculation_cooldown > 0:
@@ -397,7 +400,7 @@ class Enemy(Moving_Entity):
 
     def Reset_Behavior(self):
         self.intent_manager.Reset_Behavior()
-    
+
 
     def Render_Attacking_Symbol(self, surf, offset = (0,0)):
         if self.charge < 0:

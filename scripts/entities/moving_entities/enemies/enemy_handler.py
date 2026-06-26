@@ -1,6 +1,7 @@
 from scripts.entities.moving_entities.enemies.crypt.crypt_spawn import Crypt_Spawn
 from scripts.entities.moving_entities.enemies.crystal_caverns.crystal_cavern_spawn import Crystal_Cavern_Spawn
 from scripts.entities.moving_entities.enemies.enemy_pathfinding_handler import Enemy_Pathfinding_Handler
+from scripts.entities.moving_entities.enemies.clatter_subscription import Clatter_Subscription
 from scripts.engine.keys.keys import keys
 import random
 
@@ -12,9 +13,9 @@ class Enemy_Handler():
         self.enemy_spawner = None
         self.enemies = []
         self.pathfinding_handler = Enemy_Pathfinding_Handler(game)
+        self.clatter_subscription = Clatter_Subscription()
         self.nearby_enemies = []
         self.saved_data = {}
-        self.clatter_subscription = set()
         self.should_sort_queue = False # Optimization state latch
 
     def Save_Enemy_Data(self):
@@ -41,6 +42,7 @@ class Enemy_Handler():
         self.saved_data.clear()
         self.pathfinding_handler.pathfinding_queue.clear()
         self.pathfinding_handler.patrol_queue.clear() # Added structural reset safety
+        self.clatter_subscription.Clear_Acoustic_Listeners()
         self.should_sort_queue = False
 
     def Initialise(self):
@@ -105,6 +107,8 @@ class Enemy_Handler():
         self.game.entities_render.Remove_Entity(enemy)
         if enemy in self.enemies:
             self.enemies.remove(enemy)
+
+        self.clatter_subscription.Unsubscribe_From_Acoustics(enemy)
         
         # Completely untangle references from BOTH load-balanced processing streams
         if enemy in self.pathfinding_handler.pathfinding_queue:
@@ -145,6 +149,8 @@ class Enemy_Handler():
                 nearby_enemies.append(enemy)
         return nearby_enemies
     
+    def Subscribe_To_Acoustics(self, entity):
+        self.clatter_subscription.Subscribe_To_Acoustics(entity)
     
      # Add enemies to a pathfinding queue for performance and lock them in and set their destination
     def Add_To_Pathfinding_Queue(self, enemy, destination):

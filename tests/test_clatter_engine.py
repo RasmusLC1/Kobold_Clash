@@ -125,3 +125,43 @@ def test_silence_modifier_clamped_to_minimum(clean_clatter, mock_game):
     # 100 - 1000 would be negative, should clamp to 1
     modified_range = clean_clatter.Calculate_Silence_Modifier(clatter_range=100)
     assert modified_range == 1
+
+
+# ==================== EXTENDED NEW TESTS ====================
+
+def test_generate_clatter_broadcasts_to_acoustic_subscribers(clean_clatter, mock_game):
+    """Verifies that successful clatter events are instantly broadcast to the observer channel."""
+    clean_clatter.clatter_cooldown = 0
+    target_pos = (450, 200)
+    
+    clean_clatter.Generate_Clatter(center=target_pos, clatter_range=200)
+    
+    # Confirm the message was published directly to the subscription matrix
+    mock_game.enemy_handler.clatter_subscription.Broadcast_Clatter.assert_called_once_with(target_pos)
+
+
+def test_check_clatter_cooldown_reflects_state_correctly(clean_clatter):
+    """Validates the boolean output accuracy of Check_Clatter_Cooldown."""
+    clean_clatter.clatter_cooldown = 0.0
+    assert clean_clatter.Check_Clatter_Cooldown() is False
+    
+    clean_clatter.clatter_cooldown = 0.2
+    assert clean_clatter.Check_Clatter_Cooldown() is True
+
+
+def test_awakening_level_management(clean_clatter):
+    """Validates getter, increments, and reset pipelines for dungeon awakening state properties."""
+    # Setup initial mock properties
+    clean_clatter.mock_awakening.awakening_level = 3
+    
+    # Test Getter proxy
+    assert clean_clatter.Get_Awakening_Level() == 3
+    
+    # Test Incrementor mechanics
+    clean_clatter.Increase_Awakening()
+    clean_clatter.mock_awakening.Set_Awakening_Level.assert_called_with(4)
+    
+    # Test Reset structural commands
+    clean_clatter.Reset_Awakening_Level()
+    assert clean_clatter.mock_awakening.awakening_cooldown == 0
+    clean_clatter.mock_awakening.Set_Awakening_Level.assert_called_with(0)

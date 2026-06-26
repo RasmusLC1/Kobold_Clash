@@ -709,16 +709,18 @@ def test_echo_shard_initializes_hidden(echo_shard_context):
     entity.Set_Effect.assert_called_once_with(effect=keys.invisibility, duration=6, permanent=True)
 
 
+# ==================== ECHO SHARD TESTS ====================
+
 def test_clatter_detection_reveals_enemy(echo_shard_context):
     game, entity, ability = echo_shard_context
     ability.clatter_cooldown = 0.0  # Clear startup latch
+    ability.is_revealed = False
     
-    # Simulate noise generation event trigger
-    game.clatter.Check_If_Noise_Generated.return_value = (500, 500)
+    # 1. Directly fire the event into the ability
+    clatter_pos = (500, 500)
+    ability.On_Clatter_Heard(clatter_pos)
     
-    ability.Update(delta_time=0.016)
-    
-    # Assert state transitions shifted correctly
+    # 2. Assert state transitions shifted correctly instantly without needing an Update tick
     assert ability.is_revealed is True
     assert ability.clatter_cooldown == 10.0
     entity.Remove_Effect.assert_called_once_with(effect=keys.invisibility, reduce_permanent=6)
@@ -728,13 +730,13 @@ def test_subsequent_clatter_refreshes_timer_without_re_removing_effect(echo_shar
     game, entity, ability = echo_shard_context
     ability.is_revealed = True
     ability.clatter_cooldown = 4.0  # Ticking down
+    entity.Remove_Effect.reset_mock() # Clear any setup calls
     
-    # Noise heard mid-reveal window
-    game.clatter.Check_If_Noise_Generated.return_value = (200, 200)
+    # 1. Fire a subsequent noise event mid-reveal window
+    clatter_pos = (200, 200)
+    ability.On_Clatter_Heard(clatter_pos)
     
-    ability.Update(delta_time=0.016)
-    
-    # Timer should snap back to max, but Remove_Effect shouldn't be called again
+    # 2. Timer snaps back to max, but Remove_Effect is bypassed
     assert ability.clatter_cooldown == 10.0
     entity.Remove_Effect.assert_not_called()
 
@@ -749,6 +751,9 @@ def test_timer_expiry_re_conceals_enemy(echo_shard_context):
     assert ability.is_revealed is False
     assert ability.clatter_cooldown <= 0
     entity.Set_Effect.assert_called_once_with(effect=keys.invisibility, duration=6, permanent=True)
+
+
+# ==================== ECHO TELEPORT TESTS ====================
 
 @pytest.fixture
 def teleport_context():
@@ -778,27 +783,23 @@ def test_update_handles_quiet_frames_without_crashing(teleport_context):
     # Verify that no teleportation was mistakenly attempted
     entity.Set_Position.assert_not_called()
 
-
 def test_clatter_triggers_teleportation_in_range(teleport_context):
     game, entity, ability = teleport_context
+    entity.locked_on_target = False  # Ensure gatekeeper allows it
     
-    # Simulate a noisy frame at specific coordinates
+    # 1. Fire the event directly
     clatter_source = (500, 500)
-    game.clatter.Check_If_Noise_Generated.return_value = clatter_source
+    ability.On_Clatter_Heard(clatter_source)
     
-    ability.Update(delta_time=0.016)
-    
-    # Verify Set_Position was called exactly once
+    # 2. Verify Set_Position was called exactly once
     entity.Set_Position.assert_called_once()
     
-    # Extract the actual arguments passed to Set_Position
-    called_args = entity.Set_Position.call_args[0][0]  # Expecting a tuple (x, y)
+    # Extract and check boundaries
+    called_args = entity.Set_Position.call_args[0][0]
     actual_x, actual_y = called_args
     
-    # Verify the final position falls strictly within the randomized offset window (-100 to 100)
     assert 400 <= actual_x <= 600
     assert 400 <= actual_y <= 600
-
 
 def test_locked_on_target_blocks_teleportation(teleport_context):
     game, entity, ability = teleport_context

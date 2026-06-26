@@ -22,7 +22,6 @@ class Clatter():
         self.clatter_cooldown -= delta_time
         return False
 
-
     def Generate_Clatter(self, center, clatter_range):
         if self.clatter_cooldown > 0:
             return
@@ -32,15 +31,19 @@ class Clatter():
 
         clatter_range = self.Calculate_Silence_Modifier(clatter_range)
         self.awakening.Trigger_Awakening()
-        # find nearby enemies and prefilter them 
+        
+        # 1. Standard handling for normal nearby pathfinding queues
         nearby_enemies = [
             enemy for enemy in self.game.enemy_handler.Find_Nearby_Enemies(self.game.player, clatter_range)
             if enemy and not enemy.locked_on_target
         ]
             
         for enemy in nearby_enemies:
-            # Add enemy to pathfinding queue
             self.game.enemy_handler.Add_To_Pathfinding_Queue(enemy, center)
+
+        # 2. EVENT BROADCAST: Instantly alert all sub-abilities listening for acoustics
+        # Passive abilities like Echo_Shard and Echo_Teleport get triggered right here!
+        self.game.enemy_handler.clatter_subscription.Broadcast_Clatter(center)
 
     def Check_Clatter_Cooldown(self):
         return self.clatter_cooldown > 0
@@ -61,14 +64,6 @@ class Clatter():
 
         return clatter_range
 
-    def Check_If_Noise_Generated(self):
-        if self.clatter_cooldown <= 0:
-            return None
-        
-        return self.clatter_position
-
-    # Sets awakening level to 0
     def Reset_Awakening_Level(self):
         self.awakening.awakening_cooldown = 0
         self.awakening.Set_Awakening_Level(0)
-

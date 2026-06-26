@@ -3,21 +3,24 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability
 class Echo_Location(Passive_Ability):
     def __init__(self, game, entity, name):
         super().__init__(game, entity, name)
+        # Register the distance checking function strategy
         self.entity.intent_manager.behavior_manager.ability_handler.Set_Player_Distance(self.name)
+        
+        # Subscribe to active sound events
+        self.game.enemy_handler.clatter_subscription.Subscribe_To_Acoustics(self.entity)
 
-    # Always registrer noises and path towards them
-    def Update(self, delta_time):
-        if self.entity.locked_on_target:
+
+    def On_Clatter_Heard(self, clatter_pos):
+        if not self.Check_If_Trigger():
             return
-        
-        clatter_pos = self.game.clatter.Check_If_Noise_Generated()
-        
-        # Only act on the precise frame the noise is created
-        if clatter_pos:
-            self.game.enemy_handler.Add_To_Pathfinding_Queue(
-                self.entity, 
-                clatter_pos
-            )
-        
-        # Ensure the underlying base tick updates execute smoothly every frame
-        super().Update(delta_time)
+
+        # Add this specific entity directly to the active pathfinding queue
+        self.game.enemy_handler.Add_To_Pathfinding_Queue(
+            self.entity, 
+            clatter_pos
+        )
+
+    def Check_If_Trigger(self) -> bool:
+        if self.entity.locked_on_target:
+            return False
+        return True
