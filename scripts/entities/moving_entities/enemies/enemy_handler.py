@@ -13,7 +13,7 @@ class Enemy_Handler():
         self.enemy_spawner = None
         self.enemies = []
         self.pathfinding_handler = Enemy_Pathfinding_Handler(game)
-        self.clatter_subscription = Clatter_Subscription()
+        self.clatter_subscription = Clatter_Subscription() # Used for clatter mechanics
         self.nearby_enemies = []
         self.saved_data = {}
         self.should_sort_queue = False # Optimization state latch

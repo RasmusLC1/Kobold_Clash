@@ -12,7 +12,7 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.gloom_stalker import Gloom_Stalker
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_eater import Bone_Eater
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_ressurector import Bone_Resurrector
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.ethereal import Ethereal
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.damage_reduction.ethereal import Ethereal
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.clatter.echo_location import Echo_Location
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.clatter.echo_teleport import Echo_Teleport
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.clatter.echo_shard import Echo_Shard
@@ -21,7 +21,7 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.toxicosis import Toxicosis
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.galvanic_skin import Galvanic_Skin
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.sanguine_lord import Sanguine_Lord
-from scripts.entities.moving_entities.enemies.behavior.abilities.distance_functions import Distance_Functions, DISTANCE_REGISTRY
+from scripts.entities.moving_entities.enemies.behavior.abilities.distance_functions import DISTANCE_REGISTRY
 from scripts.engine.keys.keys import keys
 
 class Ability_Handler():
@@ -59,7 +59,6 @@ class Ability_Handler():
         self.active_ability = None  # Holds the single assigned active ability (or None)
         self.abilities_on_cooldown = []
         self.is_running_ability = False  # Track execution state separately from assignment
-        self.echo_linger_timer = 0  # Timer to track if player has moved, used by echo location distance
         self.Set_Player_Distance(keys.standard)
 
     def Save_Data(self):
@@ -201,18 +200,20 @@ class Ability_Handler():
         return self.active_ability.Check_If_Attack_Allowed()
     
     def On_Clatter_Heard(self, clatter_pos):
-        for ability in self.passive_abilities:
+        for ability in self.passive_abilities.values():
             ability.On_Clatter_Heard(clatter_pos)
 
     
     def Check_Player_Distance(self, max_distance, delta_time):
-        # Execute the active strategy function pointer, passing self context
-        return self.player_distance_check_fn(self, max_distance, delta_time)
+        # Call the .check method on our active strategy object instance
+        return self.player_distance_strategy.check(max_distance, delta_time)
 
     def Set_Player_Distance(self, type_key):
-        # Fetch function from registry, fall back to standard if not found
-        self.player_distance_check_fn = DISTANCE_REGISTRY.get(type_key,
-                                            DISTANCE_REGISTRY[keys.standard])
+        # Fetch the class structure layout from your registry map
+        strategy_class = DISTANCE_REGISTRY.get(type_key, DISTANCE_REGISTRY[keys.standard])
+        
+        # Instantiate it dynamically, binding this handler context onto it
+        self.player_distance_strategy = strategy_class(self)
 
 
     def Damage_Taken(self, damage, effect, direction, attacker):

@@ -1,53 +1,55 @@
 from scripts.engine.keys.keys import keys
 import pygame
 
-class Distance_Functions:
+class DistanceStrategy:
+    def __init__(self, handler):
+        self.handler = handler
 
-    @staticmethod
-    def Standard_Distance_Check(handler, max_distance, delta_time=0):
-        return handler.entity.distance_to_player < max_distance
+    def check(self, max_distance, delta_time=0) -> bool:
+        raise NotImplementedError
 
-    @staticmethod
-    def Echo_Location_Distance_Check(handler, max_distance, delta_time=0):
+
+class StandardDistanceCheck(DistanceStrategy):
+    def check(self, max_distance, delta_time=0) -> bool:
+        return self.handler.entity.distance_to_player < max_distance
+
+
+class EchoLocationDistanceCheck(DistanceStrategy):
+    def __init__(self, handler):
+        super().__init__(handler)
+        # The timer now lives completely inside this specific ability strategy instance!
+        self.echo_linger_timer = 0.0
+
+    def check(self, max_distance, delta_time=0) -> bool:
         # 1. Physical proximity check first
-        if handler.entity.distance_to_player >= max_distance:
-            # If the player is physically out of range, clear the linger window entirely
-            handler.echo_linger_timer = 0
+        if self.handler.entity.distance_to_player >= max_distance:
+            self.echo_linger_timer = 0.0
             return False
-            
-        # 2. Dynamic state initialization on the handler
-        if not hasattr(handler, 'echo_linger_timer'):
-            handler.echo_linger_timer = 0.0
 
-        player_moving = Distance_Functions._Check_Keyboard_Input(handler)
+        player_moving = self._Check_Keyboard_Input()
 
-        # 4. State evaluation machine
+        # 2. State evaluation machine
         if player_moving:
-            # Reset/refresh the 1-second retention window
-            handler.echo_linger_timer = 5.0
+            self.echo_linger_timer = 5.0
             return True
         else:
-            # Decay the retention window cleanly frame-by-frame
-            if handler.echo_linger_timer > 0:
-                handler.echo_linger_timer -= delta_time
-                return True # Player is still tracked during the fade window
+            if self.echo_linger_timer > 0:
+                self.echo_linger_timer -= delta_time
+                return True 
             
-            return False # Window closed; target completely lost
+            return False
 
-    @staticmethod
-    def _Check_Keyboard_Input(handler):
-        # 3. Check current snapshot input state
-        kh = handler.game.keyboard_handler
-        player_moving = (
+    def _Check_Keyboard_Input(self):
+        kh = self.handler.game.keyboard_handler
+        return (
             kh.is_key_pressed(pygame.K_w) or 
             kh.is_key_pressed(pygame.K_a) or
             kh.is_key_pressed(pygame.K_s) or 
             kh.is_key_pressed(pygame.K_d)
         )
-        return player_moving       
 
-# Map keys directly to the executable logic functions
+# Map keys directly to the strategy Classes instead of static methods
 DISTANCE_REGISTRY = {
-    keys.standard: Distance_Functions.Standard_Distance_Check,
-    keys.echo_location: Distance_Functions.Echo_Location_Distance_Check,
+    keys.standard: StandardDistanceCheck,
+    keys.echo_location: EchoLocationDistanceCheck,
 }

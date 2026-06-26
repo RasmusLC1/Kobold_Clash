@@ -28,7 +28,7 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.ability_handler
 
 # Import the core passive & active modules for structure matching
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.gloom_stalker import Gloom_Stalker
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.ethereal import Ethereal
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.damage_reduction.ethereal import Ethereal
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.crystal_scale import Crystal_Scale
 
 # Import missing concrete active and support abilities

@@ -9,7 +9,6 @@ from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.enemies.behavior.abilities.ability_handler import (
     Ability_Handler, 
     DISTANCE_REGISTRY,
-    Distance_Functions
 )
 # ==============================================================================
 # FIXTURES & MOCKING CONTEXTS
@@ -391,5 +390,5 @@ def test_fallback_to_standard_on_invalid_key(mock_game_and_entity):
     # Pass a non-existent tracking key type string
     handler.Set_Player_Distance("invalid_sensory_key_type")
     
-    # It should safely degrade to using the standard distance function layout pointer
-    assert handler.player_distance_check_fn == DISTANCE_REGISTRY[keys.standard]
+    # Verify it safely degraded and instantiated the standard fallback class
+    assert type(handler.player_distance_strategy) is DISTANCE_REGISTRY[keys.standard]
