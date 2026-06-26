@@ -1,8 +1,8 @@
 import pytest
-import math
 import pygame
 from unittest.mock import MagicMock, patch
-
+from scripts.engine.keys.keys import keys
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.clatter.echo_shard import Echo_Shard
 
 
 # ==============================================================================
@@ -20,7 +20,7 @@ class DynamicMockKeys:
 # Adjust imports matching your local package directories if needed
 from scripts.entities.moving_entities.enemies.behavior.path_finding import Path_Finding
 from scripts.entities.moving_entities.enemies.behavior.movement_strategies import Movement_Strategies
-from scripts.entities.moving_entities.enemies.behavior.behavior_manager import Behavior_Manager
+from scripts.entities.moving_entities.enemies.behavior.behavior.behavior_manager import Behavior_Manager
 from scripts.entities.moving_entities.enemies.behavior.attack_handler import Attack_Handler
 from scripts.entities.moving_entities.enemies.behavior.intent_manager import Intent_Manager
 # Import the main handler class
@@ -248,12 +248,25 @@ def test_calculate_fallback_behavior_probabilistic_weighting(mock_game, mock_ent
 
 
 def test_update_behavior_skips_when_player_not_spotted(mock_game, mock_entity):
-    bm = Behavior_Manager(mock_game, mock_entity, MockKeys.idle, 100)
+    # Setup standard required entity properties to survive behavior creation
+    mock_entity.health = 100
+    mock_entity.size = [32, 32]
+    mock_entity.agility = 1
+    mock_entity.intelligence = 1
+    mock_entity.player_spotted = False
+    
+    bm = Behavior_Manager(mock_game, mock_entity, keys.idle, 100)
     bm.max_distance = 50
     mock_entity.distance_to_player = 200.0  # Outside detection bubble
     
-    assert bm.Update_Behavior(0.016) is None
-
+    # Force the underlying component check to explicitly fail detection
+    bm.ability_handler.Check_Player_Distance = MagicMock(return_value=False)
+    
+    # Run the behavior update loop
+    result = bm.Update_Behavior(0.016)
+    
+    # The early return must hit cleanly and evaluate to None
+    assert result is None
 
 # ==============================================================================
 # 5. WEAPON CHARGING & ATTACK CYCLE CONTROL
@@ -268,7 +281,7 @@ def test_update_attack_sequence(mock_game, mock_entity):
     # Scenario: charging weapon sequence running
     bm.attack_handler.Update_Attack.return_value = True 
     
-    with patch.object(bm, 'behavior_pattern_function') as mock_pattern:
+    with patch.object(bm, 'current_behavior') as mock_pattern:
         bm.Update_Attack(0.016)
         mock_pattern.assert_not_called()
 
@@ -668,3 +681,71 @@ def test_healing_from_damage_type_status_conversion(mock_game, mock_entity):
     # Check that status effects morph safely into clean absorption mechanics
     mock_entity.Set_Effect.assert_any_call(keys.healing, 5)
     mock_entity.Set_Effect.assert_any_call(keys.electric + '_resistance', 2)
+
+@pytest.fixture
+def echo_shard_context():
+    """Sets up a clean test framework for an Echo Shard instance."""
+    game = MagicMock()
+    entity = MagicMock()
+    
+    # Mock clatter subsystem behavior
+    game.clatter.Check_If_Noise_Generated.return_value = None
+    
+    ability = Echo_Shard(game, entity, "echo_shard")
+    return game, entity, ability
+
+
+def test_echo_shard_initializes_hidden(echo_shard_context):
+    game, entity, ability = echo_shard_context
+    
+    # Initial frame has a tiny cooldown to force initialization setup
+    assert ability.clatter_cooldown == 0.01
+    assert ability.is_revealed is False
+    
+    # Process first frame tick down to zero
+    ability.Update(delta_time=0.016)
+    
+    assert ability.clatter_cooldown <= 0
+    entity.Set_Effect.assert_called_once_with(effect=keys.invisibility, duration=6, permanent=True)
+
+
+def test_clatter_detection_reveals_enemy(echo_shard_context):
+    game, entity, ability = echo_shard_context
+    ability.clatter_cooldown = 0.0  # Clear startup latch
+    
+    # Simulate noise generation event trigger
+    game.clatter.Check_If_Noise_Generated.return_value = (500, 500)
+    
+    ability.Update(delta_time=0.016)
+    
+    # Assert state transitions shifted correctly
+    assert ability.is_revealed is True
+    assert ability.clatter_cooldown == 10.0
+    entity.Remove_Effect.assert_called_once_with(effect=keys.invisibility, reduce_permanent=6)
+
+
+def test_subsequent_clatter_refreshes_timer_without_re_removing_effect(echo_shard_context):
+    game, entity, ability = echo_shard_context
+    ability.is_revealed = True
+    ability.clatter_cooldown = 4.0  # Ticking down
+    
+    # Noise heard mid-reveal window
+    game.clatter.Check_If_Noise_Generated.return_value = (200, 200)
+    
+    ability.Update(delta_time=0.016)
+    
+    # Timer should snap back to max, but Remove_Effect shouldn't be called again
+    assert ability.clatter_cooldown == 10.0
+    entity.Remove_Effect.assert_not_called()
+
+
+def test_timer_expiry_re_conceals_enemy(echo_shard_context):
+    game, entity, ability = echo_shard_context
+    ability.is_revealed = True
+    ability.clatter_cooldown = 0.005  # Almost expired
+    
+    ability.Update(delta_time=0.016)
+    
+    assert ability.is_revealed is False
+    assert ability.clatter_cooldown <= 0
+    entity.Set_Effect.assert_called_once_with(effect=keys.invisibility, duration=6, permanent=True)

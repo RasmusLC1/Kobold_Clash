@@ -447,8 +447,8 @@ Upgrade weapons
     # Poison Elemental, creates poison plumes around the player and explodes when damaged
     # Minotaur, boss mob, charges and breaks envoirement, high damage, low defence
     # Medusa, shoots electric projetiles and fast but very low health, will switch to melee if player is to close, chance to stun player if player mouse is closer to medusa than player
-    Clicker, blind but good hearing, prefers the dark and can detect the faintest sounds
-    Echo stalker, becomes visible for 60 seconds when clatter is generated
+    # Clicker, blind but good hearing, prefers the dark and can detect the faintest sounds
+    Echo shard, becomes visible for 10 seconds when clatter is generated
     Shard Wraith, teleports close to clatter source when clatter is generated
     Crystal Scarab, basic enemy that swarms player
     Hydra, boss mob, regens health fast, gains immunity to the last effect type that damaged it

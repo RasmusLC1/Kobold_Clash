@@ -19,14 +19,7 @@ class Distance_Functions:
         if not hasattr(handler, 'echo_linger_timer'):
             handler.echo_linger_timer = 0.0
 
-        # 3. Check current snapshot input state
-        kh = handler.game.keyboard_handler
-        player_moving = (
-            kh.is_key_pressed(pygame.K_w) or 
-            kh.is_key_pressed(pygame.K_a) or
-            kh.is_key_pressed(pygame.K_s) or 
-            kh.is_key_pressed(pygame.K_d)
-        )
+        player_moving = Distance_Functions._Check_Keyboard_Input(handler)
 
         # 4. State evaluation machine
         if player_moving:
@@ -40,7 +33,18 @@ class Distance_Functions:
                 return True # Player is still tracked during the fade window
             
             return False # Window closed; target completely lost
-        
+
+    @staticmethod
+    def _Check_Keyboard_Input(self, handler):
+        # 3. Check current snapshot input state
+        kh = handler.game.keyboard_handler
+        player_moving = (
+            kh.is_key_pressed(pygame.K_w) or 
+            kh.is_key_pressed(pygame.K_a) or
+            kh.is_key_pressed(pygame.K_s) or 
+            kh.is_key_pressed(pygame.K_d)
+        )
+        return player_moving       
 
 # Map keys directly to the executable logic functions
 DISTANCE_REGISTRY = {

@@ -71,6 +71,7 @@ class Moving_Entity(PhysicsEntity):
 
     @property
     def last_frame_movement(self): return self.movement.last_frame_movement
+
     @last_frame_movement.setter
     def last_frame_movement(self, val): self.movement.last_frame_movement = val
 

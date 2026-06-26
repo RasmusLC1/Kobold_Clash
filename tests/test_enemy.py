@@ -1,7 +1,6 @@
 import pytest
-from unittest.mock import MagicMock, patch, call
-from collections import deque
 import pygame
+from unittest.mock import MagicMock, patch, call
 
 from scripts.entities.moving_entities.enemies.enemy_spawner import Enemy_Spawner
 from scripts.entities.moving_entities.enemies.enemy_pathfinding_handler import Enemy_Pathfinding_Handler
@@ -322,7 +321,7 @@ def test_standard_distance_check_within_range(mock_game_and_entity):
     handler = Ability_Handler(game, entity)
     
     # Standard check: inside max_distance (200 < 300) -> Should be True
-    assert handler.Check_Player_Distance(max_distance=300) is True
+    assert handler.Check_Player_Distance(max_distance=300, delta_time=0.2) is True
 
 
 def test_standard_distance_check_out_of_range(mock_game_and_entity):
@@ -330,21 +329,26 @@ def test_standard_distance_check_out_of_range(mock_game_and_entity):
     handler = Ability_Handler(game, entity)
     
     # Standard check: outside max_distance (200 > 150) -> Should be False
-    assert handler.Check_Player_Distance(max_distance=150) is False
+    assert handler.Check_Player_Distance(max_distance=150, delta_time=0.2) is False
 
 
 def test_echo_location_player_perfectly_still(mock_game_and_entity):
     game, entity = mock_game_and_entity
     handler = Ability_Handler(game, entity)
-    
-    # Pivot strategy pointer to echo location
     handler.Set_Player_Distance(keys.echo_location)
     
-    # Player is close (200 < 300) but stationary ([0,0]) -> Should lose target (False)
-    game.player.velocity = [0.0, 0.0]
-    assert handler.Check_Player_Distance(max_distance=300) is False
-
-
+    # 1. Force the keyboard handler mock to return clean Booleans instead of truthy Mocks
+    game.keyboard_handler.is_key_pressed.return_value = False
+    
+    # 2. Force the linger timer to 0 so we aren't catching a leftover tracking window
+    handler.echo_linger_timer = 0.0
+    
+    # 3. Ensure player is within physical range bounds (200 < 300)
+    entity.distance_to_player = 200.0
+    
+    # Player is in range, but completely still with no linger window -> Must return False
+    assert handler.Check_Player_Distance(max_distance=300, delta_time=0.2) is False
+    
 def test_echo_location_player_moving(mock_game_and_entity):
     game, entity = mock_game_and_entity
     handler = Ability_Handler(game, entity)
@@ -354,19 +358,31 @@ def test_echo_location_player_moving(mock_game_and_entity):
     
     # Player is close (200 < 300) AND moving -> Should detect player (True)
     game.player.velocity = [1.5, 0.0]
-    assert handler.Check_Player_Distance(max_distance=300) is True
+    assert handler.Check_Player_Distance(max_distance=300,delta_time=0.2) is True
 
 
 def test_echo_location_player_moving_but_out_of_range(mock_game_and_entity):
     game, entity = mock_game_and_entity
     handler = Ability_Handler(game, entity)
-    
     handler.Set_Player_Distance(keys.echo_location)
     
-    # Player is moving, but physically too far away (200 > 100) -> Should be False
-    game.player.velocity = [5.0, 5.0]
-    assert handler.Check_Player_Distance(max_distance=100) is False
+    # 1. Simulate key presses indicating movement
+    game.input.is_key_pressed.side_effect = lambda key: key in [pygame.K_w, pygame.K_a]
+    
+    # 2. Player is moving, but physically out of bounds (200 > 100) -> Must return False
+    assert handler.Check_Player_Distance(max_distance=100, delta_time=0.2) is False
 
+
+def test_echo_location_player_moving_and_in_range(mock_game_and_entity):
+    game, entity = mock_game_and_entity
+    handler = Ability_Handler(game, entity)
+    handler.Set_Player_Distance(keys.echo_location)
+    
+    # 1. Simulate movement input keys
+    game.input.is_key_pressed.side_effect = lambda key: key in [pygame.K_d]
+    
+    # 2. Player is close enough (200 < 300) AND walking -> Must detect player (True)
+    assert handler.Check_Player_Distance(max_distance=300, delta_time=0.2) is True
 
 def test_fallback_to_standard_on_invalid_key(mock_game_and_entity):
     game, entity = mock_game_and_entity
