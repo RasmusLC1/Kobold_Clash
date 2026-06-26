@@ -107,6 +107,8 @@ class Enemy():
 
     fire_born = "fire_born"
 
+    adaptability = "adaptability" 
+
     glacial_core = "glacial_core"
 
     toxicosis = "toxicosis"
@@ -362,6 +364,15 @@ class Enemy():
     minotaur_attack = "minotaur_attack"
 
     minotaur_running = "minotaur_running"
+
+# Hydra
+    
+    hydra = "hydra"
+    
+    hydra_attack = "hydra_attack"
+
+    hydra_running = "hydra_running"
+
 
 # Medusa
     

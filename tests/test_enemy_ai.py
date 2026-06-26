@@ -41,6 +41,7 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_eater import Bone_Eater
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_ressurector import Bone_Resurrector
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.galvanic_skin import Galvanic_Skin
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.adaptability import Adaptability
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.damage_reduction.anti_magic import Anti_Magic
 
 
@@ -667,22 +668,120 @@ def test_jump_attack_movement_reduction_gate(mock_game, mock_entity):
     assert jump_attack.jump_trigged is False
 
 
-def test_healing_from_damage_type_status_conversion(mock_game, mock_entity):
-    """Checks that fire/electric status effects correctly convert to recovery states."""
+# ==============================================================================
+# GALVANIC SKIN TESTS (Static Element Matching)
+# ==============================================================================
+@pytest.fixture
+def mock_galvanic_entity(mock_entity):
+    """Sets up standard mock hooks for tracking Set_Effect modifications."""
+    mock_entity.Set_Effect = MagicMock()
+    return mock_entity
+
+def test_healing_from_damage_type_absorbs_and_heals(mock_game, mock_galvanic_entity):
+    """Verifies targeted element tuple is negated and hooks healing/resistance."""
     from scripts.engine.keys.keys import keys
+    keys.healing = "healing"
+    keys.electric = "electric"
+
+    galvanic = Galvanic_Skin(mock_game, mock_galvanic_entity, "galvanic_skin")
     
-    galvanic = Galvanic_Skin(mock_game, mock_entity, "galvanic_skin")
+    # Act: Simulate taking 10 electric damage via an (effect, intensity) tuple
+    final_damage = galvanic.Damage_Taken(
+        damage=10, 
+        effect=(keys.electric, 5), 
+        direction=(1, 0), 
+        attacker=None
+    )
     
-    # Emulate entity being under active element stress
-    mock_effect = MagicMock()
-    mock_effect.effect_strength = 5
-    mock_entity.Get_Effect.return_value = mock_effect
+    assert final_damage == 0  
+    mock_galvanic_entity.Set_Effect.assert_any_call(keys.healing, 5)            
+    mock_galvanic_entity.Set_Effect.assert_any_call("electric_resistance", 2)  
+
+
+def test_healing_from_damage_type_ignores_null_effects(mock_game, mock_galvanic_entity):
+    """If the tuple contains a falsy name or effect is empty, pass damage raw."""
+    galvanic = Galvanic_Skin(mock_game, mock_galvanic_entity, "galvanic_skin")
     
-    galvanic.Update(delta_time=0.016)
+    final_damage = galvanic.Damage_Taken(
+        damage=15, 
+        effect=(None, 0), 
+        direction=(0, 1), 
+        attacker=None
+    )
     
-    # Check that status effects morph safely into clean absorption mechanics
-    mock_entity.Set_Effect.assert_any_call(keys.healing, 5)
-    mock_entity.Set_Effect.assert_any_call(keys.electric + '_resistance', 2)
+    assert final_damage == 15  
+    mock_galvanic_entity.Set_Effect.assert_not_called()  
+
+
+def test_healing_from_damage_type_handles_odd_numbered_damage_flooring(mock_game, mock_galvanic_entity):
+    """Verifies integer floor division logic (// 2) behaves correctly with tuple damage input."""
+    from scripts.engine.keys.keys import keys
+    keys.healing = "healing"
+    keys.electric = "electric"
+
+    galvanic = Galvanic_Skin(mock_game, mock_galvanic_entity, "galvanic_skin")
+    
+    final_damage = galvanic.Damage_Taken(15, (keys.electric, 3), (0, 0), None)
+    
+    assert final_damage == 0
+    mock_galvanic_entity.Set_Effect.assert_any_call(keys.healing, 7)
+
+# ==============================================================================
+# ADAPTABILITY TESTS (Reactive Shifting)
+# ==============================================================================
+
+def test_adaptability_takes_damage_first_then_adapts(mock_game, mock_galvanic_entity):
+    """The first hit of an element should deal full damage, but set the adaptation state."""
+    from scripts.engine.keys.keys import keys
+    keys.fire = "fire"
+    keys.healing = "healing"
+
+    ability = Adaptability(mock_game, mock_galvanic_entity, "adaptability")
+    assert ability.effect_name is None  # Starts completely blank
+
+    # First Hit: Fire damage tuple
+    first_hit_damage = ability.Damage_Taken(20, (keys.fire, 5), (1, 0), None)
+
+    # Assertions for First Hit
+    assert first_hit_damage == 20  # Took full damage!
+    assert ability.effect_name == keys.fire  # But it learned fire!
+    mock_galvanic_entity.Set_Effect.assert_not_called()  # No healing triggered yet
+
+
+def test_adaptability_absorbs_same_element_on_subsequent_hits(mock_game, mock_galvanic_entity):
+    """The second consecutive hit of the same element should be entirely absorbed and heal."""
+    from scripts.engine.keys.keys import keys
+    keys.fire = "fire"
+    keys.healing = "healing"
+
+    ability = Adaptability(mock_game, mock_galvanic_entity, "adaptability")
+    
+    # Simulate that it already took a fire hit and adapted to it
+    ability.effect_name = keys.fire
+
+    # Second Hit: Fire damage tuple again
+    second_hit_damage = ability.Damage_Taken(20, (keys.fire, 5), (1, 0), None)
+
+    # Assertions for Second Hit
+    assert second_hit_damage == 0  # Successfully absorbed!
+    mock_galvanic_entity.Set_Effect.assert_any_call(keys.healing, 10)  # 20 // 2
+    mock_galvanic_entity.Set_Effect.assert_any_call("fire_resistance", 2)
+
+
+def test_adaptability_shifts_learning_when_hit_by_new_element(mock_game, mock_galvanic_entity):
+    """If adapted to Fire, an Ice hit should deal full damage and shift adaptation to Ice."""
+    from scripts.engine.keys.keys import keys
+    keys.fire = "fire"
+    keys.ice = "ice"
+
+    ability = Adaptability(mock_game, mock_galvanic_entity, "adaptability")
+    ability.effect_name = keys.fire  # Currently adapted to fire
+
+    # Hit with Ice instead
+    hit_damage = ability.Damage_Taken(30, (keys.ice, 2), (1, 0), None)
+
+    assert hit_damage == 30  # Took full damage because it wasn't ice-shielded
+    assert ability.effect_name == keys.ice  # Shield has now dynamically swapped to Ice!
 
 @pytest.fixture
 def echo_shard_context():

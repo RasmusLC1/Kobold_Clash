@@ -13,7 +13,7 @@ from scripts.entities.moving_entities.enemies.crypt.dwellers.vampire import Vamp
 from scripts.entities.moving_entities.enemies.crypt.void_spawn.shade import Shade
 from scripts.entities.moving_entities.enemies.crypt.void_spawn.phantom import Phantom
 from scripts.entities.moving_entities.enemies.crypt.void_spawn.wraith.wraith import Wraith
-from scripts.entities.moving_entities.enemies.crypt.skeleton.wight_king.wight_king import Wight_King
+from scripts.entities.moving_entities.enemies.crypt.skeleton.wight_king import Wight_King
 from scripts.entities.moving_entities.enemies.enemy_spawner import Enemy_Spawner
 from scripts.engine.keys.keys import keys
 

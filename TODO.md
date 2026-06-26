@@ -450,7 +450,7 @@ Upgrade weapons
     # Clicker, blind but good hearing, prefers the dark and can detect the faintest sounds
     # Echo shard, becomes visible for 10 seconds when clatter is generated
     # Echo Wraith, teleports close to clatter source when clatter is generated
-    Crystal Scarab, basic enemy that swarms player, immune to magic
+    # Crystal Scarab, basic enemy that swarms player, immune to magic
     Hydra, boss mob, regens health fast, gains immunity to the last effect type that damaged it
     Kobold, steals items from player and runs away
 ### Traps
