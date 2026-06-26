@@ -30,6 +30,7 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.ability_handler
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.gloom_stalker import Gloom_Stalker
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.damage_reduction.ethereal import Ethereal
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.crystal_scale import Crystal_Scale
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.explode_on_impact import Explode_On_Impact
 
 # Import missing concrete active and support abilities
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.jump_attack import Jump_Attack
@@ -818,14 +819,120 @@ def test_locked_on_target_blocks_teleportation(teleport_context):
 
 # AN
 
-def test_anti_magic_blocks_elements_retains_melee(self, mock_game, mock_entity):
-        """Anti-magic should strip fire/spells to 0 but pass physical variants."""
-        ability = Anti_Magic(mock_game, mock_entity, "anti_magic")
-        
-        # Melee variants should pass directly unchanged
-        assert ability.Damage_Taken(15, "slash", (1, 0), None) == 15
-        assert ability.Damage_Taken(12, "blunt", (1, 0), None) == 12
-        
-        # Magic/Exotic mutations must register as fully negated
-        assert ability.Damage_Taken(45, "fire_magic", (1, 0), None) == 0
-        assert ability.Damage_Taken(99, "lightning", (1, 0), None) == 0
+def test_anti_magic_blocks_elements_retains_melee(mock_game, mock_entity):
+    """Anti-magic should strip fire/spells to 0 but pass physical variants."""
+    from scripts.engine.keys.keys import keys
+    
+    ability = Anti_Magic(mock_game, mock_entity, "anti_magic")
+    
+    # Pass the actual mock keys properties instead of raw strings
+    assert ability.Damage_Taken(15, keys.slash, (1, 0), None) == 15
+    assert ability.Damage_Taken(12, keys.blunt, (1, 0), None) == 12
+    
+    # Magic mutations should still register as fully negated
+    assert ability.Damage_Taken(45, "fire_magic", (1, 0), None) == 0
+    assert ability.Damage_Taken(99, "lightning", (1, 0), None) == 0
+
+@pytest.fixture
+def mock_poison_elemental_entity(mock_entity):
+    """Extends the baseline mock entity with Poison_Elemental specifics."""
+    mock_entity.distance_to_player = 100.0
+    mock_entity.pushed_entities = []
+    mock_entity.health = 10
+    mock_entity.Delete = MagicMock(return_value=True)
+    return mock_entity
+
+
+def test_explode_on_impact_skips_when_far_from_player(mock_game, mock_poison_elemental_entity):
+    """The ability should return False and do nothing if distance_to_player > 60."""
+    mock_poison_elemental_entity.distance_to_player = 61.0
+    mock_poison_elemental_entity.pushed_entities = ["some_entity"]  # Impact occurs, but too far
+    
+    ability = Explode_On_Impact(mock_game, mock_poison_elemental_entity, "explode_on_impact")
+    result = ability.Update(delta_time=0.1)
+    
+    assert result is False
+    assert mock_poison_elemental_entity.health > 0
+    mock_poison_elemental_entity.Delete.assert_not_called()
+
+
+def test_explode_on_impact_skips_when_no_impact_registered(mock_game, mock_poison_elemental_entity):
+    """The ability should return False if close to the player but no impact (pushed_entities empty)."""
+    mock_poison_elemental_entity.distance_to_player = 30.0
+    mock_poison_elemental_entity.pushed_entities = []  # No impact registered
+    
+    ability = Explode_On_Impact(mock_game, mock_poison_elemental_entity, "explode_on_impact")
+    result = ability.Update(delta_time=0.1)
+    
+    assert result is False
+    assert mock_poison_elemental_entity.health > 0
+    mock_poison_elemental_entity.Delete.assert_not_called()
+
+
+def test_explode_on_impact_detonates_successfully(mock_game, mock_poison_elemental_entity):
+    """The ability should kill and delete the entity when nearby and pushing an entity."""
+    mock_poison_elemental_entity.distance_to_player = 45.0
+    mock_poison_elemental_entity.pushed_entities = ["player_hitbox"]  # Impact!
+    
+    ability = Explode_On_Impact(mock_game, mock_poison_elemental_entity, "explode_on_impact")
+    result = ability.Update(delta_time=0.1)
+    
+    assert result is True
+    assert mock_poison_elemental_entity.health == 0
+    mock_poison_elemental_entity.Delete.assert_called_once_with(generate_soul=False)
+
+@pytest.fixture
+def mock_gloom_stalker_entity(mock_entity):
+    """Extends the baseline mock entity with Gloom_Stalker specifics."""
+    mock_entity.light_level = 200  # Start in light by default
+    mock_entity.strength = 10
+    mock_entity.max_speed_holder = 5
+    mock_entity.Set_Strength = MagicMock()
+    mock_entity.Set_Max_Speed = MagicMock()
+    mock_entity.Set_Description = MagicMock()
+    return mock_entity
+
+
+def test_gloom_stalker_enters_darkness_applies_buff(mock_game, mock_gloom_stalker_entity):
+    """Entering darkness (< 150) from light (initial 999) should double baseline stats."""
+    ability = Gloom_Stalker(mock_game, mock_gloom_stalker_entity, "gloom_stalker")
+    
+    # Transitioning from initial holder (999, light) to dark (100)
+    mock_gloom_stalker_entity.light_level = 100
+    ability.Update(delta_time=0.1)
+    
+    mock_gloom_stalker_entity.Set_Strength.assert_called_once_with(20) # 10 * 2
+    mock_gloom_stalker_entity.Set_Max_Speed.assert_called_once_with(10) # 5 * 2
+    mock_gloom_stalker_entity.Set_Description.assert_called_once()
+    assert ability.light_level_holder == 100
+
+
+def test_gloom_stalker_remains_in_darkness_does_not_stack(mock_game, mock_gloom_stalker_entity):
+    """Remaining in darkness should trigger early return and not continuously stack stats."""
+    ability = Gloom_Stalker(mock_game, mock_gloom_stalker_entity, "gloom_stalker")
+    
+    # Force state to already be inside darkness
+    ability.light_level_holder = 100 
+    mock_gloom_stalker_entity.light_level = 50 # Still dark
+    
+    ability.Update(delta_time=0.1)
+    
+    mock_gloom_stalker_entity.Set_Strength.assert_not_called()
+    mock_gloom_stalker_entity.Set_Max_Speed.assert_not_called()
+
+
+def test_gloom_stalker_leaves_darkness_removes_buff(mock_game, mock_gloom_stalker_entity):
+    """Moving from dark to light should halve the current stats."""
+    ability = Gloom_Stalker(mock_game, mock_gloom_stalker_entity, "gloom_stalker")
+    
+    # Force state to simulate starting inside darkness with buffed stats
+    ability.light_level_holder = 100
+    mock_gloom_stalker_entity.strength = 20 
+    mock_gloom_stalker_entity.light_level = 200 # Back to light
+    
+    ability.Update(delta_time=0.1)
+    
+    mock_gloom_stalker_entity.Set_Strength.assert_called_once_with(10) # 20 / 2
+    mock_gloom_stalker_entity.Set_Max_Speed.assert_called_once_with(2)  # int(5 / 2)
+    mock_gloom_stalker_entity.Set_Description.assert_called_once()
+    assert ability.light_level_holder == 200
