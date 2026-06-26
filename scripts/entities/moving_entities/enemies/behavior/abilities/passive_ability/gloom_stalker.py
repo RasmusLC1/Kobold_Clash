@@ -6,11 +6,6 @@ class Gloom_Stalker(Passive_Ability):
         super().__init__(game, entity, name)
         # Dwellers get increased strength in dark
         self.light_level_holder = 999
-        self.light_strength = self.entity.strength
-        self.dark_strength = self.entity.strength * 2
-
-        self.light_speed = self.entity.max_speed_holder
-        self.dark_speed = self.entity.max_speed_holder * 2
 
 
     def Update(self, delta_time):

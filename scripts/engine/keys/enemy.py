@@ -101,6 +101,10 @@ class Enemy():
 
     echo_location = "echo_location" 
 
+    echo_shard = "echo_shard"
+
+    echo_teleport = "echo_teleport"
+
     fire_born = "fire_born"
 
     glacial_core = "glacial_core"
@@ -135,6 +139,15 @@ class Enemy():
     phantom_running = "phantom_running"
 
     phantom_attack = "phantom_attack"
+
+
+    echo_wraith = "echo_wraith"
+
+    echo_wraith_idle = "echo_wraith_idle"
+    
+    echo_wraith_running = "echo_wraith_running"
+
+    echo_wraith_attack = "echo_wraith_attack"
 
 
     wraith = "wraith"

@@ -1,0 +1,2 @@
+class Clatter_Subscription:
+    

@@ -14,6 +14,7 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_ressurector import Bone_Resurrector
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.ethereal import Ethereal
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.clatter.echo_location import Echo_Location
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.clatter.echo_teleport import Echo_Teleport
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.clatter.echo_shard import Echo_Shard
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.fire_born import Fire_Born
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.glacial_core import Glacial_Core
@@ -47,6 +48,8 @@ class Ability_Handler():
         keys.bone_ressurector : Bone_Resurrector,
         keys.ethereal : Ethereal, 
         keys.echo_location : Echo_Location, 
+        keys.echo_shard : Echo_Shard, 
+        keys.echo_teleport : Echo_Teleport
     }
 
     def __init__(self, game, entity):

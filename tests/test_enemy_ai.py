@@ -3,7 +3,7 @@ import pygame
 from unittest.mock import MagicMock, patch
 from scripts.engine.keys.keys import keys
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.clatter.echo_shard import Echo_Shard
-
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.clatter.echo_teleport import Echo_Teleport
 
 # ==============================================================================
 # DYNAMIC KEYS MOCK (Prevents breaking other test files during collection)
@@ -749,3 +749,67 @@ def test_timer_expiry_re_conceals_enemy(echo_shard_context):
     assert ability.is_revealed is False
     assert ability.clatter_cooldown <= 0
     entity.Set_Effect.assert_called_once_with(effect=keys.invisibility, duration=6, permanent=True)
+
+@pytest.fixture
+def teleport_context():
+    """Sets up a clean mock environment for the Echo_Teleport ability."""
+    game = MagicMock()
+    entity = MagicMock()
+    
+    # Setup baseline tracking states on entity
+    entity.locked_on_target = False
+    
+    # Default global sound engine state to no noise
+    game.clatter.Check_If_Noise_Generated.return_value = None
+    
+    ability = Echo_Teleport(game, entity, "echo_teleport")
+    return game, entity, ability
+
+
+def test_update_handles_quiet_frames_without_crashing(teleport_context):
+    game, entity, ability = teleport_context
+    
+    # Execute an update tick on a quiet frame (clatter_pos is None)
+    try:
+        ability.Update(delta_time=0.016)
+    except UnboundLocalError as e:
+        pytest.fail(f"Game crashed due to scoping bug on quiet frames: {e}")
+        
+    # Verify that no teleportation was mistakenly attempted
+    entity.Set_Position.assert_not_called()
+
+
+def test_clatter_triggers_teleportation_in_range(teleport_context):
+    game, entity, ability = teleport_context
+    
+    # Simulate a noisy frame at specific coordinates
+    clatter_source = (500, 500)
+    game.clatter.Check_If_Noise_Generated.return_value = clatter_source
+    
+    ability.Update(delta_time=0.016)
+    
+    # Verify Set_Position was called exactly once
+    entity.Set_Position.assert_called_once()
+    
+    # Extract the actual arguments passed to Set_Position
+    called_args = entity.Set_Position.call_args[0][0]  # Expecting a tuple (x, y)
+    actual_x, actual_y = called_args
+    
+    # Verify the final position falls strictly within the randomized offset window (-100 to 100)
+    assert 400 <= actual_x <= 600
+    assert 400 <= actual_y <= 600
+
+
+def test_locked_on_target_blocks_teleportation(teleport_context):
+    game, entity, ability = teleport_context
+    
+    # Force pathfinding engine to take tracking priority
+    entity.locked_on_target = True
+    
+    # Even if noise is made...
+    game.clatter.Check_If_Noise_Generated.return_value = (100, 100)
+    
+    ability.Update(delta_time=0.016)
+    
+    # Repositioning must be entirely blocked to preserve path vectors
+    entity.Set_Position.assert_not_called()

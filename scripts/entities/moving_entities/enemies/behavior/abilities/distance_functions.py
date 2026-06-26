@@ -35,7 +35,7 @@ class Distance_Functions:
             return False # Window closed; target completely lost
 
     @staticmethod
-    def _Check_Keyboard_Input(self, handler):
+    def _Check_Keyboard_Input(handler):
         # 3. Check current snapshot input state
         kh = handler.game.keyboard_handler
         player_moving = (

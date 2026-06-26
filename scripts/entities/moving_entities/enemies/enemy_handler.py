@@ -14,6 +14,7 @@ class Enemy_Handler():
         self.pathfinding_handler = Enemy_Pathfinding_Handler(game)
         self.nearby_enemies = []
         self.saved_data = {}
+        self.clatter_subscription = set()
         self.should_sort_queue = False # Optimization state latch
 
     def Save_Enemy_Data(self):

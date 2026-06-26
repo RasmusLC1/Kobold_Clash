@@ -10,10 +10,9 @@ class Void_Spawn(Enemy):
         self.Set_Active_Ability(keys.ethereal)
         self.touching_ground = False
 
-
     
     def Spawn_Damaged_Particles(self):
-        self.game.particle_handler.Activate_Particles(10, keys.bone_particle, self.rect().center)
+        self.game.particle_handler.Activate_Particles(10, keys.soul_particle, self.rect().center)
 
     def Spawn_Bones(self):
         pass
