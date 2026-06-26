@@ -337,6 +337,14 @@ class Enemy():
 
     electric_elemental_running = "electric_elemental_running"
 
+# Crystal Scarab
+    
+    crystal_scarab = "crystal_scarab"
+    
+    crystal_scarab_attack = "crystal_scarab_attack"
+
+    crystal_scarab_running = "crystal_scarab_running"
+
 # Poison Eleemntal
     
     poison_elemental = "poison_elemental"

@@ -40,6 +40,7 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_eater import Bone_Eater
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_ressurector import Bone_Resurrector
 from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.galvanic_skin import Galvanic_Skin
+from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.damage_reduction.anti_magic import Anti_Magic
 
 
 # Mocking structural key identifiers
@@ -814,3 +815,17 @@ def test_locked_on_target_blocks_teleportation(teleport_context):
     
     # Repositioning must be entirely blocked to preserve path vectors
     entity.Set_Position.assert_not_called()
+
+# AN
+
+def test_anti_magic_blocks_elements_retains_melee(self, mock_game, mock_entity):
+        """Anti-magic should strip fire/spells to 0 but pass physical variants."""
+        ability = Anti_Magic(mock_game, mock_entity, "anti_magic")
+        
+        # Melee variants should pass directly unchanged
+        assert ability.Damage_Taken(15, "slash", (1, 0), None) == 15
+        assert ability.Damage_Taken(12, "blunt", (1, 0), None) == 12
+        
+        # Magic/Exotic mutations must register as fully negated
+        assert ability.Damage_Taken(45, "fire_magic", (1, 0), None) == 0
+        assert ability.Damage_Taken(99, "lightning", (1, 0), None) == 0

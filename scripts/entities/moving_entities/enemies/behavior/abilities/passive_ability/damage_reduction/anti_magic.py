@@ -11,8 +11,8 @@ class Anti_Magic(Passive_Ability):
 
 
     def Damage_Taken(self, damage, effect, direction, attacker):
-        if effect[0] != keys.slash or effect[0] != keys.blunt:
-            damage = 0
-        
+        # If the attack type is NOT physical, negate it entirely
+        if effect not in (keys.slash, keys.blunt):
+            return 0
         return damage
     
