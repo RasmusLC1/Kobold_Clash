@@ -19,7 +19,7 @@ class Movement:
         self.friction_holder = self.friction 
         self.acceleration = agility * 1000
         self.acceleration_holder = self.acceleration 
-        self.max_speed = max_speed * 100  
+        self.max_speed = max_speed * 100
         self.max_speed_holder = self.max_speed 
 
         self.pushed_entities = set()

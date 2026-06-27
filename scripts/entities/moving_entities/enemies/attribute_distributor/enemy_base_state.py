@@ -8,7 +8,6 @@ class Enemy_Base_State:
     health: int
     souls: int
     size: Tuple[int, int]
-    max_weapon_charge: float
     strength: int
     
     # Movement & RPG Stats
