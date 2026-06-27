@@ -244,48 +244,6 @@ class Enemy(Moving_Entity):
                         )
 
     
-    # NOTE: This version of the method is currently overwritten by the one below it in Python.
-    # It has been updated to be vector-compatible just in case you plan to rename or merge it.
-    def Entity_Collision_Detection_With_Tilemap(self, tilemap):
-        colliding_entity = super().Entity_Collision_Detection(tilemap)
-
-        if colliding_entity:
-            if colliding_entity.type == 'player':
-                self.movement.direction.update(0, 0)
-                return colliding_entity
-
-            # Collision logic for other entities
-            collision_vector = pygame.math.Vector2(self.pos[0] - colliding_entity.pos[0],
-                                                   self.pos[1] - colliding_entity.pos[1])
-            if collision_vector.length_squared() > 0:
-                collision_vector = collision_vector.normalize()
-                direction_vector = pygame.math.Vector2(self.movement.direction)
-                reflected_direction = direction_vector.reflect(collision_vector)
-
-                if self.Future_Rect(reflected_direction).colliderect(self.game.player.rect()):
-                    self.movement.direction.update(0, 0)
-                    return self.game.player
-
-                self.movement.direction.update(reflected_direction.x, reflected_direction.y)
-
-        return None
-    
-
-    def Trap_Collision_Handler(self):
-        for trap in self.nearby_traps:
-            if self.rect().colliderect(trap.rect()):
-                # Run away in the same direction the enemy was moving previously
-                # Utilizes the updated Vector2 holder properties (.x and .y)
-                dir_x = max(-0.4, self.movement.direction_holder.x * 4) if self.movement.direction_holder.x < 0 else min(0.4, self.movement.direction_holder.x * 4)
-                dir_y = max(-0.4, self.movement.direction_holder.y * 4) if self.movement.direction_holder.y < 0 else min(0.4, self.movement.direction_holder.y * 4)
-                
-                self.movement.direction.update(dir_x, dir_y)
-            else:
-                # Check if the enemy will collide soon, if yes redirect in the opposite direction
-                if self.Future_Rect(self.movement.direction).colliderect(trap.rect()):
-                    self.movement.direction *= -1
-                    break
-    
     def Set_Attack_Direction(self):
         if not self.charge > 0:
             self.attack_direction = (0, 0)
@@ -365,16 +323,7 @@ class Enemy(Moving_Entity):
         self.charge = charge
 
 
-    # This is the active collision method overriding the tilemap signature variant above
-    def Entity_Collision_Detection(self):
-        future_pos = super().Entity_Collision_Detection()
-        player = self.game.player
-        
-        # Handle collision with the player using the component set
-        if player.rect().colliderect(self.rect_future(future_pos)):
-            self.movement.pushed_entities.add(player)
-        
-        return future_pos
+    
 
 
     def Set_Ability(self, ability_name):

@@ -217,7 +217,7 @@ class Tilemap:
 
            
 
-    # Finds nearby tiles 
+    # Finds entities on nearby tiles 
     def Search_Nearby_Tiles(self, max_distance, pos, category, ID = 0):
         pos = (pos[0] // self.tile_size, pos[1] // self.tile_size)
         
@@ -286,6 +286,27 @@ class Tilemap:
             return None
         
         return tile.entities
+    
+    # Function to search for neighbouring tiles in O(N) time
+    def Get_Tile_Neighbour_Entities(self, tile, category, ID=0):
+        entities = []
+        for neighbor in tile.neighbor_tiles:
+            if not neighbor.entities:
+                continue
+            new_entities = neighbor.Search_Entities(category, ID)
+            if new_entities:
+                entities.extend(new_entities)
+        return entities
+
+    def Get_Tile_Neighbour_Entities_By_Type(self, tile, type, ID=0):
+        entities = []
+        for neighbor in tile.neighbor_tiles:
+            if not neighbor.entities:
+                continue
+            new_entities = neighbor.Search_Type(type, ID)
+            if new_entities:
+                entities.extend(new_entities)
+        return entities
     
     def Get_Tile(self, tile_key):
         tile = self.tilemap.get(tile_key)

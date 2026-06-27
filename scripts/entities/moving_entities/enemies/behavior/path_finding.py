@@ -46,8 +46,6 @@ class Path_Finding():
     def Path_Finding(self, delta_time):
         # Pathfind towards the target
         if self.entity.Movement_Strategy(delta_time):
-            self.entity.Trap_Collision_Handler()
-
             return
         else:
             # If enemy looses sight of player he will try to go to the last known location

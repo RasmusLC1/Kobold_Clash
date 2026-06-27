@@ -216,20 +216,23 @@ def test_movement_strategy_early_exits(mock_game, mock_entity):
     mock_game.player.active_ability = MockKeys.invisibility
     assert ms.Movement_Strategy(0.016) is False
 
-
 def test_find_tiles_in_range_too_far_picks_closest_neighbor(mock_game, mock_entity):
     ms = Movement_Strategies(mock_game, mock_entity)
-    
+
     tile_far = MagicMock()
     tile_far.Get_Distance_To_Player.return_value = 200
     tile_close = MagicMock()
     tile_close.Get_Distance_To_Player.return_value = 80
-    
+
     mock_game.tilemap.Get_Floor_Tiles_Around.return_value = [tile_far, tile_close]
-    
-    # Distance is 250, Max range is 150 -> CASE 1: TOO FAR
+
+    # Distance is 250, max_range is 150 -> CASE 1: TOO FAR
+    # New logic returns up to 3 closest tiles, so check membership and ordering
     tiles = ms.Find_Tiles_In_Range(max_range=150, min_range=100, entity_dist=250)
-    assert tiles == [tile_close]
+    assert tile_close in tiles
+    assert tiles.index(tile_close) < tiles.index(tile_far)  # closest tile comes first
+
+
 
 
 # ==============================================================================
