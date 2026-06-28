@@ -331,8 +331,8 @@ class Graphics_Loader:
 
     def Asset_Clicker_List(self):
         entities_assets = {
-            keys.clicker_running: get_tiles_from_sheet('entities/enemies/dwellers/ghoul/ghoul.png', 4, 0, 0, 0, 32, 32),
-            keys.clicker_attack: get_tiles_from_sheet('entities/enemies/dwellers/ghoul/ghoul_attack.png', 5, 0, 0, 0, 32, 32),
+            keys.clicker_running: get_tiles_from_sheet('entities/enemies/dwellers/clicker/clicker.png', 4, 0, 0, 0, 32, 32),
+            keys.clicker_attack: get_tiles_from_sheet('entities/enemies/dwellers/clicker/clicker_attack.png', 5, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 
