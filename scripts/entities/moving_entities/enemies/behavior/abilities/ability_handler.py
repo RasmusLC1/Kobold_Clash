@@ -1,10 +1,12 @@
-from scripts.entities.moving_entities.enemies.behavior.abilities.registry import ABILITY_REGISTRY
+from scripts.entities.moving_entities.enemies.behavior.abilities import registry as registry
 from scripts.entities.moving_entities.enemies.behavior.abilities.distance_functions import DISTANCE_REGISTRY
 from scripts.engine.keys.keys import keys
 
 class Ability_Handler():
-    # It just references the dynamically built dictionary!
-    ABILITY_REGISTRY = ABILITY_REGISTRY
+    @property
+    def ABILITY_REGISTRY(self):
+        """Always points to the live dictionary variable inside the registry module."""
+        return registry.ABILITY_REGISTRY
 
     def __init__(self, game, entity):
         self.game = game

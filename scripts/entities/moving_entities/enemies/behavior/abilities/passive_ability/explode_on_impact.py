@@ -17,5 +17,4 @@ class Explode_On_Impact(Passive_Ability):
         # Kills entity and triggers their death condition
         self.entity.health = 0
         self.entity.Delete(generate_soul=False)
-
         return True

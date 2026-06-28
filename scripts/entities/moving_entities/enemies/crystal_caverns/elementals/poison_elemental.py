@@ -6,7 +6,6 @@ class Poison_Elemental(Elemental):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.poison_elemental)
         self.explosion_strength = 2
-        
         # Equip the new passive ability
         self.Set_Ability(keys.explode_on_impact)
 

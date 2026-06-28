@@ -253,6 +253,7 @@ class Enemy(Moving_Entity):
     def Improve_Weapon(self, effect, amount):
         if not self.active_weapon:
             print("FAILED TO IMPROVE WEAPON, ", effect, self.type, vars(self))
+            return
 
         self.active_weapon.Set_Damage(effect, amount)
 
