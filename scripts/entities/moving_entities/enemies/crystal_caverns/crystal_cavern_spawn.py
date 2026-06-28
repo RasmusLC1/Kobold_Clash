@@ -7,6 +7,7 @@ from scripts.entities.moving_entities.enemies.crystal_caverns.mythicals.medusa.m
 from scripts.entities.moving_entities.enemies.crystal_caverns.mythicals.minotaur import Minotaur
 from scripts.entities.moving_entities.enemies.crypt.dwellers.spider import Spider
 from scripts.entities.moving_entities.enemies.crypt.dwellers.clicker import Clicker
+from scripts.entities.moving_entities.enemies.crypt.void_spawn.rift_stalker import Rift_Stalker
 from scripts.entities.moving_entities.enemies.enemy_spawner import Enemy_Spawner
 from scripts.engine.keys.keys import keys
 
@@ -22,6 +23,7 @@ class Crystal_Cavern_Spawn(Enemy_Spawner):
             keys.medusa: Medusa,
             keys.spider: Spider,
             keys.clicker: Clicker,
+            keys.rift_stalker : Rift_Stalker
         }
 
         enemy_types = {
@@ -30,10 +32,11 @@ class Crystal_Cavern_Spawn(Enemy_Spawner):
             keys.earth_elemental: 0.2,
             keys.spider: 0.2,
             keys.electric_elemental: 0.2,
-            keys.poison_elemental: 9999990.2,
+            keys.poison_elemental: 0.2,
             keys.minotaur: 0.2,
-            keys.clicker: 0.2,
             keys.medusa: 0.002,
+            keys.clicker: 9.2,
+            keys.rift_stalker: 999.002,
         }
         super().__init__(game, spawn_methods, enemy_types)
     

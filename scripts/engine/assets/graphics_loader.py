@@ -381,6 +381,10 @@ class Graphics_Loader:
             keys.shade_idle: get_tiles_from_sheet('entities/enemies/void_spawn/shade/shade.png', 4, 0, 0, 0, 32, 32),
             keys.shade_running: get_tiles_from_sheet('entities/enemies/void_spawn/shade/shade.png', 4, 0, 0, 0, 32, 32),
             keys.shade_attack: get_tiles_from_sheet('entities/enemies/void_spawn/shade/shade_attack.png', 5, 0, 0, 0, 32, 32),
+
+            keys.rift_stalker_idle: get_tiles_from_sheet('entities/enemies/void_spawn/rift_stalker/rift_stalker.png', 4, 0, 0, 0, 32, 32),
+            keys.rift_stalker_running: get_tiles_from_sheet('entities/enemies/void_spawn/rift_stalker/rift_stalker.png', 4, 0, 0, 0, 32, 32),
+            keys.rift_stalker_attack: get_tiles_from_sheet('entities/enemies/void_spawn/rift_stalker/rift_stalker_attack.png', 5, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 

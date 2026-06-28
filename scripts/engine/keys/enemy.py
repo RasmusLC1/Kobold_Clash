@@ -146,13 +146,13 @@ class Enemy():
     phantom_attack = "phantom_attack"
 
 
-    echo_wraith = "echo_wraith"
-
-    echo_wraith_idle = "echo_wraith_idle"
+    rift_stalker = "rift_stalker"
     
-    echo_wraith_running = "echo_wraith_running"
+    rift_stalker_idle = "rift_stalker_idle"
 
-    echo_wraith_attack = "echo_wraith_attack"
+    rift_stalker_running = "rift_stalker_running"
+
+    rift_stalker_attack = "rift_stalker_attack"
 
 
     wraith = "wraith"

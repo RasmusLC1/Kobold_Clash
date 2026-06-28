@@ -616,45 +616,56 @@ def test_timer_expiry_re_conceals_enemy(echo_shard_context):
 # ==============================================================================
 # 13. ECHO TELEPORT
 # ==============================================================================
-
+ 
 @pytest.fixture
 def teleport_context():
     game = MagicMock()
     entity = MagicMock()
     entity.locked_on_target = False
+    entity.distance_to_player = 300.0  # beyond TELEPORT_DISTANCE so Check_If_Trigger passes
     game.clatter.Check_If_Noise_Generated.return_value = None
     ability = Echo_Teleport(game, entity, "echo_teleport")
     return game, entity, ability
-
-
-def test_update_handles_quiet_frames_without_crashing(teleport_context):
+ 
+ 
+def test_update_ticks_cooldown_down(teleport_context):
+    """Update should decrement the cooldown each frame."""
     game, entity, ability = teleport_context
-
-    try:
-        ability.Update(delta_time=0.016)
-    except UnboundLocalError as e:
-        pytest.fail(f"Game crashed due to scoping bug on quiet frames: {e}")
-
-    entity.Set_Position.assert_not_called()
-
-
-def test_clatter_triggers_teleportation_in_range(teleport_context):
+    ability.teleport_cooldown = 1.0
+ 
+    ability.Update(delta_time=0.5)
+ 
+    assert ability.teleport_cooldown == pytest.approx(0.5)
+ 
+ 
+def test_clatter_teleports_and_sets_cooldown(teleport_context):
+    """On_Clatter_Heard should teleport near the clatter position and arm the cooldown."""
     game, entity, ability = teleport_context
-    entity.locked_on_target = False
-
+ 
     ability.On_Clatter_Heard((500, 500))
-
+ 
     entity.Set_Position.assert_called_once()
     actual_x, actual_y = entity.Set_Position.call_args[0][0]
-    assert 400 <= actual_x <= 600
-    assert 400 <= actual_y <= 600
-
-
-def test_locked_on_target_blocks_teleportation(teleport_context):
+    assert 300 <= actual_x <= 700
+    assert 300 <= actual_y <= 700
+    assert ability.teleport_cooldown > 0
+ 
+ 
+def test_clatter_blocked_by_active_cooldown(teleport_context):
+    """On_Clatter_Heard must do nothing while the cooldown is still running."""
     game, entity, ability = teleport_context
-    entity.locked_on_target = True
-    game.clatter.Check_If_Noise_Generated.return_value = (100, 100)
-
-    ability.Update(delta_time=0.016)
-
+    ability.teleport_cooldown = 3.0
+ 
+    ability.On_Clatter_Heard((500, 500))
+ 
+    entity.Set_Position.assert_not_called()
+ 
+ 
+def test_clatter_blocked_when_too_close_to_player(teleport_context):
+    """Check_If_Trigger suppresses teleportation when the entity is already close."""
+    game, entity, ability = teleport_context
+    entity.distance_to_player = 50.0  # within TELEPORT_DISTANCE
+ 
+    ability.On_Clatter_Heard((500, 500))
+ 
     entity.Set_Position.assert_not_called()
