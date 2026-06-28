@@ -8,4 +8,3 @@ class Clicker(Dweller):
         super().__init__(game, pos, keys.clicker)
         self.active_weapon.Set_Damage(keys.cut, 5)
         self.Set_Ability(keys.echo_location)
-
