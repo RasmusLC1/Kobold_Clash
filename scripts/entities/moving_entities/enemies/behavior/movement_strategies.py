@@ -54,6 +54,8 @@ class Movement_Strategies():
     #  Main entry point called every frame                                 #
     # ------------------------------------------------------------------ #
     def Movement_Strategy(self, delta_time) -> bool:
+        if not self.entity.target:
+            return False
         if self.entity.distance_to_target > 300:
             return False
         if self.game.player.active_ability == keys.invisibility:
@@ -79,6 +81,9 @@ class Movement_Strategies():
     #  Direct charge with per-enemy offset so groups spread out           #
     # ------------------------------------------------------------------ #
     def _Direct_Charge(self, delta_time):
+        if not self.entity.target:
+            return
+        
         entity_pos = self.entity.pos
 
         direction = pygame.math.Vector2(
@@ -231,6 +236,7 @@ class Movement_Strategies():
     #  Line-of-sight                                                       #
     # ------------------------------------------------------------------ #
     def Handle_Line_Of_Sight(self, delta_time):
+        
         if self.line_of_sight_cooldown > 0:
             self.line_of_sight_cooldown -= delta_time
         else:

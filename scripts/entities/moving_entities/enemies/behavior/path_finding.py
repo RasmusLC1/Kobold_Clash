@@ -51,7 +51,7 @@ class Path_Finding():
             # If enemy looses sight of player he will try to go to the last known location
             if self.player_found:
                 self.player_found = False
-                self.entity.Set_Target()
+                self.entity.Set_Target(self.game.player.pos)
 
         self.Navigate_Path()
 
@@ -81,7 +81,6 @@ class Path_Finding():
             return
         self.Calculate_Path_Segment(target)
 
-        
         return True
 
 
@@ -103,6 +102,8 @@ class Path_Finding():
         return True
 
     def Find_Shortest_Path(self) -> None:
+        if not self.entity.target:
+            return
         # Check if the entity has recently received a new target
    
         self.path.clear()

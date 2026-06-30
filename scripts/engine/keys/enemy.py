@@ -66,6 +66,8 @@ class Enemy():
     jump = "jump"
 
     retreat = "retreat"
+
+    blind_attack = "blind_attack"
     
     long_range = "long_range"
 

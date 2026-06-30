@@ -29,6 +29,9 @@ class Tilemap:
         self.dungeon_type = None
         self.minimap = Minimap(game, self)
 
+    def Print_All_Tile_Positions(self):
+        for tile in self.tilemap.values():
+            print(tile.pos)
      
     def Save_data(self):
         self.saved_data = {}

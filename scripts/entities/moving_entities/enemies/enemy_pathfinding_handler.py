@@ -25,7 +25,6 @@ class Enemy_Pathfinding_Handler():
 
         self.pathfinding_queue.append(enemy)
         enemy.Set_Target(destination)
-        enemy.Set_Locked_On_Target(30)
 
     def Update_Pathfinding_Queue(self, delta_time):
         if not self.pathfinding_queue:
@@ -63,7 +62,7 @@ class Enemy_Pathfinding_Handler():
             
         self.patrol_queue.append(enemy)
         enemy.Set_Target(destination)
-        enemy.Set_Locked_On_Target(30)
+        enemy.Set_On_Patrol(True)
 
     def Update_Patrol_Queue(self, delta_time):
         if not self.patrol_queue:

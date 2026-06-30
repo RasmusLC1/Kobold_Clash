@@ -48,11 +48,12 @@ class Enemy(Moving_Entity):
         self.charge = 0
         self.damaged = False 
 
-        self.target = self.game.player.pos
         self.distance_to_target = 9999
+        self.target = self.game.player.pos
         self.target_spotted = False
         self.attack_distance = self.size[0] * 2 
         self.distance_calculation_cooldown = 0
+        self.on_patrol = False
 
         self.locked_on_target = 0 
         self.attack_symbol_offset = 20
@@ -110,6 +111,8 @@ class Enemy(Moving_Entity):
     
     def On_Clatter_Heard(self, clatter_pos):
         self.intent_manager.On_Clatter_Heard(clatter_pos)
+
+
     
 
     def Calculate_Distance_To_Player(self, delta_time):
@@ -119,6 +122,8 @@ class Enemy(Moving_Entity):
          
         max_distance_cooldown = random.uniform(0.2, 0.3) # randomise time to prevent simultaneous updates
         self.distance_calculation_cooldown = max_distance_cooldown
+        if not self.target:
+            return
         
         self.distance_to_target = math.sqrt((self.target[0] - self.pos[0]) ** 2 + (self.target[1] - self.pos[1]) ** 2)
 
@@ -198,11 +203,6 @@ class Enemy(Moving_Entity):
             self.animation_handler.Set_Animation('running')
         else:
             self.animation_handler.Set_Animation('idle')
-
-    def Set_Target(self, pos = None):
-        if not pos:
-            pos = self.game.player.pos
-        return super().Set_Target(pos)
 
 
     def Spawn_Damaged_Particles(self):
@@ -307,7 +307,6 @@ class Enemy(Moving_Entity):
     
 
     def Trigger_Attack(self):
-        self.Set_Target()
         self.Trigger_Basic_Attack()
         self.intent_manager.Reset_Attack()
 
@@ -349,6 +348,9 @@ class Enemy(Moving_Entity):
 
     def Reset_Behavior(self):
         self.intent_manager.Reset_Behavior()
+
+    def Set_On_Patrol(self, state):
+        self.on_patrol = state
 
 
     def Render_Attacking_Symbol(self, surf, offset = (0,0)):

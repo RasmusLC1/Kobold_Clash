@@ -14,14 +14,12 @@ class Echo_Location(Passive_Ability):
         # Subscribe to active sound events
         self.game.enemy_handler.clatter_subscription.Subscribe_To_Acoustics(self.entity)
 
-
     def On_Clatter_Heard(self, clatter_pos):
         if not self.Check_If_Trigger():
             return
 
         # Add this specific entity directly to the active pathfinding queue
         self.entity.Set_Target(clatter_pos)
-        self.entity.Set_Locked_On_Target(10) # Set 10 seconds lock
 
     def Check_If_Trigger(self) -> bool:
         if self.entity.locked_on_target:

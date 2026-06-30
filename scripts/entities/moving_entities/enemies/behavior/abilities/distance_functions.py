@@ -22,7 +22,8 @@ class EchoLocationDistanceCheck(DistanceStrategy):
 
     def check(self, max_distance, delta_time=0) -> bool:
         # 1. Physical proximity check first
-        if self.handler.entity.distance_to_target >= max_distance:
+        entity = self.handler.entity
+        if entity.distance_to_target >= max_distance:
             self.echo_linger_timer = 0.0
             return False
 
@@ -31,6 +32,7 @@ class EchoLocationDistanceCheck(DistanceStrategy):
         # 2. State evaluation machine
         if player_moving:
             self.echo_linger_timer = 5.0
+            entity.game.clatter.Generate_Clatter(entity.game.player.pos, 10)
             return True
         else:
             if self.echo_linger_timer > 0:

@@ -38,7 +38,8 @@ class Behavior_Manager():
             keys.medium_range: lambda: Medium_Range_Behavior(self, keys.medium_range, 400, (3, 5), self.Calculate_Ranged_Attack_Distance(200), [keys.medium_range, keys.long_range]),
             keys.short_range: lambda: Short_Range_Behavior(self, keys.short_range, 350, (2, 4), self.Calculate_Ranged_Attack_Distance(150), [keys.short_range, keys.medium_range, keys.long_range]),
             keys.hit_and_run: lambda: Hit_And_Run_Behavior(self, keys.direct, 300, (1, 1), self.Calculate_Close_Ranged_Attack_Distance(), [keys.direct_attack, keys.short_range, keys.medium_range]),
-            keys.retreat: lambda: Retreat_Behavior(self, keys.run_away, 500, (2, 4), self.Calculate_Close_Ranged_Attack_Distance())
+            keys.retreat: lambda: Retreat_Behavior(self, keys.run_away, 500, (2, 4), self.Calculate_Close_Ranged_Attack_Distance()),
+            keys.blind_attack: lambda: Direct_Attack_Behavior(self, keys.direct, 200, (1, 1), self.Calculate_Close_Ranged_Attack_Distance()),
         }
         
         # Transition to initial state
@@ -60,7 +61,7 @@ class Behavior_Manager():
         if not self.entity.target_spotted:
             return None
         
-        self.entity.Set_Target()
+        self.entity.Set_Target(self.game.player.pos) # Set the player pos as target when spotted
         
         self.Update_Attack(delta_time)
         self.ability_handler.Update(delta_time)
