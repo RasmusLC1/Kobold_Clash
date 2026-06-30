@@ -79,7 +79,7 @@ def mock_entity():
     entity = MagicMock()
     entity.pos = [64.0, 64.0]
     entity.target = [250.0, 250.0]
-    entity.distance_to_player = 100.0
+    entity.distance_to_target = 100.0
     entity.active_ability = None
     entity.size = (32, 32)
     entity.intelligence = 5
@@ -330,7 +330,7 @@ def test_crystal_scale_shield_absorption_breakthrough(mock_game, mock_entity):
 
 @pytest.fixture
 def mock_poison_elemental_entity(mock_entity):
-    mock_entity.distance_to_player = 100.0
+    mock_entity.distance_to_target = 100.0
     mock_entity.pushed_entities = []
     mock_entity.health = 10
     mock_entity.Delete = MagicMock(return_value=True)
@@ -338,7 +338,7 @@ def mock_poison_elemental_entity(mock_entity):
 
 
 def test_explode_on_impact_skips_when_far_from_player(mock_game, mock_poison_elemental_entity):
-    mock_poison_elemental_entity.distance_to_player = 61.0
+    mock_poison_elemental_entity.distance_to_target = 61.0
     mock_poison_elemental_entity.pushed_entities = ["some_entity"]
 
     ability = Explode_On_Impact(mock_game, mock_poison_elemental_entity, "explode_on_impact")
@@ -350,7 +350,7 @@ def test_explode_on_impact_skips_when_far_from_player(mock_game, mock_poison_ele
 
 
 def test_explode_on_impact_skips_when_no_impact_registered(mock_game, mock_poison_elemental_entity):
-    mock_poison_elemental_entity.distance_to_player = 30.0
+    mock_poison_elemental_entity.distance_to_target = 30.0
     mock_poison_elemental_entity.pushed_entities = []
 
     ability = Explode_On_Impact(mock_game, mock_poison_elemental_entity, "explode_on_impact")
@@ -362,7 +362,7 @@ def test_explode_on_impact_skips_when_no_impact_registered(mock_game, mock_poiso
 
 
 def test_explode_on_impact_detonates_successfully(mock_game, mock_poison_elemental_entity):
-    mock_poison_elemental_entity.distance_to_player = 45.0
+    mock_poison_elemental_entity.distance_to_target = 45.0
     mock_poison_elemental_entity.pushed_entities = ["player_hitbox"]
 
     ability = Explode_On_Impact(mock_game, mock_poison_elemental_entity, "explode_on_impact")
@@ -622,7 +622,7 @@ def teleport_context():
     game = MagicMock()
     entity = MagicMock()
     entity.locked_on_target = False
-    entity.distance_to_player = 300.0  # beyond TELEPORT_DISTANCE so Check_If_Trigger passes
+    entity.distance_to_target = 300.0  # beyond TELEPORT_DISTANCE so Check_If_Trigger passes
     game.clatter.Check_If_Noise_Generated.return_value = None
     ability = Echo_Teleport(game, entity, "echo_teleport")
     return game, entity, ability
@@ -664,7 +664,7 @@ def test_clatter_blocked_by_active_cooldown(teleport_context):
 def test_clatter_blocked_when_too_close_to_player(teleport_context):
     """Check_If_Trigger suppresses teleportation when the entity is already close."""
     game, entity, ability = teleport_context
-    entity.distance_to_player = 50.0  # within TELEPORT_DISTANCE
+    entity.distance_to_target = 50.0  # within TELEPORT_DISTANCE
  
     ability.On_Clatter_Heard((500, 500))
  

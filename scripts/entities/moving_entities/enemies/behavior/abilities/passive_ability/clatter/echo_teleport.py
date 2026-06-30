@@ -35,4 +35,4 @@ class Echo_Teleport(Passive_Ability):
         self.teleport_cooldown = TELEPORT_COOLDOWN_MAX
 
     def Check_If_Trigger(self) -> bool:
-        return self.entity.distance_to_player > TELEPORT_DISTANCE
+        return self.entity.distance_to_target > TELEPORT_DISTANCE

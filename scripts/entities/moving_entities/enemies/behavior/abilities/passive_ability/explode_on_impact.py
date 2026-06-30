@@ -8,7 +8,7 @@ class Explode_On_Impact(Passive_Ability):
         super().__init__(game, entity, name)
 
     def Update(self, delta_time) -> bool:
-        if self.entity.distance_to_player > 60:
+        if self.entity.distance_to_target > 60:
             return False
         
         if not self.entity.pushed_entities:

@@ -69,7 +69,7 @@ def mock_game_and_entity():
     """Sets up a paired mock game and mock entity context for distance strategy tests."""
     game = MagicMock()
     entity = MagicMock()
-    entity.distance_to_player = 200
+    entity.distance_to_target = 200
     game.player.velocity = [0.0, 0.0]
     return game, entity
 
@@ -357,7 +357,7 @@ def test_echo_location_player_perfectly_still(mock_game_and_entity):
     # Must use keyboard_handler — that is what EchoLocationDistanceCheck._Check_Keyboard_Input reads
     game.keyboard_handler.is_key_pressed.return_value = False
     handler.player_distance_strategy.echo_linger_timer = 0.0
-    entity.distance_to_player = 200.0
+    entity.distance_to_target = 200.0
 
     assert handler.Check_Player_Distance(max_distance=300, delta_time=0.2) is False
 
@@ -369,7 +369,7 @@ def test_echo_location_player_moving(mock_game_and_entity):
 
     # W key pressed → player is moving
     game.keyboard_handler.is_key_pressed.side_effect = lambda k: k == pygame.K_w
-    entity.distance_to_player = 200.0
+    entity.distance_to_target = 200.0
 
     assert handler.Check_Player_Distance(max_distance=300, delta_time=0.2) is True
 
@@ -381,7 +381,7 @@ def test_echo_location_player_moving_but_out_of_range(mock_game_and_entity):
 
     # Player is moving, but physically too far — distance check gates first
     game.keyboard_handler.is_key_pressed.side_effect = lambda k: k in [pygame.K_w, pygame.K_a]
-    entity.distance_to_player = 200.0
+    entity.distance_to_target = 200.0
 
     assert handler.Check_Player_Distance(max_distance=100, delta_time=0.2) is False
 
@@ -392,7 +392,7 @@ def test_echo_location_player_moving_and_in_range(mock_game_and_entity):
     handler.Set_Player_Distance(keys.echo_location)
 
     game.keyboard_handler.is_key_pressed.side_effect = lambda k: k == pygame.K_d
-    entity.distance_to_player = 200.0
+    entity.distance_to_target = 200.0
 
     assert handler.Check_Player_Distance(max_distance=300, delta_time=0.2) is True
 
@@ -408,7 +408,7 @@ def test_echo_location_linger_timer_keeps_detection_after_player_stops(mock_game
 
     game.keyboard_handler.is_key_pressed.return_value = False  # Player now still
     handler.player_distance_strategy.echo_linger_timer = 3.0   # But linger window active
-    entity.distance_to_player = 200.0
+    entity.distance_to_target = 200.0
 
     assert handler.Check_Player_Distance(max_distance=300, delta_time=0.2) is True
     # Timer should have ticked down by delta_time
@@ -423,7 +423,7 @@ def test_echo_location_linger_timer_expires_and_loses_detection(mock_game_and_en
 
     game.keyboard_handler.is_key_pressed.return_value = False
     handler.player_distance_strategy.echo_linger_timer = 0.0  # Already expired
-    entity.distance_to_player = 200.0
+    entity.distance_to_target = 200.0
 
     assert handler.Check_Player_Distance(max_distance=300, delta_time=0.2) is False
 

@@ -100,7 +100,7 @@ class Dash(Active_Ability):
         
     # Returns true if player is between min and max distance
     def Check_If_Trigger(self):
-        distance_to_target = self.entity.distance_to_player
+        distance_to_target = self.entity.distance_to_target
         return  distance_to_target > self.min_distance and distance_to_target < self.max_distance
 
     def _Check_Distance(self, target):

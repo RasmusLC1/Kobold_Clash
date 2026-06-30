@@ -56,8 +56,8 @@ class Behavior_Manager():
         self.current_behavior.Enter()
 
     def Update_Behavior(self, delta_time):
-        self.entity.Set_Player_Spotted(self.Check_Player_Distance(delta_time))
-        if not self.entity.player_spotted:
+        self.entity.Set_target_spotted(self.Check_Player_Distance(delta_time))
+        if not self.entity.target_spotted:
             return None
         
         self.entity.Set_Target()
@@ -85,7 +85,7 @@ class Behavior_Manager():
     def Check_Attack_Distance(self):
         if self.game.player.active_ability == keys.invisibility:
             return False
-        return self.entity.distance_to_player < self.attack_distance
+        return self.entity.distance_to_target < self.attack_distance
 
     def Check_If_Entity_Has_Attacked(self):
         if not self.attack_handler.Get_Entity_Has_Attacked():

@@ -54,7 +54,7 @@ class Movement_Strategies():
     #  Main entry point called every frame                                 #
     # ------------------------------------------------------------------ #
     def Movement_Strategy(self, delta_time) -> bool:
-        if self.entity.distance_to_player > 300:
+        if self.entity.distance_to_target > 300:
             return False
         if self.game.player.active_ability == keys.invisibility:
             return False
@@ -120,7 +120,7 @@ class Movement_Strategies():
         if max_range == 0:
             return None
 
-        entity_dist = self.entity.distance_to_player
+        entity_dist = self.entity.distance_to_target
         valid_tiles = self.Find_Tiles_In_Range(max_range, min_range, entity_dist)
         if not valid_tiles:
             return None
@@ -196,7 +196,7 @@ class Movement_Strategies():
             desired_velocity = desired_velocity.normalize()
 
             # Gentle sideways drift when close — avoids pure circular orbiting
-            if self.entity.distance_to_player < 200:
+            if self.entity.distance_to_target < 200:
                 player_pos = self.game.player.pos
                 to_player = pygame.math.Vector2(
                     player_pos[0] - entity_pos[0],

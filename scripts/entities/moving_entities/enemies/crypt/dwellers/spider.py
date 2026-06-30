@@ -20,7 +20,7 @@ class Spider(Dweller):
             self.animation_handler.Set_Animation('jumping')
             return
 
-        if self.charge and self.distance_to_player <= 50:
+        if self.charge and self.distance_to_target <= 50:
             self.animation_handler.Set_Animation(keys.attack)
             return
 

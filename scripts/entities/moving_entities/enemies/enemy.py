@@ -45,12 +45,12 @@ class Enemy(Moving_Entity):
         # --- Combat & AI State ---
         self.alert_cooldown = 0
         self.active_weapon = None
-        self.target = self.game.player.pos
         self.charge = 0
         self.damaged = False 
 
-        self.distance_to_player = 9999
-        self.player_spotted = False
+        self.target = self.game.player.pos
+        self.distance_to_target = 9999
+        self.target_spotted = False
         self.attack_distance = self.size[0] * 2 
         self.distance_calculation_cooldown = 0
 
@@ -71,7 +71,7 @@ class Enemy(Moving_Entity):
         super().Save_Data()
         self.intent_manager.Save_Data()
         self.saved_data['alert_cooldown'] = self.alert_cooldown
-        self.saved_data['distance_to_player'] = self.distance_to_player
+        self.saved_data['distance_to_player'] = self.distance_to_target
         self.saved_data['charge'] = self.charge
         self.saved_data['locked_on_target'] = self.locked_on_target
         self.saved_data['target'] = self.target
@@ -81,7 +81,7 @@ class Enemy(Moving_Entity):
         super().Load_Data(data)
         self.intent_manager.Load_Data(data)
         self.alert_cooldown = data['alert_cooldown']
-        self.distance_to_player = data['distance_to_player']
+        self.distance_to_target = data['distance_to_player']
         self.charge = data['charge']
         self.locked_on_target = data['locked_on_target']
         self.target = data['target']
@@ -120,8 +120,7 @@ class Enemy(Moving_Entity):
         max_distance_cooldown = random.uniform(0.2, 0.3) # randomise time to prevent simultaneous updates
         self.distance_calculation_cooldown = max_distance_cooldown
         
-        player_pos = self.game.player.pos
-        self.distance_to_player = math.sqrt((player_pos[0] - self.pos[0]) ** 2 + (player_pos[1] - self.pos[1]) ** 2)
+        self.distance_to_target = math.sqrt((self.target[0] - self.pos[0]) ** 2 + (self.target[1] - self.pos[1]) ** 2)
 
 
     def Set_Charge_To_Max(self):
@@ -183,14 +182,14 @@ class Enemy(Moving_Entity):
         self.Drop_Loot()
         self.game.enemy_handler.Delete_Enemy(self)
         self.game.entities_render.Remove_Entity(self)
-        if self.distance_to_player < 300 and generate_soul:
+        if self.distance_to_target < 300 and generate_soul:
             self.game.player.Increase_Souls(self.soul_value)
         super().Delete()
         return True
 
 
     def Set_Action(self, movement = None):
-        if self.distance_to_player > 300 :
+        if self.distance_to_target > 300 :
             return
         
         if self.charge > 0:
@@ -345,8 +344,8 @@ class Enemy(Moving_Entity):
     def Set_Max_Weapon_Charge(self, amount):
         self.max_weapon_charge = amount
 
-    def Set_Player_Spotted(self, state):
-        self.player_spotted = state
+    def Set_target_spotted(self, state):
+        self.target_spotted = state
 
     def Reset_Behavior(self):
         self.intent_manager.Reset_Behavior()

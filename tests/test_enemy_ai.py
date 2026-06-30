@@ -60,7 +60,7 @@ def mock_entity():
     entity = MagicMock()
     entity.pos = [64.0, 64.0]
     entity.target = [250.0, 250.0]
-    entity.distance_to_player = 100.0
+    entity.distance_to_target = 100.0
     entity.active_ability = None
     entity.size = (32, 32)
     entity.intelligence = 5
@@ -173,11 +173,11 @@ def test_movement_strategy_early_exits(mock_game, mock_entity):
     ms = Movement_Strategies(mock_game, mock_entity)
     
     # Case A: Too far away
-    mock_entity.distance_to_player = 350.0
+    mock_entity.distance_to_target = 350.0
     assert ms.Movement_Strategy(0.016) is False
     
     # Case B: Target player went invisible
-    mock_entity.distance_to_player = 100.0
+    mock_entity.distance_to_target = 100.0
     mock_game.player.active_ability = MockKeys.invisibility
     assert ms.Movement_Strategy(0.016) is False
 
@@ -224,11 +224,11 @@ def test_update_behavior_skips_when_player_not_spotted(mock_game, mock_entity):
     mock_entity.size = [32, 32]
     mock_entity.agility = 1
     mock_entity.intelligence = 1
-    mock_entity.player_spotted = False
+    mock_entity.target_spotted = False
     
     bm = Behavior_Manager(mock_game, mock_entity, keys.idle, 100)
     bm.max_distance = 50
-    mock_entity.distance_to_player = 200.0  # Outside detection bubble
+    mock_entity.distance_to_target = 200.0  # Outside detection bubble
     
     # Force the underlying component check to explicitly fail detection
     bm.ability_handler.Check_Player_Distance = MagicMock(return_value=False)

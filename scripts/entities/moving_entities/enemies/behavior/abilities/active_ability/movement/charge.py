@@ -17,4 +17,4 @@ class Charge(Active_Ability):
         
     # Returns true if entity is damaged 30% of health
     def Check_If_Trigger(self):
-        return self.entity.player_spotted
+        return self.entity.target_spotted

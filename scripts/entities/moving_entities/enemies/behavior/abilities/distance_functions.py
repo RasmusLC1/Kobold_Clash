@@ -11,7 +11,7 @@ class DistanceStrategy:
 
 class StandardDistanceCheck(DistanceStrategy):
     def check(self, max_distance, delta_time=0) -> bool:
-        return self.handler.entity.distance_to_player < max_distance
+        return self.handler.entity.distance_to_target < max_distance
 
 
 class EchoLocationDistanceCheck(DistanceStrategy):
@@ -22,7 +22,7 @@ class EchoLocationDistanceCheck(DistanceStrategy):
 
     def check(self, max_distance, delta_time=0) -> bool:
         # 1. Physical proximity check first
-        if self.handler.entity.distance_to_player >= max_distance:
+        if self.handler.entity.distance_to_target >= max_distance:
             self.echo_linger_timer = 0.0
             return False
 

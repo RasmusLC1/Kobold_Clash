@@ -20,10 +20,8 @@ class Echo_Location(Passive_Ability):
             return
 
         # Add this specific entity directly to the active pathfinding queue
-        self.game.enemy_handler.Add_To_Pathfinding_Queue(
-            self.entity, 
-            clatter_pos
-        )
+        self.entity.Set_Target(clatter_pos)
+        self.entity.Set_Locked_On_Target(10) # Set 10 seconds lock
 
     def Check_If_Trigger(self) -> bool:
         if self.entity.locked_on_target:
