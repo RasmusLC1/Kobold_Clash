@@ -63,7 +63,7 @@ def moving_entity(mock_game_context):
     
     # 2. Setup mock layout context for tile checking logic if needed elsewhere
     entity.tile = MagicMock()
-    entity.tile.Get_Distance_To_Player.return_value = 150
+    entity.tile.self.entity.target.return_value = 150
     entity.tile_handler = MagicMock()
     
     return entity

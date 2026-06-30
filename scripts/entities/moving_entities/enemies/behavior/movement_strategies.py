@@ -79,12 +79,11 @@ class Movement_Strategies():
     #  Direct charge with per-enemy offset so groups spread out           #
     # ------------------------------------------------------------------ #
     def _Direct_Charge(self, delta_time):
-        player_pos = self.game.player.pos
         entity_pos = self.entity.pos
 
         direction = pygame.math.Vector2(
-            player_pos[0] - entity_pos[0],
-            player_pos[1] - entity_pos[1],
+            self.entity.target[0] - entity_pos[0],
+            self.entity.target[1] - entity_pos[1],
         )
         if direction.length_squared() == 0:
             return
@@ -145,25 +144,25 @@ class Movement_Strategies():
         if not surrounding_tiles:
             return []
 
-        player_tile_x = self.game.player.pos[0] // self.game.tilemap.tile_size
-        player_tile_y = self.game.player.pos[1] // self.game.tilemap.tile_size
+        target_tile_x = self.entity.target[0] // self.game.tilemap.tile_size
+        target_tile_y = self.entity.target[1] // self.game.tilemap.tile_size
 
         valid_tiles = [
             tile for tile in surrounding_tiles
-            if tile.Get_Distance_To_Player() is not None
-            and (tile.scaled_pos[0] != player_tile_x or tile.scaled_pos[1] != player_tile_y)
+            if tile.Get_Distance_To_Target(self.entity.target) is not None
+            and (tile.scaled_pos[0] != target_tile_x or tile.scaled_pos[1] != target_tile_y)
         ]
         if not valid_tiles:
             return []
 
         # Too far — pick from the 3 closest tiles for variety
         if entity_dist > max_range:
-            sorted_tiles = sorted(valid_tiles, key=lambda t: t.Get_Distance_To_Player())
+            sorted_tiles = sorted(valid_tiles, key=lambda t: t.Get_Distance_To_Target(self.entity.target))
             return sorted_tiles[:3]
 
         # Too close — pick from the 3 furthest tiles
         elif entity_dist < min_range:
-            sorted_tiles = sorted(valid_tiles, key=lambda t: t.Get_Distance_To_Player(), reverse=True)
+            sorted_tiles = sorted(valid_tiles, key=lambda t: t.Get_Distance_To_Target(self.entity.target), reverse=True)
             return sorted_tiles[:3]
 
         # In range — loiter freely
@@ -197,7 +196,7 @@ class Movement_Strategies():
 
             # Gentle sideways drift when close — avoids pure circular orbiting
             if self.entity.distance_to_target < 200:
-                player_pos = self.game.player.pos
+                player_pos = self.entity.target
                 to_player = pygame.math.Vector2(
                     player_pos[0] - entity_pos[0],
                     player_pos[1] - entity_pos[1],
@@ -236,7 +235,7 @@ class Movement_Strategies():
             self.line_of_sight_cooldown -= delta_time
         else:
             self.line_of_sight_cooldown = 1.0
-            if self.Line_Of_Sight(self.game.player.pos):
+            if self.Line_Of_Sight(self.entity.target):
                 self.player_found = PLAYER_FOUND_MAX
                 self.Trigger_Player_Found()
 

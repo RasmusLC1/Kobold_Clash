@@ -185,9 +185,9 @@ def test_find_tiles_in_range_too_far_picks_closest_neighbor(mock_game, mock_enti
     ms = Movement_Strategies(mock_game, mock_entity)
 
     tile_far = MagicMock()
-    tile_far.Get_Distance_To_Player.return_value = 200
+    tile_far.Get_Distance_To_Target.return_value = 200
     tile_close = MagicMock()
-    tile_close.Get_Distance_To_Player.return_value = 80
+    tile_close.Get_Distance_To_Target.return_value = 80
 
     mock_game.tilemap.Get_Floor_Tiles_Around.return_value = [tile_far, tile_close]
 
