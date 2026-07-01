@@ -83,7 +83,6 @@ class A_Star:
         self.width = size_x
         self.height = size_y
 
-    # def Update_Level_Configuration_Map(self, game):
 
 
 
@@ -145,7 +144,7 @@ class A_Star:
 # Create a specific rule and pass it onto the generic map
     def Build_Standard_Map(self, game):
         def rule(t):
-            return t.sub_type == keys.floor and not t.trap and not t.touching_wall
+            return t.type == keys.floor and not t.trap and not t.touching_wall
         self.standard_map = self._Build_Generic_Map(game, rule)
 
     def Build_IgnoreLava_Map(self, game):

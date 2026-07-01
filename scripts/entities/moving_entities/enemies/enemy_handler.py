@@ -121,6 +121,8 @@ class Enemy_Handler():
 
 
         for enemy in self.enemies:
+            if not enemy.target:
+                self.Add_To_Patrol_Queue(enemy)
             enemy.Update(self.game.tilemap, delta_time)      
 
     # Sort at most once per frame tick instead of on every element insertion

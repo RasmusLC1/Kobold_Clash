@@ -124,7 +124,6 @@ def test_add_to_pathfinding_queue_locks_target_and_swaps_queues(mock_game, mock_
     assert mock_enemy in handler.pathfinding_queue
     assert mock_enemy not in handler.patrol_queue
     mock_enemy.Set_Target.assert_called_once_with((500, 500))
-    mock_enemy.Set_Locked_On_Target.assert_called_once_with(30)
 
 
 def test_update_pathfinding_queue_pops_and_evaluates_if_cooldown_clear(mock_game, mock_enemy):

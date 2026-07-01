@@ -104,17 +104,25 @@ class Path_Finding():
     def Find_Shortest_Path(self) -> None:
         if not self.entity.target:
             return
-        # Check if the entity has recently received a new target
-   
+
         self.path.clear()
         self.Calculate_Position()
         self.Calculate_Destination_Position(self.entity.target)
-        self.path = self.game.a_star.a_star_search([self.src_x, self.src_y], [self.des_x, self.des_y], self.path_finding_strategy)
+
+        # Translate world tile coords → map-local coords before passing to A*
+        min_x = self.game.a_star.min_x
+        min_y = self.game.a_star.min_y
+
+        src = [self.src_x - min_x, self.src_y - min_y]
+        dst = [self.des_x - min_x, self.des_y - min_y]
+
+        self.path = self.game.a_star.a_star_search(src, dst, self.path_finding_strategy)
+        # print("PATH ", self.path)
         if not self.path:
             return False
-        self.path = [(x + self.game.a_star.min_x, y + self.game.a_star.min_y) for (x, y) in self.path]
 
-        
+        # Translate back to world tile coords
+        self.path = [(x + min_x, y + min_y) for (x, y) in self.path]
         return True
 
     

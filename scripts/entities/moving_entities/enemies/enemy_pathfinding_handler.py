@@ -16,15 +16,15 @@ class Enemy_Pathfinding_Handler():
         self.Update_Pathfinding_Queue(delta_time)
         self.Update_Patrol_Queue(delta_time)
 
-    def Add_To_Pathfinding_Queue(self, enemy, destination):
-        if enemy in self.pathfinding_queue:
+    def Add_To_Pathfinding_Queue(self, entity, destination):
+        if entity in self.pathfinding_queue:  # this line must be first
             return
-        
-        if enemy in self.patrol_queue:
-            self.patrol_queue.remove(enemy)
 
-        self.pathfinding_queue.append(enemy)
-        enemy.Set_Target(destination)
+        if entity in self.patrol_queue:
+            self.patrol_queue.remove(entity)
+
+        entity.Set_Target(destination)
+        self.pathfinding_queue.append(entity)
 
     def Update_Pathfinding_Queue(self, delta_time):
         if not self.pathfinding_queue:
@@ -51,14 +51,15 @@ class Enemy_Pathfinding_Handler():
         self.pathfinding_queue = deque(sorted_list)
 
     def Add_To_Patrol_Queue(self, enemy):
+        if enemy in self.patrol_queue or enemy in self.pathfinding_queue:
+            return
+        
         enemy_target = self.Get_Random_Enemy()
         if not enemy_target:
             return
         
         destination = enemy_target.pos
 
-        if enemy in self.patrol_queue or enemy in self.pathfinding_queue:
-            return
             
         self.patrol_queue.append(enemy)
         enemy.Set_Target(destination)
