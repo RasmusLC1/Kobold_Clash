@@ -1,50 +1,12 @@
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.dash import Dash
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.jump_attack import Jump_Attack
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.run_away import Run_Away
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.effects.invulnerable import Invulnerable
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.effects.invisibility import Invisibility
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.effects.rage import Rage
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.charge import Charge
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.rally import Rally
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.electrify import Electrify
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.healer import Healer
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.crystal_scale import Crystal_Scale
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.gloom_stalker import Gloom_Stalker
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_eater import Bone_Eater
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_ressurector import Bone_Resurrector
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.ethereal import Ethereal
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.fire_born import Fire_Born
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.glacial_core import Glacial_Core
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.toxicosis import Toxicosis
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.galvanic_skin import Galvanic_Skin
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.sanguine_lord import Sanguine_Lord
-
+from scripts.entities.moving_entities.enemies.behavior.abilities import registry as registry
+from scripts.entities.moving_entities.enemies.behavior.abilities.distance_functions import DISTANCE_REGISTRY
 from scripts.engine.keys.keys import keys
 
 class Ability_Handler():
-
-    ABILITY_REGISTRY = {
-        keys.dash : Dash,
-        keys.jump : Jump_Attack,
-        keys.run_away : Run_Away,
-        keys.invulnerable : Invulnerable,
-        keys.rage : Rage,
-        keys.invisibility : Invisibility,
-        keys.charge : Charge,
-        keys.rally : Rally,
-        keys.electrify : Electrify,
-        keys.healer : Healer,
-        keys.crystal_scale : Crystal_Scale,
-        keys.gloom_stalker : Gloom_Stalker,
-        keys.fire_born : Fire_Born,
-        keys.glacial_core : Glacial_Core,
-        keys.toxicosis : Toxicosis,
-        keys.galvanic_skin : Galvanic_Skin,
-        keys.sanguine_lord : Sanguine_Lord,
-        keys.bone_eater : Bone_Eater,
-        keys.bone_ressurector : Bone_Resurrector,
-        keys.ethereal : Ethereal, 
-    }
+    @property
+    def ABILITY_REGISTRY(self):
+        """Always points to the live dictionary variable inside the registry module."""
+        return registry.ABILITY_REGISTRY
 
     def __init__(self, game, entity):
         self.game = game
@@ -53,6 +15,7 @@ class Ability_Handler():
         self.active_ability = None  # Holds the single assigned active ability (or None)
         self.abilities_on_cooldown = []
         self.is_running_ability = False  # Track execution state separately from assignment
+        self.Set_Player_Distance(keys.standard)
 
     def Save_Data(self):
         self.entity.saved_data['active_ability_key'] = self.active_ability.name if self.active_ability else None
@@ -192,6 +155,23 @@ class Ability_Handler():
             return True
         return self.active_ability.Check_If_Attack_Allowed()
     
+    def On_Clatter_Heard(self, clatter_pos):
+        for ability in self.passive_abilities.values():
+            ability.On_Clatter_Heard(clatter_pos)
+
+    
+    def Check_Player_Distance(self, max_distance, delta_time):
+        # Call the .check method on our active strategy object instance
+        return self.player_distance_strategy.check(max_distance, delta_time)
+
+    def Set_Player_Distance(self, type_key):
+        # Fetch the class structure layout from your registry map
+        strategy_class = DISTANCE_REGISTRY.get(type_key, DISTANCE_REGISTRY[keys.standard])
+        
+        # Instantiate it dynamically, binding this handler context onto it
+        self.player_distance_strategy = strategy_class(self)
+
+
     def Damage_Taken(self, damage, effect, direction, attacker):
         for ability in self.passive_abilities.values():
             damage = ability.Damage_Taken(damage, effect, direction, attacker)

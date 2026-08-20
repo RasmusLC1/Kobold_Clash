@@ -1,5 +1,4 @@
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.active_ability import Active_Ability
-from scripts.engine.keys.keys import keys
 
 COOLDOWN_TIME = 10
 # Base class ability for buffing nearby enemies 
@@ -29,4 +28,4 @@ class Support_Nearby_Entities(Active_Ability):
         
     # Returns true if entity is damaged 30% of health
     def Check_If_Trigger(self):
-        return self.entity.player_spotted
+        return self.entity.target_spotted

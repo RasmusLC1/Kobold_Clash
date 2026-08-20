@@ -36,7 +36,7 @@ class Medusa(Enemy):
         self.attack_type_cooldown = ATTACK_TYPE_COOLDOWN
         self.attack_type_cooldown = ATTACK_TYPE_COOLDOWN
         # ranged attack
-        if self.distance_to_player > RANGED_DISTANCE and self.attack_type != keys.range:
+        if self.distance_to_target > RANGED_DISTANCE and self.attack_type != keys.range:
             self.attack_distance  = 150
 
         # Direct attack
@@ -45,7 +45,6 @@ class Medusa(Enemy):
 
 
     def Trigger_Ranged_Attack(self):
-        self.Set_Target()
         self.Set_Attack_Direction()
         self.ranged_weapon.Initialise_Shooting(self, 100, self.electric_damage)
 

@@ -412,7 +412,7 @@ Upgrade weapons
     # Shade, immune to physical attacks, will always pathfind towards player, medium damage, low speed, low health
     # Vampire, boss, life steal, flying bat form when travelling, close combat
     # Crypt Ghoul, bone club, fast and high damage, but glass cannon
-    Lich, casts doom on player, debuffing him and slowly drains health until Lich is killed
+
 ### Traps
     - # Soul bind, disables player healing and spawns item (soul shard) that needs to be found to enable healing again
     - # Pressure plate that opens nearby tombs and spawns enemies
@@ -447,11 +447,11 @@ Upgrade weapons
     # Poison Elemental, creates poison plumes around the player and explodes when damaged
     # Minotaur, boss mob, charges and breaks envoirement, high damage, low defence
     # Medusa, shoots electric projetiles and fast but very low health, will switch to melee if player is to close, chance to stun player if player mouse is closer to medusa than player
-    Clicker, blind but good hearing, loud because of clicks
-    Echo stalker, becomes visible for 60 seconds when clatter is generated
-    Shard Wraith, teleports close to clatter source when clatter is generated
-    Crystal Scarab, basic enemy that swarms player
-    Hydra, boss mob, regens health fast, gains immunity to the last effect type that damaged it
+    # Clicker, blind but good hearing, prefers the dark and can detect the faintest sounds
+    # Echo shard, becomes visible for 10 seconds when clatter is generated
+    # Echo Wraith, teleports close to clatter source when clatter is generated
+    # Crystal Scarab, basic enemy that swarms player, immune to magic
+    # Hydra, boss mob, regens health fast, gains immunity to the last effect type that damaged it
     Kobold, steals items from player and runs away
 ### Traps
     - Crystal shards, shoots crystal spikes
@@ -516,7 +516,7 @@ Upgrade weapons
 ### Description
     Ancient culture that guards the world from a curse
 ### Specialty
-    Quatlz curse, player will slowly get more and more curse the longer they stay.
+    Quatlz curse, player will slowly get more and more curse the longer they stay. Gold idols loot spawned throughout map to reduce Quatlz curse
     Cursed items spawn more often
 ### Enemies
     Serpent Warriors, basic enemies that are decently strong individually
@@ -524,8 +524,8 @@ Upgrade weapons
     Skink fanatics, high damage low health that charges the player aggressively
     Salamander hunters, shoots fire projectiles and high mobility, hunts in packs
     Temple guards, large crocodiles with high defence that aim to hold player in place
-    Komodo priests, increases strength of nearby enemies
-    Quetzalcoatl shaman, heals nearby enemies
+    Komodo priests, increases strength of nearby enemies, reduces Quatlz curse when killed
+    Quetzalcoatl shaman, heals nearby enemies, reduces Quatlz curse when killed
     Ancient Tyrant, bos box t-rex, high damage and speed but low defence
     Embermaw, boss shoots fire from the front and has ball tail in back that can attack player, high defence and damage, but low movement 
     Great Python, constricts the player for a time allowing other enemies to attack
@@ -540,11 +540,12 @@ Upgrade weapons
     - # Loose rubble, generates clatter when stepped on
 ### Decorations
     - # Braziers with fire, lights up area, can be extinguished/ignited
-    - Spawning pool, enter to clear yourself of curses
+    - Spawning pool, enter to gain a permanent buff
     - Venemous idol, pay gold to gain poison resistance
     - Camouflaged cache, hidden treasure rooms behind vines
     - Shedding altar, activate to lose max health, but remove all curses
     - Offering altar, place cursed item to remove negative effect, pay with souls
+    - Cleansing pool, reset Quatlz curse
     - Hunter Trial shrine, kill X enemies and gain immunity from Quatlz curse
     - Offering stone, sacrifice cursed item for a blessing
 

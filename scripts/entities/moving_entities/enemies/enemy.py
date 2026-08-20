@@ -18,7 +18,7 @@ class Enemy(Moving_Entity):
         # 1. Fetch the Profile (Contains scaled stats AND animation info)
         stats = Attribute_Distributor.Get_Enemy_Profile(type, game.depth, is_elite)
 
-        self.max_weapon_charge = stats.max_weapon_charge
+        self.max_weapon_charge = max(0.1, 1 - ((stats.agility + stats.stamina) / 20))
         self.soul_value = stats.souls
         
         # 2. Call super().__init__ using the clean attributes
@@ -45,14 +45,15 @@ class Enemy(Moving_Entity):
         # --- Combat & AI State ---
         self.alert_cooldown = 0
         self.active_weapon = None
-        self.target = self.game.player.pos
         self.charge = 0
         self.damaged = False 
 
-        self.distance_to_player = 9999
-        self.player_spotted = False
+        self.distance_to_target = 9999
+        self.target = self.game.player.pos
+        self.target_spotted = False
         self.attack_distance = self.size[0] * 2 
         self.distance_calculation_cooldown = 0
+        self.on_patrol = False
 
         self.locked_on_target = 0 
         self.attack_symbol_offset = 20
@@ -63,7 +64,6 @@ class Enemy(Moving_Entity):
             game, self, stats.path_finding_strategy, 
             stats.behavior, self.max_weapon_charge
         )
-
         self.Set_Ability(stats.ability)
         self.Set_Description()
 
@@ -72,7 +72,7 @@ class Enemy(Moving_Entity):
         super().Save_Data()
         self.intent_manager.Save_Data()
         self.saved_data['alert_cooldown'] = self.alert_cooldown
-        self.saved_data['distance_to_player'] = self.distance_to_player
+        self.saved_data['distance_to_player'] = self.distance_to_target
         self.saved_data['charge'] = self.charge
         self.saved_data['locked_on_target'] = self.locked_on_target
         self.saved_data['target'] = self.target
@@ -82,7 +82,7 @@ class Enemy(Moving_Entity):
         super().Load_Data(data)
         self.intent_manager.Load_Data(data)
         self.alert_cooldown = data['alert_cooldown']
-        self.distance_to_player = data['distance_to_player']
+        self.distance_to_target = data['distance_to_player']
         self.charge = data['charge']
         self.locked_on_target = data['locked_on_target']
         self.target = data['target']
@@ -108,6 +108,12 @@ class Enemy(Moving_Entity):
         self.Set_Damaged(False)
         self.Reset_Max_Speed()
 
+    
+    def On_Clatter_Heard(self, clatter_pos):
+        self.intent_manager.On_Clatter_Heard(clatter_pos)
+
+
+    
 
     def Calculate_Distance_To_Player(self, delta_time):
         if self.distance_calculation_cooldown > 0:
@@ -116,9 +122,10 @@ class Enemy(Moving_Entity):
          
         max_distance_cooldown = random.uniform(0.2, 0.3) # randomise time to prevent simultaneous updates
         self.distance_calculation_cooldown = max_distance_cooldown
+        if not self.target:
+            return
         
-        player_pos = self.game.player.pos
-        self.distance_to_player = math.sqrt((player_pos[0] - self.pos[0]) ** 2 + (player_pos[1] - self.pos[1]) ** 2)
+        self.distance_to_target = math.sqrt((self.target[0] - self.pos[0]) ** 2 + (self.target[1] - self.pos[1]) ** 2)
 
 
     def Set_Charge_To_Max(self):
@@ -180,14 +187,14 @@ class Enemy(Moving_Entity):
         self.Drop_Loot()
         self.game.enemy_handler.Delete_Enemy(self)
         self.game.entities_render.Remove_Entity(self)
-        if self.distance_to_player < 300 and generate_soul:
+        if self.distance_to_target < 300 and generate_soul:
             self.game.player.Increase_Souls(self.soul_value)
         super().Delete()
         return True
 
 
     def Set_Action(self, movement = None):
-        if self.distance_to_player > 300 :
+        if self.distance_to_target > 300 :
             return
         
         if self.charge > 0:
@@ -196,11 +203,6 @@ class Enemy(Moving_Entity):
             self.animation_handler.Set_Animation('running')
         else:
             self.animation_handler.Set_Animation('idle')
-
-    def Set_Target(self, pos = None):
-        if not pos:
-            pos = self.game.player.pos
-        return super().Set_Target(pos)
 
 
     def Spawn_Damaged_Particles(self):
@@ -241,48 +243,6 @@ class Enemy(Moving_Entity):
                         )
 
     
-    # NOTE: This version of the method is currently overwritten by the one below it in Python.
-    # It has been updated to be vector-compatible just in case you plan to rename or merge it.
-    def Entity_Collision_Detection_With_Tilemap(self, tilemap):
-        colliding_entity = super().Entity_Collision_Detection(tilemap)
-
-        if colliding_entity:
-            if colliding_entity.type == 'player':
-                self.movement.direction.update(0, 0)
-                return colliding_entity
-
-            # Collision logic for other entities
-            collision_vector = pygame.math.Vector2(self.pos[0] - colliding_entity.pos[0],
-                                                   self.pos[1] - colliding_entity.pos[1])
-            if collision_vector.length_squared() > 0:
-                collision_vector = collision_vector.normalize()
-                direction_vector = pygame.math.Vector2(self.movement.direction)
-                reflected_direction = direction_vector.reflect(collision_vector)
-
-                if self.Future_Rect(reflected_direction).colliderect(self.game.player.rect()):
-                    self.movement.direction.update(0, 0)
-                    return self.game.player
-
-                self.movement.direction.update(reflected_direction.x, reflected_direction.y)
-
-        return None
-    
-
-    def Trap_Collision_Handler(self):
-        for trap in self.nearby_traps:
-            if self.rect().colliderect(trap.rect()):
-                # Run away in the same direction the enemy was moving previously
-                # Utilizes the updated Vector2 holder properties (.x and .y)
-                dir_x = max(-0.4, self.movement.direction_holder.x * 4) if self.movement.direction_holder.x < 0 else min(0.4, self.movement.direction_holder.x * 4)
-                dir_y = max(-0.4, self.movement.direction_holder.y * 4) if self.movement.direction_holder.y < 0 else min(0.4, self.movement.direction_holder.y * 4)
-                
-                self.movement.direction.update(dir_x, dir_y)
-            else:
-                # Check if the enemy will collide soon, if yes redirect in the opposite direction
-                if self.Future_Rect(self.movement.direction).colliderect(trap.rect()):
-                    self.movement.direction *= -1
-                    break
-    
     def Set_Attack_Direction(self):
         if not self.charge > 0:
             self.attack_direction = (0, 0)
@@ -292,6 +252,7 @@ class Enemy(Moving_Entity):
     def Improve_Weapon(self, effect, amount):
         if not self.active_weapon:
             print("FAILED TO IMPROVE WEAPON, ", effect, self.type, vars(self))
+            return
 
         self.active_weapon.Set_Damage(effect, amount)
 
@@ -346,7 +307,6 @@ class Enemy(Moving_Entity):
     
 
     def Trigger_Attack(self):
-        self.Set_Target()
         self.Trigger_Basic_Attack()
         self.intent_manager.Reset_Attack()
 
@@ -362,16 +322,7 @@ class Enemy(Moving_Entity):
         self.charge = charge
 
 
-    # This is the active collision method overriding the tilemap signature variant above
-    def Entity_Collision_Detection(self):
-        future_pos = super().Entity_Collision_Detection()
-        player = self.game.player
-        
-        # Handle collision with the player using the component set
-        if player.rect().colliderect(self.rect_future(future_pos)):
-            self.movement.pushed_entities.add(player)
-        
-        return future_pos
+    
 
 
     def Set_Ability(self, ability_name):
@@ -392,12 +343,15 @@ class Enemy(Moving_Entity):
     def Set_Max_Weapon_Charge(self, amount):
         self.max_weapon_charge = amount
 
-    def Set_Player_Spotted(self, state):
-        self.player_spotted = state
+    def Set_target_spotted(self, state):
+        self.target_spotted = state
 
     def Reset_Behavior(self):
         self.intent_manager.Reset_Behavior()
-    
+
+    def Set_On_Patrol(self, state):
+        self.on_patrol = state
+
 
     def Render_Attacking_Symbol(self, surf, offset = (0,0)):
         if self.charge < 0:

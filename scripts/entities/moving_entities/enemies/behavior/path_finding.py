@@ -46,14 +46,12 @@ class Path_Finding():
     def Path_Finding(self, delta_time):
         # Pathfind towards the target
         if self.entity.Movement_Strategy(delta_time):
-            self.entity.Trap_Collision_Handler()
-
             return
         else:
             # If enemy looses sight of player he will try to go to the last known location
             if self.player_found:
                 self.player_found = False
-                self.entity.Set_Target()
+                self.entity.Set_Target(self.game.player.pos)
 
         self.Navigate_Path()
 
@@ -83,7 +81,6 @@ class Path_Finding():
             return
         self.Calculate_Path_Segment(target)
 
-        
         return True
 
 
@@ -105,17 +102,27 @@ class Path_Finding():
         return True
 
     def Find_Shortest_Path(self) -> None:
-        # Check if the entity has recently received a new target
-   
+        if not self.entity.target:
+            return
+
         self.path.clear()
         self.Calculate_Position()
         self.Calculate_Destination_Position(self.entity.target)
-        self.path = self.game.a_star.a_star_search([self.src_x, self.src_y], [self.des_x, self.des_y], self.path_finding_strategy)
+
+        # Translate world tile coords → map-local coords before passing to A*
+        min_x = self.game.a_star.min_x
+        min_y = self.game.a_star.min_y
+
+        src = [self.src_x - min_x, self.src_y - min_y]
+        dst = [self.des_x - min_x, self.des_y - min_y]
+
+        self.path = self.game.a_star.a_star_search(src, dst, self.path_finding_strategy)
+        # print("PATH ", self.path)
         if not self.path:
             return False
-        self.path = [(x + self.game.a_star.min_x, y + self.game.a_star.min_y) for (x, y) in self.path]
 
-        
+        # Translate back to world tile coords
+        self.path = [(x + min_x, y + min_y) for (x, y) in self.path]
         return True
 
     

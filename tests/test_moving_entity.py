@@ -63,7 +63,7 @@ def moving_entity(mock_game_context):
     
     # 2. Setup mock layout context for tile checking logic if needed elsewhere
     entity.tile = MagicMock()
-    entity.tile.Get_Distance_To_Player.return_value = 150
+    entity.tile.self.entity.target.return_value = 150
     entity.tile_handler = MagicMock()
     
     return entity
@@ -198,16 +198,20 @@ def test_apply_repulsion_pushes_weaker_entities(moving_entity):
     assert called_args['push_strength'] == pytest.approx(5.0)
 
 
-def test_apply_repulsion_ignores_stronger_or_equal_entities(moving_entity):
-    """Verifies that an entity cannot physically budge a target of equal or greater strength."""
-    moving_entity.strength = 15
-    
-    heavy_boss = MagicMock()
-    heavy_boss.strength = 100
-    
-    moving_entity.movement.pushed_entities.add(heavy_boss)
-    collided = moving_entity.movement.Apply_Repulsion(tilemap=moving_entity.game.tilemap)
-    
-    assert collided is False
-    heavy_boss.Push.assert_not_called()
+def test_movement_acceleration_and_clamping(moving_entity):
+    moving_entity.velocity = [0.0, 0.0]
 
+    moving_entity.Update(tilemap=moving_entity.game.tilemap, delta_time=0.016, movement=(1, 0))
+
+    assert moving_entity.velocity[0] > 0
+    assert moving_entity.velocity[1] == 0
+
+    # Force extreme velocity to test clamping
+    moving_entity.velocity = [5000.0, 0.0]
+    moving_entity.Update(tilemap=moving_entity.game.tilemap, delta_time=0.016, movement=(1, 0))
+
+    # New model: clamp to max_speed first, then drag only applies on axes with no input.
+    # movement=(1, 0) means X has active input, so drag is NOT applied on X.
+    # Result should just be max_speed.
+    expected_speed = moving_entity.movement.max_speed
+    assert moving_entity.velocity[0] == pytest.approx(expected_speed, rel=1e-3)

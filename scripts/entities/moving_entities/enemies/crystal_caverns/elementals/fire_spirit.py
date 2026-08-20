@@ -15,27 +15,4 @@ class Fire_Spirit(Elemental):
         super().Update(tilemap, delta_time, movement)
         self.active_weapon.Update(delta_time)
 
-    # TODO: IMPLEMENT
-    def Look_For_Health(self, delta_time):
-        if self.look_for_health_cooldown:
-            self.look_for_health_cooldown = max(0, self.look_for_health_cooldown - delta_time)
-            return
-        
-
-        if self.health < self.max_health / 2:
-            self.Set_Locked_On_Target(0)
-
-            self.look_for_health_cooldown = 30
-
-            nearby_traps = self.game.trap_handler.Find_Nearby_Traps(self, 1000)
-            for trap in nearby_traps:
-
-                if trap.type == keys.lava_env:
-                    self.game.enemy_handler.Add_To_Pathfinding_Queue(self, trap.pos)
-                    self.locked_on_target = True
-                    break
-
-            self.Set_Locked_On_Target(50)
-        
-        return
 

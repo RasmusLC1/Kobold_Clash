@@ -1,48 +1,28 @@
+"""
+test_enemy_ai.py
+----------------
+Unit tests for enemy AI systems: pathfinding, line-of-sight, movement
+strategies, behavior manager, attack handler, and intent manager.
+
+Ability-specific tests live in test_abilities.py.
+"""
+
 import pytest
-import math
 import pygame
 from unittest.mock import MagicMock, patch
+from scripts.engine.keys.keys import keys
 
-
-
-# ==============================================================================
-# DYNAMIC KEYS MOCK (Prevents breaking other test files during collection)
-# ==============================================================================
-class DynamicMockKeys:
-    """Dynamically returns the attribute name as a string if it doesn't exist.
-    This satisfies keys.direct -> 'direct' while safely allowing 
-    keys.skeleton_warrior -> 'skeleton_warrior' down the import chain.
-    """
-    def __getattr__(self, name):
-        return name
-
-# Assuming your modules are structured under your scripts directory structure:
-# Adjust imports matching your local package directories if needed
 from scripts.entities.moving_entities.enemies.behavior.path_finding import Path_Finding
 from scripts.entities.moving_entities.enemies.behavior.movement_strategies import Movement_Strategies
-from scripts.entities.moving_entities.enemies.behavior.behavior_manager import Behavior_Manager
+from scripts.entities.moving_entities.enemies.behavior.behavior.behavior_manager import Behavior_Manager
 from scripts.entities.moving_entities.enemies.behavior.attack_handler import Attack_Handler
 from scripts.entities.moving_entities.enemies.behavior.intent_manager import Intent_Manager
-# Import the main handler class
 from scripts.entities.moving_entities.enemies.behavior.abilities.ability_handler import Ability_Handler
 
-# Import the core passive & active modules for structure matching
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.gloom_stalker import Gloom_Stalker
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.ethereal import Ethereal
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.crystal_scale import Crystal_Scale
 
-# Import missing concrete active and support abilities
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.jump_attack import Jump_Attack
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.dash import Dash  # (Base class if needed)
-from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.support_nearby_enemies.support_nearby_entities import Support_Nearby_Entities
-
-# Import missing passive abilities (bone seekers and status handlers)
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_eater import Bone_Eater
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.bone_seeker.bone_ressurector import Bone_Resurrector
-from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability.healing.galvanic_skin import Galvanic_Skin
-
-
-# Mocking structural key identifiers
+# MockKeys provides the fixed string constants the behavior manager tests need.
+# It does NOT patch the global keys object — each test that needs specific key
+# values passes MockKeys explicitly, keeping other tests unaffected.
 class MockKeys:
     direct = "direct"
     long_range = "long_range"
@@ -56,18 +36,6 @@ class MockKeys:
     retreat = "retreat"
     direct_attack = "direct_attack"
     hit_and_run = "hit_and_run"
-
-# Patch the key registry system inside all target files globally
-patch("scripts.engine.keys.keys.keys", MockKeys).start()
-
-
-# ==============================================================================
-# FIXTURES SETUP
-# ==============================================================================
-
-
-# Replace the old rigid MockKeys patch with this:
-patch("scripts.engine.keys.keys.keys", DynamicMockKeys()).start()
 
 @pytest.fixture
 def mock_game():
@@ -92,7 +60,7 @@ def mock_entity():
     entity = MagicMock()
     entity.pos = [64.0, 64.0]
     entity.target = [250.0, 250.0]
-    entity.distance_to_player = 100.0
+    entity.distance_to_target = 100.0
     entity.active_ability = None
     entity.size = (32, 32)
     entity.intelligence = 5
@@ -205,28 +173,31 @@ def test_movement_strategy_early_exits(mock_game, mock_entity):
     ms = Movement_Strategies(mock_game, mock_entity)
     
     # Case A: Too far away
-    mock_entity.distance_to_player = 350.0
+    mock_entity.distance_to_target = 350.0
     assert ms.Movement_Strategy(0.016) is False
     
     # Case B: Target player went invisible
-    mock_entity.distance_to_player = 100.0
+    mock_entity.distance_to_target = 100.0
     mock_game.player.active_ability = MockKeys.invisibility
     assert ms.Movement_Strategy(0.016) is False
 
-
 def test_find_tiles_in_range_too_far_picks_closest_neighbor(mock_game, mock_entity):
     ms = Movement_Strategies(mock_game, mock_entity)
-    
+
     tile_far = MagicMock()
-    tile_far.Get_Distance_To_Player.return_value = 200
+    tile_far.Get_Distance_To_Target.return_value = 200
     tile_close = MagicMock()
-    tile_close.Get_Distance_To_Player.return_value = 80
-    
+    tile_close.Get_Distance_To_Target.return_value = 80
+
     mock_game.tilemap.Get_Floor_Tiles_Around.return_value = [tile_far, tile_close]
-    
-    # Distance is 250, Max range is 150 -> CASE 1: TOO FAR
+
+    # Distance is 250, max_range is 150 -> CASE 1: TOO FAR
+    # New logic returns up to 3 closest tiles, so check membership and ordering
     tiles = ms.Find_Tiles_In_Range(max_range=150, min_range=100, entity_dist=250)
-    assert tiles == [tile_close]
+    assert tile_close in tiles
+    assert tiles.index(tile_close) < tiles.index(tile_far)  # closest tile comes first
+
+
 
 
 # ==============================================================================
@@ -248,12 +219,25 @@ def test_calculate_fallback_behavior_probabilistic_weighting(mock_game, mock_ent
 
 
 def test_update_behavior_skips_when_player_not_spotted(mock_game, mock_entity):
-    bm = Behavior_Manager(mock_game, mock_entity, MockKeys.idle, 100)
-    bm.max_distance = 50
-    mock_entity.distance_to_player = 200.0  # Outside detection bubble
+    # Setup standard required entity properties to survive behavior creation
+    mock_entity.health = 100
+    mock_entity.size = [32, 32]
+    mock_entity.agility = 1
+    mock_entity.intelligence = 1
+    mock_entity.target_spotted = False
     
-    assert bm.Update_Behavior(0.016) is None
-
+    bm = Behavior_Manager(mock_game, mock_entity, keys.idle, 100)
+    bm.max_distance = 50
+    mock_entity.distance_to_target = 200.0  # Outside detection bubble
+    
+    # Force the underlying component check to explicitly fail detection
+    bm.ability_handler.Check_Player_Distance = MagicMock(return_value=False)
+    
+    # Run the behavior update loop
+    result = bm.Update_Behavior(0.016)
+    
+    # The early return must hit cleanly and evaluate to None
+    assert result is None
 
 # ==============================================================================
 # 5. WEAPON CHARGING & ATTACK CYCLE CONTROL
@@ -268,7 +252,7 @@ def test_update_attack_sequence(mock_game, mock_entity):
     # Scenario: charging weapon sequence running
     bm.attack_handler.Update_Attack.return_value = True 
     
-    with patch.object(bm, 'behavior_pattern_function') as mock_pattern:
+    with patch.object(bm, 'current_behavior') as mock_pattern:
         bm.Update_Attack(0.016)
         mock_pattern.assert_not_called()
 
@@ -391,274 +375,6 @@ def test_retreat_behavior_clears_strategy_on_tick(mock_game, mock_entity):
             behavior_obj.Execute()
             assert bm.movement_behavior == MockKeys.run_away
 
+# Ability handler and individual ability tests have been moved to test_abilities.py.
 # ==============================================================================
-# 7. ENEMY ABILITY SYSTEM INTEGRATION TESTS
-# ==============================================================================
-
-@pytest.fixture
-def mock_ability_instance():
-    """Generates a standard active mock ability structure."""
-    ability = MagicMock()
-    ability.name = "mock_dash"
-    ability.is_passive = False
-    ability.cooldown = 0
-    ability.Get_Cooldown.return_value = 0
-    ability.Update_Cooldown.return_value = True
-    ability.Check_Trigger_Cooldown.return_value = True
-    ability.Check_If_Trigger.return_value = True
-    ability.Activate.return_value = True
-    ability.Check_If_Attack_Allowed.return_value = True
-    return ability
-
-
-def test_ability_handler_lazy_loading_via_getattr(mock_game, mock_entity):
-    """Ensures __getattr__ intercepts registry mappings and caches instances correctly."""
-    handler = Ability_Handler(mock_game, mock_entity)
-    
-    # Patch the registry item to map to a dummy constructor
-    mock_ability_cls = MagicMock()
-    handler.ABILITY_REGISTRY = {"dash": mock_ability_cls}
-    
-    # Trigger dynamic dynamic layout resolution
-    resolved_ability = handler.dash
-    
-    assert resolved_ability is not None
-    mock_ability_cls.assert_called_once_with(mock_game, mock_entity, "dash")
-    # Verify it was cached locally as an instance attribute
-    assert getattr(handler, "dash") == resolved_ability
-
-
-def test_ability_handler_getattr_raises_error_on_missing_key(mock_game, mock_entity):
-    """Guards lookup parameters by dropping clean errors on invalid lookups."""
-    handler = Ability_Handler(mock_game, mock_entity)
-    handler.ABILITY_REGISTRY = {"dash": MagicMock()}
-    
-    with pytest.raises(AttributeError, match="has no registry or attribute mapping for 'unregistered_spell'"):
-        _ = handler.unregistered_spell
-
-
-def test_passive_ability_updates_independently(mock_game, mock_entity):
-    """Validates that passive modules update every engine loop frame unconditionally."""
-    handler = Ability_Handler(mock_game, mock_entity)
-    mock_passive = MagicMock()
-    mock_passive.is_passive = True
-    
-    handler.passive_abilities["crystal_scale"] = mock_passive
-    handler.Update(delta_time=0.016)
-    
-    mock_passive.Update.assert_called_once_with(0.016)
-
-
-def test_active_ability_execution_lifecycle_flow(mock_game, mock_entity, mock_ability_instance):
-    """Tests the state transition sequence from evaluation up to trigger locks."""
-    handler = Ability_Handler(mock_game, mock_entity)
-    handler.active_ability = mock_ability_instance
-    mock_entity.active_ability = None # Target entity can host spell context
-    
-    # Emulate a single clock update
-    triggered = handler.Update(delta_time=0.1)
-    
-    assert triggered is True
-    assert handler.is_running_ability is True
-    mock_ability_instance.Activate.assert_called_once()
-    mock_entity.Set_Active_Ability.assert_called_once_with("mock_dash")
-
-
-def test_active_ability_removal_on_cooldown_detection(mock_game, mock_entity, mock_ability_instance):
-    """Ensures active loops drop gracefully once their cooldown timers are set."""
-    handler = Ability_Handler(mock_game, mock_entity)
-    handler.active_ability = mock_ability_instance
-    handler.is_running_ability = True
-    
-    # Force cooldown to simulate that execution has completed
-    mock_ability_instance.Get_Cooldown.return_value = 3.5
-    
-    handler.Update(delta_time=0.1)
-    
-    # Must shift system back to baseline tracking
-    assert handler.is_running_ability is False
-    assert mock_ability_instance in handler.abilities_on_cooldown
-    mock_entity.Remove_Active_Ability.assert_called_once()
-
-
-def test_ethereal_passive_damage_mitigation(mock_game, mock_entity):
-    """Validates Ethereal entirely voids slash and blunt pipeline interactions."""
-    # Instantiating custom entity context
-    mock_entity.is_ethereal = False
-    def set_ethereal(val): mock_entity.is_ethereal = val
-    mock_entity.Set_Ethereal = set_ethereal
-    
-    ethereal_passive = Ethereal(mock_game, mock_entity, "ethereal")
-    assert mock_entity.is_ethereal is True
-    
-    # Test physical reduction properties
-    assert ethereal_passive.Damage_Taken(15, ("slash",), (1, 0), None) == 0
-    assert ethereal_passive.Damage_Taken(22, ("blunt",), (0, 1), None) == 0
-    # Elemental damage should slice through unhindered
-    assert ethereal_passive.Damage_Taken(10, ("electric",), (0, 0), None) == 10
-
-
-def test_gloom_stalker_darkness_buff_toggle_boundaries(mock_game, mock_entity):
-    """Checks that Gloom Stalker shifts stats only across threshold transitions."""
-    mock_entity.strength = 10
-    mock_entity.max_speed_holder = 4.0
-    
-    gloom = Gloom_Stalker(mock_game, mock_entity, "gloom_stalker")
-    
-    # Scenario A: Initial state in deep dark (Light level 50 < 150)
-    mock_entity.light_level = 50
-    gloom.Update(0.1)
-    mock_entity.Set_Strength.assert_called_with(20) # 10 * 2
-    mock_entity.Set_Max_Speed.assert_called_with(8.0) # 4.0 * 2
-    
-    # Scenario B: Move back into well-lit corridors (Light level 200 > 150)
-    mock_entity.light_level = 200
-    gloom.Update(0.1)
-    mock_entity.Set_Strength.assert_called_with(10) # Reverted
-    mock_entity.Set_Max_Speed.assert_called_with(4.0)
-
-
-def test_crystal_scale_shield_absorption_breakthrough(mock_game, mock_entity):
-    """Validates Crystal Scale shield absorption arithmetic and blunt double damage."""
-    mock_entity.max_health = 40
-    mock_entity.pos = pygame.math.Vector2(100, 120)
-    
-    # Mocking assets registry to skip real blitting image payloads
-    mock_game.assets = {"crystal_scale_bar": MagicMock()}
-    
-    shield = Crystal_Scale(mock_game, mock_entity, "crystal_scale")
-    shield.crystal_scale_max = 10
-    shield.crystal_scale = 10
-    
-    # Standard breakthrough hit: 12 standard damage. 10 absorbed by shield, 2 breaks through.
-    rem_damage = shield.Damage_Taken(12, "normal", (0,0), None)
-    assert shield.crystal_scale == 0
-    assert rem_damage == 2
-
-
-
-# ==============================================================================
-# 8. ADVANCED ROBUSTNESS & SERIALIZATION EDGE-CASE TESTS
-# ==============================================================================
-
-def test_ability_handler_save_and_load_data_restoration(mock_game, mock_entity):
-    """Verifies complete state re-hydration during system Save/Load sequences."""
-    handler = Ability_Handler(mock_game, mock_entity)
-    mock_entity.saved_data = {}
-    
-    # Setup standard mocked active ability
-    mock_active = MagicMock()
-    mock_active.name = "dash"
-    handler.active_ability = mock_active
-    
-    # Setup standard passive
-    mock_passive = MagicMock()
-    handler.passive_abilities["gloom_stalker"] = mock_passive
-    
-    # Save step execution
-    handler.Save_Data()
-    assert mock_entity.saved_data['active_ability_key'] == "dash"
-    assert "gloom_stalker" in mock_entity.saved_data['passive_abilities_keys']
-    mock_active.Save_Data.assert_called_once()
-    mock_passive.Save_Data.assert_called_once()
-
-    # Emulate payload loading step
-    mock_data = {
-        'active_ability_key': 'dash',
-        'passive_abilities_keys': ['gloom_stalker'],
-        'cooldown_keys': ['dash'],
-        'is_running_ability': True,
-        'cooldown': 10,
-        'trigger_cooldown': 0
-    }
-    
-    with patch.object(handler, 'Get_Ability') as mock_get:
-        handler.Load_Data(mock_data)
-        assert handler.is_running_ability is True
-        assert mock_get.call_count == 2 # 1 for active, 1 for passive loop
-
-
-def test_bone_seeker_delta_time_throttling_and_cleanup(mock_game, mock_entity):
-    """Ensures Bone Seeker limits performance spikes and cleans up deleted targets."""
-    # Build complete execution landscape path structures
-    mock_game.tilemap = MagicMock()
-    mock_game.enemy_handler = MagicMock()
-    
-    bone_seeker = Bone_Resurrector(mock_game, mock_entity, "bone_resurrector")
-    
-    # Mock stale / destroyed target parameters
-    destroyed_bone = MagicMock()
-    destroyed_bone.is_destroyed = True
-    bone_seeker.target_bones = destroyed_bone
-    bone_seeker.target_bones_collision_cooldown = 0
-    
-    # Update execution loop must catch target death state instantly
-    bone_seeker.Update(delta_time=0.1)
-    assert bone_seeker.target_bones is None
-
-
-def test_bone_seeker_collision_and_consumption_trigger(mock_game, mock_entity):
-    """Validates real physical bounding box triggers item consumer hooks."""
-    mock_game.particle_handler = MagicMock()
-    
-    bone_seeker = Bone_Eater(mock_game, mock_entity, "bone_eater")
-    mock_bone = MagicMock()
-    mock_bone.is_destroyed = False
-    bone_seeker.target_bones = mock_bone
-    bone_seeker.target_bones_collision_cooldown = 0
-    
-    # Force a mock rect intersection match
-    mock_entity.rect = MagicMock(return_value=pygame.Rect(0, 0, 32, 32))
-    mock_bone.rect = MagicMock(return_value=pygame.Rect(10, 10, 32, 32))
-    
-    bone_seeker.Update(delta_time=0.1)
-    
-    # Assert that hooks clean out memory records properly
-    mock_bone.Consume.assert_called_once()
-    assert bone_seeker.target_bones is None
-
-
-def test_support_nearby_entities_empty_or_failed_activation(mock_game, mock_entity):
-    """Ensures area of effect abilities fail cleanly when zero targets exist."""
-    mock_game.enemy_handler.Find_Nearby_Enemies.return_value = []
-    
-    # Provide a support entity class instance config manually 
-    support_spell = Support_Nearby_Entities(
-        mock_game, mock_entity, "rally", "strength_buff", "rally_particle", radius=100
-    )
-    
-    # Trigger execution frame validation
-    success = support_spell.Activate()
-    assert success is True # Returns true to avoid stopping core manager update cascades
-    mock_game.particle_handler.Activate_Particles.assert_not_called()
-
-
-def test_jump_attack_movement_reduction_gate(mock_game, mock_entity):
-    """Confirms jump attack locks down movement forces while building charging power."""
-    jump_attack = Jump_Attack(mock_game, mock_entity, "jump")
-    jump_attack.wait_before_jump_cooldown = 1.5
-    jump_attack.jump_trigged = False
-    
-    jump_attack.Update(delta_time=0.5)
-    
-    # Entity should be frozen during winding phases
-    mock_entity.Reduce_Movement.assert_called_with(10000)
-    assert jump_attack.jump_trigged is False
-
-
-def test_healing_from_damage_type_status_conversion(mock_game, mock_entity):
-    """Checks that fire/electric status effects correctly convert to recovery states."""
-    from scripts.engine.keys.keys import keys
-    
-    galvanic = Galvanic_Skin(mock_game, mock_entity, "galvanic_skin")
-    
-    # Emulate entity being under active element stress
-    mock_effect = MagicMock()
-    mock_effect.effect_strength = 5
-    mock_entity.Get_Effect.return_value = mock_effect
-    
-    galvanic.Update(delta_time=0.016)
-    
-    # Check that status effects morph safely into clean absorption mechanics
-    mock_entity.Set_Effect.assert_any_call(keys.healing, 5)
-    mock_entity.Set_Effect.assert_any_call(keys.electric + '_resistance', 2)
+# END OF FILE

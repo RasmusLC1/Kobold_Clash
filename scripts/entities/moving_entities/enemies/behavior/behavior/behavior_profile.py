@@ -6,4 +6,4 @@ class Behavior_Profile:
         self.movement = movement # String with movement
         self.cooldown_range = cooldown_range # (min, max)
         self.retreat_opts = retreat_opts # Array of options
-        self.attack_distance = attack_distance # Int determines the attack distance
+        self.attack_distance = attack_distance

@@ -1,8 +1,12 @@
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.active_ability import Active_Ability
+from scripts.entities.moving_entities.enemies.behavior.abilities.registry import register_ability
 from scripts.engine.keys.keys import keys
+
+
 
 COOLDOWN_TIME = 30
 
+@register_ability(keys.rage) # add ability to registry
 class Rage(Active_Ability):
     def __init__(self, game, entity, name):
         super().__init__(game, entity, name, can_attack_while_triggered=True)

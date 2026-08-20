@@ -38,7 +38,8 @@ class Behavior_Manager():
             keys.medium_range: lambda: Medium_Range_Behavior(self, keys.medium_range, 400, (3, 5), self.Calculate_Ranged_Attack_Distance(200), [keys.medium_range, keys.long_range]),
             keys.short_range: lambda: Short_Range_Behavior(self, keys.short_range, 350, (2, 4), self.Calculate_Ranged_Attack_Distance(150), [keys.short_range, keys.medium_range, keys.long_range]),
             keys.hit_and_run: lambda: Hit_And_Run_Behavior(self, keys.direct, 300, (1, 1), self.Calculate_Close_Ranged_Attack_Distance(), [keys.direct_attack, keys.short_range, keys.medium_range]),
-            keys.retreat: lambda: Retreat_Behavior(self, keys.run_away, 500, (2, 4), self.Calculate_Close_Ranged_Attack_Distance())
+            keys.retreat: lambda: Retreat_Behavior(self, keys.run_away, 500, (2, 4), self.Calculate_Close_Ranged_Attack_Distance()),
+            keys.blind_attack: lambda: Direct_Attack_Behavior(self, keys.direct, 200, (1, 1), self.Calculate_Close_Ranged_Attack_Distance()),
         }
         
         # Transition to initial state
@@ -56,11 +57,11 @@ class Behavior_Manager():
         self.current_behavior.Enter()
 
     def Update_Behavior(self, delta_time):
-        self.entity.Set_Player_Spotted(self.Check_Player_Distance())
-        if not self.entity.player_spotted:
+        self.entity.Set_target_spotted(self.Check_Player_Distance(delta_time))
+        if not self.entity.target_spotted:
             return None
         
-        self.entity.Set_Target()
+        self.entity.Set_Target(self.game.player.pos) # Set the player pos as target when spotted
         
         self.Update_Attack(delta_time)
         self.ability_handler.Update(delta_time)
@@ -78,13 +79,14 @@ class Behavior_Manager():
         self.current_behavior.Execute()
         self.Check_If_Entity_Has_Attacked()
 
-    def Check_Player_Distance(self):
-        return self.entity.distance_to_player < self.max_distance
+    def Check_Player_Distance(self, delta_time):
+        return self.ability_handler.Check_Player_Distance(self.max_distance, delta_time)
+        
 
     def Check_Attack_Distance(self):
         if self.game.player.active_ability == keys.invisibility:
             return False
-        return self.entity.distance_to_player < self.attack_distance
+        return self.entity.distance_to_target < self.attack_distance
 
     def Check_If_Entity_Has_Attacked(self):
         if not self.attack_handler.Get_Entity_Has_Attacked():
@@ -192,3 +194,6 @@ class Behavior_Manager():
     
     def Reset_Attack_Speed(self):
         return self.attack_handler.Reset_Max_Weapon_Charge()
+    
+    def On_Clatter_Heard(self, clatter_pos):
+        self.ability_handler.On_Clatter_Heard(clatter_pos)

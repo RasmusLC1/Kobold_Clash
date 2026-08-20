@@ -6,18 +6,12 @@ class Healing_From_Damage_Type(Passive_Ability):
         super().__init__(game, entity, name)
         self.effect_name = effect_name
 
-    def Update(self, delta_time):
-        self.Check_If_On_Fire()
-        return super().Update(delta_time)
-    
 
-    def Check_If_On_Fire(self):
-        entity = self.entity
-        effect = entity.Get_Effect(self.effect_name)
-        if not effect:
-            return False
+    def Damage_Taken(self, damage, effect, direction, attacker):
+        # If there's no effect or the effect doesn't match our specialty, take standard damage
+        if not effect[0] or effect[0] != self.effect_name:
+            return damage
         
-        entity.Set_Effect(keys.healing, effect.effect_strength)
-        entity.Set_Effect(self.effect_name + '_resistance', 2)
-        return True
-    
+        self.entity.Set_Effect(keys.healing, damage // 2)
+        self.entity.Set_Effect(self.effect_name + '_resistance', 2)
+        return 0

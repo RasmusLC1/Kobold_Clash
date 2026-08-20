@@ -84,7 +84,7 @@ class Trap_Handler:
 
 
     def Find_Nearby_Traps(self, entity, max_distance):
-        return self.game.tilemap.Search_Nearby_Tiles(max_distance, entity.pos, 'trap', entity.ID)
+        return self.game.tilemap.Search_Nearby_Tiles(max_distance, entity.pos, keys.trap, entity.ID)
 
     def Find_Traps_Near_Player(self):
         nearby_traps = []

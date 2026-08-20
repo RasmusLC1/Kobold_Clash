@@ -9,6 +9,7 @@ class Direct_Attack_Behavior(Base_Behavior):
         in_range = self.manager.Check_Attack_Distance()
         self.manager.attack_handler.Set_Attack_Triggered(in_range)
         return in_range # Returns a value
+    
 
 class Hit_And_Run_Behavior(Base_Behavior):
     def Execute(self):

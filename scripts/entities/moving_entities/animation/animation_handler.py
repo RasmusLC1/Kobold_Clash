@@ -40,7 +40,7 @@ class Animation_Handler:
 
     def Set_Action(self):
         entity = self.entity
-        if entity.distance_to_player > 300:
+        if entity.distance_to_target > 300:
             return
 
         if entity.charge > 0:

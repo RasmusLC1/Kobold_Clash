@@ -50,6 +50,7 @@ class Graphics_Loader:
         Graphics_Loader.Asset_vampire_List(self)
         Graphics_Loader.Asset_minotaur_List(self)
         Graphics_Loader.Asset_medusa_List(self)
+        Graphics_Loader.Asset_Clicker_List(self)
     
     def Asset_Background_List(self):
         background_assets = {'background': load_image('background.png'),}
@@ -328,6 +329,13 @@ class Graphics_Loader:
         }
         self.assets.update(entities_assets)
 
+    def Asset_Clicker_List(self):
+        entities_assets = {
+            keys.clicker_running: get_tiles_from_sheet('entities/enemies/dwellers/clicker/clicker.png', 4, 0, 0, 0, 32, 32),
+            keys.clicker_attack: get_tiles_from_sheet('entities/enemies/dwellers/clicker/clicker_attack.png', 5, 0, 0, 0, 32, 32),
+        }
+        self.assets.update(entities_assets)
+
     def Asset_minotaur_List(self):
         entities_assets = {
             keys.minotaur: get_tiles_from_sheet('entities/enemies/mythical/minotaur/minotaur_idle.png', 3, 0, 0, 0, 64, 64),
@@ -373,6 +381,10 @@ class Graphics_Loader:
             keys.shade_idle: get_tiles_from_sheet('entities/enemies/void_spawn/shade/shade.png', 4, 0, 0, 0, 32, 32),
             keys.shade_running: get_tiles_from_sheet('entities/enemies/void_spawn/shade/shade.png', 4, 0, 0, 0, 32, 32),
             keys.shade_attack: get_tiles_from_sheet('entities/enemies/void_spawn/shade/shade_attack.png', 5, 0, 0, 0, 32, 32),
+
+            keys.rift_stalker_idle: get_tiles_from_sheet('entities/enemies/void_spawn/rift_stalker/rift_stalker.png', 4, 0, 0, 0, 32, 32),
+            keys.rift_stalker_running: get_tiles_from_sheet('entities/enemies/void_spawn/rift_stalker/rift_stalker.png', 4, 0, 0, 0, 32, 32),
+            keys.rift_stalker_attack: get_tiles_from_sheet('entities/enemies/void_spawn/rift_stalker/rift_stalker_attack.png', 5, 0, 0, 0, 32, 32),
         }
         self.assets.update(entities_assets)
 

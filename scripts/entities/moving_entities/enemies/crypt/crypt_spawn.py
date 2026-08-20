@@ -7,13 +7,13 @@ from scripts.entities.moving_entities.enemies.crypt.skeleton.skeleton_undertaker
 from scripts.entities.moving_entities.enemies.crypt.skeleton.skeleton_warlock import Skeleton_Warlock 
 from scripts.entities.moving_entities.enemies.crypt.skeleton.skeleton_guardian import Skeleton_Guardian 
 from scripts.entities.moving_entities.enemies.crypt.skeleton.skeleton_banner_bearer import Skeleton_Banner_Bearer 
-from scripts.entities.moving_entities.enemies.crypt.dwellers.spider.spider import Spider
+from scripts.entities.moving_entities.enemies.crypt.dwellers.spider import Spider
 from scripts.entities.moving_entities.enemies.crypt.dwellers.ghoul import Ghoul
-from scripts.entities.moving_entities.enemies.crypt.dwellers.vampire.vampire import Vampire
+from scripts.entities.moving_entities.enemies.crypt.dwellers.vampire import Vampire
 from scripts.entities.moving_entities.enemies.crypt.void_spawn.shade import Shade
 from scripts.entities.moving_entities.enemies.crypt.void_spawn.phantom import Phantom
 from scripts.entities.moving_entities.enemies.crypt.void_spawn.wraith.wraith import Wraith
-from scripts.entities.moving_entities.enemies.crypt.skeleton.wight_king.wight_king import Wight_King
+from scripts.entities.moving_entities.enemies.crypt.skeleton.wight_king import Wight_King
 from scripts.entities.moving_entities.enemies.enemy_spawner import Enemy_Spawner
 from scripts.engine.keys.keys import keys
 

@@ -175,25 +175,42 @@ def test_tile_lighting_contributions(mock_game_context):
 
 
 def test_tile_navigation_distance_caching(mock_game_context):
-    """Validates distance functions update calculations smoothly relative to game runtime stamps."""
+    """Validates distance caching: cached within the 0.5s window for an unchanged
+    target position, but recomputed immediately if the target position changes,
+    and recomputed once the 0.5s window elapses regardless."""
     tile = Tile(mock_game_context, "floor", "crypt_floor", 0, (0, 0), 0, 0, False, True)
-    
-    # Mock player entity reference targets
-    mock_game_context.player = MagicMock()
-    mock_game_context.player.pos = (32.0, 0.0)  # Located 1 complete tile tile-size away on X-axis
-    
-    # Initial generation calculation check
-    distance = tile.Get_Distance_To_Player()
-    assert distance == 32.0
-    
-    # Move player locations without advancing global ticks (Should return cached metrics)
-    mock_game_context.player.pos = (64.0, 0.0)
-    assert tile.Get_Distance_To_Player() == 32.0
-    
-    # Move time indices past the 0.5s evaluation threshold limit
-    mock_game_context.total_time = 0.6
-    assert tile.Get_Distance_To_Player() == 64.0
 
+    mock_game_context.total_time = 0.0
+    mock_game_context.player = MagicMock()
+    mock_game_context.player.pos = (32.0, 0.0)  # 1 tile away on X-axis
+
+    # Initial calculation
+    distance = tile.Get_Distance_To_Target(mock_game_context.player.pos)
+    assert distance == 32.0
+
+    # Same target position, still within 0.5s window -> cached value returned,
+    # even though the underlying player.pos mock has since "moved" elsewhere.
+    mock_game_context.total_time = 0.2
+    distance = tile.Get_Distance_To_Target((32.0, 0.0))
+    assert distance == 32.0
+
+    # Target position changes within the 0.5s window -> cache must NOT be trusted,
+    # since a different position means a different (or differently-targeting) entity.
+    mock_game_context.total_time = 0.3
+    distance = tile.Get_Distance_To_Target((64.0, 0.0))
+    assert distance == 64.0
+
+    # Same (new) target position again, still within window -> cached.
+    mock_game_context.total_time = 0.4
+    distance = tile.Get_Distance_To_Target((64.0, 0.0))
+    assert distance == 64.0
+
+    # Time crosses the 0.5s threshold for the same target position -> recompute
+    # is forced even though nothing about the position changed.
+    mock_game_context.player.pos = (96.0, 0.0)
+    mock_game_context.total_time = 1.0
+    distance = tile.Get_Distance_To_Target(mock_game_context.player.pos)
+    assert distance == 96.0
 
 # ==============================================================================
 # SPATIAL ENTITY LOOKUPS

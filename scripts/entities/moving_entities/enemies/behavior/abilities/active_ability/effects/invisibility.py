@@ -1,6 +1,10 @@
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.active_ability import Active_Ability
+from scripts.entities.moving_entities.enemies.behavior.abilities.registry import register_ability
 from scripts.engine.keys.keys import keys
 
+
+
+@register_ability(keys.invisibility) # add ability to registry
 class Invisibility(Active_Ability):
     def __init__(self, game, entity, name):
         super().__init__(game, entity, name)
@@ -32,7 +36,7 @@ class Invisibility(Active_Ability):
         return self.Check_Invisibility_Conditions()
     
     def Check_Invisibility_Conditions(self):
-        return self.entity.light_level <= self.light_level_limit and self.entity.distance_to_player >= self.player_min_distance
+        return self.entity.light_level <= self.light_level_limit and self.entity.distance_to_target >= self.player_min_distance
 
     def _Reset_Attack(self):
         self.entity.Remove_Effect(keys.invisibility, self.invisibility_level)

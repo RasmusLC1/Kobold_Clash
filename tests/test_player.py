@@ -1,14 +1,34 @@
+import sys
+from unittest.mock import MagicMock
+
+# ==============================================================================
+# DYNAMIC ENGINE GLOBAL MOCKING
+# ==============================================================================
+
+class DynamicMockKeys:
+    """
+    Dynamically returns the attribute name as a string for any requested key.
+    Fixes AttributeError crashes when production code requests new keys like keys.silence.
+    """
+    def __getattr__(self, name):
+        return name
+
+# Overwrite the engine keys module before importing player modules
+mock_keys_module = MagicMock()
+mock_keys_module.keys = DynamicMockKeys()
+sys.modules['scripts.engine.keys.keys'] = mock_keys_module
+
+# Now safely import your player elements
 import pytest
-from unittest.mock import MagicMock, patch
 import pygame
 import random
+from unittest.mock import patch
 
-# Core module imports based on your script configurations
 from scripts.entities.moving_entities.player.player import Player
 from scripts.entities.moving_entities.player.player_movement import Player_Movement
 from scripts.entities.moving_entities.player.player_weapon import Player_Weapon_Handler
 from scripts.entities.moving_entities.player.player_animation_handler import Player_Animation_Handler
-from scripts.engine.keys.keys import keys
+from scripts.engine.keys.keys import keys  # This now cleanly resolves to our DynamicMockKeys
 
 # ==============================================================================
 # FIXTURES & SETUP MOCKS

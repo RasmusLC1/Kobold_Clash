@@ -66,6 +66,8 @@ class Enemy():
     jump = "jump"
 
     retreat = "retreat"
+
+    blind_attack = "blind_attack"
     
     long_range = "long_range"
 
@@ -99,7 +101,15 @@ class Enemy():
 
     gloom_stalker = "gloom_stalker" 
 
+    echo_location = "echo_location" 
+
+    echo_shard = "echo_shard"
+
+    echo_teleport = "echo_teleport"
+
     fire_born = "fire_born"
+
+    adaptability = "adaptability" 
 
     glacial_core = "glacial_core"
 
@@ -115,6 +125,9 @@ class Enemy():
 
     ethereal = "ethereal"
 
+    anti_magic = "anti_magic"
+
+    explode_on_impact = "explode_on_impact"
 # Void Spawn
 
     shade = "shade"
@@ -133,6 +146,15 @@ class Enemy():
     phantom_running = "phantom_running"
 
     phantom_attack = "phantom_attack"
+
+
+    rift_stalker = "rift_stalker"
+    
+    rift_stalker_idle = "rift_stalker_idle"
+
+    rift_stalker_running = "rift_stalker_running"
+
+    rift_stalker_attack = "rift_stalker_attack"
 
 
     wraith = "wraith"
@@ -321,6 +343,14 @@ class Enemy():
 
     electric_elemental_running = "electric_elemental_running"
 
+# Crystal Scarab
+    
+    crystal_scarab = "crystal_scarab"
+    
+    crystal_scarab_attack = "crystal_scarab_attack"
+
+    crystal_scarab_running = "crystal_scarab_running"
+
 # Poison Eleemntal
     
     poison_elemental = "poison_elemental"
@@ -337,7 +367,16 @@ class Enemy():
 
     minotaur_running = "minotaur_running"
 
-# Minotaur
+# Hydra
+    
+    hydra = "hydra"
+    
+    hydra_attack = "hydra_attack"
+
+    hydra_running = "hydra_running"
+
+
+# Medusa
     
     medusa = "medusa"
     
@@ -346,6 +385,15 @@ class Enemy():
     medusa_attack_ranged = "medusa_attack_ranged"
 
     medusa_running = "medusa_running"
+
+
+# Clicker
+    
+    clicker = "clicker"
+    
+    clicker_attack = "clicker_attack"
+
+    clicker_running = "clicker_running"
 
 
 # Wight King

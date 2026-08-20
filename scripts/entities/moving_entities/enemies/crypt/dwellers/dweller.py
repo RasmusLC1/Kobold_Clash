@@ -8,7 +8,5 @@ class Dweller(Enemy):
         self.Equip_Weapon(Claw(game, self.pos)) 
         self.Set_Ability(keys.gloom_stalker)
 
-    
-
     def Spawn_Damaged_Particles(self):
-        self.game.particle_handler.Activate_Particles(10, keys.bone_particle, self.rect().center)
+        self.game.particle_handler.Activate_Particles(10, keys.blood_particle, self.rect().center)

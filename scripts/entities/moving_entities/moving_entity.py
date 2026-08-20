@@ -71,6 +71,7 @@ class Moving_Entity(PhysicsEntity):
 
     @property
     def last_frame_movement(self): return self.movement.last_frame_movement
+
     @last_frame_movement.setter
     def last_frame_movement(self, val): self.movement.last_frame_movement = val
 
@@ -275,7 +276,7 @@ class Moving_Entity(PhysicsEntity):
     def Set_Attack_Direction(self, attack_direction=None):
         attack_direction = self.Check_Attack_Direction(attack_direction)
         if not attack_direction:
-            self.Set_Target()
+            self.Set_Target(self.game.player.pos)
             self.Set_Attack_Direction(self.target)
             print("ATTACK DIRECTION NOT FOUND", self.target, attack_direction, self.pos, self.type)
             return

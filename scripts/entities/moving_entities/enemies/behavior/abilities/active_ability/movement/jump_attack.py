@@ -1,6 +1,10 @@
 from scripts.entities.moving_entities.enemies.behavior.abilities.active_ability.movement.dash import Dash
+from scripts.entities.moving_entities.enemies.behavior.abilities.registry import register_ability
 from scripts.engine.keys.keys import keys
 
+
+
+@register_ability(keys.jump) # add ability to registry
 class Jump_Attack(Dash):
     def __init__(self, game, entity, name):
         super().__init__(game, entity, name, min_distance=100, max_distance=200, speed_factor=13)
