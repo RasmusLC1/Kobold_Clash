@@ -8,19 +8,4 @@ def register_ability(key):
     
     return decorator
 
-from scripts.entities.decoration.shared.shrine.portal_shrine import Portal_Shrine
-from scripts.entities.decoration.shared.shrine.soul_well import Soul_Well
-from scripts.entities.decoration.shared.shrine.hunter_shrine import Hunter_Shrine
-from scripts.entities.decoration.shared.bones.bones import Bones
-from scripts.entities.decoration.shared.loot_container.chest import Chest
-from scripts.entities.decoration.shared.loot_container.vase import Vase
-from scripts.entities.decoration.shared.loot_container.mimic_chest import Mimic_Chest
-from scripts.entities.decoration.shared.loot_container.weapon_rack import Weapon_rack
-from scripts.entities.decoration.shared.loot_container.plinth import Plinth
-from scripts.entities.decoration.shared.loot_container.potion_table import Potion_Table
-from scripts.entities.decoration.shared.doors.door import Door
-from scripts.entities.decoration.shared.doors.fragile_wall import Fragile_Wall
-from scripts.entities.decoration.shared.boss_room.boss_room import Boss_Room
-from scripts.entities.decoration.shared.interactive.lever import Lever
-from scripts.entities.decoration.shared.interactive.teleportation_circle import Teleportation_Circle
-from scripts.entities.decoration.shared.interactive.campfire import Campfire
+

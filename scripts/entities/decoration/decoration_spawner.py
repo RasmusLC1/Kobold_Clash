@@ -1,6 +1,13 @@
-from scripts.entities.decoration.ancient_tomb.ancient_tomb_registry import ancient_tomb_registry
-from scripts.entities.decoration.crystal_caverns.crystal_caverns_registry import crystal_caverns_registry
-from scripts.entities.decoration.shared.shared_registry import shared_registry
+from scripts.entities.decoration.ancient_tomb import ancient_tomb_registry
+from scripts.entities.decoration.ancient_tomb import load_all
+
+
+from scripts.entities.decoration.crystal_caverns import crystal_caverns_registry
+from scripts.entities.decoration.crystal_caverns import load_all
+
+
+from scripts.entities.decoration.shared import shared_registry
+from scripts.entities.decoration.shared import load_all
 
 from scripts.entities.decoration.decoration_initialiser.crypt_decoration_initialiser import Crypt_Decoration_Initialiser
 from scripts.entities.decoration.decoration_initialiser.crystal_cavern_decoration_initialiser import Crystal_Cavern_Decoration_Initialiser
