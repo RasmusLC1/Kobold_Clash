@@ -2,8 +2,8 @@ from scripts.entities.moving_entities.enemies.behavior.abilities.passive_ability
 from scripts.entities.moving_entities.enemies.behavior.abilities.registry import register_ability
 from scripts.engine.keys.keys import keys
 
-@register_ability(keys.gloom_stalker)
 
+@register_ability(keys.gloom_stalker)
 class Gloom_Stalker(Passive_Ability):
     def __init__(self, game, entity, name):
         super().__init__(game, entity, name)

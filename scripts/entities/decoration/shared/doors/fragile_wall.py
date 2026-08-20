@@ -1,7 +1,9 @@
 from scripts.entities.decoration.decoration import Decoration
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.shared.shared_registry import register_ability
 
 
+@register_ability(keys.fragile_wall)
 class Fragile_Wall(Decoration):
     def __init__(self, game, pos, size = (32, 32)) -> None:
         super().__init__(game, keys.fragile_wall, pos, size, True, 100, 'wall_break', 1000)

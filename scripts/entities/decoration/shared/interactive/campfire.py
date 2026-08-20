@@ -1,7 +1,9 @@
 from scripts.entities.decoration.decoration import Decoration
 import random
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.shared.shared_registry import register_ability
 
+@register_ability(keys.campfire)
 class Campfire(Decoration):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.campfire, pos, (32, 32))

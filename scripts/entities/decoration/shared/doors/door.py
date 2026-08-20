@@ -1,7 +1,9 @@
 from scripts.entities.decoration.decoration import Decoration
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.shared.shared_registry import register_ability
 
 
+@register_ability(keys.door_basic)
 class Door(Decoration):
     def __init__(self, game, pos, size = (32, 32)) -> None:
         super().__init__(game, keys.door_basic, pos, size, True, 50, 'door_destroyed', 700)

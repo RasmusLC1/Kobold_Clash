@@ -3,7 +3,9 @@ import random
 from scripts.engine.keys.keys import keys
 
 activation_radius = 200
+from scripts.entities.decoration.shared.shared_registry import register_ability
 
+@register_ability(keys.hunter_shrine)
 class Hunter_Shrine(Decoration):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.hunter_shrine, pos, (64, 64))

@@ -16,12 +16,6 @@ class Decoration_Handler():
 
         self.spawn_methods = None
 
-
-        self.light_sources = {
-            keys.torch : 0.1,
-            keys.brazier : 0.3,
-        }
-
         self.item_sacrifice = []
 
 
@@ -82,9 +76,11 @@ class Decoration_Handler():
             print(f"Warning: Decoration type '{type}' not recognized. Decoration_Handler Decoration_Spawner")
             return None
         decoration = spawn_function(self.game, pos)
-        if decoration:
-            if data:
-                decoration.Load_Data(data)
+        if not decoration:
+            return None
+        
+        if data:
+            decoration.Load_Data(data)
         self.decorations.append(decoration)
         return decoration
 

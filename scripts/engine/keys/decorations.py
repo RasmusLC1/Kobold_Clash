@@ -2,6 +2,8 @@ class Decorations():
 # Interactive Objects
     
     chest = "chest"
+    
+    mimic_chest = "mimic_chest"
 
     bookshelf = "bookshelf"
 

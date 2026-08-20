@@ -1,8 +1,10 @@
 from scripts.entities.decoration.shared.loot_container.chest import Chest
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.shared.shared_registry import register_ability
 import random
 
 
+@register_ability(keys.mimic_chest)
 class Mimic_Chest(Chest):
 
     def Drop_Loot(self):

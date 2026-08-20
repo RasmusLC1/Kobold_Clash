@@ -1,7 +1,9 @@
 from scripts.entities.decoration.decoration import Decoration
 import random
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.shared.shared_registry import register_ability
 
+@register_ability(keys.portal_shrine)
 class Portal_Shrine(Decoration):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.portal_shrine, pos, (64, 64))

@@ -3,8 +3,10 @@ import pygame
 import random
 from scripts.entities.items.weapons.weapon_handler import Weapon_Handler
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.shared.shared_registry import register_ability
 
 
+@register_ability(keys.boss_room)
 class Boss_Room():
     def __init__(self, game, pos, level) -> None:
         self.game = game

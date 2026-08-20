@@ -1,8 +1,9 @@
 from scripts.entities.decoration.shared.loot_container.loot_container import Loot_Container
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.ancient_tomb.ancient_tomb_registry import register_ability
 import random
 
-
+@register_ability(keys.blood_shrine)
 class Effigy_Tomb(Loot_Container):
     def __init__(self, game, pos) -> None:
         self.enemies = {}

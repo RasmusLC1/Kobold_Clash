@@ -1,33 +1,17 @@
-from scripts.entities.decoration.shared.loot_container.vase import Vase
-from scripts.entities.decoration.ancient_tomb.loot_container.effigy_tomb import Effigy_Tomb
-from scripts.entities.decoration.ancient_tomb.shrine.rune_shrine import Rune_Shrine
-from scripts.entities.decoration.ancient_tomb.loot_container.bookshelf import Bookshelf
-from scripts.entities.decoration.ancient_tomb.light_sources.brazier import Brazier
-from scripts.entities.decoration.ancient_tomb.shrine.blood_shrine import Blood_Shrine
-from scripts.entities.decoration.shared.shrine.sacrifice_shrine import Sacrifice_Shrine
-
-
-from scripts.entities.decoration.shared.shrine.portal_shrine import Portal_Shrine
-from scripts.entities.decoration.shared.shrine.soul_well import Soul_Well
-from scripts.entities.decoration.shared.shrine.hunter_shrine import Hunter_Shrine
-from scripts.entities.decoration.shared.bones.bones import Bones
-from scripts.entities.decoration.shared.loot_container.chest import Chest
-from scripts.entities.decoration.shared.loot_container.mimic_chest import Mimic_Chest
-from scripts.entities.decoration.shared.loot_container.weapon_rack import Weapon_rack
-from scripts.entities.decoration.shared.loot_container.plinth import Plinth
-from scripts.entities.decoration.shared.loot_container.potion_table import Potion_Table
-from scripts.entities.decoration.shared.doors.door import Door
-from scripts.entities.decoration.shared.doors.fragile_wall import Fragile_Wall
-from scripts.entities.decoration.shared.boss_room.boss_room import Boss_Room
-from scripts.entities.decoration.shared.interactive.lever import Lever
-from scripts.entities.decoration.shared.interactive.teleportation_circle import Teleportation_Circle
-from scripts.entities.decoration.shared.interactive.campfire import Campfire
+from scripts.entities.decoration.ancient_tomb.ancient_tomb_registry import ancient_tomb_registry
+from scripts.entities.decoration.crystal_caverns.crystal_caverns_registry import crystal_caverns_registry
+from scripts.entities.decoration.shared.shared_registry import shared_registry
 
 from scripts.entities.decoration.decoration_initialiser.crypt_decoration_initialiser import Crypt_Decoration_Initialiser
 from scripts.entities.decoration.decoration_initialiser.crystal_cavern_decoration_initialiser import Crystal_Cavern_Decoration_Initialiser
 from scripts.engine.keys.keys import keys
 
 import random
+
+DUNGEON_REGISTRIES = {
+        keys.ancient_crypt: ancient_tomb_registry,
+        keys.crystal_caverns: crystal_caverns_registry,
+    }
 
 class Decoration_Spawner():
     def __init__(self, game) -> None:
@@ -48,7 +32,6 @@ class Decoration_Spawner():
 
         self.item_sacrifice = []
 
-
     def Clear_Decorations(self):
         self.decorations.clear()
         self.saved_data.clear()
@@ -61,55 +44,16 @@ class Decoration_Spawner():
         self.Link_Teleportation_Circles()
         return self.decorations, self.item_sacrifice, self.spawn_methods
 
+    
 
     def Get_Dungeon_Type(self):
-        # Shared decorations for all dungeons
-        shared_spawns = {
-            keys.door_basic: Door,
-            keys.fragile_wall: Fragile_Wall,
-            keys.chest: Chest,
-            keys.vase: Vase,
-            keys.potion_table: Potion_Table,
-            keys.portal_shrine: Portal_Shrine,
-            keys.hunter_shrine: Hunter_Shrine,
-            keys.soul_well: Soul_Well,
-            keys.bones: Bones,
-            keys.weapon_rack: Weapon_rack,
-            keys.plinth: Plinth,
-            keys.lever: Lever,
-            keys.teleportation_circle: Teleportation_Circle,
-            keys.campfire: Campfire,
-            keys.torch: None,
-            keys.brazier: Brazier,
-        }
-
-        # Dungeon-specific decorations
-        dungeon_specific = {
-            keys.ancient_crypt: {
-                keys.effigy_tomb: Effigy_Tomb,
-                keys.rune_shrine: Rune_Shrine,
-                keys.blood_shrine: Blood_Shrine,
-                keys.sacrifice_shrine: Sacrifice_Shrine,
-                keys.bookshelf: Bookshelf,
-            },
-            keys.crystal_caverns: {
-                # Add crystal-specific ones if needed
-            }
-        }
-
-        # Merge shared + dungeon-specific
-        # ** unpacks the key-value pairs from a dictionary and then merges them
-        dungeon_types = {
-            key: {**shared_spawns, **dungeon_specific.get(key, {})}
-            for key in [keys.ancient_crypt, keys.crystal_caverns]
-        }
+        dungeon_specific_registry = DUNGEON_REGISTRIES.get(self.game.dungeon_type, {})
+        self.spawn_methods = {**shared_registry, **dungeon_specific_registry}
 
         decoration_initialisers = {
             keys.ancient_crypt: Crypt_Decoration_Initialiser,
             keys.crystal_caverns: Crystal_Cavern_Decoration_Initialiser,
         }
-
-        self.spawn_methods = dungeon_types.get(self.game.dungeon_type)
         initaliser_type = decoration_initialisers.get(self.game.dungeon_type)
         self.decoration_initialiser = initaliser_type(self.game)
 
@@ -144,7 +88,11 @@ class Decoration_Spawner():
                 self.decorations.append(light_source)
     
     def Spawn_Mimic_Chest(self, pos, size=None, version=None, radius=None, level=None):
-        chest = Mimic_Chest(self.game, pos)  
+        mimic_chest = self.spawn_methods.get(keys.mimic_chest)
+        if mimic_chest is None:
+            print(f"Warning: mimic chest not registered for dungeon type {self.game.dungeon_type}")
+            return None
+        chest = mimic_chest(self.game, pos, size=size, version=version, radius=radius, level=level)
         self.decorations.append(chest)
         return chest
    

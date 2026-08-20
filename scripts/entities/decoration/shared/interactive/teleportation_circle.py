@@ -3,7 +3,9 @@ import random
 from scripts.engine.keys.keys import keys
 
 activation_radius = 200
+from scripts.entities.decoration.shared.shared_registry import register_ability
 
+@register_ability(keys.teleportation_circle)
 class Teleportation_Circle(Decoration):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.teleportation_circle, pos, (32, 32))

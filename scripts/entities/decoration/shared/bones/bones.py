@@ -1,6 +1,9 @@
 from scripts.entities.decoration.decoration import Decoration
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.shared.shared_registry import register_ability
 
+
+@register_ability(keys.bones)
 class Bones(Decoration):
     def __init__(self, game, pos, entity_type) -> None:
         super().__init__(game, "bones", pos, (32, 32))
