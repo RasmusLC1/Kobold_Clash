@@ -2,8 +2,10 @@ from scripts.entities.items.weapons.weapon import Weapon
 from scripts.entities.items.weapons.magic_attacks.fire.flame_thrower import Flame_Thrower
 import random
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.light_sources.light_sources_registry import Register_Light_Source
 
 
+@Register_Light_Source(keys.torch, 0.1)
 class Torch(Weapon):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.torch, 1, 2, 3, 100, 'one_handed_melee', keys.fire, max_animation=3)

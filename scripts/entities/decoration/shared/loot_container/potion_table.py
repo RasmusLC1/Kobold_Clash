@@ -2,9 +2,9 @@ import pygame
 import random
 from scripts.entities.decoration.shared.loot_container.loot_container import Loot_Container
 from scripts.engine.keys.keys import keys
-from scripts.entities.decoration.shared.shared_registry import register_ability
+from scripts.entities.decoration.shared.shared_registry import Register_Decoration
 
-@register_ability(keys.potion_table)
+@Register_Decoration(keys.potion_table)
 class Potion_Table(Loot_Container):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.potion_table, pos, (64, 64), True, 50, 'table_break', 500)

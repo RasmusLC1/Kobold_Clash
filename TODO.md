@@ -463,7 +463,7 @@ Upgrade weapons
 ### Decorations
     - Glowing crystals, lights up area, can be shattered to remove light
     - Small rocks strewn around
-    - Crystalisation shrine, give a gem and return a random one in return with -1 effectiveness
+    - Crystalisation shrine, give a gem and return a random one in return with negative 1 effectiveness
     - Gem shrine, Spawns a high level gem somewhere in the dungeon
     - Crystal plinths, contains gems
     - Weapon shrine, pay souls to bind gems to weapons for bonuses increased bonuses

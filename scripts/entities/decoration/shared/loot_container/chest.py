@@ -1,9 +1,9 @@
 from scripts.entities.decoration.shared.loot_container.loot_container import Loot_Container
 from scripts.engine.keys.keys import keys
 from scripts.engine.utility.luck_calculator import Luck_Calculator
-from scripts.entities.decoration.shared.shared_registry import register_ability
+from scripts.entities.decoration.shared.shared_registry import Register_Decoration
 
-@register_ability(keys.chest)
+@Register_Decoration(keys.chest)
 class Chest(Loot_Container):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.chest, pos, (32, 32), True, 20, keys.chest_break, 500, max_version = 7)

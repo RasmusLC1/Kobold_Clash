@@ -1,9 +1,9 @@
 from scripts.entities.decoration.decoration import Decoration
 from scripts.engine.keys.keys import keys
-from scripts.entities.decoration.ancient_tomb.ancient_tomb_registry import register_ability
+from scripts.entities.decoration.ancient_tomb.ancient_tomb_registry import Register_Decoration
 import random
 
-@register_ability(keys.rune_shrine)
+@Register_Decoration(keys.rune_shrine)
 class Rune_Shrine(Decoration):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.rune_shrine, pos, (64, 64))

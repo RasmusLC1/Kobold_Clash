@@ -1,12 +1,12 @@
 import pygame
 import random
 from scripts.entities.decoration.shared.loot_container.loot_container import Loot_Container
-from scripts.entities.decoration.shared.shared_registry import register_ability
+from scripts.entities.decoration.shared.shared_registry import Register_Decoration
 from scripts.engine.keys.keys import keys
 
 
 
-@register_ability(keys.vase)
+@Register_Decoration(keys.vase)
 class Vase(Loot_Container):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.vase, pos, (32, 32), True, 5, 'vase_shatter', 600)

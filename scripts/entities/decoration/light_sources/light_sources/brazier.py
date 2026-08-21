@@ -1,28 +1,14 @@
-from scripts.entities.decoration.decoration import Decoration
+from scripts.entities.decoration.light_sources.light_sources.light_source import Light_Source
 import random
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.light_sources.ancient_tomb.light_sources_registry import Register_Light_Source
 
-class Brazier(Decoration):
+
+@Register_Light_Source(keys.brazier, 0.3)
+class Brazier(Light_Source):
     def __init__(self, game, pos) -> None:
-        self.version = random.randint(1, 2)
-        super().__init__(game, keys.brazier + '_' + str(self.version), pos, (32, 32))
-        self.animation = 1
-        self.max_animation = 5
-        self.animation_cooldown = 0
-        self.animation_cooldown_max = 0.8
-        self.Add_Light()
-
-    def Save_Data(self):
-        super().Save_Data()
-        self.type = keys.brazier # Set brazier to default version to make loading easier
-        self.saved_data['version'] = self.version
-
-
-    def Load_Data(self, data):
-        super().Load_Data(data)
-        self.version = data['version']
-        self.type = keys.brazier + '_' + str(self.version)
-        self.Set_Sprite()
+        version = random.randint(1, 2)
+        super().__init__(game, pos, keys.brazier, version, strength=10, max_animation=5, animation_cooldown_max=0.8)
     
 
     def Update(self, delta_time):
@@ -31,10 +17,6 @@ class Brazier(Decoration):
         self.Update_Light_Level()
         
         return super().Update(delta_time)
-
-    def Add_Light(self):
-        self.light_source = self.game.light_handler.Add_Light(self.pos, 10, self.tile)
-        self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
 
     # Turn off the fire
     def Open(self, generate_clatter=False):

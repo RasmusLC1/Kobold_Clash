@@ -1,3 +1,16 @@
+from scripts.entities.decoration.light_sources import light_sources_registry
+from scripts.entities.decoration.light_sources import load_all
+
+from scripts.entities.decoration.light_sources.crystal_caverns import light_sources_registry as crystal_cavern_light_source_registry
+from scripts.entities.decoration.light_sources.crystal_caverns import load_all
+
+from scripts.entities.decoration.light_sources.ancient_tomb import light_sources_registry as ancient_tomb_light_source_registry
+from scripts.entities.decoration.light_sources.ancient_tomb import load_all
+
+
+from scripts.entities.decoration.shared import shared_registry
+from scripts.entities.decoration.shared import load_all
+
 from scripts.entities.decoration.ancient_tomb import ancient_tomb_registry
 from scripts.entities.decoration.ancient_tomb import load_all
 
@@ -6,11 +19,9 @@ from scripts.entities.decoration.crystal_caverns import crystal_caverns_registry
 from scripts.entities.decoration.crystal_caverns import load_all
 
 
-from scripts.entities.decoration.shared import shared_registry
-from scripts.entities.decoration.shared import load_all
-
 from scripts.entities.decoration.decoration_initialiser.crypt_decoration_initialiser import Crypt_Decoration_Initialiser
 from scripts.entities.decoration.decoration_initialiser.crystal_cavern_decoration_initialiser import Crystal_Cavern_Decoration_Initialiser
+
 from scripts.engine.keys.keys import keys
 
 import random
@@ -19,6 +30,12 @@ DUNGEON_REGISTRIES = {
         keys.ancient_crypt: ancient_tomb_registry,
         keys.crystal_caverns: crystal_caverns_registry,
     }
+
+DUNGEON_LIGHT_SOURCES = {
+    keys.ancient_crypt: ancient_tomb_light_source_registry,
+    keys.crystal_caverns: crystal_cavern_light_source_registry,
+}
+
 
 class Decoration_Spawner():
     def __init__(self, game) -> None:
@@ -30,12 +47,6 @@ class Decoration_Spawner():
         self.saved_data = {}
 
         self.spawn_methods = None
-
-
-        self.light_sources = {
-            keys.torch : 0.1,
-            keys.brazier : 0.3,
-        }
 
         self.item_sacrifice = []
 
@@ -64,6 +75,10 @@ class Decoration_Spawner():
         initaliser_type = decoration_initialisers.get(self.game.dungeon_type)
         self.decoration_initialiser = initaliser_type(self.game)
 
+        dungeon_light_sources = DUNGEON_LIGHT_SOURCES.get(self.game.dungeon_type, {})
+        self.light_source_classes = {**light_sources_registry.LIGHT_SOURCE_REGISTRY, **dungeon_light_sources.LIGHT_SOURCE_REGISTRY}
+        self.light_source_probability = {**light_sources_registry.LIGHT_SOURCE_PROBABILITY, **dungeon_light_sources.LIGHT_SOURCE_PROBABILITY}
+
 
     def Generic_Spawn(self, types):
         for t in types:
@@ -76,23 +91,32 @@ class Decoration_Spawner():
                 decoration = cls(self.game, pos)
                 self.decorations.append(decoration)
 
-    def Spawn_Lightsource(self):
-        if not keys.light_source in self.decoration_initialiser.decorations:
-            return
-        for pos in self.decoration_initialiser.decorations[keys.light_source]:
 
-            # Type needs to be reset
+
+    def Spawn_Lightsource(self):
+        if keys.light_source not in self.decoration_initialiser.decorations:
+            return
+
+        for pos in self.decoration_initialiser.decorations[keys.light_source]:
             type = random.choices(
-                population=list(self.light_sources.keys()),
-                weights=list(self.light_sources.values()),
+                population=list(self.light_source_probability.keys()),
+                weights=list(self.light_source_probability.values()),
                 k=1
             )[0]
 
             if type == keys.torch:
                 self.game.item_handler.weapon_handler.Weapon_Spawner(keys.torch, pos[0], pos[1])
-            else:
-                light_source = Brazier(self.game, pos)
-                self.decorations.append(light_source)
+                continue
+
+            cls = self.light_source_classes.get(type)
+            if cls is None:
+                print(f"Warning: light source type '{type}' not recognized.")
+                continue
+
+            light_source = cls(self.game, pos)
+            self.decorations.append(light_source)
+
+            
     
     def Spawn_Mimic_Chest(self, pos, size=None, version=None, radius=None, level=None):
         mimic_chest = self.spawn_methods.get(keys.mimic_chest)

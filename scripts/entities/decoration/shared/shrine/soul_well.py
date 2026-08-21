@@ -2,10 +2,10 @@ from scripts.entities.decoration.decoration import Decoration
 import random
 from scripts.engine.keys.keys import keys
 import math
-from scripts.entities.decoration.shared.shared_registry import register_ability
+from scripts.entities.decoration.shared.shared_registry import Register_Decoration
 
 
-@register_ability(keys.soul_well)
+@Register_Decoration(keys.soul_well)
 class Soul_Well(Decoration):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.soul_well, pos, (64, 64))

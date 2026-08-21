@@ -1,6 +1,6 @@
 from scripts.entities.decoration.decoration import Decoration
 from scripts.engine.keys.keys import keys
-from scripts.entities.decoration.ancient_tomb.ancient_tomb_registry import register_ability
+from scripts.entities.decoration.ancient_tomb.ancient_tomb_registry import Register_Decoration
 import random
 from enum import Enum
 
@@ -9,7 +9,7 @@ class RewardType(Enum):
     MID = 2
     GOOD = 3
 
-@register_ability(keys.sacrifice_shrine)
+@Register_Decoration(keys.sacrifice_shrine)
 class Sacrifice_Shrine(Decoration):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.sacrifice_shrine, pos, (64, 64))

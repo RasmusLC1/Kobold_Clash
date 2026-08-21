@@ -1,11 +1,11 @@
 from scripts.entities.decoration.shared.loot_container.loot_container import Loot_Container
 from scripts.engine.keys.keys import keys
-from scripts.entities.decoration.ancient_tomb.ancient_tomb_registry import register_ability
+from scripts.entities.decoration.ancient_tomb.ancient_tomb_registry import Register_Decoration
 import random
 
 key_empty = 'empty'
 
-@register_ability(keys.bookshelf)
+@Register_Decoration(keys.bookshelf)
 class Bookshelf(Loot_Container):
     def __init__(self, game, pos) -> None:
         self.enemies = {}
