@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 from scripts.entities.decoration.light_sources.ancient_tomb.light_sources_registry import Register_Light_Source
 
 
-@Register_Light_Source(keys.brazier, 0.3)
+@Register_Light_Source(keys.brazier, 0.4)
 class Brazier(Light_Source):
     def __init__(self, game, pos) -> None:
         version = random.randint(1, 2)

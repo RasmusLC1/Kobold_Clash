@@ -65,18 +65,26 @@ class Decoration_Spawner():
     
 
     def Get_Dungeon_Type(self):
-        dungeon_specific_registry = DUNGEON_REGISTRIES.get(self.game.dungeon_type, {})
-        self.spawn_methods = {**shared_registry, **dungeon_specific_registry}
-
+        dungeon_specific_registry = DUNGEON_REGISTRIES.get(self.game.dungeon_type)
+        if dungeon_specific_registry is None:
+            raise ValueError(f"No decoration registry found for dungeon type: {self.game.dungeon_type}")
+            
+        self.spawn_methods = {
+                **shared_registry.DECORATION_REGISTRY,
+                **dungeon_specific_registry.DECORATION_REGISTRY,
+            }
         decoration_initialisers = {
             keys.ancient_crypt: Crypt_Decoration_Initialiser,
             keys.crystal_caverns: Crystal_Cavern_Decoration_Initialiser,
         }
         initaliser_type = decoration_initialisers.get(self.game.dungeon_type)
         self.decoration_initialiser = initaliser_type(self.game)
+        self._Set_Dungeon_Light_Sources()
 
+    def _Set_Dungeon_Light_Sources(self):
         dungeon_light_sources = DUNGEON_LIGHT_SOURCES.get(self.game.dungeon_type, {})
         self.light_source_classes = {**light_sources_registry.LIGHT_SOURCE_REGISTRY, **dungeon_light_sources.LIGHT_SOURCE_REGISTRY}
+        print(self.light_source_classes.keys())
         self.light_source_probability = {**light_sources_registry.LIGHT_SOURCE_PROBABILITY, **dungeon_light_sources.LIGHT_SOURCE_PROBABILITY}
 
 
@@ -123,7 +131,7 @@ class Decoration_Spawner():
         if mimic_chest is None:
             print(f"Warning: mimic chest not registered for dungeon type {self.game.dungeon_type}")
             return None
-        chest = mimic_chest(self.game, pos, size=size, version=version, radius=radius, level=level)
+        chest = mimic_chest(self.game, pos)
         self.decorations.append(chest)
         return chest
    
