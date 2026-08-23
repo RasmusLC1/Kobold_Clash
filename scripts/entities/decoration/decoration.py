@@ -8,7 +8,7 @@ class Decoration(PhysicsEntity):
     def __init__(self, game, type, pos, size, destructable = False, health = 0, destruction_sound = None, destruction_clatter = 500, animation = 0, max_animation = 0) -> None:
         # Version 0 indexed
         self.animation = animation
-        self.max_version = max_animation
+        self.max_animation = max_animation
         super().__init__(game, type, keys.decoration, pos, size)
         self.game.tilemap.Add_Entity_To_Tile(self.tile, self)
         self.light_level = 10
@@ -37,8 +37,16 @@ class Decoration(PhysicsEntity):
         pass
 
     def Set_Animation(self, animation_state):
-        self.animation = animation_state
+        self.animation = min(animation_state, self.max_animation)
         self.Set_Entity_Image()
+
+
+    def Increase_Animation(self):
+        self.animation += 1
+        if self.animation > self.max_animation:
+            self.animation = 0
+        self.Set_Entity_Image()
+
     
     # Setting the initial sprite type from assets, only called during initial setup
     def Set_Sprite(self):
@@ -48,6 +56,7 @@ class Decoration(PhysicsEntity):
     # Setting the item image and scaling it
     def Set_Entity_Image(self):
         self.entity_image = self.sprite[self.animation].convert_alpha()
+        self.render_needs_update = True
         # self.entity_image = pygame.transform.scale(entity_image, self.size)
 
     def Damage_Taken(self, damage, effect):

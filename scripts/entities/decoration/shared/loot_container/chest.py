@@ -6,7 +6,7 @@ from scripts.entities.decoration.shared.shared_registry import Register_Decorati
 @Register_Decoration(keys.chest)
 class Chest(Loot_Container):
     def __init__(self, game, pos) -> None:
-        super().__init__(game, keys.chest, pos, (32, 32), True, 20, keys.chest_break, 500, max_version = 7)
+        super().__init__(game, keys.chest, pos, (32, 32), True, 20, keys.chest_break, 500, max_animation = 7)
 
     def Save_Data(self):
         super().Save_Data()
@@ -30,7 +30,7 @@ class Chest(Loot_Container):
         MAX_RARITY = 100
 
         # Rarity ranges from 0 to 100. Max version is 7 (8 possible versions).
-        MAX_VERSION_INDEX = 7 
+        MAX_ANIMATION_INDEX = 7 
         TOTAL_VERSIONS = 8 # (0-7)
 
         rarity_value = Luck_Calculator.Calculate_Rarity_Value(game, MIN_RARITY, MAX_RARITY, clamp_values=False)
@@ -44,7 +44,7 @@ class Chest(Loot_Container):
         raw_version_float = rarity_value * scaling_factor
         
         # Clamp between 0 and 7 after taking the floor (or truncation)
-        version = int(min(MAX_VERSION_INDEX, max(0, raw_version_float)))
+        version = int(min(MAX_ANIMATION_INDEX, max(0, raw_version_float)))
         
         return version
     

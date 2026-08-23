@@ -8,7 +8,11 @@ from scripts.entities.decoration.light_sources.ancient_tomb.light_sources_regist
 class Brazier(Light_Source):
     def __init__(self, game, pos) -> None:
         version = random.randint(1, 2)
-        super().__init__(game, pos, keys.brazier, version, strength=10, max_animation=5, animation_cooldown_max=0.8)
+        max_animation = 5
+        start_animation = random.randint(1, max_animation)
+        super().__init__(game, pos, keys.brazier, version, light_strength=10,
+                         animation=start_animation, max_animation=max_animation,
+                         animation_cooldown_max=0.8)
     
 
     def Update(self, delta_time):

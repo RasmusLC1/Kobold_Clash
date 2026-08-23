@@ -4,8 +4,8 @@ import math
 
 # Spawns the items when player gets near and displays it
 class Display_Loot_Container(Loot_Container):
-    def __init__(self, game, type, pos, size = (32, 32), destructable = False, health = 100, destruction_sound = None, destruction_clatter = 500, max_version = 0) -> None:
-        super().__init__(game, type, pos, size, destructable, health, destruction_sound, destruction_clatter, max_version)
+    def __init__(self, game, type, pos, size = (32, 32), destructable = False, health = 100, destruction_sound = None, destruction_clatter = 500, max_animation = 0) -> None:
+        super().__init__(game, type, pos, size, destructable, health, destruction_sound, destruction_clatter, max_animation)
         self.distance_cooldown = 0
         self.radius = 15
 

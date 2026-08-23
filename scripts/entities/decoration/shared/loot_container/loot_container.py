@@ -5,10 +5,10 @@ from scripts.engine.utility.luck_calculator import Luck_Calculator
 
 
 class Loot_Container(Decoration):
-    def __init__(self, game, type, pos, size = (32, 32), destructable = False, health = 100, destruction_sound = None, destruction_clatter = 500, max_version = 0) -> None:
-        self.max_version = max_version # 0 indexed
+    def __init__(self, game, type, pos, size = (32, 32), destructable = False, health = 100, destruction_sound = None, destruction_clatter = 500, max_animation = 0) -> None:
+        self.max_animation = max_animation # 0 indexed
         version = self.Set_Version(game)
-        super().__init__(game, type, pos, size, destructable, health, destruction_sound, destruction_clatter, version, max_version)
+        super().__init__(game, type, pos, size, destructable, health, destruction_sound, destruction_clatter, version, max_animation)
         self.Set_Max_Rarity()
         self.Set_Min_Rarity()
         self.loot_type = 0

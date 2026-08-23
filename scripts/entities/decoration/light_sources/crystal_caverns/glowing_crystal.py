@@ -8,26 +8,37 @@ from scripts.entities.decoration.light_sources.crystal_caverns.light_sources_reg
 class Glowing_Crystal(Light_Source):
     def __init__(self, game, pos) -> None:
         version = random.randint(1, 5)
-        super().__init__(game, pos, keys.glowing_crystal, version, strength=8, max_animation=5, animation_cooldown_max=0.9)
+        max_animation = 5
+        start_animation = random.randint(0, max_animation)
+        super().__init__(game, pos, keys.glowing_crystal, version,
+                         light_strength=8, animation=start_animation,
+                         max_animation=max_animation, animation_cooldown_max=2.0,
+                         destructable=True, health=40, destruction_sound='vase_shatter')
+
+        self.updated_light_strength = self.light_strength
     
 
     def Update(self, delta_time):
-        if self.animation > 0: # animation 0 is off
-            self.Update_Animation(delta_time)
+        self.Update_Animation(delta_time)
         self.Update_Light_Level()
         
         return super().Update(delta_time)
 
-    def Damage_Taken(self, damage, effect):
-        self.game.clatter.Generate_Clatter(self.pos, damage * 10)
-
+    def Open(self, generate_clatter=False):
+        self.updated_light_strength = self.light_strength + 4
+        self.light_source.Update_Light_Level(self.updated_light_strength)
         
     def Update_Animation(self, delta_time):
         if self.animation_cooldown > 0:
             self.animation_cooldown -= delta_time
         else:
-            self.Animate()
+            self.Increase_Animation()
+            self.animation_cooldown = random.uniform(self.animation_cooldown_max - 0.2, self.animation_cooldown_max)
+            self.Handle_Updated_Lightlevel()
+    
+    def Handle_Updated_Lightlevel(self):
+        if self.updated_light_strength <= self.light_strength:
+            return
+        self.light_source.Update_Light_Level(self.updated_light_strength)
+        self.updated_light_strength -= 1
 
-    def Animate(self):
-        self.animation_cooldown = random.uniform(self.animation_cooldown_max - 0.2, self.animation_cooldown_max)
-        self.Set_Animation(random.randint(1,self.max_animation))

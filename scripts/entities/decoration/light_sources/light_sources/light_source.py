@@ -4,13 +4,18 @@ from scripts.engine.keys.keys import keys
 
 
 class Light_Source(Decoration):
-    def __init__(self, game, pos, type, version, strength, max_animation = 0, animation_cooldown_max = 0) -> None:
+    def __init__(self, game, pos, type, version, light_strength, destructable=False, health=0,
+                         destruction_sound=None, destruction_clatter = 500, animation=1, 
+                         max_animation = 0, animation_cooldown_max = 0) -> None:
         self.version = version
-        super().__init__(game, type + '_' + str(version), pos, (32, 32))
-        self.animation = 1
-        self.max_animation = max_animation
+        super().__init__(game, type + '_' + str(version), pos, (32, 32),
+                         destructable=destructable, health=health,
+                         destruction_sound=destruction_sound,
+                         destruction_clatter=destruction_clatter, animation=animation,
+                         max_animation=max_animation)
+        
+        self.light_strength = light_strength
         self.animation_cooldown = 0
-        self.strength = strength
         self.animation_cooldown_max = animation_cooldown_max
         self.Add_Light()
 
@@ -27,6 +32,6 @@ class Light_Source(Decoration):
         self.Set_Sprite()
     
     def Add_Light(self):
-        self.light_source = self.game.light_handler.Add_Light(self.pos, self.strength, self.tile)
+        self.light_source = self.game.light_handler.Add_Light(self.pos, self.light_strength, self.tile)
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
 
