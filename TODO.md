@@ -461,7 +461,7 @@ Upgrade weapons
     - # Spike pits, fall into and slows you down
     - # Loose rubble, generates clatter when stepped on
 ### Decorations
-    - Glowing crystals, lights up area, can be shattered to remove light
+    # Glowing crystals, lights up area, can be shattered to remove light
     - Small rocks strewn around
     - Crystalisation shrine, give a gem and return a random one in return with negative 1 effectiveness
     - Gem shrine, Spawns a high level gem somewhere in the dungeon
