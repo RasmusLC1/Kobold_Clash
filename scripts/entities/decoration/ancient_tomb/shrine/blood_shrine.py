@@ -1,8 +1,10 @@
 from scripts.entities.decoration.shared.shrine.shrine import Cycling_Shrine
 from scripts.engine.keys.keys import keys
 from scripts.entities.decoration.ancient_tomb.ancient_tomb_registry import Register_Decoration
+from scripts.entities.decoration.shared.shrine.shrine_registry import Register_Shrine
 
 
+Register_Shrine(keys.blood_shrine)
 @Register_Decoration(keys.blood_shrine)
 class Blood_Shrine(Cycling_Shrine):
     def __init__(self, game, pos, size=(64, 64)) -> None:

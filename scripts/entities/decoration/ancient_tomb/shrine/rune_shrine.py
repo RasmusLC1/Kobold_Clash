@@ -1,9 +1,10 @@
 from scripts.entities.decoration.shared.shrine.shrine import Menu_Shrine
 from scripts.engine.keys.keys import keys
 from scripts.entities.decoration.ancient_tomb.ancient_tomb_registry import Register_Decoration
+from scripts.entities.decoration.shared.shrine.shrine_registry import Register_Shrine
 import random
 
-
+Register_Shrine(keys.rune_shrine)
 @Register_Decoration(keys.rune_shrine)
 class Rune_Shrine(Menu_Shrine):
     def __init__(self, game, pos) -> None:

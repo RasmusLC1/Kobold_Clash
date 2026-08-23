@@ -18,6 +18,8 @@ from scripts.entities.decoration.ancient_tomb import load_all
 from scripts.entities.decoration.crystal_caverns import crystal_caverns_registry
 from scripts.entities.decoration.crystal_caverns import load_all
 
+from scripts.entities.decoration.shared.shrine.shrine_registry import SHRINE_REGISTRY
+
 
 from scripts.entities.decoration.decoration_initialiser.crypt_decoration_initialiser import Crypt_Decoration_Initialiser
 from scripts.entities.decoration.decoration_initialiser.crystal_cavern_decoration_initialiser import Crystal_Cavern_Decoration_Initialiser
@@ -84,7 +86,6 @@ class Decoration_Spawner():
     def _Set_Dungeon_Light_Sources(self):
         dungeon_light_sources = DUNGEON_LIGHT_SOURCES.get(self.game.dungeon_type, {})
         self.light_source_classes = {**light_sources_registry.LIGHT_SOURCE_REGISTRY, **dungeon_light_sources.LIGHT_SOURCE_REGISTRY}
-        print(self.light_source_classes.keys())
         self.light_source_probability = {**light_sources_registry.LIGHT_SOURCE_PROBABILITY, **dungeon_light_sources.LIGHT_SOURCE_PROBABILITY}
 
 
@@ -153,17 +154,11 @@ class Decoration_Spawner():
 
         for teleport_circle in teleportation_circles:
             if not teleport_circle.linked_portal:
-                self.Remove_Decoration(teleport_circle)
+                self.game.decoration_handler.Remove_Decoration(teleport_circle)
                 teleportation_circles.remove(teleport_circle)
 
 
     def Set_Item_Sacrifice_Decorations(self):
-        item_sacrifice_decorations = [
-            keys.soul_well,
-            keys.hunter_shrine,
-            keys.sacrifice_shrine,
-        ]
-
         for decoration in self.decorations:
-            if decoration.type in item_sacrifice_decorations:
+            if decoration.type in SHRINE_REGISTRY:
                 self.item_sacrifice.append(decoration)

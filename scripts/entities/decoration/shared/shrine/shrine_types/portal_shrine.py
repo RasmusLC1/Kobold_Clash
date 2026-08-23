@@ -1,8 +1,10 @@
 from scripts.entities.decoration.shared.shrine.shrine import Menu_Shrine
 from scripts.engine.keys.keys import keys
 from scripts.entities.decoration.shared.shared_registry import Register_Decoration
+from scripts.entities.decoration.shared.shrine.shrine_registry import Register_Shrine
 
 
+Register_Shrine(keys.portal_shrine)
 @Register_Decoration(keys.portal_shrine)
 class Portal_Shrine(Menu_Shrine):
     def __init__(self, game, pos) -> None:

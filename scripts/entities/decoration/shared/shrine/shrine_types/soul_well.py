@@ -1,9 +1,10 @@
 from scripts.entities.decoration.shared.shrine.shrine import Cycling_Shrine
 from scripts.engine.keys.keys import keys
 from scripts.entities.decoration.shared.shared_registry import Register_Decoration
+from scripts.entities.decoration.shared.shrine.shrine_registry import Register_Shrine
 import random
 
-
+Register_Shrine(keys.soul_well)
 @Register_Decoration(keys.soul_well)
 class Soul_Well(Cycling_Shrine):
     def __init__(self, game, pos) -> None:

@@ -1,6 +1,7 @@
 from scripts.entities.decoration.shared.shrine.shrine import Cycling_Shrine
 from scripts.entities.decoration.shared.shrine.shrine_reward_pools import BAD_REWARDS, MID_REWARDS, GOOD_REWARDS
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.shared.shrine.shrine_registry import Register_Shrine
 from scripts.entities.decoration.ancient_tomb.ancient_tomb_registry import Register_Decoration
 import random
 from enum import Enum
@@ -12,6 +13,7 @@ class RewardType(Enum):
     GOOD = 3
 
 
+Register_Shrine(keys.sacrifice_shrine)
 @Register_Decoration(keys.sacrifice_shrine)
 class Sacrifice_Shrine(Cycling_Shrine):
     def __init__(self, game, pos) -> None:

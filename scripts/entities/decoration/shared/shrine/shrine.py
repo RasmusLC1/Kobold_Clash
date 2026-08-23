@@ -1,7 +1,6 @@
 from scripts.entities.decoration.decoration import Decoration
 import random
 
-
 class Shrine(Decoration):
     """Common base for all shrine decorations."""
 

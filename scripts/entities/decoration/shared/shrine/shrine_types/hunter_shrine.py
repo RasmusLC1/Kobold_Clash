@@ -2,9 +2,10 @@ from scripts.entities.decoration.shared.shrine.shrine import Shrine
 from scripts.entities.decoration.shared.shrine.shrine_reward_pools import GOOD_REWARDS
 from scripts.engine.keys.keys import keys
 from scripts.entities.decoration.shared.shared_registry import Register_Decoration
+from scripts.entities.decoration.shared.shrine.shrine_registry import Register_Shrine
 import random
 
-
+Register_Shrine(keys.hunter_shrine)
 @Register_Decoration(keys.hunter_shrine)
 class Hunter_Shrine(Shrine):
     def __init__(self, game, pos) -> None:
