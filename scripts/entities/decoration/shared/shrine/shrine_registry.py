@@ -1,5 +1,5 @@
 # Global registry dictionary
-SHRINE_REGISTRY = []
+SHRINE_REGISTRY = set()
 
 def Register_Shrine(key):
-        SHRINE_REGISTRY.append(key)
+    SHRINE_REGISTRY.add(key)
