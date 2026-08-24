@@ -235,3 +235,39 @@ def test_brazier_animates_while_lit(mock_game):
     assert brazier.animation == 4
     assert brazier.animation_cooldown == 0.6
     mock_game.particle_handler.Activate_Particles.assert_called_once()
+
+### 7. Glowing_Crystal Destruction & Loot Drop
+
+def test_glowing_crystal_destruction_triggers_loot_drop(mock_game):
+    """Verifies that calling Destroyed() invokes Drop_Loot on the loot_component 
+    with the crystal's coordinates and animation multiplier."""
+    with patch("random.randint", return_value=1):
+        crystal = Glowing_Crystal(mock_game, (32, 64))
+
+    crystal.animation = 3
+    
+    # Mock the loot component to assert interaction
+    crystal.loot_component = MagicMock()
+
+    with patch("scripts.entities.decoration.decoration.Decoration.Destroyed", return_value=True), \
+         patch("random.randint", return_value=0):
+        
+        destroyed_result = crystal.Destroyed()
+
+    assert destroyed_result is True
+    crystal.loot_component.Drop_Loot.assert_called_once_with((32.0, 64.0), multiplier=3)
+
+
+def test_glowing_crystal_destruction_aborts_if_super_destroyed_fails(mock_game):
+    """If the parent Decoration.Destroyed() returns False (e.g., already destroyed or indestructible),
+    loot dropping should be prevented."""
+    with patch("random.randint", return_value=1):
+        crystal = Glowing_Crystal(mock_game, (32, 64))
+
+    crystal.loot_component = MagicMock()
+
+    with patch("scripts.entities.decoration.decoration.Decoration.Destroyed", return_value=False):
+        destroyed_result = crystal.Destroyed()
+
+    assert destroyed_result is False
+    crystal.loot_component.Drop_Loot.assert_not_called()
