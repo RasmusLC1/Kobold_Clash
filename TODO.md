@@ -357,7 +357,7 @@ Upgrade weapons
     - # Chest, standard loot, safe but multiple tiers that can determine the loot table
     - # Weapon racks, contains weapons
     - # Teleportation Circles, linked to each other, can be used to traverse the dungeon
-    - Shops where you can buy different items for gold, maybe a little kobold with a shop. Opens a menu, you can sell loot for gold and use gold to buy random selection of items
+    - Shops where you can buy different items for gold, maybe a little kobold with a shop. This happens when you transition between levels, use it hide loading screen. Opens a menu, you can sell loot for gold and use gold to buy random selection of items
     - # Campfires, rest locations player can regain 50% hp, one per floor, one per floor, using it increases awakening by 1
     - # Sacrifice Shrine, sacrifice loot for rewards, which are status effects. Scales with the gold value of the sacrificed item
     - # Soul well, Sacrifice items for souls but can summon/attract enemies

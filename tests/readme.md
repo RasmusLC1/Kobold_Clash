@@ -12,3 +12,9 @@ pip install pytest
 ## To run tests
 py -m pytest
 
+## Line coverage
+Install cov:
+python -m pip install pytest-cov
+
+Run:
+py -m pytest --cov=. --cov-report=term-missing
