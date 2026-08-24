@@ -4,11 +4,6 @@ from scripts.entities.traps.trap_spawners.ancient_crypt_trap_spawner import Anci
 from scripts.entities.traps.trap_spawners.crystal_cavern_trap_spawner import Crystal_Cavern_Trap_Spawner
 
 
-
-
-
-
-
 class Trap_Handler:
     def __init__(self, game):
         self.game = game

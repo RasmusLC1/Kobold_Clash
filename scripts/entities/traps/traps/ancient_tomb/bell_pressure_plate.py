@@ -1,7 +1,6 @@
 from scripts.entities.traps.trap import Trap
 from scripts.engine.keys.keys import keys
 
-import random
 
 CLATTER_RANGE = 1000
 

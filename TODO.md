@@ -457,7 +457,6 @@ Upgrade weapons
     - Crystal shards, shoots crystal spikes
     - Shifting walls, changes the layout of the dungeon
     - Shard explosion, unstable crystals explode when damaged
-    - Swinging blade, swing from central tile, all affected tiles are marked as traps, rotate the sprite as it swings
     - # Spike pits, fall into and slows you down
     - # Loose rubble, generates clatter when stepped on
 ### Decorations

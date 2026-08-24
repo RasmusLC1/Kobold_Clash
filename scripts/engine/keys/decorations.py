@@ -116,3 +116,5 @@ class Decorations():
     soul_trap = "soul_trap"
 
     arrow_trap = "arrow_trap"
+
+    unstable_crystal = "unstable_crystal"

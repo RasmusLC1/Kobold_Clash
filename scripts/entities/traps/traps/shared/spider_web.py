@@ -17,8 +17,6 @@ class Spider_Web(Trap):
 
         self.Determine_If_Shot_By_Spider()
 
-        
-
 
     def Update(self, entity, delta_time):
         if self.Cooldown > 0:
