@@ -66,7 +66,7 @@ class Loot_Container(Decoration):
         return True
 
     def Drop_Loot(self):
-        self.loot_component.Drop_Loot(self.Get_Pos(), multiplier=self.animation)
+        self.loot_component.Drop_Loot(self.Get_Pos())
 
     def Get_Pos(self):
         rand_pos_x = self.pos[0] + random.randint(-100, 100) / 10

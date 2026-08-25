@@ -46,7 +46,7 @@ Effect types (poison, freeze, slow, etc.) are defined once in a class-level regi
 
 Being upfront about this rather than hiding it: the newer systems (enemy AI, the registries, lighting) reflect how I'd approach this today. Inventory and weapon handling are from earlier in the project and haven't had the same pass yet — they work, but the patterns are older and I know they need a refactor. I'd rather flag that than have someone find it and wonder if I don't see it.
 
-Test coverage is real but uneven — pathfinding, tilemap queries, raycasting, and status effects have solid pytest coverage with a mocked game context; some of the newer registry systems got their smoke tests added after the fact rather than alongside.
+Test coverage is real but uneven — pathfinding, tilemap queries, raycasting, and status effects have solid pytest coverage with a mocked game context.
 
 ---
 

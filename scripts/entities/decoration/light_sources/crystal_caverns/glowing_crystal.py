@@ -45,7 +45,7 @@ class Glowing_Crystal(Light_Source):
             self.pos[0] + random.randint(-10, 10) / 10,
             self.pos[1] + random.randint(-10, 10) / 10
         )
-        self.loot_component.Drop_Loot(spawn_pos, multiplier=self.animation)
+        self.loot_component.Drop_Loot(spawn_pos)
         return True
         
     def Update_Animation(self, delta_time):

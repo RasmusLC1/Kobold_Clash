@@ -1,9 +1,10 @@
 from scripts.entities.traps.trap import Trap
 from scripts.engine.keys.keys import keys
-
+from ..traps.shared.shared_registry import register_trap
 import random
 
 # TODO: General rewrite for the update logic
+@register_trap(keys.lava_env, 0) # Low value as this needs to be spawned as lakes
 class Lava(Trap):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.lava_env)

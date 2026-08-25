@@ -11,11 +11,11 @@ class LootComponent:
         self.loot_weights = loot_weights or {}
         self.empty = False
 
-    def Drop_Loot(self, pos, multiplier=1):
+    def Drop_Loot(self, pos):
         if self.empty:
             return
             
-        rarity_value = self.Calculate_Rarity(multiplier)
+        rarity_value = self.Calculate_Rarity()
         loot_type = self.Calculate_Loot_Type(rarity_value)
 
         if loot_type != keys.nothing:
@@ -24,9 +24,9 @@ class LootComponent:
         self.empty = True
         self.game.item_handler.Reset_Nearby_Items_Cooldown()
 
-    def Calculate_Rarity(self, multiplier):
-        min_val = self.min_rarity * max(1, multiplier)
-        max_val = self.max_rarity * max(1, multiplier)
+    def Calculate_Rarity(self):
+        min_val = self.min_rarity * max(1, self.game.player.luck)
+        max_val = self.max_rarity * max(1, self.game.player.luck)
         return Luck_Calculator.Calculate_Rarity_Value(self.game, min_val, max_val)
 
     def Calculate_Loot_Type(self, rarity_value):

@@ -255,7 +255,7 @@ def test_glowing_crystal_destruction_triggers_loot_drop(mock_game):
         destroyed_result = crystal.Destroyed()
 
     assert destroyed_result is True
-    crystal.loot_component.Drop_Loot.assert_called_once_with((32.0, 64.0), multiplier=3)
+    crystal.loot_component.Drop_Loot.assert_called_once_with((32.0, 64.0))
 
 
 def test_glowing_crystal_destruction_aborts_if_super_destroyed_fails(mock_game):
