@@ -26,7 +26,8 @@ class Item(PhysicsEntity):
         self.value = rarity_value # Temporary value set correctly in Calculate_Rarity
         self.rarity = self.Calculate_Rarity() # rarity used for loot defaults to common
 
-        self.animation = random.randint(0, self.max_animation)
+        # Frame index now lives on the animation handler, not the entity.
+        self.animation_handler.animation_value = random.randint(0, self.max_animation)
         self.nearby_entities = []
         self.delete_countdown = 0
 
@@ -41,7 +42,7 @@ class Item(PhysicsEntity):
         self.Set_Sprite()
         self.broken_rendering_counter = 0 # Counter if it hits 10, delete item since something is wrong
         self.Add_To_Tile(add_to_tile)
-        
+
 
     def Save_Data(self):
         super().Save_Data()
@@ -53,7 +54,7 @@ class Item(PhysicsEntity):
         self.saved_data[keys.amount] = self.amount
         self.saved_data[keys.inventory_index] = self.inventory_index
 
-    
+
     def Load_Data(self, data):
         super().Load_Data(data)
         self.sub_type = data[keys.sub_type]
@@ -64,7 +65,7 @@ class Item(PhysicsEntity):
         self.amount = data[keys.amount]
         self.inventory_index = data[keys.inventory_index]
         self.Set_Description()
-        
+
     def Update(self, delta_time):
         if self.durability <= 0:
             self.Delete_Item()
@@ -75,11 +76,11 @@ class Item(PhysicsEntity):
 
     def Calculate_Value(self):
         return self.amount * self.value
-    
+
     def Activate(self):
         if self.activate_cooldown:
             return False
-        
+
         self.activate_cooldown = 1
         return True
 
@@ -90,7 +91,7 @@ class Item(PhysicsEntity):
 
     def Set_Inventory_Index(self, index):
         self.inventory_index = index
-    
+
     def Find_Nearby_Entities(self, distance):
         self.nearby_entities = self.game.enemy_handler.Find_Nearby_Enemies(self, distance)
 
@@ -99,7 +100,7 @@ class Item(PhysicsEntity):
         # First Check if the player is colliding with the object as this is priority
         if not self.game.inventory.Add_Item(self):
             return None
-        
+
         self.picked_up = True
         self.Remove_Tile()
 
@@ -110,9 +111,8 @@ class Item(PhysicsEntity):
         self.Set_Size(self.inventory_size) # Standard loot size in inventory
 
         return self.game.player
-        
 
-         
+
 
     # Returns false if the item was deleted in the process of palcedown
     def Place_Down(self):
@@ -127,29 +127,25 @@ class Item(PhysicsEntity):
     def Update_Animation(self, delta_time):
         if self.animation_cooldown > 0:
             self.animation_cooldown = max(0, self.animation_cooldown - delta_time)
-        else:
-            self.animation_cooldown = self.animation_cooldown_max
-            self.animation = random.randint(0,self.max_animation)
-            self.Set_Entity_Image()
+            return
 
-    
+        self.animation_cooldown = self.animation_cooldown_max
+        self.animation_handler.Set_Frame(random.randint(0, self.max_animation))
+
 
     def Distance(self, start_pos, target_pos):
         return math.sqrt((start_pos[0] - target_pos[0]) ** 2 + (start_pos[1] - target_pos[1]) ** 2)
-    
+
     def Set_Amount(self, amount):
         self.amount = min(self.max_amount, amount)
 
     # Setting the initial sprite type from assets, only called during initial setup
     def Set_Sprite(self):
-        try:
-            self.sprite = self.game.assets[self.sub_type]
-            self.Set_Entity_Image()
-        except Exception as e:
+        if not super().Set_Sprite(self.sub_type):
             print("SETTING ITEM SUBTYPE FAILED", self.sub_type, self.type)
             self.Delete_Item()
 
-    
+
     def Increase_Amount(self, amount):
         self.amount = int(min(self.max_amount, self.amount + int(amount)))
         self.Set_Description()
@@ -174,20 +170,20 @@ class Item(PhysicsEntity):
 
     def Set_Inventory_Type(self, inventory_type):
         self.inventory_type = inventory_type
-    
+
     # Check for out of bounds, return true if valid, else false
     def Move_Legal(self, mouse_pos, player_pos, tilemap, offset = (0,0)):
         # Check if distance is legal, update to account for player strength later
         if self.Distance(player_pos, mouse_pos) < 80:
-            
+
             for rect in tilemap.physics_rects_around(mouse_pos):
                 if self.rect().colliderect(rect):
                     return False
             return True
-        
+
         else:
             return False
-    
+
     # Update position
     def Move(self, new_pos):
         self.pos = list(new_pos)
@@ -202,7 +198,7 @@ class Item(PhysicsEntity):
         self.durability = max(0, self.durability - amount)
         self.Set_Description()
         self.Update_Durability_Bar()
-    
+
     def Update_Durability_Bar(self):
         current_step = int((self.durability / self.max_durability) * 10)
 
@@ -221,12 +217,12 @@ class Item(PhysicsEntity):
         image_index = max(0, min(9, image_index))
         self.durability_bar_image = self.game.assets[keys.durability_bar][image_index]
 
-    
+
     def Increase_Value(self, value):
         self.value += value
         self.Set_Description()
 
-    
+
     def Decrease_Value(self, value):
         self.value -= value
         self.Set_Description()
@@ -242,11 +238,11 @@ class Item(PhysicsEntity):
             (50, keys.rare),
             (20, keys.uncommon),
         ]
-        
+
         for limit, rarity in thresholds:
             if value >= limit:
                 return rarity
-            
+
         return keys.common
 
 
@@ -261,11 +257,11 @@ class Item(PhysicsEntity):
 
     def Set_Delete_Countdown(self, time):
         self.delete_countdown = time
-    
+
     def Delete_Item(self):
         self.game.item_handler.Remove_Item(self, True)
         self.game.inventory.Remove_Item(self)
-        
+
     # Destroy item when damaged
     def Damage_Taken(self, damage):
         self.game.item_handler.Remove_Item(self, True)
@@ -273,13 +269,12 @@ class Item(PhysicsEntity):
     def Add_To_Tile(self, add_to_tile):
         if not add_to_tile:
             return
-        
+
         if not self.tile:
             self.Set_Tile()
         self.game.tilemap.Add_Entity_To_Tile(self.tile, self)
 
-    
-    
+
 
 # RENDERING LOGIC
 
@@ -296,7 +291,7 @@ class Item(PhysicsEntity):
 
             item_image = pygame.transform.scale(self.entity_image, size)
             surf.blit(item_image, pos)
-            
+
         except Exception as e:
             print(f"ITEM Render_Inventory failed {e}", self.entity_image, size, pos, self.type, self.sub_type)
 
@@ -310,18 +305,18 @@ class Item(PhysicsEntity):
             print(f"ITEM Render durability bar failed{e}", self.durability_bar_image, pos, self.type, self.sub_type)
 
     def Render_Floor(self, surf, offset=(0, 0)):
-        
+
         if not self.Update_Light_Level():
             return
-        
+
         self.Update_Dark_Surface()
-        
+
         # Render the item
         if not self.rendered_image:
             self.Set_Sprite()
 
             if not self.rendered_image:
-                
+
                 self.broken_rendering_counter += 1
                 if self.broken_rendering_counter >= 10:
                       self.Delete_Item()
@@ -331,7 +326,7 @@ class Item(PhysicsEntity):
     def Update_Dark_Surface(self):
         if not super().Update_Dark_Surface():
             return False
-        
+
         self.rendered_image =  pygame.transform.scale(self.rendered_image, self.floor_size)
         return True
 
@@ -342,21 +337,21 @@ class Item(PhysicsEntity):
 
         distance = max(20, 100 - self.Distance(player_pos, mouse_pos))
         entity_image =  pygame.transform.scale(self.entity_image.copy(), self.floor_size)
-        
+
         entity_image.set_alpha(distance)
 
         # Render on Mouse position as the item position is not being updated
         surf.blit(entity_image, (mouse_pos[0] - offset[0], mouse_pos[1] - offset[1]))
 
-    
+
     # Render item with fadeout if it's in an illegal position
     def Render_In_Bounds(self, player_pos, mouse_pos, surf, offset = (0,0)):
 
         entity_image =  pygame.transform.scale(self.entity_image.copy(), self.floor_size)
-        
+
         # Render on Mouse position as the item position is not being updated
         surf.blit(entity_image, (mouse_pos[0] - offset[0], mouse_pos[1] - offset[1]))
-    
+
     # Used to render effect when active
     def Render_Active(self, surf, offset = (0,0)):
         pass

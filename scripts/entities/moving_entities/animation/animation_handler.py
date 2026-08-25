@@ -1,37 +1,22 @@
 from scripts.engine.keys.keys import keys
+from scripts.entities.entity.animation_handler import Base_Animation_Handler
 
-class Animation_Handler:
+class Animation_Handler(Base_Animation_Handler):
     def __init__(self, entity):
-        self.entity = entity
-        self.sprite = None
-        self.entity_image = None
-        self.animation_value = 0
+        super().__init__(entity)
+        self.animation_key = ''
         self.action = ''
         self.flip = [False, False]
         self.animation_lock = False
-        self.Set_Animation('')
 
-        # Unified animation data
         self.animations = {
             keys.run: {keys.num: 0, keys.num_max: 0, keys.cooldown: 0, keys.cooldown_max: 0.1},
             keys.attack: {keys.num: 0, keys.num_max: 0, keys.cooldown: 0, keys.cooldown_max: 0.2},
             keys.jump: {keys.num: 0, keys.num_max: 0, keys.cooldown: 0, keys.cooldown_max: 0.2},
             keys.idle: {keys.num: 0, keys.num_max: 0, keys.cooldown: 0, keys.cooldown_max: 0.2}
         }
-
         self.attack_frame = 0
-
-    def Set_Sprite(self):
-        try:
-            self.sprite = self.entity.game.assets[self.animation]
-        except Exception as e:
-            print(f'Setting sprite went wrong {e}', self.sprite, self.animation_value, self.animation)
-
-    def Set_Entity_Image(self):
-        try:
-            self.entity_image = self.sprite[self.animation_value]
-        except Exception as e:
-            print(f'ANIMATION WENT WRONG {e}', self.sprite, self.animation_value, self.animation)
+        self.Set_Animation('')
 
     def Update_Animation(self, movement, delta_time):
         self.Flip_Entity_In_Move_Direction(movement)
@@ -42,7 +27,6 @@ class Animation_Handler:
         entity = self.entity
         if entity.distance_to_target > 300:
             return
-
         if entity.charge > 0:
             self.Set_Animation(keys.attack)
         elif entity.frame_movement:
@@ -53,16 +37,14 @@ class Animation_Handler:
     def Set_Animation(self, action):
         if self.animation_lock:
             return False
-
         if action != self.action:
             self.action = action
-            self.animation = self.entity.type + '_' + self.action
+            self.animation_key = self.entity.type + '_' + self.action
             self.Reset_Animation_Values()
             self.animation_value = 0
-            self.Set_Sprite()
+            self.Set_Sprite(self.animation_key)
             self.Set_Animation_Lock(True)
             return True
-        
         return False
 
     def Reset_Animation_Values(self):
@@ -71,7 +53,7 @@ class Animation_Handler:
 
     def Handle_Animation_Update(self, delta_time):
         for anim_type in self.animations.keys():
-            if anim_type in self.animation:
+            if anim_type in self.animation_key:
                 self.Update_Generic_Animation(anim_type, delta_time)
                 break
 
@@ -90,8 +72,7 @@ class Animation_Handler:
         if anim_type == keys.attack and animation[keys.num] == self.attack_frame:
             self.entity.Trigger_Attack()
 
-        self.animation_value = animation[keys.num]
-        self.Set_Entity_Image()
+        self.Set_Frame(animation[keys.num])
         return True
 
     # --- Generalized setter functions ---

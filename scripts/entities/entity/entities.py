@@ -2,51 +2,49 @@ from collections import deque
 import pygame
 from scripts.engine.keys.keys import keys
 from .tile_handler import Tile_Handler
+from .animation_handler import Base_Animation_Handler
 
 class PhysicsEntity:
     _id_counter = 0
     _available_IDs = deque()
+    _animation_handler = Base_Animation_Handler   # subclasses override this
 
     def __init__(self, game, type, category, pos, size, sub_category=None):
         self.game = game
         self.Set_ID()
-        
-        # Classification
+
         self.category = category
         if not sub_category:
-            sub_category = category 
+            sub_category = category
         self.sub_category = sub_category
         self.type = type
-        
-        # Transforms & Vectors
+
         self.pos = pygame.Vector2(pos)
         self.size = list(size)
-        
-        # Rendering States
-        self.sprite = None
+
         self.entity_image = None
         self.rendered_image = None
         self.render = True
         self.render_needs_update = True
         self.min_light_level = 40
-        
-        # Performance Cache Surfaces
+
         self._cached_dark_surface = pygame.Surface(self.size, pygame.SRCALPHA).convert_alpha()
         self._cached_light_surface = pygame.Surface(self.size, pygame.SRCALPHA).convert_alpha()
-        
-        # Game Logic Properties
+
         self.saved_data = None
         self.active = 0
         self.active_opacity = 255
         self.light_level = 0
-        
-        # Tile Handling Component Injection
+
         self.tile_handler = Tile_Handler(self)
         self.tile_handler.Set_Tile()
-        
+
+        self.animation_handler = self._animation_handler(self)
+
         self.Set_Text_Box()
         self.description = ''
         self.light_up_color = (255, 0, 0, 255)
+
 
     # --- Properties for Backward Compatibility ---
     @property
@@ -201,20 +199,11 @@ class PhysicsEntity:
 
     def Set_Description(self): pass
     
-    def Set_Sprite(self):
-        try:
-            self.sprite = self.game.assets[self.type]
-            self.Set_Entity_Image()
-        except Exception as e:
-            print("SETTING ENTITY TYPE FAILED", self.type)
+    def Set_Sprite(self, key=None):
+        return self.animation_handler.Set_Sprite(key if key is not None else self.type)
 
     def Set_Entity_Image(self):
-        try:
-            self.entity_image = self.sprite[self.animation].convert_alpha()
-            self.render_needs_update = True
-        except Exception as e:
-            print(f'SET Entity image failed {e}', self.type, self.sub_type, self.pos, self.animation, self.max_animation, self.size, self.entity_image, self.sprite)
-
+        self.animation_handler.Set_Entity_Image()
     
     def Render(self, surf, offset = (0,0)):
         if not self.Update_Light_Level():

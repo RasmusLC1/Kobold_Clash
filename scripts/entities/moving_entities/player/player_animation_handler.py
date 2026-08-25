@@ -22,12 +22,10 @@ class Player_Animation_Handler(Animation_Handler):
     def __init__(self, entity):
         super().__init__(entity)
 
-
         self.keyboard = self.entity.game.keyboard_handler
 
         self.Set_Animation_Values()
 
-    
     # Add player-specific animations to unified handler self.animations
     def Set_Animation_Values(self):
         self.animations.update({
@@ -43,24 +41,21 @@ class Player_Animation_Handler(Animation_Handler):
         self.Set_Animation_Num_Max(keys.attack, 4)
         self.Set_Animation_Cooldown_Max(keys.attack, 0.1)
 
-    # State Handling 
+    # State Handling
     def Set_Action(self):
         if self.animation_lock:
             return
-        if self.Check_Special_Animations(): # Check special first as this is priority
+        if self.Check_Special_Animations():  # Check special first as this is priority
             return
 
         if self.Check_Movement():
             return
-        
+
     def Set_Attack_Speed(self, attack_time):
         attack_animation = self.animations[keys.attack]
         max_animation = attack_animation[keys.num_max]
         attack_speed = attack_time / max_animation
         self.Set_Animation_Cooldown_Max(keys.attack, attack_speed)
-
-
-
 
     # Check general movement and idling
     def Check_Movement(self):
@@ -79,8 +74,6 @@ class Player_Animation_Handler(Animation_Handler):
             self.Set_Animation('running_down')
 
         return True
-    
-
 
     # Check for special animations, such as attacks and special movements
     def Check_Special_Animations(self):
@@ -97,7 +90,6 @@ class Player_Animation_Handler(Animation_Handler):
 
         return False
 
-
     def Trigger_Attack_Animation(self):
         self.Reset_Animation_Values()
         self.Attack_Direction_Handler()
@@ -107,23 +99,13 @@ class Player_Animation_Handler(Animation_Handler):
         anim = self.animations[keys.attack]
         self.entity.weapon_handler.Update_Weapon_Animation(anim[keys.num])
         return True
-    
-    def Set_Animation(self, action):
-        if not super().Set_Animation(action):
-            return False
-        
-        weapon = self.entity.Get_Weapon()
-        if weapon:
-            weapon.Reset_Animation()
-        
-        return True
 
     def Get_Attack_Animation_Type(self):
         weapon_type = self.entity.weapon_handler.Get_Weapon_Type()
 
         if not weapon_type:
             return None
-        
+
         weapon_attack_types = ATTACK_TYPES.get(weapon_type)
 
         if not weapon_attack_types:
@@ -133,29 +115,40 @@ class Player_Animation_Handler(Animation_Handler):
         attack_type = random.choice(weapon_attack_types)
 
         return attack_type
-        
 
+    # NOTE: this class previously defined Set_Animation twice — the first
+    # (delegating to super(), resetting the weapon's animation) was silently
+    # shadowed by this second definition and never ran. Merged into one:
+    # keeps this version's no-auto-lock behavior (movement needs to keep
+    # re-evaluating every frame; only special/attack call sites lock
+    # explicitly) but restores the weapon reset call that had gone dead.
+    # Flagging in case the missing weapon reset was relied on anywhere.
     def Set_Animation(self, action):
         if self.animation_lock:
-            return
-        
-        if action != self.action:
-            self.action = action
-            self.animation = self.entity.type + '_' + self.action
-            for anim in self.animations.values():
-                anim[keys.num] = 0
-            self.animation_value = 0
-            self.Set_Sprite()
+            return False
+        if action == self.action:
+            return False
 
-    # Animation Updatesa
+        self.action = action
+        self.animation_key = self.entity.type + '_' + self.action
+        self.Reset_Animation_Values()
+        self.animation_value = 0
+        self.Set_Sprite(self.animation_key)
+
+        weapon = self.entity.Get_Weapon()
+        if weapon:
+            weapon.Reset_Animation()
+
+        return True
+
+    # Animation Updates
     def Handle_Animation_Update(self, delta_time):
         for anim_type in self.animations.keys():
-            if anim_type in self.animation:
+            if anim_type in self.animation_key:
                 self.Update_Generic_Animation(anim_type, delta_time)
                 return
         # fallback if no match
         self.Update_Generic_Animation(keys.idle, delta_time)
-
 
     def Update_Generic_Animation(self, anim_type, delta_time):
         if not super().Update_Generic_Animation(anim_type, delta_time):
