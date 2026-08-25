@@ -11,6 +11,7 @@ class Unstable_Crystal(Trap):
         self.trigger_radius = DEFAULT_TRIGGER_RADIUS
         self.damage = 5
         super().__init__(game, pos, keys.unstable_crystal)
+        self.light_strength = 9
         self.Add_Light()
 
 
