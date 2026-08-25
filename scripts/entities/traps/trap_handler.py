@@ -1,7 +1,6 @@
 
 from scripts.engine.keys.keys import keys
-from scripts.entities.traps.trap_spawners.ancient_crypt_trap_spawner import Ancient_Crypt_Trap_Spawner
-from scripts.entities.traps.trap_spawners.crystal_cavern_trap_spawner import Crystal_Cavern_Trap_Spawner
+from .trap_spawner import Trap_Spawner
 
 
 class Trap_Handler:
@@ -14,12 +13,7 @@ class Trap_Handler:
         self.trap_spawner = None
 
     def Initialise(self):
-        trap_spawners = {
-            keys.ancient_crypt : Ancient_Crypt_Trap_Spawner,
-            keys.crystal_caverns : Crystal_Cavern_Trap_Spawner,
-        }
-        trap_spawner = trap_spawners.get(self.game.dungeon_type)
-        self.trap_spawner = trap_spawner(self.game)
+        self.trap_spawner = Trap_Spawner(self.game)
 
     def Spawn_Traps(self):
         self.traps = self.trap_spawner.Initialise()

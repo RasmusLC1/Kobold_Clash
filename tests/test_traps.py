@@ -303,3 +303,79 @@ class TestUnstableCrystal:
         crystal_instance.Generate_Sound.assert_not_called()
         mock_game.item_handler.Add_Item.assert_not_called()
         mock_game.trap_handler.Remove_Trap.assert_not_called()
+
+
+# ---------------------------------------------------------------------------
+# Force registry decorators to run before any test resolves a registry key.
+# ---------------------------------------------------------------------------
+from scripts.entities.traps.trap_spawner import Trap_Spawner
+from scripts.entities.traps.trap_handler import Trap_Handler
+from scripts.entities.traps.traps.shared import shared_registry as trap_registry
+from scripts.entities.traps.traps.ancient_tomb import ancient_tomb_registry as ancient_tomb_trap_registry
+from scripts.entities.traps.traps.crystal_caverns import crystal_cavern_registry as crystal_cavern_trap_registry
+
+
+
+class TestTrapRegistry:
+    def test_shared_trap_registry_is_populated(self):
+        """Fails if a shared trap module wasn't imported (decorator never ran)."""
+        expected_keys = [
+            keys.pit_trap, keys.spike_poison_trap, keys.spike_trap,
+            keys.rubble, keys.arrow_trap,
+        ]
+        for key in expected_keys:
+            assert key in trap_registry.TRAP_REGISTRY, (
+                f"'{key}' missing from TRAP_REGISTRY — check load_all.py imports it."
+            )
+
+    def test_ancient_tomb_trap_registry_is_populated(self):
+        expected_keys = [keys.tomb_pressure_plate, keys.bell_pressure_plate, keys.soul_trap]
+        for key in expected_keys:
+            assert key in ancient_tomb_trap_registry.TRAP_REGISTRY, (
+                f"'{key}' missing from ancient tomb TRAP_REGISTRY."
+            )
+
+    def test_weighted_and_lookup_only_traps_are_distinguished(self):
+        """Env traps (lava/water/ice) are lookup-only — never rolled by weight."""
+        assert keys.lava_env in trap_registry.TRAP_REGISTRY
+        assert keys.lava_env not in trap_registry.TRAP_TABLE
+
+
+class TestTrapSpawnerDungeonMerge:
+    def test_ancient_crypt_merges_shared_and_dungeon_specific(self, mock_game):
+        mock_game.dungeon_type = keys.ancient_crypt
+        spawner = Trap_Spawner(mock_game)
+
+        # shared traps present
+        assert keys.spike_trap in spawner.trap_classes
+        # dungeon-specific traps present
+        assert keys.soul_trap in spawner.trap_classes
+        assert keys.soul_trap in spawner.TRAP_TABLE
+
+    def test_unknown_dungeon_type_raises(self, mock_game):
+        mock_game.dungeon_type = "not_a_real_dungeon"
+        with pytest.raises(ValueError):
+            Trap_Spawner(mock_game)
+
+
+class TestTrapHandlerSpawning:
+    def test_initialise_builds_plain_trap_spawner(self, mock_game):
+        mock_game.dungeon_type = keys.ancient_crypt
+        handler = Trap_Handler(mock_game)
+        handler.Initialise()
+
+        assert isinstance(handler.trap_spawner, Trap_Spawner)
+
+    def test_load_data_adds_trap_to_handlers_own_list(self, mock_game):
+        """Regression test: loaded traps must land in Trap_Handler.traps,
+        not just Trap_Spawner.traps, or they never update/render."""
+        mock_game.dungeon_type = keys.ancient_crypt
+        handler = Trap_Handler(mock_game)
+
+        saved_data = {
+            "1": {keys.type: keys.spike_trap, keys.pos: (64, 64)}
+        }
+        handler.Load_Data(saved_data)
+
+        assert len(handler.traps) == 1
+        assert handler.traps[0].type == keys.spike_trap

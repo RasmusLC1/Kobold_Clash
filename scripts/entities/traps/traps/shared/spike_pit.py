@@ -1,6 +1,8 @@
 from scripts.entities.traps.trap import Trap
 from scripts.engine.keys.keys import keys
+from .shared_registry import register_trap
 
+@register_trap(keys.pit_trap, 0.4)
 class Spike_Pit(Trap):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.pit_trap)

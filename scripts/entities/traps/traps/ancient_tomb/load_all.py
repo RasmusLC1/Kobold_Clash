@@ -1,0 +1,3 @@
+from scripts.entities.traps.traps.ancient_tomb.bell_pressure_plate import Bell_Pressure_plate
+from scripts.entities.traps.traps.ancient_tomb.tomb_pressure_plate import Tomb_Pressure_Plate
+from scripts.entities.traps.traps.ancient_tomb.soul_trap import Soul_Trap

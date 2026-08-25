@@ -1,12 +1,12 @@
 from scripts.engine.keys.keys import keys
 from scripts.entities.traps.trap import Trap
+from .ancient_tomb_registry import register_trap
 
 import random
 
 COOLDOWN_MAX = 2
 
-
-# TODO: NEEDS TO BE TESTED
+@register_trap(keys.arrow_trap, 0.2)
 class Arrow_Trap(Trap):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.arrow_trap)
