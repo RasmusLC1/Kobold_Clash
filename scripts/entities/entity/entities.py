@@ -13,6 +13,8 @@ class PhysicsEntity:
         
         # Classification
         self.category = category
+        if not sub_category:
+            sub_category = category 
         self.sub_category = sub_category
         self.type = type
         
@@ -196,7 +198,40 @@ class PhysicsEntity:
     def Update(self, delta_time): pass
     def Damage_Taken(self, damage): pass
     def Set_Effect(self, effect, duration, permanent=False): pass
-    def Set_Sprite(self): pass
-    def Set_Entity_Image(self): pass
+
     def Set_Description(self): pass
-    def Render(self, surf, offset=(0, 0)): pass
+    
+    def Set_Sprite(self):
+        try:
+            self.sprite = self.game.assets[self.type]
+            self.Set_Entity_Image()
+        except Exception as e:
+            print("SETTING ENTITY TYPE FAILED", self.type)
+
+    def Set_Entity_Image(self):
+        try:
+            self.entity_image = self.sprite[self.animation].convert_alpha()
+            self.render_needs_update = True
+        except Exception as e:
+            print(f'SET Entity image failed {e}', self.type, self.sub_type, self.pos, self.animation, self.max_animation, self.size, self.entity_image, self.sprite)
+
+    
+    def Render(self, surf, offset = (0,0)):
+        if not self.Update_Light_Level():
+            return
+
+        
+        self.Update_Dark_Surface()
+
+        if not self.rendered_image:
+            self.render_needs_update = True
+            self.Update_Dark_Surface()
+            if not self.rendered_image:
+                self.Set_Sprite()
+                self.rendered_image = self.entity_image
+                print("Failed to update dark surface decoration", vars(self))
+                return
+        
+        # Render the chest
+        surf.blit(self.rendered_image, (self.pos[0] - offset[0], self.pos[1] - offset[1]))
+    

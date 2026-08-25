@@ -10,7 +10,7 @@ class Plinth(Display_Loot_Container):
         
 
     def Drop_Loot(self):
-        rarity_value = self.Calculate_Rarity()
+        rarity_value = self.loot_component.Calculate_Rarity()
 
         if rarity_value == keys.nothing:
                     return

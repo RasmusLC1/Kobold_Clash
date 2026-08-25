@@ -7,10 +7,12 @@ CLATTER_RANGE = 500
 DEFAULT_TRIGGER_RADIUS = 32  # Pixels padded around each side of the crystal
 
 class Unstable_Crystal(Trap):
-    def __init__(self, game, pos, trigger_radius=DEFAULT_TRIGGER_RADIUS):
-        self.trigger_radius = trigger_radius
+    def __init__(self, game, pos):
+        self.trigger_radius = DEFAULT_TRIGGER_RADIUS
         self.damage = 5
-        super().__init__(game, pos, keys.pressure_plate)
+        super().__init__(game, pos, keys.unstable_crystal)
+        self.Add_Light()
+
 
     # Expanded rect using the trigger radius
     def rect(self):
@@ -33,3 +35,7 @@ class Unstable_Crystal(Trap):
         
         # Safe removal via trap handler
         self.game.trap_handler.Remove_Trap(self)
+
+    def Add_Light(self):
+        self.light_source = self.game.light_handler.Add_Light(self.pos, self.light_strength, self.tile)
+        self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)

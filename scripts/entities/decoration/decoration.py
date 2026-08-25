@@ -5,7 +5,9 @@ import random
 
 
 class Decoration(PhysicsEntity):
-    def __init__(self, game, type, pos, size, destructable = False, health = 0, destruction_sound = None, destruction_clatter = 500, animation = 0, max_animation = 0) -> None:
+    def __init__(self, game, type, pos, size, destructable = False, health = 0,
+                 destruction_sound = None, destruction_clatter = 500,
+                 animation = 0, max_animation = 0) -> None:
         # Version 0 indexed
         self.animation = animation
         self.max_animation = max_animation
@@ -48,17 +50,6 @@ class Decoration(PhysicsEntity):
         self.Set_Entity_Image()
 
     
-    # Setting the initial sprite type from assets, only called during initial setup
-    def Set_Sprite(self):
-        self.sprite = self.game.assets[self.type]
-        self.Set_Entity_Image()
-
-    # Setting the item image and scaling it
-    def Set_Entity_Image(self):
-        self.entity_image = self.sprite[self.animation].convert_alpha()
-        self.render_needs_update = True
-        # self.entity_image = pygame.transform.scale(entity_image, self.size)
-
     def Damage_Taken(self, damage, effect):
         if not self.health:
             return
@@ -84,22 +75,3 @@ class Decoration(PhysicsEntity):
     def Spawn_Reward(self, item):
         pass
 
-    def Render(self, surf, offset = (0,0)):
-        if not self.Update_Light_Level():
-            return
-
-        
-        self.Update_Dark_Surface()
-
-        if not self.rendered_image:
-            self.render_needs_update = True
-            self.Update_Dark_Surface()
-            if not self.rendered_image:
-                self.Set_Sprite()
-                self.rendered_image = self.entity_image
-                print("Failed to update dark surface decoration", vars(self))
-                return
-        
-        # Render the chest
-        surf.blit(self.rendered_image, (self.pos[0] - offset[0], self.pos[1] - offset[1]))
-    

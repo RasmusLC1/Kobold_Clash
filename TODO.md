@@ -454,22 +454,22 @@ Upgrade weapons
     # Hydra, boss mob, regens health fast, gains immunity to the last effect type that damaged it
     Kobold, steals items from player and runs away
 ### Traps
-    - Crystal shards, shoots crystal spikes
+    - Crystal shards, shoots crystal spikes, basically arrow trap
     - Shifting walls, changes the layout of the dungeon
-    - Shard explosion, unstable crystals explode when damaged
-    - # Spike pits, fall into and slows you down
-    - # Loose rubble, generates clatter when stepped on
+    # Unstable Crystals, explode when damaged
+    # Spike pits, fall into and slows you down
+    # Loose rubble, generates clatter when stepped on
 ### Decorations
     # Glowing crystals, lights up area, can be shattered to remove light
-    - Small rocks strewn around
-    - Crystalisation shrine, give a gem and return a random one in return with negative 1 effectiveness
+    # Small rocks strewn around
+    - Crystalisation shrine, give a gem and return a random one in return with negative 1 effectiveness, trade in low value gem for potential to get better gem
     - Gem shrine, Spawns a high level gem somewhere in the dungeon
     - Crystal plinths, contains gems
     - Weapon shrine, pay souls to bind gems to weapons for bonuses increased bonuses
     - Fragile walls, can be broken by hitting with blunt weapons, acts as doors
     - Blood shrine, Gives an item that tracks player kills, when 10 are killed reduce awakening level
+    - Prism pedestal, activate to disable shifting walls
     - Crystal Fountains gives player damage resistance when interacted with
-    - Prism pedestal, activate to unlock a random room (Remove blocking wall)
     - Harmonic crystal, activate to generate souls, but generate clatter
     - Amplifying node, runes are more effective when in range
 

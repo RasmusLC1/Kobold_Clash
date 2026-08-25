@@ -149,13 +149,6 @@ class Item(PhysicsEntity):
             print("SETTING ITEM SUBTYPE FAILED", self.sub_type, self.type)
             self.Delete_Item()
 
-    # Setting the item image and scaling it
-    def Set_Entity_Image(self):
-        try:
-            self.entity_image = self.sprite[self.animation].convert_alpha()
-        except Exception as e:
-            print(f'SET Entity image failed {e}', self.type, self.sub_type, self.pos, self.animation, self.max_animation, self.size, self.entity_image, self.sprite)
-
     
     def Increase_Amount(self, amount):
         self.amount = int(min(self.max_amount, self.amount + int(amount)))

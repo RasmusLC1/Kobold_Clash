@@ -363,22 +363,7 @@ class Moving_Entity(PhysicsEntity):
     def Set_Ethereal(self, state):
         self.movement.Set_Ethereal(state)
 
-    # --- Graphics Rendering ---
-    def Render(self, surf, offset=(0, 0)):
-        if not self.active:
-            return False
-        if not self.Update_Light_Level():
-            return False
-        if not self.animation_handler.entity_image:
-            return False
 
-        self.Update_Dark_Surface()
-        self.effects.Render_Effects(surf, offset)
-        self.Render_Damage(surf, offset)
-
-        surf.blit(pygame.transform.flip(self.rendered_image, self.animation_handler.flip[0], False), 
-                (self.pos[0] - offset[0], self.pos[1] - offset[1]))
-        return True
     
     def Render_Damage(self, surf, offset):
         self.Lightup(self.rendered_image)
@@ -403,3 +388,27 @@ class Moving_Entity(PhysicsEntity):
 
         self.rendered_image.blit(dark_surface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
         self.render_needs_update = False
+
+    def Set_Entity_Image(self):
+        pass
+
+    def Set_Sprite(self):
+        pass
+    
+    def Render(self, surf, offset=(0, 0)):
+        if not self.active:
+            return False
+        if not self.Update_Light_Level():
+            return False
+        if not self.animation_handler.entity_image:
+            return False
+
+        self.Update_Dark_Surface()
+        self.effects.Render_Effects(surf, offset)
+        self.Render_Damage(surf, offset)
+
+        surf.blit(pygame.transform.flip(self.rendered_image, self.animation_handler.flip[0], False), 
+                (self.pos[0] - offset[0], self.pos[1] - offset[1]))
+        return True
+
+    
