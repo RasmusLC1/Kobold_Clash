@@ -1,116 +1,59 @@
-# High-Performance 2D Systems-Driven Roguelike Engine
+# Kobold Clash
 
-A custom, highly optimized 2D game engine built from scratch in Python and Pygame. This project showcases advanced game architecture, clean code principles, and deliberate systems design aimed at maximizing CPU efficiency within a single-threaded execution environment.
+A 2D roguelike dungeon crawler built from scratch in Python and Pygame — no external game engine, no third-party ECS or physics library. Enemy AI, pathfinding, lighting, save/load, and level generation are all hand-rolled.
 
-Instead of relying on commercial game engines, this project implements core production patterns—such as spatial partitioning, time-spliced request throttling, lazy-instantiated status matrices, and an adaptive AI Director—directly to practice high-fidelity software engineering and hot-loop optimization.
-
----
-
-## Key Architectural Showcases
-
-### 1. Hybrid Spatial Partitioning & Query Filtering
-* **The Problem:** Broad-phase proximity scans (e.g., checking which enemies are caught in an explosion radius) typically trigger expensive $O(N^2)$ nested distance checks, causing severe performance degradation as entity counts scale.
-* **The Solution:** A dual-layer hybrid search system (`Find_Nearby_Enemies`) that dynamically selects the mathematically optimal algorithm based on the query radius.
-* **Technical Details:**
-  * **Short-Range Queries ($\le 10$ units):** Bypasses entity-list iteration entirely by utilizing an $O(1)$ grid-based spatial partition system via the tilemap array, querying only local cached, neighboring tile indices.
-  * **Long-Range Queries ($> 10$ units):** Transitions to a localized linear scan utilizing **squared Euclidean distance**:
-    $$dx^2 + dy^2 < \text{radius}^2$$
-    This avoids the massive CPU overhead of square-root calculations (`math.sqrt`) inside the rendering and physics loops.
-
-### 2. Asynchronous Time-Spliced Pathfinding Queue
-* **The Problem:** Processing heavy A* pathfinding requests for 50+ enemies on the exact same frame causes massive micro-stutters and dropped frames.
-* **The Solution:** Implemented a decoupled **Load-Balanced Request Queue** (`Enemy_Pathfinding_Handler`) that throttles and distributes heavy calculations over multiple frame steps.
-* **Technical Details:**
-  * Leveraged `collections.deque` for $O(1)$ constant-time element extraction (`popleft`), bypassing the linear $O(N)$ memory shifting costs of standard Python arrays.
-  * Features dual processing streams: a high-priority, proximity-sorted queue for aggressive combat targets, and a relaxed, low-frequency queue for idling/patrolling entities.
-  * **Batch Optimization:** Uses a frame-latch mechanism (`should_sort_queue`) to sort the queue at most *once* per frame execution tick and only when needed, preventing the $O(N^2 \log N)$ computational spikes caused by sorting on every single element insertion.
-
-### 3. Dynamic AI Director ("Awakening" System)
-* **The Problem:** Traditional static spawning structures lead to predictable gameplay pacing and high risk of entity-overflow performance degradation.
-* **The Solution:** Engineered an architectural state-machine supervisor (`Awakening`) modeled after modern AI director patterns like Left 4 Dead to dynamically regulate mechanical pressure.
-* **Technical Details:**
-  * Monitors real-time environmental stress indicators (active entity metrics, map density coefficients).
-  * Uses a dynamic probability matrix (`random.choices` with moving weight configurations) that chokes off enemy spawns entirely when performance limits are neared, or increases threat generation if the player clears areas too quickly.
-  * Employs unified command execution patterns wrapped in parameterless execution closures (`lambda` handlers) to cleanly trigger world mutations safely.
-
-### 4. Unified Serialization Pipeline & Memento Hub (`Save_Load_Manager`)
-* **The Problem:** Saving or restoring state in a deeply interconnected game world often yields scattered file I/O operations, creating "stale data injections" and risking broken state syncing between dependent subsystems.
-* **The Solution:** A centralized, atomic persistence layer that orchestrates game-wide snapshot captures, consolidating independent subsystem data schemas into a single unified binary composite save-file.
-* **Technical Details:**
-  * **The Memento Pattern Variant:** Implements a centralized snapshot mechanism. It triggers deep state extractions across disparate game-state modules (`a_star`, `tilemap`, `enemy_handler`, etc.), tracking localized dictionaries via index-matched orchestration registries.
-  * **Atomic Binary I/O Operations:** Bundles aggregated component layers into an absolute composite dictionary payload, executing non-blocking file exports to a disk cluster via Python’s binary serialization layer (`pickle.dump` with `"wb"` flags).
-  * **Defensive Lifecycle Protections:** Features pre-execution filesystem sanitization hooks (`os.remove`) with structured error boundaries to guarantee file integrity, preventing corrupt data injections from breaking the game's startup sequence.
-  
-### 5. Data-Driven Spawning Factory
-* **The Problem:** Hardcoding level generation or specific biome entity arrays violates the *Open-Closed Principle*, making codebase expansion difficult and highly error-prone as the project scales.
-* **The Solution:** Implemented a decoupled polymorphic factory infrastructure (`Set_Spawner_Type`) that isolates biome data mapping from core game mechanics.
-* **Technical Details:**
-  * Dynamically maps level configurations directly to specific generator types (`Crypt_Spawn`, `Crystal_Cavern_Spawn`) using configuration lookups.
-  * Sanitizes raw generation string keys using suffix-stripping logic (`.split('_')`) to isolate base types from instances, ensuring clean lookup tracking against structural dictionary functions.
-
-### 6. Sub-Stepped Radial Light & Fog-of-War Raycaster
-* **The Problem:** Standard tile-stepping vectors easily clip through 45-degree corner boundaries (diagonal light leaking), and linear step-decay results in diamond-shaped falloff matrices rather than accurate radial shapes.
-* **The Solution:** A high-frequency dynamic lighting layer built using optimized trigonometrical lookups and distance-attenuation formulas.
-* **Technical Details:**
-  * **Hot Loop Optimization:** Pre-computes angle cosine/sine lookup arrays outside the rendering loop, localizing class methods to minimize instruction overhead during execution.
-  * Implements sub-stepped vector sampling ($0.5$ tile increments) to completely eliminate diagonal wall penetration bugs.
-  * Computes geometric decay utilizing true Euclidean distance calculations (`math.hypot`) for smooth circular falloff.
-  
-### 7. Immutable Flyweight State Engine (`Attribute_Distributor`)
-* **The Problem:** Storing individual base balance stats directly inside every active enemy instance introduces redundant memory overhead and risks "variable pollution"—where updating one enemy accidentally mutates the traits of every other enemy of that type.
-* **The Solution:** A decoupled scaling factory that treats base enemy configurations as immutable prototypes, processing progression math to return distinct state allocations.
-* **Technical Details:**
-  * **The Prototype/Flyweight Pattern:** Aggregates independent stat dictionaries (`SKELETON_STATS`, `ELEMENTAL_SPAWN_STATS`) into a centralized lookup matrix, treating them as read-only blueprints.
-  * **Hot-Loop String Parsing Optimization:** Replaces expensive, on-the-fly regular expression compilation bottlenecks with a globally cached, pre-compiled regex structural pattern (`re.compile`) to safely optimize string split passes during heavy level generation phases.
-  * **Data Isolation via Immutability:** Leverages Python's `dataclasses.replace` to duplicate base profiles into standalone records with modified values, ensuring current entity variables remain strictly separate from baseline global profiles.
-
-### 8. Hierarchical Composite Inventory & Drop Director (`Item_Handler`)
-* **The Problem:** Scaling item sub-categories (weapons, runes, potion consumables) within a centralized manager often causes code bloat and unmaintainable state branching logic.
-* **The Solution:** A decoupled **Composite Design Pattern** framework that acts as a single gateway interface while handing off generation logic to localized, item-specific handlers.
-* **Technical Details:**
-  * **Adaptive Pacing & Loot Economy:** Implements an evaluation scanner (`Adjust_Weights`) that queries the player's inventory cache in real time, dynamically warping drops based on current state coefficients (e.g., choking a rare key drop rate to 0% if one is already carried or increasing others to improve player satisfaction through interesting combinations).
-  * **The Facade Pattern:** `Item_Handler` exposes a single, unified interface for spatial proximity checks, item clearing, and loading sequences, abstracting away the complex internal logic of `Rune_Handler`, `Weapon_Handler`, and `Loot_Handler`.
-  * **Proximity Scan Throttling:** Features a delta-time cooldown gate (`Update_Nearby_Items_Cooldown`) that limits expensive spatial tile queries to fixed 0.5-second intervals, preserving CPU cycles during intense combat phases.
-  
-### 9. Flyweight Grid Matrix & Cellular Extraction Engine (`Tilemap` & `Tile`)
-* **The Problem:** Naively instantiating a unique high-level object for every individual tile in a massive game world rapidly degrades memory performance and creates heavy initialization bottlenecks.
-* **The Solution:** A high-performance spatial grid system that treats static structural cells as lightweight data points, paired with a specialized entity extraction lookup pipeline.
-* **Technical Details:**
-  * **The Flyweight Pattern for Grid Maps:** Separates structural layout definitions from variable runtime objects. Coordinates contain localized index vectors mapped against a centralized tile dictionary layout rather than unique graphic textures.
-  * **Layered Key Filtering & Token Extraction (`extract`):** Bypasses blind nested loops across grid dimensions via an optimized lookup array mechanism. Subsystems pass unique signature tokens (e.g., `[(keys.gold, 0)]`) to extract matching elements dynamically while clearing structural tiles simultaneously, avoiding duplicate tracking registries.
-  * **Spatial Entity Dereferencing:** Features explicit entity tracking registers tied directly to the cell grid structure (`Remove_Entity_From_Tile`), allowing physics layers, item drops, and raycasting systems to execute focused, localized tile searches.
-
-### 10. Memory-Efficient Flyweight Status Effect Pipeline (`Status_Effect_Handler`)
-* **The Problem:** Processing dozens of active, ticking elemental states (Poison, Fire, Freeze) across hundreds of active entities causes massive memory overhead if instances are repeatedly instantiated, allocated, and garbage collected every time a status applies.
-* **The Solution:** A highly optimized status matrix combining a **Class-Level Global Registry Look-up** with a **Lazy Instance Cache** and magic attribute bypass routing (`__getattr__`).
-* **Technical Details:**
-  * **Class-Level Memory Isolation:** Houses all type definitions in an immutable class-level dictionary (`EFFECT_REGISTRY`), decoupling effect initialization parameters from standard object constructor memory footprints.
-  * **Lazy On-Demand Instantiation:** Effects are completely uninstantiated until explicitly queried or applied. When called via `Get_Effect(effect_name)`, the handler spins up the type once and caches it inside `instantiated_effects` for all future state ticks.
-  * **Magic Attribute Route-Caching (`__getattr__` Override):** Bypasses standard dictionary lookup speeds for real-time physics and damage hooks. Accessing an effect via direct property notation (e.g., `handler.poison`) traps the initial lookup via magic methods, injects the bound instance via `setattr()`, and hot-wires future execution calls directly to the instance, completely bypassing `__getattr__` overhead thereafter.
-  * **Dynamic Cross-Status Synergy Vectors:** Inter-subsystem conditions evaluate variables directly across states without manager intervention (e.g., `Frozen` inspects `keys.wet` to double its base status application duration, while `Fire` reads current stack depth to mathematically scale and amplify incoming damage percentages directly against health caches).
+I started this in August 2024 and have kept working on it since, on and off, treating it partly as a real product I'd like to eventually release, and partly as a space to practice building and maintaining a codebase the way I would at work — with tests, PR-style self-review, and refactors instead of rewrites.
 
 ---
 
-## 🏗️ Architectural Blueprint & Design Patterns
+## Why build the engine instead of using one
 
-The engineering foundation of this engine relies on a strictly decoupled, composition-over-inheritance architectural philosophy. By isolating distinct execution domains, the system achieves predictable state mutation, straightforward maintainability, and horizontal scalability.
+Mostly because I wanted to actually understand the problems a game engine solves for you, rather than just use the solution. A* pathfinding for 100+ enemies without stuttering, tile-based fog-of-war lighting that doesn't leak through corners, saving a deeply interconnected game world without corrupting it — these are the kinds of problems that are easy to wave away with "the engine handles that," and I wanted the version of this project where I couldn't wave them away.
 
-### 1. Object Pool & Manager Pattern (`Enemy_Handler`)
-* **Context:** Creating, garbage collecting, and destroying high-level Python class instances frequently during runtime triggers costly memory overhead and unpredictable garbage collection spikes.
-* **Implementation:** The `Handler` classes act as a centralized object repository and lifecycle hub. 
-* **Design Advantage:** Instantiates entities inside a controlled, reusable list pool. It completely decouples entity lifecycles from system handlers. When an entity dies, the manager cleanly unlinks it across all tracking layers simultaneously (rendering pipelines, pathfinding queues, and spatial indices), preventing dangling references, ghost execution updates, and memory leaks.
+The trade-off is honest: this took a lot longer than using Godot or Unity would have, and some systems here (the earlier ones, in particular) show it. I'd rather that be visible than hidden.
 
-### 2. Polymorphic Spawner Factory Method (`Set_Spawner_Type`)
-* **Context:** Hardcoding environmental configurations or map-specific generation rules creates tight coupling, breaking the *Open-Closed Principle* and forcing sweeping codebase updates whenever a new level tier or biome is developed.
-* **Implementation:** Implemented an extensible abstract factory lookup infrastructure mapping system configurations to localized generator contexts (e.g., `Crypt_Spawn`, `Crystal_Cavern_Spawn`).
-* **Design Advantage:** The core game loop never needs to know *what* specific enemy variants are spawning or *how* they are structured. It simply invokes the assigned factory interface. Adding a new biome is completely risk-free and achieved simply by registering a new spawner type mapping to the dictionary layout.
+---
 
-### 3. Command Pattern Closure Execution (`Awakening`)
-* **Context:** The AI Director must execute a wide array of completely unrelated world-mutating events (spawning elites, debuffing players, locking doorways) through a unified execution interface without creating massive, unmaintainable nested `if/elif` branching blocks.
-* **Implementation:** Encapsulated environmental modifications inside a Command Pattern structure, routing event triggers directly into parameterless execution closures (`lambda` expressions).
-* **Design Advantage:** Isolates the system selector from target object signatures. The execution pipeline invokes a uniform `awakening_function()` call, leaving signature validation and argument isolation safely compartmentalized inside individual event objects.
+## Systems worth looking at
 
-### 4. Component Composition Over Inheritance (`Enemy` Sub-Systems)
-* **Context:** Relying on deep class inheritance hierarchies leads to rigid code structures where units inherit bloated, unused logic and components cannot easily adapt during runtime.
-* **Implementation:** Replaced heavy inheritance branches with decoupled component handlers (`Status_Effect_Handler`, `Behavior_Manager`, `Movement_Strategies`) instantiated inside base entity wrappers.
-* **Design Advantage:** Grants the engine immense flexibility. Behavior and movement rules are isolated as hot-swappable strategies. Units can dynamically shift states, swap out movement modes, or gain and lose active status modifiers on the fly without changing their underlying class layout.
+### Enemy AI and the pathfinding queue
+`Enemy_Handler` owns the lifecycle of every enemy — spawning, updating, and tearing down references across every subsystem that tracks them (render layer, pathfinding queues, acoustic/clatter listeners) so nothing gets left dangling when an enemy dies.
+
+The part I'm most happy with is `Enemy_Pathfinding_Handler`. Running full A* for 50+ enemies on the same frame causes visible stutter, so requests get distributed across frames instead of solved all at once, using a `deque` for O(1) queue operations and two separate priority streams — one for enemies actively chasing the player, one low-priority stream for idle patrolling so it never competes with combat pathing. Sorting the combined queue is throttled to once per frame via a simple boolean latch, rather than re-sorting on every single insertion.
+
+### Registries instead of subclassing
+Enemies, decorations, traps, and abilities all used to be registered by hand — a per-dungeon subclass with its own hardcoded dict of types. That worked, but adding a new dungeon meant writing a new subclass, and adding a new type inside an existing dungeon meant editing that subclass's constructor. It didn't scale well and it violated open/closed pretty directly.
+
+I refactored all four systems onto the same pattern: a decorator (`@register_trap`, `@register_ability`, etc.) that a class uses to register itself into a plain dict at import time, a small "shared vs. dungeon-specific" merge step, and a `load_all.py` per package whose only job is importing every module in that category so its decorator fires. Adding a new trap now means writing the trap class and adding one import line — nothing in the spawner itself changes.
+
+It's not free. Decorator-based registration trades loud failures for quiet ones — a missing import means a type silently doesn't exist rather than an obvious crash, and getting the import ordering wrong reintroduces circular imports that are genuinely annoying to trace back to their actual cause. I hit that a few times while building this out. I think the trade-off is worth it for a project that's still actively growing its content, but it's not something I'd reach for unconditionally.
+
+### Fog-of-war raycasting and lighting
+360° raycasting for visibility, with per-light-source additive tile lighting layered on top. The two things that were actually hard here: stepping the rays in half-tile increments so a diagonal wall corner can't be seen through, and using true Euclidean distance for falloff so light reads as a circle instead of a diamond. Angle lookups are precomputed outside the render loop since this runs every frame.
+
+### AI Director ("The Awakening")
+Loosely inspired by Left 4 Dead's director — it watches how much noise the player is making and how dense the current room is, then leans on spawn rates and trap density in response, rather than following a fixed script. Mechanically it's a state machine that dispatches to a set of world-mutation functions based on a weighted table that shifts over time.
+
+### Save/load
+Every subsystem that owns persistent state (pathfinding, tilemap, enemies, decorations, traps) implements its own `Save_Data`/`Load_Data`, and a central manager collects all of it into one dictionary and writes it with `pickle`. Nothing fancy, but it's consistent across every subsystem and I made a point of guarding the file write so a crash mid-save can't leave a corrupted file blocking the next launch.
+
+### Status effects
+Effect types (poison, freeze, slow, etc.) are defined once in a class-level registry and instantiated lazily — an entity only pays for a `Poison` instance the first time it's actually poisoned, and that instance is cached and reused after. Some effects read each other's state directly (frozen entities take double duration if they're already wet, stacked fire damage scales with stack depth) rather than going through a central coordinator, which keeps the interactions simple to write but means the coupling between effects is implicit — worth knowing if you're reading that code.
+
+---
+
+## What's still rough
+
+Being upfront about this rather than hiding it: the newer systems (enemy AI, the registries, lighting) reflect how I'd approach this today. Inventory and weapon handling are from earlier in the project and haven't had the same pass yet — they work, but the patterns are older and I know they need a refactor. I'd rather flag that than have someone find it and wonder if I don't see it.
+
+Test coverage is real but uneven — pathfinding, tilemap queries, raycasting, and status effects have solid pytest coverage with a mocked game context; some of the newer registry systems got their smoke tests added after the fact rather than alongside.
+
+---
+
+## Running it
+
+*(setup instructions — Python version, `pip install -r requirements.txt`, how to launch)*
+
+## Tech
+
+Python, Pygame, pytest.
