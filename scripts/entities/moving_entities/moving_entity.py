@@ -17,7 +17,8 @@ class Moving_Entity(PhysicsEntity):
     _animation_handler = Animation_Handler
     _effect_handler = Status_Effect_Handler
 
-    def __init__(self, game, type, category, pos, size, health, strength, max_speed, agility, intelligence, stamina, sub_category):
+    def __init__(self, game, type, category, pos, size, health, strength,
+                 max_speed, agility, intelligence, stamina, sub_category):
         super().__init__(game, type, category, pos, size, sub_category)
         # PhysicsEntity.__init__ already constructs self.animation_handler via
         # self._animation_handler(self), so no need to build it again here.
@@ -110,7 +111,7 @@ class Moving_Entity(PhysicsEntity):
         self.saved_data['stamina'] = self.stamina
         self.saved_data['target'] = self.target
         self.saved_data['animation'] = self.animation_handler.animation_key
-        self.saved_data['animation_value'] = self.animation_handler.animation_value
+        self.saved_data['animation_value'] = self.animation_handler.animation
         self.saved_data['effects'] = self.effects.Save_Data()
 
     def Load_Data(self, data):
@@ -125,7 +126,7 @@ class Moving_Entity(PhysicsEntity):
         self.stamina = data['stamina']
         self.target = data['target']
         self.animation_handler.animation_key = data['animation']
-        self.animation_handler.animation_value = data.get('animation_value', 0)
+        self.animation_handler.animation = data.get('animation_value', 0)
         # Re-derive action from the saved key and reload sprite/entity_image
         # so entity_image isn't left None after a load.
         self.animation_handler.action = data['animation'].removeprefix(self.type + '_')

@@ -9,13 +9,13 @@ COOLDOWN_MAX = 0.05
 DAMAGE_COOLDOWN = 1
 
 class Trap(PhysicsEntity):
-    def __init__(self, game, pos, type, size = (32, 32)):
-        super().__init__(game, type, 'trap', pos, size)
+    def __init__(self, game, pos, type, size = (32, 32), max_animation = 0, animation_cooldown_max = 0):
+        super().__init__(game, type, 'trap', pos, size, max_animation, animation_cooldown_max)
         self.cooldown = 0
         self.animation = 0
+        self.animation_max = max_animation
         self.Set_Sprite()
         self.animation_cooldown = 0
-        self.animation_max = 0
         self.entity_check_cooldown = 0
         self.entities = {}
         if self.tile:

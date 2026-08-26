@@ -2,8 +2,9 @@ from scripts.engine.keys.keys import keys
 from scripts.entities.entity.animation_handler import Base_Animation_Handler
 
 class Animation_Handler(Base_Animation_Handler):
-    def __init__(self, entity):
-        super().__init__(entity)
+    def __init__(self, entity, animation_max=0, animation_cooldown_max=0):
+        super().__init__(entity, animation_max=animation_max,
+                         animation_cooldown_max=animation_cooldown_max)
         self.animation_key = ''
         self.action = ''
         self.flip = [False, False]
@@ -41,7 +42,7 @@ class Animation_Handler(Base_Animation_Handler):
             self.action = action
             self.animation_key = self.entity.type + '_' + self.action
             self.Reset_Animation_Values()
-            self.animation_value = 0
+            self.animation = 0
             self.Set_Sprite(self.animation_key)
             self.Set_Animation_Lock(True)
             return True

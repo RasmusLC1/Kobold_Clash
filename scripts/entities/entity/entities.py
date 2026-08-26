@@ -9,7 +9,8 @@ class PhysicsEntity:
     _available_IDs = deque()
     _animation_handler = Base_Animation_Handler   # subclasses override this
 
-    def __init__(self, game, type, category, pos, size, sub_category=None):
+    def __init__(self, game, type, category, pos, size, sub_category=None,
+                 max_animation = 0, animation_cooldown_max = 0):
         self.game = game
         self.Set_ID()
 
@@ -40,7 +41,7 @@ class PhysicsEntity:
         self.tile_handler = Tile_Handler(self)
         self.tile_handler.Set_Tile()
 
-        self.animation_handler = self._animation_handler(self)
+        self.animation_handler = self._animation_handler(self, max_animation, animation_cooldown_max)
 
         self.Set_Text_Box()
         self.description = ''
@@ -175,6 +176,7 @@ class PhysicsEntity:
             'light_level': self.light_level,
             'render': self.render
         }
+        self.saved_data.update(self.animation_handler.Save_Data())
         return self.saved_data
 
     def Load_Data(self, data):
@@ -186,6 +188,7 @@ class PhysicsEntity:
         self.active = data['active']
         self.light_level = data['light_level']
         self.render = data['render']
+        self.animation_handler.Load_Data(data)
         
         self.tile_handler.Set_Tile()
         if self.ID >= PhysicsEntity._id_counter:

@@ -19,8 +19,8 @@ ATTACK_TYPES = {
 }
 
 class Player_Animation_Handler(Animation_Handler):
-    def __init__(self, entity):
-        super().__init__(entity)
+    def __init__(self, entity, animation_max=0, animation_cooldown_max=0):
+        super().__init__(entity, animation_max=0, animation_cooldown_max=0)
 
         self.keyboard = self.entity.game.keyboard_handler
 
@@ -132,7 +132,7 @@ class Player_Animation_Handler(Animation_Handler):
         self.action = action
         self.animation_key = self.entity.type + '_' + self.action
         self.Reset_Animation_Values()
-        self.animation_value = 0
+        self.animation = 0
         self.Set_Sprite(self.animation_key)
 
         weapon = self.entity.Get_Weapon()
@@ -153,5 +153,5 @@ class Player_Animation_Handler(Animation_Handler):
     def Update_Generic_Animation(self, anim_type, delta_time):
         if not super().Update_Generic_Animation(anim_type, delta_time):
             return False
-        self.entity.weapon_handler.Update_Weapon_Animation(self.animation_value)
+        self.entity.weapon_handler.Update_Weapon_Animation(self.animation)
         return True

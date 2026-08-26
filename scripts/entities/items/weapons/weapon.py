@@ -50,7 +50,10 @@ class Weapon(Item):
         self.charge_effect_handler = Charge_Effect_Weapon(game, self)
         self.attack_effect_handler = Attack_Effect_Weapon(game, self)
         self.gem_handler = Gem_Handler(self)
-        super().__init__(game, type, keys.weapon, pos, size, amount=amount, max_amount=max_amount, add_to_tile=add_to_tile, max_animation = max_animation, durability=durability, max_durability=max_durability)
+        super().__init__(game, type, keys.weapon, pos, size, amount=amount,
+                         max_amount=max_amount, add_to_tile=add_to_tile,
+                         max_animation = max_animation, durability=durability,
+                         max_durability=max_durability)
 
     def Save_Data(self):
         # if self.entity:

@@ -4,7 +4,7 @@ from .shared_registry import register_trap
 
 import random
 
-@register_trap(keys.spike_trap, 0.5)
+@register_trap(keys.spike_trap, 1900.5)
 class Spike(Trap):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.spike_trap)
@@ -17,6 +17,7 @@ class Spike(Trap):
             
 
     def Animation_Update(self, delta_time):
+        print("TESTETS")
         if self.animation_cooldown > 0:
             self.animation_cooldown -= delta_time
             return
@@ -24,6 +25,6 @@ class Spike(Trap):
         if self.animation >= 5:
             self.animation = 0
         else:
-            self.animation += 1
+            self.animation_handler.Increase_Frame()
         
         self.animation_cooldown = random.uniform(0.3, 0.4)

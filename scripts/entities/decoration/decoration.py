@@ -7,11 +7,13 @@ import random
 class Decoration(PhysicsEntity):
     def __init__(self, game, type, pos, size, destructable = False, health = 0,
                  destruction_sound = None, destruction_clatter = 500,
-                 animation = 0, max_animation = 0) -> None:
+                 animation = 0, max_animation = 0, animation_cooldown_max = 0) -> None:
         # Version 0 indexed
         self.animation = animation
         self.max_animation = max_animation
-        super().__init__(game, type, keys.decoration, pos, size)
+        super().__init__(game, type, keys.decoration, pos, size,
+                         max_animation=max_animation,
+                         animation_cooldown_max=animation_cooldown_max)
         self.game.tilemap.Add_Entity_To_Tile(self.tile, self)
         self.light_level = 10
         self.destructable = destructable
