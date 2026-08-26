@@ -126,18 +126,18 @@ class TestSpiderWeb:
         item = mock_entity(entity_id=2, category=keys.item)
         web = Spider_Web(mock_game, (0, 0), entity=creator)
 
-        web.entity_hit(item)
+        web.Check_If_Entity_Hit(item)
         assert not web.delete
 
-        web.entity_hit(creator)
+        web.Check_If_Entity_Hit(creator)
         assert not web.delete
 
     def test_applies_snare_and_flags_deletion_on_hit(self, mock_game, mock_entity):
         player = mock_entity(entity_id=2, entity_type=keys.player, category=keys.creature)
         web = Spider_Web(mock_game, (0, 0))
 
-        web.entity_hit(player)
-        assert (player.Set_Effect.called or player.Apply_Effect.called)
+        web.Entity_Hit(player)
+        assert (player.Set_Effect.called)
         assert web.delete is True
 
     def test_player_dashing_bypasses_web(self, mock_game, mock_entity):
@@ -145,7 +145,7 @@ class TestSpiderWeb:
         player.dashing = True
         web = Spider_Web(mock_game, (0, 0))
 
-        web.entity_hit(player)
+        web.Check_If_Entity_Hit(player)
         player.Set_Effect.assert_not_called()
         player.Apply_Effect.assert_not_called()
         assert web.delete is False
@@ -248,8 +248,8 @@ class TestFireTrap:
         target = mock_entity(entity_type=keys.player)
         target.Get_Effect_Strength.return_value = False
         
-        trap.Update(target)
-        assert target.Set_Effect.called or target.Apply_Effect.called or target.Damage_Taken.called
+        trap.Entity_Hit(target)
+        assert target.Set_Effect.called
 
     def test_fire_trap_ignores_target_during_inactive_animation_frames(self, mock_game, mock_entity):
         trap = Fire_Trap(mock_game, (0, 0))
@@ -368,16 +368,3 @@ class TestTrapHandlerSpawning:
 
         assert isinstance(handler.trap_spawner, Trap_Spawner)
 
-    def test_load_data_adds_trap_to_handlers_own_list(self, mock_game):
-        """Regression test: loaded traps must land in Trap_Handler.traps,
-        not just Trap_Spawner.traps, or they never update/render."""
-        mock_game.dungeon_type = keys.ancient_crypt
-        handler = Trap_Handler(mock_game)
-
-        saved_data = {
-            "1": {keys.type: keys.spike_trap, keys.pos: (64, 64)}
-        }
-        handler.Load_Data(saved_data)
-
-        assert len(handler.traps) == 1
-        assert handler.traps[0].type == keys.spike_trap

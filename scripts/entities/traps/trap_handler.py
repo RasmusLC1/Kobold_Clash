@@ -32,7 +32,6 @@ class Trap_Handler:
         for item_id, item_data in data.items():
             if not item_data:
                 continue
-
             type = item_data[keys.type]
             pos = item_data[keys.pos]
             try: 

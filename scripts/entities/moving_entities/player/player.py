@@ -147,7 +147,6 @@ class Player(Moving_Entity):
 
     # Function to update the light around player
     def Update_Light(self):
-        
         # Check if player has moved to new tile
         if self.light_source.tile == self.tile:
             return

@@ -27,23 +27,23 @@ class Spider_Web(Trap):
             self.game.trap_handler.Remove_Trap(self)
             return
         
-        self.entity_hit(entity)
+        self.Check_If_Entity_Hit(entity)
 
     
-    def entity_hit(self, entity):
+    def Check_If_Entity_Hit(self, entity):
         if entity.category == keys.item:
             return
         if entity == self.entity:
             return
         if self.rect().colliderect(entity.rect()) and self.Cooldown == 0:
-            if entity.type == 'player':
-                if entity.dashing:
-                    return
-            self.animation = self.animation_max
-            entity.Set_Effect(keys.snare, 100)
-            self.Cooldown = 100
-            self.delete = True
-            self.active = False
+            self.Entity_Hit(entity)
+    
+    def Entity_Hit(self, entity):
+        self.animation = self.animation_max
+        entity.Set_Effect(keys.snare, 100)
+        self.Cooldown = 100
+        self.delete = True
+        self.active = False
 
     def Determine_If_Shot_By_Spider(self):
         if self.duration:
