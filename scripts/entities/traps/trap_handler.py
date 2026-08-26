@@ -40,6 +40,8 @@ class Trap_Handler:
             except Exception as e:
                 print("DATA WRONG TRAPHANDLER", item_data, e)
 
+        self.traps = self.trap_spawner.traps
+
     # Only update traps that are close t the player
     def Update(self, delta_time):
         if self.Update_Nearby_Traps_Cooldown(delta_time):

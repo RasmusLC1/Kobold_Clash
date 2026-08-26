@@ -321,7 +321,7 @@ class TestTrapRegistry:
         """Fails if a shared trap module wasn't imported (decorator never ran)."""
         expected_keys = [
             keys.pit_trap, keys.spike_poison_trap, keys.spike_trap,
-            keys.rubble, keys.arrow_trap,
+            keys.rubble,
         ]
         for key in expected_keys:
             assert key in trap_registry.TRAP_REGISTRY, (
@@ -329,7 +329,7 @@ class TestTrapRegistry:
             )
 
     def test_ancient_tomb_trap_registry_is_populated(self):
-        expected_keys = [keys.tomb_pressure_plate, keys.bell_pressure_plate, keys.soul_trap]
+        expected_keys = [keys.tomb_pressure_plate, keys.bell_pressure_plate, keys.soul_trap, keys.arrow_trap]
         for key in expected_keys:
             assert key in ancient_tomb_trap_registry.TRAP_REGISTRY, (
                 f"'{key}' missing from ancient tomb TRAP_REGISTRY."
@@ -337,9 +337,11 @@ class TestTrapRegistry:
 
     def test_weighted_and_lookup_only_traps_are_distinguished(self):
         """Env traps (lava/water/ice) are lookup-only — never rolled by weight."""
-        assert keys.lava_env in trap_registry.TRAP_REGISTRY
-        assert keys.lava_env not in trap_registry.TRAP_TABLE
-
+        env_traps = (keys.lava_env, keys.ice_env, keys.water_env)
+        
+        for key in env_traps:
+            assert key in trap_registry.TRAP_REGISTRY, f"{key} should be in TRAP_REGISTRY"
+            assert key not in trap_registry.TRAP_TABLE, f"{key} should not be in TRAP_TABLE"
 
 class TestTrapSpawnerDungeonMerge:
     def test_ancient_crypt_merges_shared_and_dungeon_specific(self, mock_game):

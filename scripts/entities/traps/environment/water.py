@@ -1,7 +1,9 @@
 from scripts.entities.traps.trap import Trap
 from scripts.engine.keys.keys import keys
+from ..traps.shared.shared_registry import register_trap
 import random
 
+@register_trap(keys.water_env) # no probablity as this needs to be spawned as lakes
 class Water(Trap):
     def __init__(self, game, pos, type):
         super().__init__(game, pos, type)

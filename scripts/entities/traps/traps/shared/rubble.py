@@ -15,10 +15,5 @@ class Rubble(Trap):
         if entity.type != keys.player:
             return
         
-
         self.Generate_Sound(keys.rubble, 0.4, CLATTER_RANGE)
 
-        self.game.sound_handler.Play_Sound(keys.rubble, 0.4)
-        self.game.clatter.Generate_Clatter(self.pos, CLATTER_RANGE) # Generate clatter to alert nearby enemies
-
-            
