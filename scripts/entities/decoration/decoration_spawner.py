@@ -62,8 +62,10 @@ class Decoration_Spawner():
         self.Spawn_Lightsource()
         self.Set_Item_Sacrifice_Decorations()
         self.Link_Teleportation_Circles()
-        return self.decorations, self.item_sacrifice, self.spawn_methods
+        return self.decorations, self.item_sacrifice, self.All_Spawn_Methods()
 
+    def All_Spawn_Methods(self):
+        return {**self.spawn_methods, **self.light_source_classes}
     
 
     def Get_Dungeon_Type(self):

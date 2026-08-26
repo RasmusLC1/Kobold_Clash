@@ -46,6 +46,8 @@ class Decoration_Handler():
             self.saved_data[decoration.ID] = decoration.saved_data
 
     def Load_Data(self, data):
+        self.decoration_spawner.Get_Dungeon_Type()
+        self.spawn_methods = self.decoration_spawner.All_Spawn_Methods()
         # Check if the decoration spawner is initialised
         if not self.initalised:
             self.Initialise()
@@ -71,6 +73,7 @@ class Decoration_Handler():
         
 
     def Decoration_Spawner(self, type, pos, data=None):
+        type = self._Strip_Suffix(type)
         spawn_function = self.spawn_methods.get(type)
         if not spawn_function:
             print(f"Warning: Decoration type '{type}' not recognized. Decoration_Handler Decoration_Spawner")
@@ -84,7 +87,12 @@ class Decoration_Handler():
         self.decorations.append(decoration)
         return decoration
 
-
+    def _Strip_Suffix(self, type):
+        base_type = type
+        parts = type.split('_')
+        if parts[-1].isdigit():
+            base_type = '_'.join(parts[:-1])
+        return base_type
 
     def Update(self, delta_time):
         self.Check_Keyboard_Input()

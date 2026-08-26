@@ -44,7 +44,6 @@ class Moving_Entity(PhysicsEntity):
         self.health = health
         self.healing_enabled = True
         self.max_health = self.health
-        self.touching_ground = True
 
         self.block_direction = (0,0)
 
@@ -355,8 +354,7 @@ class Moving_Entity(PhysicsEntity):
     def Increase_Max_Health(self, value):
         self.max_health += value
 
-    def Set_Touching_Ground(self, state):
-        self.touching_ground = state
+
 
     def Set_Action(self, movement = None):
         pass

@@ -36,6 +36,7 @@ class PhysicsEntity:
         self.active_opacity = 255
         self.light_level = 0
 
+        self.touching_ground = True
         self.tile_handler = Tile_Handler(self)
         self.tile_handler.Set_Tile()
 
@@ -71,6 +72,9 @@ class PhysicsEntity:
 
     def Set_Tile(self):
         self.tile_handler.Set_Tile()
+
+    def Set_Touching_Ground(self, state):
+        self.touching_ground = state
         
     def Update_Tile(self, delta_time):
         # if self.tile:
