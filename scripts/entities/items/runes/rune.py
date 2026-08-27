@@ -7,7 +7,8 @@ import random
 
 
 class Rune(Item):
-    def __init__(self, game, type, pos, upgrades, soul_cost, animation_time_max = 0.5, animation_size_max = 15):
+    def __init__(self, game, type, pos, upgrades, soul_cost,
+                 animation_time_max = 0.5, animation_size_max = 15):
         self.player = game.player
         self.menu_pos = pos
         self.Initialise_Upgrades(soul_cost, upgrades)
