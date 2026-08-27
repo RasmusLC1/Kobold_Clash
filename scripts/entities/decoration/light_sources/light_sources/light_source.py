@@ -12,11 +12,10 @@ class Light_Source(Decoration):
                          destructable=destructable, health=health,
                          destruction_sound=destruction_sound,
                          destruction_clatter=destruction_clatter, animation=animation,
-                         max_animation=max_animation)
+                         max_animation=max_animation,
+                         animation_cooldown_max=animation_cooldown_max)
         
         self.light_strength = light_strength
-        self.animation_cooldown = 0
-        self.animation_cooldown_max = animation_cooldown_max
         self.Add_Light()
 
     def Save_Data(self):

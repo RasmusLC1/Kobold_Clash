@@ -18,10 +18,9 @@ Register_Shrine(keys.sacrifice_shrine)
 class Sacrifice_Shrine(Cycling_Shrine):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.sacrifice_shrine, pos, (64, 64),
-                          cooldown_range=(0.5, 0.7), particle_type=keys.soul_particle,
-                          particle_chance=2)
+                          particle_type=keys.soul_particle,
+                          particle_chance=2, max_animation=3, animation_cooldown_max=0.5)
         self.description = "Sacrifice loot\nfor reward"
-        self.max_animation = 3
         self.Add_Light()
 
     def Add_Light(self):

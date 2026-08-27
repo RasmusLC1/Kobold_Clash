@@ -25,10 +25,14 @@ class Loot_Container(Decoration):
         keys.vase: 10,
     }
 
-    def __init__(self, game, type, pos, size=(32, 32), destructable=False, health=100, destruction_sound=None, destruction_clatter=500, max_animation=0) -> None:
-        self.max_animation = max_animation # 0 indexed
+    def __init__(self, game, type, pos, size=(32, 32), destructable=False,
+                 health=100, destruction_sound=None, destruction_clatter=500,
+                 max_animation=0, animation_cooldown_max=0) -> None:
         version = self.Set_Version(game)
-        super().__init__(game, type, pos, size, destructable, health, destruction_sound, destruction_clatter, version, max_animation)
+        super().__init__(game, type, pos, size, destructable, health,
+                         destruction_sound, destruction_clatter, version,
+                         max_animation=max_animation,
+                         animation_cooldown_max=animation_cooldown_max)
         
         self.text_cooldown = 0
         self.text_animation = 0

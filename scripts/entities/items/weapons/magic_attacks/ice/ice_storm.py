@@ -8,12 +8,11 @@ from scripts.engine.keys.keys import keys
 
 class Ice_Storm(PhysicsEntity):
     def __init__(self, game, entity, duration):
-        super().__init__(game, keys.ice_storm, keys.magic_attack, entity.pos, (32,32))
+        super().__init__(game, keys.ice_storm, keys.magic_attack, entity.pos, (32,32),
+                         max_animation=9, animation_cooldown_max=0.4)
         self.entity = entity
         self.ice_cooldown = 0
         self.duration = 0
-        self.animation = 0
-        self.animation_max = 9
         self.ice_shooter = Ice_Shooter(game, entity)
         self.Set_Duration(duration * 10)
 
@@ -38,13 +37,6 @@ class Ice_Storm(PhysicsEntity):
         self.Update_Animation(delta_time)
         return True
 
-    def Update_Animation(self, delta_time = 0):
-        if self.animation >= self.animation_max:
-            self.animation = 0
-        else:
-            self.animation += 1
-
-        return
 
 
     def Update_Light_Level(self):

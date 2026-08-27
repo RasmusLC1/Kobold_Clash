@@ -9,10 +9,9 @@ Register_Shrine(keys.soul_well)
 class Soul_Well(Cycling_Shrine):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.soul_well, pos, (64, 64),
-                          cooldown_range=(0.7, 1.0), particle_type=keys.soul_particle,
-                          particle_chance=4)
+                           particle_type=keys.soul_particle,
+                          particle_chance=4, max_animation=3, animation_cooldown_max=0.8)
         self.description = "sacrifice gold\nfor souls"
-        self.max_animation = 3
 
     def Spawn_Reward(self, item):
         self.Activate_Shrine()

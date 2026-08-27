@@ -23,16 +23,12 @@ class Item(PhysicsEntity):
         self.floor_size = size # Used to upscale item for inventory
         self.inventory_size = (32,32) # Used to upscale item for inventory
         self.activate_cooldown = 0
-        self.animation_cooldown = 0
-        self.animation_cooldown_max = animation_cooldown_max
         self.max_amount = max_amount
         self.amount = int(min(max_amount, int(amount))) # Cap the amount
-        self.max_animation = max_animation
         self.value = rarity_value # Temporary value set correctly in Calculate_Rarity
         self.rarity = self.Calculate_Rarity() # rarity used for loot defaults to common
 
         # Frame index now lives on the animation handler, not the entity.
-        self.animation_handler.animation = random.randint(0, self.max_animation)
         self.nearby_entities = []
         self.delete_countdown = 0
 
@@ -128,14 +124,6 @@ class Item(PhysicsEntity):
         self.Set_Size(self.floor_size) # Standard loot size on floor
         self.game.sound_handler.Play_Sound(keys.item_placedown, 0.2)
         return True
-
-    def Update_Animation(self, delta_time):
-        if self.animation_cooldown > 0:
-            self.animation_cooldown = max(0, self.animation_cooldown - delta_time)
-            return
-
-        self.animation_cooldown = self.animation_cooldown_max
-        self.animation_handler.Set_Frame(random.randint(0, self.max_animation))
 
 
     def Distance(self, start_pos, target_pos):

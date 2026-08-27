@@ -3,10 +3,9 @@ from scripts.engine.keys.keys import keys
 
 class Spider_Web(Trap):
     def __init__(self, game, pos, speed = 0, direction = (0, 0), duration = 0, entity = None):
-        super().__init__(game, pos, keys.spider_web)
+        super().__init__(game, pos, keys.spider_web, max_animation=3, animation_cooldown_max=0.3)
         self.duration = duration
         self.active = False
-        self.animation_max = 3
         self.delete = False
         self.frame_movement = (0, 0)
         self.direction = direction
@@ -39,7 +38,7 @@ class Spider_Web(Trap):
             self.Entity_Hit(entity)
     
     def Entity_Hit(self, entity):
-        self.animation = self.animation_max
+        self.animation = self.max_animation
         entity.Set_Effect(keys.snare, 100)
         self.Cooldown = 100
         self.delete = True
@@ -48,9 +47,9 @@ class Spider_Web(Trap):
     def Determine_If_Shot_By_Spider(self):
         if self.duration:
             self.active = True
-            self.animation = self.animation_max
+            self.animation = self.max_animation
         else:
-            self.animation = self.animation_max
+            self.animation = self.max_animation
 
     def Update_Duration(self):
         if not self.active:

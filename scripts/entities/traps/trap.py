@@ -12,10 +12,7 @@ class Trap(PhysicsEntity):
     def __init__(self, game, pos, type, size = (32, 32), max_animation = 0, animation_cooldown_max = 0):
         super().__init__(game, type, 'trap', pos, size, max_animation, animation_cooldown_max)
         self.cooldown = 0
-        self.animation = 0
-        self.animation_max = max_animation
         self.Set_Sprite()
-        self.animation_cooldown = 0
         self.entity_check_cooldown = 0
         self.entities = {}
         if self.tile:
@@ -26,17 +23,11 @@ class Trap(PhysicsEntity):
     def Save_Data(self):
         super().Save_Data()
         self.saved_data['Cooldown'] = self.cooldown
-        self.saved_data['animation'] = self.animation
-        self.saved_data['animation_cooldown'] = self.animation_cooldown
-        self.saved_data['animation_max'] = self.animation_max
 
     
     def Load_Data(self, data):
         super().Load_Data(data)
         self.cooldown = data['Cooldown']
-        self.animation = data['animation']
-        self.animation_cooldown = data['animation_cooldown']
-        self.animation_max = data['animation_max']
 
     def Update(self, delta_time):
         if not self.render:

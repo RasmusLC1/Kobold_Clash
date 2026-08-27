@@ -57,44 +57,43 @@ def test_light_source_forwards_decoration_kwargs(mock_game):
     """Ensures destructable/health/animation kwargs actually land on the entity, not just the constructor."""
     light_source = Light_Source(
         mock_game, (0, 0), keys.glowing_crystal, 1, light_strength=8,
-        destructable=True, health=40, animation=3, max_animation=5,
+        destructable=True, health=40, max_animation=5, animation_cooldown_max=0.5
     )
 
     assert light_source.destructable is True
     assert light_source.health == 40
-    assert light_source.animation == 3
     assert light_source.max_animation == 5
+    assert light_source.animation_cooldown_max == 0.5
 
 
 ### 2. Glowing_Crystal Animation Cycling
-
 def test_glowing_crystal_holds_animation_during_cooldown(mock_game):
-    """Confirms the frame doesn't advance before the cooldown window elapses."""
-    with patch("random.randint", return_value=1):
+    # Target exact location of random inside animation_handler.py
+    with patch("scripts.entities.entity.animation_handler.random.randint", return_value=2):
         crystal = Glowing_Crystal(mock_game, (0, 0))
+    crystal.Update_Animation(delta_time=0.3)
 
     start_animation = crystal.animation
-    crystal.animation_cooldown = 1.0
 
     crystal.Update_Animation(delta_time=0.3)
 
     assert crystal.animation == start_animation
-    assert crystal.animation_cooldown == pytest.approx(0.7)
+    assert crystal.animation_handler.animation_cooldown == pytest.approx(1.7)
 
 
 def test_glowing_crystal_advances_and_wraps_animation(mock_game):
     """Confirms the frame advances once cooldown expires, wrapping back to 0 past max_animation."""
-    with patch("random.randint", return_value=1):
+    with patch("scripts.entities.entity.animation_handler.random.randint", return_value=1):
         crystal = Glowing_Crystal(mock_game, (0, 0))
 
     crystal.animation = crystal.max_animation
-    crystal.animation_cooldown = 0
+    crystal.animation_handler.animation_cooldown = 0
 
-    with patch("random.uniform", return_value=0.5):
+    with patch("scripts.entities.entity.animation_handler.random.uniform", return_value=0.5):
         crystal.Update_Animation(delta_time=0.1)
 
     assert crystal.animation == 0
-    assert crystal.animation_cooldown == 0.5
+    assert crystal.animation_cooldown == 2.0
 
 
 ### 3. Glowing_Crystal Light Boost & Decay (Open)
@@ -117,7 +116,7 @@ def test_glowing_crystal_light_decays_toward_baseline(mock_game):
 
     crystal.Open()
     crystal.light_source.Update_Light_Level.reset_mock()
-    crystal.animation_cooldown = 0
+    crystal.animation_handler.animation_cooldown = 0
 
     with patch("random.uniform", return_value=0.5):
         crystal.Update_Animation(delta_time=0.1)
@@ -133,7 +132,7 @@ def test_glowing_crystal_stops_pushing_updates_at_baseline(mock_game):
 
     crystal.updated_light_strength = crystal.light_strength
     crystal.light_source.Update_Light_Level.reset_mock()
-    crystal.animation_cooldown = 0
+    crystal.animation_handler.animation_cooldown = 0
 
     with patch("random.uniform", return_value=0.5):
         crystal.Update_Animation(delta_time=0.1)
@@ -149,7 +148,7 @@ def test_increase_animation_flags_render_for_update(mock_game):
         crystal = Glowing_Crystal(mock_game, (0, 0))
 
     crystal.render_needs_update = False
-    crystal.Increase_Animation()
+    crystal.animation_handler.Increase_Frame()
 
     assert crystal.render_needs_update is True
 
@@ -163,7 +162,7 @@ def test_brazier_open_extinguishes_when_lit(mock_game):
     with patch("random.randint", return_value=1):
         brazier = Brazier(mock_game, (0, 0))
 
-    assert brazier.animation > 0
+    assert brazier.animation_handler.animation > 0
     active_light_handle = brazier.light_source
 
     result = brazier.Open()
@@ -176,19 +175,19 @@ def test_brazier_open_extinguishes_when_lit(mock_game):
 
 def test_brazier_open_relights_when_off(mock_game):
     """Opening an unlit brazier should re-add its light and resume animating."""
-    with patch("random.randint", return_value=1):
+    with patch("scripts.entities.entity.animation_handler.random.randint", return_value=1):
         brazier = Brazier(mock_game, (0, 0))
 
     brazier.Open()  # extinguish first
     mock_game.light_handler.Add_Light.reset_mock()
     mock_game.particle_handler.Activate_Particles.reset_mock()
 
-    with patch("random.randint", return_value=3), patch("random.uniform", return_value=0.5):
+    with patch("scripts.entities.entity.animation_handler.random.randint", return_value=3):
         result = brazier.Open()
 
     assert result is True
     mock_game.light_handler.Add_Light.assert_called_once()
-    assert brazier.animation == 3
+    assert brazier.animation_handler.animation == 3
     mock_game.particle_handler.Activate_Particles.assert_called_once()
 
 
@@ -215,7 +214,7 @@ def test_brazier_skips_animation_update_while_off(mock_game):
         brazier = Brazier(mock_game, (0, 0))
 
     brazier.animation = 0
-    brazier.animation_cooldown = 5.0
+    brazier.animation_handler.animation_cooldown = 5.0
 
     brazier.Update(delta_time=2.0)
 
@@ -227,13 +226,14 @@ def test_brazier_animates_while_lit(mock_game):
     with patch("random.randint", return_value=1):
         brazier = Brazier(mock_game, (0, 0))
 
-    brazier.animation_cooldown = 0
+    brazier.animation_handler.animation_cooldown = 0
 
-    with patch("random.randint", return_value=4), patch("random.uniform", return_value=0.6):
-        brazier.Update(delta_time=0.1)
+    with patch("random.randint", return_value=4):
+        brazier.Update(delta_time=0.3)
+        brazier.Update(delta_time=0.3)
 
-    assert brazier.animation == 4
-    assert brazier.animation_cooldown == 0.6
+    assert brazier.animation_handler.animation == 4
+    assert brazier.animation_handler.animation_cooldown == 0.5
     mock_game.particle_handler.Activate_Particles.assert_called_once()
 
 ### 7. Glowing_Crystal Destruction & Loot Drop

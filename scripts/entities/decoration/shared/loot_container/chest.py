@@ -8,15 +8,6 @@ class Chest(Loot_Container):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.chest, pos, (32, 32), True, 20, keys.chest_break, 500, max_animation = 7)
 
-    def Save_Data(self):
-        super().Save_Data()
-        self.saved_data['animation'] = self.animation
-        
-
-    def Load_Data(self, data):
-        super().Load_Data(data)
-        self.animation = data['animation']
-
     def Open(self):
         if not super().Open():
             return False

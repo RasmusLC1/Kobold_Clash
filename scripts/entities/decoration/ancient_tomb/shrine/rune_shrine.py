@@ -8,8 +8,7 @@ Register_Shrine(keys.rune_shrine)
 @Register_Decoration(keys.rune_shrine)
 class Rune_Shrine(Menu_Shrine):
     def __init__(self, game, pos) -> None:
-        super().__init__(game, keys.rune_shrine, pos, (64, 64), cycle_requires_open=False)
-        self.max_animation = 3
+        super().__init__(game, keys.rune_shrine, pos, (64, 64), cycle_requires_open=False, max_animation=3)
         self.light_level = 8
         self.light_source = self.game.light_handler.Add_Light(self.pos, self.light_level, self.tile)
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)

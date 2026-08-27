@@ -9,9 +9,8 @@ Register_Shrine(keys.hunter_shrine)
 @Register_Decoration(keys.hunter_shrine)
 class Hunter_Shrine(Shrine):
     def __init__(self, game, pos) -> None:
-        super().__init__(game, keys.hunter_shrine, pos, (64, 64))
+        super().__init__(game, keys.hunter_shrine, pos, (64, 64), max_animation=2)
         self.description = "Return the\ntreasure for\nreward"
-        self.max_animation = 2
         self.treasures = []
 
     def Open(self, generate_clatter=False):

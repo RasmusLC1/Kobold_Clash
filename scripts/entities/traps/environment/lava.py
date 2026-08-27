@@ -7,8 +7,7 @@ import random
 @register_trap(keys.lava_env) # Low value as this needs to be spawned as lakes
 class Lava(Trap):
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.lava_env)
-        self.animation = random.randint(0, 2)
+        super().__init__(game, pos, keys.lava_env, max_animation=2, animation_cooldown_max=0.5)
         self.light_level = 10
         self.light_source = self.game.light_handler.Add_Light(self.pos, self.light_level, self.tile)
         self.fire_particle_cooldown = 0
@@ -23,21 +22,6 @@ class Lava(Trap):
             return
         entity.Damage_Taken(5, (keys.fire, 3))
 
-
-    def Animation_Update(self, delta_time):
-        self.Spawn_Fire_Particle(delta_time)
-
-        if self.animation_cooldown > 0:
-            self.animation_cooldown -= delta_time
-            return
-
-        
-        if self.animation >= 2:
-            self.animation = 0
-        else:
-            self.animation += 1
-        
-        self.animation_cooldown = random.uniform(0.4, 0.5)
 
     def Spawn_Fire_Particle(self, delta_time):
         if not self.fire_particle_cooldown:

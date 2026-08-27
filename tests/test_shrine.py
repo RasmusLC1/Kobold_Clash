@@ -52,21 +52,19 @@ def mock_game():
 ### 1. Cycling_Shrine base behavior
 
 def test_cycling_shrine_holds_frame_during_cooldown(mock_game):
-    shrine = Cycling_Shrine(mock_game, "test_shrine", (0, 0), cooldown_range=(0.5, 0.7))
-    shrine.max_animation = 3
-    shrine.animation_cooldown = 1.0
+    shrine = Cycling_Shrine(mock_game, "test_shrine", (0, 0), max_animation = 3, animation_cooldown_max=0.5)
+    shrine.animation_handler.animation_cooldown = 1.0
 
     shrine.Update_Animation(delta_time=0.4)
 
     assert shrine.animation == 0
-    assert shrine.animation_cooldown == pytest.approx(0.6)
+    assert shrine.animation_handler.animation_cooldown == pytest.approx(0.6)
 
 
 def test_cycling_shrine_wraps_animation_at_max(mock_game):
-    shrine = Cycling_Shrine(mock_game, "test_shrine", (0, 0), cooldown_range=(0.5, 0.7))
-    shrine.max_animation = 3
+    shrine = Cycling_Shrine(mock_game, "test_shrine", (0, 0), max_animation = 3, animation_cooldown_max=0.5)
     shrine.animation = 3
-    shrine.animation_cooldown = 0
+    shrine.animation_handler.animation_cooldown = 0
 
     with patch("random.uniform", return_value=0.6):
         shrine.Update_Animation(delta_time=0.1)
@@ -76,11 +74,10 @@ def test_cycling_shrine_wraps_animation_at_max(mock_game):
 
 def test_cycling_shrine_particles_respect_chance_roll(mock_game):
     shrine = Cycling_Shrine(
-        mock_game, "test_shrine", (0, 0), cooldown_range=(0.5, 0.7),
+        mock_game, "test_shrine", (0, 0), max_animation = 3, animation_cooldown_max=0.5,
         particle_type=keys.soul_particle, particle_chance=2,
     )
-    shrine.max_animation = 3
-    shrine.animation_cooldown = 0
+    shrine.animation_handler.animation_cooldown = 0
 
     with patch("random.uniform", return_value=0.6), patch("random.randint", return_value=0):
         shrine.Update_Animation(delta_time=0.1)
@@ -92,9 +89,8 @@ def test_cycling_shrine_particles_respect_chance_roll(mock_game):
 
 def test_cycling_shrine_skips_particles_without_type(mock_game):
     """Default particle_type=None means no particle call, regardless of the chance roll."""
-    shrine = Cycling_Shrine(mock_game, "test_shrine", (0, 0), cooldown_range=(0.5, 0.7))
-    shrine.max_animation = 3
-    shrine.animation_cooldown = 0
+    shrine = Cycling_Shrine(mock_game, "test_shrine", (0, 0), max_animation = 3, animation_cooldown_max=0.5)
+    shrine.animation_handler.animation_cooldown = 0
 
     shrine.Update_Animation(delta_time=0.1)
 
@@ -105,8 +101,8 @@ def test_cycling_shrine_skips_particles_without_type(mock_game):
 
 def test_menu_shrine_ignores_ticks_while_closed(mock_game):
     shrine = Menu_Shrine(mock_game, "test_menu_shrine", (0, 0), cycle_requires_open=True)
-    shrine.max_animation = 3
-    shrine.animation_cooldown = 0
+    shrine.animation_handler.max_animation = 3
+    shrine.animation_handler.animation_cooldown = 0
 
     shrine.Update_Animation(delta_time=0.5)
 
@@ -117,8 +113,8 @@ def test_menu_shrine_cycles_once_open(mock_game):
     shrine = Menu_Shrine(mock_game, "test_menu_shrine", (0, 0), cycle_requires_open=True)
     shrine.is_open = True
     shrine.min_animation = 1
-    shrine.max_animation = 3
-    shrine.animation_cooldown = 0
+    shrine.animation_handler.max_animation = 3
+    shrine.animation_handler.animation_cooldown = 0
 
     with patch("random.randint", return_value=2) as mocked_randint:
         shrine.Update_Animation(delta_time=0.1)
@@ -130,8 +126,8 @@ def test_menu_shrine_cycles_once_open(mock_game):
 def test_menu_shrine_cycles_regardless_of_open_state(mock_game):
     """cycle_requires_open=False (Rune_Shrine's original behavior) animates even while closed."""
     shrine = Menu_Shrine(mock_game, "test_menu_shrine", (0, 0), cycle_requires_open=False)
-    shrine.max_animation = 3
-    shrine.animation_cooldown = 0
+    shrine.animation_handler.max_animation = 3
+    shrine.animation_handler.animation_cooldown = 0
 
     with patch("random.randint", return_value=2):
         shrine.Update_Animation(delta_time=0.1)

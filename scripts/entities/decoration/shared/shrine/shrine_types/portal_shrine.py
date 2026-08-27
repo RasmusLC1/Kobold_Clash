@@ -8,7 +8,7 @@ Register_Shrine(keys.portal_shrine)
 @Register_Decoration(keys.portal_shrine)
 class Portal_Shrine(Menu_Shrine):
     def __init__(self, game, pos) -> None:
-        super().__init__(game, keys.portal_shrine, pos, (64, 64), cycle_requires_open=True)
+        super().__init__(game, keys.portal_shrine, pos, (64, 64), cycle_requires_open=True, max_animation=3)
         self.available_rune = None  # appears unused past storage — flag if dead
 
     def Remove_Available_Rune(self):
@@ -25,6 +25,5 @@ class Portal_Shrine(Menu_Shrine):
         self.light_level = 5
         self.light_source = self.game.light_handler.Add_Light(self.pos, self.light_level, self.tile)
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
-        self.max_animation = 3
         self.min_animation = 1
         self.is_open = True

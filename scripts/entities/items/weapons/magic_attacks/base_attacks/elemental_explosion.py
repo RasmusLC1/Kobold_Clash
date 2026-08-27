@@ -5,11 +5,9 @@ from scripts.engine.keys.keys import keys
 
 class Elemental_Explosion(Item):
     def __init__(self, game, type, effect, pos, power, effect_strength, max_animation, animation_cooldown_max, entity = None):
-        super().__init__(game, type, keys.magic_attack, pos, (game.tilemap.tile_size, game.tilemap.tile_size))
-        self.animation = 0
-        self.animation_cooldown = 0
-        self.max_animation = max_animation
-        self.animation_cooldown_max = animation_cooldown_max
+        super().__init__(game, type, keys.magic_attack, pos,
+                         (game.tilemap.tile_size, game.tilemap.tile_size),
+                         max_animation=max_animation, animation_cooldown_max=animation_cooldown_max)
         self.entity = entity
         self.delete_countdown = self.max_animation * self.animation_cooldown_max
         self.power = power
@@ -102,11 +100,7 @@ class Elemental_Explosion(Item):
                 del(self.light_source)
             except Exception as e:
                 return
-        if self.animation_cooldown >= self.animation_cooldown_max:
-            self.animation_cooldown = 0
-            self.animation = min(self.animation + 1, self.max_animation)
-            return
-        self.animation_cooldown += delta_time
+        super().Update_Animation(delta_time)
 
     # Own render function since we don't need to compute light
     def Render(self, surf, offset=(0, 0)):

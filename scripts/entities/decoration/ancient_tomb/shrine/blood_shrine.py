@@ -8,9 +8,8 @@ Register_Shrine(keys.blood_shrine)
 @Register_Decoration(keys.blood_shrine)
 class Blood_Shrine(Cycling_Shrine):
     def __init__(self, game, pos, size=(64, 64)) -> None:
-        super().__init__(game, keys.blood_shrine, pos, size, cooldown_range=(0.6, 0.8))
+        super().__init__(game, keys.blood_shrine, pos, size, max_animation=3, animation_cooldown_max=0.8)
         self.description = "sacrifice blood\nfor power"
-        self.max_animation = 3
         self.tile.Set_Physics(True)
         self.is_open = False
 

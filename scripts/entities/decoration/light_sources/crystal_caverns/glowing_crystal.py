@@ -9,11 +9,9 @@ from scripts.entities.decoration.shared.loot_container.loot_component import Loo
 class Glowing_Crystal(Light_Source):
     def __init__(self, game, pos) -> None:
         version = random.randint(1, 5)
-        max_animation = 5
-        start_animation = random.randint(0, max_animation)
         super().__init__(game, pos, keys.glowing_crystal, version,
-                         light_strength=8, animation=start_animation,
-                         max_animation=max_animation, animation_cooldown_max=2.0,
+                         light_strength=8,
+                         max_animation=5, animation_cooldown_max=2.0,
                          destructable=True, health=40, destruction_sound='vase_shatter')
 
         self.updated_light_strength = self.light_strength
@@ -49,12 +47,8 @@ class Glowing_Crystal(Light_Source):
         return True
         
     def Update_Animation(self, delta_time):
-        if self.animation_cooldown > 0:
-            self.animation_cooldown -= delta_time
-        else:
-            self.Increase_Animation()
-            self.animation_cooldown = random.uniform(self.animation_cooldown_max - 0.2, self.animation_cooldown_max)
-            self.Handle_Updated_Lightlevel()
+        super().Update_Animation(delta_time)
+        self.Handle_Updated_Lightlevel()
     
     def Handle_Updated_Lightlevel(self):
         if self.updated_light_strength <= self.light_strength:

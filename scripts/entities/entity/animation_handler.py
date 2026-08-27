@@ -1,18 +1,20 @@
+import random
+
 class Base_Animation_Handler:
     def __init__(self, entity, animation_max, animation_cooldown_max):
         self.entity = entity
         self.sprite = None
         self.animation = 0
-        self.animation_max = animation_max
-        self.animation_cooldown = 0
-        self.animation_cooldown_max = animation_cooldown_max
+        self.animation_max = int(animation_max)
+        self.animation_cooldown = 0.0
+        self.animation_cooldown_max = float(animation_cooldown_max)
+        self.Set_Random_Animation()
 
     def Save_Data(self):
-        saved_data = {
+        return {
             'animation': self.animation,
             'animation_cooldown': self.animation_cooldown
         }
-        return saved_data
 
     def Load_Data(self, data):
         self.animation = data['animation']
@@ -22,20 +24,22 @@ class Base_Animation_Handler:
         try:
             self.sprite = self.entity.game.assets[key]
         except Exception as e:
-            print(f'Setting sprite failed: {e}', self.entity.type, key)
+            print(f'Setting sprite failed: {e}', getattr(self.entity, 'type', None), key)
             return False
         self.Set_Entity_Image()
         return True
 
     def Set_Entity_Image(self):
+        if not self.sprite:
+            return
         try:
             self.entity.entity_image = self.sprite[self.animation].convert_alpha()
             self.entity.render_needs_update = True
         except Exception as e:
-            print(f'Set entity image failed: {e}', self.entity.type, self.animation, self.sprite)
+            print(f'Set entity image failed: {e}', getattr(self.entity, 'type', None), self.animation, self.sprite)
 
     def Set_Frame(self, value):
-        value = min(value, self.animation_max)
+        value = max(0, min(int(value), self.animation_max))
         self.animation = value
         self.Set_Entity_Image()
 
@@ -44,3 +48,18 @@ class Base_Animation_Handler:
         if next_value > self.animation_max:
             next_value = 0
         self.Set_Frame(next_value)
+
+    def Update_Animation(self, delta_time):
+        if self.animation_cooldown > 0:
+            self.animation_cooldown -= delta_time
+            return False
+        
+        self.Increase_Frame()
+        self.animation_cooldown = self.animation_cooldown_max
+        return True
+
+    def Set_Random_Animation(self):
+        if self.animation_max > 0:
+            self.animation = random.randint(0, self.animation_max)
+        else:
+            self.animation = 0

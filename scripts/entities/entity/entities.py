@@ -59,6 +59,27 @@ class PhysicsEntity:
         """Allows direct mutation alignment transfers."""
         self.tile_handler.tile = new_tile
 
+    @property
+    def max_animation(self):
+        return self.animation_handler.animation_max
+
+    @property
+    def animation_cooldown_max(self):
+        return self.animation_handler.animation_cooldown_max
+    @property
+    def animation_cooldown(self):
+        return self.animation_handler.animation_cooldown
+
+    @property
+    def animation(self):
+        return self.animation_handler.animation
+
+    @animation.setter
+    def animation(self, new_animation):
+        """Allows direct mutation alignment transfers."""
+        self.animation_handler.animation = new_animation
+
+
     # --- Structural Identity Core ---
     def Set_ID(self):
         if PhysicsEntity._available_IDs:
@@ -116,6 +137,12 @@ class PhysicsEntity:
     def Update_Active(self, state):
         self.Set_Active(state)
         self.Update_Dark_Surface()
+
+    def Update_Animation(self, delta_time):
+        return self.animation_handler.Update_Animation(delta_time)
+
+    def Set_Animation(self, animation):
+        return self.animation_handler.Set_Frame(animation)
 
     def Set_Light_Level(self, value):
         # Clamps values flawlessly within color array safety channels

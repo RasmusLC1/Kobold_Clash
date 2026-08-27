@@ -8,9 +8,6 @@ class Decoration(PhysicsEntity):
     def __init__(self, game, type, pos, size, destructable = False, health = 0,
                  destruction_sound = None, destruction_clatter = 500,
                  animation = 0, max_animation = 0, animation_cooldown_max = 0) -> None:
-        # Version 0 indexed
-        self.animation = animation
-        self.max_animation = max_animation
         super().__init__(game, type, keys.decoration, pos, size,
                          max_animation=max_animation,
                          animation_cooldown_max=animation_cooldown_max)
@@ -26,30 +23,15 @@ class Decoration(PhysicsEntity):
 
     def Save_Data(self):
         super().Save_Data()
-        self.saved_data['animation'] = self.animation
         self.saved_data['empty'] = self.empty
 
     def Load_Data(self, data):
-        self.Set_Animation(data['animation'])
         self.empty = data['empty']
         return super().Load_Data(data)
 
-    def Update_Animation(self, delta_time):
-        pass
 
     def Open(self, generate_clatter = False):
         pass
-
-    def Set_Animation(self, animation_state):
-        self.animation = min(animation_state, self.max_animation)
-        self.Set_Entity_Image()
-
-
-    def Increase_Animation(self):
-        self.animation += 1
-        if self.animation > self.max_animation:
-            self.animation = 0
-        self.Set_Entity_Image()
 
     
     def Damage_Taken(self, damage, effect):

@@ -5,8 +5,7 @@ import random
 
 class Poison_Plume(Trap):
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.poison_plume)
-        self.animation = 0
+        super().__init__(game, pos, keys.poison_plume, max_animation=5, animation_cooldown_max=0.4)
 
     def Update(self, delta_time, entity = None):
 
@@ -19,15 +18,3 @@ class Poison_Plume(Trap):
             entity.Damage_Taken(2, (keys.poison, 0))
             # entity.Set_Effect('slow_down', 4)
             
-
-    def Animation_Update(self, delta_time):
-        if self.animation_cooldown > 0:
-            self.animation_cooldown -= delta_time
-
-        if self.animation_cooldown == 0:
-            if self.animation >= 5:
-                self.animation = 0
-            else:
-                self.animation += 1
-            
-            self.animation_cooldown = random.randint(0.3, 0.4)

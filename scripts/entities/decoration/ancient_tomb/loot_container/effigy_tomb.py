@@ -7,8 +7,7 @@ import random
 class Effigy_Tomb(Loot_Container):
     def __init__(self, game, pos) -> None:
         self.enemies = {}
-        super().__init__(game, keys.effigy_tomb, pos, (32, 64))
-        self.animation_max = 1
+        super().__init__(game, keys.effigy_tomb, pos, (32, 64), max_animation=1)
 
     def Open(self):
         if not super().Open():
