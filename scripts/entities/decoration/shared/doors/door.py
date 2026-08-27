@@ -26,9 +26,11 @@ class Door(Decoration):
             self.Open(False)
 
     def Update(self, delta_time):
+        super().Update(delta_time)
         if not self.high_light_cooldown:
             return
         self.high_light_cooldown -= delta_time
+
 
 
     def Set_Highlight(self):

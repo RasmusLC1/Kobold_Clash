@@ -38,9 +38,6 @@ class Chest(Loot_Container):
         version = int(min(MAX_ANIMATION_INDEX, max(0, raw_version_float)))
         
         return version
-    
-    def Update_Animation(self):
-        pass
 
     def Set_Loot_Types(self):
         self.loot_weights = {

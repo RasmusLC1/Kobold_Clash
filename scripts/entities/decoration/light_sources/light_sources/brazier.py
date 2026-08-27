@@ -19,8 +19,6 @@ class Brazier(Light_Source):
     
 
     def Update(self, delta_time):
-        if self.animation > 0: # animation 0 is off
-            self.Update_Animation(delta_time)
         self.Update_Light_Level()
         
         return super().Update(delta_time)

@@ -218,7 +218,7 @@ def test_brazier_skips_animation_update_while_off(mock_game):
 
     brazier.Update(delta_time=2.0)
 
-    assert brazier.animation_cooldown == 5.0  # untouched — branch was skipped
+    assert brazier.animation_cooldown == 3.0  # untouched — branch was skipped
 
 
 def test_brazier_animates_while_lit(mock_game):

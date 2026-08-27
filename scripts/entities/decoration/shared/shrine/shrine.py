@@ -27,10 +27,6 @@ class Cycling_Shrine(Shrine):
         self.particle_chance = particle_chance
         self.particle_time_range = particle_time_range
 
-    def Update(self, delta_time):
-        self.Update_Animation(delta_time)
-        return super().Update(delta_time)
-
     def Update_Animation(self, delta_time):
         if not super().Update_Animation(delta_time):
             return False
@@ -65,10 +61,6 @@ class Menu_Shrine(Shrine):
     def Load_Data(self, data):
         super().Load_Data(data)
         self.is_open = data['is_open']
-
-    def Update(self, delta_time):
-        self.Update_Animation(delta_time)
-        return super().Update(delta_time)
 
     def Update_Animation(self, delta_time):
         if self.cycle_requires_open and not self.is_open:

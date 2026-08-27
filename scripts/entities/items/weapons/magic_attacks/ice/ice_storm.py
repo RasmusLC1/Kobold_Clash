@@ -17,6 +17,7 @@ class Ice_Storm(PhysicsEntity):
         self.Set_Duration(duration * 10)
 
     def Update(self, delta_time):
+        super().Update(delta_time)
         self.pos = (self.entity.pos[0], self.entity.pos[1] + 8)
         if self.Update_Cooldown(delta_time):
             self.Ice_Particle_Creation()
@@ -34,7 +35,6 @@ class Ice_Storm(PhysicsEntity):
         
         self.duration -= 1
         self.ice_cooldown = random.uniform(0.3, 0.4)
-        self.Update_Animation(delta_time)
         return True
 
 

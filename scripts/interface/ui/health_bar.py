@@ -30,7 +30,6 @@ class Health_Bar(UI):
 
     
     def Update(self, delta_time):
-        self.Update_Animation(delta_time)
         if self.current_health == self.game.player.health:
             return
         

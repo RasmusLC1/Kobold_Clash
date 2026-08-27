@@ -71,6 +71,8 @@ class Item(PhysicsEntity):
         if self.durability <= 0:
             self.Delete_Item()
         self.Update_Activate_Cooldown(delta_time)
+        super().Update(delta_time)
+
 
     def Update_In_Inventory(self):
         pass

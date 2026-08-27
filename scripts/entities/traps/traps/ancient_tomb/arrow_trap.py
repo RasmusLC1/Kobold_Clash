@@ -91,9 +91,10 @@ class Arrow_Trap(Trap):
     def Update(self, delta_time):
         if not self.render:
             return False
+
+        super().Update(delta_time)
         if not self.Update_Cooldown(delta_time):
             return False
-        
         self.Shoot_Arrow()
         self.Check_If_Arrows_Need_Reset()
         return True

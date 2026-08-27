@@ -12,9 +12,6 @@ class Campfire(Decoration):
         super().__init__(game, keys.campfire, pos, (32, 32), max_animation=4, animation_cooldown_max=0.8)
         self.description = "Light a fire\nRest and recover"
 
-    def Update(self, delta_time):
-        self.Update_Animation(delta_time)
-        return super().Update(delta_time)
 
     def Open(self, generate_clatter=False):
         if self.empty:

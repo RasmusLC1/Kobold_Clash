@@ -26,7 +26,6 @@ class Glowing_Crystal(Light_Source):
     
 
     def Update(self, delta_time):
-        self.Update_Animation(delta_time)
         self.Update_Light_Level()
         
         return super().Update(delta_time)
