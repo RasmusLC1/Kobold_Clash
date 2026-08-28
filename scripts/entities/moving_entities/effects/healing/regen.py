@@ -1,7 +1,9 @@
 from scripts.entities.moving_entities.effects.effect import Effect
 import random
 from scripts.engine.keys.keys import keys
+from ..registry import register_effect
 
+@register_effect(keys.regen)
 # Regen health over time each time effect is triggered
 class Regen(Effect):
     def __init__(self, entity):

@@ -1,6 +1,8 @@
 from scripts.entities.moving_entities.effects.effect import Effect
 from scripts.engine.keys.keys import keys
+from ..player_registry import register_effect
 
+@register_effect(keys.black_coin)
 # Increases luck, but increases damage taken
 class Black_Coin(Effect):
     def __init__(self, entity):

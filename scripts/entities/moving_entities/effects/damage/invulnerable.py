@@ -1,6 +1,8 @@
 from scripts.entities.moving_entities.effects.effect import Effect
 from scripts.engine.keys.keys import keys
+from ..registry import register_effect
 
+@register_effect(keys.invulnerable)
 # Immune to damage but cannot move
 class Invulnerable(Effect):
     def __init__(self, entity):

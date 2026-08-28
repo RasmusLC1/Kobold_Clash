@@ -1,6 +1,8 @@
 from scripts.entities.moving_entities.effects.effect import Effect
 from scripts.engine.keys.keys import keys
+from ..registry import register_effect
 
+@register_effect(keys.arcane_hunger)
 # Increase souls from entity kills
 class Arcane_Hunger(Effect):
     def __init__(self, entity):

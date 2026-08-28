@@ -1,6 +1,8 @@
 from scripts.entities.moving_entities.effects.effect import Effect
 from scripts.engine.keys.keys import keys
+from ..player_registry import register_effect
 
+@register_effect(keys.temptress_embrace)
 
 # Increases damage when health when low
 class Temptress_Embrace(Effect):

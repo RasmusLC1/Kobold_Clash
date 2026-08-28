@@ -1,7 +1,9 @@
 from scripts.entities.moving_entities.effects.effect import Effect
 import random
 from scripts.engine.keys.keys import keys
+from ..registry import register_effect
 
+@register_effect(keys.frozen)
 # Low damage and slowdown of entity
 class Frozen(Effect):
     def __init__(self, entity):

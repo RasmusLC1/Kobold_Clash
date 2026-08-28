@@ -1,6 +1,8 @@
 from scripts.entities.moving_entities.effects.effect import Effect
 from scripts.engine.keys.keys import keys
+from ..player_registry import register_effect
 
+@register_effect(keys.demonic_bargain)
 # Scales damage but prevent healing
 class Demonic_Bargain(Effect):
     def __init__(self, entity):
