@@ -135,8 +135,8 @@ class Moving_Entity(PhysicsEntity):
 
     # --- Core Engine Cycle ---
     def Update(self, tilemap, delta_time, movement=(0, 0)):
+        super().Update(delta_time)
         self.movement.Update_Movement(movement, delta_time)
-        self.animation_handler.Update_Animation(movement, delta_time)
         self.Update_Status_Effects(delta_time)
 
         # self.Update_Traps(delta_time)

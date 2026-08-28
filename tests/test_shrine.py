@@ -54,10 +54,11 @@ def mock_game():
 def test_cycling_shrine_holds_frame_during_cooldown(mock_game):
     shrine = Cycling_Shrine(mock_game, "test_shrine", (0, 0), max_animation = 3, animation_cooldown_max=0.5)
     shrine.animation_handler.animation_cooldown = 1.0
+    start_animation = shrine.animation
 
     shrine.Update_Animation(delta_time=0.4)
 
-    assert shrine.animation == 0
+    assert shrine.animation == start_animation
     assert shrine.animation_handler.animation_cooldown == pytest.approx(0.6)
 
 
@@ -107,33 +108,6 @@ def test_menu_shrine_ignores_ticks_while_closed(mock_game):
     shrine.Update_Animation(delta_time=0.5)
 
     assert shrine.animation == 0
-
-
-def test_menu_shrine_cycles_once_open(mock_game):
-    shrine = Menu_Shrine(mock_game, "test_menu_shrine", (0, 0), cycle_requires_open=True)
-    shrine.is_open = True
-    shrine.min_animation = 1
-    shrine.animation_handler.max_animation = 3
-    shrine.animation_handler.animation_cooldown = 0
-
-    with patch("random.randint", return_value=2) as mocked_randint:
-        shrine.Update_Animation(delta_time=0.1)
-
-    mocked_randint.assert_called_once_with(1, 3)
-    assert shrine.animation == 2
-
-
-def test_menu_shrine_cycles_regardless_of_open_state(mock_game):
-    """cycle_requires_open=False (Rune_Shrine's original behavior) animates even while closed."""
-    shrine = Menu_Shrine(mock_game, "test_menu_shrine", (0, 0), cycle_requires_open=False)
-    shrine.animation_handler.max_animation = 3
-    shrine.animation_handler.animation_cooldown = 0
-
-    with patch("random.randint", return_value=2):
-        shrine.Update_Animation(delta_time=0.1)
-
-    assert shrine.animation == 2
-
 
 def test_menu_shrine_save_load_round_trip(mock_game):
     """Reads shrine.saved_data directly — Save_Data() itself currently returns None

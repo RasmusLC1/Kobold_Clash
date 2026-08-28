@@ -231,6 +231,8 @@ class PhysicsEntity:
         if not self.animation_cooldown_max:
             return
         self.Update_Animation(delta_time)
+
+        
     def Damage_Taken(self, damage): pass
     def Set_Effect(self, effect, duration, permanent=False): pass
 
