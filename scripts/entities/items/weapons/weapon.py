@@ -15,7 +15,8 @@ class Weapon(Item):
     def __init__(self, game, pos, type, damage, speed, range, max_charge_time,
                  weapon_class, effect = 'slash', attack_types = ['cut'],
                  size = (16, 16), add_to_tile = True, max_animation = 0,
-                 amount = 1, max_amount = 1, durability = 100, max_durability = 100):
+                 amount = 1, max_amount = 1, durability = 100, max_durability = 100,
+                 animation_cooldown_max = 0):
         self.speed = speed # Speed of the weapon
         self.range = range # Range of the weapon
         self.damage = damage

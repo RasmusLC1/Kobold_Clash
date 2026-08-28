@@ -5,7 +5,6 @@ from scripts.engine.keys.keys import keys
 class Bow(Ranged_Weapon):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.bow, 3, 8, 10, 50)
-        self.max_animation = 0
         self.attack_animation_max = 2
         self.attack_animation_counter = 0
 

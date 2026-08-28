@@ -5,8 +5,8 @@ from scripts.engine.keys.keys import keys
 class Potion(Loot):
     def __init__(self, game, type, pos, amount, strength):
         self.effect = type.replace('_potion', '')
-        super().__init__(game, type, pos, (16, 16), 5, keys.potion, amount, 3)
-        self.max_animation = 4
+        super().__init__(game, type, pos, (16, 16), 5, keys.potion, amount, 3,
+                         max_animation=4)
         self.strength = strength
         
         self.Set_Description()

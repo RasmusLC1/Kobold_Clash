@@ -3,8 +3,8 @@ from scripts.engine.keys.keys import keys
 
 class Claw(Weapon):
     def __init__(self, game, pos, damage_type = keys.slash):
-        super().__init__(game, pos, keys.claw, 0, 1, 3, 50, 'one_handed_melee', damage_type)
-        self.max_animation = 7
+        super().__init__(game, pos, keys.claw, 0, 1, 3, 50, 'one_handed_melee',
+                         damage_type, max_animation = 7)
         self.attack_animation_max = 8
 
     def Set_Description(self):

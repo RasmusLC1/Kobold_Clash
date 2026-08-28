@@ -3,13 +3,15 @@ from scripts.entities.items.weapons.magic_attacks.fire.flame_thrower import Flam
 import random
 from scripts.engine.keys.keys import keys
 from scripts.entities.decoration.light_sources.light_sources_registry import Register_Light_Source
+from scripts.entities.entity.fire_animation_handler import Fire_Animation_Handler
 
 
 @Register_Light_Source(keys.torch, 0.1)
 class Torch(Weapon):
+    _animation_handler = Fire_Animation_Handler 
+    
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.torch, 1, 2, 3, 100, 'one_handed_melee', keys.fire, max_animation=3)
-        self.animation_cooldown_max = 0.5
+        super().__init__(game, pos, keys.torch, 1, 2, 3, 100, 'one_handed_melee', keys.fire, max_animation=3, animation_cooldown_max=0.5)
         self.light_source = self.game.light_handler.Add_Light(self.pos, 8, self.tile)
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
         self.flame_thrower = Flame_Thrower(self.game, None)
@@ -41,19 +43,6 @@ class Torch(Weapon):
         self.game.sound_handler.Play_Sound(keys.torch_attack, 0.5)
         return True
 
-
-    def Update_Animation(self, delta_time):
-        if self.picked_up or self.equipped:
-            return
-        if self.animation_cooldown > 0:
-            self.animation_cooldown -= delta_time
-        else:
-            self.sub_type = keys.torch
-            self.animation_cooldown = random.uniform(self.animation_cooldown_max * 0.7, self.animation_cooldown_max)
-            self.Spawn_Fire_Particle()
-
-            self.animation = random.randint(0,self.max_animation)
-            self.Set_Entity_Image()
 
     def Ability(self):
         if self.special_attack <= 0 or not self.equipped:

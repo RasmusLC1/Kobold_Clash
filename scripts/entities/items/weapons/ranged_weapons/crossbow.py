@@ -7,8 +7,7 @@ from scripts.engine.keys.keys import keys
 
 class Crossbow(Ranged_Weapon):
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.crossbow, 5, 8, 10, 80)
-        self.max_animation = 8
+        super().__init__(game, pos, keys.crossbow, 5, 8, 10, 80, max_animation = 8)
         self.attack_animation_max = 2
         self.attack_animation_counter = 0
         self.attack_animation_time = self.max_charge_time / self.attack_animation_max
