@@ -1,5 +1,6 @@
 from collections import deque
 import pygame
+import logging
 from scripts.engine.keys.keys import keys
 from .tile_handler import Tile_Handler
 from .animation_handler import Base_Animation_Handler
@@ -62,6 +63,15 @@ class PhysicsEntity:
     @property
     def max_animation(self):
         return self.animation_handler.animation_max
+
+    @property
+    def min_animation(self):
+        return self.animation_handler.min_animation
+
+    @min_animation.setter
+    def min_animation(self, new_animation):
+        self.animation_handler.min_animation = new_animation
+    
 
     @property
     def animation_cooldown_max(self):
@@ -232,7 +242,7 @@ class PhysicsEntity:
             return
         self.Update_Animation(delta_time)
 
-        
+
     def Damage_Taken(self, damage): pass
     def Set_Effect(self, effect, duration, permanent=False): pass
 
@@ -244,22 +254,23 @@ class PhysicsEntity:
     def Set_Entity_Image(self):
         self.animation_handler.Set_Entity_Image()
     
-    def Render(self, surf, offset = (0,0)):
+    def Render(self, surf, offset=(0, 0)):
         if not self.Update_Light_Level():
             return
 
-        
         self.Update_Dark_Surface()
 
         if not self.rendered_image:
-            self.render_needs_update = True
-            self.Update_Dark_Surface()
-            if not self.rendered_image:
+            if not self.entity_image:
                 self.Set_Sprite()
-                self.rendered_image = self.entity_image
-                print("Failed to update dark surface decoration", vars(self))
+
+            if self.entity_image:
+                self.render_needs_update = True
+                self.Update_Dark_Surface()
+
+            if not self.rendered_image:
+                logging.warning("No image to render for %s (id=%s)", self.type, self.ID)
                 return
-        
-        # Render the chest
+
         surf.blit(self.rendered_image, (self.pos[0] - offset[0], self.pos[1] - offset[1]))
     

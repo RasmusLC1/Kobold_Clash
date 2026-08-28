@@ -5,6 +5,7 @@ class Base_Animation_Handler:
         self.entity = entity
         self.sprite = None
         self.animation = 0
+        self.min_animation = 0
         self.animation_max = int(animation_max)
         self.animation_cooldown = 0.0
         self.animation_cooldown_max = float(animation_cooldown_max)
@@ -46,7 +47,7 @@ class Base_Animation_Handler:
     def Increase_Frame(self):
         next_value = self.animation + 1
         if next_value > self.animation_max:
-            next_value = 0
+            next_value = self.min_animation
         self.Set_Frame(next_value)
 
     def Update_Animation(self, delta_time):
@@ -62,6 +63,8 @@ class Base_Animation_Handler:
 
     def Set_Random_Animation(self):
         if self.animation_max > 0:
-            self.animation = random.randint(0, self.animation_max)
+            self.animation = random.randint(self.min_animation, self.animation_max)
         else:
             self.animation = 0
+
+    
