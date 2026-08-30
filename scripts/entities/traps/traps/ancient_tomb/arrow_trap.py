@@ -121,14 +121,7 @@ class Arrow_Trap(Trap):
                 continue
             arrow.Set_Position((-999, -999))
 
-    def Update_Cooldown(self, delta_time):
-        if self.entity_check_cooldown > 0:
-            self.entity_check_cooldown -= delta_time
-            return False
 
-        self.entity_check_cooldown = random.uniform(COOLDOWN_MAX / 2, COOLDOWN_MAX)
-        return True
-    
     # Handle cooldown of entities in the trap seperately to ensure fast trigger on trap
     # but controlled damage
     def Update_Damage_Cooldown(self, delta_time):
