@@ -1,6 +1,7 @@
 from scripts.entities.items.weapons.magic_attacks.ice.ice_particle import Ice_Particle
 from scripts.entities.items.weapons.magic_attacks.ice.ice_shooter import Ice_Shooter
 from scripts.entities.entity.entities import PhysicsEntity
+from scripts.entities.entity.cooldown_handler import Cooldown_Handler
 import math
 import random
 from scripts.engine.keys.keys import keys
@@ -11,10 +12,12 @@ class Ice_Storm(PhysicsEntity):
         super().__init__(game, keys.ice_storm, keys.magic_attack, entity.pos, (32,32),
                          max_animation=9, animation_cooldown_max=0.4)
         self.entity = entity
+        self.ice_cooldown_handler = Cooldown_Handler(0.4)
         self.ice_cooldown = 0
         self.duration = 0
         self.ice_shooter = Ice_Shooter(game, entity)
         self.Set_Duration(duration * 10)
+
 
     def Update(self, delta_time):
         super().Update(delta_time)
@@ -29,12 +32,11 @@ class Ice_Storm(PhysicsEntity):
         self.duration = 0
 
     def Update_Cooldown(self, delta_time):
-        if self.ice_cooldown:
-            self.ice_cooldown -= delta_time
+        if not self.ice_cooldown_handler.Tick(delta_time):
             return False
-        
+
         self.duration -= 1
-        self.ice_cooldown = random.uniform(0.3, 0.4)
+        self.ice_cooldown_handler.Set_Cooldown(random.uniform(0.3, 0.4))  # pick a fresh random cooldown for next cycle
         return True
 
 

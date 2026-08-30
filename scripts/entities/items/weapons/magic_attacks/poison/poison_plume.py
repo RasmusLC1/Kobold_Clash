@@ -1,4 +1,5 @@
 from scripts.entities.items.weapons.magic_attacks.poison.poison_cloud import Poison_Cloud
+from scripts.entities.entity.cooldown_handler import Cooldown_Handler
 import random
 from scripts.engine.keys.keys import keys
 
@@ -9,14 +10,12 @@ class Poison_Plume():
         self.cooldown_max = 40
         self.current_cloud = 0
         self.poison_clouds = []
+        self.plume_cooldown_handler = Cooldown_Handler(0.4)
+        
 
     
-    def Update_Cooldown(self):
-        if self.cooldown < self.cooldown_max:
-            self.cooldown += 1
-            return
-        
-        self.cooldown = 0
+    def Update_Cooldown(self, delta_time):
+        return self.plume_cooldown_handler.Update_Cooldown(delta_time)      
 
     def Update_Clouds(self):
         for cloud in self.poison_clouds:
@@ -32,14 +31,13 @@ class Poison_Plume():
 
 
     # Return False once all clouds have been spawned
-    def Update(self, power):
+    def Update(self, delta_time, power):
         self.pos = list(self.entity.pos)
         if self.current_cloud >= power * 3:
             self.current_cloud = 0
             return False
         
-        self.Update_Cooldown()
-        if not self.cooldown:
+        if self.Update_Cooldown(delta_time):
             self.Generate_Cloud()
             self.current_cloud += 1
         

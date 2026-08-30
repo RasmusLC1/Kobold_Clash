@@ -1,19 +1,19 @@
 import pygame
 import random
 from scripts.engine.keys.keys import keys
+from scripts.entities.entity.cooldown_handler import Cooldown_Handler
 
 class Effect():
     def __init__(self, entity, effect_type, animation_max, animation_cooldown_max, cooldown_range, description):
         self.entity = entity
         self.effect_type = effect_type
+        self.effect_cooldown_handler = Cooldown_Handler(0)  # actual value always set explicitly via Set_Cooldown
+        self.animation_cooldown_handler = Cooldown_Handler(animation_cooldown_max)
         self.effect_max = 10
         self.permanent = False
         self.effect_strength = 0
-        self.cooldown = 0
         self.animation = 0
         self.animation_max = animation_max
-        self.animation_cooldown = 0
-        self.animation_cooldown_max = animation_cooldown_max
         self.update_trigged = False
         self.cooldown_range = cooldown_range
         self.description = description
@@ -22,52 +22,47 @@ class Effect():
     def Save_Data(self):
         self.saved_data = {}
         self.saved_data['effect'] = self.effect_strength
-        self.saved_data['cooldown'] = self.cooldown
+        self.saved_data['cooldown'] = self.effect_cooldown_handler.Save_Data()
         self.saved_data['animation'] = self.animation
-        self.saved_data['animation_cooldown'] = self.animation_cooldown
+        self.saved_data['animation_cooldown'] = self.animation_cooldown_handler.Save_Data()
         self.saved_data['permanent'] = self.permanent
         return self.saved_data
 
-
     def Load_Data(self, data):
         self.effect_strength = data['effect']
-        self.cooldown = data['cooldown']
+        self.effect_cooldown_handler.Load_Data(data['cooldown'])
         self.animation = data['animation']
-        self.animation_cooldown = data['animation_cooldown']
+        self.animation_cooldown_handler.Load_Data(data['animation_cooldown'])
         self.permanent = data['permanent']
 
-
-    # set effect, defualt is not permanent
-    # If permanent is enabled it sets a lower boundary for effect
-    def Set_Effect(self, effect_time, permanent = False):
+    def Set_Effect(self, effect_time, permanent=False):
         if self.effect_strength >= self.effect_max:
             return False
 
         if permanent:
             self.Set_Permanent(effect_time)
-        
+
         self.effect_strength = min(effect_time + self.effect_strength, self.effect_max)
         self.Set_Cooldown()
         return True
-    
+
     def Update_Effect(self, delta_time):
         if not self.effect_strength:
             return False
-        
+
         self.Update_Cooldown(delta_time)
-        
         return True
 
-    def Remove_Effect(self, reduce_permanent = 0):
-         self.Set_Permanent(-reduce_permanent)
-         if self.permanent > 0:
-             self.effect_strength = max(0, self.effect_strength - reduce_permanent)
-             return False
-         self.effect_strength = 0
-         self.animation = 0
-         self.cooldown = 0
-         self.animation_cooldown = 0
-         return True
+    def Remove_Effect(self, reduce_permanent=0):
+        self.Set_Permanent(-reduce_permanent)
+        if self.permanent > 0:
+            self.effect_strength = max(0, self.effect_strength - reduce_permanent)
+            return False
+        self.effect_strength = 0
+        self.animation = 0
+        self.effect_cooldown_handler.Set_Cooldown(0)
+        self.animation_cooldown_handler.Set_Cooldown(0)
+        return True
 
     def Set_Permanent(self, amount):
         self.permanent += amount
@@ -76,29 +71,24 @@ class Effect():
         self.effect_strength = max(self.effect_strength - 1, 0)
 
     def Update_Cooldown(self, delta_time) -> bool:
-            
-        if self.cooldown > 0:
-            self.cooldown -= delta_time
+        if not self.effect_cooldown_handler.Tick(delta_time):
             return False
-        
+
         self.Set_Cooldown()
         if self.permanent >= self.effect_strength:
             return False
         self.effect_strength -= 1
         self.entity.Set_Description()
-        
         return True
-    
+
     def Set_Cooldown(self):
         self.update_trigged = True
-        self.cooldown = random.uniform(self.cooldown_range[0], self.cooldown_range[1])
+        self.effect_cooldown_handler.Set_Cooldown(random.uniform(self.cooldown_range[0], self.cooldown_range[1]))
 
     def Effect_Animation_Cooldown(self, delta_time):
-        if self.animation_cooldown > 0:
-            self.animation_cooldown -= delta_time
+        if not self.animation_cooldown_handler.Update_Cooldown(delta_time):
             return
-        
-        self.animation_cooldown = self.animation_cooldown_max
+
         if self.animation >= self.animation_max:
             self.animation = 0
         else:
@@ -128,12 +118,3 @@ class Effect():
 
     def Render_Effect(self, surf, offset=(0, 0)):
         pass
-        # if not self.effect:
-        #     return
-        
-        # if self.animation_max == 0:
-        #     return
-        # image = self.entity.game.assets[self.effect_type][self.animation].convert_alpha()
-        # # Set the opacity to 70%
-        # image.set_alpha(179)
-        # surf.blit(pygame.transform.flip(image, self.entity.animation_handler.flip[0], False), (self.entity.pos[0] - offset[0], self.entity.pos[1] - offset[1] - 5))
