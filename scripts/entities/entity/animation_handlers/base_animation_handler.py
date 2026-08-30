@@ -1,4 +1,5 @@
 import random
+from ..cooldown_handler import Cooldown_Handler
 
 class Base_Animation_Handler:
     def __init__(self, entity, animation_max, animation_cooldown_max):
@@ -7,19 +8,28 @@ class Base_Animation_Handler:
         self.animation = 0
         self.min_animation = 0
         self.animation_max = int(animation_max)
-        self.animation_cooldown = 0.0
         self.animation_cooldown_max = float(animation_cooldown_max)
+        self.animation_cooldown_handler = Cooldown_Handler(self.animation_cooldown_max)
         self.Set_Random_Animation()
+
+    @property
+    def animation_cooldown(self):
+        return self.animation_cooldown_handler.value
+
+    @animation_cooldown.setter
+    def animation_cooldown(self, new_cooldown):
+        self.animation_cooldown_handler.value = new_cooldown
+
 
     def Save_Data(self):
         return {
             'animation': self.animation,
-            'animation_cooldown': self.animation_cooldown
+            'animation_cooldown': self.animation_cooldown_handler.Save_Data()
         }
 
     def Load_Data(self, data):
         self.animation = data['animation']
-        self.animation_cooldown = data['animation_cooldown']
+        self.animation_cooldown_handler.Load_Data(data['animation_cooldown'])
 
     def Set_Sprite(self, key):
         try:
@@ -53,12 +63,9 @@ class Base_Animation_Handler:
     def Update_Animation(self, movement, delta_time):
         if not self.entity.render or self.animation_cooldown_max == 0:
             return False
-        if self.animation_cooldown > 0:
-            self.animation_cooldown -= delta_time
+        if not self.animation_cooldown_handler.Update_Cooldown(delta_time):
             return False
-        
         self.Increase_Frame()
-        self.animation_cooldown = self.animation_cooldown_max
         return True
 
     def Set_Random_Animation(self):

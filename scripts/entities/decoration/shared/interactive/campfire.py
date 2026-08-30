@@ -2,7 +2,7 @@ from scripts.entities.decoration.decoration import Decoration
 import random
 from scripts.engine.keys.keys import keys
 from scripts.entities.decoration.shared.shared_registry import Register_Decoration
-from scripts.entities.entity.fire_animation_handler import Fire_Animation_Handler
+from scripts.entities.entity.animation_handlers.fire_animation_handler import Fire_Animation_Handler
 
 @Register_Decoration(keys.campfire)
 class Campfire(Decoration):

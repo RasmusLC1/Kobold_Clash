@@ -3,7 +3,7 @@ import pygame
 import logging
 from scripts.engine.keys.keys import keys
 from .tile_handler import Tile_Handler
-from .base_animation_handler import Base_Animation_Handler
+from .animation_handlers.base_animation_handler import Base_Animation_Handler
 
 class PhysicsEntity:
     _id_counter = 0
@@ -76,6 +76,7 @@ class PhysicsEntity:
     @property
     def animation_cooldown_max(self):
         return self.animation_handler.animation_cooldown_max
+    
     @property
     def animation_cooldown(self):
         return self.animation_handler.animation_cooldown

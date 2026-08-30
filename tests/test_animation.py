@@ -2,8 +2,8 @@ import pytest
 import random
 from unittest.mock import MagicMock
 
-from scripts.entities.entity.base_animation_handler import Base_Animation_Handler
-from scripts.entities.entity.fire_animation_handler import Fire_Animation_Handler
+from scripts.entities.entity.animation_handlers.base_animation_handler import Base_Animation_Handler
+from scripts.entities.entity.animation_handlers.fire_animation_handler import Fire_Animation_Handler
 from scripts.entities.moving_entities.animation.animation_handler import Animation_Handler
 from scripts.engine.keys.keys import keys
 
@@ -371,16 +371,17 @@ def test_set_attack_animation_num_max_derives_frame_and_cooldown(animation_handl
     assert animation_handler.attack_frame == 3
     assert animation_handler.animations[keys.attack][keys.cooldown_max] == pytest.approx(0.25)
 
-def test_update_animation_needs_extra_call_after_cooldown_goes_negative(base_handler):
-    """A large delta_time that pushes cooldown below zero does not advance
-    the frame in the same call — it takes one more call to actually fire."""
+def test_update_animation_needs_extra_call_after_cooldown_reaches_zero(base_handler):
+    """A delta_time that fully consumes the cooldown does not advance the
+    frame in the same call — it takes one more call to actually fire.
+    Cooldown_Handler clamps the decrement at 0 rather than going negative."""
     base_handler.animation = 0
     base_handler.animation_cooldown = 0.01
 
     first_result = base_handler.Update_Animation(movement=(0, 0), delta_time=0.5)
     assert first_result is False
     assert base_handler.animation == 0
-    assert base_handler.animation_cooldown == pytest.approx(-0.49)
+    assert base_handler.animation_cooldown == 0  # clamped, not negative
 
     second_result = base_handler.Update_Animation(movement=(0, 0), delta_time=0.0)
     assert second_result is True

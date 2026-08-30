@@ -3,7 +3,7 @@ from scripts.entities.items.weapons.magic_attacks.fire.flame_thrower import Flam
 import random
 from scripts.engine.keys.keys import keys
 from scripts.entities.decoration.light_sources.light_sources_registry import Register_Light_Source
-from scripts.entities.entity.fire_animation_handler import Fire_Animation_Handler
+from scripts.entities.entity.animation_handlers.fire_animation_handler import Fire_Animation_Handler
 
 
 @Register_Light_Source(keys.torch, 0.1)
