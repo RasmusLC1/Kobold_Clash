@@ -7,6 +7,3 @@ def register_effect(key):
         return cls
     
     return decorator
-
-
-
