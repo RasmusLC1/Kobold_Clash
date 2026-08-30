@@ -1,7 +1,7 @@
 from scripts.entities.decoration.light_sources.light_sources.light_source import Light_Source
 import random
 from scripts.engine.keys.keys import keys
-from scripts.entities.decoration.light_sources.ancient_tomb.light_sources_registry import Register_Light_Source
+from scripts.entities.decoration.light_sources.crystal_caverns.light_sources_registry import Register_Light_Source
 from scripts.entities.entity.fire_animation_handler import Fire_Animation_Handler
 
 @Register_Light_Source(keys.brazier, 0.4)
@@ -40,8 +40,8 @@ class Brazier(Light_Source):
         return True
 
         
-    def Update_Animation(self, delta_time):
-        if not super().Update_Animation(delta_time):
+    def Update_Animation(self, delta_time, movement=(0, 0)):
+        if not super().Update_Animation(delta_time, movement):
             return False
         self.Spawn_Fire_Particle()
         return True

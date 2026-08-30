@@ -30,8 +30,8 @@ class Campfire(Decoration):
         self.light_source = self.game.light_handler.Add_Light(self.pos, 10, self.tile)
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
 
-    def Update_Animation(self, delta_time):
-        if not super().Update_Animation(delta_time):
+    def Update_Animation(self, delta_time, movement=(0, 0)):
+        if not super().Update_Animation(delta_time, movement):
             return False
         self.Spawn_Fire_Particle()
         return True

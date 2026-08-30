@@ -10,7 +10,7 @@ class Ice_Explosion(Elemental_Explosion):
         for entity in self.nearby_entities:
             entity.effects.Set_Effect(keys.frozen, self.power)
 
-    def Update_Animation(self, delta_time):
+    def Update_Animation(self, delta_time, movement=(0, 0)):
         self.Slow_Entities()
 
-        return super().Update_Animation(delta_time)
+        return super().Update_Animation(delta_time, movement)

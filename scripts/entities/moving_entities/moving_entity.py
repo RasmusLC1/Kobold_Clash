@@ -19,10 +19,9 @@ class Moving_Entity(PhysicsEntity):
 
     def __init__(self, game, type, category, pos, size, health, strength,
                  max_speed, agility, intelligence, stamina, sub_category):
-        super().__init__(game, type, category, pos, size, sub_category)
-        # PhysicsEntity.__init__ already constructs self.animation_handler via
-        # self._animation_handler(self), so no need to build it again here.
-
+        super().__init__(game, type, category, pos, size, sub_category,
+                  max_animation=0, animation_cooldown_max=1) # Placeholder cooldown value, real cooldown in animation_handler
+  
         self.movement = Movement(self, max_speed, agility)
 
         self.attack_direction = (0,0)
@@ -135,7 +134,7 @@ class Moving_Entity(PhysicsEntity):
 
     # --- Core Engine Cycle ---
     def Update(self, tilemap, delta_time, movement=(0, 0)):
-        super().Update(delta_time)
+        super().Update(delta_time, movement)
         self.movement.Update_Movement(movement, delta_time)
         self.Update_Status_Effects(delta_time)
 
@@ -362,6 +361,9 @@ class Moving_Entity(PhysicsEntity):
 
     def Set_Ethereal(self, state):
         self.movement.Set_Ethereal(state)
+
+    def Update_Animation(self, delta_time, movement=(0, 0)):
+        return self.animation_handler.Update_Animation(movement, delta_time)
 
     # --- Rendering ---
     # Update_Dark_Surface, Set_Entity_Image, Set_Sprite are gone: base

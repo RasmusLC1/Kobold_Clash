@@ -13,7 +13,7 @@ class UI():
     def Update(self, delta_time):
         self.Update_Animation(delta_time)
 
-    def Update_Animation(self, delta_time):
+    def Update_Animation(self, delta_time, movement=(0, 0)):
         if not self.cooldown:
             if self.animation >= self.max_animation:
                 self.animation = 0

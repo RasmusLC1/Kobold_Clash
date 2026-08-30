@@ -45,8 +45,8 @@ class Glowing_Crystal(Light_Source):
         self.loot_component.Drop_Loot(spawn_pos)
         return True
         
-    def Update_Animation(self, delta_time):
-        super().Update_Animation(delta_time)
+    def Update_Animation(self, delta_time, movement=(0, 0)):
+        super().Update_Animation(delta_time, movement)
         self.Handle_Updated_Lightlevel()
     
     def Handle_Updated_Lightlevel(self):

@@ -164,7 +164,7 @@ class Rune(Item):
         self.animation_size = min(self.animation_size + 0.1, self.animation_size_max)
 
 
-    def Update_Animation(self, delta_time):
+    def Update_Animation(self, delta_time, movement=(0, 0)):
         if self.animation_time:
             self.animation_time = max(0, self.animation_time - delta_time)
             self.Increase_Animation_Size()

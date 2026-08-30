@@ -50,7 +50,7 @@ class Base_Animation_Handler:
             next_value = self.min_animation
         self.Set_Frame(next_value)
 
-    def Update_Animation(self, delta_time):
+    def Update_Animation(self, movement, delta_time):
         if not self.entity.render:
             return False
         if self.animation_cooldown > 0:

@@ -23,8 +23,6 @@ class Loot(Item):
         self.loot_type = data[keys.loot_type]
         super().Load_Data(data)
 
-    def Update_Animation(self, delta_time = 0):
-        pass
 
     def Set_Description(self):
         self.description = f"{self.Calculate_Value()} {keys.gold}\n"

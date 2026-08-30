@@ -1,5 +1,5 @@
 from scripts.engine.keys.keys import keys
-from scripts.entities.entity.animation_handler import Base_Animation_Handler
+from scripts.entities.entity.base_animation_handler import Base_Animation_Handler
 
 class Animation_Handler(Base_Animation_Handler):
     def __init__(self, entity, animation_max=0, animation_cooldown_max=0):
@@ -38,6 +38,7 @@ class Animation_Handler(Base_Animation_Handler):
     def Set_Animation(self, action):
         if self.animation_lock:
             return False
+        print(action)
         if action != self.action:
             self.action = action
             self.animation_key = self.entity.type + '_' + self.action
@@ -80,6 +81,7 @@ class Animation_Handler(Base_Animation_Handler):
     def Set_Animation_Num_Max(self, anim_type, value):
         if anim_type in self.animations:
             self.animations[anim_type][keys.num_max] = value
+            self.animation_max = max(self.animation_max, value)   # <-- keep base clamp harmless
 
     def Set_Animation_Cooldown_Max(self, anim_type, value):
         if anim_type in self.animations:

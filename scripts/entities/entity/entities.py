@@ -3,7 +3,7 @@ import pygame
 import logging
 from scripts.engine.keys.keys import keys
 from .tile_handler import Tile_Handler
-from .animation_handler import Base_Animation_Handler
+from .base_animation_handler import Base_Animation_Handler
 
 class PhysicsEntity:
     _id_counter = 0
@@ -148,8 +148,8 @@ class PhysicsEntity:
         self.Set_Active(state)
         self.Update_Dark_Surface()
 
-    def Update_Animation(self, delta_time):
-        return self.animation_handler.Update_Animation(delta_time)
+    def Update_Animation(self, delta_time, movement=(0, 0)):
+        return self.animation_handler.Update_Animation(movement, delta_time)
 
     def Set_Animation(self, animation):
         return self.animation_handler.Set_Frame(animation)
@@ -237,10 +237,10 @@ class PhysicsEntity:
             PhysicsEntity._available_IDs.append(self.ID)
 
     # --- Subclass Extension Hooks ---
-    def Update(self, delta_time):
+    def Update(self, delta_time, movement=(0, 0)):
         if not self.animation_cooldown_max:
-            return
-        self.Update_Animation(delta_time)
+            return False
+        return self.Update_Animation(delta_time, movement)
 
 
     def Damage_Taken(self, damage): pass
