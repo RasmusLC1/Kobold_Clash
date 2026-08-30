@@ -1,16 +1,19 @@
 from scripts.entities.entity.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
+from scripts.entities.entity.cooldown_handler import Cooldown_Handler
 
 import math
 import pygame
 import random
 
-COOLDOWN_MAX = 0.05
 DAMAGE_COOLDOWN = 1
 
 class Trap(PhysicsEntity):
-    def __init__(self, game, pos, type, size = (32, 32), max_animation = 0, animation_cooldown_max = 0):
-        super().__init__(game, type, 'trap', pos, size, max_animation, animation_cooldown_max)
+    def __init__(self, game, pos, type, size = (32, 32), max_animation = 0,
+                 animation_cooldown_max = 0):
+        super().__init__(game, type, 'trap', pos, size,
+                            max_animation=max_animation,
+                            animation_cooldown_max=animation_cooldown_max)
         self.cooldown = 0
         self.Set_Sprite()
         self.entity_check_cooldown = 0
@@ -18,6 +21,8 @@ class Trap(PhysicsEntity):
         if self.tile:
             self.tile.Set_Trap(self)
         self.damaged_entities = {}
+        self.entity_cooldown_handler = Cooldown_Handler(0.05)
+
 
 
     def Save_Data(self):
@@ -60,40 +65,30 @@ class Trap(PhysicsEntity):
         return self.entities.pop(entity_ID, None) is not None
 
     def Update_Cooldown(self, delta_time):
-        if self.entity_check_cooldown > 0:
-            self.entity_check_cooldown -= delta_time
-            return False
-
-        self.entity_check_cooldown = COOLDOWN_MAX
-        return True
+        return self.entity_cooldown_handler.Update_Cooldown(delta_time)
     
     # Handle cooldown of entities in the trap seperately to ensure fast trigger on trap
     # but controlled damage
     def Update_Damage_Cooldown(self, delta_time):
-        to_remove = []
-        for entity_id  in self.damaged_entities:
-            self.damaged_entities[entity_id] -= delta_time
-            if self.damaged_entities[entity_id] <= 0:
-                to_remove.append(entity_id)
-
-        for entity_id in to_remove:
+        expired = [entity_id for entity_id, handler in self.damaged_entities.items()
+                if handler.Tick(delta_time)]
+        for entity_id in expired:
             self.damaged_entities.pop(entity_id)
 
-    
     def Update_Trapped_Entities(self):
         for entity in self.entities.values():
             if not entity.touching_ground:
                 continue
-            if entity.ID in self.damaged_entities: # Check if enemy is in damage cooldown
+            if entity.ID in self.damaged_entities:
                 continue
             if entity.ID == self.ID:
                 continue
-            
             if not self.rect().colliderect(entity.rect()):
                 continue
             self.Apply_Entity_Effect(entity)
-            self.damaged_entities[entity.ID] = DAMAGE_COOLDOWN
-    
+            self.damaged_entities[entity.ID] = Cooldown_Handler(DAMAGE_COOLDOWN)
+
+
     def Apply_Entity_Effect(self, entity):
         pass
 
