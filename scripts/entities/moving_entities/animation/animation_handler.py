@@ -38,7 +38,7 @@ class Animation_Handler(Base_Animation_Handler):
     def Set_Animation(self, action):
         if self.animation_lock:
             return False
-        print(action)
+        
         if action != self.action:
             self.action = action
             self.animation_key = self.entity.type + '_' + self.action

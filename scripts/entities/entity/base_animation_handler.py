@@ -51,7 +51,7 @@ class Base_Animation_Handler:
         self.Set_Frame(next_value)
 
     def Update_Animation(self, movement, delta_time):
-        if not self.entity.render:
+        if not self.entity.render or self.animation_cooldown_max == 0:
             return False
         if self.animation_cooldown > 0:
             self.animation_cooldown -= delta_time

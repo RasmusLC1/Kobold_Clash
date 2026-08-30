@@ -299,23 +299,20 @@ class Item(PhysicsEntity):
         except Exception as e:
             print(f"ITEM Render durability bar failed{e}", self.durability_bar_image, pos, self.type, self.sub_type)
 
+
     def Render_Floor(self, surf, offset=(0, 0)):
-
-        if not self.Update_Light_Level():
-            return
-
+        self.Update_Light_Level()  
         self.Update_Dark_Surface()
 
-        # Render the item
         if not self.rendered_image:
             self.Set_Sprite()
-
             if not self.rendered_image:
-
                 self.broken_rendering_counter += 1
                 if self.broken_rendering_counter >= 10:
-                      self.Delete_Item()
+                    self.Delete_Item()
                 return
+
+        self.broken_rendering_counter = 0  # reset once a good frame lands
         surf.blit(self.rendered_image, (self.pos[0] - offset[0], self.pos[1] - offset[1]))
 
     def Update_Dark_Surface(self):

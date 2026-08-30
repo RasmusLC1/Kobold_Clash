@@ -57,7 +57,8 @@ class Weapon(Item):
         super().__init__(game, type, keys.weapon, pos, size, amount=amount,
                          max_amount=max_amount, add_to_tile=add_to_tile,
                          max_animation = max_animation, durability=durability,
-                         max_durability=max_durability)
+                         max_durability=max_durability,
+                         animation_cooldown_max=animation_cooldown_max)
 
     def Save_Data(self):
         # if self.entity:

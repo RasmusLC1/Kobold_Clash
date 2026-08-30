@@ -11,7 +11,8 @@ class Torch(Weapon):
     _animation_handler = Fire_Animation_Handler 
     
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.torch, 1, 2, 3, 100, 'one_handed_melee', keys.fire, max_animation=3, animation_cooldown_max=0.5)
+        super().__init__(game, pos, keys.torch, 1, 2, 3, 100, 'one_handed_melee',
+                         keys.fire, max_animation=3, animation_cooldown_max=0.5)
         self.light_source = self.game.light_handler.Add_Light(self.pos, 8, self.tile)
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
         self.flame_thrower = Flame_Thrower(self.game, None)
@@ -21,7 +22,21 @@ class Torch(Weapon):
         self.flame_thrower.Update(delta_time)
         return super().Update(delta_time, offset)
     
-    
+    def Render_Floor(self, surf, offset=(0, 0)):
+        self.Update_Light_Level()  
+        self.Update_Dark_Surface()
+
+        
+        if not self.rendered_image:
+            self.Set_Sprite()
+            if not self.rendered_image:
+                self.broken_rendering_counter += 1
+                if self.broken_rendering_counter >= 10:
+                    self.Delete_Item()
+                return
+
+        self.broken_rendering_counter = 0  # reset once a good frame lands
+        surf.blit(self.rendered_image, (self.pos[0] - offset[0], self.pos[1] - offset[1]))
 
     # Pick up the torch and update the general light in the area
     def Pick_Up(self):

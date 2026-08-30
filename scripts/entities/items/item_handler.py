@@ -148,17 +148,19 @@ class Item_Handler():
         if self.Update_Nearby_Items_Cooldown(delta_time):
             self.nearby_items.clear()
             self.nearby_items = self.Find_Nearby_Item(self.game.player.pos, 3)
-        
+
+        picked_up_items = []
         for item in self.items:
             item.Update_Delete_Cooldown(delta_time)
-            if not item:
-                self.Remove_Item(item, True)
 
             if item.picked_up:
-                self.items.remove(item)
+                picked_up_items.append(item)
                 continue
 
             self.Throw_Projectile(item, delta_time)
+
+        for item in picked_up_items:
+            self.items.remove(item)
 
         self.rune_handler.Update(delta_time)
         

@@ -69,7 +69,7 @@ def test_light_source_forwards_decoration_kwargs(mock_game):
 ### 2. Glowing_Crystal Animation Cycling
 def test_glowing_crystal_holds_animation_during_cooldown(mock_game):
     # Target exact location of random inside animation_handler.py
-    with patch("scripts.entities.entity.animation_handler.random.randint", return_value=2):
+    with patch("scripts.entities.entity.base_animation_handler.random.randint", return_value=2):
         crystal = Glowing_Crystal(mock_game, (0, 0))
     crystal.Update_Animation(delta_time=0.3)
 
@@ -83,13 +83,13 @@ def test_glowing_crystal_holds_animation_during_cooldown(mock_game):
 
 def test_glowing_crystal_advances_and_wraps_animation(mock_game):
     """Confirms the frame advances once cooldown expires, wrapping back to 0 past max_animation."""
-    with patch("scripts.entities.entity.animation_handler.random.randint", return_value=1):
+    with patch("scripts.entities.entity.base_animation_handler.random.randint", return_value=1):
         crystal = Glowing_Crystal(mock_game, (0, 0))
 
     crystal.animation = crystal.max_animation
     crystal.animation_handler.animation_cooldown = 0
 
-    with patch("scripts.entities.entity.animation_handler.random.uniform", return_value=0.5):
+    with patch("scripts.entities.entity.base_animation_handler.random.uniform", return_value=0.5):
         crystal.Update_Animation(delta_time=0.1)
 
     assert crystal.animation == 0
@@ -175,14 +175,14 @@ def test_brazier_open_extinguishes_when_lit(mock_game):
 
 def test_brazier_open_relights_when_off(mock_game):
     """Opening an unlit brazier should re-add its light and resume animating."""
-    with patch("scripts.entities.entity.animation_handler.random.randint", return_value=1):
+    with patch("scripts.entities.entity.base_animation_handler.random.randint", return_value=1):
         brazier = Brazier(mock_game, (0, 0))
 
     brazier.Open()  # extinguish first
     mock_game.light_handler.Add_Light.reset_mock()
     mock_game.particle_handler.Activate_Particles.reset_mock()
 
-    with patch("scripts.entities.entity.animation_handler.random.randint", return_value=3):
+    with patch("scripts.entities.entity.base_animation_handler.random.randint", return_value=3):
         result = brazier.Open()
 
     assert result is True

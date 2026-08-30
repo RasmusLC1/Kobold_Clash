@@ -19,8 +19,9 @@ ATTACK_TYPES = {
 }
 
 class Player_Animation_Handler(Animation_Handler):
-    def __init__(self, entity, animation_max=0, animation_cooldown_max=0):
-        super().__init__(entity, animation_max=0, animation_cooldown_max=0)
+    def __init__(self, entity, animation_max=0, animation_cooldown_max=1):
+        super().__init__(entity, animation_max=animation_max,
+                         animation_cooldown_max=animation_cooldown_max)
 
         self.keyboard = self.entity.game.keyboard_handler
 
