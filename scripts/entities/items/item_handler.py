@@ -1,6 +1,7 @@
 from scripts.entities.items.weapons.weapon_handler import Weapon_Handler
 from scripts.entities.items.runes.rune_handler import Rune_Handler
 from scripts.entities.items.loot.loot_handler import Loot_Handler
+from scripts.entities.entity.cooldown_handler import Cooldown_Handler
 import pygame
 from scripts.engine.keys.keys import keys
 
@@ -10,11 +11,12 @@ class Item_Handler():
         self.game = game
         self.items = []
         self.nearby_items = []
-        self.nearby_item_cooldown = 0
+        self.nearby_item_cooldown_handler = Cooldown_Handler(0.5)
         self.saved_data = {}
         self.weapon_handler = Weapon_Handler(self.game, self)
         self.loot_handler = Loot_Handler(self.game, self)
         self.rune_handler = Rune_Handler(self.game, self)
+
 
     def Save_Item_Data(self):
         for item in self.items:
@@ -145,7 +147,7 @@ class Item_Handler():
 
     def Update(self, delta_time):
         self.Check_Keyboard_Input()
-        if self.Update_Nearby_Items_Cooldown(delta_time):
+        if self.nearby_item_cooldown_handler.Update_Cooldown(delta_time):
             self.nearby_items.clear()
             self.nearby_items = self.Find_Nearby_Item(self.game.player.pos, 3)
 
@@ -163,8 +165,6 @@ class Item_Handler():
             self.items.remove(item)
 
         self.rune_handler.Update(delta_time)
-        
-
 
     
     # Shoot projectiles
@@ -217,7 +217,7 @@ class Item_Handler():
         return True
 
     def Reset_Nearby_Items_Cooldown(self):
-        self.nearby_item_cooldown = 0.001
+        self.nearby_item_cooldown_handler.Set_Cooldown(0.001)
 
     def Update_Nearby_Items_Cooldown(self, delta_time):
         if self.nearby_item_cooldown:

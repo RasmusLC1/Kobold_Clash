@@ -8,7 +8,7 @@ import random
 
 class Rune(Item):
     def __init__(self, game, type, pos, upgrades, soul_cost,
-                 animation_time_max = 0.5, animation_size_max = 15):
+                 animation_time_max=0.5, animation_size_max=15):
         self.player = game.player
         self.menu_pos = pos
         self.Initialise_Upgrades(soul_cost, upgrades)
@@ -17,11 +17,10 @@ class Rune(Item):
         self.animation_size = 0
         self.animation_size_max = animation_size_max
         self.effect = type.replace('_rune', '')
-        self.activate_cooldown = 0
         self.activate_cooldown_max = 5
-        self.clicked = False # Used for projectiles
-        super().__init__(game,  type, keys.rune, pos, size=(16, 16), amount=1, max_amount=1, add_to_tile=False, rarity_value=soul_cost, durability=100, max_durability=100)
-
+        self.clicked = False
+        super().__init__(game, type, keys.rune, pos, size=(16, 16), amount=1, max_amount=1,
+                          add_to_tile=False, rarity_value=soul_cost, durability=100, max_durability=100)
 
     def Save_Data(self):
         super().Save_Data()
@@ -49,14 +48,11 @@ class Rune(Item):
     # Checks defauls activation is valid, then checks if the player can pay the souls
     # Then trigger the effect
     def Activate(self):
-        if self.activate_cooldown:
-            return False
-        if not super().Activate():
+        if self.activate_cooldown_handler.value > 0:
             return False
         if self.player.Get_Total_Available_Souls() < self.soul_cost:
             return False
         self.Trigger_Effect()
-
         return True
 
     # Add the player's current power level to the runes power and checks if it is
@@ -132,14 +128,16 @@ class Rune(Item):
 
     
     def Update_Activate_Cooldown(self, delta_time):
-        if self.activate_cooldown:
-            self.activate_cooldown = max(0, self.activate_cooldown - delta_time)
-            if self.activate_cooldown > 0:
-                self.player.weapon_handler.Set_Attack_Lock(True)
-            else:
-                self.player.weapon_handler.Set_Attack_Lock(False)
-
+        if self.activate_cooldown_handler.value <= 0:
             return
+        self.activate_cooldown_handler.Tick(delta_time)
+        if self.activate_cooldown_handler.value > 0:
+            self.player.weapon_handler.Set_Attack_Lock(True)
+        else:
+            self.player.weapon_handler.Set_Attack_Lock(False)
+
+    def Set_Activate_Cooldown(self, value):
+        self.activate_cooldown_handler.Set_Cooldown(value)
 
     # Updated in rune inventory when player's power is modified
     def Set_Description(self):
@@ -149,10 +147,6 @@ class Rune(Item):
                             f"Dur {self.durability}/{self.max_durability}\n"
                             f"{self.Calculate_Value()} {keys.gold}\n"
                         )  
-
-    
-    def Set_Activate_Cooldown(self, value):
-        self.activate_cooldown = value
 
     def Set_Animation_Time(self):
         self.animation_time = self.animation_time_max

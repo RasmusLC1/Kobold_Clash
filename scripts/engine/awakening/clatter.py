@@ -1,4 +1,5 @@
 from scripts.engine.awakening.awakening import Awakening
+from scripts.entities.entity.cooldown_handler import Cooldown_Handler
 from scripts.engine.keys.keys import keys
 
 SILENCE_MULTIPLIER = 100
@@ -9,21 +10,14 @@ class Clatter():
         self.game = game
         self.awakening = Awakening(game)
         self.clatter_position = None
-        self.clatter_cooldown = 0
+        self.clatter_cooldown_handler = Cooldown_Handler()
 
     def Update(self, delta_time):
         self.awakening.Update()
-        self.Update_Clatter_Cooldown(delta_time)
-
-    def Update_Clatter_Cooldown(self, delta_time):
-        if self.clatter_cooldown <= 0:
-            return True
-        
-        self.clatter_cooldown -= delta_time
-        return False
+        self.clatter_cooldown_handler.Tick(delta_time)
 
     def Generate_Clatter(self, center, clatter_range):
-        if self.clatter_cooldown > 0:
+        if self.clatter_cooldown_handler.value > 0:
             return
 
         self.clatter_position = center
@@ -31,25 +25,22 @@ class Clatter():
 
         clatter_range = self.Calculate_Silence_Modifier(clatter_range)
         self.awakening.Trigger_Awakening()
-        
-        # 1. Standard handling for normal nearby pathfinding queues
+
         nearby_enemies = [
             enemy for enemy in self.game.enemy_handler.Find_Nearby_Enemies(self.game.player, clatter_range)
             if enemy and not enemy.locked_on_target
         ]
-            
+
         for enemy in nearby_enemies:
             self.game.enemy_handler.Add_To_Pathfinding_Queue(enemy, center)
 
-        # 2. EVENT BROADCAST: Instantly alert all sub-abilities listening for acoustics
-        # Passive abilities like Echo_Shard and Echo_Teleport get triggered right here!
         self.game.enemy_handler.clatter_subscription.Broadcast_Clatter(center)
 
     def Check_Clatter_Cooldown(self):
-        return self.clatter_cooldown > 0
-    
+        return self.clatter_cooldown_handler.value > 0
+
     def Set_Clatter_Cooldown(self):
-        self.clatter_cooldown = CLATTER_COOLDOWN
+        self.clatter_cooldown_handler.Set_Cooldown(CLATTER_COOLDOWN)
 
     def Increase_Awakening(self):
         self.awakening.Set_Awakening_Level(self.awakening.awakening_level + 1)

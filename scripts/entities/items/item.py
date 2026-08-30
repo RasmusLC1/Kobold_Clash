@@ -1,13 +1,13 @@
-import random
 import math
 import pygame
 from scripts.entities.entity.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
+from scripts.entities.entity.cooldown_handler import Cooldown_Handler
 
 class Item(PhysicsEntity):
-    def __init__(self, game, type, sub_category, pos, size = (16, 16),
-                 amount = 1, add_to_tile = True, rarity_value = 9999, max_amount=1,
-                 max_animation = 0, durability = 1, max_durability = 1, animation_cooldown_max=0):
+    def __init__(self, game, type, sub_category, pos, size=(16, 16),
+                 amount=1, add_to_tile=True, rarity_value=9999, max_amount=1,
+                 max_animation=0, durability=1, max_durability=1, animation_cooldown_max=0):
         
         super().__init__(game, type, keys.item, pos, size, sub_category,
                          max_animation=max_animation,
@@ -16,32 +16,30 @@ class Item(PhysicsEntity):
         self.sub_type = type
 
         self.picked_up = False
-        self.clicked = False # Used for if the item is active
-        self.move_inventory_slot = False # Check for if the item is being moved to a new inventory slot
+        self.clicked = False
+        self.move_inventory_slot = False
         self.inventory_type = None
         self.inventory_index = None
-        self.floor_size = size # Used to upscale item for inventory
-        self.inventory_size = (32,32) # Used to upscale item for inventory
-        self.activate_cooldown = 0
+        self.floor_size = size
+        self.inventory_size = (32, 32)
+        self.activate_cooldown_handler = Cooldown_Handler()
         self.max_amount = max_amount
-        self.amount = int(min(max_amount, int(amount))) # Cap the amount
-        self.value = rarity_value # Temporary value set correctly in Calculate_Rarity
-        self.rarity = self.Calculate_Rarity() # rarity used for loot defaults to common
+        self.amount = int(min(max_amount, int(amount)))
+        self.value = rarity_value
+        self.rarity = self.Calculate_Rarity()
 
-        # Frame index now lives on the animation handler, not the entity.
         self.nearby_entities = []
-        self.delete_countdown = 0
+        self.delete_cooldown_handler = Cooldown_Handler()
 
-        # Durability logic
         self.durability = durability
         self.max_durability = max_durability
-        self.last_durability_step = 999  # Used for tracking decrements accurately so it does not skip a percentage
+        self.last_durability_step = 999
         self.durability_bar_image = None
         self.Update_Durability_Bar()
 
         self.is_projectile = False
         self.Set_Sprite()
-        self.broken_rendering_counter = 0 # Counter if it hits 10, delete item since something is wrong
+        self.broken_rendering_counter = 0
         self.Add_To_Tile(add_to_tile)
 
 
@@ -70,7 +68,7 @@ class Item(PhysicsEntity):
     def Update(self, delta_time):
         if self.durability <= 0:
             self.Delete_Item()
-        self.Update_Activate_Cooldown(delta_time)
+        self.activate_cooldown_handler.Tick(delta_time)
         super().Update(delta_time)
 
 
@@ -81,16 +79,22 @@ class Item(PhysicsEntity):
         return self.amount * self.value
 
     def Activate(self):
-        if self.activate_cooldown:
+        if self.activate_cooldown_handler.value > 0:
             return False
 
-        self.activate_cooldown = 1
+        self.activate_cooldown_handler.Set_Cooldown(1)
         return True
 
-    def Update_Activate_Cooldown(self, delta_time):
-        if self.activate_cooldown <= 0:
-            return
-        self.activate_cooldown = max(0, self.activate_cooldown - delta_time)
+    def Update_Delete_Cooldown(self, delta_time):
+        if self.delete_cooldown_handler.value <= 0:
+            return False
+
+        if self.delete_cooldown_handler.Tick(delta_time):
+            self.Delete_Item()
+        return True
+
+    def Set_Delete_Countdown(self, time):
+        self.delete_cooldown_handler.Set_Cooldown(time)
 
     def Set_Inventory_Index(self, index):
         self.inventory_index = index
@@ -240,18 +244,6 @@ class Item(PhysicsEntity):
 
         return keys.common
 
-
-    def Update_Delete_Cooldown(self, delta_time):
-        if not self.delete_countdown:
-            return False
-        self.delete_countdown = max(0, self.delete_countdown - delta_time)
-
-        if self.delete_countdown <= 0:
-            self.Delete_Item()
-        return True
-
-    def Set_Delete_Countdown(self, time):
-        self.delete_countdown = time
 
     def Delete_Item(self):
         self.game.item_handler.Remove_Item(self, True)

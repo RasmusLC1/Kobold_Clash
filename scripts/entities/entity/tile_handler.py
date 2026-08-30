@@ -1,14 +1,16 @@
+import pygame
+from scripts.entities.entity.cooldown_handler import Cooldown_Handler
+
 MIN_LIGHT_LEVEL = 40
 LIGHT_ALPHA_SCALE = 30
 TILE_COOLDOWN_MAX = 0.1
-import pygame
 
 class Tile_Handler:
     def __init__(self, entity):
         self.entity = entity
         self.game = entity.game
         self.tile = None
-        self.update_tile_cooldown = 0.0
+        self.tile_cooldown_handler = Cooldown_Handler(TILE_COOLDOWN_MAX)
 
     def Set_Tile(self):
         self.Remove_Tile()
@@ -52,16 +54,8 @@ class Tile_Handler:
         
         return self.entity.light_level > self.entity.min_light_level
 
-    def Update_Tile_Cooldown(self, delta_time):
-        if self.update_tile_cooldown > 0:
-            self.update_tile_cooldown -= delta_time
-            return False
-
-        self.update_tile_cooldown = TILE_COOLDOWN_MAX
-        return True
-        
     def Update_Tile(self, delta_time):
-        if not self.Update_Tile_Cooldown(delta_time):
+        if not self.tile_cooldown_handler.Update_Cooldown(delta_time):
             return False
 
         if not self._Check_If_Tile():
