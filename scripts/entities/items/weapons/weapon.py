@@ -45,7 +45,7 @@ class Weapon(Item):
         self.weapon_cooldown = 0
         self.weapon_cooldown_max = 50 # How fast the weapon can attack
 
-        self.delete_timer = 0 # time before weapon is deleted
+        self.delete_countdown = 0 # time before weapon is deleted
 
         self.Set_Inventory_Image(game, type)
 

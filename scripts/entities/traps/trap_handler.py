@@ -103,7 +103,7 @@ class Trap_Handler:
         return True
 
     def Remove_Trap(self, trap):
-        self.game.ray_caster.Remove_Trap(trap)
+        trap.Remove_Tile()
         if trap in self.traps:
             self.traps.remove(trap)
         if trap in self.nearby_traps:

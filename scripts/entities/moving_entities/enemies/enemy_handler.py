@@ -5,7 +5,7 @@ from scripts.entities.moving_entities.enemies.clatter_subscription import Clatte
 from scripts.engine.keys.keys import keys
 import random
 
-INTIAL_ENEMIES = 30
+INTIAL_ENEMIES = 5
 
 class Enemy_Handler():
     def __init__(self, game):
@@ -141,10 +141,11 @@ class Enemy_Handler():
             return self.game.tilemap.Search_Nearby_Tiles(max_distance, entity.pos, keys.enemy, entity.ID)
         else:
             return self.Find_Nearby_Enemies_Long_Distance(entity, max_distance)
-    
+
     def Find_Nearby_Enemies_Long_Distance(self, entity, max_distance):
         nearby_enemies = []
-        max_distance_squared = max_distance * max_distance
+        max_distance_px = max_distance * self.game.tilemap.tile_size
+        max_distance_squared = max_distance_px * max_distance_px
         for enemy in self.enemies:
             distance = (enemy.pos[0] - entity.pos[0]) ** 2 + (enemy.pos[1] - entity.pos[1]) ** 2
             if distance < max_distance_squared and enemy.ID != entity.ID:

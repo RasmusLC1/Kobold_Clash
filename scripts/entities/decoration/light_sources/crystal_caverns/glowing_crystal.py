@@ -47,7 +47,8 @@ class Glowing_Crystal(Light_Source):
         return True
         
     def Update_Animation(self, delta_time, movement=(0, 0)):
-        super().Update_Animation(delta_time, movement)
+        if not super().Update_Animation(delta_time, movement):
+            return
         self.Handle_Updated_Lightlevel()
     
     def Handle_Updated_Lightlevel(self):

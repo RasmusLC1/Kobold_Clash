@@ -10,7 +10,6 @@ class Base_Animation_Handler:
         self.animation_max = int(animation_max)
         self.animation_cooldown_max = float(animation_cooldown_max)
         self.animation_cooldown_handler = Cooldown_Handler(self.animation_cooldown_max)
-        self.Set_Random_Animation()
 
     @property
     def animation_cooldown(self):
