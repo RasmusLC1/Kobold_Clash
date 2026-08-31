@@ -6,8 +6,6 @@ from scripts.entities.decoration.shared.shared_registry import Register_Decorati
 class Plinth(Display_Loot_Container):
     def __init__(self, game, pos):
         super().__init__(game, keys.plinth, pos, (32, 32), True, 60, 'plinth_shatter', 700)
-        
-        
 
     def Drop_Loot(self):
         rarity_value = self.loot_component.Calculate_Rarity()

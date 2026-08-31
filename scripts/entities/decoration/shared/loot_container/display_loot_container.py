@@ -12,7 +12,6 @@ class Display_Loot_Container(Loot_Container):
         
     def Update(self, delta_time):
         if self.Calculate_Distance():
-            self.empty = True
             self.Drop_Loot()
         return super().Update(delta_time)
 
@@ -21,7 +20,7 @@ class Display_Loot_Container(Loot_Container):
 
 
     def Calculate_Distance(self):
-        if self.empty:
+        if self.loot_component.empty:
             return
         
         if self.distance_cooldown > 0:

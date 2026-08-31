@@ -462,9 +462,9 @@ Upgrade weapons
 ### Decorations
     # Glowing crystals, lights up area, can be shattered to remove light
     # Small rocks strewn around
+    - Crystal plinths, contains gems
     - Crystalisation shrine, give a gem and return a random one in return with negative 1 effectiveness, trade in low value gem for potential to get better gem
     - Gem shrine, Spawns a high level gem somewhere in the dungeon
-    - Crystal plinths, contains gems
     - Weapon shrine, pay souls to bind gems to weapons for bonuses increased bonuses
     - Fragile walls, can be broken by hitting with blunt weapons, acts as doors
     - Blood shrine, Gives an item that tracks player kills, when 10 are killed reduce awakening level
