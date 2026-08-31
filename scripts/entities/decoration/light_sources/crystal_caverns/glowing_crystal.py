@@ -43,6 +43,7 @@ class Glowing_Crystal(Light_Source):
             self.pos[1] + random.randint(-10, 10) / 10
         )
         self.loot_component.Drop_Loot(spawn_pos)
+        self.game.light_handler.Remove_Light(self.light_source)
         return True
         
     def Update_Animation(self, delta_time, movement=(0, 0)):
@@ -50,7 +51,7 @@ class Glowing_Crystal(Light_Source):
         self.Handle_Updated_Lightlevel()
     
     def Handle_Updated_Lightlevel(self):
-        if self.updated_light_strength <= self.light_strength:
+        if self.updated_light_strength < self.light_strength:
             return
         self.light_source.Update_Light_Level(self.updated_light_strength)
         self.updated_light_strength -= 1
