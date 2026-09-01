@@ -15,8 +15,8 @@ class Cooldown_Handler:
     def Tick(self, delta_time):
         if self.value > 0:
             self.Set_Cooldown(self.value - delta_time)
-            return
         return self.value <= 0
+    
 
     def Set_Cooldown(self, value):
         self.value = max(0, value)

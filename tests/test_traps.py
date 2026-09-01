@@ -120,6 +120,37 @@ class TestSpikeTraps:
         target.Damage_Taken.assert_called_with(5, (keys.slow, 1))
 
 
+    def test_entity_remains_in_damaged_entities_until_cooldown_expires(self, mock_game, mock_entity):
+        spike = Spike(mock_game, (0, 0))
+        target = mock_entity(entity_id=10)
+        
+        target.touching_ground = True
+        target.rect.return_value = spike.rect()
+        
+        spike.entities[target.ID] = target
+
+        # Step 1: Trigger initial trap collision
+        spike.Update_Trapped_Entities()
+        assert target.ID in spike.damaged_entities
+
+        # Retrieve the handler created by Update_Trapped_Entities
+        handler = spike.damaged_entities[target.ID]
+        
+        # Use the actual configured cooldown duration
+        cooldown_duration = getattr(handler, 'cooldown_time', getattr(handler, 'duration', 1.0))
+
+        # Step 2: Partial time progression
+        spike.Update_Damage_Cooldown(delta_time=cooldown_duration / 2)
+        assert target.ID in spike.damaged_entities
+
+        # Step 3: Prevent re-triggering while on cooldown
+        spike.Update_Trapped_Entities()
+        assert target.Damage_Taken.call_count == 1
+
+        # Step 4: Advance past remaining duration
+        spike.Update_Damage_Cooldown(delta_time=(cooldown_duration))
+        assert target.ID not in spike.damaged_entities
+        
 class TestSpiderWeb:
     def test_ignores_items_and_creator(self, mock_game, mock_entity):
         creator = mock_entity(entity_id=1)
