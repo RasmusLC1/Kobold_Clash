@@ -10,7 +10,7 @@ class Potion_Table(Loot_Container):
         super().__init__(game, keys.potion_table, pos, (64, 64), True, 50, 'table_break', 500)
 
 
-    def Set_Loot_Types(self):
+    def Get_Loot_Types(self):
 
         self.loot_weights = {keys.potion : 0.8,
                              keys.recipe_scroll : 0.1,

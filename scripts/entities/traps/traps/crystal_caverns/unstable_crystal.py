@@ -71,7 +71,9 @@ class Unstable_Crystal(Trap):
 
         if not self.rect().colliderect(player.rect()):
             return False
-        
+        self.Explode()
+
+    def Explode(self):
         self.Generate_Sound(keys.fire_explosion, 0.3, CLATTER_RANGE)
         
         # Spawn explosion at crystal location

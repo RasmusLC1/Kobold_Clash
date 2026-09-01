@@ -54,6 +54,7 @@ class Clatter():
             clatter_range = max(1, clatter_range - silence_effect.effect_strength * SILENCE_MULTIPLIER)
 
         return clatter_range
+        
 
     def Reset_Awakening_Level(self):
         self.awakening.awakening_cooldown = 0

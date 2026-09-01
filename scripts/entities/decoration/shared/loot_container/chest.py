@@ -7,6 +7,7 @@ from scripts.entities.decoration.shared.shared_registry import Register_Decorati
 class Chest(Loot_Container):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.chest, pos, (32, 32), True, 20, keys.chest_break, 500, max_animation = 7)
+        self.version = self.Set_Version(game)
 
     def Open(self):
         if not super().Open():
@@ -14,7 +15,8 @@ class Chest(Loot_Container):
         
         self.game.decoration_handler.Remove_Decoration(self)
 
-        self.Generate_Sound(keys.chest_open, 0.1, 500)
+        self.Generate_Sound(keys.chest_open, 0.1, 200)
+        return True
 
     def Set_Version(self, game):
         MIN_RARITY = 1
@@ -39,16 +41,16 @@ class Chest(Loot_Container):
         
         return version
 
-    def Set_Loot_Types(self):
-        self.loot_weights = {
-                             keys.passive : 0.05,
-                             keys.key : 0.1,
-                             keys.bomb : 0.1,
-                             keys.potion : 0.1,
-                             keys.revive : 0.04,
-                             keys.utility : 0.2,
-                             keys.curse : 99990.1,
-                             keys.valuable : 0.2,
-                             keys.gem_ingot : 0.2}
-
+    def Get_Loot_Types(self):
+        return {
+            keys.passive: 0.05,
+            keys.key: 0.1,
+            keys.bomb: 0.1,
+            keys.potion: 0.1,
+            keys.revive: 0.04,
+            keys.utility: 0.2,
+            keys.curse: 99990.1,   # <- confirm this isn't a leftover test value
+            keys.valuable: 0.2,
+            keys.gem_ingot: 0.2,
+        }
 

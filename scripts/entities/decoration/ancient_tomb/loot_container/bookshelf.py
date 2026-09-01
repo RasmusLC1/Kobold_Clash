@@ -13,7 +13,7 @@ class Bookshelf(Loot_Container):
         self.tile.Set_Physics(True) # Bookshelf is impassible
 
 
-    def Set_Loot_Types(self):
+    def Get_Loot_Types(self):
         self.loot_weights = {keys.recipe_scroll : 0.1,
                              keys.temptress_embrace: 0.1,
                              keys.demonic_bargain: 0.1,

@@ -52,8 +52,7 @@ class Glowing_Crystal(Light_Source):
         self.Handle_Updated_Lightlevel()
     
     def Handle_Updated_Lightlevel(self):
-        if self.updated_light_strength < self.light_strength:
+        if self.updated_light_strength <= self.light_strength:
             return
         self.light_source.Update_Light_Level(self.updated_light_strength)
         self.updated_light_strength -= 1
-

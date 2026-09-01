@@ -31,24 +31,25 @@ class Effigy_Tomb(Loot_Container):
             self.game.enemy_handler.Enemy_Spawner(self.Get_Pos(), enemy_type)
             return
         else:
-            rarity_value = self.loot_component.Calculate_Rarity()
-            self.Spawn_Loot(loot_type, self.Get_Pos(), rarity_value)
+            self.loot_component.Drop_Loot(self.Get_Pos())
 
 
 
-    def Set_Loot_Types(self):
-        self.loot_weights = {keys.enemy : 0.5,
-                             keys.revive : 0.2,
-                             keys.curse : 0.3}
-        
-        self.enemies = {
-            keys.vampire : 0.01,
-            keys.skeleton_bell_toller : 0.2,
-            keys.skeleton_warrior : 0.5,
-            keys.skeleton_guardian : 0.2,
-            keys.skeleton_undertaker : 0.2,
-            keys.skeleton_cleric : 0.1,
+    def Get_Loot_Types(self):
+        self.loot_weights = {
+            keys.enemy: 0.5,
+            keys.revive: 0.2,
+            keys.curse: 0.3,
         }
-
+        self.enemies = {
+            keys.vampire: 0.01,
+            keys.skeleton_bell_toller: 0.2,
+            keys.skeleton_warrior: 0.5,
+            keys.skeleton_guardian: 0.2,
+            keys.skeleton_undertaker: 0.2,
+            keys.skeleton_cleric: 0.1,
+        }
+        return self.loot_weights
+    
     def Set_Loot_To_Always_Spawn_Enemy(self):
         self.loot_weights = {keys.enemy : 100}

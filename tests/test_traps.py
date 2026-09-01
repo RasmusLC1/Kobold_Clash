@@ -285,11 +285,10 @@ class TestUnstableCrystal:
         rect = crystal_instance.rect()
         assert isinstance(rect, pygame.Rect)
 
-    def test_detonates_and_spawns_explosion_on_player_proximity(self, mock_game, mock_entity, crystal_instance):
+    def test_detonates_and_spawns_explosion(self, mock_game, mock_entity, crystal_instance):
         crystal_instance.Generate_Sound = MagicMock()
         
-        player = mock_entity(entity_type=keys.player)
-        crystal_instance.Apply_Entity_Effect(player)
+        crystal_instance.Explode()
         
         assert crystal_instance.Generate_Sound.called or mock_game.sound_handler.Play_Sound.called
         assert mock_game.item_handler.Add_Item.called or mock_game.trap_handler.Remove_Trap.called

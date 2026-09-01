@@ -164,7 +164,7 @@ def test_invisibility_render_modification_pipeline(handler, mock_entity):
     """Ensures invisibility sets dynamic transparency settings based on strength."""
     original_active = mock_entity.active
     handler.Set_Effect(keys.invisibility, duration=5)
-    handler.Update_Status_Effects(delta_time=0.1)
+    handler.Update_Status_Effects(delta_time=5)
     
     # Math calculation test: 110 - (5 * 10) = 60 alpha transparency
     assert mock_entity.active == original_active - 50

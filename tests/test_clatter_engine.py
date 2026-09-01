@@ -135,10 +135,10 @@ def test_generate_clatter_broadcasts_to_acoustic_subscribers(clean_clatter, mock
 
 def test_check_clatter_cooldown_reflects_state_correctly(clean_clatter):
     """Validates the boolean output accuracy of Check_Clatter_Cooldown."""
-    clean_clatter.clatter_cooldown = 0.0
+    clean_clatter.clatter_cooldown_handler.value = 0.0
     assert clean_clatter.Check_Clatter_Cooldown() is False
     
-    clean_clatter.clatter_cooldown = 0.2
+    clean_clatter.clatter_cooldown_handler.value = 0.2
     assert clean_clatter.Check_Clatter_Cooldown() is True
 
 

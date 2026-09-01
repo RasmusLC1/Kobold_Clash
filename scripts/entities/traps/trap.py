@@ -86,7 +86,7 @@ class Trap(PhysicsEntity):
             if not self.rect().colliderect(entity.rect()):
                 continue
             self.Apply_Entity_Effect(entity)
-            self.damaged_entities[entity.ID] = Cooldown_Handler(DAMAGE_COOLDOWN)
+            self.damaged_entities[entity.ID] = Cooldown_Handler(DAMAGE_COOLDOWN, DAMAGE_COOLDOWN)
 
 
     def Apply_Entity_Effect(self, entity):

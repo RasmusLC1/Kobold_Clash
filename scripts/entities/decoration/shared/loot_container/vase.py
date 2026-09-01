@@ -19,7 +19,7 @@ class Vase(Loot_Container):
         
         self.game.decoration_handler.Remove_Decoration(self)
 
-    def Set_Loot_Types(self):
+    def Get_Loot_Types(self):
 
         self.loot_weights = {keys.valuable : 0.8,
                              keys.key : 0.3,

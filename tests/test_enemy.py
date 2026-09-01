@@ -59,6 +59,7 @@ def mock_game():
     game.player = MagicMock()
     game.player.pos = [100.0, 100.0]
     game.tilemap = MagicMock()
+    game.tilemap.tile_size = 32         
     game.dungeon_type = keys.ancient_crypt
     game.entities_render = MagicMock()
     return game
@@ -232,15 +233,17 @@ def test_find_nearby_enemies_long_distance_filtering(mock_game, mock_enemy):
 
     in_range = MagicMock()
     in_range.ID = "enemy_near"
-    in_range.pos = [30.0, 40.0]  # Distance = 50
+    in_range.pos = [30.0, 40.0]  # Distance = 50px
 
     out_of_range = MagicMock()
     out_of_range.ID = "enemy_far"
-    out_of_range.pos = [100.0, 100.0]  # Distance = ~141
+    out_of_range.pos = [100.0, 100.0]  # Distance = ~141.4px
 
     handler.enemies = [in_range, out_of_range]
 
-    found = handler.Find_Nearby_Enemies_Long_Distance(searching_entity, max_distance=60)
+    # max_distance is in tiles; tile_size=32px -> threshold=64px, which sits
+    # between the two fixture distances (50px in-range, 141.4px out-of-range)
+    found = handler.Find_Nearby_Enemies_Long_Distance(searching_entity, max_distance=2)
 
     assert in_range in found
     assert out_of_range not in found

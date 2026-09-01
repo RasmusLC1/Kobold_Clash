@@ -17,7 +17,7 @@ class Mimic_Chest(Chest):
         self.game.player.Set_Effect(keys.slow, 4)
 
 
-    def Set_Loot_Types(self):
+    def Get_Loot_Types(self):
         self.loot_weights = {}
         
         self.enemies = {

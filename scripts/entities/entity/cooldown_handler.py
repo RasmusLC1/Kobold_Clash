@@ -1,6 +1,6 @@
 class Cooldown_Handler:
-    def __init__(self, max_value=0):
-        self.value = 0
+    def __init__(self, max_value=0, value=0):
+        self.value = value
         self.max_value = max_value
 
     # Looping cooldown
@@ -15,6 +15,7 @@ class Cooldown_Handler:
     def Tick(self, delta_time):
         if self.value > 0:
             self.Set_Cooldown(self.value - delta_time)
+            return
         return self.value <= 0
 
     def Set_Cooldown(self, value):
