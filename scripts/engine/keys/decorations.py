@@ -84,6 +84,8 @@ class Decorations():
 
     lever = "lever"
 
+    amplifying_node = "amplifying_node" 
+
 
 # Traps
     trap = "trap"

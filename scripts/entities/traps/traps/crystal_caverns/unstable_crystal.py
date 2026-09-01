@@ -25,20 +25,26 @@ class Unstable_Crystal(Trap):
 
 
     def Update(self, delta_time):
-        self.Twitch()
+        self.Check_Player_Distance()
         return super().Update(delta_time)
 
     # Visual indicator that the crystal is unstable
+    def Check_Player_Distance(self):
+        if not self.Twitch():
+            return
+        
+        self.Check_If_Explode()
+
     def Twitch(self):
         player = self.game.player
         if player.Get_Effect(keys.silence): # Silent player does not disrupt crystal
-            return
+            return False
         if not player.rect().colliderect(self.warning_rect()):
-            return
+            return False
         new_x_pos = self.center[0] + random.randint(-1, 1)
         new_y_pos = self.center[1] + random.randint(-1, 1)
         self.Set_Position((new_x_pos, new_y_pos))
-        self.Check_If_Explode()
+        return True
 
     # Expanded rect using the trigger radius
     def rect(self):
