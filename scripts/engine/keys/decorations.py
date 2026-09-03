@@ -86,6 +86,8 @@ class Decorations():
 
     amplifying_node = "amplifying_node" 
 
+    harmonic_crystal = "harmonic_crystal"
+
 
 # Traps
     trap = "trap"
