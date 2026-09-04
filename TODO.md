@@ -464,14 +464,14 @@ Upgrade weapons
     # Small rocks strewn around
     # Gem shrine, Spawns a high level gem somewhere in the dungeon
     # Amplifying node, runes are more effective when in range
-    - Crystal plinths, contains gems
+    # Crystal plinths, contains gems
+    # Harmonic crystal, activate to generate souls, but generate clatter
+    - Crystal Fountains gives player damage resistance when interacted with
     - Crystalisation shrine, give a gem and return a random one in return with negative 1 effectiveness, trade in low value gem for potential to get better gem
     - Weapon shrine, pay souls to bind gems to weapons for bonuses increased bonuses
     - Fragile walls, can be broken by hitting with blunt weapons, acts as doors
     - Blood shrine, Gives an item that tracks player kills, when 10 are killed reduce awakening level
     - Prism pedestal, activate to disable shifting walls
-    - Crystal Fountains gives player damage resistance when interacted with
-    - Harmonic crystal, activate to generate souls, but generate clatter
 
 
 

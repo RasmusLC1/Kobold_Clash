@@ -88,6 +88,7 @@ class Decorations():
 
     harmonic_crystal = "harmonic_crystal"
 
+    crystal_fountain = "crystal_fountain"
 
 # Traps
     trap = "trap"
