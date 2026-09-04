@@ -49,20 +49,15 @@ class Bookshelf(Loot_Container):
         rune_handler = self.game.item_handler.rune_handler
         rune_type = None
         rune_active = False
-        while not rune_active:
-            rune_type = random.choices(
-                    population=list(runes.keys()),
-                    weights=list(runes.values()),
-                    k=1
-                )[0]
-            counter += 1
-            rune_active = rune_handler.Check_If_Rune_Is_Active(rune_type)
-            if counter >= 20 or not rune_active:
-                break
+        rune_type = random.choices(
+                population=list(runes.keys()),
+                weights=list(runes.values()),
+                k=1
+            )[0]
 
-        if not rune_type:
-            print("UNIQUE RUNE NOT FOUND BOOKSHELF")
-            return self.Select_Available_Rune(keys.recipe_scroll, self.Get_Pos())
+        # if not rune_type:
+        #     print("UNIQUE RUNE NOT FOUND BOOKSHELF")
+        #     return self.Select_Available_Rune(keys.recipe_scroll, self.Get_Pos())
         
         self.Spawn_Rune(rune_type)
         return True

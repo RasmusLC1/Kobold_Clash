@@ -540,3 +540,43 @@ def test_bones_revive_is_idempotent(mock_game):
     bones.Revive()
 
     mock_game.enemy_handler.Enemy_Spawner.assert_called_once()
+
+def test_harmonic_crystal_open_grants_souls_and_empties(mock_game):
+    crystal = Harmonic_Crystal(mock_game, (0, 0))
+    crystal.empty = False
+
+    result = crystal.Open()
+
+    assert result is True
+    assert crystal.empty is True
+    mock_game.player.Increase_Souls.assert_called_once_with(100)
+
+from scripts.entities.decoration.crystal_caverns.harmonic_crystal import Harmonic_Crystal  # adjust path
+
+def test_harmonic_crystal_open_fails_when_already_empty(mock_game):
+    crystal = Harmonic_Crystal(mock_game, (0, 0))
+    crystal.empty = True
+
+    result = crystal.Open()
+
+    assert result is False
+    mock_game.player.Increase_Souls.assert_not_called()
+
+
+def test_harmonic_crystal_open_generates_sound(mock_game):
+    crystal = Harmonic_Crystal(mock_game, (0, 0))
+    crystal.empty = False
+
+    with patch.object(crystal, "Generate_Sound") as mock_sound:
+        crystal.Open()
+
+    mock_sound.assert_called_once_with(keys.harmonic_crystal, 0.5, 1000)
+
+
+def test_harmonic_crystal_update_does_not_crash(mock_game):
+    """Update() no longer references the stray Check_Player_Distance() call —
+    Open() is player-triggered externally, same pattern as Campfire."""
+    crystal = Harmonic_Crystal(mock_game, (0, 0))
+    crystal.animation_handler.animation_cooldown = 999  # avoid unrelated animation branches
+
+    crystal.Update(delta_time=0.1)  # should be a no-op passthrough to super()
