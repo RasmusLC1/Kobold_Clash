@@ -4,11 +4,12 @@ from ..cooldown_handler import Cooldown_Handler
 class Base_Animation_Handler:
     def __init__(self, entity, animation_max, animation_cooldown_max):
         self.entity = entity
+        self.animation_enabled = True
         self.sprite = None
         self.animation = 0
         self.min_animation = 0
         self.animation_max = int(animation_max)
-        self.animation_cooldown_max = float(animation_cooldown_max)
+        self.Set_Animation_Cooldown_Max(animation_cooldown_max)
         self.animation_cooldown_handler = Cooldown_Handler(self.animation_cooldown_max)
 
     @property
@@ -49,7 +50,7 @@ class Base_Animation_Handler:
             print(f'Set entity image failed: {e}', getattr(self.entity, 'type', None), self.animation, self.sprite)
 
     def Set_Frame(self, value):
-        value = max(0, min(int(value), self.animation_max))
+        value = max(self.min_animation, min(int(value), self.animation_max))
         self.animation = value
         self.Set_Entity_Image()
 
@@ -60,7 +61,7 @@ class Base_Animation_Handler:
         self.Set_Frame(next_value)
 
     def Update_Animation(self, movement, delta_time):
-        if not self.entity.render or self.animation_cooldown_max == 0:
+        if not self.entity.render or not self.animation_enabled:
             return False
         if not self.animation_cooldown_handler.Update_Cooldown(delta_time):
             return False
@@ -73,4 +74,21 @@ class Base_Animation_Handler:
         else:
             self.animation = 0
 
-    
+    def Set_Min_Animation(self, value):
+        self.min_animation = value
+        if self.animation < self.min_animation:
+            self.animation = self.min_animation
+
+    def Set_Static_Animation(self, value):
+        self.aniamtion_cooldown = 0
+        self.animation = value
+        self.animation_enabled = False
+
+    # Animation and cooldown will autoamtically be set to correct value with min and max animation
+    def Enable_Animation(self):
+        self.animation_enabled = True
+
+    def Set_Animation_Cooldown_Max(self, value):
+        self.animation_cooldown_max = float(value)
+        if self.animation_cooldown_max <= 0:
+            self.animation_enabled = False

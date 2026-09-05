@@ -16,6 +16,7 @@ class Brazier(Light_Source):
         super().__init__(game, pos, keys.brazier, version, light_strength=10,
                          animation=start_animation, max_animation=max_animation,
                          animation_cooldown_max=0.8)
+        self.animation_handler.Set_Min_Animation(1)
     
 
     def Update(self, delta_time):
@@ -26,19 +27,24 @@ class Brazier(Light_Source):
     # Turn off the fire
     def Open(self, generate_clatter=False):
         if self.animation > 0:
-            self.animation_handler.Set_Frame(0)
-            self.game.light_handler.Remove_Light(self.light_source)
-            self.light_source = None
+            self._Turn_Off()
         else:
-            if self.light_source:
-                print("BRAZIER Lightsource error", vars(self))
-                return False
-            self.Add_Light()
-            self.animation_handler.Set_Random_Animation()
-            self.Spawn_Fire_Particle()
+            self._Turn_On()
             
         return True
 
+    def _Turn_On(self):
+        if self.light_source:
+            print("BRAZIER Lightsource error", vars(self))
+            return False
+        self.Add_Light()
+        self.animation_handler.Set_Random_Animation()
+        self.Spawn_Fire_Particle()
+
+    def _Turn_Off(self):
+        self.animation_handler.Set_Static_Animation(0)
+        self.game.light_handler.Remove_Light(self.light_source)
+        self.light_source = None
         
     def Update_Animation(self, delta_time, movement=(0, 0)):
         if not super().Update_Animation(delta_time, movement):
