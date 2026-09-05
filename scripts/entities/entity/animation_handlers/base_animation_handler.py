@@ -9,7 +9,7 @@ class Base_Animation_Handler:
         self.animation = 0
         self.min_animation = 0
         self.animation_max = int(animation_max)
-        self.Set_Animation_Cooldown_Max(animation_cooldown_max)
+        self._Set_Animation_Cooldown_Max(animation_cooldown_max)
         self.animation_cooldown_handler = Cooldown_Handler(self.animation_cooldown_max)
 
     @property
@@ -88,7 +88,7 @@ class Base_Animation_Handler:
     def Enable_Animation(self):
         self.animation_enabled = True
 
-    def Set_Animation_Cooldown_Max(self, value):
+    def _Set_Animation_Cooldown_Max(self, value):
         self.animation_cooldown_max = float(value)
         if self.animation_cooldown_max <= 0:
             self.animation_enabled = False

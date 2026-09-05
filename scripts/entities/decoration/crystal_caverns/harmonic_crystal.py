@@ -10,9 +10,6 @@ class Harmonic_Crystal(Decoration):
                          max_animation=4, animation_cooldown_max=1.5)
         self.description = "Harmonic vibrations eminate\n from this crystal"
 
-    def Update(self, delta_time):
-        self.Check_Player_Distance()
-        return super().Update(delta_time)
 
     def Open(self, generate_clatter=False):
         if self.empty:
