@@ -5,6 +5,21 @@ A custom, highly optimized 2D game engine built from scratch in Python and Pygam
 Instead of relying on commercial game engines, this project implements core production patterns—such as spatial partitioning, time-spliced request throttling, lazy-instantiated status matrices, and an adaptive AI Director—directly to practice high-fidelity software engineering and hot-loop optimization.
 
 ---
+## How to Run
+## How to Run
+
+* **Prerequisites:** Python 3.11+ and Pip must be installed in advance.
+* **Install dependencies:**
+  ```powershell
+  # Windows (Python Launcher)
+  py -m pip install -r requirements.txt
+
+  # macOS / Linux
+  python3 -m pip install -r requirements.txt
+  
+* To run the game run py main.py
+* To run the test suite py -m pytest
+---
 
 ## Key Architectural Showcases
 

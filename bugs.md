@@ -1,2 +1,2 @@
-Items soemtimes dissapear from inventory
+Items sometimes dissapear from inventory
 Attack direction not calculated correctly
