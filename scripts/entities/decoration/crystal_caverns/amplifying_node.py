@@ -2,18 +2,21 @@ from scripts.entities.decoration.decoration import Decoration
 from scripts.engine.keys.keys import keys
 from .crystal_caverns_registry import Register_Decoration
 import pygame
+from scripts.engine.utility.rect_handler import Rect_Handler
 
-DEFAULT_TRIGGER_RADIUS = 100  # Pixels padded around each side of the node
+DEFAULT_TRIGGER_RADIUS = 200  # Pixels padded around each side of the node
 
 @Register_Decoration(keys.amplifying_node)
 class Amplifying_Node(Decoration):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.amplifying_node, pos, (32, 32),
-                         max_animation=4, animation_cooldown_max=1.5)
+                         max_animation=4, animation_cooldown_max=1.2)
         self.description = "Resonant energies\nAmplifies Runes"
         self.trigger_radius = DEFAULT_TRIGGER_RADIUS
         self.player_in_range = False
         self.effect_strength = 3
+        self.Configure_Rect_Handlers()
+
 
     def Update(self, delta_time):
         self.Check_Player_Distance()
@@ -21,7 +24,7 @@ class Amplifying_Node(Decoration):
 
     def Check_Player_Distance(self):
         player = self.game.player
-        in_range_now = player.rect().colliderect(self.rect())
+        in_range_now = player.rect().colliderect(self.Rune_Amplification_Rect())
 
         if in_range_now == self.player_in_range:
             return  # No state change — nothing to do
@@ -33,11 +36,9 @@ class Amplifying_Node(Decoration):
             player.Remove_Effect(keys.power, self.effect_strength)
         return
     
+    def Configure_Rect_Handlers(self):
+        rect_size = self.size[0] + (DEFAULT_TRIGGER_RADIUS * 2)
+        self.rune_amplification_radius = Rect_Handler(rect_size, rect_size)
 
-    def rect(self):
-        return pygame.Rect(
-            self.pos[0] - self.trigger_radius,
-            self.pos[1] - self.trigger_radius,
-            self.size[0] + (self.trigger_radius * 2),
-            self.size[1] + (self.trigger_radius * 2)
-        )
+    def Rune_Amplification_Rect(self):
+        return self.rune_amplification_radius.rect(self.pos)

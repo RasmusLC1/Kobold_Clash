@@ -583,8 +583,9 @@ class Graphics_Loader:
 
     def Crystal_Cavern_Decorations(self):
         Objects_assets = {
-            keys.amplifying_node + '_1': get_tiles_from_sheet('decoration\crystal_caverns/amplifying_node.png', 5, 0, 0, 0, 32, 32),
-            keys.harmonic_crystal + '_2': get_tiles_from_sheet('decoration\crystal_caverns/harmonic_crystal.png', 5, 0, 0, 0, 32, 32),
+            keys.amplifying_node: get_tiles_from_sheet('decoration\crystal_caverns/amplifying_node.png', 5, 0, 0, 0, 32, 32),
+            keys.harmonic_crystal: get_tiles_from_sheet('decoration\crystal_caverns/harmonic_crystal.png', 5, 0, 0, 0, 32, 32),
+            keys.crystalisation_shrine: get_tiles_from_sheet('decoration\crystal_caverns/crystalisation_shrine.png', 4, 0, 0, 0, 64, 64)
         }
         self.assets.update(Objects_assets)
 

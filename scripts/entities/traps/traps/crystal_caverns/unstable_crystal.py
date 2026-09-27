@@ -21,15 +21,18 @@ class Unstable_Crystal(Trap):
         super().__init__(game, pos, rendered_image, max_animation=5,
                          animation_cooldown_max=1.2)
 
-        # 2. Immediately define handler attributes so they exist even if light/tile setup fails
-        explosion_size = int(self.size[0] + DEFAULT_TRIGGER_RADIUS * 2)
-        warning_size = self.size[0] + (DEFAULT_TRIGGER_RADIUS * 10) * 2
-        self.explosion_rect_handler = Rect_Handler(explosion_size, explosion_size)
-        self.warning_rect_handler = Rect_Handler(warning_size, warning_size)
+
+        self.Configure_Rect_Handlers()
 
         # 3. Handle lighting/effects after attributes are bound
         self.light_strength = 9
         self.Add_Light()
+
+    def Configure_Rect_Handlers(self):
+        explosion_size = int(self.size[0] + DEFAULT_TRIGGER_RADIUS * 2)
+        warning_size = self.size[0] + (DEFAULT_TRIGGER_RADIUS * 10) * 2
+        self.explosion_rect_handler = Rect_Handler(explosion_size, explosion_size)
+        self.warning_rect_handler = Rect_Handler(warning_size, warning_size)
 
     def Update(self, delta_time):
         self.Check_Player_Distance()

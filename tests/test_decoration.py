@@ -580,3 +580,5 @@ def test_harmonic_crystal_update_does_not_crash(mock_game):
     crystal.animation_handler.animation_cooldown = 999  # avoid unrelated animation branches
 
     crystal.Update(delta_time=0.1)  # should be a no-op passthrough to super()
+
+
