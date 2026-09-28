@@ -50,7 +50,6 @@ class Decoration_Spawner():
 
         self.spawn_methods = None
 
-        self.item_sacrifice = []
 
     def Clear_Decorations(self):
         self.decorations.clear()
@@ -60,9 +59,8 @@ class Decoration_Spawner():
         self.Get_Dungeon_Type()
         self.Generic_Spawn(self.spawn_methods.keys())
         self.Spawn_Lightsource()
-        self.Set_Item_Sacrifice_Decorations()
         self.Link_Teleportation_Circles()
-        return self.decorations, self.item_sacrifice, self.All_Spawn_Methods()
+        return self.decorations, self.All_Spawn_Methods()
 
     def All_Spawn_Methods(self):
         return {**self.spawn_methods, **self.light_source_classes}
@@ -160,7 +158,3 @@ class Decoration_Spawner():
                 teleportation_circles.remove(teleport_circle)
 
 
-    def Set_Item_Sacrifice_Decorations(self):
-        for decoration in self.decorations:
-            if decoration.type in SHRINE_REGISTRY:
-                self.item_sacrifice.append(decoration)

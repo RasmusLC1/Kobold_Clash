@@ -14,6 +14,10 @@ class Shrine(Decoration):
         self.game.player.Set_Last_Shrine(self)
 
 
+    def Check_Item_Collision(self, item):
+        if self.rect().colliderect(item.rect()):
+            return self.Spawn_Reward(item)
+
 class Cycling_Shrine(Shrine):
     """Shrines that continuously loop an idle animation on a randomized cooldown."""
 

@@ -16,7 +16,6 @@ class Decoration_Handler():
 
         self.spawn_methods = None
 
-        self.item_sacrifice = []
 
 
     def Clear_Decorations(self):
@@ -24,7 +23,7 @@ class Decoration_Handler():
         self.saved_data.clear()
 
     def Initialise(self):
-        self.decorations, self.item_sacrifice, self.spawn_methods = self.decoration_spawner.Initialise()
+        self.decorations, self.spawn_methods = self.decoration_spawner.Initialise()
         self.initalised = True
 
 
@@ -185,10 +184,9 @@ class Decoration_Handler():
         return None
  
     def Check_Item_Collision(self, item):
-        for decoration in self.item_sacrifice:
-            if decoration.rect().colliderect(item.rect()):
-                return decoration.Spawn_Reward(item)
-                 
+        for decoration in self.nearby_decorations:
+            if decoration.Check_Item_Collision(item):
+                return True
             
         return False
     

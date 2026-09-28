@@ -61,3 +61,5 @@ class Decoration(PhysicsEntity):
     def Spawn_Reward(self, item):
         pass
 
+    def Check_Item_Collision(self, item):
+        pass

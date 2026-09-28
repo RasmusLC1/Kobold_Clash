@@ -137,37 +137,50 @@ def test_open_decoration_all_bones_opens_nothing(mock_game):
     assert result is False
 
 
-### 4. Item / Decoration collisions (shrine sacrifice flow)
+### 4. Item / Decoration collisions (delegated to nearby decorations)
 
-def test_check_item_collision_triggers_spawn_reward(mock_game):
+def test_check_item_collision_returns_true_when_a_decoration_handles_it(mock_game):
     handler = Decoration_Handler(mock_game)
     shrine = make_decoration(type_=keys.soul_well)
-    shrine.rect.return_value = pygame.Rect(0, 0, 32, 32)
-    handler.item_sacrifice = [shrine]
+    shrine.Check_Item_Collision.return_value = True
+    handler.nearby_decorations = [shrine]
 
     item = MagicMock()
-    item.rect.return_value = pygame.Rect(10, 10, 8, 8)  # overlaps shrine
-    shrine.Spawn_Reward.return_value = True
-
     result = handler.Check_Item_Collision(item)
 
-    shrine.Spawn_Reward.assert_called_once_with(item)
+    shrine.Check_Item_Collision.assert_called_once_with(item)
     assert result is True
 
 
-def test_check_item_collision_no_overlap_returns_false(mock_game):
+def test_check_item_collision_no_hit_returns_false(mock_game):
     handler = Decoration_Handler(mock_game)
     shrine = make_decoration(type_=keys.soul_well)
-    shrine.rect.return_value = pygame.Rect(0, 0, 32, 32)
-    handler.item_sacrifice = [shrine]
+    shrine.Check_Item_Collision.return_value = False
+    handler.nearby_decorations = [shrine]
 
-    item = MagicMock()
-    item.rect.return_value = pygame.Rect(500, 500, 8, 8)  # far away
+    result = handler.Check_Item_Collision(MagicMock())
 
-    result = handler.Check_Item_Collision(item)
-
-    shrine.Spawn_Reward.assert_not_called()
+    shrine.Check_Item_Collision.assert_called_once()
     assert result is False
+
+
+def test_check_item_collision_stops_at_first_hit(mock_game):
+    handler = Decoration_Handler(mock_game)
+    first = make_decoration(ID=1)
+    second = make_decoration(ID=2)
+    first.Check_Item_Collision.return_value = True
+    handler.nearby_decorations = [first, second]
+
+    assert handler.Check_Item_Collision(MagicMock()) is True
+
+    second.Check_Item_Collision.assert_not_called()
+
+
+def test_check_item_collision_with_no_nearby_decorations(mock_game):
+    handler = Decoration_Handler(mock_game)
+    handler.nearby_decorations = []
+
+    assert handler.Check_Item_Collision(MagicMock()) is False
 
 
 ### 5. Decoration_Spawner (instance method on Decoration_Handler) & Load_Data
@@ -300,20 +313,6 @@ def test_link_teleportation_circles_pairs_and_links(spawner):
 
 
 ### 10. Set_Item_Sacrifice_Decorations — shrine registry integration
-
-def test_set_item_sacrifice_decorations_uses_shrine_registry(spawner, monkeypatch):
-    monkeypatch.setattr(
-        "scripts.entities.decoration.decoration_spawner.SHRINE_REGISTRY",
-        [keys.soul_well],
-    )
-    shrine = make_decoration(type_=keys.soul_well)
-    chest = make_decoration(type_="chest")
-    spawner.decorations = [shrine, chest]
-
-    spawner.Set_Item_Sacrifice_Decorations()
-
-    assert spawner.item_sacrifice == [shrine]
-
 
 def test_soul_well_registers_itself_in_shrine_registry():
     """Import-time side effect: Register_Shrine(keys.soul_well) must have populated SHRINE_REGISTRY."""
