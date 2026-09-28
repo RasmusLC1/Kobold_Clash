@@ -547,7 +547,56 @@ def test_harmonic_crystal_open_grants_souls_and_empties(mock_game):
     assert crystal.empty is True
     mock_game.player.Increase_Souls.assert_called_once_with(100)
 
-from scripts.entities.decoration.crystal_caverns.harmonic_crystal import Harmonic_Crystal  # adjust path
+import pygame
+import pytest
+from unittest.mock import MagicMock, patch
+
+from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.crystal_caverns.crystalisation_shrine import Crystalisation_Shrine  # adjust path
+from scripts.entities.decoration.crystal_caverns.harmonic_crystal import Harmonic_Crystal            # adjust path
+from scripts.entities.decoration.crystal_caverns.amplifying_node import Amplifying_Node              # adjust path
+
+
+# ---------------------------------------------------------------------------
+# Harmonic_Crystal
+# ---------------------------------------------------------------------------
+
+def test_harmonic_crystal_starts_not_empty(mock_game):
+    # Fails on the original if Decoration defaults `empty` to True
+    crystal = Harmonic_Crystal(mock_game, (0, 0))
+
+    assert crystal.empty is False
+
+
+def test_harmonic_crystal_open_grants_souls(mock_game):
+    crystal = Harmonic_Crystal(mock_game, (0, 0))
+
+    with patch.object(crystal, "Generate_Sound"):
+        result = crystal.Open()
+
+    assert result is True
+    mock_game.player.Increase_Souls.assert_called_once_with(100)
+
+
+def test_harmonic_crystal_open_marks_empty(mock_game):
+    crystal = Harmonic_Crystal(mock_game, (0, 0))
+
+    with patch.object(crystal, "Generate_Sound"):
+        crystal.Open()
+
+    assert crystal.empty is True
+
+
+def test_harmonic_crystal_second_open_grants_nothing(mock_game):
+    crystal = Harmonic_Crystal(mock_game, (0, 0))
+
+    with patch.object(crystal, "Generate_Sound"):
+        crystal.Open()
+        second = crystal.Open()
+
+    assert second is False
+    assert mock_game.player.Increase_Souls.call_count == 1
+
 
 def test_harmonic_crystal_open_fails_when_already_empty(mock_game):
     crystal = Harmonic_Crystal(mock_game, (0, 0))
@@ -569,12 +618,261 @@ def test_harmonic_crystal_open_generates_sound(mock_game):
     mock_sound.assert_called_once_with(keys.harmonic_crystal, 0.5, 1000)
 
 
+def test_harmonic_crystal_no_sound_when_already_empty(mock_game):
+    crystal = Harmonic_Crystal(mock_game, (0, 0))
+    crystal.empty = True
+
+    with patch.object(crystal, "Generate_Sound") as mock_sound:
+        crystal.Open()
+
+    mock_sound.assert_not_called()
+
+
+def test_harmonic_crystal_cannot_be_farmed_if_sound_raises(mock_game):
+    # Verifies `empty` is set before side effects that can fail (fails on the original)
+    crystal = Harmonic_Crystal(mock_game, (0, 0))
+
+    with patch.object(crystal, "Generate_Sound", side_effect=RuntimeError("audio failure")):
+        with pytest.raises(RuntimeError):
+            crystal.Open()
+
+        crystal.Open()  # second attempt must not pay out again
+
+    assert mock_game.player.Increase_Souls.call_count == 1
+
+
+def test_harmonic_crystal_ignores_generate_clatter_flag(mock_game):
+    crystal = Harmonic_Crystal(mock_game, (0, 0))
+
+    with patch.object(crystal, "Generate_Sound") as mock_sound:
+        crystal.Open(generate_clatter=True)
+
+    mock_sound.assert_called_once_with(keys.harmonic_crystal, 0.5, 1000)
+
+
 def test_harmonic_crystal_update_does_not_crash(mock_game):
-    """Update() no longer references the stray Check_Player_Distance() call —
-    Open() is player-triggered externally, same pattern as Campfire."""
     crystal = Harmonic_Crystal(mock_game, (0, 0))
     crystal.animation_handler.animation_cooldown = 999  # avoid unrelated animation branches
 
-    crystal.Update(delta_time=0.1)  # should be a no-op passthrough to super()
+    crystal.Update(delta_time=0.1)
 
 
+# ---------------------------------------------------------------------------
+# Crystalisation_Shrine
+# ---------------------------------------------------------------------------
+
+def make_gem(amount=3, value=2, sub_category=None):
+    gem = MagicMock()
+    gem.sub_category = keys.gem if sub_category is None else sub_category
+    gem.amount = amount
+    gem.value = value
+    return gem
+
+
+@pytest.fixture
+def shrine(mock_game):
+    return Crystalisation_Shrine(mock_game, (100, 200))
+
+
+def test_shrine_rejects_non_gem(shrine):
+    item = make_gem(sub_category="weapon")
+
+    assert shrine.Check_If_Item_Is_Valid(item) is False
+
+
+def test_shrine_rejects_gem_with_amount_one(shrine):
+    assert shrine.Check_If_Item_Is_Valid(make_gem(amount=1)) is False
+
+
+def test_shrine_rejects_gem_with_amount_zero(shrine):
+    assert shrine.Check_If_Item_Is_Valid(make_gem(amount=0)) is False
+
+
+def test_shrine_accepts_gem_with_amount_two(shrine):
+    assert shrine.Check_If_Item_Is_Valid(make_gem(amount=2)) is True
+
+
+def test_shrine_invalid_item_spawns_nothing_and_keeps_item(shrine, mock_game):
+    item = make_gem(amount=1)
+
+    result = shrine.Spawn_Reward(item)
+
+    assert result is False
+    mock_game.item_handler.Spawn_Item_By_Type.assert_not_called()
+    item.Delete_Item.assert_not_called()
+
+
+def test_shrine_spawns_gem_of_same_rarity(shrine, mock_game):
+    item = make_gem(amount=4, value=3)
+
+    shrine.Spawn_Reward(item)
+
+    kwargs = mock_game.item_handler.Spawn_Item_By_Type.call_args.kwargs
+    assert kwargs["category"] == keys.gem
+    assert kwargs["rarity_value"] == 3
+
+
+def test_shrine_spawn_position_uses_both_axes(shrine, mock_game):
+    # Catches the self.pos[y] NameError, and checks x/y offsets are applied to the right axes
+    item = make_gem()
+
+    with patch("random.randint", side_effect=[5, -7]):
+        shrine.Spawn_Reward(item)
+
+    kwargs = mock_game.item_handler.Spawn_Item_By_Type.call_args.kwargs
+    assert kwargs["pos"] == (105, 193)
+
+
+def test_shrine_spawn_position_stays_within_scatter(shrine, mock_game):
+    item = make_gem()
+
+    for _ in range(50):
+        shrine.Spawn_Reward(item)
+        pos = mock_game.item_handler.Spawn_Item_By_Type.call_args.kwargs["pos"]
+        assert 90 <= pos[0] <= 110
+        assert 190 <= pos[1] <= 210
+
+
+def test_shrine_new_gem_amount_is_one_less(shrine, mock_game):
+    item = make_gem(amount=5)
+    new_gem = mock_game.item_handler.Spawn_Item_By_Type.return_value
+
+    shrine.Spawn_Reward(item)
+
+    new_gem.Set_Amount.assert_called_once_with(4)
+
+
+def test_shrine_deletes_original_on_success(shrine):
+    item = make_gem()
+
+    shrine.Spawn_Reward(item)
+
+    item.Delete_Item.assert_called_once()
+
+
+def test_shrine_returns_true_on_success(shrine):
+    assert shrine.Spawn_Reward(make_gem()) is True
+
+
+def test_shrine_spawn_failure_keeps_original_and_returns_false(shrine, mock_game):
+    mock_game.item_handler.Spawn_Item_By_Type.return_value = None
+    item = make_gem()
+
+    result = shrine.Spawn_Reward(item)
+
+    assert result is False
+    item.Delete_Item.assert_not_called()
+    item.Set_Amount.assert_not_called()
+
+
+def test_shrine_description(shrine):
+    assert shrine.description == "Trade gem for another"
+
+
+# ---------------------------------------------------------------------------
+# Amplifying_Node
+# ---------------------------------------------------------------------------
+
+@pytest.fixture
+def node(mock_game):
+    return Amplifying_Node(mock_game, (500, 500))
+
+
+def set_player_in_range(node, mock_game, in_range):
+    """Force the overlap result without depending on Rect_Handler geometry."""
+    area = pygame.Rect(0, 0, 100, 100)
+    mock_game.player.rect.return_value = (
+        pygame.Rect(10, 10, 10, 10) if in_range else pygame.Rect(900, 900, 10, 10)
+    )
+    return patch.object(node, "Rune_Amplification_Rect", return_value=area)
+
+
+def test_node_starts_out_of_range_with_nothing_applied(node):
+    assert node.player_in_range is False
+    assert node.applied_strength == 0
+
+
+def test_node_applies_effect_on_entering_range(node, mock_game):
+    with set_player_in_range(node, mock_game, True):
+        node.Check_Player_Distance()
+
+    mock_game.player.Set_Effect.assert_called_once_with(keys.power, 3, True)
+    assert node.player_in_range is True
+
+
+def test_node_does_not_reapply_while_staying_in_range(node, mock_game):
+    with set_player_in_range(node, mock_game, True):
+        node.Check_Player_Distance()
+        node.Check_Player_Distance()
+        node.Check_Player_Distance()
+
+    assert mock_game.player.Set_Effect.call_count == 1
+
+
+def test_node_does_nothing_while_staying_out_of_range(node, mock_game):
+    with set_player_in_range(node, mock_game, False):
+        node.Check_Player_Distance()
+        node.Check_Player_Distance()
+
+    mock_game.player.Set_Effect.assert_not_called()
+    mock_game.player.Remove_Effect.assert_not_called()
+
+
+def test_node_removes_effect_on_leaving_range(node, mock_game):
+    with set_player_in_range(node, mock_game, True):
+        node.Check_Player_Distance()
+    with set_player_in_range(node, mock_game, False):
+        node.Check_Player_Distance()
+
+    mock_game.player.Remove_Effect.assert_called_once_with(keys.power, 3)
+    assert node.player_in_range is False
+
+
+def test_node_removes_the_amount_it_applied_if_strength_changes(node, mock_game):
+    # Fails on the original, which removes self.effect_strength at exit time
+    with set_player_in_range(node, mock_game, True):
+        node.Check_Player_Distance()
+
+    node.effect_strength = 10
+
+    with set_player_in_range(node, mock_game, False):
+        node.Check_Player_Distance()
+
+    mock_game.player.Remove_Effect.assert_called_once_with(keys.power, 3)
+
+
+def test_node_can_reapply_after_leaving_and_reentering(node, mock_game):
+    for in_range in (True, False, True):
+        with set_player_in_range(node, mock_game, in_range):
+            node.Check_Player_Distance()
+
+    assert mock_game.player.Set_Effect.call_count == 2
+    assert mock_game.player.Remove_Effect.call_count == 1
+
+
+def test_node_remove_amplification_is_noop_when_not_applied(node, mock_game):
+    node.Remove_Amplification()
+
+    mock_game.player.Remove_Effect.assert_not_called()
+
+
+def test_node_remove_amplification_cleans_up_when_active(node, mock_game):
+    # This is the hook to call from removal/unload paths
+    with set_player_in_range(node, mock_game, True):
+        node.Check_Player_Distance()
+
+    node.Remove_Amplification()
+
+    mock_game.player.Remove_Effect.assert_called_once_with(keys.power, 3)
+    assert node.player_in_range is False
+    assert node.applied_strength == 0
+
+
+def test_node_remove_amplification_is_idempotent(node, mock_game):
+    with set_player_in_range(node, mock_game, True):
+        node.Check_Player_Distance()
+
+    node.Remove_Amplification()
+    node.Remove_Amplification()
+
+    assert mock_game.player.Remove_Effect.call_count

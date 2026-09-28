@@ -239,4 +239,4 @@ class Item_Handler():
         return self.loot_handler.Check_If_Loot_Is_Affordable(item_types, rarity_value)
     
     def Spawn_Item_By_Type(self, category, pos, type = None, rarity_value = 0):
-        self.loot_handler.Spawn_Loot_Type(category, pos, type = type, rarity_value = rarity_value)
+        return self.loot_handler.Spawn_Loot_Type(category, pos, type = type, rarity_value = rarity_value)
