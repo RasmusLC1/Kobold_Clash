@@ -42,23 +42,16 @@ class Bookshelf(Loot_Container):
 
 
     def Select_Available_Rune(self):
-        # Get the rune object using the random key
         runes = self.Adjust_Rune_Weight()
+        if not runes:
+            return False  # every rune is already active; nothing to spawn
 
-        counter = 0
-        rune_handler = self.game.item_handler.rune_handler
-        rune_type = None
-        rune_active = False
         rune_type = random.choices(
-                population=list(runes.keys()),
-                weights=list(runes.values()),
-                k=1
-            )[0]
+            population=list(runes.keys()),
+            weights=list(runes.values()),
+            k=1
+        )[0]
 
-        # if not rune_type:
-        #     print("UNIQUE RUNE NOT FOUND BOOKSHELF")
-        #     return self.Select_Available_Rune(keys.recipe_scroll, self.Get_Pos())
-        
         self.Spawn_Rune(rune_type)
         return True
 
@@ -120,6 +113,8 @@ class Bookshelf(Loot_Container):
                 if damage_rune in runes:
                     runes[damage_rune] += 0.1
 
+        rune_handler = self.game.item_handler.rune_handler
+        runes = {r: w for r, w in runes.items() if not rune_handler.Check_If_Rune_Is_Active(r)}
         return runes
         
     

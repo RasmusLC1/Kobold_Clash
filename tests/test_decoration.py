@@ -335,16 +335,12 @@ def test_effigy_tomb_forced_enemy_override(mock_game):
 # reach them yet. Flagging rather than asserting the integration until the
 # override is added (see review notes).
 
-def test_bookshelf_select_available_rune_avoids_active_runes(mock_game):
+def test_bookshelf_spawns_nothing_when_all_runes_active(mock_game):
     shelf = Bookshelf(mock_game, (0, 0))
-    shelf.Get_Loot_Types()  # populate loot_categories / weights until this is wired into __init__
+    mock_game.item_handler.rune_handler.Check_If_Rune_Is_Active.return_value = True
 
-    mock_game.item_handler.rune_handler.Check_If_Rune_Is_Active.side_effect = [True, False]
-
-    with patch("random.choices", side_effect=[[keys.dash_rune], [keys.healing_rune]]):
-        shelf.Select_Available_Rune()
-
-    mock_game.item_handler.Spawn_Rune.assert_called_once_with(keys.healing_rune, shelf.Get_Pos.__self__.pos if False else shelf.Get_Pos())
+    assert shelf.Select_Available_Rune() is False
+    mock_game.item_handler.Spawn_Rune.assert_not_called()
 
 
 def test_bookshelf_spawn_loot_routes_curse_category(mock_game):

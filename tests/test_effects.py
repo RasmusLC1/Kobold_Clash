@@ -76,13 +76,6 @@ def test_effect_data_serialization_integrity(mock_entity):
     assert save_payload['permanent'] == 4 
 
 
-
-@pytest.fixture
-def handler(mock_entity):
-    """Instantiates a status effect handler targeted onto the mock entity."""
-    return Status_Effect_Handler(mock_entity)
-
-
 # --- 1. Status Effect Handler Component Tests ---
 
 def test_handler_initialization(handler, mock_entity):
@@ -160,14 +153,16 @@ def test_fire_damage_amplification_math(mock_entity):
     assert mock_entity.Set_Health.called
     mock_entity.Set_Health.assert_called_with(100 - 25)
 
-def test_invisibility_render_modification_pipeline(handler, mock_entity):
-    """Ensures invisibility sets dynamic transparency settings based on strength."""
-    original_active = mock_entity.active
-    handler.Set_Effect(keys.invisibility, duration=5)
-    handler.Update_Status_Effects(delta_time=5)
-    
-    # Math calculation test: 110 - (5 * 10) = 60 alpha transparency
-    assert mock_entity.active == original_active - 50
+
+def test_invisibility_update_sets_alpha_from_strength(mock_entity):
+    effect = Invisibility(mock_entity)
+    assert effect.Set_Effect(5) is True
+    mock_entity.Set_Active_Ability.assert_called_once_with(keys.invisibility)
+
+    effect.effect_cooldown_handler.Set_Cooldown(999)  # stop the strength ticking down
+    effect.Update_Effect(delta_time=0)
+
+    assert mock_entity.active == 60  # 110 - 5 * 10
     assert mock_entity.render_needs_update is True
 
 def test_weakness_melee_reduction_boundaries(handler, mock_entity):
