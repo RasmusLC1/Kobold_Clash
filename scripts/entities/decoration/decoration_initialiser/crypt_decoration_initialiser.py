@@ -25,4 +25,4 @@ class Crypt_Decoration_Initialiser(Decoration_Initialiser):
         self.Find_Floor_Tiles_Large_Object(keys.sacrifice_shrine, 1)
 
     def Spawn_Blood_Shrine(self):
-        self.Find_Floor_Tiles_Large_Object(keys.blood_shrine, 1, True)
+        self.Find_Floor_Tiles_Large_Object(keys.blood_shrine, 1, check_for_path_to_player=True)

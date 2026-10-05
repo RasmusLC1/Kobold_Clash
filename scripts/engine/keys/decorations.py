@@ -60,6 +60,8 @@ class Decorations():
 
     plinth = "plinth"
 
+    crystal_plinth = "crystal_plinth"
+
     loot_container = "loot_container"
 
     vase = "vase"

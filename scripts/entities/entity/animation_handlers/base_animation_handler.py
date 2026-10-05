@@ -80,7 +80,7 @@ class Base_Animation_Handler:
             self.animation = self.min_animation
 
     def Set_Static_Animation(self, value):
-        self.aniamtion_cooldown = 0
+        self.animation_cooldown = 0
         self.animation = value
         self.animation_enabled = False
 
