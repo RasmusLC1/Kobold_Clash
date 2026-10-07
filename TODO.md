@@ -467,7 +467,7 @@ Upgrade weapons
     # Crystal plinths, contains gems
     # Harmonic crystal, activate to generate souls, but generate clatter
     # Crystal Fountains gives player damage resistance when interacted with
-    - Crystalisation shrine, give a gem and return a random one in return with negative 1 effectiveness, trade in low value gem for potential to get better gem
+    # Crystalisation shrine, give a gem and return a random one in return with negative 1 effectiveness, trade in low value gem for potential to get better gem
     - Crystal Alter, Sacrifice a gem for buff, scales with the quality of the gem
     - Weapon shrine, pay souls to bind gems to weapons for bonuses increased bonuses
     - Fragile walls, can be broken by hitting with blunt weapons, acts as doors
