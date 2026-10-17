@@ -11,7 +11,7 @@ class Tiles():
     wall_top = "wall_top"
     
 
-    # Crypt
+    # Ancient_Tomb
     crypt_floor = "crypt_floor"
     crypt_wall_top = "crypt_wall_top"
     crypt_wall_left = "crypt_wall_left"

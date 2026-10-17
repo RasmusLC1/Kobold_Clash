@@ -83,13 +83,13 @@ class Graphics_Loader:
 
     def Asset_Crypt_Tile_List(self):
         tiles_assets = {
-            keys.crypt_floor : get_tiles_from_sheet('tile_set/crypt/floor.png', 5, 1, 0, 0, 32, 32),
-            keys.crypt_wall_top : get_tiles_from_sheet('tile_set/crypt/wall_top.png', 3, 0, 0, 0, 32, 32),
-            keys.crypt_wall_left : get_tiles_from_sheet('tile_set/crypt/wall_left.png', 0, 3, 0, 0, 32, 32),
-            keys.crypt_wall_right : get_tiles_from_sheet('tile_set/crypt/wall_right.png', 0, 3, 0, 0, 32, 32),
-            keys.crypt_wall_middle : get_tiles_from_sheet('tile_set/crypt/wall_middle.png', 0, 3, 0, 0, 32, 32),
-            keys.crypt_wall_bottom : get_tiles_from_sheet('tile_set/crypt/wall_bottom.png', 3, 0, 0, 0, 32, 32),
-            keys.crypt_wall_bottom_corner : get_tiles_from_sheet('tile_set/crypt/wall_bottom_corner.png', 2, 0, 0, 0, 32, 32),
+            keys.crypt_floor : get_tiles_from_sheet('tile_set/ancient_tomb/floor.png', 5, 1, 0, 0, 32, 32),
+            keys.crypt_wall_top : get_tiles_from_sheet('tile_set/ancient_tomb/wall_top.png', 3, 0, 0, 0, 32, 32),
+            keys.crypt_wall_left : get_tiles_from_sheet('tile_set/ancient_tomb/wall_left.png', 0, 3, 0, 0, 32, 32),
+            keys.crypt_wall_right : get_tiles_from_sheet('tile_set/ancient_tomb/wall_right.png', 0, 3, 0, 0, 32, 32),
+            keys.crypt_wall_middle : get_tiles_from_sheet('tile_set/ancient_tomb/wall_middle.png', 0, 3, 0, 0, 32, 32),
+            keys.crypt_wall_bottom : get_tiles_from_sheet('tile_set/ancient_tomb/wall_bottom.png', 3, 0, 0, 0, 32, 32),
+            keys.crypt_wall_bottom_corner : get_tiles_from_sheet('tile_set/ancient_tomb/wall_bottom_corner.png', 2, 0, 0, 0, 32, 32),
         }
         self.assets.update(tiles_assets)
 

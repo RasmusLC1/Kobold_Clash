@@ -1,4 +1,4 @@
-from scripts.entities.moving_entities.enemies.crypt.void_spawn.void_spawn import Void_Spawn
+from scripts.entities.moving_entities.enemies.ancient_tomb.void_spawn.void_spawn import Void_Spawn
 from scripts.engine.keys.keys import keys
 
 class Rift_Stalker(Void_Spawn):

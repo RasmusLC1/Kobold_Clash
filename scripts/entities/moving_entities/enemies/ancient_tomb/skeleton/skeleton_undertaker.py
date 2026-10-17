@@ -1,5 +1,5 @@
 from scripts.entities.items.weapons.enemy_weapons.claw import Claw
-from scripts.entities.moving_entities.enemies.crypt.skeleton.skeleton import Skeleton
+from scripts.entities.moving_entities.enemies.ancient_tomb.skeleton.skeleton import Skeleton
 from scripts.engine.keys.keys import keys
 
 import random

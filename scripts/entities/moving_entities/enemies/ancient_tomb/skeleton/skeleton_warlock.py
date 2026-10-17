@@ -1,4 +1,4 @@
-from scripts.entities.moving_entities.enemies.crypt.skeleton.skeleton import Skeleton
+from scripts.entities.moving_entities.enemies.ancient_tomb.skeleton.skeleton import Skeleton
 from scripts.entities.items.weapons.close_combat.staff import Staff
 from scripts.engine.keys.keys import keys
 

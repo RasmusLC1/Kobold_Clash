@@ -411,7 +411,7 @@ Upgrade weapons
     # Wraith, immune to physical attacks, pathfinds directly to the target, phasing through walls, low damage but steals soul (player mana), high speed and low health
     # Shade, immune to physical attacks, will always pathfind towards player, medium damage, low speed, low health
     # Vampire, boss, life steal, flying bat form when travelling, close combat
-    # Crypt Ghoul, bone club, fast and high damage, but glass cannon
+    # Ancient_Tomb Ghoul, bone club, fast and high damage, but glass cannon
 
 ### Traps
     - # Soul bind, disables player healing and spawns item (soul shard) that needs to be found to enable healing again

@@ -1,4 +1,4 @@
-from scripts.entities.moving_entities.enemies.crypt.dwellers.dweller import Dweller
+from scripts.entities.moving_entities.enemies.ancient_tomb.dwellers.dweller import Dweller
 from scripts.engine.keys.keys import keys
 from scripts.entities.items.weapons.enemy_weapons.claw import Claw
 
