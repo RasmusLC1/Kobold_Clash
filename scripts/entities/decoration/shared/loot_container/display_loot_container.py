@@ -11,8 +11,9 @@ class Display_Loot_Container(Loot_Container):
 
         
     def Update(self, delta_time):
-        if self.Calculate_Distance():
+        if not self.empty and self.Calculate_Distance():
             self.Drop_Loot()
+            self.empty = True
         return super().Update(delta_time)
 
     def Drop_Loot(self):

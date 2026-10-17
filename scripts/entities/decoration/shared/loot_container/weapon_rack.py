@@ -10,3 +10,4 @@ class Weapon_rack(Display_Loot_Container):
 
     def Drop_Loot(self):
         self.game.item_handler.Spawn_Weapon((self.pos[0], self.pos[1] - 3))
+        

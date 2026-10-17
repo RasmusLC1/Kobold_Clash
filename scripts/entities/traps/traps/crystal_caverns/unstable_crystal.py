@@ -9,7 +9,7 @@ CLATTER_RANGE = 500
 DEFAULT_TRIGGER_RADIUS = 10  # Pixels padded around each side of the crystal
 
 # Mimics a normal light crystal but explodes if you get to close
-@register_trap(keys.unstable_crystal, 10.1)
+@register_trap(keys.unstable_crystal, 0.1)
 class Unstable_Crystal(Trap):
     def __init__(self, game, pos):
         self.damage = 5
