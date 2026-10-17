@@ -391,7 +391,7 @@
 # @pytest.fixture
 # def mock_dungeon_game():
 #     game = MagicMock()
-#     game.dungeon_type = keys.ancient_crypt
+#     game.dungeon_type = keys.ancient_tomb
 #     return game
 
 

@@ -20,14 +20,14 @@ def mock_game_context():
     """
     game = MagicMock()
     game.depth = 1
-    game.dungeon_type = keys.ancient_crypt  # Expected by Set_Dungeon_Type mapping
+    game.dungeon_type = keys.ancient_tomb  # Expected by Set_Dungeon_Type mapping
     game.total_time = 0.0
     
     # Setup dummy graphic structures to satisfy component rendering requirements
     mock_surface = pygame.Surface((32, 32))
     game.assets = {
-        "crypt_floor": {0: mock_surface, 1: mock_surface},
-        "crypt_wall": {0: mock_surface}
+        "ancient_tomb_floor": {0: mock_surface, 1: mock_surface},
+        "ancient_tomb_wall": {0: mock_surface}
     }
     
     # Stub core coordination engines used during search pathways
@@ -58,7 +58,7 @@ def test_tilemap_initialization_bounds(empty_tilemap):
 def test_generate_tile_tracks_boundaries_and_subtypes(empty_tilemap):
     """Validates that bounds recalculate correctly and subtypes parse configuration string arrays."""
     # Set dungeon context configuration
-    empty_tilemap.Set_Dungeon_Type()  # sets dungeon_type to "crypt_"
+    empty_tilemap.Set_Dungeon_Type()  # sets dungeon_type to "ancient_tomb_"
     
     tile_values = {
         keys.type: "floor",
@@ -74,7 +74,7 @@ def test_generate_tile_tracks_boundaries_and_subtypes(empty_tilemap):
     assert empty_tilemap.max_x == 10
     assert empty_tilemap.min_y == -5
     assert empty_tilemap.max_y == -5
-    assert tile.sub_type == "crypt_floor"
+    assert tile.sub_type == "ancient_tomb_floor"
     assert tile.physics is False
 
 
@@ -155,14 +155,14 @@ def test_extract_removes_grid_tiles_and_severs_neighbor_references(empty_tilemap
 
 def test_tile_slots_override_attributes(mock_game_context):
     """Confirms strict compliance with slot layouts to check memory control handles."""
-    tile = Tile(mock_game_context, "floor", "crypt_floor", 0, (0, 0), 0, 0, False, True)
+    tile = Tile(mock_game_context, "floor", "ancient_tomb_floor", 0, (0, 0), 0, 0, False, True)
     with pytest.raises(AttributeError):
         tile.custom_runtime_field = "invalid_mutation"
 
 
 def test_tile_lighting_contributions(mock_game_context):
     """Tests non-linear lighting levels calculate maximum brightness maps correctly."""
-    tile = Tile(mock_game_context, "floor", "crypt_floor", 0, (0, 0), 0, 0, False, True)
+    tile = Tile(mock_game_context, "floor", "ancient_tomb_floor", 0, (0, 0), 0, 0, False, True)
     
     tile.Add_Light_Contribution("light_A", 100)
     tile.Add_Light_Contribution("light_B", 180)
@@ -178,7 +178,7 @@ def test_tile_navigation_distance_caching(mock_game_context):
     """Validates distance caching: cached within the 0.5s window for an unchanged
     target position, but recomputed immediately if the target position changes,
     and recomputed once the 0.5s window elapses regardless."""
-    tile = Tile(mock_game_context, "floor", "crypt_floor", 0, (0, 0), 0, 0, False, True)
+    tile = Tile(mock_game_context, "floor", "ancient_tomb_floor", 0, (0, 0), 0, 0, False, True)
 
     mock_game_context.total_time = 0.0
     mock_game_context.player = MagicMock()

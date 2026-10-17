@@ -15,7 +15,7 @@ TILESIZE = 32
 TRAP_DENSITY = 30  # Lower = more traps
 
 DUNGEON_TRAP_REGISTRIES = {
-    keys.ancient_crypt: ancient_tomb_trap_registry,
+    keys.ancient_tomb: ancient_tomb_trap_registry,
     keys.crystal_caverns: crystal_cavern_trap_registry,
 }
 

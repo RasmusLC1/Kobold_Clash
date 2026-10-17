@@ -122,7 +122,7 @@ class Level_Structure():
     
 
     def Set_Dungeon_Type(self):
-        if self.game.dungeon_type == keys.ancient_crypt:
+        if self.game.dungeon_type == keys.ancient_tomb:
             self.floor = keys.floor
             self.wall_left = keys.wall_left
             self.wall_right = keys.wall_right

@@ -1,4 +1,4 @@
-from scripts.entities.moving_entities.enemies.ancient_tomb.crypt_spawn import Crypt_Spawn
+from scripts.entities.moving_entities.enemies.ancient_tomb.ancient_tomb_spawn import Ancient_Tomb_Spawn
 from scripts.entities.moving_entities.enemies.crystal_caverns.crystal_cavern_spawn import Crystal_Cavern_Spawn
 from scripts.entities.moving_entities.enemies.enemy_pathfinding_handler import Enemy_Pathfinding_Handler
 from scripts.entities.moving_entities.enemies.clatter_subscription import Clatter_Subscription
@@ -68,7 +68,7 @@ class Enemy_Handler():
 
     def Set_Spawner_Type(self):
         spawner_types = {
-            keys.ancient_crypt : Crypt_Spawn,
+            keys.ancient_tomb : Ancient_Tomb_Spawn,
             keys.crystal_caverns : Crystal_Cavern_Spawn
         }
         spawner_type = spawner_types.get(self.game.dungeon_type)

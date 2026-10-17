@@ -120,7 +120,7 @@ class Tilemap:
 
     def Set_Dungeon_Type(self):
         dungeon_types = {
-            keys.ancient_crypt : "crypt_",
+            keys.ancient_tomb : "ancient_tomb_",
             keys.crystal_caverns : "crystal_cavern_",
         }
         self.dungeon_type = dungeon_types.get(self.game.dungeon_type)

@@ -60,7 +60,7 @@ def mock_game():
     game.player.pos = [100.0, 100.0]
     game.tilemap = MagicMock()
     game.tilemap.tile_size = 32         
-    game.dungeon_type = keys.ancient_crypt
+    game.dungeon_type = keys.ancient_tomb
     game.entities_render = MagicMock()
     return game
 

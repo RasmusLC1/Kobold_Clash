@@ -86,7 +86,7 @@ class Game_Types():
 
 # Dungeon Types
 
-    ancient_crypt = "ancient_crypt"
+    ancient_tomb = "ancient_tomb"
 
     crystal_caverns = "crystal_caverns"
 

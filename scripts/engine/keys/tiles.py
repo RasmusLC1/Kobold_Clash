@@ -12,13 +12,13 @@ class Tiles():
     
 
     # Ancient_Tomb
-    crypt_floor = "crypt_floor"
-    crypt_wall_top = "crypt_wall_top"
-    crypt_wall_left = "crypt_wall_left"
-    crypt_wall_right = "crypt_wall_right"
-    crypt_wall_middle = "crypt_wall_middle"
-    crypt_wall_bottom = "crypt_wall_bottom"
-    crypt_wall_bottom_corner = "crypt_wall_bottom_corner"
+    ancient_tomb_floor = "ancient_tomb_floor"
+    ancient_tomb_wall_top = "ancient_tomb_wall_top"
+    ancient_tomb_wall_left = "ancient_tomb_wall_left"
+    ancient_tomb_wall_right = "ancient_tomb_wall_right"
+    ancient_tomb_wall_middle = "ancient_tomb_wall_middle"
+    ancient_tomb_wall_bottom = "ancient_tomb_wall_bottom"
+    ancient_tomb_wall_bottom_corner = "ancient_tomb_wall_bottom_corner"
 
 
     # Crystal Cavern

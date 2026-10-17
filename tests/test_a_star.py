@@ -36,7 +36,7 @@ def make_mock_tile(type_val, sub_type_val, touching_wall=False, trap=None, physi
     """
     Build a tile mock that mirrors what Tilemap.Generate_Tile produces.
     type      → raw key e.g. keys.floor  (what Build_Standard_Map must check)
-    sub_type  → prefixed e.g. "crypt_floor" (what sub_type actually contains)
+    sub_type  → prefixed e.g. "ancient_tomb_floor" (what sub_type actually contains)
     """
     tile = MagicMock()
     tile.type = type_val
@@ -95,7 +95,7 @@ class TestStandardMapBuild:
     Build_Standard_Map to mark every tile as blocked (all 1s).
 
     The rule must use  t.type == keys.floor  NOT  t.sub_type == keys.floor,
-    because sub_type is a dungeon-prefixed string like "crypt_floor".
+    because sub_type is a dungeon-prefixed string like "ancient_tomb_floor".
     """
 
     def _make_game_with_tiles(self, tiles_by_pos):
@@ -112,7 +112,7 @@ class TestStandardMapBuild:
         """
         tile = make_mock_tile(
             type_val=keys.floor,
-            sub_type_val="crypt_floor",   # realistic prefixed value
+            sub_type_val="ancient_tomb_floor",   # realistic prefixed value
             touching_wall=False,
             trap=None,
         )
@@ -128,7 +128,7 @@ class TestStandardMapBuild:
     def test_wall_tile_is_impassable(self):
         tile = make_mock_tile(
             type_val="wall",
-            sub_type_val="crypt_wall",
+            sub_type_val="ancient_tomb_wall",
             touching_wall=False,
         )
         game = self._make_game_with_tiles({(0, 0): tile})
@@ -139,7 +139,7 @@ class TestStandardMapBuild:
     def test_floor_touching_wall_is_impassable(self):
         tile = make_mock_tile(
             type_val=keys.floor,
-            sub_type_val="crypt_floor",
+            sub_type_val="ancient_tomb_floor",
             touching_wall=True,
         )
         game = self._make_game_with_tiles({(0, 0): tile})
@@ -150,7 +150,7 @@ class TestStandardMapBuild:
     def test_trapped_floor_tile_is_impassable(self):
         tile = make_mock_tile(
             type_val=keys.floor,
-            sub_type_val="crypt_floor",
+            sub_type_val="ancient_tomb_floor",
             touching_wall=False,
             trap=MagicMock(),  # any truthy trap
         )
@@ -162,7 +162,7 @@ class TestStandardMapBuild:
     def test_standard_map_not_all_ones_for_valid_floor(self):
         """Catches the exact symptom: every cell being 1 (all blocked)."""
         tiles = {
-            (x, y): make_mock_tile(keys.floor, "crypt_floor")
+            (x, y): make_mock_tile(keys.floor, "ancient_tomb_floor")
             for x in range(3) for y in range(3)
         }
         game = self._make_game_with_tiles(tiles)
@@ -395,9 +395,9 @@ class TestCoordinateOffsets:
         calling a_star_search — if they are 0 the subtraction is a no-op and
         world coords get passed in raw, causing is_valid to fail immediately.
         """
-        tile = make_mock_tile(keys.floor, "crypt_floor")
+        tile = make_mock_tile(keys.floor, "ancient_tomb_floor")
         tile.pos = (10, 5)
-        tile.sub_type = "crypt_floor"
+        tile.sub_type = "ancient_tomb_floor"
         tile.type = keys.floor
         tile.trap = None
         tile.touching_wall = False
@@ -418,8 +418,8 @@ class TestCoordinateOffsets:
         return [] — this is the exact symptom of the missing subtraction bug.
         """
         tiles = {
-            (10, 5): make_mock_tile(keys.floor, "crypt_floor"),
-            (11, 5): make_mock_tile(keys.floor, "crypt_floor"),
+            (10, 5): make_mock_tile(keys.floor, "ancient_tomb_floor"),
+            (11, 5): make_mock_tile(keys.floor, "ancient_tomb_floor"),
         }
         game = MagicMock()
         game.tilemap.Get_Pos.return_value = list(tiles.keys())
@@ -436,8 +436,8 @@ class TestCoordinateOffsets:
     def test_offset_coords_succeed(self):
         """After subtracting min_x/min_y the same path must be found."""
         tiles = {
-            (10, 5): make_mock_tile(keys.floor, "crypt_floor"),
-            (11, 5): make_mock_tile(keys.floor, "crypt_floor"),
+            (10, 5): make_mock_tile(keys.floor, "ancient_tomb_floor"),
+            (11, 5): make_mock_tile(keys.floor, "ancient_tomb_floor"),
         }
         game = MagicMock()
         game.tilemap.Get_Pos.return_value = list(tiles.keys())
@@ -454,8 +454,8 @@ class TestCoordinateOffsets:
 
     def test_result_path_can_be_re_offset(self):
         """After finding a path, adding min_x/min_y back must yield world coords."""
-        tiles = {(10, 5): make_mock_tile(keys.floor, "crypt_floor"),
-                 (11, 5): make_mock_tile(keys.floor, "crypt_floor")}
+        tiles = {(10, 5): make_mock_tile(keys.floor, "ancient_tomb_floor"),
+                 (11, 5): make_mock_tile(keys.floor, "ancient_tomb_floor")}
         game = MagicMock()
         game.tilemap.Get_Pos.return_value = list(tiles.keys())
         game.tilemap.Current_Tile.side_effect = lambda pos: tiles.get(pos)

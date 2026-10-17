@@ -17,7 +17,7 @@ from scripts.entities.moving_entities.enemies.ancient_tomb.skeleton.wight_king i
 from scripts.entities.moving_entities.enemies.enemy_spawner import Enemy_Spawner
 from scripts.engine.keys.keys import keys
 
-class Crypt_Spawn(Enemy_Spawner):
+class Ancient_Tomb_Spawn(Enemy_Spawner):
     def __init__(self, game):
         spawn_methods = {
             keys.skeleton_warrior: Skeleton_Warrior,

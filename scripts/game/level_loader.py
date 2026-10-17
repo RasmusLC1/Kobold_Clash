@@ -72,7 +72,7 @@ class Level_Loader():
     # Set the dungeon type
     def Select_Dungeon_Type(self):
         dungeon_types = [
-            # keys.ancient_crypt,
+            # keys.ancient_tomb,
             keys.crystal_caverns,
         ]
         self.game.dungeon_type = random.choice(dungeon_types)

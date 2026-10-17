@@ -6,7 +6,7 @@ from scripts.engine.keys.keys import keys
 class Graphics_Loader:
     def Run_All(self):
         Graphics_Loader.Asset_Background_List(self)
-        Graphics_Loader.Asset_Crypt_Tile_List(self)
+        Graphics_Loader.Asset_Ancient_Tomb_Tile_List(self)
         Graphics_Loader.Asset_Crystal_Cavern_Tile_List(self)
         Graphics_Loader.Asset_Trap_List(self)
         Graphics_Loader.Asset_Effect_List(self)
@@ -81,15 +81,15 @@ class Graphics_Loader:
         self.assets.update(new_assets)
 
 
-    def Asset_Crypt_Tile_List(self):
+    def Asset_Ancient_Tomb_Tile_List(self):
         tiles_assets = {
-            keys.crypt_floor : get_tiles_from_sheet('tile_set/ancient_tomb/floor.png', 5, 1, 0, 0, 32, 32),
-            keys.crypt_wall_top : get_tiles_from_sheet('tile_set/ancient_tomb/wall_top.png', 3, 0, 0, 0, 32, 32),
-            keys.crypt_wall_left : get_tiles_from_sheet('tile_set/ancient_tomb/wall_left.png', 0, 3, 0, 0, 32, 32),
-            keys.crypt_wall_right : get_tiles_from_sheet('tile_set/ancient_tomb/wall_right.png', 0, 3, 0, 0, 32, 32),
-            keys.crypt_wall_middle : get_tiles_from_sheet('tile_set/ancient_tomb/wall_middle.png', 0, 3, 0, 0, 32, 32),
-            keys.crypt_wall_bottom : get_tiles_from_sheet('tile_set/ancient_tomb/wall_bottom.png', 3, 0, 0, 0, 32, 32),
-            keys.crypt_wall_bottom_corner : get_tiles_from_sheet('tile_set/ancient_tomb/wall_bottom_corner.png', 2, 0, 0, 0, 32, 32),
+            keys.ancient_tomb_floor : get_tiles_from_sheet('tile_set/ancient_tomb/floor.png', 5, 1, 0, 0, 32, 32),
+            keys.ancient_tomb_wall_top : get_tiles_from_sheet('tile_set/ancient_tomb/wall_top.png', 3, 0, 0, 0, 32, 32),
+            keys.ancient_tomb_wall_left : get_tiles_from_sheet('tile_set/ancient_tomb/wall_left.png', 0, 3, 0, 0, 32, 32),
+            keys.ancient_tomb_wall_right : get_tiles_from_sheet('tile_set/ancient_tomb/wall_right.png', 0, 3, 0, 0, 32, 32),
+            keys.ancient_tomb_wall_middle : get_tiles_from_sheet('tile_set/ancient_tomb/wall_middle.png', 0, 3, 0, 0, 32, 32),
+            keys.ancient_tomb_wall_bottom : get_tiles_from_sheet('tile_set/ancient_tomb/wall_bottom.png', 3, 0, 0, 0, 32, 32),
+            keys.ancient_tomb_wall_bottom_corner : get_tiles_from_sheet('tile_set/ancient_tomb/wall_bottom_corner.png', 2, 0, 0, 0, 32, 32),
         }
         self.assets.update(tiles_assets)
 

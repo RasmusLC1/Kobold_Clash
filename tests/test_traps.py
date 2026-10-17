@@ -374,8 +374,8 @@ class TestTrapRegistry:
             assert key not in trap_registry.TRAP_TABLE, f"{key} should not be in TRAP_TABLE"
 
 class TestTrapSpawnerDungeonMerge:
-    def test_ancient_crypt_merges_shared_and_dungeon_specific(self, mock_game):
-        mock_game.dungeon_type = keys.ancient_crypt
+    def test_ancient_tomb_merges_shared_and_dungeon_specific(self, mock_game):
+        mock_game.dungeon_type = keys.ancient_tomb
         spawner = Trap_Spawner(mock_game)
 
         # shared traps present
@@ -392,7 +392,7 @@ class TestTrapSpawnerDungeonMerge:
 
 class TestTrapHandlerSpawning:
     def test_initialise_builds_plain_trap_spawner(self, mock_game):
-        mock_game.dungeon_type = keys.ancient_crypt
+        mock_game.dungeon_type = keys.ancient_tomb
         handler = Trap_Handler(mock_game)
         handler.Initialise()
 

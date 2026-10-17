@@ -21,7 +21,7 @@ from scripts.entities.decoration.crystal_caverns import load_all
 from scripts.entities.decoration.shared.shrine.shrine_registry import SHRINE_REGISTRY
 
 
-from scripts.entities.decoration.decoration_initialiser.crypt_decoration_initialiser import Crypt_Decoration_Initialiser
+from scripts.entities.decoration.decoration_initialiser.ancient_tomb_decoration_initialiser import Ancient_Tomb_Decoration_Initialiser
 from scripts.entities.decoration.decoration_initialiser.crystal_cavern_decoration_initialiser import Crystal_Cavern_Decoration_Initialiser
 
 from scripts.engine.keys.keys import keys
@@ -29,12 +29,12 @@ from scripts.engine.keys.keys import keys
 import random
 
 DUNGEON_REGISTRIES = {
-        keys.ancient_crypt: ancient_tomb_registry,
+        keys.ancient_tomb: ancient_tomb_registry,
         keys.crystal_caverns: crystal_caverns_registry,
     }
 
 DUNGEON_LIGHT_SOURCES = {
-    keys.ancient_crypt: ancient_tomb_light_source_registry,
+    keys.ancient_tomb: ancient_tomb_light_source_registry,
     keys.crystal_caverns: crystal_cavern_light_source_registry,
 }
 
@@ -76,7 +76,7 @@ class Decoration_Spawner():
                 **dungeon_specific_registry.DECORATION_REGISTRY,
             }
         decoration_initialisers = {
-            keys.ancient_crypt: Crypt_Decoration_Initialiser,
+            keys.ancient_tomb: Ancient_Tomb_Decoration_Initialiser,
             keys.crystal_caverns: Crystal_Cavern_Decoration_Initialiser,
         }
         initaliser_type = decoration_initialisers.get(self.game.dungeon_type)
