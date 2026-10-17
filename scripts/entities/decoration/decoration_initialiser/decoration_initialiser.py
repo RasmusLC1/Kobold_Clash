@@ -41,24 +41,6 @@ class Decoration_Initialiser():
         self.Spawn_Teleport()
         self.Spawn_Lever()
 
-    def Spawn_Chests(self):
-        amount = random.randint(10, 20)
-        self.Find_Floor_Tiles(keys.chest, amount)
-
-    def Spawn_Vase(self):
-        amount = random.randint(10, 20)
-        self.Find_Floor_Tiles(keys.vase, amount)
-
-    def Spawn_Weapon_Rack(self):
-        amount = random.randint(40, 50)
-        self.Find_Floor_Tiles(keys.weapon_rack, amount)
-
-    def Spawn_Lever(self):
-        amount = random.randint(4, 7)
-        self.Find_Floor_Tiles(keys.lever, amount)
-
-    def Spawn_Campfire(self):
-        self.Find_Floor_Tiles(keys.campfire, 1)
 
     def Spawn_Teleport(self):
         amount = random.randint(20, 30)
@@ -91,18 +73,6 @@ class Decoration_Initialiser():
                 self.decorations[keys.door_basic].append(pos)
             else:
                 self.decorations[keys.fragile_wall].append(pos)
-
-
-
-    def Spawn_Hunter_Shrine(self):
-        amount = random.randint(2, 4)
-        self.Find_Floor_Tiles_Large_Object(keys.hunter_shrine, amount)
-
-    def Spawn_Portal_Shrine(self):
-        self.Find_Floor_Tiles_Large_Object(keys.portal_shrine, 1, True)
-
-    def Spawn_Soul_Well(self):
-        self.Find_Floor_Tiles_Large_Object(keys.soul_well, 1, True)
 
     def Spawn_Rooms(self):
         if not self.room_type:

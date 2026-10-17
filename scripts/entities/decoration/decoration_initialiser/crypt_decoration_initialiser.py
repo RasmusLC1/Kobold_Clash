@@ -16,13 +16,3 @@ class Crypt_Decoration_Initialiser(Decoration_Initialiser):
     def Spawn_Small_Objects(self):
         super().Spawn_Small_Objects()
 
-
-    def Spawn_Effigy_Tomb(self):
-        amount = random.randint(10, 15)
-        self.Find_Floor_Tiles_Large_Object(keys.effigy_tomb, amount)
-
-    def Spawn_Sacrifice_Shrine(self):
-        self.Find_Floor_Tiles_Large_Object(keys.sacrifice_shrine, 1)
-
-    def Spawn_Blood_Shrine(self):
-        self.Find_Floor_Tiles_Large_Object(keys.blood_shrine, 1, check_for_path_to_player=True)
