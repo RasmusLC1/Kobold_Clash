@@ -1,492 +1,862 @@
 # tests/test_pathfinding.py
+# Tests for the game-facing layer: map building, tile coordinates, map selection,
+# and the Find_Path / flood fill API. The algorithms themselves are tested in
+# test_a_star.py and test_flood_fill.py.
 import pytest
-from unittest.mock import MagicMock, patch
-from scripts.engine.pathfinding.pathfinding import Pathfinding
+from unittest.mock import MagicMock
+
 from scripts.engine.keys.keys import keys
-
-FLOOR, WALL, LAVA = 0, 1, 2
+from scripts.engine.pathfinding.pathfinding import (
+    Pathfinding, GridMap, FLOOR, WALL, LAVA, DOOR, TRAP, BOSS_ROOM,
+)
 
 
 # ─────────────────────────────────────────────
-#  Fixtures
+#  Helpers
 # ─────────────────────────────────────────────
-
-@pytest.fixture
-def mock_game():
-    game = MagicMock()
-    return game
-
-
-@pytest.fixture
-def astar(mock_game):
-    return Pathfinding(mock_game)
-
 
 def open_grid(w, h):
-    """All-floor grid of size w × h."""
+    """All-floor custom map of size w × h (indexed grid[x][y])."""
     return [[FLOOR for _ in range(h)] for _ in range(w)]
 
 
-def apply_custom(astar, grid, w, h):
-    astar.Setup_Custom_Map(grid, w, h)
-    astar.Set_Map('custom')
-
-
-def make_mock_tile(type_val, sub_type_val, touching_wall=False, trap=None, physics=False):
+def make_mock_tile(type_val, sub_type_val="ancient_tomb_floor",
+                   touching_wall=False, trap=None, physics=False):
     """
     Build a tile mock that mirrors what Tilemap.Generate_Tile produces.
-    type      → raw key e.g. keys.floor  (what Build_Standard_Map must check)
-    sub_type  → prefixed e.g. "ancient_tomb_floor" (what sub_type actually contains)
+    type      → raw key e.g. keys.floor  (what the map rules must check)
+    sub_type  → prefixed e.g. "ancient_tomb_floor" (deliberately different from type)
     """
     tile = MagicMock()
     tile.type = type_val
-    tile.sub_type = sub_type_val          # deliberately different from type
+    tile.sub_type = sub_type_val
     tile.touching_wall = touching_wall
     tile.trap = trap
     tile.physics = physics
     return tile
 
 
+def floor_tile(**kwargs):
+    return make_mock_tile(keys.floor, "ancient_tomb_floor", **kwargs)
+
+
+def wall_tile():
+    return make_mock_tile("wall", "ancient_tomb_wall")
+
+
+def row_of_floor(x_start, x_end, y):
+    """Floor tiles at (x_start..x_end, y), inclusive."""
+    return {(x, y): floor_tile() for x in range(x_start, x_end + 1)}
+
+
+def game_with_tiles(tiles_by_pos):
+    """A mock game whose tilemap returns a fixed set of tiles."""
+    game = MagicMock()
+    game.tilemap.Get_Pos.return_value = list(tiles_by_pos)
+    game.tilemap.Current_Tile.side_effect = lambda pos: tiles_by_pos.get(pos)
+    return game
+
+
+def build_from_tiles(tiles_by_pos):
+    pathfinding = Pathfinding(game_with_tiles(tiles_by_pos))
+    pathfinding.Setup_Map_From_Game()
+    return pathfinding
+
+
+def cell(pathfinding, which_map, x=0, y=0):
+    return pathfinding.maps[which_map].cells[x][y]
+
+
+@pytest.fixture
+def pathfinding():
+    return Pathfinding(MagicMock())
+
+
 # ─────────────────────────────────────────────
-#  1. Custom-map setup
+#  1. GridMap coordinate conversion
+# ─────────────────────────────────────────────
+
+class TestGridMap:
+
+    def test_default_origin_is_zero(self):
+        grid_map = GridMap([[0]])
+        assert (grid_map.min_x, grid_map.min_y) == (0, 0)
+        assert grid_map.to_local((3, 4)) == (3, 4)
+
+    def test_conversion_round_trip(self):
+        grid_map = GridMap([[0]], min_x=10, min_y=5)
+        assert grid_map.to_local((12, 7)) == (2, 2)
+        assert grid_map.to_tile((2, 2)) == (12, 7)
+
+
+# ─────────────────────────────────────────────
+#  2. Custom-map setup
 # ─────────────────────────────────────────────
 
 class TestCustomMapSetup:
 
-    def test_dimensions_stored(self, astar):
-        apply_custom(astar, open_grid(6, 4), 6, 4)
-        assert astar.width == 6
-        assert astar.height == 4
+    def test_stored_under_the_custom_key_with_its_dimensions(self, pathfinding):
+        pathfinding.Setup_Custom_Map(open_grid(6, 4))
+        cells = pathfinding.maps[keys.custom].cells
+        assert len(cells) == 6
+        assert len(cells[0]) == 4
 
-    def test_floor_cells_are_zero(self, astar):
-        apply_custom(astar, open_grid(3, 3), 3, 3)
-        assert all(astar.map[x][y] == 0 for x in range(3) for y in range(3))
+    def test_custom_map_origin_is_zero(self, pathfinding):
+        pathfinding.Setup_Custom_Map(open_grid(3, 3))
+        grid_map = pathfinding.maps[keys.custom]
+        assert (grid_map.min_x, grid_map.min_y) == (0, 0)
 
-    def test_wall_cells_are_one(self, astar):
-        grid = [[WALL for _ in range(3)] for _ in range(3)]
-        apply_custom(astar, grid, 3, 3)
-        assert all(astar.map[x][y] == 1 for x in range(3) for y in range(3))
+    def test_does_not_create_any_other_map(self, pathfinding):
+        pathfinding.Setup_Custom_Map(open_grid(3, 3))
+        assert set(pathfinding.maps) == {keys.custom}
 
-    def test_lava_treated_as_floor_in_custom(self, astar):
-        """Lava maps to 0 in Setup_Custom_Map (passable)."""
-        grid = [[LAVA for _ in range(3)] for _ in range(3)]
-        apply_custom(astar, grid, 3, 3)
-        assert all(astar.map[x][y] == 0 for x in range(3) for y in range(3))
+    def test_floor_cells_are_zero(self, pathfinding):
+        pathfinding.Setup_Custom_Map(open_grid(3, 3))
+        cells = pathfinding.maps[keys.custom].cells
+        assert all(cells[x][y] == 0 for x in range(3) for y in range(3))
 
-    def test_mixed_grid_converted_correctly(self, astar):
-        grid = [
+    def test_wall_cells_are_one(self, pathfinding):
+        pathfinding.Setup_Custom_Map([[WALL] * 3 for _ in range(3)])
+        cells = pathfinding.maps[keys.custom].cells
+        assert all(cells[x][y] == 1 for x in range(3) for y in range(3))
+
+    @pytest.mark.parametrize("value", [LAVA, DOOR, TRAP, BOSS_ROOM])
+    def test_everything_except_walls_is_passable(self, pathfinding, value):
+        pathfinding.Setup_Custom_Map([[value] * 2 for _ in range(2)])
+        cells = pathfinding.maps[keys.custom].cells
+        assert all(cells[x][y] == 0 for x in range(2) for y in range(2))
+
+    def test_mixed_grid_converted_correctly(self, pathfinding):
+        pathfinding.Setup_Custom_Map([
             [FLOOR, WALL],
             [LAVA,  FLOOR],
-        ]
-        apply_custom(astar, grid, 2, 2)
-        assert astar.map[0][0] == 0   # FLOOR → 0
-        assert astar.map[0][1] == 1   # WALL  → 1
-        assert astar.map[1][0] == 0   # LAVA  → 0
-        assert astar.map[1][1] == 0   # FLOOR → 0
+        ])
+        cells = pathfinding.maps[keys.custom].cells
+        assert cells[0][0] == 0   # FLOOR
+        assert cells[0][1] == 1   # WALL
+        assert cells[1][0] == 0   # LAVA
+        assert cells[1][1] == 0   # FLOOR
+
+    def test_unknown_tile_value_raises(self, pathfinding):
+        with pytest.raises(KeyError):
+            pathfinding.Setup_Custom_Map([[99]])
 
 
 # ─────────────────────────────────────────────
-#  2. Standard-map build — the critical regression tests
+#  3. Map building from the game tilemap
+#     (the critical regression tests)
 # ─────────────────────────────────────────────
 
 class TestStandardMapBuild:
     """
-    These tests guard against the sub_type vs type bug that caused
-    Build_Standard_Map to mark every tile as blocked (all 1s).
+    These tests guard against the sub_type vs type bug that caused the standard
+    map to mark every tile as blocked (all 1s).
 
     The rule must use  t.type == keys.floor  NOT  t.sub_type == keys.floor,
     because sub_type is a dungeon-prefixed string like "ancient_tomb_floor".
     """
 
-    def _make_game_with_tiles(self, tiles_by_pos):
-        """Wire up a mock game whose tilemap returns a fixed tile set."""
-        game = MagicMock()
-        game.tilemap.Get_Pos.return_value = list(tiles_by_pos.keys())
-        game.tilemap.Current_Tile.side_effect = lambda pos: tiles_by_pos.get(pos)
-        return game
-
     def test_floor_tile_is_passable_when_type_is_floor_key(self):
-        """
-        Regression: rule must hit t.type (keys.floor), not t.sub_type.
-        If it checked sub_type the tile would map to 1 and this test fails.
-        """
-        tile = make_mock_tile(
-            type_val=keys.floor,
-            sub_type_val="ancient_tomb_floor",   # realistic prefixed value
-            touching_wall=False,
-            trap=None,
-        )
-        game = self._make_game_with_tiles({(0, 0): tile})
-        a = Pathfinding(game)
-        a.Setup_Map_From_Game(game)
-
-        assert a.standard_map[0][0] == 0, (
+        p = build_from_tiles({(0, 0): floor_tile()})
+        assert cell(p, keys.standard) == 0, (
             "Floor tile should be passable (0). "
-            "If this is 1, Build_Standard_Map is checking sub_type instead of type."
+            "If this is 1, the standard rule is checking sub_type instead of type."
         )
 
     def test_wall_tile_is_impassable(self):
-        tile = make_mock_tile(
-            type_val="wall",
-            sub_type_val="ancient_tomb_wall",
-            touching_wall=False,
-        )
-        game = self._make_game_with_tiles({(0, 0): tile})
-        a = Pathfinding(game)
-        a.Setup_Map_From_Game(game)
-        assert a.standard_map[0][0] == 1
+        p = build_from_tiles({(0, 0): wall_tile()})
+        assert cell(p, keys.standard) == 1
 
     def test_floor_touching_wall_is_impassable(self):
-        tile = make_mock_tile(
-            type_val=keys.floor,
-            sub_type_val="ancient_tomb_floor",
-            touching_wall=True,
-        )
-        game = self._make_game_with_tiles({(0, 0): tile})
-        a = Pathfinding(game)
-        a.Setup_Map_From_Game(game)
-        assert a.standard_map[0][0] == 1
+        p = build_from_tiles({(0, 0): floor_tile(touching_wall=True)})
+        assert cell(p, keys.standard) == 1
 
     def test_trapped_floor_tile_is_impassable(self):
-        tile = make_mock_tile(
-            type_val=keys.floor,
-            sub_type_val="ancient_tomb_floor",
-            touching_wall=False,
-            trap=MagicMock(),  # any truthy trap
-        )
-        game = self._make_game_with_tiles({(0, 0): tile})
-        a = Pathfinding(game)
-        a.Setup_Map_From_Game(game)
-        assert a.standard_map[0][0] == 1
+        p = build_from_tiles({(0, 0): floor_tile(trap=MagicMock())})
+        assert cell(p, keys.standard) == 1
 
-    def test_standard_map_not_all_ones_for_valid_floor(self):
-        """Catches the exact symptom: every cell being 1 (all blocked)."""
-        tiles = {
-            (x, y): make_mock_tile(keys.floor, "ancient_tomb_floor")
-            for x in range(3) for y in range(3)
-        }
-        game = self._make_game_with_tiles(tiles)
-        a = Pathfinding(game)
-        a.Setup_Map_From_Game(game)
-
-        all_blocked = all(
-            a.standard_map[x][y] == 1
-            for x in range(a.width)
-            for y in range(a.height)
-        )
-        assert not all_blocked, (
-            "Every cell is blocked — Build_Standard_Map rule never matched. "
-            "Check that it uses t.type, not t.sub_type."
-        )
+    def test_standard_map_not_all_blocked_for_valid_floor(self):
+        """Catches the exact symptom: every cell being 1."""
+        tiles = {(x, y): floor_tile() for x in range(3) for y in range(3)}
+        p = build_from_tiles(tiles)
+        assert all(cell(p, keys.standard, x, y) == 0 for x in range(3) for y in range(3))
 
     def test_crystal_cavern_floor_also_passable(self):
-        """Different dungeon prefix must not break the rule."""
-        tile = make_mock_tile(
-            type_val=keys.floor,
-            sub_type_val="crystal_cavern_floor",
-        )
-        game = self._make_game_with_tiles({(0, 0): tile})
-        a = Pathfinding(game)
-        a.Setup_Map_From_Game(game)
-        assert a.standard_map[0][0] == 0
+        """A different dungeon prefix must not break the rule."""
+        p = build_from_tiles({(0, 0): make_mock_tile(keys.floor, "crystal_cavern_floor")})
+        assert cell(p, keys.standard) == 0
+
+    def test_builds_all_three_game_maps(self):
+        p = build_from_tiles({(0, 0): floor_tile()})
+        assert set(p.maps) == {keys.standard, keys.ignore_lava, keys.void_spawn}
+
+
+class TestOtherMapRules:
+
+    def test_ignore_lava_map_allows_lava_that_standard_blocks(self):
+        p = build_from_tiles({(0, 0): make_mock_tile(keys.lava_env, "ancient_tomb_lava")})
+        assert cell(p, keys.standard) == 1
+        assert cell(p, keys.ignore_lava) == 0
+
+    def test_ignore_lava_map_still_blocks_wall_touching_tiles(self):
+        p = build_from_tiles({(0, 0): floor_tile(touching_wall=True)})
+        assert cell(p, keys.ignore_lava) == 1
+
+    def test_void_spawn_map_allows_wall_touching_tiles(self):
+        p = build_from_tiles({(0, 0): floor_tile(touching_wall=True)})
+        assert cell(p, keys.standard) == 1
+        assert cell(p, keys.void_spawn) == 0
+
+
+class TestMapBounds:
+
+    def test_positions_without_a_tile_stay_blocked(self):
+        p = build_from_tiles({(10, 5): floor_tile(), (12, 5): floor_tile()})
+        cells = p.maps[keys.standard].cells
+        assert len(cells) == 3 and len(cells[0]) == 1
+        assert [cells[0][0], cells[1][0], cells[2][0]] == [0, 1, 0]
+
+    def test_gap_in_the_tilemap_blocks_the_path(self):
+        p = build_from_tiles({(10, 5): floor_tile(), (12, 5): floor_tile()})
+        assert p.Find_Path((10, 5), (12, 5)) == []
+
+    def test_empty_tilemap_raises_a_clear_error(self):
+        pathfinding = Pathfinding(game_with_tiles({}))
+        with pytest.raises(RuntimeError, match="empty"):
+            pathfinding.Setup_Map_From_Game()
 
 
 # ─────────────────────────────────────────────
-#  3. Map selection
+#  4. Tile coordinates in and out
+#     (replaces the old min_x / min_y offset tests)
+# ─────────────────────────────────────────────
+
+class TestTileCoordinates:
+
+    def test_origin_is_taken_from_the_tilemap_bounds(self):
+        p = build_from_tiles(row_of_floor(10, 11, 5))
+        grid_map = p.maps[keys.standard]
+        assert (grid_map.min_x, grid_map.min_y) == (10, 5)
+
+    def test_find_path_takes_and_returns_tile_coordinates(self):
+        p = build_from_tiles(row_of_floor(10, 14, 5))
+        assert p.Find_Path((10, 5), (14, 5)) == [(10, 5), (11, 5), (12, 5), (13, 5), (14, 5)]
+
+    def test_find_path_across_a_two_dimensional_block(self):
+        tiles = {(x, y): floor_tile() for x in range(10, 13) for y in range(5, 8)}
+        p = build_from_tiles(tiles)
+        assert p.Find_Path((10, 5), (12, 7)) == [(10, 5), (11, 6), (12, 7)]
+
+    def test_path_points_are_tuples(self):
+        p = build_from_tiles(row_of_floor(10, 12, 5))
+        assert all(isinstance(point, tuple) for point in p.Find_Path([10, 5], [12, 5]))
+
+    def test_coordinates_outside_the_map_return_empty(self):
+        """Tile (0, 0) is outside a map that starts at (10, 5). Nothing to subtract
+        by hand any more, it is simply out of bounds."""
+        p = build_from_tiles(row_of_floor(10, 11, 5))
+        assert p.Find_Path((0, 0), (1, 0)) == []
+
+    def test_start_on_a_blocked_tile_returns_empty(self):
+        tiles = row_of_floor(10, 12, 5)
+        tiles[(10, 5)] = floor_tile(touching_wall=True)
+        p = build_from_tiles(tiles)
+        assert p.Find_Path((10, 5), (12, 5)) == []
+
+
+# ─────────────────────────────────────────────
+#  5. Map selection (replaces the Set_Map tests)
 # ─────────────────────────────────────────────
 
 class TestMapSelection:
 
-    def test_set_map_standard(self, astar):
-        apply_custom(astar, open_grid(2, 2), 2, 2)
-        astar.standard_map = [[0, 0], [0, 0]]
-        astar.Set_Map(keys.standard)
-        assert astar.map is astar.standard_map
+    def test_find_path_uses_the_requested_map(self, pathfinding):
+        pathfinding.maps[keys.standard] = GridMap([[1, 1], [1, 1]])  # all blocked
+        pathfinding.Setup_Custom_Map(open_grid(2, 2))                # all open
 
-    def test_set_map_custom(self, astar):
-        apply_custom(astar, open_grid(2, 2), 2, 2)
-        astar.Set_Map('custom')
-        assert astar.map is astar.custom_map
+        assert pathfinding.Find_Path((0, 0), (1, 1), which_map=keys.custom)
+        assert pathfinding.Find_Path((0, 0), (1, 1), which_map=keys.standard) == []
 
-    def test_set_map_unknown_falls_back_to_standard(self, astar):
-        astar.standard_map = [[0]]
-        astar.Set_Map('nonexistent_map_key')
-        assert astar.map is astar.standard_map
+    def test_default_map_is_standard(self, pathfinding):
+        pathfinding.maps[keys.standard] = GridMap([[1, 1], [1, 1]])
+        pathfinding.Setup_Custom_Map(open_grid(2, 2))
+        assert pathfinding.Find_Path((0, 0), (1, 1)) == []
 
+    def test_no_state_leaks_between_calls(self, pathfinding):
+        pathfinding.maps[keys.standard] = GridMap([[1, 1], [1, 1]])
+        pathfinding.Setup_Custom_Map(open_grid(2, 2))
 
-# ─────────────────────────────────────────────
-#  4. Validity and passability helpers
-# ─────────────────────────────────────────────
+        assert pathfinding.Find_Path((0, 0), (1, 1), which_map=keys.custom)
+        assert pathfinding.Find_Path((0, 0), (1, 1)) == []          # still standard
+        assert pathfinding.Find_Path((0, 0), (1, 1), which_map=keys.custom)
 
-class TestHelpers:
+    def test_unknown_map_raises_instead_of_falling_back(self, pathfinding):
+        pathfinding.Setup_Custom_Map(open_grid(2, 2))
+        with pytest.raises(KeyError):
+            pathfinding.Find_Path((0, 0), (1, 1), which_map="nonexistent_map_key")
 
-    def test_is_valid_inside_bounds(self, astar):
-        apply_custom(astar, open_grid(5, 5), 5, 5)
-        assert astar.is_valid(0, 0)
-        assert astar.is_valid(4, 4)
-        assert astar.is_valid(2, 3)
-
-    def test_is_valid_outside_bounds(self, astar):
-        apply_custom(astar, open_grid(5, 5), 5, 5)
-        assert not astar.is_valid(-1, 0)
-        assert not astar.is_valid(0, -1)
-        assert not astar.is_valid(5, 0)
-        assert not astar.is_valid(0, 5)
-
-    def test_is_unblocked_floor(self, astar):
-        apply_custom(astar, open_grid(3, 3), 3, 3)
-        assert astar.is_unblocked(1, 1)
-
-    def test_is_unblocked_wall(self, astar):
-        grid = [[WALL for _ in range(3)] for _ in range(3)]
-        apply_custom(astar, grid, 3, 3)
-        assert not astar.is_unblocked(0, 0)
-
-    def test_heuristic_is_euclidean(self, astar):
-        assert astar.calculate_h_value(0, 0, (3, 4)) == pytest.approx(5.0)
-        assert astar.calculate_h_value(1, 1, (1, 1)) == pytest.approx(0.0)
+    def test_querying_before_any_setup_raises(self, pathfinding):
+        with pytest.raises(KeyError):
+            pathfinding.Find_Path((0, 0), (1, 1))
 
 
 # ─────────────────────────────────────────────
-#  5. A* 8-directional search
+#  6. Find_Path / Has_Path
 # ─────────────────────────────────────────────
 
-class TestAStarSearch:
+class TestFindPath:
 
-    def test_straight_line_path(self, astar):
-        apply_custom(astar, open_grid(5, 5), 5, 5)
-        path = astar.pathfinding_search([0, 0], [4, 0], 'custom')
-        assert path[0] == (0, 0)
-        assert path[-1] == (4, 0)
+    DIAGONAL_GAP = [[FLOOR, WALL],
+                    [WALL,  FLOOR]]
 
-    def test_diagonal_path_used(self, astar):
-        """8-directional search should cut corners — path length < manhattan distance."""
-        apply_custom(astar, open_grid(5, 5), 5, 5)
-        path = astar.pathfinding_search([0, 0], [4, 4], 'custom')
-        assert len(path) == 5   # diagonal cuts: (0,0)→(1,1)→(2,2)→(3,3)→(4,4)
+    def test_straight_path(self, pathfinding):
+        pathfinding.Setup_Custom_Map(open_grid(5, 5))
+        path = pathfinding.Find_Path((0, 0), (4, 0), which_map=keys.custom)
+        assert path[0] == (0, 0) and path[-1] == (4, 0)
 
-    def test_start_equals_goal(self, astar):
-        apply_custom(astar, open_grid(3, 3), 3, 3)
-        path = astar.pathfinding_search([1, 1], [1, 1], 'custom')
-        assert len(path) == 1
-        assert path[0][0] == 1 and path[0][1] == 1
+    def test_start_equals_goal(self, pathfinding):
+        pathfinding.Setup_Custom_Map(open_grid(3, 3))
+        assert pathfinding.Find_Path((1, 1), (1, 1), which_map=keys.custom) == [(1, 1)]
 
-    def test_fully_walled_returns_empty(self, astar):
-        grid = [[WALL for _ in range(3)] for _ in range(3)]
-        apply_custom(astar, grid, 3, 3)
-        path = astar.pathfinding_search([0, 0], [2, 2], 'custom')
-        assert path == []
+    def test_fully_walled_returns_empty(self, pathfinding):
+        pathfinding.Setup_Custom_Map([[WALL] * 3 for _ in range(3)])
+        assert pathfinding.Find_Path((0, 0), (2, 2), which_map=keys.custom) == []
 
-    def test_start_on_wall_returns_empty(self, astar):
-        grid = [[FLOOR, FLOOR], [WALL, FLOOR]]
-        apply_custom(astar, grid, 2, 2)
-        path = astar.pathfinding_search([1, 0], [0, 0], 'custom')
-        assert path == []
-
-    def test_goal_on_wall_returns_empty(self, astar):
-        grid = [[FLOOR, FLOOR], [WALL, FLOOR]]
-        apply_custom(astar, grid, 2, 2)
-        path = astar.pathfinding_search([0, 0], [1, 0], 'custom')
-        assert path == []
-
-    def test_start_out_of_bounds_returns_empty(self, astar):
-        apply_custom(astar, open_grid(3, 3), 3, 3)
-        path = astar.pathfinding_search([-1, 0], [2, 2], 'custom')
-        assert path == []
-
-    def test_goal_out_of_bounds_returns_empty(self, astar):
-        apply_custom(astar, open_grid(3, 3), 3, 3)
-        path = astar.pathfinding_search([0, 0], [99, 99], 'custom')
-        assert path == []
-
-    def test_routes_around_wall(self, astar):
-        """
-        Path blocked at x=1 (full column wall), but open at the top (y=0)
-        so 8-directional search can go around diagonally.
-
-        Grid (x=col, y=row):
-          x:  0     1     2
-          y0: floor wall  floor
-          y1: floor wall  floor
-          y2: floor floor floor
-        """
+    def test_routes_around_a_wall(self, pathfinding):
         grid = [
             [FLOOR, FLOOR, FLOOR],   # x=0
-            [WALL,  WALL,  FLOOR],   # x=1 (wall except y=2)
+            [WALL,  WALL,  FLOOR],   # x=1, only open at y=2
             [FLOOR, FLOOR, FLOOR],   # x=2
         ]
-        apply_custom(astar, grid, 3, 3)
-        path = astar.pathfinding_search([0, 0], [2, 0], 'custom')
-        assert len(path) > 0
-        assert path[-1] == (2, 0)
-        # Path must not pass through any wall cell
-        for (x, y) in path:
-            assert grid[x][y] == FLOOR
+        pathfinding.Setup_Custom_Map(grid)
+        path = pathfinding.Find_Path((0, 0), (2, 0), which_map=keys.custom)
+        assert path and path[-1] == (2, 0)
+        assert (1, 2) in path
+        assert all(grid[x][y] != WALL for x, y in path)
 
-    def test_path_contains_no_wall_cells(self, astar):
-        """Every cell in the returned path must be passable."""
-        grid = [
-            [FLOOR, FLOOR, FLOOR, FLOOR, FLOOR],
-            [FLOOR, WALL,  WALL,  WALL,  FLOOR],
-            [FLOOR, FLOOR, FLOOR, WALL,  FLOOR],
-            [FLOOR, FLOOR, FLOOR, FLOOR, FLOOR],
-        ]
-        apply_custom(astar, grid, 4, 5)
-        path = astar.pathfinding_search([0, 0], [3, 4], 'custom')
-        assert path, "Expected a valid path"
-        for (x, y) in path:
-            assert grid[x][y] == FLOOR, f"Path passes through wall at ({x}, {y})"
+    def test_diagonals_flag_controls_corner_cutting(self, pathfinding):
+        pathfinding.Setup_Custom_Map(self.DIAGONAL_GAP)
+        assert pathfinding.Find_Path((0, 0), (1, 1), which_map=keys.custom, diagonals=True)
+        assert pathfinding.Find_Path((0, 0), (1, 1), which_map=keys.custom, diagonals=False) == []
 
-    def test_path_is_connected(self, astar):
-        """Each step must be adjacent (max Chebyshev distance of 1)."""
-        apply_custom(astar, open_grid(6, 6), 6, 6)
-        path = astar.pathfinding_search([0, 0], [5, 5], 'custom')
+    def test_four_way_path_has_no_diagonal_steps(self, pathfinding):
+        pathfinding.Setup_Custom_Map(open_grid(5, 5))
+        path = pathfinding.Find_Path((0, 0), (4, 4), which_map=keys.custom, diagonals=False)
         for (ax, ay), (bx, by) in zip(path, path[1:]):
-            assert max(abs(bx - ax), abs(by - ay)) == 1
+            assert abs(bx - ax) + abs(by - ay) == 1
+
+    def test_has_path_returns_a_bool(self, pathfinding):
+        pathfinding.Setup_Custom_Map(self.DIAGONAL_GAP)
+        assert pathfinding.Has_Path((0, 0), (1, 1), which_map=keys.custom) is True
+        assert pathfinding.Has_Path((0, 0), (1, 1), which_map=keys.custom, diagonals=False) is False
 
 
 # ─────────────────────────────────────────────
-#  6. A* 4-directional (no diagonals) search
+#  7. Flood fill API (tile coordinates)
 # ─────────────────────────────────────────────
 
-class TestAStarNoDialogals:
+class TestFloodApi:
 
-    def test_no_diagonal_moves(self, astar):
-        """Every step must be orthogonal (Chebyshev distance == 1, Manhattan == 1)."""
-        apply_custom(astar, open_grid(5, 5), 5, 5)
-        path = astar.pathfinding_search_no_diagonals([0, 0], [4, 4], 'custom')
-        for (ax, ay), (bx, by) in zip(path, path[1:]):
-            assert abs(bx - ax) + abs(by - ay) == 1, \
-                f"Diagonal move detected: ({ax},{ay}) → ({bx},{by})"
+    def test_distances_use_tile_coordinates(self):
+        p = build_from_tiles(row_of_floor(10, 12, 5))
+        assert p.Flood_Distances((10, 5)) == {(10, 5): 0, (11, 5): 1, (12, 5): 2}
 
-    def test_manhattan_distance_path_length(self, astar):
-        """On an open grid, path length == manhattan distance + 1."""
-        apply_custom(astar, open_grid(5, 5), 5, 5)
-        path = astar.pathfinding_search_no_diagonals([0, 0], [4, 0], 'custom')
-        assert len(path) == 5   # 4 steps + start
+    def test_reachable_is_the_key_set_of_distances(self):
+        p = build_from_tiles(row_of_floor(10, 12, 5))
+        assert p.Flood_Reachable((10, 5)) == {(10, 5), (11, 5), (12, 5)}
 
-    def test_corner_to_corner_no_diagonals(self, astar):
-        apply_custom(astar, open_grid(3, 3), 3, 3)
-        path = astar.pathfinding_search_no_diagonals([0, 0], [1, 1], 'custom')
+    def test_start_outside_the_map_returns_empty(self):
+        p = build_from_tiles(row_of_floor(10, 12, 5))
+        assert p.Flood_Reachable((0, 0)) == set()
+
+    def test_start_on_a_blocked_tile_returns_empty(self):
+        tiles = row_of_floor(10, 12, 5)
+        tiles[(11, 5)] = floor_tile(touching_wall=True)
+        p = build_from_tiles(tiles)
+        assert p.Flood_Reachable((11, 5)) == set()
+
+    def test_max_steps_is_passed_through(self):
+        p = build_from_tiles(row_of_floor(10, 14, 5))
+        assert p.Flood_Distances((10, 5), max_steps=1) == {(10, 5): 0, (11, 5): 1}
+
+    def test_diagonals_flag_is_passed_through(self, pathfinding):
+        pathfinding.Setup_Custom_Map([[FLOOR, WALL],
+                                      [WALL,  FLOOR]])
+        assert (1, 1) in pathfinding.Flood_Reachable((0, 0), keys.custom, diagonals=True)
+        assert (1, 1) not in pathfinding.Flood_Reachable((0, 0), keys.custom, diagonals=False)
+
+    def test_region_labels_use_tile_coordinates(self):
+        tiles = {**row_of_floor(10, 11, 5), (12, 5): wall_tile(), **row_of_floor(13, 14, 5)}
+        p = build_from_tiles(tiles)
+        labels, sizes = p.Label_Regions()
+
+        assert sorted(sizes) == [2, 2]
+        assert (12, 5) not in labels
+        assert labels[(10, 5)] == labels[(11, 5)]
+        assert labels[(13, 5)] == labels[(14, 5)]
+        assert labels[(10, 5)] != labels[(13, 5)]
+
+
+# ─────────────────────────────────────────────
+#  8. Clear / Save / Load
+# ─────────────────────────────────────────────
+
+class TestClearSaveLoad:
+
+    def test_clear_maps_empties_the_store(self):
+        p = build_from_tiles(row_of_floor(10, 12, 5))
+        p.Clear_Maps()
+        assert p.maps == {}
+
+    def test_save_load_round_trip_preserves_maps_and_origin(self):
+        p = build_from_tiles(row_of_floor(10, 12, 5))
+
+        fresh = Pathfinding(MagicMock())
+        fresh.Load_Data(p.Save_Data())
+
+        assert fresh.maps == p.maps
+        assert (fresh.maps[keys.standard].min_x, fresh.maps[keys.standard].min_y) == (10, 5)
+        assert fresh.Find_Path((10, 5), (12, 5)) == p.Find_Path((10, 5), (12, 5))
+
+    def test_clearing_a_loaded_instance_leaves_the_saved_data_alone(self):
+        p = build_from_tiles(row_of_floor(10, 12, 5))
+        data = p.Save_Data()
+
+        fresh = Pathfinding(MagicMock())
+        fresh.Load_Data(data)
+        fresh.Clear_Maps()
+
+        assert data["maps"]
+        assert p.maps
+
+
+# tests/test_a_star.py
+# Tests for the pure A* algorithm. No game, no mocks, no coordinate offsets.
+import heapq
+import math
+import random
+
+import pytest
+
+from scripts.engine.pathfinding.a_star import pathfinding_search
+from scripts.engine.pathfinding.directions import CARDINAL, DIAGONAL
+from scripts.engine.pathfinding.flood_fill import flood_distances
+
+OPEN, BLOCKED = 0, 1
+
+
+# ─────────────────────────────────────────────
+#  Helpers
+# ─────────────────────────────────────────────
+
+def make_grid(*rows):
+    """Build grid[x][y] from text rows, written top to bottom (y) and left to right (x).
+    '.' is open, '#' is blocked."""
+    height = len(rows)
+    width = len(rows[0])
+    return [[BLOCKED if rows[y][x] == "#" else OPEN for y in range(height)]
+            for x in range(width)]
+
+
+def open_grid(width, height):
+    return [[OPEN] * height for _ in range(width)]
+
+
+def step_cost(a, b):
+    return 1.0 if a[0] == b[0] or a[1] == b[1] else math.sqrt(2)
+
+
+def path_cost(path):
+    return sum(step_cost(a, b) for a, b in zip(path, path[1:]))
+
+
+def assert_valid_path(grid, path, start, goal, directions=DIAGONAL):
+    """Starts and ends in the right place, never crosses a blocked cell,
+    and only takes steps the movement rules allow."""
+    assert path, "expected a path, got an empty list"
+    assert path[0] == tuple(start)
+    assert path[-1] == tuple(goal)
+    for x, y in path:
+        assert grid[x][y] == OPEN, f"path crosses a blocked cell at ({x}, {y})"
+    for (ax, ay), (bx, by) in zip(path, path[1:]):
+        assert (bx - ax, by - ay) in directions, f"illegal step ({ax},{ay}) -> ({bx},{by})"
+
+
+def dijkstra_cost(grid, start, goal, directions):
+    """Reference implementation: cost of the cheapest route, or None if unreachable."""
+    width, height = len(grid), len(grid[0])
+    dist = {start: 0.0}
+    heap = [(0.0, start)]
+    while heap:
+        d, cell = heapq.heappop(heap)
+        if cell == goal:
+            return d
+        if d > dist.get(cell, float("inf")):
+            continue
+        x, y = cell
+        for dx, dy in directions:
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < width and 0 <= ny < height and grid[nx][ny] == OPEN:
+                nd = d + (1.0 if dx == 0 or dy == 0 else math.sqrt(2))
+                if nd < dist.get((nx, ny), float("inf")):
+                    dist[(nx, ny)] = nd
+                    heapq.heappush(heap, (nd, (nx, ny)))
+    return None
+
+
+def random_grid(rng, size=10, wall_chance=0.3):
+    return [[BLOCKED if rng.random() < wall_chance else OPEN for _ in range(size)]
+            for _ in range(size)]
+
+
+def grid_for_seed(seed):
+    """Alternate sparse and dense walls so both reachable and unreachable goals show up."""
+    rng = random.Random(seed)
+    wall_chance = 0.3 if seed % 2 == 0 else 0.55
+    return rng, random_grid(rng, wall_chance=wall_chance)
+
+
+def random_start_goal(rng, grid):
+    cells = [(x, y) for x in range(len(grid)) for y in range(len(grid[0]))
+             if grid[x][y] == OPEN]
+    if len(cells) < 2:
+        pytest.skip("random grid had fewer than two open cells")
+    return rng.sample(cells, 2)
+
+
+# ─────────────────────────────────────────────
+#  1. Basic paths (8-way, the default)
+# ─────────────────────────────────────────────
+
+class TestBasicPaths:
+
+    def test_straight_line(self):
+        grid = open_grid(5, 5)
+        path = pathfinding_search(grid, (0, 0), (4, 0))
+        assert_valid_path(grid, path, (0, 0), (4, 0))
+        assert len(path) == 5
+
+    def test_diagonal_shortcut_is_taken(self):
+        path = pathfinding_search(open_grid(5, 5), (0, 0), (4, 4))
+        assert path == [(0, 0), (1, 1), (2, 2), (3, 3), (4, 4)]
+
+    def test_start_equals_goal(self):
+        assert pathfinding_search(open_grid(3, 3), (1, 1), (1, 1)) == [(1, 1)]
+
+    def test_accepts_lists_and_returns_tuples(self):
+        path = pathfinding_search(open_grid(3, 3), [0, 0], [2, 0])
+        assert path == [(0, 0), (1, 0), (2, 0)]
+
+    def test_default_movement_is_eight_way(self):
+        grid = open_grid(3, 3)
+        assert len(pathfinding_search(grid, (0, 0), (2, 2))) == 3
+        assert len(pathfinding_search(grid, (0, 0), (2, 2), CARDINAL)) == 5
+
+    def test_does_not_modify_the_grid(self):
+        grid = make_grid("..#",
+                         ".#.",
+                         "...")
+        snapshot = [column[:] for column in grid]
+        pathfinding_search(grid, (0, 0), (2, 2))
+        assert grid == snapshot
+
+
+# ─────────────────────────────────────────────
+#  2. Obstacles, blocked and invalid input
+# ─────────────────────────────────────────────
+
+class TestObstaclesAndInvalidInput:
+
+    def test_routes_around_a_wall(self):
+        grid = make_grid(".#.",
+                         ".#.",
+                         "...")
+        path = pathfinding_search(grid, (0, 0), (2, 0))
+        assert_valid_path(grid, path, (0, 0), (2, 0))
+        assert (1, 2) in path  # the only gap in the wall
+
+    def test_path_through_a_maze_stays_on_open_cells(self):
+        grid = make_grid(".....",
+                         ".###.",
+                         "...#.",
+                         ".....")
+        path = pathfinding_search(grid, (0, 0), (4, 3))
+        assert_valid_path(grid, path, (0, 0), (4, 3))
+
+    def test_fully_blocked_grid_returns_empty(self):
+        grid = make_grid("###",
+                         "###",
+                         "###")
+        assert pathfinding_search(grid, (0, 0), (2, 2)) == []
+
+    def test_goal_behind_a_full_wall_returns_empty(self):
+        grid = make_grid("..#..",
+                         "..#..",
+                         "..#..")
+        assert pathfinding_search(grid, (0, 0), (4, 0)) == []
+
+    def test_start_on_wall_returns_empty(self):
+        grid = make_grid("..",
+                         "#.")
+        assert pathfinding_search(grid, (0, 1), (0, 0)) == []
+
+    def test_goal_on_wall_returns_empty(self):
+        grid = make_grid("..",
+                         "#.")
+        assert pathfinding_search(grid, (0, 0), (0, 1)) == []
+
+    def test_start_out_of_bounds_returns_empty(self):
+        assert pathfinding_search(open_grid(3, 3), (-1, 0), (2, 2)) == []
+
+    def test_goal_out_of_bounds_returns_empty(self):
+        assert pathfinding_search(open_grid(3, 3), (0, 0), (99, 99)) == []
+
+    def test_empty_grid_returns_empty(self):
+        assert pathfinding_search([], (0, 0), (0, 0)) == []
+
+
+# ─────────────────────────────────────────────
+#  3. Movement rules
+# ─────────────────────────────────────────────
+
+class TestMovementRules:
+
+    def test_cardinal_search_never_moves_diagonally(self):
+        grid = open_grid(5, 5)
+        path = pathfinding_search(grid, (0, 0), (4, 4), CARDINAL)
+        assert_valid_path(grid, path, (0, 0), (4, 4), CARDINAL)
+
+    def test_cardinal_path_length_is_manhattan_distance(self):
+        path = pathfinding_search(open_grid(5, 5), (0, 0), (4, 0), CARDINAL)
+        assert len(path) == 5  # 4 steps plus the start
+
+    def test_cardinal_corner_to_corner(self):
+        path = pathfinding_search(open_grid(3, 3), (0, 0), (1, 1), CARDINAL)
         assert len(path) == 3
         assert path[1] in [(1, 0), (0, 1)]
 
-    def test_blocked_returns_empty(self, astar):
-        grid = [
-            [FLOOR, WALL],
-            [WALL,  FLOOR],
-        ]
-        apply_custom(astar, grid, 2, 2)
-        path = astar.pathfinding_search_no_diagonals([0, 0], [1, 1], 'custom')
-        assert path == []
+    def test_cardinal_search_blocked_returns_empty(self):
+        grid = make_grid(".#",
+                         "#.")
+        assert pathfinding_search(grid, (0, 0), (1, 1), CARDINAL) == []
+
+    def test_diagonal_moves_can_cut_between_two_blocked_corners(self):
+        """Documents current behaviour (same as the old A*). If you ever forbid
+        corner cutting, this is the test to change."""
+        grid = make_grid(".#",
+                         "#.")
+        assert pathfinding_search(grid, (0, 0), (1, 1)) == [(0, 0), (1, 1)]
 
 
 # ─────────────────────────────────────────────
-#  7. Coordinate offset handling
-#     (the runtime bug: world tile coords vs map-local coords)
+#  4. Cross-checks against reference implementations
+#     (random grids, fixed seeds so failures are reproducible)
 # ─────────────────────────────────────────────
 
-class TestCoordinateOffsets:
+@pytest.mark.parametrize("seed", range(25))
+class TestAgainstReferences:
 
-    def test_min_offsets_populated_after_setup_from_game(self):
-        """
-        Setup_Map_From_Game must store non-zero min_x/min_y when the tilemap
-        does not start at (0,0).  Find_Shortest_Path subtracts these before
-        calling pathfinding_search — if they are 0 the subtraction is a no-op and
-        world coords get passed in raw, causing is_valid to fail immediately.
-        """
-        tile = make_mock_tile(keys.floor, "ancient_tomb_floor")
-        tile.pos = (10, 5)
-        tile.sub_type = "ancient_tomb_floor"
-        tile.type = keys.floor
-        tile.trap = None
-        tile.touching_wall = False
+    def test_cardinal_matches_breadth_first_search(self, seed):
+        rng, grid = grid_for_seed(seed)
+        start, goal = random_start_goal(rng, grid)
 
-        game = MagicMock()
-        game.tilemap.Get_Pos.return_value = [(10, 5)]
-        game.tilemap.Current_Tile.return_value = tile
+        path = pathfinding_search(grid, start, goal, CARDINAL)
+        reachable = flood_distances(grid, start, CARDINAL)
 
-        a = Pathfinding(game)
-        a.Setup_Map_From_Game(game)
+        if goal not in reachable:
+            assert path == []
+        else:
+            assert_valid_path(grid, path, start, goal, CARDINAL)
+            assert len(path) - 1 == reachable[goal]
 
-        assert a.min_x == 10
-        assert a.min_y == 5
+    def test_diagonal_path_is_optimal(self, seed):
+        rng, grid = grid_for_seed(seed)
+        start, goal = random_start_goal(rng, grid)
 
-    def test_raw_world_coords_fail_is_valid(self):
-        """
-        Passing un-offset world tile coords directly to pathfinding_search must
-        return [] — this is the exact symptom of the missing subtraction bug.
-        """
-        tiles = {
-            (10, 5): make_mock_tile(keys.floor, "ancient_tomb_floor"),
-            (11, 5): make_mock_tile(keys.floor, "ancient_tomb_floor"),
-        }
-        game = MagicMock()
-        game.tilemap.Get_Pos.return_value = list(tiles.keys())
-        game.tilemap.Current_Tile.side_effect = lambda pos: tiles.get(pos)
+        path = pathfinding_search(grid, start, goal, DIAGONAL)
+        expected = dijkstra_cost(grid, start, goal, DIAGONAL)
 
-        a = Pathfinding(game)
-        a.Setup_Map_From_Game(game)
-        a.Set_Map(keys.standard)
+        if expected is None:
+            assert path == []
+        else:
+            assert_valid_path(grid, path, start, goal, DIAGONAL)
+            assert path_cost(path) == pytest.approx(expected)
 
-        # (10, 5) is out of the map-local bounds [0..width)
-        path = a.pathfinding_search([10, 5], [11, 5], keys.standard)
-        assert path == [], "Raw world coords should fail is_valid — subtract min_x/min_y first"
+# tests/test_flood_fill.py
+# Tests for the pure flood fill tool. No game, no mocks, no coordinate offsets.
+import random
 
-    def test_offset_coords_succeed(self):
-        """After subtracting min_x/min_y the same path must be found."""
-        tiles = {
-            (10, 5): make_mock_tile(keys.floor, "ancient_tomb_floor"),
-            (11, 5): make_mock_tile(keys.floor, "ancient_tomb_floor"),
-        }
-        game = MagicMock()
-        game.tilemap.Get_Pos.return_value = list(tiles.keys())
-        game.tilemap.Current_Tile.side_effect = lambda pos: tiles.get(pos)
+import pytest
 
-        a = Pathfinding(game)
-        a.Setup_Map_From_Game(game)
-        a.Set_Map(keys.standard)
+from scripts.engine.pathfinding.directions import CARDINAL, DIAGONAL
+from scripts.engine.pathfinding.flood_fill import (
+    flood_distances, flood_reachable, label_regions,
+)
 
-        src = [10 - a.min_x, 5 - a.min_y]
-        dst = [11 - a.min_x, 5 - a.min_y]
-        path = a.pathfinding_search(src, dst, keys.standard)
-        assert len(path) > 0
+OPEN, BLOCKED = 0, 1
 
-    def test_result_path_can_be_re_offset(self):
-        """After finding a path, adding min_x/min_y back must yield world coords."""
-        tiles = {(10, 5): make_mock_tile(keys.floor, "ancient_tomb_floor"),
-                 (11, 5): make_mock_tile(keys.floor, "ancient_tomb_floor")}
-        game = MagicMock()
-        game.tilemap.Get_Pos.return_value = list(tiles.keys())
-        game.tilemap.Current_Tile.side_effect = lambda pos: tiles.get(pos)
 
-        a = Pathfinding(game)
-        a.Setup_Map_From_Game(game)
-        a.Set_Map(keys.standard)
+def make_grid(*rows):
+    """Build grid[x][y] from text rows, written top to bottom (y) and left to right (x).
+    '.' is open, '#' is blocked."""
+    height = len(rows)
+    width = len(rows[0])
+    return [[BLOCKED if rows[y][x] == "#" else OPEN for y in range(height)]
+            for x in range(width)]
 
-        path = a.pathfinding_search([0, 0], [1, 0], keys.standard)
-        world_path = [(x + a.min_x, y + a.min_y) for (x, y) in path]
 
-        assert (10, 5) in world_path
-        assert (11, 5) in world_path
+def open_grid(width, height):
+    return [[OPEN] * height for _ in range(width)]
+
+
+def random_grid(rng, size=12, wall_chance=0.35):
+    return [[BLOCKED if rng.random() < wall_chance else OPEN for _ in range(size)]
+            for _ in range(size)]
+
+
+# Two open cells that only touch diagonally
+DIAGONAL_GAP = make_grid(".#",
+                         "#.")
 
 
 # ─────────────────────────────────────────────
-#  8. Save / Load round-trip
+#  1. flood_distances
 # ─────────────────────────────────────────────
 
-class TestSaveLoad:
+class TestFloodDistances:
 
-    def test_save_load_preserves_map(self, astar):
-        apply_custom(astar, open_grid(3, 3), 3, 3)
-        astar.min_x, astar.min_y = 2, 4
-        astar.Save_Data()
+    def test_start_has_distance_zero(self):
+        assert flood_distances(open_grid(3, 3), (1, 1))[(1, 1)] == 0
 
-        fresh = Pathfinding(MagicMock())
-        fresh.Load_Data(astar.saved_data)
+    def test_cardinal_distances_are_manhattan(self):
+        dist = flood_distances(open_grid(4, 4), (0, 0), CARDINAL)
+        assert len(dist) == 16
+        assert dist[(3, 3)] == 6
+        assert dist[(2, 1)] == 3
 
-        assert fresh.min_x == 2
-        assert fresh.min_y == 4
-        assert fresh.width == 3
-        assert fresh.height == 3
-        assert fresh.custom_map == astar.custom_map
+    def test_diagonal_distances_count_each_step_as_one(self):
+        dist = flood_distances(open_grid(4, 4), (0, 0), DIAGONAL)
+        assert dist[(3, 3)] == 3
+        assert dist[(3, 1)] == 3  # Chebyshev distance
+
+    def test_default_movement_is_eight_way(self):
+        assert flood_distances(open_grid(3, 3), (0, 0))[(2, 2)] == 2
+
+    def test_walls_split_the_grid(self):
+        grid = make_grid("..#..",
+                         "..#..")
+        assert flood_reachable(grid, (0, 0)) == {(0, 0), (1, 0), (0, 1), (1, 1)}
+
+    def test_start_on_wall_returns_empty(self):
+        grid = make_grid("#.")
+        assert flood_distances(grid, (0, 0)) == {}
+
+    def test_start_out_of_bounds_returns_empty(self):
+        assert flood_distances(open_grid(3, 3), (-1, 0)) == {}
+        assert flood_distances(open_grid(3, 3), (3, 0)) == {}
+
+    def test_empty_grid_returns_empty(self):
+        assert flood_distances([], (0, 0)) == {}
+
+    def test_accepts_list_start(self):
+        assert flood_reachable(open_grid(2, 2), [0, 0]) == {(0, 0), (1, 0), (0, 1), (1, 1)}
+
+    def test_max_steps_limits_the_search(self):
+        dist = flood_distances(open_grid(5, 5), (0, 0), CARDINAL, max_steps=2)
+        assert set(dist) == {(0, 0), (1, 0), (0, 1), (2, 0), (1, 1), (0, 2)}
+        assert max(dist.values()) == 2
+
+    def test_max_steps_zero_returns_only_the_start(self):
+        assert flood_distances(open_grid(3, 3), (1, 1), max_steps=0) == {(1, 1): 0}
+
+    def test_does_not_modify_the_grid(self):
+        grid = make_grid("..#",
+                         ".#.",
+                         "...")
+        snapshot = [column[:] for column in grid]
+        flood_distances(grid, (0, 0))
+        assert grid == snapshot
+
+
+# ─────────────────────────────────────────────
+#  2. flood_reachable
+# ─────────────────────────────────────────────
+
+class TestFloodReachable:
+
+    def test_is_the_key_set_of_flood_distances(self):
+        grid = make_grid("..#.",
+                         ".#..",
+                         "....")
+        assert flood_reachable(grid, (0, 0)) == set(flood_distances(grid, (0, 0)))
+
+    def test_diagonal_gap_is_crossed_with_eight_way_movement(self):
+        assert (1, 1) in flood_reachable(DIAGONAL_GAP, (0, 0), DIAGONAL)
+
+    def test_diagonal_gap_is_not_crossed_with_four_way_movement(self):
+        assert (1, 1) not in flood_reachable(DIAGONAL_GAP, (0, 0), CARDINAL)
+
+
+# ─────────────────────────────────────────────
+#  3. label_regions
+# ─────────────────────────────────────────────
+
+class TestLabelRegions:
+
+    def test_two_separate_regions(self):
+        grid = make_grid("..#..",
+                         "..#..")
+        labels, sizes = label_regions(grid)
+        assert sorted(sizes) == [4, 4]
+        assert labels[(0, 0)] == labels[(1, 1)]
+        assert labels[(0, 0)] != labels[(4, 1)]
+
+    def test_blocked_cells_are_not_labelled(self):
+        grid = make_grid(".#.")
+        labels, _ = label_regions(grid)
+        assert (1, 0) not in labels
+
+    def test_region_ids_are_contiguous_and_match_sizes(self):
+        grid = make_grid(".#.#.",
+                         ".#.#.")
+        labels, sizes = label_regions(grid)
+        assert set(labels.values()) == set(range(len(sizes)))
+        for region_id, size in enumerate(sizes):
+            assert sum(1 for r in labels.values() if r == region_id) == size
+
+    def test_diagonal_gap_joins_regions_only_with_eight_way_movement(self):
+        _, sizes_diagonal = label_regions(DIAGONAL_GAP, DIAGONAL)
+        _, sizes_cardinal = label_regions(DIAGONAL_GAP, CARDINAL)
+        assert sizes_diagonal == [2]
+        assert sizes_cardinal == [1, 1]
+
+    def test_fully_blocked_grid_has_no_regions(self):
+        assert label_regions(make_grid("##", "##")) == ({}, [])
+
+    def test_empty_grid_has_no_regions(self):
+        assert label_regions([]) == ({}, [])
+
+
+# ─────────────────────────────────────────────
+#  4. Consistency on random grids
+# ─────────────────────────────────────────────
+
+@pytest.mark.parametrize("seed", range(15))
+class TestConsistency:
+
+    def test_region_sizes_add_up_to_the_open_cells(self, seed):
+        grid = random_grid(random.Random(seed))
+        open_cells = sum(cell == OPEN for column in grid for cell in column)
+        labels, sizes = label_regions(grid)
+        assert len(labels) == open_cells
+        assert sum(sizes) == open_cells
+
+    def test_a_region_is_exactly_what_flood_reachable_finds(self, seed):
+        grid = random_grid(random.Random(seed))
+        labels, _ = label_regions(grid)
+        if not labels:
+            pytest.skip("random grid had no open cells")
+
+        start = next(iter(labels))
+        same_region = {cell for cell, region in labels.items() if region == labels[start]}
+        assert flood_reachable(grid, start) == same_region
