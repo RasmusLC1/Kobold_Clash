@@ -42,7 +42,7 @@ class Decoration_Spawner():
         self.bones = []
         self.nearby_decoration_cooldown = 0
         self.saved_data = {}
-
+        self.decoration_initialiser = None
         self.spawn_methods = None
 
 
@@ -53,14 +53,11 @@ class Decoration_Spawner():
     def Initialise(self, depth=0):
         self.Get_Dungeon_Type()
         self.decorations = []
-        self.decoration_initialiser = Decoration_Initialiser(self.game)  # fresh pool per dungeon
+        self.decoration_initialiser = Decoration_Initialiser(self.game)  # fresh pool and path cache
         if not self.Spawn_Initial_Decorations():
-            return None, None
-
-        # self.Generic_Spawn(self.spawn_methods.keys())
-        # self.Spawn_Lightsource()
-        # self.Link_Teleportation_Circles()
-        return self.decorations, self.All_Spawn_Methods()
+            return None
+        
+        return self.decorations, self.spawn_methods
 
 
     def Spawn_Initial_Decorations(self):
