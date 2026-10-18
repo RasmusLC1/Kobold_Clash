@@ -5,7 +5,7 @@ from collections import deque
 
 from scripts.entities.entity.entities import PhysicsEntity
 from scripts.entities.decoration.decoration_handler import Decoration_Handler
-from scripts.entities.decoration.decoration_spawner import Decoration_Spawner
+from scripts.entities.decoration.decoration_spawning.decoration_spawner import Decoration_Spawner
 from scripts.entities.decoration.shared.shrine.shrine_registry import SHRINE_REGISTRY
 from scripts.engine.keys.keys import keys
 

@@ -362,7 +362,14 @@ class Tilemap:
                 floor_tiles.append(tile)
                 
         return floor_tiles
-    
+
+    # Used for large decorations
+    def Check_If_Neighbor_Tiles_Contain_Decoration(self, tile):
+        for tile in tile.neighbor_tiles:
+            if tile.contains_decoration:
+                return True
+
+        return False
         
     # Check what tile type is in a given position
     def Current_Tile_Type_Without_Offset(self, pos):

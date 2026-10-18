@@ -1,8 +1,3 @@
-NEIGHBOR_OFFSETS = [(-1, 0), (-1, -1), (0, -1),
-                    (1, -1), (1, 0), (0, 0),
-                    (-1, 1), (0, 1), (1, 1)]
-
-
 class Check_Floor_Tile():
     def __init__(self, game):
          self.game = game
@@ -31,24 +26,9 @@ class Check_Floor_Tile():
     def _Check_Neighbours(self, floor_tile, is_large):
         # Early exit if not large always True
         if not is_large:
-                return True
+            return True
         
-        tilemap = self.game.tilemap.tilemap
-        pos_x, pos_y = floor_tile.pos
-
-        for offset in NEIGHBOR_OFFSETS:
-            nx, ny = pos_x + offset[0], pos_y + offset[1] # Get neigbour key
-            neighbor_key = (nx, ny)
-
-            if neighbor_key not in tilemap:
-                return False
-
-            neighbor_tile = tilemap[neighbor_key]
-
-            if neighbor_tile.contains_decoration or neighbor_tile.physics or neighbor_tile.room:
-                return False
-            
-        return True
+        return not self.game.tilemap.Check_If_Neighbor_Tiles_Contain_Decoration(floor_tile) 
 
     def _Get_Reachable(self):
         if self._reachable is None:
