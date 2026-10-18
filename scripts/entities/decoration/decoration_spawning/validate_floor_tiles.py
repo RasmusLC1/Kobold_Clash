@@ -26,9 +26,10 @@ class Check_Floor_Tile():
     def _Check_Neighbours(self, floor_tile, is_large):
         # Early exit if not large always True
         if not is_large:
-            return True
+                return True
+
+        return self.game.tilemap.Check_All_Neighboring_Tiles_Are_Free(floor_tile)
         
-        return not self.game.tilemap.Check_If_Neighbor_Tiles_Contain_Decoration(floor_tile) 
 
     def _Get_Reachable(self):
         if self._reachable is None:

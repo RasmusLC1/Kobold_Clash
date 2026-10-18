@@ -364,12 +364,22 @@ class Tilemap:
         return floor_tiles
 
     # Used for large decorations
-    def Check_If_Neighbor_Tiles_Contain_Decoration(self, tile):
-        for tile in tile.neighbor_tiles:
-            if tile.contains_decoration:
-                return True
+    def Check_All_Neighboring_Tiles_Are_Free(self, tile):
+        # A tile on the edge of the map has fewer than 8 neighbours
+        if len(tile.neighbor_tiles) < 8:
+            return False
 
-        return False
+        for neighbour in tile.neighbor_tiles:
+            if (neighbour.contains_decoration
+                or neighbour.physics
+                or neighbour.room
+                ):
+                return False
+
+        return True
+            
+
+        return True
         
     # Check what tile type is in a given position
     def Current_Tile_Type_Without_Offset(self, pos):

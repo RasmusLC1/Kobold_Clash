@@ -1,211 +1,76 @@
-import random
+from .decoration_config.shared_decoration_config import SHARED_DECRATION_CONFIG
+from .decoration_config.ancient_tomb_config import ANCIENT_TOMB_CONFIG
+from .decoration_config.crystal_cavern_config import CRYSTAL_CAVERN_CONFIG
+
+from .select_floor_tiles import Select_Floor_Tiles
 from scripts.engine.keys.keys import keys
-import math
+import random
 
-TILESIZE = 32
-NEIGHBOR_OFFSETS = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 0), (-1, 1), (0, 1), (1, 1)]
-
-class Decoration_Initialiser():
-    room_type = None
-    def __init__(self, game):
-        self.game = game
-        self.tiles_not_touching_walls = self.game.tilemap.tiles_not_touching_wall
-        self.floor_tiles = {}
-        self.Get_Floor_Tiles()
-        self.decorations = {}
-        self.Spawn_Decorations()
-
-
-    # Spawn large objects first as they need more space, therefore it's harder to
-    # find space for them if there's a lot of small objects scattered around
-    def Spawn_Decorations(self):
-        self.Spawn_Lightsource()
-        self.Spawn_Rooms()
-        self.Spawn_Doors()
-        self.Spawn_Large_Objects()
-        self.Spawn_Small_Objects()
-
-    def Spawn_Large_Objects(self):
-        pass
-
-    def Spawn_Small_Objects(self):
-        self.Spawn_Teleport()
-
-
-    def Spawn_Teleport(self):
-        amount = random.randint(20, 30)
-        if amount % 2:
-            amount += 1
-        self.Find_Floor_Tiles(keys.teleportation_circle, amount)
-
-    def Spawn_Doors(self):
-        doors = self.game.tilemap.extract([(keys.door_basic, 0)])
-        if not keys.door_basic in self.decorations:
-            self.decorations[keys.door_basic] = []
-
-        if not keys.fragile_wall in self.decorations:
-            self.decorations[keys.fragile_wall] = []
-        
-        door_wall_table = {
-            keys.door_basic : 1,
-            keys.fragile_wall : 0.5
+DUNGEON_MAP = {
+            keys.ancient_tomb : ANCIENT_TOMB_CONFIG,
+            keys.crystal_caverns : CRYSTAL_CAVERN_CONFIG,
         }
 
-        for door in doors:
-            pos = door[keys.pos]
-            
-            door_or_wall = random.choices(
-                    population=list(door_wall_table.keys()),
-                    weights=list(door_wall_table.values()),
-                    k=1
-                )[0]
-            if door_or_wall == keys.door_basic:
-                self.decorations[keys.door_basic].append(pos)
-            else:
-                self.decorations[keys.fragile_wall].append(pos)
+# Called when the dungeon is loaded
+class Decoration_Initialiser():
+    def __init__(self, game):
+        self.game = game
+        self.floor_tiles_finder = Select_Floor_Tiles(game)
 
-    def Spawn_Rooms(self):
-        if not self.room_type:
+
+    def Initialise_Dungeon(self):
+        decoration_config = self._Get_Decoration_Config()
+        if not decoration_config:
+            print("NO DECORATIONS FOUND")
             return
-        self.decorations.update(self.room_type.Spawn_Rooms(self.game, self.decorations))
 
+        return self.Get_Decorations_To_Spawn(decoration_config)
 
-    def Spawn_Lightsource(self):
-        # Ensure the light_source key exists in the decorations dictionary
-        if keys.light_source not in self.decorations:
-            self.decorations[keys.light_source] = []
+    def Get_Decorations_To_Spawn(self, decoration_config):
+        decorations_to_spawn = {}
+        for decoration_type, decoration_values in decoration_config:
+            amount_tuple = decoration_values.amount
+            size = decoration_values.size
+            check_for_path_to_player = decoration_values.check_player_path
 
-        torch_tiles = []  # Keeps track of already placed torch positions (in tile coordinates)
-        density = 40      # Controls how sparse the torch placement is (lower = more torches)
-        tilemap = self.game.tilemap.tilemap
-
-        # Convert floor_tiles to a list to avoid runtime errors from modifying the dict during iteration
-        for tile_key, tile in list(self.floor_tiles.items()):
-            # Skip tiles that already have entities on them
-            if tile.contains_decoration:
+            amount = self._Get_Amount_From_Range(amount_tuple)
+            if amount == 0:  # a range like (0, 3) can roll 0, which isn't a failure
                 continue
 
-            i, j = tile.pos 
+            tiles = self.floor_tiles_finder.Select_Floor_Tiles(amount,
+                                                       check_for_path_to_player,
+                                                       self._Check_If_Large(size)
+                                                       )
+            if not tiles:
+                return None
 
-            # Random chance to try placing a torch at this tile
-            if random.randint(0, density) == 1:
-                too_close = False
+            # extend, not assign: the same type can appear in more than one config
+            decorations_to_spawn.setdefault(decoration_type, []).extend(tiles)
 
-                # Check distance to all previously placed torches
-                for torch_pos in torch_tiles:
-                    if math.hypot(i - torch_pos[0], j - torch_pos[1]) < 8:
-                        too_close = True
-                        break  # Too close to an existing torch, skip placement
+        return decorations_to_spawn
 
-                # If no nearby torch found, place one here
-                if not too_close:
-                    torch_tiles.append((i, j))  # Track this torch position
-                    self.decorations[keys.light_source].append((i * TILESIZE, j * TILESIZE))
-                    tilemap[tile_key].Set_Contains_Decoration(True)
-                    del self.floor_tiles[tile_key]
-
-
-
-
-    def Find_Floor_Tiles(self, key, amount, check_for_path_to_player = False):
-        spawns = 0
-        fail = 0
-        tilemap_dic = self.game.tilemap.tilemap
-        player_pos = self.game.player.pos
-        keys = []
-        if key not in self.decorations:
-            self.decorations[key] = []
-
-        while spawns < amount:
-            
-            if fail > amount * 2 and fail > 30:
-                return
-
-            tile_key, floor_tile = random.choice(list(self.floor_tiles.items()))
-            del self.floor_tiles[tile_key]
-            
-            if floor_tile.contains_decoration or floor_tile.room:
-                fail += 1
-                continue
             
 
-            if not self.Check_Path_Finding_To_Player(check_for_path_to_player, player_pos, floor_tile):
-                fail += 1
-                continue
-            
-
-            tilemap_dic[tile_key].Set_Contains_Decoration(True)
+    def _Get_Amount_From_Range(self, amount_tuple):
+        return random.randint(amount_tuple[0], amount_tuple[1])
 
 
-            self.decorations[key].append(floor_tile.scaled_pos)
-
-            spawns += 1
-            keys.append(floor_tile.pos)
-
-        return keys
-
-
-    def Find_Floor_Tiles_Large_Object(self, key, amount, check_for_path_to_player = False):
-        spawns = 0
-        fail = 0
-
-        keys = []
-        player_pos = self.game.player.pos
-
-        if key not in self.decorations:
-            self.decorations[key] = []
-
-
-        while spawns < amount:
-            
-            if fail > amount * 2 and fail > 30:
-                return
-            tile_key, floor_tile = random.choice(list(self.floor_tiles.items()))
-            del self.floor_tiles[tile_key]
-            
-            if not self.Check_Path_Finding_To_Player(check_for_path_to_player, player_pos, floor_tile):
-                fail += 1
-                continue
-
-
-
-
-            neigbour_tiles_valid = self.Check_Neighbours(tile_key[0], tile_key[1])
-            
-            if not neigbour_tiles_valid:
-                fail += 1
-                continue
-            
-            self.Set_Decoration_Neighbours(tile_key[0], tile_key[1])
-
-
-
-            self.decorations[key].append(floor_tile.scaled_pos)
-
-            spawns += 1
-            keys.append(floor_tile.pos)
-
-        return keys
-    
+    def _Check_If_Large(self, size):
+        return size > 32
 
     
-        
+    def _Get_Decoration_Config(self):
+        dungeon_type = self.game.dungeon_type
 
+        dungeon_map = {
+            keys.ancient_tomb : ANCIENT_TOMB_CONFIG,
+            keys.crystal_caverns : CRYSTAL_CAVERN_CONFIG,
+        }
 
-    
+        dungeon_config = dungeon_map.get(dungeon_type)
+        if dungeon_config is None:
+            print("DUNGEON TYPE DOES NOT EXIST", dungeon_type, dungeon_map.keys())
+            return None
 
-    def Set_Decoration_Neighbours(self, x, y):
-        tilemap = self.game.tilemap.tilemap
-
-        for offset in NEIGHBOR_OFFSETS:
-            nx, ny = x + offset[0], y + offset[1] # Get neigbour key
-            neighbor_key = (nx, ny)
-
-
-            if neighbor_key not in tilemap:
-                return False
-
-            tilemap[neighbor_key].Set_Contains_Decoration(True)
-
-            if neighbor_key in self.floor_tiles:
-                del self.floor_tiles[neighbor_key]
+        # New list every call: never mutate the shared module-level config
+        return list(SHARED_DECRATION_CONFIG) + list(dungeon_config)
