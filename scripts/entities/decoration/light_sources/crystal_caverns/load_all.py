@@ -1,1 +1,1 @@
-from scripts.entities.decoration.light_sources.crystal_caverns.glowing_crystal import Glowing_Crystal
+from scripts.entities.decoration.crystal_caverns.glowing_crystal import Glowing_Crystal

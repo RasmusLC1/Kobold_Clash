@@ -22,4 +22,11 @@ CRYSTAL_CAVERN_CONFIG = {
             size = (32, 32)
     ),
 
+    Decorations.glowing_crystal: Decoration_Config(
+            amount= (1, 3),
+            size = (32, 32),
+            light_source=0.5
+    ),
+
+
 }

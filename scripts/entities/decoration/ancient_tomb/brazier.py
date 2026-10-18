@@ -1,10 +1,10 @@
 from scripts.entities.decoration.light_sources.light_sources.light_source import Light_Source
 import random
 from scripts.engine.keys.keys import keys
-from scripts.entities.decoration.light_sources.ancient_tomb.light_sources_registry import Register_Light_Source
+from .ancient_tomb_registry import Register_Decoration
 from scripts.entities.entity.animation_handlers.fire_animation_handler import Fire_Animation_Handler
 
-@Register_Light_Source(keys.brazier, 0.4)
+@Register_Decoration(keys.brazier)
 class Brazier(Light_Source):
 
     _animation_handler = Fire_Animation_Handler 

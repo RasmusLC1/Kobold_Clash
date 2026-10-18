@@ -55,4 +55,10 @@ SHARED_DECRATION_CONFIG = {
             check_player_path=True
     ),
 
+    Decorations.torch: Decoration_Config(
+            amount= (1, 2),
+            size = (32, 32),
+            light_source=0.1
+    ),
+
 }

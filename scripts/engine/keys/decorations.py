@@ -82,6 +82,8 @@ class Decorations():
 
     brazier = "brazier"
 
+    torch = "torch"
+
     glowing_crystal = "glowing_crystal"
 
     lever = "lever"

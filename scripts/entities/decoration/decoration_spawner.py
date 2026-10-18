@@ -18,7 +18,7 @@ from scripts.entities.decoration.ancient_tomb import load_all
 from scripts.entities.decoration.crystal_caverns import crystal_caverns_registry
 from scripts.entities.decoration.crystal_caverns import load_all
 
-from .decoration_initialiser import Decoration_Initialiser
+from .decoration_spawning.decoration_initialiser import Decoration_Initialiser
 
 from scripts.engine.keys.keys import keys
 
@@ -124,29 +124,7 @@ class Decoration_Spawner():
 
 
 
-    def Spawn_Lightsource(self):
-        if keys.light_source not in self.decoration_initialiser.decorations:
-            return
-
-        for pos in self.decoration_initialiser.decorations[keys.light_source]:
-            type = random.choices(
-                population=list(self.light_source_probability.keys()),
-                weights=list(self.light_source_probability.values()),
-                k=1
-            )[0]
-
-            if type == keys.torch:
-                self.game.item_handler.weapon_handler.Weapon_Spawner(keys.torch, pos[0], pos[1])
-                continue
-
-            cls = self.light_source_classes.get(type)
-            if cls is None:
-                print(f"Warning: light source type '{type}' not recognized.")
-                continue
-
-            light_source = cls(self.game, pos)
-            self.decorations.append(light_source)
-
+    
             
     
     def Spawn_Mimic_Chest(self, pos, size=None, version=None, radius=None, level=None):

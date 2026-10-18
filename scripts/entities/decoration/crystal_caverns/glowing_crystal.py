@@ -1,11 +1,11 @@
 from scripts.entities.decoration.light_sources.light_sources.light_source import Light_Source
 import random
 from scripts.engine.keys.keys import keys
-from scripts.entities.decoration.light_sources.crystal_caverns.light_sources_registry import Register_Light_Source
+from .crystal_caverns_registry import Register_Decoration
 from scripts.entities.decoration.shared.loot_container.loot_component import LootComponent
 
 
-@Register_Light_Source(keys.glowing_crystal, 0.5)
+@Register_Decoration(keys.glowing_crystal)
 class Glowing_Crystal(Light_Source):
     def __init__(self, game, pos) -> None:
         version = random.randint(1, 5)

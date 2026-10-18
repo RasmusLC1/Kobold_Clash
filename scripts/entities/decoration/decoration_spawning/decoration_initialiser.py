@@ -3,6 +3,7 @@ from .decoration_config.ancient_tomb_config import ANCIENT_TOMB_CONFIG
 from .decoration_config.crystal_cavern_config import CRYSTAL_CAVERN_CONFIG
 
 from .select_floor_tiles import Select_Floor_Tiles
+from .lights_initialiser import Lights_Initialiser
 from scripts.engine.keys.keys import keys
 import random
 
@@ -17,14 +18,26 @@ class Decoration_Initialiser():
     def __init__(self, game):
         self.game = game
         self.floor_tiles_finder = Select_Floor_Tiles(game)
+        self.lights_initialiser = Lights_Initialiser(game, self.floor_tiles_finder)
 
     def Initialise_Dungeon(self):
         decoration_config = self._Get_Decoration_Config()
         if not decoration_config:
             print("NO DECORATIONS FOUND")
-            return
+            return None
 
-        return self._Get_Decorations_To_Spawn(decoration_config)
+        # Lights first, so they claim their tiles before the other decorations
+        lights_to_Spawn = self.lights_initialiser.Initialise_Light_Sources(decoration_config)
+
+        print(lights_to_Spawn)
+
+        decorations_to_spawn = self._Get_Decorations_To_Spawn(decoration_config)
+        if decorations_to_spawn is None:  # a decoration type couldn't be placed
+            return None
+
+        decorations_to_spawn.update(lights_to_Spawn)
+        return decorations_to_spawn
+    
 
     def _Get_Decorations_To_Spawn(self, decoration_config):
         decorations_to_spawn = {}
@@ -42,6 +55,7 @@ class Decoration_Initialiser():
                                                        self._Check_If_Large(size)
                                                        )
             if not tiles:
+                print("NO TILES FOUND")
                 return None
 
             decorations_to_spawn.setdefault(decoration_type, []).extend(tiles)

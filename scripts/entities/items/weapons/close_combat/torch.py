@@ -2,11 +2,11 @@ from scripts.entities.items.weapons.weapon import Weapon
 from scripts.entities.items.weapons.magic_attacks.fire.flame_thrower import Flame_Thrower
 import random
 from scripts.engine.keys.keys import keys
-from scripts.entities.decoration.light_sources.light_sources_registry import Register_Light_Source
+from scripts.entities.decoration.shared.shared_registry import Register_Decoration
 from scripts.entities.entity.animation_handlers.fire_animation_handler import Fire_Animation_Handler
 
 
-@Register_Light_Source(keys.torch, 0.1)
+@Register_Decoration(keys.torch)
 class Torch(Weapon):
     _animation_handler = Fire_Animation_Handler 
     

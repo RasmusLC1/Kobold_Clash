@@ -473,36 +473,22 @@ class Tilemap:
 
 
     def Get_Random_Tile_With_Path_To_Player(self):
-        tiles = []
-        for tile in self.tiles_not_touching_wall.values():
-            if tile.type != keys.floor:
-                continue
-
-            tiles.append(tile)
+        tiles = [tile for tile in self.tiles_not_touching_wall.values()
+                if tile.type == keys.floor]
         if not tiles:
             print("TILES NOT FOUND", self.tiles_not_touching_wall)
             for tile in self.tiles_not_touching_wall.values():
                 print(tile.sub_type, tile.type)
             return
-        tile_found = False
-        random_tile = None
-        player = self.game.player
-        fail = 0
 
-        while not tile_found:
-            random_tile = random.choice(tiles)
-            tile_pos = (random_tile.pos[0] - self.game.pathfinding.min_x, random_tile.pos[1] - self.game.pathfinding.min_y)
-            player_pos = (round(player.tile.pos[0]) - self.game.pathfinding.min_x, round(player.tile.pos[1]) - self.game.pathfinding.min_y)
-            path = self.game.pathfinding.pathfinding_search([tile_pos[0], tile_pos[1]], [player_pos[0], player_pos[1]])
-            if path:
-                tile_found = True
-                break
+        reachable = self.game.pathfinding.Flood_Reachable(tuple(self.game.player.tile.pos))
+        reachable_tiles = [tile for tile in tiles if tuple(tile.pos) in reachable]
 
-            fail += 1
+        if reachable_tiles:
+            return random.choice(reachable_tiles)
 
-            if fail > 40:
-                return random.choice(tiles)
-        return random_tile
+        return random.choice(tiles)  # same fallback as the old "fail > 40" branch
+
 
     def Get_Random_Tile_With_Path_Tile(self, target_tile):
         tiles = []

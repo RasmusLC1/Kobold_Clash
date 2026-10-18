@@ -6,7 +6,7 @@ from collections import deque
 # Adjust imports to point to your actual engine directory structure
 from scripts.entities.entity.entities import PhysicsEntity
 from scripts.entities.decoration.light_sources.light_sources.light_source import Light_Source
-from scripts.entities.decoration.light_sources.crystal_caverns.glowing_crystal import Glowing_Crystal
+from scripts.entities.decoration.crystal_caverns.glowing_crystal import Glowing_Crystal
 from scripts.engine.keys.keys import keys
 
 @pytest.fixture(scope="session", autouse=True)
@@ -152,7 +152,7 @@ def test_increase_animation_flags_render_for_update(mock_game):
 
     assert crystal.render_needs_update is True
 
-from scripts.entities.decoration.light_sources.light_sources.brazier import Brazier
+from scripts.entities.decoration.ancient_tomb.brazier import Brazier
 
 
 ### 5. Brazier — Toggle On/Off
