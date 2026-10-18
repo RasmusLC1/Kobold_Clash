@@ -7,9 +7,10 @@ from scripts.engine.keys.keys import keys
 import random
 
 DUNGEON_MAP = {
-            keys.ancient_tomb : ANCIENT_TOMB_CONFIG,
-            keys.crystal_caverns : CRYSTAL_CAVERN_CONFIG,
-        }
+    keys.ancient_tomb : ANCIENT_TOMB_CONFIG,
+    keys.crystal_caverns : CRYSTAL_CAVERN_CONFIG,
+}
+TILE_SIZE = 32
 
 # Called when the dungeon is loaded
 class Decoration_Initialiser():
@@ -17,18 +18,17 @@ class Decoration_Initialiser():
         self.game = game
         self.floor_tiles_finder = Select_Floor_Tiles(game)
 
-
     def Initialise_Dungeon(self):
         decoration_config = self._Get_Decoration_Config()
         if not decoration_config:
             print("NO DECORATIONS FOUND")
             return
 
-        return self.Get_Decorations_To_Spawn(decoration_config)
+        return self._Get_Decorations_To_Spawn(decoration_config)
 
-    def Get_Decorations_To_Spawn(self, decoration_config):
+    def _Get_Decorations_To_Spawn(self, decoration_config):
         decorations_to_spawn = {}
-        for decoration_type, decoration_values in decoration_config:
+        for decoration_type, decoration_values in decoration_config.items():  # .items()
             amount_tuple = decoration_values.amount
             size = decoration_values.size
             check_for_path_to_player = decoration_values.check_player_path
@@ -44,33 +44,24 @@ class Decoration_Initialiser():
             if not tiles:
                 return None
 
-            # extend, not assign: the same type can appear in more than one config
             decorations_to_spawn.setdefault(decoration_type, []).extend(tiles)
 
         return decorations_to_spawn
 
-            
-
     def _Get_Amount_From_Range(self, amount_tuple):
         return random.randint(amount_tuple[0], amount_tuple[1])
 
-
     def _Check_If_Large(self, size):
-        return size > 32
+        return max(size) > TILE_SIZE
 
-    
     def _Get_Decoration_Config(self):
         dungeon_type = self.game.dungeon_type
 
-        dungeon_map = {
-            keys.ancient_tomb : ANCIENT_TOMB_CONFIG,
-            keys.crystal_caverns : CRYSTAL_CAVERN_CONFIG,
-        }
-
-        dungeon_config = dungeon_map.get(dungeon_type)
+        dungeon_config = DUNGEON_MAP.get(dungeon_type)
         if dungeon_config is None:
-            print("DUNGEON TYPE DOES NOT EXIST", dungeon_type, dungeon_map.keys())
+            print("DUNGEON TYPE DOES NOT EXIST", dungeon_type, DUNGEON_MAP.keys())
             return None
 
-        # New list every call: never mutate the shared module-level config
-        return list(SHARED_DECRATION_CONFIG) + list(dungeon_config)
+        # New dict every call: never mutate the shared module-level config.
+        # On a key clash the dungeon entry replaces the shared one.
+        return {**SHARED_DECRATION_CONFIG, **dungeon_config}

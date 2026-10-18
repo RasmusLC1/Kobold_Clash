@@ -22,9 +22,17 @@ class Decoration_Handler():
         self.decorations.clear()
         self.saved_data.clear()
 
+    # Decoration_Handler
     def Initialise(self):
-        self.decorations, self.spawn_methods = self.decoration_spawner.Initialise()
+        result = self.decoration_spawner.Initialise()
+        if not result:
+            print("DECORATION INITIALISATION FAILED")
+            self.decorations = []
+            return False
+
+        self.decorations, self.spawn_methods = result
         self.initalised = True
+        return True
 
 
     def Get_Random_Decoration_Of_Type(self, type):

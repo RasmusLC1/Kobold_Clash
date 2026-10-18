@@ -101,35 +101,28 @@ class Path_Finding():
         self.path.pop(0)
         return True
 
-    def Find_Shortest_Path(self) -> None:
+    def Find_Shortest_Path(self) -> bool:
         if not self.entity.target:
-            return
+            return False
 
         self.path.clear()
         self.Calculate_Position()
         self.Calculate_Destination_Position(self.entity.target)
 
-        # Translate world tile coords → map-local coords before passing to A*
-        min_x = self.game.pathfinding.min_x
-        min_y = self.game.pathfinding.min_y
-
-        src = [self.src_x - min_x, self.src_y - min_y]
-        dst = [self.des_x - min_x, self.des_y - min_y]
-
-        self.path = self.game.pathfinding.pathfinding_search(src, dst, self.path_finding_strategy)
-        # print("PATH ", self.path)
-        if not self.path:
-            return False
-
-        # Translate back to world tile coords
-        self.path = [(x + min_x, y + min_y) for (x, y) in self.path]
-        return True
+        self.path = self.game.pathfinding.Find_Path(
+            (self.src_x, self.src_y),
+            (self.des_x, self.des_y),
+            which_map=self.path_finding_strategy,
+        )
+        return bool(self.path)
 
     
     def Calculate_Position(self):
-        self.src_x = round(self.entity.pos[0] // self.game.tilemap.tile_size) - self.game.pathfinding.min_x 
-        self.src_y = round(self.entity.pos[1] // self.game.tilemap.tile_size) - self.game.pathfinding.min_y 
+        tile_size = self.game.tilemap.tile_size
+        self.src_x = int(self.entity.pos[0] // tile_size)
+        self.src_y = int(self.entity.pos[1] // tile_size)
         
     def Calculate_Destination_Position(self, destination):
-        self.des_x = round(destination[0] // self.game.tilemap.tile_size) - self.game.pathfinding.min_x 
-        self.des_y = round(destination[1] // self.game.tilemap.tile_size) - self.game.pathfinding.min_y 
+        tile_size = self.game.tilemap.tile_size
+        self.src_x = int(destination[0] // tile_size)
+        self.src_y = int(destination[1] // tile_size)

@@ -18,7 +18,7 @@ from scripts.entities.decoration.ancient_tomb import load_all
 from scripts.entities.decoration.crystal_caverns import crystal_caverns_registry
 from scripts.entities.decoration.crystal_caverns import load_all
 
-from scripts.entities.decoration.shared.shrine.shrine_registry import SHRINE_REGISTRY
+from .decoration_initialiser import Decoration_Initialiser
 
 from scripts.engine.keys.keys import keys
 
@@ -38,7 +38,6 @@ DUNGEON_LIGHT_SOURCES = {
 class Decoration_Spawner():
     def __init__(self, game) -> None:
         self.game = game
-        self.decoration_initialiser = None
         self.decorations = []
         self.bones = []
         self.nearby_decoration_cooldown = 0
@@ -53,38 +52,68 @@ class Decoration_Spawner():
 
     def Initialise(self, depth=0):
         self.Get_Dungeon_Type()
-        self.Generic_Spawn(self.spawn_methods.keys())
-        self.Spawn_Lightsource()
-        self.Link_Teleportation_Circles()
+        self.decorations = []
+        self.decoration_initialiser = Decoration_Initialiser(self.game)  # fresh pool per dungeon
+        if not self.Spawn_Initial_Decorations():
+            return None, None
+
+        # self.Generic_Spawn(self.spawn_methods.keys())
+        # self.Spawn_Lightsource()
+        # self.Link_Teleportation_Circles()
         return self.decorations, self.All_Spawn_Methods()
+
+
+    def Spawn_Initial_Decorations(self):
+        decorations_to_spawn = self.decoration_initialiser.Initialise_Dungeon()
+
+        if not decorations_to_spawn:
+            print("DEOCRATION SPAWNING FAILED")
+            return False
+
+        for decoration_type, tiles in decorations_to_spawn.items():
+            for tile in tiles:
+                self.Spawn_Deocration(decoration_type, tile.scaled_pos)
+
+        return True
+
+
+    def Spawn_Deocration(self, type, pos):
+        cls = self.spawn_methods.get(type)
+        if cls is None:
+            print(f"Warning: no spawn method for decoration type '{type}'")
+            return
+        self.decorations.append(cls(self.game, pos))
+
+
+    def Get_Dungeon_Type(self):
+        dungeon_type = self.game.dungeon_type
+        dungeon_registry = DUNGEON_REGISTRIES.get(dungeon_type)
+        if dungeon_registry is None:
+            raise ValueError(f"No decoration registry found for dungeon type: {dungeon_type}")
+
+        self.spawn_methods = {
+            **shared_registry.DECORATION_REGISTRY,
+            **dungeon_registry.DECORATION_REGISTRY,
+        }
+        self._Set_Dungeon_Light_Sources()
+
+    def _Set_Dungeon_Light_Sources(self):
+        dungeon_lights = DUNGEON_LIGHT_SOURCES.get(self.game.dungeon_type)
+
+        self.light_source_classes = dict(light_sources_registry.LIGHT_SOURCE_REGISTRY)
+        self.light_source_probability = dict(light_sources_registry.LIGHT_SOURCE_PROBABILITY)
+
+        if dungeon_lights is not None:  # no dungeon-specific lights: shared ones only
+            self.light_source_classes.update(dungeon_lights.LIGHT_SOURCE_REGISTRY)
+            self.light_source_probability.update(dungeon_lights.LIGHT_SOURCE_PROBABILITY)
+
+    
 
     def All_Spawn_Methods(self):
         return {**self.spawn_methods, **self.light_source_classes}
     
 
-    def Get_Dungeon_Type(self):
-        dungeon_specific_registry = DUNGEON_REGISTRIES.get(self.game.dungeon_type)
-        if dungeon_specific_registry is None:
-            raise ValueError(f"No decoration registry found for dungeon type: {self.game.dungeon_type}")
-            
-        self.spawn_methods = {
-                **shared_registry.DECORATION_REGISTRY,
-                **dungeon_specific_registry.DECORATION_REGISTRY,
-            }
-        decoration_initialisers = {
-            keys.ancient_tomb: Ancient_Tomb_Decoration_Initialiser,
-            keys.crystal_caverns: Crystal_Cavern_Decoration_Initialiser,
-        }
-        initaliser_type = decoration_initialisers.get(self.game.dungeon_type)
-        self.decoration_initialiser = initaliser_type(self.game)
-        self._Set_Dungeon_Light_Sources()
-
-    def _Set_Dungeon_Light_Sources(self):
-        dungeon_light_sources = DUNGEON_LIGHT_SOURCES.get(self.game.dungeon_type, {})
-        self.light_source_classes = {**light_sources_registry.LIGHT_SOURCE_REGISTRY, **dungeon_light_sources.LIGHT_SOURCE_REGISTRY}
-        self.light_source_probability = {**light_sources_registry.LIGHT_SOURCE_PROBABILITY, **dungeon_light_sources.LIGHT_SOURCE_PROBABILITY}
-
-
+ 
     def Generic_Spawn(self, types):
         for t in types:
             if t not in self.decoration_initialiser.decorations:

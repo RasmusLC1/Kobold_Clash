@@ -8,5 +8,5 @@ class Decoration_Config:
     size: Tuple[int, int]
     check_player_path: Optional[bool] = False # Costly pathfinding in loading
     link_to_other: Optional[bool] = False # Used for Teleportation circles
-    light_source = Optional[bool] = False
+    light_source: Optional[bool] = False
 

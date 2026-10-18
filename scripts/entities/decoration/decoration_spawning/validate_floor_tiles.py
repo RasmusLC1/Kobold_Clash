@@ -1,6 +1,7 @@
 class Check_Floor_Tile():
     def __init__(self, game):
          self.game = game
+         self._reachable = None
 
     # Returns True if tile is good and False if not
     def Verify_Tile(self, floor_tile, path_find_to_player=False, is_large=False):

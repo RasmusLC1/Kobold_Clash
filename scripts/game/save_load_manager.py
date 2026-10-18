@@ -67,7 +67,7 @@ class Save_Load_Manager():
     def Save_Data_Structure(self):
         self.Save_Data()
 
-        self.data_structures = [self.game.pathfinding.saved_data,
+        self.data_structures = [self.game.pathfinding.Save_Data(),
                                 self.game.tilemap.saved_data,
                                 self.game.player.saved_data,
                                 self.game.item_handler.saved_data,
