@@ -1,7 +1,7 @@
 from scripts.level_generation.cellular_automata import Cellular_Automata
 from scripts.level_generation.noise_map import Noise_Map
-from scripts.engine.tilemap.tilemap import Tilemap
-from scripts.engine.pathfinding.a_star import A_Star
+from scripts.engine.keys.keys import keys
+from scripts.engine.pathfinding.pathfinding import Pathfinding
 from scripts.level_generation.room_generation.level_structure import Level_Structure
 from scripts.level_generation.rooms.spawn_boss_room import Spawn_Boss_Room
 from scripts.level_generation.rooms.spawn_loot_room import Spawn_Loot_Room
@@ -24,7 +24,7 @@ class Dungeon_Generator():
         self.tile_size = 32
         self.player_spawn = (20, 20)
         self.offgrid_tiles = []
-        self.a_star = A_Star(game)
+        self.pathfinding = Pathfinding(game)
         # TODO: IMPLEMENT MORE TRAPS AND ADD THEM HERE
         self.noise_map = Noise_Map()
         self.level_structure = Level_Structure(game)
@@ -45,28 +45,27 @@ class Dungeon_Generator():
         size_x = self.cellular_automata.size_x
         size_y = self.cellular_automata.size_y
         
-        self.Update_A_Star_Map()
+        self.Update_Pathfinding_Map()
 
         
-        self.a_star.Set_Map('custom')
         self.Update_Load_Menu(3)
 
         # Spawn more loot rooms in lower levels of dungeon
         # TODO: PROPER LEVEL SYSTEM
-        if not Spawn_Loot_Room.Spawn_Loot_Room(self.cellular_automata.map, size_x, size_y, map_id, self.player_spawn, self.A_Star_Search, self.offgrid_tiles):
+        if not Spawn_Loot_Room.Spawn_Loot_Room(self.cellular_automata.map, size_x, size_y, map_id, self.player_spawn, self.Pathfinding_Search, self.offgrid_tiles):
             self.Generate_Map(map_id)
             return
         
-        self.Update_A_Star_Map()
+        self.Update_Pathfinding_Map()
 
         self.Update_Load_Menu(4)
 
-        Spawn_Boss_Room.Spawn_Boss_Room(self.cellular_automata.map, self.tile_size, size_x, size_y, self.player_spawn, self.A_Star_Search, self.offgrid_tiles)
+        Spawn_Boss_Room.Spawn_Boss_Room(self.cellular_automata.map, self.tile_size, size_x, size_y, self.player_spawn, self.Pathfinding_Search, self.offgrid_tiles)
 
-        self.Update_A_Star_Map()
+        self.Update_Pathfinding_Map()
 
         # Call itself recursively and generate a new map if it fails to spawn enemies
-        if not Spawn_Enemy.Enemy_Spawner(self.cellular_automata.map, self.tile_size, size_x, size_y, self.A_Star_Search, self.offgrid_tiles):
+        if not Spawn_Enemy.Enemy_Spawner(self.cellular_automata.map, self.tile_size, size_x, size_y, self.Pathfinding_Search, self.offgrid_tiles):
             self.Generate_Map(map_id)
             return
         
@@ -87,13 +86,14 @@ class Dungeon_Generator():
     def Update_Load_Menu(self, value):
         self.game.menu_handler.Loading_Menu_Update(value)
 
-    def Update_A_Star_Map(self):
-        self.a_star.Setup_Custom_Map(self.cellular_automata.map, self.cellular_automata.size_x, self.cellular_automata.size_y)
+    def Update_Pathfinding_Map(self):
+        self.pathfinding.Setup_Custom_Map(self.cellular_automata.map)
 
-    def A_Star_Search(self, start_x, start_y):
-        return self.a_star.a_star_search_no_diagonals([start_x, start_y], [self.player_spawn[0], self.player_spawn[1]], 'custom')
+    def Pathfinding_Search(self, start_x, start_y):
+        return self.pathfinding.Find_Path(
+            (start_x, start_y), self.player_spawn,
+            which_map=keys.custom, diagonals=False)
     
-
     def Delete_Map_File(self, file_path):
 
         # Check if the file exists

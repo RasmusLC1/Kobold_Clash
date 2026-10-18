@@ -14,7 +14,7 @@ def _manhattan(a, b):
     return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
 
-def a_star_search(grid, start, goal, directions=DIAGONAL):
+def pathfinding_search(grid, start, goal, directions=DIAGONAL):
     """grid[x][y] == 0 is passable. Returns a list of (x, y) cells, or [] if no path."""
     start, goal = (start[0], start[1]), (goal[0], goal[1])
     width = len(grid)

@@ -31,9 +31,9 @@ def mock_game_context():
     }
     
     # Stub core coordination engines used during search pathways
-    game.a_star = MagicMock()
-    game.a_star.min_x = 0
-    game.a_star.min_y = 0
+    game.pathfinding = MagicMock()
+    game.pathfinding.min_x = 0
+    game.pathfinding.min_y = 0
     
     return game
 
@@ -279,12 +279,12 @@ def test_random_tile_pathfinding_fallback_on_failure(empty_tilemap, mock_game_co
     # Force mock references to return an empty un-reachable path array
     mock_game_context.player = MagicMock()
     mock_game_context.player.tile.pos = (0, 0)
-    mock_game_context.a_star.a_star_search.return_value = [] # Path completely blocked
+    mock_game_context.pathfinding.pathfinding_search.return_value = [] # Path completely blocked
     
     # Method must break execution instantly and return a fallback choice after 40 failures
     selected_tile = empty_tilemap.Get_Random_Tile_With_Path_To_Player()
     assert selected_tile == tile
-    assert mock_game_context.a_star.a_star_search.call_count > 40
+    assert mock_game_context.pathfinding.pathfinding_search.call_count > 40
 
 def test_add_tile_deregisters_from_raycaster(empty_tilemap, mock_game_context):
     """Confirms that replacing live tiles alerts the raycaster system for engine safety."""

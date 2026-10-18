@@ -116,7 +116,7 @@ class Path_Finding():
         src = [self.src_x - min_x, self.src_y - min_y]
         dst = [self.des_x - min_x, self.des_y - min_y]
 
-        self.path = self.game.pathfinding.a_star_search(src, dst, self.path_finding_strategy)
+        self.path = self.game.pathfinding.pathfinding_search(src, dst, self.path_finding_strategy)
         # print("PATH ", self.path)
         if not self.path:
             return False

@@ -98,7 +98,7 @@ class Level_Loader():
     def load_level(self, clear_inventory = True):
         self.Clear_Level(clear_inventory)
 
-        self.game.pathfinding.Setup_Map_From_Game(self.game) # Initialise Astar early since other functions needs it
+        self.game.pathfinding.Setup_Map_From_Game() # Initialise Astar early since other functions needs it
         if not self.initialised:
             self.Initial_Setup()
         else:

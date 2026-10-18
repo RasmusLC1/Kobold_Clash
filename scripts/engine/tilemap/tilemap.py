@@ -476,7 +476,7 @@ class Tilemap:
             random_tile = random.choice(tiles)
             tile_pos = (random_tile.pos[0] - self.game.pathfinding.min_x, random_tile.pos[1] - self.game.pathfinding.min_y)
             player_pos = (round(player.tile.pos[0]) - self.game.pathfinding.min_x, round(player.tile.pos[1]) - self.game.pathfinding.min_y)
-            path = self.game.pathfinding.a_star_search([tile_pos[0], tile_pos[1]], [player_pos[0], player_pos[1]])
+            path = self.game.pathfinding.pathfinding_search([tile_pos[0], tile_pos[1]], [player_pos[0], player_pos[1]])
             if path:
                 tile_found = True
                 break
@@ -501,7 +501,7 @@ class Tilemap:
             random_tile = random.choice(tiles)
             tile_pos = (random_tile.pos[0] - self.game.pathfinding.min_x, random_tile.pos[1] - self.game.pathfinding.min_y)
             target_tile_pos = (target_tile.pos[0] - self.game.pathfinding.min_x, target_tile.pos[1] - self.game.pathfinding.min_y)
-            path = self.game.pathfinding.a_star_search([tile_pos[0], tile_pos[1]], [target_tile_pos[0], target_tile_pos[1]])
+            path = self.game.pathfinding.pathfinding_search([tile_pos[0], tile_pos[1]], [target_tile_pos[0], target_tile_pos[1]])
             if path:
                 tile_found = True
                 break

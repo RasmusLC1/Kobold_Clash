@@ -7,7 +7,7 @@ from scripts.engine.keys.keys import keys
 class Spawn_Boss_Room():
 
     @staticmethod
-    def Spawn_Boss_Room(map, tile_size, size_x, size_y, player_pos, A_Star_Search, offgrid_tiles):
+    def Spawn_Boss_Room(map, tile_size, size_x, size_y, player_pos, Pathfinding_Search, offgrid_tiles):
         # Create backup of map
         map_copy = map.copy()
         fail = 0
@@ -25,7 +25,7 @@ class Spawn_Boss_Room():
             if distance_to_player < 50:
                 continue
             path = []
-            path = A_Star_Search(start_x, start_y)
+            path = Pathfinding_Search(start_x, start_y)
             if path:
                 break
 
@@ -34,10 +34,10 @@ class Spawn_Boss_Room():
         Circle_Room.Room_Structure_Circle(map, start_x, start_y, radius)
 
         # Ensure there's a valid path to get into the boss room
-        path = A_Star_Search(start_x, start_y)
+        path = Pathfinding_Search(start_x, start_y)
         if not path:
             map = map_copy
-            Spawn_Boss_Room.Spawn_Boss_Room(map, tile_size, size_x, size_y, player_pos, A_Star_Search, offgrid_tiles)
+            Spawn_Boss_Room.Spawn_Boss_Room(map, tile_size, size_x, size_y, player_pos, Pathfinding_Search, offgrid_tiles)
             return
 
         # self.tilemap.offgrid_tiles.append({"type": 'Shrine', "variant": 0, "pos": [start_x * self.tile_size, start_y * self.tile_size]})

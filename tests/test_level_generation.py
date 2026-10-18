@@ -207,25 +207,25 @@
 
 #     def test_successful_room_returns_door_tuple(self):
 #         grid = open_grid(20, 20)
-#         a_star = MagicMock(return_value=[(1, 1)])
+#         pathfinding = MagicMock(return_value=[(1, 1)])
 #         result = Rectangle_Room.Room_Structure_Rectangle(
-#             grid, start_x=5, start_y=5, size_x=5, size_y=5, a_star=a_star)
+#             grid, start_x=5, start_y=5, size_x=5, size_y=5, pathfinding=pathfinding)
 #         assert isinstance(result, tuple)
 
 #     def test_failed_path_returns_none_and_rolls_back(self):
 #         grid = open_grid(10, 10)
 #         grid[5][5] = 99  # Landmark to verify rollback
-#         a_star = MagicMock(return_value=[])
+#         pathfinding = MagicMock(return_value=[])
 #         result = Rectangle_Room.Room_Structure_Rectangle(
-#             grid, start_x=3, start_y=3, size_x=5, size_y=5, a_star=a_star)
+#             grid, start_x=3, start_y=3, size_x=5, size_y=5, pathfinding=pathfinding)
 #         assert result is None
 #         assert grid[5][5] == 99
 
 #     def test_walls_placed_on_room_perimeter(self):
 #         grid = open_grid(20, 20)
-#         a_star = MagicMock(return_value=[(1, 1)])
+#         pathfinding = MagicMock(return_value=[(1, 1)])
 #         Rectangle_Room.Room_Structure_Rectangle(
-#             grid, start_x=2, start_y=2, size_x=5, size_y=5, a_star=a_star)
+#             grid, start_x=2, start_y=2, size_x=5, size_y=5, pathfinding=pathfinding)
 #         # Top and bottom rows of the room should be walls
 #         for x in range(2, 7):
 #             assert grid[x][2] == WALL
@@ -233,17 +233,17 @@
 
 #     def test_interior_cells_are_floor(self):
 #         grid = open_grid(20, 20, WALL)
-#         a_star = MagicMock(return_value=[(1, 1)])
+#         pathfinding = MagicMock(return_value=[(1, 1)])
 #         Rectangle_Room.Room_Structure_Rectangle(
-#             grid, start_x=2, start_y=2, size_x=6, size_y=6, a_star=a_star)
+#             grid, start_x=2, start_y=2, size_x=6, size_y=6, pathfinding=pathfinding)
 #         assert grid[4][4] == FLOOR
 
 #     def test_door_placed_in_perimeter(self):
 #         """The returned door position should contain a DOOR cell."""
 #         grid = open_grid(20, 20)
-#         a_star = MagicMock(return_value=[(1, 1)])
+#         pathfinding = MagicMock(return_value=[(1, 1)])
 #         door_pos = Rectangle_Room.Room_Structure_Rectangle(
-#             grid, start_x=3, start_y=3, size_x=5, size_y=5, a_star=a_star)
+#             grid, start_x=3, start_y=3, size_x=5, size_y=5, pathfinding=pathfinding)
 #         if door_pos:
 #             x, y = door_pos
 #             assert grid[x][y] == DOOR
@@ -251,10 +251,10 @@
 #     def test_overlapping_grid_raises_index_error(self):
 #         """Rooms that overflow the grid should raise IndexError."""
 #         grid = open_grid(8, 8)
-#         a_star = MagicMock(return_value=[(1, 1)])
+#         pathfinding = MagicMock(return_value=[(1, 1)])
 #         with pytest.raises(IndexError):
 #             Rectangle_Room.Room_Structure_Rectangle(
-#                 grid, start_x=4, start_y=4, size_x=10, size_y=5, a_star=a_star)
+#                 grid, start_x=4, start_y=4, size_x=10, size_y=5, pathfinding=pathfinding)
 
 #     def test_overlaps_detection_true(self):
 #         assert Spawn_Loot_Room.overlaps(0, 0, 5, 5, 3, 3, 5, 5) is True
@@ -275,22 +275,22 @@
 
 #     def test_successful_run_returns_true(self):
 #         grid = open_grid(60, 60)
-#         a_star = MagicMock(return_value=[(1, 1)])
+#         pathfinding = MagicMock(return_value=[(1, 1)])
 #         offgrid = []
 #         result = Spawn_Loot_Room.Spawn_Loot_Room(
 #             grid, size_x=60, size_y=60, level=1,
-#             player_spawn=(20, 20), A_Star_Search=a_star,
+#             player_spawn=(20, 20), Pathfinding_Search=pathfinding,
 #             offgrid_tiles=offgrid)
 #         assert result is True
 #         assert len(offgrid) > 0
 
 #     def test_offgrid_entries_have_required_keys(self):
 #         grid = open_grid(60, 60)
-#         a_star = MagicMock(return_value=[(1, 1)])
+#         pathfinding = MagicMock(return_value=[(1, 1)])
 #         offgrid = []
 #         Spawn_Loot_Room.Spawn_Loot_Room(
 #             grid, size_x=60, size_y=60, level=1,
-#             player_spawn=(20, 20), A_Star_Search=a_star,
+#             player_spawn=(20, 20), Pathfinding_Search=pathfinding,
 #             offgrid_tiles=offgrid)
 #         for entry in offgrid:
 #             assert keys.type in entry
@@ -301,22 +301,22 @@
 #     def test_returns_false_when_placement_consistently_fails(self):
 #         """If A* never finds a path, room placement should eventually give up."""
 #         grid = open_grid(60, 60)
-#         a_star = MagicMock(return_value=[])
+#         pathfinding = MagicMock(return_value=[])
 #         offgrid = []
 #         result = Spawn_Loot_Room.Spawn_Loot_Room(
 #             grid, size_x=60, size_y=60, level=1,
-#             player_spawn=(20, 20), A_Star_Search=a_star,
+#             player_spawn=(20, 20), Pathfinding_Search=pathfinding,
 #             offgrid_tiles=offgrid)
 #         assert result is False
 
 #     def test_rooms_do_not_overlap(self):
 #         """No two placed rooms should occupy overlapping coordinates."""
 #         grid = open_grid(80, 80)
-#         a_star = MagicMock(return_value=[(1, 1)])
+#         pathfinding = MagicMock(return_value=[(1, 1)])
 #         offgrid = []
 #         Spawn_Loot_Room.Spawn_Loot_Room(
 #             grid, size_x=80, size_y=80, level=1,
-#             player_spawn=(5, 5), A_Star_Search=a_star,
+#             player_spawn=(5, 5), Pathfinding_Search=pathfinding,
 #             offgrid_tiles=offgrid)
 
 #         rooms = [(e[keys.pos], e[keys.size]) for e in offgrid]
@@ -406,9 +406,9 @@
 #         generator.cellular_automata = MagicMock(
 #             size_x=size_x, size_y=size_y,
 #             map=open_grid(size_x, size_y))
-#         generator.Update_A_Star_Map = MagicMock()
+#         generator.Update_Pathfinding_Map = MagicMock()
 #         generator.Update_Load_Menu = MagicMock()
-#         generator.A_Star_Search = MagicMock(return_value=[(1, 1)])
+#         generator.Pathfinding_Search = MagicMock(return_value=[(1, 1)])
 
 #         with patch('scripts.level_generation.rooms.spawn_loot_room.Spawn_Loot_Room.Spawn_Loot_Room',
 #                    return_value=True), \
@@ -430,9 +430,9 @@
 #         generator.cellular_automata = MagicMock(
 #             size_x=size_x, size_y=size_y,
 #             map=open_grid(size_x, size_y))
-#         generator.Update_A_Star_Map = MagicMock()
+#         generator.Update_Pathfinding_Map = MagicMock()
 #         generator.Update_Load_Menu = MagicMock()
-#         generator.A_Star_Search = MagicMock(return_value=[(1, 1)])
+#         generator.Pathfinding_Search = MagicMock(return_value=[(1, 1)])
 
 #         call_counts = {"enemy": 0}
 
@@ -449,16 +449,16 @@
 
 #         assert call_counts["enemy"] == 2
 
-#     def test_update_a_star_map_called_multiple_times(self, mock_dungeon_game):
+#     def test_update_pathfinding_map_called_multiple_times(self, mock_dungeon_game):
 #         """A* map must be rebuilt after each map-modifying step."""
 #         generator = Dungeon_Generator(mock_dungeon_game)
 #         size_x, size_y = 50, 50
 #         generator.cellular_automata = MagicMock(
 #             size_x=size_x, size_y=size_y,
 #             map=open_grid(size_x, size_y))
-#         generator.Update_A_Star_Map = MagicMock()
+#         generator.Update_Pathfinding_Map = MagicMock()
 #         generator.Update_Load_Menu = MagicMock()
-#         generator.A_Star_Search = MagicMock(return_value=[(1, 1)])
+#         generator.Pathfinding_Search = MagicMock(return_value=[(1, 1)])
 
 #         with patch('scripts.level_generation.rooms.spawn_loot_room.Spawn_Loot_Room.Spawn_Loot_Room',
 #                    return_value=True), \
@@ -467,4 +467,4 @@
 #              patch('random.randint', return_value=10):
 #             generator.Generate_Map(map_id=1)
 
-#         assert generator.Update_A_Star_Map.call_count >= 3
+#         assert generator.Update_Pathfinding_Map.call_count >= 3

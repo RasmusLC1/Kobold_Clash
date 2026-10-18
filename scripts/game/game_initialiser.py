@@ -15,7 +15,7 @@ from scripts.engine.assets.graphics_loader import Graphics_Loader
 from scripts.engine.assets.audio_loader import Audio_Loader
 from scripts.input.keyboard import Keyboard_Handler
 from scripts.input.mouse import Mouse_Handler
-from scripts.engine.pathfinding.a_star import A_Star
+from scripts.engine.pathfinding.pathfinding import Pathfinding
 from scripts.interface.menu.menu_handler import Menu_Handler
 from scripts.interface.ui.ui_handler import UI_Handler
 
@@ -52,7 +52,7 @@ class Game_Initialiser():
     def initialise_Engine(self):
         self.game.mouse = Mouse_Handler(self.game)
         self.game.ray_caster = Ray_Caster(self.game)
-        self.game.pathfinding = A_Star(self.game)
+        self.game.pathfinding = Pathfinding(self.game)
         self.game.entities_render = Entity_Renderer(self.game)
         self.game.default_font = Font(self.game)
         self.game.symbols = SymbolRegistry(self.game)

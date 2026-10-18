@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from scripts.engine.keys.keys import keys
-from .a_star import a_star_search
+from .a_star import pathfinding_search
 from .flood_fill import flood_distances, label_regions
 from .directions import CARDINAL, DIAGONAL
 
@@ -68,7 +68,7 @@ class Pathfinding:
     # ---- queries (all in tile coordinates) ------------------------------------
     def Find_Path(self, start, goal, which_map=keys.standard, diagonals=True):
         grid = self.maps[which_map]
-        local = a_star_search(grid.cells, grid.to_local(start), grid.to_local(goal),
+        local = pathfinding_search(grid.cells, grid.to_local(start), grid.to_local(goal),
                               DIAGONAL if diagonals else CARDINAL)
         return [grid.to_tile(p) for p in local]
 

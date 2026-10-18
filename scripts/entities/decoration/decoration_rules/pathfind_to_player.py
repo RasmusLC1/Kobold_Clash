@@ -7,16 +7,16 @@ class Pathfind_To_Player():
         if not check_for_path_to_player:
             return True
 
-        a_star = self.game.pathfinding
+        pathfinding = self.game.pathfinding
         tilemap = self.game.tilemap
 
-        dest_x = round(player_pos[0] // tilemap.tile_size) - a_star.min_x 
-        dest_y = round(player_pos[1] // tilemap.tile_size) - a_star.min_y 
+        dest_x = round(player_pos[0] // tilemap.tile_size) - pathfinding.min_x 
+        dest_y = round(player_pos[1] // tilemap.tile_size) - pathfinding.min_y 
 
-        src_x = floor_tile.pos[0] - a_star.min_x 
-        src_y = floor_tile.pos[1] - a_star.min_y
+        src_x = floor_tile.pos[0] - pathfinding.min_x 
+        src_y = floor_tile.pos[1] - pathfinding.min_y
         
-        path = a_star.a_star_search([src_x, src_y], [dest_x, dest_y])
+        path = pathfinding.pathfinding_search([src_x, src_y], [dest_x, dest_y])
         if not path:
             return False
         return True

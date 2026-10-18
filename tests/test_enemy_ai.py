@@ -41,8 +41,8 @@ class MockKeys:
 def mock_game():
     game = MagicMock()
     game.tilemap.tile_size = 32
-    game.a_star.min_x = 0
-    game.a_star.min_y = 0
+    game.pathfinding.min_x = 0
+    game.pathfinding.min_y = 0
     
     # Player Setup
     game.player = MagicMock()
@@ -94,8 +94,8 @@ def test_pathfinding_save_and_load_data(mock_game, mock_entity):
 
 
 def test_calculate_position_handles_offsets(mock_game, mock_entity):
-    mock_game.a_star.min_x = 5
-    mock_game.a_star.min_y = -2
+    mock_game.pathfinding.min_x = 5
+    mock_game.pathfinding.min_y = -2
     mock_entity.pos = [96.0, 32.0]  # Pixel coordinates
     
     pf = Path_Finding(mock_game, mock_entity, "floor_layer")

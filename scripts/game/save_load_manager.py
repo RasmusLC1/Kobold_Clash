@@ -80,7 +80,7 @@ class Save_Load_Manager():
                                 self.game.ray_caster.saved_data,
                                 ]
         
-        self.data_structure_names = ['a_star',
+        self.data_structure_names = ['pathfinding',
                                     'tilemap',
                                     'player',
                                     'item_handler',
@@ -117,7 +117,7 @@ class Save_Load_Manager():
         
         self.entities_to_load_names = [
                                     'tilemap',
-                                    'a_star',
+                                    'pathfinding',
                                     'player',
                                     'item_handler',
                                     'rune_handler',
