@@ -1,5 +1,5 @@
 from scripts.engine.keys.decorations import Decorations
-from ..decoration_config import Decoration_Config
+from .decoration_config import Decoration_Config
 
 ANCIENT_TOMB_CONFIG = {
     Decorations.effigy_tomb: Decoration_Config(

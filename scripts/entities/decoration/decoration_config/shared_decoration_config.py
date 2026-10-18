@@ -1,5 +1,5 @@
 from scripts.engine.keys.decorations import Decorations
-from ...decoration.decoration_config import Decoration_Config
+from .decoration_config import Decoration_Config
 
 SHARED_DECRATION_CONFIG = {
     Decorations.chest: Decoration_Config(
@@ -29,7 +29,8 @@ SHARED_DECRATION_CONFIG = {
     
     Decorations.teleportation_circle: Decoration_Config(
             amount= (10, 20),
-            size = (32, 32)
+            size = (32, 32),
+            link_to_other=True
     ),
     
     Decorations.hunter_shrine: Decoration_Config(

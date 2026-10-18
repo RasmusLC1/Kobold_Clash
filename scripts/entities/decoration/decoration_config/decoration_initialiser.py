@@ -29,17 +29,10 @@ class Decoration_Initialiser():
         self.Spawn_Small_Objects()
 
     def Spawn_Large_Objects(self):
-        self.Spawn_Portal_Shrine()
-        self.Spawn_Hunter_Shrine()
-        self.Spawn_Soul_Well()
+        pass
 
     def Spawn_Small_Objects(self):
-        self.Spawn_Weapon_Rack()
-        self.Spawn_Campfire()
-        self.Spawn_Chests()
-        self.Spawn_Vase()
         self.Spawn_Teleport()
-        self.Spawn_Lever()
 
 
     def Spawn_Teleport(self):
@@ -198,39 +191,11 @@ class Decoration_Initialiser():
         return keys
     
 
-    def Check_Path_Finding_To_Player(self, check_for_path_to_player, player_pos, floor_tile):
-        if not check_for_path_to_player:
-            return True
-        
-        dest_x = round(player_pos[0] // self.game.tilemap.tile_size) - self.game.a_star.min_x 
-        dest_y = round(player_pos[1] // self.game.tilemap.tile_size) - self.game.a_star.min_y 
-
-        src_x = floor_tile.pos[0] - self.game.a_star.min_x 
-        src_y = floor_tile.pos[1] - self.game.a_star.min_y
-        
-        path = self.game.a_star.a_star_search([src_x, src_y], [dest_x, dest_y])
-        if not path:
-            return False
-        return True
+    
         
 
 
-    def Check_Neighbours(self, x, y):
-        tilemap = self.game.tilemap.tilemap
-
-        for offset in NEIGHBOR_OFFSETS:
-            nx, ny = x + offset[0], y + offset[1] # Get neigbour key
-            neighbor_key = (nx, ny)
-
-            if neighbor_key not in tilemap:
-                return False
-
-            neighbor_tile = tilemap[neighbor_key]
-
-            if neighbor_tile.contains_decoration or neighbor_tile.physics or neighbor_tile.room:
-                return False
-            
-        return True
+    
 
     def Set_Decoration_Neighbours(self, x, y):
         tilemap = self.game.tilemap.tilemap

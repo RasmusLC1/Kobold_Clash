@@ -15,7 +15,7 @@ from scripts.engine.assets.graphics_loader import Graphics_Loader
 from scripts.engine.assets.audio_loader import Audio_Loader
 from scripts.input.keyboard import Keyboard_Handler
 from scripts.input.mouse import Mouse_Handler
-from scripts.engine.a_star import A_Star
+from scripts.engine.pathfinding.a_star import A_Star
 from scripts.interface.menu.menu_handler import Menu_Handler
 from scripts.interface.ui.ui_handler import UI_Handler
 

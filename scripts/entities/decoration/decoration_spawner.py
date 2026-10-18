@@ -20,10 +20,6 @@ from scripts.entities.decoration.crystal_caverns import load_all
 
 from scripts.entities.decoration.shared.shrine.shrine_registry import SHRINE_REGISTRY
 
-
-from scripts.entities.decoration.decoration_initialiser.ancient_tomb_decoration_initialiser import Ancient_Tomb_Decoration_Initialiser
-from scripts.entities.decoration.decoration_initialiser.crystal_cavern_decoration_initialiser import Crystal_Cavern_Decoration_Initialiser
-
 from scripts.engine.keys.keys import keys
 
 import random

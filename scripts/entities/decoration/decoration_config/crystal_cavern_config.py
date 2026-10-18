@@ -1,5 +1,5 @@
 from scripts.engine.keys.decorations import Decorations
-from ..decoration_config import Decoration_Config
+from .decoration_config import Decoration_Config
 
 CRYSTAL_CAVERN_CONFIG = {
     Decorations.amplifying_node: Decoration_Config(

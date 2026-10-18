@@ -1,6 +1,7 @@
 import math
 import heapq
 from scripts.engine.keys.keys import keys
+from .flood_fill import flood_distances
 FLOOR = 0
 WALL = 1
 LAVA = 2
@@ -349,3 +350,11 @@ class A_Star:
                             heapq.heappush(open_list, (f_new, nx, ny))
 
         return []
+
+
+    def Flood_Reachable(self, start, which_map=keys.standard, directions=DIAGONAL):
+        """start is in tile coordinates. Returns a set of tile coordinates."""
+        self.Set_Map(which_map)
+        sx, sy = start[0] - self.min_x, start[1] - self.min_y
+        cells = flood_distances(self.map, (sx, sy), directions)
+        return {(x + self.min_x, y + self.min_y) for x, y in cells}

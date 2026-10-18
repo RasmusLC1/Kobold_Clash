@@ -1,7 +1,7 @@
 # tests/test_a_star.py
 import pytest
 from unittest.mock import MagicMock, patch
-from scripts.engine.a_star import A_Star
+from scripts.engine.pathfinding.a_star import A_Star
 from scripts.engine.keys.keys import keys
 
 FLOOR, WALL, LAVA = 0, 1, 2
