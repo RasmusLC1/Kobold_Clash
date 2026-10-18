@@ -129,6 +129,7 @@ class Tile:
         return True
 
 # --- Core Mechanics API ---
+    # Floor tiles do not have physics
     def Set_Physics(self, state):
         self.physics = state
         self.hitbox = pygame.Rect(self.scaled_pos[0], self.scaled_pos[1], TILE_SIZE, TILE_SIZE) if state else None

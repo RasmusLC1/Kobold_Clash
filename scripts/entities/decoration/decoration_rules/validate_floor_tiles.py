@@ -10,19 +10,17 @@ class Check_Floor_Tile():
     # Returns True if tile is good and False if not
     def Verify_Tile(self, floor_tile, path_find_to_player=False, is_large=False):
         # Cheap attribute checks first
-        if (floor_tile.contains_decoration
-                or floor_tile.room
-                or floor_tile.trap):
+        if (floor_tile.contains_decoration):
             return False
 
         # Then the neighbour scan, then pathfinding last since A* is the expensive one
-        if not self.Check_Neighbours(floor_tile, is_large):
+        if not self._Check_Neighbours(floor_tile, is_large):
             return False
 
-        return self.Check_Path_Finding_To_Player(floor_tile, path_find_to_player)
+        return self._Check_Path_Finding_To_Player(floor_tile, path_find_to_player)
 
 
-    def Check_Path_Finding_To_Player(self, floor_tile, path_find_to_player):
+    def _Check_Path_Finding_To_Player(self, floor_tile, path_find_to_player):
         if not path_find_to_player:
             return True
         reachable = self._Get_Reachable()
@@ -30,7 +28,7 @@ class Check_Floor_Tile():
             return True    # or False, whichever fallback you want
         return floor_tile.pos in reachable
 
-    def Check_Neighbours(self, floor_tile, is_large):
+    def _Check_Neighbours(self, floor_tile, is_large):
         # Early exit if not large always True
         if not is_large:
                 return True
