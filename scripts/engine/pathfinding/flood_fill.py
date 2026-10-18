@@ -1,8 +1,5 @@
 from collections import deque
-
-CARDINAL = ((1, 0), (-1, 0), (0, 1), (0, -1))
-DIAGONAL = CARDINAL + ((1, 1), (1, -1), (-1, 1), (-1, -1))
-
+from .directions import DIAGONAL
 
 def flood_distances(grid, start, directions=DIAGONAL, max_steps=None):
     """BFS over grid[x][y] == 0 cells. Returns {(x, y): steps_from_start}.

@@ -52,7 +52,7 @@ class Save_Load_Manager():
 
     # Initialise the data that needs to be saved
     def Save_Data(self):
-        self.game.a_star.Save_Data()
+        self.game.pathfinding.Save_Data()
         self.game.tilemap.Save_data()
         self.game.player.Save_Data()
         self.game.enemy_handler.Save_Enemy_Data()
@@ -67,7 +67,7 @@ class Save_Load_Manager():
     def Save_Data_Structure(self):
         self.Save_Data()
 
-        self.data_structures = [self.game.a_star.saved_data,
+        self.data_structures = [self.game.pathfinding.saved_data,
                                 self.game.tilemap.saved_data,
                                 self.game.player.saved_data,
                                 self.game.item_handler.saved_data,
@@ -104,7 +104,7 @@ class Save_Load_Manager():
     def Load_Data_Structure(self, data):
         self.entities_to_load = [
                                 self.game.tilemap,
-                                self.game.a_star,
+                                self.game.pathfinding,
                                 self.game.player,
                                 self.game.item_handler,
                                 self.game.item_handler.rune_handler,

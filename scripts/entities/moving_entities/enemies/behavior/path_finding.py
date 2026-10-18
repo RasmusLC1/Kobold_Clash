@@ -110,13 +110,13 @@ class Path_Finding():
         self.Calculate_Destination_Position(self.entity.target)
 
         # Translate world tile coords → map-local coords before passing to A*
-        min_x = self.game.a_star.min_x
-        min_y = self.game.a_star.min_y
+        min_x = self.game.pathfinding.min_x
+        min_y = self.game.pathfinding.min_y
 
         src = [self.src_x - min_x, self.src_y - min_y]
         dst = [self.des_x - min_x, self.des_y - min_y]
 
-        self.path = self.game.a_star.a_star_search(src, dst, self.path_finding_strategy)
+        self.path = self.game.pathfinding.a_star_search(src, dst, self.path_finding_strategy)
         # print("PATH ", self.path)
         if not self.path:
             return False
@@ -127,9 +127,9 @@ class Path_Finding():
 
     
     def Calculate_Position(self):
-        self.src_x = round(self.entity.pos[0] // self.game.tilemap.tile_size) - self.game.a_star.min_x 
-        self.src_y = round(self.entity.pos[1] // self.game.tilemap.tile_size) - self.game.a_star.min_y 
+        self.src_x = round(self.entity.pos[0] // self.game.tilemap.tile_size) - self.game.pathfinding.min_x 
+        self.src_y = round(self.entity.pos[1] // self.game.tilemap.tile_size) - self.game.pathfinding.min_y 
         
     def Calculate_Destination_Position(self, destination):
-        self.des_x = round(destination[0] // self.game.tilemap.tile_size) - self.game.a_star.min_x 
-        self.des_y = round(destination[1] // self.game.tilemap.tile_size) - self.game.a_star.min_y 
+        self.des_x = round(destination[0] // self.game.tilemap.tile_size) - self.game.pathfinding.min_x 
+        self.des_y = round(destination[1] // self.game.tilemap.tile_size) - self.game.pathfinding.min_y 

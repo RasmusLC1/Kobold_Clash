@@ -7,7 +7,7 @@ class Pathfind_To_Player():
         if not check_for_path_to_player:
             return True
 
-        a_star = self.game.a_star
+        a_star = self.game.pathfinding
         tilemap = self.game.tilemap
 
         dest_x = round(player_pos[0] // tilemap.tile_size) - a_star.min_x 

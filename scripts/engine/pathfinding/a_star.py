@@ -1,360 +1,64 @@
-import math
 import heapq
-from scripts.engine.keys.keys import keys
-from .flood_fill import flood_distances
-FLOOR = 0
-WALL = 1
-LAVA = 2
-DOOR = 3
-TRAP = 4
-BOSS_ROOM = 5
+import math
+from .directions import DIAGONAL
+
+SQRT2 = math.sqrt(2)
 
 
-class A_Star:
-    def __init__(self, game):
-        # Parent coords and costs
-        self.game = game
-        self.parent_x = 0
-        self.parent_y = 0
-        self.f = float('inf')
-        self.g = float('inf')
-        self.h = 0
-
-        # Offsets, dimensions
-        self.min_x = 0
-        self.min_y = 0
-        self.width = 0   # number of cells in X dimension
-        self.height = 0  # number of cells in Y dimension
-
-        self.saved_data = {}
-
-        # Various maps
-        self.standard_map = []
-        self.ignore_lava_map = []
-        self.void_spawn_map = []
-        self.custom_map = []
-        self.map = []  # Will point to whichever map is in use
-
-    # ========== CLEAR / SETUP ==========
-
-    def Clear_Maps(self):
-        self.standard_map.clear()
-        self.ignore_lava_map.clear()
-        self.void_spawn_map.clear()
-        self.custom_map.clear()
-
-    def Save_Data(self):
-        self.saved_data['min_x'] = self.min_x
-        self.saved_data['min_y'] = self.min_y
-        self.saved_data['width'] = self.width
-        self.saved_data['height'] = self.height
-        self.saved_data['standard_map'] = self.standard_map 
-        self.saved_data['ignore_lava_map'] = self.ignore_lava_map 
-        self.saved_data['void_spawn_map'] = self.void_spawn_map 
-        self.saved_data['custom_map'] = self.custom_map 
-        self.saved_data['map'] = self.map 
-
-    def Load_Data(self, data):
-        self.min_x = data['min_x']
-        self.min_y = data['min_y']
-        self.width = data['width']
-        self.height = data['height']
-        self.standard_map = data['standard_map'] 
-        self.ignore_lava_map = data['ignore_lava_map'] 
-        self.void_spawn_map = data['void_spawn_map'] 
-        self.custom_map = data['custom_map'] 
-        self.map = data['map'] 
-
-    def Setup_Custom_Map(self, custom_map, size_x, size_y):
-        """
-        custom_map is a 2D array in the form custom_map[x][y].
-        size_x, size_y are its dimensions (width, height).
-        We'll store converted values through map_conversion: self.custom_map[x][y].
-        """
-        map_conversion = {
-            FLOOR: 0,
-            WALL: 1,
-            LAVA: 0,
-            DOOR: 0,
-            TRAP: 0,
-            BOSS_ROOM: 0,
-        }
-        # Convert and copy the map using the conversion dictionary
-        self.custom_map = [[map_conversion[val] for val in col] for col in custom_map]
-        self.width = size_x
-        self.height = size_y
+def _octile(a, b):
+    dx, dy = abs(a[0] - b[0]), abs(a[1] - b[1])
+    return (dx + dy) + (SQRT2 - 2) * min(dx, dy)
 
 
+def _manhattan(a, b):
+    return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
 
-    def Set_Map(self, which_map):
-        """Select which map array (standard, ignore_lava, custom) to use for pathfinding."""
-        if which_map == keys.standard:
-            self.map = self.standard_map
-        elif which_map == keys.ignore_lava:
-            self.map = self.ignore_lava_map
-        elif which_map == keys.void_spawn:
-            self.map = self.void_spawn_map
-        elif which_map == keys.custom:
-            self.map = self.custom_map
-        else:
-            self.map = self.standard_map  # fallback
+def a_star_search(grid, start, goal, directions=DIAGONAL):
+    """grid[x][y] == 0 is passable. Returns a list of (x, y) cells, or [] if no path."""
+    start, goal = (start[0], start[1]), (goal[0], goal[1])
+    width = len(grid)
+    height = len(grid[0]) if width else 0
 
-    def Setup_Map_From_Game(self, game):
-        """
-        Example function to build standard_map and ignore_lava_map
-        from your game tilemap. We assume tilemap.Get_Pos() returns
-        (x, y) for each tile, and we want map[x][y].
-        """
-        self.Extract_Map_Bounds(game)
-        self.Build_Standard_Map(game)
-        self.Build_IgnoreLava_Map(game)
-        self.Build_Void_Spawn_Map(game)
+    def is_open(x, y):
+        return 0 <= x < width and 0 <= y < height and grid[x][y] == 0
 
-    def Extract_Map_Bounds(self, game):
-        """Determine min_x, max_x, min_y, max_y from the tile positions."""
-        all_positions = game.tilemap.Get_Pos()  # each is (x, y)
-        x_coords = [p[0] for p in all_positions]
-        y_coords = [p[1] for p in all_positions]
-        self.min_x, max_x = min(x_coords), max(x_coords)
-        self.min_y, max_y = min(y_coords), max(y_coords)
-        self.width = max_x - self.min_x + 1
-        self.height = max_y - self.min_y + 1
-
-    def _Build_Generic_Map(self, game, passability_func):
-        """Internal helper to build a 2D map based on a specific rule."""
-        # Initialize as blocked (1)
-        new_map = [[1 for _ in range(self.height)] for _ in range(self.width)]
-        
-        all_positions = game.tilemap.Get_Pos()
-        for (x, y) in all_positions:
-            map_x = x - self.min_x
-            map_y = y - self.min_y
-            
-            if 0 <= map_x < self.width and 0 <= map_y < self.height:
-                tile = game.tilemap.Current_Tile((x, y))
-                if not tile:
-                    continue
-                
-                # Apply the specific rule passed in
-                if passability_func(tile):
-                    new_map[map_x][map_y] = 0
-                    
-        return new_map
-
-# Create a specific rule and pass it onto the generic map
-    def Build_Standard_Map(self, game):
-        def rule(t):
-            return t.type == keys.floor and not t.trap and not t.touching_wall
-        self.standard_map = self._Build_Generic_Map(game, rule)
-
-    def Build_IgnoreLava_Map(self, game):
-        
-        def rule(t):
-            if t.touching_wall: return False
-            return (t.type == keys.floor or 
-                    keys.lava_env in t.type or 
-                    keys.fire in t.type)
-        
-        self.ignore_lava_map = self._Build_Generic_Map(game, rule)
-
-    def Build_Void_Spawn_Map(self, game):
-        # This one seems to allow everything as long as the tile exists
-        self.void_spawn_map = self._Build_Generic_Map(game, lambda t: t.type is not None)
-
-    # ========== UTILITY CHECKS ==========
-
-    def is_valid(self, x, y):
-        """Check that (x, y) is within the map bounds."""
-        return (0 <= x < self.width) and (0 <= y < self.height)
-
-    def is_unblocked(self, x, y):
-        """Check if the cell is passable (0)."""
-        return (self.map[x][y] == 0)
-
-    def is_destination(self, x, y, dest):
-        """Return True if (x, y) == dest = (dest_x, dest_y)."""
-        return (x == dest[0] and y == dest[1])
-
-    def calculate_h_value(self, x, y, dest):
-        """Euclidean heuristic from (x, y) to (dest_x, dest_y)."""
-        return math.sqrt((x - dest[0])**2 + (y - dest[1])**2)
-
-    def trace_path(self, cell_details, dest):
-        """
-        Walk back through parents from dest to start.
-        cell_details[x][y].parent_x and parent_y store the parent coords.
-        Returns the path as a list of (x, y).
-        """
-        path = []
-        node = (dest[0], dest[1])
-
-        while True:
-            path.append(node)
-            px = cell_details[node[0]][node[1]].parent_x
-            py = cell_details[node[0]][node[1]].parent_y
-            if (px == node[0] and py == node[1]):
-                break
-            node = (px, py)
-
-        path.reverse()
-        return path
-
-    # ========== A* IMPLEMENTATION ==========
-    # Accepts coordinates in tile size, so downscaled to 1 : 16 scale
-    def a_star_search(self, start, goal, which_map='standard'):
-        """
-        start, goal are (x, y) in map coordinates.
-        which_map is 'standard', 'ignore_lava', or 'custom'.
-        Returns the path as a list of (x, y), or empty list if no path.
-        """
-        self.Set_Map(which_map)
-
-
-        sx, sy = start
-        gx, gy = goal
-
-        # Basic checks
-        if not self.is_valid(sx, sy) or not self.is_valid(gx, gy):
-            return []
-        # print("VALID")
-        if not self.is_unblocked(sx, sy) or not self.is_unblocked(gx, gy):
-            return []
-        # print("UNBLOCKED")
-        if self.is_destination(sx, sy, goal):
-            return [start]
-        # print("DESTINATION")
-        # Initialize "closed list" to mark visited
-        closed_list = [[False]*self.height for _ in range(self.width)]
-
-        # Build a 2D array of cell info (like parent_x, f, g, h)
-        # cell_details[x][y] = A_Star()
-        cell_details = [[A_Star(self.game) for _ in range(self.height)] for _ in range(self.width)]
-
-        # Initialize the start cell
-        cell_details[sx][sy].f = 0.0
-        cell_details[sx][sy].g = 0.0
-        cell_details[sx][sy].h = 0.0
-        cell_details[sx][sy].parent_x = sx
-        cell_details[sx][sy].parent_y = sy
-
-        # Min-heap (priority queue) for the open list
-        open_list = []
-        heapq.heappush(open_list, (0.0, sx, sy))  # (f, x, y)
-
-        # Directions: 8 neighbors (dx, dy)
-        neighbors = [(-1, 0), (1, 0), (0, -1), (0, 1),
-                     (-1, -1), (-1, 1), (1, -1), (1, 1)]
-
-        while open_list:
-            f_current, cx, cy = heapq.heappop(open_list)
-            closed_list[cx][cy] = True
-
-            # Explore neighbors
-            for dx, dy in neighbors:
-                nx, ny = cx + dx, cy + dy
-
-                if self.is_valid(nx, ny) and not closed_list[nx][ny]:
-                    if self.is_unblocked(nx, ny):
-                        # If this neighbor is the destination
-                        if self.is_destination(nx, ny, goal):
-                            # Set its parent, then build the path
-                            cell_details[nx][ny].parent_x = cx
-                            cell_details[nx][ny].parent_y = cy
-                            return self.trace_path(cell_details, goal)
-
-                        # Otherwise, compute cost
-                        # Straight moves cost 1, diagonal ~1.414
-                        move_cost = 1.0 if (dx == 0 or dy == 0) else math.sqrt(2)
-                        g_new = cell_details[cx][cy].g + move_cost
-                        h_new = self.calculate_h_value(nx, ny, goal)
-                        f_new = g_new + h_new
-
-                        # If better, update cell details and push to heap
-                        if cell_details[nx][ny].f > f_new:
-                            cell_details[nx][ny].f = f_new
-                            cell_details[nx][ny].g = g_new
-                            cell_details[nx][ny].h = h_new
-                            cell_details[nx][ny].parent_x = cx
-                            cell_details[nx][ny].parent_y = cy
-
-                            heapq.heappush(open_list, (f_new, nx, ny))
-
-        # No path found
+    if not is_open(*start) or not is_open(*goal):
         return []
+    if start == goal:
+        return [start]
+
+    heuristic = _octile if len(directions) > 4 else _manhattan
+    g = {start: 0.0}
+    parent = {start: start}
+    closed = set()
+    heap = [(heuristic(start, goal), start)]
+
+    while heap:
+        _, current = heapq.heappop(heap)
+        if current == goal:
+            return _trace_path(parent, goal)
+        if current in closed:  # stale heap entry
+            continue
+        closed.add(current)
+
+        cx, cy = current
+        for dx, dy in directions:
+            nxt = (cx + dx, cy + dy)
+            if nxt in closed or not is_open(*nxt):
+                continue
+            step = 1.0 if dx == 0 or dy == 0 else SQRT2
+            new_g = g[current] + step
+            if new_g < g.get(nxt, float("inf")):
+                g[nxt] = new_g
+                parent[nxt] = current
+                heapq.heappush(heap, (new_g + heuristic(nxt, goal), nxt))
+    return []
 
 
-    def a_star_search_no_diagonals(self, start, goal, which_map=keys.standard):
-        """
-        A* search with only 4-directional movement (up, down, left, right).
-        start, goal are (x, y) in map coordinates.
-        which_map is 'standard', 'ignore_lava', or 'custom'.
-        Returns the path as a list of (x, y), or empty list if no path.
-        """
-        self.Set_Map(which_map)
-
-        sx, sy = start
-        gx, gy = goal
-
-        # Basic checks remain the same
-        if not self.is_valid(sx, sy) or not self.is_valid(gx, gy):
-            return []
-        if not self.is_unblocked(sx, sy) or not self.is_unblocked(gx, gy):
-            return []
-        if self.is_destination(sx, sy, goal):
-            return [start]
-
-        closed_list = [[False]*self.height for _ in range(self.width)]
-        cell_details = [[A_Star(self.game) for _ in range(self.height)] for _ in range(self.width)]
-
-        # Initialize start cell (same as before)
-        cell_details[sx][sy].f = 0.0
-        cell_details[sx][sy].g = 0.0
-        cell_details[sx][sy].h = 0.0
-        cell_details[sx][sy].parent_x = sx
-        cell_details[sx][sy].parent_y = sy
-
-        open_list = []
-        heapq.heappush(open_list, (0.0, sx, sy))
-
-        # Modified directions: Only 4 neighbors (no diagonals)
-        neighbors = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-
-        while open_list:
-            f_current, cx, cy = heapq.heappop(open_list)
-            closed_list[cx][cy] = True
-
-            for dx, dy in neighbors:
-                nx, ny = cx + dx, cy + dy
-
-                if self.is_valid(nx, ny) and not closed_list[nx][ny]:
-                    if self.is_unblocked(nx, ny):
-                        if self.is_destination(nx, ny, goal):
-                            cell_details[nx][ny].parent_x = cx
-                            cell_details[nx][ny].parent_y = cy
-                            return self.trace_path(cell_details, goal)
-
-                        # All moves now cost 1 (no diagonals)
-                        move_cost = 1.0
-                        g_new = cell_details[cx][cy].g + move_cost
-                        h_new = self.calculate_h_value(nx, ny, goal)
-                        f_new = g_new + h_new
-
-                        if cell_details[nx][ny].f > f_new:
-                            cell_details[nx][ny].f = f_new
-                            cell_details[nx][ny].g = g_new
-                            cell_details[nx][ny].h = h_new
-                            cell_details[nx][ny].parent_x = cx
-                            cell_details[nx][ny].parent_y = cy
-
-                            heapq.heappush(open_list, (f_new, nx, ny))
-
-        return []
-
-
-    def Flood_Reachable(self, start, which_map=keys.standard, directions=DIAGONAL):
-        """start is in tile coordinates. Returns a set of tile coordinates."""
-        self.Set_Map(which_map)
-        sx, sy = start[0] - self.min_x, start[1] - self.min_y
-        cells = flood_distances(self.map, (sx, sy), directions)
-        return {(x + self.min_x, y + self.min_y) for x, y in cells}
+def _trace_path(parent, goal):
+    path = [goal]
+    while parent[path[-1]] != path[-1]:
+        path.append(parent[path[-1]])
+    path.reverse()
+    return path

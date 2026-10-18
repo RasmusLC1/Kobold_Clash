@@ -90,7 +90,7 @@ class Level_Loader():
         self.game.decoration_handler.Clear_Decorations()
         if clear_inventory:
             self.game.inventory.Clear_Inventory()
-        self.game.a_star.Clear_Maps()
+        self.game.pathfinding.Clear_Maps()
         
         self.game.tilemap.Clear_Tilemap()
 
@@ -98,7 +98,7 @@ class Level_Loader():
     def load_level(self, clear_inventory = True):
         self.Clear_Level(clear_inventory)
 
-        self.game.a_star.Setup_Map_From_Game(self.game) # Initialise Astar early since other functions needs it
+        self.game.pathfinding.Setup_Map_From_Game(self.game) # Initialise Astar early since other functions needs it
         if not self.initialised:
             self.Initial_Setup()
         else:

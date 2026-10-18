@@ -57,5 +57,5 @@ class Check_Floor_Tile():
             ts = self.game.tilemap.tile_size
             px, py = self.game.player.pos
             start = (int(px // ts), int(py // ts))
-            self._reachable = self.game.a_star.Flood_Reachable(start)
+            self._reachable = self.game.pathfinding.Flood_Reachable(start)
         return self._reachable
