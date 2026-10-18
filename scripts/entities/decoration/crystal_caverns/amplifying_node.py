@@ -12,6 +12,7 @@ class Amplifying_Node(Decoration):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.amplifying_node, pos, (64, 64),
                          max_animation=3, animation_cooldown_max=1.2)
+
         self.description = "Resonant energies\nAmplifies Runes"
         self.trigger_radius = DEFAULT_TRIGGER_RADIUS
         self.effect_strength = DEFAULT_EFFECT_STRENGTH

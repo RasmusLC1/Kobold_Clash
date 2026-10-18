@@ -213,7 +213,7 @@ class Rune(Item):
         if not self.rendered_image:
             self.Set_Sprite()
             if not self.rendered_image:
-                print("UNABLE TO RENDER RUNE", self.type, vars(self))
+                print("UNABLE TO RENDER RUNE", self.type)
                 self.broken_rendering_counter += 1
                 if self.broken_rendering_counter >= 10:
                       self.Delete_Item()

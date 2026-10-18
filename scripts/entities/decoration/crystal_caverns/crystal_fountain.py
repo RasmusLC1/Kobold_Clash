@@ -5,7 +5,7 @@ from .crystal_caverns_registry import Register_Decoration
 @Register_Decoration(keys.crystal_fountain)
 class Crystal_Fountain(Decoration):
     def __init__(self, game, pos) -> None:
-        super().__init__(game, keys.crystal_fountain, pos, (32, 32),
+        super().__init__(game, keys.crystal_fountain, pos, (64, 64),
                          max_animation=4, animation_cooldown_max=1.3)
         self.description = "Crystal clear waters flow"
         self.effect_strength = 4

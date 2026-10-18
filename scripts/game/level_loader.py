@@ -12,7 +12,7 @@ from scripts.entities.moving_entities.enemies.enemy_handler import Enemy_Handler
 from scripts.engine.lights.light_handler import Light_Handler
 from scripts.interface.inventory.inventory_handler import Inventory_Handler
 
-
+MAX_LEVEL_ATTEMPTS = 5
 
 
 class Level_Loader():
@@ -54,20 +54,42 @@ class Level_Loader():
         return data
         
 
+    def Load_Level_New_Map(self, map_id, clear_inventory = True):
+        self.Select_Dungeon_Type()
+        depth_before = self.game.depth
+
+        for attempt in range(1, MAX_LEVEL_ATTEMPTS + 1):
+            self.game.depth = depth_before
+            self.Clear_Level(clear_inventory)  # old level or failed attempt goes first
+            self.game.game_initialiser.initialise_Engine()
+            self.game.dungeon_generator.Generate_Map(map_id)
+            self.Setup_Level()
+
+            if self.Initialise_Level():
+                return
+
+            print(f"LEVEL GENERATION ATTEMPT {attempt}/{MAX_LEVEL_ATTEMPTS} FAILED, REGENERATING")
+
+        raise RuntimeError(f"Could not generate a valid level after {MAX_LEVEL_ATTEMPTS} attempts")
+
+    def Setup_Level(self):
+        self.game.pathfinding.Setup_Map_From_Game()  # Initialise Astar early since other functions needs it
+        if not self.initialised:
+            self.Initial_Setup()
+        else:
+            self.Spawn_Player()
+
     def Initialise_Level(self):
         self.game.depth += 1
         self.game.item_handler.Initialise()
         self.game.enemy_handler.Initialise()
-        self.game.decoration_handler.Initialise()
+
+        if not self.game.decoration_handler.Initialise():
+            return False  # caller regenerates the level
+
         self.game.trap_handler.Initialise()
         self.game.trap_handler.Spawn_Traps()
-
-    def Load_Level_New_Map(self, map_id, clear_inventory = True):
-        self.Select_Dungeon_Type()
-        self.game.game_initialiser.initialise_Engine()
-        self.game.dungeon_generator.Generate_Map(map_id)
-        self.load_level(clear_inventory)
-        self.Initialise_Level()
+        return True
 
     # Set the dungeon type
     def Select_Dungeon_Type(self):
@@ -95,14 +117,9 @@ class Level_Loader():
         self.game.tilemap.Clear_Tilemap()
 
 
-    def load_level(self, clear_inventory = True):
+    def load_level(self, clear_inventory = True):  # kept for any other callers
         self.Clear_Level(clear_inventory)
-
-        self.game.pathfinding.Setup_Map_From_Game() # Initialise Astar early since other functions needs it
-        if not self.initialised:
-            self.Initial_Setup()
-        else:
-            self.Spawn_Player()
+        self.Setup_Level()
             
 
     def Set_Initialised(self, state):

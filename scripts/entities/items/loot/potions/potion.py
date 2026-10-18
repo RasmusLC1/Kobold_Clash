@@ -30,7 +30,7 @@ class Potion(Loot):
 
     def Set_Sprite(self):
         if not self.type:
-            print("POTION HAS NO TYPE", vars(self))
+            print("POTION HAS NO TYPE")
             return
         
         self.Update_Sub_Type()

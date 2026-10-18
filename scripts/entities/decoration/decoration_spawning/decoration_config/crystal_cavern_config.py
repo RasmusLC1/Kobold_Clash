@@ -17,6 +17,11 @@ CRYSTAL_CAVERN_CONFIG = {
             size = (64, 64)
     ),
 
+    Decorations.crystal_fountain: Decoration_Config(
+                amount= (2, 4),
+                size = (64, 64)
+        ),
+
     Decorations.crystal_plinth: Decoration_Config(
             amount= (7, 12),
             size = (32, 32)

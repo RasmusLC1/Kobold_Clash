@@ -29,8 +29,6 @@ class Decoration_Initialiser():
         # Lights first, so they claim their tiles before the other decorations
         lights_to_Spawn = self.lights_initialiser.Initialise_Light_Sources(decoration_config)
 
-        print(lights_to_Spawn)
-
         decorations_to_spawn = self._Get_Decorations_To_Spawn(decoration_config)
         if decorations_to_spawn is None:  # a decoration type couldn't be placed
             return None

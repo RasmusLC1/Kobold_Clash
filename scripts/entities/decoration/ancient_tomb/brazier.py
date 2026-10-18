@@ -35,7 +35,7 @@ class Brazier(Light_Source):
 
     def _Turn_On(self):
         if self.light_source:
-            print("BRAZIER Lightsource error", vars(self))
+            print("BRAZIER Lightsource error")
             return False
         self.Add_Light()
         self.animation_handler.Set_Random_Animation()

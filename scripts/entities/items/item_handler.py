@@ -183,7 +183,7 @@ class Item_Handler():
                 return
             item.Shoot(delta_time)
         except Exception as e:
-            print(f"Item is not throwable {e}", item.type, item.entity, item.tile, vars(item))
+            print(f"Item is not throwable {e}", item.type, item.entity, item.tile)
 
     def Check_Keyboard_Input(self):
         if self.game.keyboard_handler.is_key_pressed(pygame.K_e):

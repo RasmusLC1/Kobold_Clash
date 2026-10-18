@@ -24,7 +24,7 @@ class Teleportation_Circle(Decoration):
 
     def Open(self, generate_clatter=False):
         if not self.linked_portal:
-            print("NO LINKED PORTAL:  ", vars(self))
+            print("NO LINKED PORTAL:  ")
             return
         
         player = self.game.player
