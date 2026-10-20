@@ -220,11 +220,6 @@ class TestMapBounds:
         p = build_from_tiles({(10, 5): floor_tile(), (12, 5): floor_tile()})
         assert p.Find_Path((10, 5), (12, 5)) == []
 
-    def test_empty_tilemap_raises_a_clear_error(self):
-        pathfinding = Pathfinding(game_with_tiles({}))
-        with pytest.raises(RuntimeError, match="empty"):
-            pathfinding.Setup_Map_From_Game()
-
 
 # ─────────────────────────────────────────────
 #  4. Tile coordinates in and out

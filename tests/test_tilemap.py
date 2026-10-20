@@ -281,10 +281,10 @@ def test_random_tile_pathfinding_fallback_on_failure(empty_tilemap, mock_game_co
     mock_game_context.player.tile.pos = (0, 0)
     mock_game_context.pathfinding.pathfinding_search.return_value = [] # Path completely blocked
     
-    # Method must break execution instantly and return a fallback choice after 40 failures
+    # Method only needs to run flood once to validate if there's a path to player
     selected_tile = empty_tilemap.Get_Random_Tile_With_Path_To_Player()
     assert selected_tile == tile
-    assert mock_game_context.pathfinding.pathfinding_search.call_count > 40
+    assert mock_game_context.pathfinding.Flood_Reachable.call_count == 1
 
 def test_add_tile_deregisters_from_raycaster(empty_tilemap, mock_game_context):
     """Confirms that replacing live tiles alerts the raycaster system for engine safety."""

@@ -93,19 +93,31 @@ def test_pathfinding_save_and_load_data(mock_game, mock_entity):
     assert pf2.player_found is True
 
 
-def test_calculate_position_handles_offsets(mock_game, mock_entity):
-    mock_game.pathfinding.min_x = 5
-    mock_game.pathfinding.min_y = -2
-    mock_entity.pos = [96.0, 32.0]  # Pixel coordinates
-    
+from scripts.engine.pathfinding.pathfinding import Pathfinding
+
+@pytest.fixture
+def mock_game():
+    game = MagicMock()
+    game.tilemap.tile_size = 32
+    # spec=Pathfinding: min_x / min_y no longer exist, so any code that still reads them raises
+    game.pathfinding = MagicMock(spec=Pathfinding)
+    return game
+
+
+@pytest.mark.parametrize("pixel_pos, expected", [
+    ([96.0, 32.0], (3, 1)),
+    ([100.0, 63.9], (3, 1)),   # floor division, not rounding
+    ([31.9, 32.0], (0, 1)),
+    ([0.0, 0.0], (0, 0)),
+])
+def test_calculate_position_uses_plain_tile_coordinates(mock_game, mock_entity, pixel_pos, expected):
+    mock_entity.pos = pixel_pos
+
     pf = Path_Finding(mock_game, mock_entity, "floor_layer")
     pf.Calculate_Position()
-    
-    # 96 // 32 = 3. 3 - 5 = -2
-    assert pf.src_x == -2
-    # 32 // 32 = 1. 1 - (-2) = 3
-    assert pf.src_y == 3
 
+    assert (pf.src_x, pf.src_y) == expected
+    assert isinstance(pf.src_x, int) and isinstance(pf.src_y, int)
 
 def test_navigate_path_early_exit_on_short_path(mock_game, mock_entity):
     pf = Path_Finding(mock_game, mock_entity, "floor_layer")
