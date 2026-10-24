@@ -8,7 +8,7 @@ from scripts.entities.decoration.shared.shared_registry import Register_Decorati
 @Register_Decoration(keys.teleportation_circle)
 class Teleportation_Circle(Decoration):
     def __init__(self, game, pos) -> None:
-        super().__init__(game, keys.teleportation_circle, pos, (32, 32))
+        super().__init__(game, keys.teleportation_circle, pos, (32, 32), link_to_other=True)
         self.description = "Teleport to\nlinked portal\ncosts 10 souls"
         self.linked_portal = None
         self.linked_portal_ID = None

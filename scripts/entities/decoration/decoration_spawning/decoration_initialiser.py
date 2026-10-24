@@ -43,10 +43,14 @@ class Decoration_Initialiser():
             amount_tuple = decoration_values.amount
             size = decoration_values.size
             check_for_path_to_player = decoration_values.check_player_path
+            link_to_other = decoration_values.link_to_other
 
             amount = self._Get_Amount_From_Range(amount_tuple)
             if amount == 0:  # a range like (0, 3) can roll 0, which isn't a failure
                 continue
+
+            if link_to_other: # Ensure even amount for decorations that needs to be linked
+                amount = self.Spawn_Even_Amount(amount) 
 
             tiles = self.floor_tiles_finder.Select_Floor_Tiles(amount,
                                                        check_for_path_to_player,
@@ -62,6 +66,11 @@ class Decoration_Initialiser():
 
     def _Get_Amount_From_Range(self, amount_tuple):
         return random.randint(amount_tuple[0], amount_tuple[1])
+
+    def Spawn_Even_Amount(self, amount):
+        if amount % 2:
+           amount += 1
+        return amount 
 
     def _Check_If_Large(self, size):
         return max(size) > TILE_SIZE

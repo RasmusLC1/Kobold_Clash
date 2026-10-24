@@ -1,4 +1,4 @@
-from scripts.entities.decoration.decoration_spawner import Decoration_Spawner
+from scripts.entities.decoration.decoration_spawning.decoration_spawner import Decoration_Spawner
 import random
 import pygame
 from scripts.engine.keys.keys import keys

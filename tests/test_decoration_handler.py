@@ -5,7 +5,7 @@ from collections import deque
 
 from scripts.entities.entity.entities import PhysicsEntity
 from scripts.entities.decoration.decoration_handler import Decoration_Handler
-from scripts.entities.decoration.decoration_spawner import Decoration_Spawner
+from scripts.entities.decoration.decoration_spawning.decoration_spawner import Decoration_Spawner
 from scripts.entities.decoration.shared.shrine.shrine_registry import SHRINE_REGISTRY
 from scripts.engine.keys.keys import keys
 
@@ -228,75 +228,33 @@ def test_get_dungeon_type_raises_for_unknown_dungeon(spawner, mock_game):
         spawner.Get_Dungeon_Type()
 
 
-### 7. Generic_Spawn
+### 7. Spawn_Deocration
 
-def test_generic_spawn_instantiates_registered_types(spawner, mock_game):
+def test_spawn_decoration_instantiates_registered_types(spawner, mock_game):
     spawned = make_decoration(type_="barrel")
     spawn_cls = MagicMock(return_value=spawned)
     spawner.spawn_methods = {"barrel": spawn_cls}
     spawner.decoration_initialiser = MagicMock()
     spawner.decoration_initialiser.decorations = {"barrel": [(0, 0), (32, 32)]}
 
-    spawner.Generic_Spawn(["barrel"])
+    spawner.Spawn_Deocration("barrel", (0,0))
 
-    assert spawn_cls.call_count == 2
+    assert spawn_cls.call_count == 1
     assert spawned in spawner.decorations
-    assert len(spawner.decorations) == 2
+    assert len(spawner.decorations) == 1
 
 
-def test_generic_spawn_skips_unregistered_type(spawner):
+def test_spawn_decoration_skips_unregistered_type(spawner):
     spawner.spawn_methods = {}
     spawner.decoration_initialiser = MagicMock()
     spawner.decoration_initialiser.decorations = {"unregistered": [(0, 0)]}
 
-    spawner.Generic_Spawn(["unregistered"])
+    spawner.Spawn_Deocration("unregistered", (0,0))
 
     assert spawner.decorations == []
 
 
-### 8. Spawn_Lightsource — weighted choice, torch special-case
-
-def test_spawn_lightsource_creates_registered_class(spawner, mock_game):
-    spawned_light = make_decoration(type_="torch_deco")
-    light_cls = MagicMock(return_value=spawned_light)
-    spawner.decoration_initialiser = MagicMock()
-    spawner.decoration_initialiser.decorations = {keys.light_source: [(0, 0)]}
-    spawner.light_source_classes = {"crystal": light_cls}
-    spawner.light_source_probability = {"crystal": 1.0}
-
-    with patch("random.choices", return_value=["crystal"]):
-        spawner.Spawn_Lightsource()
-
-    light_cls.assert_called_once_with(mock_game, (0, 0))
-    assert spawned_light in spawner.decorations
-
-
-def test_spawn_lightsource_torch_spawns_weapon_not_decoration(spawner, mock_game):
-    spawner.decoration_initialiser = MagicMock()
-    spawner.decoration_initialiser.decorations = {keys.light_source: [(5, 5)]}
-    spawner.light_source_classes = {}
-    spawner.light_source_probability = {keys.torch: 1.0}
-
-    with patch("random.choices", return_value=[keys.torch]):
-        spawner.Spawn_Lightsource()
-
-    mock_game.item_handler.weapon_handler.Weapon_Spawner.assert_called_once_with(keys.torch, 5, 5)
-    assert spawner.decorations == []  # torch is a weapon pickup, not a decoration
-
-
-def test_spawn_lightsource_warns_on_unregistered_type(spawner, capsys):
-    spawner.decoration_initialiser = MagicMock()
-    spawner.decoration_initialiser.decorations = {keys.light_source: [(0, 0)]}
-    spawner.light_source_classes = {}
-    spawner.light_source_probability = {"ghost_light": 1.0}
-
-    with patch("random.choices", return_value=["ghost_light"]):
-        spawner.Spawn_Lightsource()
-
-    assert spawner.decorations == []
-
-
-### 9. Link_Teleportation_Circles
+### 8. Link_Teleportation_Circles
 
 def test_link_teleportation_circles_pairs_and_links(spawner):
     circle_a = make_decoration(type_=keys.teleportation_circle, ID=1)

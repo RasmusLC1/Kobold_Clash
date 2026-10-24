@@ -18,7 +18,7 @@ from scripts.entities.decoration.ancient_tomb import load_all
 from scripts.entities.decoration.crystal_caverns import crystal_caverns_registry
 from scripts.entities.decoration.crystal_caverns import load_all
 
-from .decoration_spawning.decoration_initialiser import Decoration_Initialiser
+from .decoration_initialiser import Decoration_Initialiser
 
 from scripts.engine.keys.keys import keys
 
@@ -108,25 +108,9 @@ class Decoration_Spawner():
 
     def All_Spawn_Methods(self):
         return {**self.spawn_methods, **self.light_source_classes}
-    
-
- 
-    def Generic_Spawn(self, types):
-        for t in types:
-            if t not in self.decoration_initialiser.decorations:
-                continue
-            cls = self.spawn_methods.get(t)
-            if cls is None:
-                continue
-            for pos in self.decoration_initialiser.decorations[t]:
-                decoration = cls(self.game, pos)
-                self.decorations.append(decoration)
 
 
 
-    
-            
-    
     def Spawn_Mimic_Chest(self, pos, size=None, version=None, radius=None, level=None):
         mimic_chest = self.spawn_methods.get(keys.mimic_chest)
         if mimic_chest is None:
