@@ -264,10 +264,10 @@ def test_link_teleportation_circles_pairs_and_links(spawner):
     spawner.decorations = [circle_a, circle_b]
 
     with patch("random.shuffle", lambda lst: lst):  # deterministic order
-        spawner.Link_Teleportation_Circles()
+        spawner._Link_Decorations()
 
-    circle_a.Set_Linked_Portal.assert_called_once_with(circle_b)
-    circle_b.Set_Linked_Portal.assert_called_once_with(circle_a)
+    circle_a.Set_Linked_Decoration.assert_called_once_with(circle_b)
+    circle_b.Set_Linked_Decoration.assert_called_once_with(circle_a)
 
 
 ### 10. Set_Item_Sacrifice_Decorations — shrine registry integration

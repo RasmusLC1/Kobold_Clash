@@ -23,6 +23,7 @@ from .decoration_initialiser import Decoration_Initialiser
 from scripts.engine.keys.keys import keys
 
 import random
+from collections import defaultdict
 
 DUNGEON_REGISTRIES = {
         keys.ancient_tomb: ancient_tomb_registry,
@@ -71,6 +72,7 @@ class Decoration_Spawner():
             for tile in tiles:
                 self.Spawn_Deocration(decoration_type, tile.scaled_pos)
 
+        self._Link_Decorations()
         return True
 
 
@@ -79,7 +81,10 @@ class Decoration_Spawner():
         if cls is None:
             print(f"Warning: no spawn method for decoration type '{type}'")
             return
-        self.decorations.append(cls(self.game, pos))
+        decoration = cls(self.game, pos)
+        if not decoration:
+            print("Decoration did not spawn", type, pos)
+        self.decorations.append(decoration)
 
 
     def Get_Dungeon_Type(self):
@@ -119,26 +124,23 @@ class Decoration_Spawner():
         chest = mimic_chest(self.game, pos)
         self.decorations.append(chest)
         return chest
-   
-    def Link_Teleportation_Circles(self):
-        teleportation_circles = []
+
+
+
+    def _Group_Decorations_To_Link(self) -> dict:
+        groups = defaultdict(list)
         for decoration in self.decorations:
-            if not decoration.type == keys.teleportation_circle:
-                continue
-
-            teleportation_circles.append(decoration)
-
-        random.shuffle(teleportation_circles)  # Randomly pair circles
-
-        for i in range(0, len(teleportation_circles) - 1, 2):
-            a = teleportation_circles[i]
-            b = teleportation_circles[i + 1]
-            a.Set_Linked_Portal(b)
-            b.Set_Linked_Portal(a)
-
-        for teleport_circle in teleportation_circles:
-            if not teleport_circle.linked_portal:
-                self.game.decoration_handler.Remove_Decoration(teleport_circle)
-                teleportation_circles.remove(teleport_circle)
+            if decoration.link_to_other:
+                groups[decoration.type].append(decoration)
+        return dict(groups)
 
 
+    def _Link_Decorations(self):
+        for decorations in self._Group_Decorations_To_Link().values():
+            random.shuffle(decorations)  # random partners
+
+            paired_count = len(decorations) // 2 * 2
+            for i in range(0, paired_count, 2):
+                a, b = decorations[i], decorations[i + 1]
+                a.Set_Linked_Decoration(b)
+                b.Set_Linked_Decoration(a)

@@ -36,7 +36,7 @@ class Teleportation_Circle(Decoration):
         self.game.particle_handler.Activate_Particles(random.randint(8, 12), keys.soul_particle, self.linked_portal.rect().center)
         
     
-    def Set_Linked_Portal(self, linked_portal):
+    def Set_Linked_Decoration(self, linked_portal):
         if not linked_portal:
             print("FAILED TO LINK PORTALS")
             return

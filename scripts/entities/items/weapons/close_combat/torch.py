@@ -17,6 +17,7 @@ class Torch(Weapon):
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
         self.flame_thrower = Flame_Thrower(self.game, None)
         self.fire_charge_max = 2
+        self.link_to_other = False # Decoration flag
 
     def Update(self, delta_time, offset=None):
         self.flame_thrower.Update(delta_time)

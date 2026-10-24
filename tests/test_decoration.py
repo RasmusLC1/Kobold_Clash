@@ -467,7 +467,7 @@ def test_teleportation_circle_blocked_without_enough_souls(mock_game):
 def test_teleportation_circle_save_load_round_trip(mock_game):
     circle = Teleportation_Circle(mock_game, (0, 0))
     portal = MagicMock(ID=42)
-    circle.Set_Linked_Portal(portal)
+    circle.Set_Linked_Decoration(portal)
 
     circle.Save_Data()
     data = circle.saved_data

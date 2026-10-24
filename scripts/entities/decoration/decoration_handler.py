@@ -76,7 +76,7 @@ class Decoration_Handler():
         for decoration in self.decorations:
             if decoration.type == keys.teleportation_circle:
                 linked_portal = self.Get_Decoration_By_ID(decoration.linked_portal_ID)
-                decoration.Set_Linked_Portal(linked_portal)
+                decoration.Set_Linked_Decoration(linked_portal)
         
 
     def Decoration_Spawner(self, type, pos, data=None):
