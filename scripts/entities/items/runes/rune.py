@@ -17,10 +17,11 @@ class Rune(Item):
         self.animation_size = 0
         self.animation_size_max = animation_size_max
         self.effect = type.replace('_rune', '')
-        self.activate_cooldown_max = 5
+
         self.clicked = False
         super().__init__(game, type, keys.rune, pos, size=(16, 16), amount=1, max_amount=1,
                           add_to_tile=False, rarity_value=soul_cost, durability=100, max_durability=100)
+        self.activate_cooldown_handler.max_value = 5
 
     def Save_Data(self):
         super().Save_Data()
@@ -66,7 +67,7 @@ class Rune(Item):
         self.Compute_Souls_Cost()
         self.Set_Animation_Time()
         self.Reset_Animation_Size()
-        self.Set_Activate_Cooldown(self.activate_cooldown_max)
+        self.Set_Activate_Cooldown()
         self.player.weapon_handler.Set_Attack_Lock(True)
 
         durability_damage = int(max(1, self.power // 2))
@@ -136,8 +137,8 @@ class Rune(Item):
         else:
             self.player.weapon_handler.Set_Attack_Lock(False)
 
-    def Set_Activate_Cooldown(self, value):
-        self.activate_cooldown_handler.Set_Cooldown(value)
+    def Set_Activate_Cooldown(self):
+        self.activate_cooldown_handler.Reset_Cooldown()
 
     # Updated in rune inventory when player's power is modified
     def Set_Description(self):
