@@ -6,6 +6,7 @@ from scripts.engine.keys.keys import keys
 class Passive_Loot(Loot):
     def __init__(self, game, type, pos, effect_power, rarity_value, loot_type=keys.passive):
         if not self.Set_Effect(type):
+            game.item_handler.Remove_Item(self, True)
             return False
         self.effect_power = int(effect_power)
         super().__init__(game, type, pos, (16, 16), rarity_value=rarity_value, loot_type=loot_type)

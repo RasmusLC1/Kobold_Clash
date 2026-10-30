@@ -9,7 +9,7 @@ class Loot(Item):
 
     def __init__(self, game, type, pos, size, rarity_value, loot_type,
                  amount = 1, max_amount = 1, max_animation = 0,
-                 animation_cooldown_max=None): # None as default value as loot is generally static
+                 animation_cooldown_max=0): # 0 as default value as loot is generally static
         super().__init__(game=game, type=type, sub_category=keys.loot, pos=pos,
                          size=size, amount=amount, add_to_tile=True,
                            rarity_value = rarity_value, max_amount=max_amount,
