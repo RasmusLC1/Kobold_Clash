@@ -78,10 +78,8 @@ class Entity_Renderer():
 
     # Enabled by pressing P
     def Render_Hithox(self, surf, offset):
-        show_hitbox = self.game.keyboard_handler.is_key_pressed(pygame.K_p)
-        if not show_hitbox:
+        if not self.game.keyboard_handler.is_key_pressed(pygame.K_p):
             return
 
         for entity in self.entities:
-            if show_hitbox:
-                entity.Render_Hitbox(surf, offset)
+            entity.Render_Hitbox(surf, offset)

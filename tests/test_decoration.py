@@ -238,7 +238,7 @@ def test_chest_loot_weights_are_populated(mock_game):
         "Chest's loot table is empty — Get_Loot_Types() isn't being used "
         "to populate the LootComponent"
     )
-    assert keys.gem_ingot in chest.loot_component.loot_weights
+    assert keys.gem in chest.loot_component.loot_weights
 
 
 def test_effigy_tomb_loot_weights_are_populated(mock_game):
@@ -253,7 +253,7 @@ def test_chest_open_drops_loot_and_empties(mock_game):
     with patch("scripts.entities.decoration.shared.loot_container.chest.Luck_Calculator.Calculate_Rarity_Value", return_value=10):
         chest = Chest(mock_game, (0, 0))
 
-    mock_game.item_handler.Check_If_Loot_Is_Affordable.return_value = [keys.gem_ingot]
+    mock_game.item_handler.Check_If_Loot_Is_Affordable.return_value = [keys.gem]
 
     with patch.object(chest.loot_component, "Calculate_Rarity", return_value=10):
         result = chest.Open()

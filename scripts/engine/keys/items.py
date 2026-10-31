@@ -190,8 +190,6 @@ class Items():
 
 # Ingots
 
-    gem_ingot = "gem_ingot"
-
     ingot = "ingot"
 
     Steel_ingot = "Steel_ingot"

@@ -13,7 +13,7 @@ CRYSTAL_CAVERN_CONFIG = {
     ),
 
     Decorations.crystalisation_shrine: Decoration_Config(
-            amount= (2, 4),
+            amount= (20, 40),
             size = (64, 64)
     ),
 

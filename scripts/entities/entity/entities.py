@@ -265,21 +265,29 @@ class PhysicsEntity:
             return
 
         self.Update_Dark_Surface()
-
-        if not self.rendered_image:
-            if not self.entity_image:
-                self.Set_Sprite()
-
-            if self.entity_image:
-                self.render_needs_update = True
-                self.Update_Dark_Surface()
-
-            if not self.rendered_image:
-                logging.warning("No image to render for %s (id=%s)", self.type, self.ID)
-                return
+        if not self.Check_For_Rendered_Image():
+            return
+        
 
         surf.blit(self.rendered_image, (self.pos[0] - offset[0], self.pos[1] - offset[1]))
 
+    def Check_For_Rendered_Image(self):
+        if self.rendered_image:
+            return True
+        
+        if not self.entity_image:
+            self.Set_Sprite()
+
+        if self.entity_image:
+            self.render_needs_update = True
+            self.active = 1
+            self.Update_Dark_Surface()
+
+        if not self.rendered_image:
+            logging.warning("No image to render for %s (id=%s)", self.type, self.ID)
+            return False
+
+        return True
 
     def Render_Hitbox(self, surf, offset=(0,0)):
         self.rect_handler.Render_Hitbox(self.pos, surf, offset)

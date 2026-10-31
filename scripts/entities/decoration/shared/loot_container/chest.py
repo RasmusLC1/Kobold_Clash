@@ -49,8 +49,9 @@ class Chest(Loot_Container):
             keys.potion: 0.1,
             keys.revive: 0.04,
             keys.utility: 0.2,
-            keys.curse: 99990.1,   # <- confirm this isn't a leftover test value
+            keys.curse: 0.1,
             keys.valuable: 0.2,
-            keys.gem_ingot: 0.2,
+            keys.gem: 99990.2,
+            keys.ingot: 0.2,
         }
 

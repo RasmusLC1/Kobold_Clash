@@ -32,9 +32,10 @@ class Crystalisation_Shrine(Cycling_Shrine):
                   f"(rarity={item.value}, item={item})")
             return False
 
+        print(new_gem, item.type, item.amount)
         new_gem.Set_Amount(item.amount - 1)
         item.Delete_Item()
         return True
 
     def Check_If_Item_Is_Valid(self, item) -> bool:
-        return item.sub_category == keys.gem and item.amount > 1
+        return item.type == keys.gem and item.amount > 1
