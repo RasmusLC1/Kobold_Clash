@@ -65,3 +65,4 @@ class Decoration(PhysicsEntity):
 
     def Check_Item_Collision(self, item):
         pass
+

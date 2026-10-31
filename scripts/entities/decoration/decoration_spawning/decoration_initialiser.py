@@ -51,10 +51,11 @@ class Decoration_Initialiser():
 
             if link_to_other: # Ensure even amount for decorations that needs to be linked
                 amount = self.Spawn_Even_Amount(amount) 
-
+            is_large = self._Check_If_Large(size)
+            
             tiles = self.floor_tiles_finder.Select_Floor_Tiles(amount,
                                                        check_for_path_to_player,
-                                                       self._Check_If_Large(size)
+                                                       is_large
                                                        )
             if not tiles:
                 print("NO TILES FOUND")

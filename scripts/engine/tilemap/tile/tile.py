@@ -119,8 +119,13 @@ class Tile:
     def Set_Light_ID(self, light_id):
         self.lighting.light_ID = light_id
 
-    def Set_Contains_Decoration(self, state):
+    def Set_Contains_Decoration(self, state, is_large = False):
         self.contains_decoration = state
+        if not is_large:
+            return
+        
+        for tile in self.neighbor_tiles:
+            tile.Set_Contains_Decoration(True)
 
     def Add_To_Minimap(self):
         if self.minimap:

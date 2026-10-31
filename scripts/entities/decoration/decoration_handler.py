@@ -193,7 +193,6 @@ class Decoration_Handler():
  
     def Check_Item_Collision(self, item):
         nearby_decorations = self.Find_Nearby_Decorations()
-        print(nearby_decorations)
         if not nearby_decorations:
             return
         for decoration in nearby_decorations:

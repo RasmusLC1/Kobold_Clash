@@ -22,7 +22,6 @@ class Lantern(Loot):
             return False
         
         self.game.player.Update_Light_Source(self.game.player.default_light_level)
-        self.game.light_handler.Add_Light(self.light_source)
         self.light_source.Move_Light(self.pos, self.tile)
         return True
     
