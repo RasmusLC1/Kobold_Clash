@@ -279,4 +279,7 @@ class PhysicsEntity:
                 return
 
         surf.blit(self.rendered_image, (self.pos[0] - offset[0], self.pos[1] - offset[1]))
-    
+
+
+    def Render_Hitbox(self, surf, offset=(0,0)):
+        self.rect_handler.Render_Hitbox(self.pos, surf, offset)

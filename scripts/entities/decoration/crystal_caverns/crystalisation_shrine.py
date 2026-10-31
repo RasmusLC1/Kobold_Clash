@@ -10,7 +10,7 @@ class Crystalisation_Shrine(Cycling_Shrine):
 
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.crystalisation_shrine, pos,
-                         max_animation=4, animation_cooldown_max=1.5)
+                         max_animation=3, animation_cooldown_max=1.5)
         self.description = "Trade gem for another"
 
     # Replace a gem stack with one of a different gem at amount - 1

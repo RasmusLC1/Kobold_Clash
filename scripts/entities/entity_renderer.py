@@ -1,4 +1,5 @@
 import math
+import pygame
 from scripts.engine.keys.keys import keys
 
 class Entity_Renderer():
@@ -52,6 +53,8 @@ class Entity_Renderer():
 
             nearest_interactable_object_found = self.Render_Tool_Tip(surf, offset, nearest_interactable_object_found, entity)
 
+        self.Render_Debug_Mode(surf, offset)
+
     
     def Render_Tool_Tip(self, surf, offset, nearest_interactable_object_found, entity):
         if entity.category == keys.item and not entity.picked_up or entity.category == keys.decoration:
@@ -64,3 +67,21 @@ class Entity_Renderer():
                 return True
         
         return False
+
+
+# Debug mode below
+##########################
+
+    def Render_Debug_Mode(self, surf, offset):
+        self.Render_Hithox(surf, offset)
+
+
+    # Enabled by pressing P
+    def Render_Hithox(self, surf, offset):
+        show_hitbox = self.game.keyboard_handler.is_key_pressed(pygame.K_p)
+        if not show_hitbox:
+            return
+
+        for entity in self.entities:
+            if show_hitbox:
+                entity.Render_Hitbox(surf, offset)
