@@ -289,5 +289,15 @@ class PhysicsEntity:
 
         return True
 
+
+# Debug mode
+#####################
+
     def Render_Hitbox(self, surf, offset=(0,0)):
         self.rect_handler.Render_Hitbox(self.pos, surf, offset)
+
+    def Render_Tile(self, surf, offset):
+        if not self.tile:
+            return
+        
+        self.tile.Render_Debug(surf, offset)

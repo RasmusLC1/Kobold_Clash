@@ -51,7 +51,7 @@ class Select_Floor_Tiles():
 
             tiles_found += 1
             valid_tiles.append(tile)
-            tile.Set_Contains_Decoration(True) # Flag the tile as having decoration
+            tile.Set_Contains_Decoration(True, is_large) # Flag the tile as having decoration
 
             if tiles_found >= amount:
                 break 

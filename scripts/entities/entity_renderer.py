@@ -74,6 +74,7 @@ class Entity_Renderer():
 
     def Render_Debug_Mode(self, surf, offset):
         self.Render_Hithox(surf, offset)
+        self.Render_Tile(surf, offset)
 
 
     # Enabled by pressing P
@@ -83,3 +84,10 @@ class Entity_Renderer():
 
         for entity in self.entities:
             entity.Render_Hitbox(surf, offset)
+
+    def Render_Tile(self, surf, offset):
+        if not self.game.keyboard_handler.is_key_pressed(pygame.K_t):
+            return
+
+        for entity in self.entities:
+            entity.Render_Tile(surf, offset)

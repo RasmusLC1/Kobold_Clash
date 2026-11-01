@@ -15,6 +15,7 @@ class Keyboard_Handler:
             pygame.K_x: False,
             pygame.K_c: False,
             pygame.K_p: False,
+            pygame.K_t: False,
             pygame.K_SPACE: False,
             pygame.K_LALT: False,
             pygame.K_ESCAPE: False,
