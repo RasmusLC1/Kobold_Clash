@@ -1,6 +1,8 @@
 from scripts.entities.moving_entities.effects.effect import Effect
 from scripts.engine.keys.keys import keys
+from ..player_registry import register_effect
 
+@register_effect(keys.blood_tomb)
 # Gain souls when damaged
 class Blood_Tomb(Effect):
     def __init__(self, entity):

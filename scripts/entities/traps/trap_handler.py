@@ -1,12 +1,6 @@
 
 from scripts.engine.keys.keys import keys
-from scripts.entities.traps.trap_spawners.ancient_crypt_trap_spawner import Ancient_Crypt_Trap_Spawner
-from scripts.entities.traps.trap_spawners.crystal_cavern_trap_spawner import Crystal_Cavern_Trap_Spawner
-
-
-
-
-
+from .trap_spawner import Trap_Spawner
 
 
 class Trap_Handler:
@@ -19,12 +13,7 @@ class Trap_Handler:
         self.trap_spawner = None
 
     def Initialise(self):
-        trap_spawners = {
-            keys.ancient_crypt : Ancient_Crypt_Trap_Spawner,
-            keys.crystal_caverns : Crystal_Cavern_Trap_Spawner,
-        }
-        trap_spawner = trap_spawners.get(self.game.dungeon_type)
-        self.trap_spawner = trap_spawner(self.game)
+        self.trap_spawner = Trap_Spawner(self.game)
 
     def Spawn_Traps(self):
         self.traps = self.trap_spawner.Initialise()
@@ -43,13 +32,14 @@ class Trap_Handler:
         for item_id, item_data in data.items():
             if not item_data:
                 continue
-
             type = item_data[keys.type]
             pos = item_data[keys.pos]
             try: 
                 self.trap_spawner.Spawn_Traps(pos, type, item_data)
             except Exception as e:
                 print("DATA WRONG TRAPHANDLER", item_data, e)
+
+        self.traps = self.trap_spawner.traps
 
     # Only update traps that are close t the player
     def Update(self, delta_time):
@@ -113,7 +103,7 @@ class Trap_Handler:
         return True
 
     def Remove_Trap(self, trap):
-        self.game.ray_caster.Remove_Trap(trap)
+        trap.Remove_Tile()
         if trap in self.traps:
             self.traps.remove(trap)
         if trap in self.nearby_traps:

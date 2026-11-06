@@ -12,6 +12,7 @@ class Inventory_Item(Loot):
 
 
     def Update(self, delta_time):
+        super().Update(delta_time)
         if self.update_cooldown:
             self.update_cooldown -= delta_time
         else:

@@ -3,10 +3,9 @@ from scripts.engine.keys.keys import keys
 
 class Spider_Web(Trap):
     def __init__(self, game, pos, speed = 0, direction = (0, 0), duration = 0, entity = None):
-        super().__init__(game, pos, keys.spider_web)
+        super().__init__(game, pos, keys.spider_web, max_animation=3, animation_cooldown_max=0.3)
         self.duration = duration
         self.active = False
-        self.animation_max = 3
         self.delete = False
         self.frame_movement = (0, 0)
         self.direction = direction
@@ -16,8 +15,6 @@ class Spider_Web(Trap):
 
 
         self.Determine_If_Shot_By_Spider()
-
-        
 
 
     def Update(self, entity, delta_time):
@@ -29,30 +26,30 @@ class Spider_Web(Trap):
             self.game.trap_handler.Remove_Trap(self)
             return
         
-        self.entity_hit(entity)
+        self.Check_If_Entity_Hit(entity)
 
     
-    def entity_hit(self, entity):
+    def Check_If_Entity_Hit(self, entity):
         if entity.category == keys.item:
             return
         if entity == self.entity:
             return
         if self.rect().colliderect(entity.rect()) and self.Cooldown == 0:
-            if entity.type == 'player':
-                if entity.dashing:
-                    return
-            self.animation = self.animation_max
-            entity.Set_Effect(keys.snare, 100)
-            self.Cooldown = 100
-            self.delete = True
-            self.active = False
+            self.Entity_Hit(entity)
+    
+    def Entity_Hit(self, entity):
+        self.animation = self.max_animation
+        entity.Set_Effect(keys.snare, 100)
+        self.Cooldown = 100
+        self.delete = True
+        self.active = False
 
     def Determine_If_Shot_By_Spider(self):
         if self.duration:
             self.active = True
-            self.animation = self.animation_max
+            self.animation = self.max_animation
         else:
-            self.animation = self.animation_max
+            self.animation = self.max_animation
 
     def Update_Duration(self):
         if not self.active:

@@ -4,10 +4,10 @@ from scripts.engine.keys.keys import keys
 
 class Faded_Hourglass(Radius_Effect_Loot):
     def __init__(self, game, type, pos, amount, rarity_value):
-        super().__init__(game, type, pos, 320, keys.utility, 4, amount, rarity_value)
+        super().__init__(game, type, pos, 320, keys.utility, 4, amount,
+                         rarity_value, max_animation=4)
         self.slowdown_triggered = 0
         self.animation_cooldown = 20
-        self.max_animation = 4
         self.slowdown_amount = 8
    
 

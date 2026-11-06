@@ -17,52 +17,48 @@ class Moving_Entity(PhysicsEntity):
     _animation_handler = Animation_Handler
     _effect_handler = Status_Effect_Handler
 
-    def __init__(self, game, type, category, pos, size, health, strength, max_speed, agility, intelligence, stamina, sub_category):
-        super().__init__(game, type, category, pos, size, sub_category)
-        
-        # Initialize the Movement component passing 'self' as the parent entity
+    def __init__(self, game, type, category, pos, size, health, strength,
+                 max_speed, agility, intelligence, stamina, sub_category):
+        super().__init__(game, type, category, pos, size, sub_category,
+                  max_animation=0, animation_cooldown_max=1) # Placeholder cooldown value, real cooldown in animation_handler
+  
         self.movement = Movement(self, max_speed, agility)
 
         self.attack_direction = (0,0)
         self.target = (0,0)
         self.distance_to_player = 0
         self.active_ability = None
-        
+
         self.damage_cooldown = 0
-        
+
         self.nearby_traps = []
         self.nearby_traps_cooldown = 0
         self.nearby_enemies = []
         self.nearby_enemies_cooldown = 0
 
-        # Attributes, placeholder should be assigned on creation
-        self.strength = strength 
-        self.strength_holder = strength 
-        self.agility = agility 
-        self.intelligence = intelligence 
-        self.stamina = stamina 
+        self.strength = strength
+        self.strength_holder = strength
+        self.agility = agility
+        self.intelligence = intelligence
+        self.stamina = stamina
         self.health = health
         self.healing_enabled = True
         self.max_health = self.health
-        self.touching_ground = True 
 
-        # Handle Blocking
         self.block_direction = (0,0)
 
-        # Status Effects
         self.effects = self._effect_handler(self)
-        self.animation_handler = self._animation_handler(self)
 
         self.active_weapon_cooldown = 0
-        self.Set_Sprite()
+        # Removed: self.Set_Sprite() — animation_key isn't populated until the
+        # first Update_Animation/Set_Action call, so calling Set_Sprite here
+        # would try to load assets for animation_key == '' and fail.
 
     # --- Backward Compatibility Properties ---
-    # These ensure external handlers can access movement values seamlessly
     @property
     def velocity(self): return self.movement.velocity
     @velocity.setter
     def velocity(self, val): self.movement.velocity = val
-
 
     @property
     def frame_movement(self): return self.movement.frame_movement
@@ -71,7 +67,6 @@ class Moving_Entity(PhysicsEntity):
 
     @property
     def last_frame_movement(self): return self.movement.last_frame_movement
-
     @last_frame_movement.setter
     def last_frame_movement(self, val): self.movement.last_frame_movement = val
 
@@ -99,7 +94,6 @@ class Moving_Entity(PhysicsEntity):
     @property
     def acceleration_holder(self): return self.movement.acceleration_holder
 
-
     @property
     def pushed_entities(self): return self.movement.pushed_entities
 
@@ -115,7 +109,8 @@ class Moving_Entity(PhysicsEntity):
         self.saved_data['intelligence'] = self.intelligence
         self.saved_data['stamina'] = self.stamina
         self.saved_data['target'] = self.target
-        self.saved_data['animation'] = self.animation_handler.animation
+        self.saved_data['animation'] = self.animation_handler.animation_key
+        self.saved_data['animation_value'] = self.animation_handler.animation
         self.saved_data['effects'] = self.effects.Save_Data()
 
     def Load_Data(self, data):
@@ -129,13 +124,18 @@ class Moving_Entity(PhysicsEntity):
         self.intelligence = data['intelligence']
         self.stamina = data['stamina']
         self.target = data['target']
-        self.animation_handler.animation = data['animation']
+        self.animation_handler.animation_key = data['animation']
+        self.animation_handler.animation = data.get('animation_value', 0)
+        # Re-derive action from the saved key and reload sprite/entity_image
+        # so entity_image isn't left None after a load.
+        self.animation_handler.action = data['animation'].removeprefix(self.type + '_')
+        self.animation_handler.Set_Sprite(self.animation_handler.animation_key)
         self.effects.Load_Data(data['effects'])
 
     # --- Core Engine Cycle ---
     def Update(self, tilemap, delta_time, movement=(0, 0)):
+        super().Update(delta_time, movement)
         self.movement.Update_Movement(movement, delta_time)
-        self.animation_handler.Update_Animation(movement, delta_time)
         self.Update_Status_Effects(delta_time)
 
         # self.Update_Traps(delta_time)
@@ -176,7 +176,7 @@ class Moving_Entity(PhysicsEntity):
 
     def Set_Description(self):
         pass
-    
+
     def Attack_Direction_Handler(self):
         self.Set_Attack_Direction()
         self.animation_handler.Attack_Direction_Handler()
@@ -200,7 +200,7 @@ class Moving_Entity(PhysicsEntity):
         if self.nearby_enemies_cooldown > 0:
             self.nearby_enemies_cooldown -= delta_time
             return
-        
+
         self.nearby_enemies.clear()
         self.nearby_enemies = self.game.enemy_handler.Find_Nearby_Enemies(self, max_distance)
         self.nearby_enemies_cooldown = ENEMY_COOLDOWN_MAX
@@ -210,7 +210,7 @@ class Moving_Entity(PhysicsEntity):
             self.damage_cooldown -= delta_time
             if self.damage_cooldown <= 0:
                 self.damage_cooldown = 0
-    
+
     def Set_Damage_Cooldown(self):
         self.damage_cooldown = DAMAGE_COOLDOWN_MAX
 
@@ -221,18 +221,18 @@ class Moving_Entity(PhysicsEntity):
             return False
         if self.Check_Blocking_Direction(direction) or self.damage_cooldown > 0:
             return False
-        
+
         self.game.text_box_handler.Spawn_Damage_Text(self.pos.copy(), effect[0], str(damage))
         self.Set_Health(self.health - damage)
         self.Set_Description()
-        
+
         self.effects.Damage_Taken(damage, attacker)
         if direction:
             strength_multiplier = 1
             if attacker:
                 strength_multiplier = attacker.strength * 0.2
             self.Push(direction, self.game.tilemap, damage * strength_multiplier)
-        
+
         if effect[1] > 0 and not keys.vampiric in effect[0]:
             effect_strength = max(effect[1] // 10, 1)
             self.effects.Set_Effect(effect[0], effect_strength)
@@ -254,7 +254,7 @@ class Moving_Entity(PhysicsEntity):
     def Check_Blocking_Direction(self, direction) -> bool:
         if self.block_direction == (0, 0):
             return False
-        
+
         attack_vector = pygame.math.Vector2(self.attack_direction)
         block_vector = pygame.math.Vector2(direction)
 
@@ -307,10 +307,10 @@ class Moving_Entity(PhysicsEntity):
 
     def Set_Active_Ability(self, ability):
         if self.active_ability:
-            return self.active_ability == ability                
+            return self.active_ability == ability
         self.active_ability = ability
         return True
-    
+
     def Remove_Active_Ability(self):
         self.active_ability = None
 
@@ -334,10 +334,10 @@ class Moving_Entity(PhysicsEntity):
 
     def Set_Max_Speed(self, speed):
         self.max_speed = speed
-    
+
     def Set_Effect(self, effect, duration, permanent = False):
         return self.effects.Set_Effect(effect, duration, permanent)
-    
+
     def Remove_Effect(self, effect, reduce_permanent = 0):
         return self.effects.Remove_Effect(effect, reduce_permanent)
 
@@ -354,8 +354,7 @@ class Moving_Entity(PhysicsEntity):
     def Increase_Max_Health(self, value):
         self.max_health += value
 
-    def Set_Touching_Ground(self, state):
-        self.touching_ground = state
+
 
     def Set_Action(self, movement = None):
         pass
@@ -363,23 +362,15 @@ class Moving_Entity(PhysicsEntity):
     def Set_Ethereal(self, state):
         self.movement.Set_Ethereal(state)
 
-    # --- Graphics Rendering ---
-    def Render(self, surf, offset=(0, 0)):
-        if not self.active:
-            return False
-        if not self.Update_Light_Level():
-            return False
-        if not self.animation_handler.entity_image:
-            return False
+    def Update_Animation(self, delta_time, movement=(0, 0)):
+        return self.animation_handler.Update_Animation(movement, delta_time)
 
-        self.Update_Dark_Surface()
-        self.effects.Render_Effects(surf, offset)
-        self.Render_Damage(surf, offset)
+    # --- Rendering ---
+    # Update_Dark_Surface, Set_Entity_Image, Set_Sprite are gone: base
+    # PhysicsEntity versions now work correctly because entity_image lives
+    # on self (not self.animation_handler), and Set_Sprite/Set_Entity_Image
+    # delegate to self.animation_handler already.
 
-        surf.blit(pygame.transform.flip(self.rendered_image, self.animation_handler.flip[0], False), 
-                (self.pos[0] - offset[0], self.pos[1] - offset[1]))
-        return True
-    
     def Render_Damage(self, surf, offset):
         self.Lightup(self.rendered_image)
 
@@ -388,18 +379,21 @@ class Moving_Entity(PhysicsEntity):
             return
         return super().Lightup(entity_image)
 
-    def Update_Dark_Surface(self):
-        if not self.render_needs_update:
-            return
-        if not self.animation_handler.entity_image:
-            self.animation_handler.Set_Entity_Image()
-            print("SET dark surface for entity: ", self.type, vars(self))
-            return
-        self.rendered_image = self.animation_handler.entity_image.copy()
-        self.rendered_image.set_alpha(min(255, self.active))
+    def Render(self, surf, offset=(0, 0)):
+        if not self.active:
+            return False
+        if not self.Update_Light_Level():
+            return False
+        if not self.entity_image:
+            return False
 
-        dark_surface = pygame.Surface(self.rendered_image.get_size(), pygame.SRCALPHA).convert_alpha()
-        dark_surface.fill((self.light_level, self.light_level, self.light_level, 255))  
+        self.Update_Dark_Surface()
+        if not self.rendered_image:
+            return False
 
-        self.rendered_image.blit(dark_surface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
-        self.render_needs_update = False
+        self.effects.Render_Effects(surf, offset)
+        self.Render_Damage(surf, offset)
+
+        surf.blit(pygame.transform.flip(self.rendered_image, self.animation_handler.flip[0], False),
+                (self.pos[0] - offset[0], self.pos[1] - offset[1]))
+        return True

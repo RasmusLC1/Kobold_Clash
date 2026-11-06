@@ -1,4 +1,5 @@
 from scripts.entities.moving_entities.enemies.behavior.abilities import registry as registry
+from scripts.entities.moving_entities.enemies.behavior.abilities import load_all
 from scripts.entities.moving_entities.enemies.behavior.abilities.distance_functions import DISTANCE_REGISTRY
 from scripts.engine.keys.keys import keys
 

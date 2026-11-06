@@ -2,6 +2,8 @@ class Decorations():
 # Interactive Objects
     
     chest = "chest"
+    
+    mimic_chest = "mimic_chest"
 
     bookshelf = "bookshelf"
 
@@ -58,6 +60,8 @@ class Decorations():
 
     plinth = "plinth"
 
+    crystal_plinth = "crystal_plinth"
+
     loot_container = "loot_container"
 
     vase = "vase"
@@ -78,8 +82,19 @@ class Decorations():
 
     brazier = "brazier"
 
+    torch = "torch"
+
+    glowing_crystal = "glowing_crystal"
+
     lever = "lever"
 
+    amplifying_node = "amplifying_node" 
+
+    crystalisation_shrine = "crystalisation_shrine"
+
+    harmonic_crystal = "harmonic_crystal"
+
+    crystal_fountain = "crystal_fountain"
 
 # Traps
     trap = "trap"
@@ -112,3 +127,5 @@ class Decorations():
     soul_trap = "soul_trap"
 
     arrow_trap = "arrow_trap"
+
+    unstable_crystal = "unstable_crystal"

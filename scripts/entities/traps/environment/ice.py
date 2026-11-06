@@ -1,9 +1,11 @@
 from scripts.entities.traps.trap import Trap
+from ..traps.shared.shared_registry import register_trap
 
 import random
 from scripts.engine.keys.keys import keys
 
 
+@register_trap(keys.ice_env) # No value as this needs to be spawned as lakes
 class Ice(Trap):
     def __init__(self, game, pos, type):
         super().__init__(game, pos, type)

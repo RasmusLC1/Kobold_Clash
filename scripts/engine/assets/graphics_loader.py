@@ -6,7 +6,7 @@ from scripts.engine.keys.keys import keys
 class Graphics_Loader:
     def Run_All(self):
         Graphics_Loader.Asset_Background_List(self)
-        Graphics_Loader.Asset_Crypt_Tile_List(self)
+        Graphics_Loader.Asset_Ancient_Tomb_Tile_List(self)
         Graphics_Loader.Asset_Crystal_Cavern_Tile_List(self)
         Graphics_Loader.Asset_Trap_List(self)
         Graphics_Loader.Asset_Effect_List(self)
@@ -14,6 +14,8 @@ class Graphics_Loader:
         Graphics_Loader.Enemy_Assets(self)
         Graphics_Loader.Asset_Player_List(self)
         Graphics_Loader.Asset_Interative_Objects_List(self)
+        Graphics_Loader.Glowing_Crystals_List(self)
+        Graphics_Loader.Crystal_Cavern_Decorations(self)
         Graphics_Loader.Asset_Environment_List(self)
         Graphics_Loader.Asset_Potion_List(self)
         Graphics_Loader.Asset_Decoration_List(self)
@@ -79,15 +81,15 @@ class Graphics_Loader:
         self.assets.update(new_assets)
 
 
-    def Asset_Crypt_Tile_List(self):
+    def Asset_Ancient_Tomb_Tile_List(self):
         tiles_assets = {
-            keys.crypt_floor : get_tiles_from_sheet('tile_set/crypt/floor.png', 5, 1, 0, 0, 32, 32),
-            keys.crypt_wall_top : get_tiles_from_sheet('tile_set/crypt/wall_top.png', 3, 0, 0, 0, 32, 32),
-            keys.crypt_wall_left : get_tiles_from_sheet('tile_set/crypt/wall_left.png', 0, 3, 0, 0, 32, 32),
-            keys.crypt_wall_right : get_tiles_from_sheet('tile_set/crypt/wall_right.png', 0, 3, 0, 0, 32, 32),
-            keys.crypt_wall_middle : get_tiles_from_sheet('tile_set/crypt/wall_middle.png', 0, 3, 0, 0, 32, 32),
-            keys.crypt_wall_bottom : get_tiles_from_sheet('tile_set/crypt/wall_bottom.png', 3, 0, 0, 0, 32, 32),
-            keys.crypt_wall_bottom_corner : get_tiles_from_sheet('tile_set/crypt/wall_bottom_corner.png', 2, 0, 0, 0, 32, 32),
+            keys.ancient_tomb_floor : get_tiles_from_sheet('tile_set/ancient_tomb/floor.png', 5, 1, 0, 0, 32, 32),
+            keys.ancient_tomb_wall_top : get_tiles_from_sheet('tile_set/ancient_tomb/wall_top.png', 3, 0, 0, 0, 32, 32),
+            keys.ancient_tomb_wall_left : get_tiles_from_sheet('tile_set/ancient_tomb/wall_left.png', 0, 3, 0, 0, 32, 32),
+            keys.ancient_tomb_wall_right : get_tiles_from_sheet('tile_set/ancient_tomb/wall_right.png', 0, 3, 0, 0, 32, 32),
+            keys.ancient_tomb_wall_middle : get_tiles_from_sheet('tile_set/ancient_tomb/wall_middle.png', 0, 3, 0, 0, 32, 32),
+            keys.ancient_tomb_wall_bottom : get_tiles_from_sheet('tile_set/ancient_tomb/wall_bottom.png', 3, 0, 0, 0, 32, 32),
+            keys.ancient_tomb_wall_bottom_corner : get_tiles_from_sheet('tile_set/ancient_tomb/wall_bottom_corner.png', 2, 0, 0, 0, 32, 32),
         }
         self.assets.update(tiles_assets)
 
@@ -577,6 +579,24 @@ class Graphics_Loader:
             keys.brazier + '_1': get_tiles_from_sheet('decoration/light_sources/brazier_1.png', 5, 0, 0, 0, 32, 32),
             keys.brazier + '_2': get_tiles_from_sheet('decoration/light_sources/brazier_2.png', 5, 0, 0, 0, 32, 32),
         }
+        self.assets.update(Objects_assets)
+
+    def Crystal_Cavern_Decorations(self):
+        Objects_assets = {
+            keys.amplifying_node: get_tiles_from_sheet('decoration/crystal_caverns/amplifying_node.png', 4, 0, 0, 0, 64, 64),
+            keys.harmonic_crystal: get_tiles_from_sheet('decoration/crystal_caverns/harmonic_crystal.png', 3, 0, 0, 0, 32, 32),
+            keys.crystalisation_shrine: get_tiles_from_sheet('decoration/crystal_caverns/crystalisation_shrine.png', 3, 0, 0, 0, 64, 64)
+        }
+        self.assets.update(Objects_assets)
+
+    def Glowing_Crystals_List(self):
+        Objects_assets = {
+                    keys.glowing_crystal + '_1': get_tiles_from_sheet('decoration/light_sources/glowing_crystal_1.png', 5, 0, 0, 0, 32, 32),
+                    keys.glowing_crystal + '_2': get_tiles_from_sheet('decoration/light_sources/glowing_crystal_2.png', 5, 0, 0, 0, 32, 32),
+                    keys.glowing_crystal + '_3': get_tiles_from_sheet('decoration/light_sources/glowing_crystal_3.png', 5, 0, 0, 0, 32, 32),
+                    keys.glowing_crystal + '_4': get_tiles_from_sheet('decoration/light_sources/glowing_crystal_4.png', 5, 0, 0, 0, 32, 32),
+                    keys.glowing_crystal + '_5': get_tiles_from_sheet('decoration/light_sources/glowing_crystal_5.png', 5, 0, 0, 0, 32, 32),
+                }
         self.assets.update(Objects_assets)
 
 

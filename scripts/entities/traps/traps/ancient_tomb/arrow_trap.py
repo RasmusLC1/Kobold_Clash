@@ -1,12 +1,12 @@
 from scripts.engine.keys.keys import keys
 from scripts.entities.traps.trap import Trap
+from .ancient_tomb_registry import register_trap
 
 import random
 
 COOLDOWN_MAX = 2
 
-
-# TODO: NEEDS TO BE TESTED
+@register_trap(keys.arrow_trap, 0.2)
 class Arrow_Trap(Trap):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.arrow_trap)
@@ -91,9 +91,10 @@ class Arrow_Trap(Trap):
     def Update(self, delta_time):
         if not self.render:
             return False
+
+        super().Update(delta_time)
         if not self.Update_Cooldown(delta_time):
             return False
-        
         self.Shoot_Arrow()
         self.Check_If_Arrows_Need_Reset()
         return True
@@ -120,14 +121,7 @@ class Arrow_Trap(Trap):
                 continue
             arrow.Set_Position((-999, -999))
 
-    def Update_Cooldown(self, delta_time):
-        if self.entity_check_cooldown > 0:
-            self.entity_check_cooldown -= delta_time
-            return False
 
-        self.entity_check_cooldown = random.uniform(COOLDOWN_MAX / 2, COOLDOWN_MAX)
-        return True
-    
     # Handle cooldown of entities in the trap seperately to ensure fast trigger on trap
     # but controlled damage
     def Update_Damage_Cooldown(self, delta_time):

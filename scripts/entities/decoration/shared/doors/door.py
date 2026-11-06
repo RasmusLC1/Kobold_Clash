@@ -1,7 +1,9 @@
 from scripts.entities.decoration.decoration import Decoration
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.shared.shared_registry import Register_Decoration
 
 
+@Register_Decoration(keys.door_basic)
 class Door(Decoration):
     def __init__(self, game, pos, size = (32, 32)) -> None:
         super().__init__(game, keys.door_basic, pos, size, True, 50, 'door_destroyed', 700)
@@ -24,9 +26,11 @@ class Door(Decoration):
             self.Open(False)
 
     def Update(self, delta_time):
+        super().Update(delta_time)
         if not self.high_light_cooldown:
             return
         self.high_light_cooldown -= delta_time
+
 
 
     def Set_Highlight(self):

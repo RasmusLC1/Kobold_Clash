@@ -1,0 +1,15 @@
+from scripts.entities.moving_entities.enemies.ancient_tomb.skeleton.skeleton import Skeleton
+from scripts.entities.items.weapons.enemy_weapons.claw import Claw
+from scripts.engine.keys.keys import keys
+
+import random
+
+# Boss mob
+class Wight_King(Skeleton):
+
+    def __init__(self, game, pos):
+        super().__init__(game, pos, keys.wight_king)
+        self.Equip_Weapon(Claw(game, self.pos)) 
+        self.active_weapon.Set_Damage(keys.slash, 10)
+
+

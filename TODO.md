@@ -357,7 +357,7 @@ Upgrade weapons
     - # Chest, standard loot, safe but multiple tiers that can determine the loot table
     - # Weapon racks, contains weapons
     - # Teleportation Circles, linked to each other, can be used to traverse the dungeon
-    - Shops where you can buy different items for gold, maybe a little kobold with a shop. Opens a menu, you can sell loot for gold and use gold to buy random selection of items
+    - Shops where you can buy different items for gold, maybe a little kobold with a shop. This happens when you transition between levels, use it hide loading screen. Opens a menu, you can sell loot for gold and use gold to buy random selection of items
     - # Campfires, rest locations player can regain 50% hp, one per floor, one per floor, using it increases awakening by 1
     - # Sacrifice Shrine, sacrifice loot for rewards, which are status effects. Scales with the gold value of the sacrificed item
     - # Soul well, Sacrifice items for souls but can summon/attract enemies
@@ -411,7 +411,7 @@ Upgrade weapons
     # Wraith, immune to physical attacks, pathfinds directly to the target, phasing through walls, low damage but steals soul (player mana), high speed and low health
     # Shade, immune to physical attacks, will always pathfind towards player, medium damage, low speed, low health
     # Vampire, boss, life steal, flying bat form when travelling, close combat
-    # Crypt Ghoul, bone club, fast and high damage, but glass cannon
+    # Ancient_Tomb Ghoul, bone club, fast and high damage, but glass cannon
 
 ### Traps
     - # Soul bind, disables player healing and spawns item (soul shard) that needs to be found to enable healing again
@@ -454,25 +454,25 @@ Upgrade weapons
     # Hydra, boss mob, regens health fast, gains immunity to the last effect type that damaged it
     Kobold, steals items from player and runs away
 ### Traps
-    - Crystal shards, shoots crystal spikes
+    - Crystal shards, shoots crystal spikes, basically arrow trap
     - Shifting walls, changes the layout of the dungeon
-    - Shard explosion, unstable crystals explode when damaged
-    - Swinging blade, swing from central tile, all affected tiles are marked as traps, rotate the sprite as it swings
-    - # Spike pits, fall into and slows you down
-    - # Loose rubble, generates clatter when stepped on
+    # Unstable Crystals, explode when damaged
+    # Spike pits, fall into and slows you down
+    # Loose rubble, generates clatter when stepped on
 ### Decorations
-    - Glowing crystals, lights up area, can be shattered to remove light
-    - Small rocks strewn around
-    - Crystalisation shrine, give a gem and return a random one in return with -1 effectiveness
-    - Gem shrine, Spawns a high level gem somewhere in the dungeon
-    - Crystal plinths, contains gems
+    # Glowing crystals, lights up area, can be shattered to remove light
+    # Small rocks strewn around
+    # Gem shrine, Spawns a high level gem somewhere in the dungeon
+    # Amplifying node, runes are more effective when in range
+    # Crystal plinths, contains gems
+    # Harmonic crystal, activate to generate souls, but generate clatter
+    # Crystal Fountains gives player damage resistance when interacted with
+    # Crystalisation shrine, offer a gem and return a random one in return with negative 1 effectiveness, trade in low value gem for potential to get better gem
+    - Crystal Alter, Sacrifice a gem for buff, scales with the quality of the gem
     - Weapon shrine, pay souls to bind gems to weapons for bonuses increased bonuses
     - Fragile walls, can be broken by hitting with blunt weapons, acts as doors
     - Blood shrine, Gives an item that tracks player kills, when 10 are killed reduce awakening level
-    - Crystal Fountains gives player damage resistance when interacted with
-    - Prism pedestal, activate to unlock a random room (Remove blocking wall)
-    - Harmonic crystal, activate to generate souls, but generate clatter
-    - Amplifying node, runes are more effective when in range
+    - Prism pedestal, activate to disable shifting walls
 
 
 

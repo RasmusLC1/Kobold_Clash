@@ -1,50 +1,58 @@
 from collections import deque
 import pygame
+import logging
 from scripts.engine.keys.keys import keys
 from .tile_handler import Tile_Handler
+from .animation_handlers.base_animation_handler import Base_Animation_Handler
+from scripts.engine.utility.rect_handler import Rect_Handler
 
 class PhysicsEntity:
     _id_counter = 0
     _available_IDs = deque()
+    _animation_handler = Base_Animation_Handler   # subclasses override this
 
-    def __init__(self, game, type, category, pos, size, sub_category=None):
+    def __init__(self, game, type, category, pos, size, sub_category=None,
+                 max_animation = 0, animation_cooldown_max = 0):
         self.game = game
         self.Set_ID()
-        
-        # Classification
+        self.rect_handler = Rect_Handler(size[0], size[1])
+
         self.category = category
+        if not sub_category:
+            sub_category = category
         self.sub_category = sub_category
         self.type = type
-        
-        # Transforms & Vectors
+        self.Set_Text_Box()
+
+
         self.pos = pygame.Vector2(pos)
         self.size = list(size)
-        
-        # Rendering States
-        self.sprite = None
+
         self.entity_image = None
         self.rendered_image = None
         self.render = True
         self.render_needs_update = True
         self.min_light_level = 40
-        
-        # Performance Cache Surfaces
+
         self._cached_dark_surface = pygame.Surface(self.size, pygame.SRCALPHA).convert_alpha()
         self._cached_light_surface = pygame.Surface(self.size, pygame.SRCALPHA).convert_alpha()
-        
-        # Game Logic Properties
+
         self.saved_data = None
         self.active = 0
         self.active_opacity = 255
         self.light_level = 0
-        
-        # Tile Handling Component Injection
+
+
+
+        self.touching_ground = True
         self.tile_handler = Tile_Handler(self)
         self.tile_handler.Set_Tile()
-        
-        self.Set_Text_Box()
+
+        self.animation_handler = self._animation_handler(self, max_animation, animation_cooldown_max)
+
         self.description = ''
         self.light_up_color = (255, 0, 0, 255)
+
 
     # --- Properties for Backward Compatibility ---
     @property
@@ -56,6 +64,37 @@ class PhysicsEntity:
     def tile(self, new_tile):
         """Allows direct mutation alignment transfers."""
         self.tile_handler.tile = new_tile
+
+    @property
+    def max_animation(self):
+        return self.animation_handler.animation_max
+
+    @property
+    def min_animation(self):
+        return self.animation_handler.min_animation
+
+    @min_animation.setter
+    def min_animation(self, new_animation):
+        self.animation_handler.min_animation = new_animation
+    
+
+    @property
+    def animation_cooldown_max(self):
+        return self.animation_handler.animation_cooldown_max
+    
+    @property
+    def animation_cooldown(self):
+        return self.animation_handler.animation_cooldown
+
+    @property
+    def animation(self):
+        return self.animation_handler.animation
+
+    @animation.setter
+    def animation(self, new_animation):
+        """Allows direct mutation alignment transfers."""
+        self.animation_handler.animation = new_animation
+
 
     # --- Structural Identity Core ---
     def Set_ID(self):
@@ -71,6 +110,9 @@ class PhysicsEntity:
 
     def Set_Tile(self):
         self.tile_handler.Set_Tile()
+
+    def Set_Touching_Ground(self, state):
+        self.touching_ground = state
         
     def Update_Tile(self, delta_time):
         # if self.tile:
@@ -94,7 +136,7 @@ class PhysicsEntity:
         self.Set_Sprite()
 
     def rect(self):
-        return pygame.Rect(self.pos, self.size)
+        return self.rect_handler.rect(self.pos)
 
     # --- Stateful Logic Engine ---
     def Set_Active(self, duration):
@@ -111,6 +153,12 @@ class PhysicsEntity:
     def Update_Active(self, state):
         self.Set_Active(state)
         self.Update_Dark_Surface()
+
+    def Update_Animation(self, delta_time, movement=(0, 0)):
+        return self.animation_handler.Update_Animation(movement, delta_time)
+
+    def Set_Animation(self, animation):
+        return self.animation_handler.Set_Frame(animation)
 
     def Set_Light_Level(self, value):
         # Clamps values flawlessly within color array safety channels
@@ -171,6 +219,7 @@ class PhysicsEntity:
             'light_level': self.light_level,
             'render': self.render
         }
+        self.saved_data.update(self.animation_handler.Save_Data())
         return self.saved_data
 
     def Load_Data(self, data):
@@ -182,6 +231,7 @@ class PhysicsEntity:
         self.active = data['active']
         self.light_level = data['light_level']
         self.render = data['render']
+        self.animation_handler.Load_Data(data)
         
         self.tile_handler.Set_Tile()
         if self.ID >= PhysicsEntity._id_counter:
@@ -193,10 +243,61 @@ class PhysicsEntity:
             PhysicsEntity._available_IDs.append(self.ID)
 
     # --- Subclass Extension Hooks ---
-    def Update(self, delta_time): pass
+    def Update(self, delta_time, movement=(0, 0)):
+        if not self.animation_cooldown_max:
+            return False
+        return self.Update_Animation(delta_time, movement)
+
+
     def Damage_Taken(self, damage): pass
     def Set_Effect(self, effect, duration, permanent=False): pass
-    def Set_Sprite(self): pass
-    def Set_Entity_Image(self): pass
+
     def Set_Description(self): pass
-    def Render(self, surf, offset=(0, 0)): pass
+    
+    def Set_Sprite(self, key=None):
+        return self.animation_handler.Set_Sprite(key if key is not None else self.type)
+
+    def Set_Entity_Image(self):
+        self.animation_handler.Set_Entity_Image()
+    
+    def Render(self, surf, offset=(0, 0)):
+        if not self.Update_Light_Level():
+            return
+
+        self.Update_Dark_Surface()
+        if not self.Check_For_Rendered_Image():
+            return
+        
+
+        surf.blit(self.rendered_image, (self.pos[0] - offset[0], self.pos[1] - offset[1]))
+
+    def Check_For_Rendered_Image(self):
+        if self.rendered_image:
+            return True
+        
+        if not self.entity_image:
+            self.Set_Sprite()
+
+        if self.entity_image:
+            self.render_needs_update = True
+            self.active = 1
+            self.Update_Dark_Surface()
+
+        if not self.rendered_image:
+            logging.warning("No image to render for %s (id=%s)", self.type, self.ID)
+            return False
+
+        return True
+
+
+# Debug mode
+#####################
+
+    def Render_Hitbox(self, surf, offset=(0,0)):
+        self.rect_handler.Render_Hitbox(self.pos, surf, offset)
+
+    def Render_Tile(self, surf, offset):
+        if not self.tile:
+            return
+        
+        self.tile.Render_Debug(surf, offset)

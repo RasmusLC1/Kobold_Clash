@@ -6,6 +6,7 @@ import pygame
 # class since it uses effects
 class Cursed_Loot(Passive_Loot):
     def __init__(self, game, type, pos, effect_power, value):
+        print(type, pos, effect_power, value)
         super().__init__(game, type, pos, effect_power=effect_power, rarity_value=value, loot_type=keys.curse)
 
     def Place_Down(self):

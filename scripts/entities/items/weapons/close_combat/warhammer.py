@@ -5,8 +5,8 @@ from scripts.engine.keys.keys import keys
 
 class Warhammer(Weapon):
     def __init__(self, game, pos, damage_type = keys.blunt):
-        super().__init__(game, pos, keys.warhammer, 6, 2, 6, 80, 'two_handed_melee', damage_type)
-        self.max_animation = 5
+        super().__init__(game, pos, keys.warhammer, 6, 2, 6, 80,
+                         'two_handed_melee', damage_type, max_animation=5)
         self.attack_animation_max = 5
         self.special_attack_effect_animation_max = 5
 

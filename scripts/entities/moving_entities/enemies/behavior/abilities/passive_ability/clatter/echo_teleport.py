@@ -15,6 +15,7 @@ class Echo_Teleport(Passive_Ability):
         self.game.enemy_handler.clatter_subscription.Subscribe_To_Acoustics(self.entity)
 
     def Update(self, delta_time):
+        super().Update(delta_time)
         if self.teleport_cooldown > 0:
             self.teleport_cooldown -= delta_time
 

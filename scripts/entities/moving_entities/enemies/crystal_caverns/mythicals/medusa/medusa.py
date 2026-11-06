@@ -52,7 +52,7 @@ class Medusa(Enemy):
     def Render(self, surf, offset=(0, 0)):
         if not self.active or not self.Update_Light_Level():
             return False
-        if not self.animation_handler.entity_image:
+        if not self.entity_image:
             return False
 
         self.Update_Dark_Surface()

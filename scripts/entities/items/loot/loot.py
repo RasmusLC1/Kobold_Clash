@@ -1,10 +1,20 @@
 from scripts.entities.items.item import Item
 from scripts.entities.textbox.loot_textbox import Loot_Textbox
 from scripts.engine.keys.keys import keys
+from scripts.entities.entity.animation_handlers.static_animation_handler import Static_Animation_Handler
 
 class Loot(Item):
-    def __init__(self, game, type, pos, size, rarity_value, loot_type, amount = 1, max_amount = 1, max_animation=0):
-        super().__init__(game=game, type=type, sub_category=keys.loot, pos=pos, size=size, amount=amount, add_to_tile=True, rarity_value = rarity_value, max_amount=max_amount, max_animation=max_animation)
+
+    _animation_handler = Static_Animation_Handler 
+
+    def __init__(self, game, type, pos, size, rarity_value, loot_type,
+                 amount = 1, max_amount = 1, max_animation = 0,
+                 animation_cooldown_max=0): # 0 as default value as loot is generally static
+        super().__init__(game=game, type=type, sub_category=keys.loot, pos=pos,
+                         size=size, amount=amount, add_to_tile=True,
+                           rarity_value = rarity_value, max_amount=max_amount,
+                           max_animation=max_animation,
+                            animation_cooldown_max=animation_cooldown_max)
         self.loot_type =  loot_type
         self.Set_Description()
 
@@ -17,8 +27,6 @@ class Loot(Item):
         self.loot_type = data[keys.loot_type]
         super().Load_Data(data)
 
-    def Update_Animation(self, delta_time = 0):
-        pass
 
     def Set_Description(self):
         self.description = f"{self.Calculate_Value()} {keys.gold}\n"

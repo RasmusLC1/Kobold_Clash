@@ -1,9 +1,9 @@
 from scripts.entities.traps.trap import Trap
-
-import random
+from .ancient_tomb_registry import register_trap
 from scripts.engine.keys.keys import keys
 
-# TODO: ADD sprite
+
+@register_trap(keys.soul_trap, 0.1)
 class Soul_Trap(Trap):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.soul_trap)

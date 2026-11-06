@@ -3,8 +3,14 @@ import pygame
 from scripts.engine.keys.keys import keys
 
 class Radius_Effect_Loot(Interactive_Loot):
-    def __init__(self, game, type, pos, max_distance, loot_type, radius, amount, rarity_value, max_amount=5):
-        super().__init__(game, type, pos, max_distance, (16, 16), loot_type=loot_type, rarity_value=rarity_value, amount = amount,max_amount=max_amount)
+    def __init__(self, game, type, pos, max_distance, loot_type, radius, amount,
+                 rarity_value, max_amount=5, max_animation = 1,
+                 animation_cooldown_max=0):
+        super().__init__(game, type, pos, max_distance, (16, 16),
+                         loot_type=loot_type, rarity_value=rarity_value,
+                         amount = amount,max_amount=max_amount,
+                         max_animation=max_animation,
+                         animation_cooldown_max=animation_cooldown_max)
         self.radius = radius
         self.Set_Radius_Image()
  

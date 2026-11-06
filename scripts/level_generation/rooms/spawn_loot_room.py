@@ -15,7 +15,7 @@ class Spawn_Loot_Room():
         return not (x1 + w1 <= x2 or x2 + w2 <= x1 or y1 + h1 <= y2 or y2 + h2 <= y1)
 
     @staticmethod
-    def Spawn_Loot_Room(map, size_x, size_y, level, player_spawn, A_Star_Search, offgrid_tiles):
+    def Spawn_Loot_Room(map, size_x, size_y, level, player_spawn, Pathfinding_Search, offgrid_tiles):
         success = 0
         fail = 0
         rooms = random.randint(15, 25)
@@ -57,7 +57,7 @@ class Spawn_Loot_Room():
             if overlap:
                 continue
             
-            door_location = Rectangle_Room.Room_Structure_Rectangle(map, start_x, start_y, room_size_x, room_size_y, A_Star_Search)
+            door_location = Rectangle_Room.Room_Structure_Rectangle(map, start_x, start_y, room_size_x, room_size_y, Pathfinding_Search)
             # Try to place the room
             if not door_location:
                 fail += 1

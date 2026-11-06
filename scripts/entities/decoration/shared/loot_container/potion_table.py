@@ -2,15 +2,15 @@ import pygame
 import random
 from scripts.entities.decoration.shared.loot_container.loot_container import Loot_Container
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.shared.shared_registry import Register_Decoration
 
-
-
+@Register_Decoration(keys.potion_table)
 class Potion_Table(Loot_Container):
     def __init__(self, game, pos) -> None:
         super().__init__(game, keys.potion_table, pos, (64, 64), True, 50, 'table_break', 500)
 
 
-    def Set_Loot_Types(self):
+    def Get_Loot_Types(self):
 
         self.loot_weights = {keys.potion : 0.8,
                              keys.recipe_scroll : 0.1,

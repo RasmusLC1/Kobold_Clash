@@ -1,11 +1,11 @@
-from scripts.entities.moving_entities.enemies.crypt.crypt_spawn import Crypt_Spawn
+from scripts.entities.moving_entities.enemies.ancient_tomb.ancient_tomb_spawn import Ancient_Tomb_Spawn
 from scripts.entities.moving_entities.enemies.crystal_caverns.crystal_cavern_spawn import Crystal_Cavern_Spawn
 from scripts.entities.moving_entities.enemies.enemy_pathfinding_handler import Enemy_Pathfinding_Handler
 from scripts.entities.moving_entities.enemies.clatter_subscription import Clatter_Subscription
 from scripts.engine.keys.keys import keys
 import random
 
-INTIAL_ENEMIES = 30
+INTIAL_ENEMIES = 5
 
 class Enemy_Handler():
     def __init__(self, game):
@@ -68,7 +68,7 @@ class Enemy_Handler():
 
     def Set_Spawner_Type(self):
         spawner_types = {
-            keys.ancient_crypt : Crypt_Spawn,
+            keys.ancient_tomb : Ancient_Tomb_Spawn,
             keys.crystal_caverns : Crystal_Cavern_Spawn
         }
         spawner_type = spawner_types.get(self.game.dungeon_type)
@@ -141,10 +141,11 @@ class Enemy_Handler():
             return self.game.tilemap.Search_Nearby_Tiles(max_distance, entity.pos, keys.enemy, entity.ID)
         else:
             return self.Find_Nearby_Enemies_Long_Distance(entity, max_distance)
-    
+
     def Find_Nearby_Enemies_Long_Distance(self, entity, max_distance):
         nearby_enemies = []
-        max_distance_squared = max_distance * max_distance
+        max_distance_px = max_distance * self.game.tilemap.tile_size
+        max_distance_squared = max_distance_px * max_distance_px
         for enemy in self.enemies:
             distance = (enemy.pos[0] - entity.pos[0]) ** 2 + (enemy.pos[1] - entity.pos[1]) ** 2
             if distance < max_distance_squared and enemy.ID != entity.ID:

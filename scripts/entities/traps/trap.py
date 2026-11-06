@@ -1,45 +1,43 @@
 from scripts.entities.entity.entities import PhysicsEntity
 from scripts.engine.keys.keys import keys
+from scripts.engine.utility.cooldown_handler import Cooldown_Handler
 
 import math
 import pygame
 import random
 
-COOLDOWN_MAX = 0.05
 DAMAGE_COOLDOWN = 1
 
 class Trap(PhysicsEntity):
-    def __init__(self, game, pos, type, size = (32, 32)):
-        super().__init__(game, type, 'trap', pos, size)
+    def __init__(self, game, pos, type, size = (32, 32), max_animation = 0,
+                 animation_cooldown_max = 0):
+        super().__init__(game, type, 'trap', pos, size,
+                            max_animation=max_animation,
+                            animation_cooldown_max=animation_cooldown_max)
         self.cooldown = 0
-        self.animation = 0
-        self.animation_cooldown = 0
-        self.animation_max = 0
+        self.Set_Sprite()
         self.entity_check_cooldown = 0
         self.entities = {}
         if self.tile:
             self.tile.Set_Trap(self)
         self.damaged_entities = {}
+        self.entity_cooldown_handler = Cooldown_Handler(0.05)
+
 
 
     def Save_Data(self):
         super().Save_Data()
         self.saved_data['Cooldown'] = self.cooldown
-        self.saved_data['animation'] = self.animation
-        self.saved_data['animation_cooldown'] = self.animation_cooldown
-        self.saved_data['animation_max'] = self.animation_max
 
     
     def Load_Data(self, data):
         super().Load_Data(data)
         self.cooldown = data['Cooldown']
-        self.animation = data['animation']
-        self.animation_cooldown = data['animation_cooldown']
-        self.animation_max = data['animation_max']
 
     def Update(self, delta_time):
         if not self.render:
             return False
+        super().Update(delta_time)
         self.Update_Damage_Cooldown(delta_time)
         if not self.Update_Cooldown(delta_time):
             return False
@@ -67,40 +65,30 @@ class Trap(PhysicsEntity):
         return self.entities.pop(entity_ID, None) is not None
 
     def Update_Cooldown(self, delta_time):
-        if self.entity_check_cooldown > 0:
-            self.entity_check_cooldown -= delta_time
-            return False
-
-        self.entity_check_cooldown = COOLDOWN_MAX
-        return True
+        return self.entity_cooldown_handler.Update_Cooldown(delta_time)
     
     # Handle cooldown of entities in the trap seperately to ensure fast trigger on trap
     # but controlled damage
     def Update_Damage_Cooldown(self, delta_time):
-        to_remove = []
-        for entity_id  in self.damaged_entities:
-            self.damaged_entities[entity_id] -= delta_time
-            if self.damaged_entities[entity_id] <= 0:
-                to_remove.append(entity_id)
-
-        for entity_id in to_remove:
+        expired = [entity_id for entity_id, handler in self.damaged_entities.items()
+                if handler.Tick(delta_time)]
+        for entity_id in expired:
             self.damaged_entities.pop(entity_id)
 
-    
     def Update_Trapped_Entities(self):
         for entity in self.entities.values():
             if not entity.touching_ground:
                 continue
-            if entity.ID in self.damaged_entities: # Check if enemy is in damage cooldown
+            if entity.ID in self.damaged_entities:
                 continue
             if entity.ID == self.ID:
                 continue
-            
             if not self.rect().colliderect(entity.rect()):
                 continue
             self.Apply_Entity_Effect(entity)
-            self.damaged_entities[entity.ID] = DAMAGE_COOLDOWN
-    
+            self.damaged_entities[entity.ID] = Cooldown_Handler(DAMAGE_COOLDOWN, DAMAGE_COOLDOWN)
+
+
     def Apply_Entity_Effect(self, entity):
         pass
 
@@ -114,37 +102,3 @@ class Trap(PhysicsEntity):
     def Reduce_Active(self):
         self.active -= 1
 
-    def rect(self):
-        return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
-    
-    def Render(self, surf, offset=(0, 0)):
-
-        # Get the tile surface from the assets
-        tile_surface = self.game.assets[self.type][self.animation].copy()
-        
-        # Adjust the tile activeness calculation
-        tile_activeness = max(0, min(255, 700 - self.active))
-            
-        # Apply a non-linear scaling for a smoother transition
-        tile_darken_factor = min(255, (255 * (1 - math.exp(-tile_activeness / 255)) + 150))
-
-
-     
-        if self.tile.light_level > 0:
-            light_level = min(255, self.tile.light_level * 25)
-        else:
-            light_level = 1
-        tile_darken_factor = max(0, min(220, tile_darken_factor - light_level))
-        
-        # Create a darkening surface with an alpha channel
-        darkening_surface = pygame.Surface(self.size, flags=pygame.SRCALPHA)
-        darkening_surface.fill((0, 0, 0, int(tile_darken_factor)))
-        
-        # Blit the darkening surface onto the tile surface
-        tile_surface.blit(darkening_surface, (0, 0))
-        
-        # Blit the darkened tile surface onto the main surface
-        surf.blit(tile_surface, (self.pos[0] * self.size[0] - offset[0], self.pos[1] * self.size[1] - offset[1]))
-
-
-        surf.blit(tile_surface, (self.pos[0] - offset[0], self.pos[1] - offset[1]))

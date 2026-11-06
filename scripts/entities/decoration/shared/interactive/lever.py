@@ -1,11 +1,12 @@
 from scripts.entities.decoration.decoration import Decoration
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.shared.shared_registry import Register_Decoration
 
+@Register_Decoration(keys.lever)
 class Lever(Decoration):
     def __init__(self, game, pos) -> None:
-        super().__init__(game, keys.lever, pos, (32, 32))
+        super().__init__(game, keys.lever, pos, (32, 32), max_animation=1)
         self.description = "Opens something"
-        self.max_animation = 1
 
     def Open(self, generate_clatter=False):
         if not self.empty:

@@ -1,4 +1,4 @@
-from scripts.entities.decoration.decoration_spawner import Decoration_Spawner
+from scripts.entities.decoration.decoration_spawning.decoration_spawner import Decoration_Spawner
 import random
 import pygame
 from scripts.engine.keys.keys import keys
@@ -17,21 +17,22 @@ class Decoration_Handler():
         self.spawn_methods = None
 
 
-        self.light_sources = {
-            keys.torch : 0.1,
-            keys.brazier : 0.3,
-        }
-
-        self.item_sacrifice = []
-
 
     def Clear_Decorations(self):
         self.decorations.clear()
         self.saved_data.clear()
 
+    # Decoration_Handler
     def Initialise(self):
-        self.decorations, self.item_sacrifice, self.spawn_methods = self.decoration_spawner.Initialise()
+        result = self.decoration_spawner.Initialise()
+        if not result:
+            print("DECORATION INITIALISATION FAILED")
+            self.decorations = []
+            return False
+
+        self.decorations, self.spawn_methods = result
         self.initalised = True
+        return True
 
 
     def Get_Random_Decoration_Of_Type(self, type):
@@ -52,6 +53,8 @@ class Decoration_Handler():
             self.saved_data[decoration.ID] = decoration.saved_data
 
     def Load_Data(self, data):
+        self.decoration_spawner.Get_Dungeon_Type()
+        self.spawn_methods = self.decoration_spawner.All_Spawn_Methods()
         # Check if the decoration spawner is initialised
         if not self.initalised:
             self.Initialise()
@@ -73,22 +76,30 @@ class Decoration_Handler():
         for decoration in self.decorations:
             if decoration.type == keys.teleportation_circle:
                 linked_portal = self.Get_Decoration_By_ID(decoration.linked_portal_ID)
-                decoration.Set_Linked_Portal(linked_portal)
+                decoration.Set_Linked_Decoration(linked_portal)
         
 
     def Decoration_Spawner(self, type, pos, data=None):
+        type = self._Strip_Suffix(type)
         spawn_function = self.spawn_methods.get(type)
         if not spawn_function:
             print(f"Warning: Decoration type '{type}' not recognized. Decoration_Handler Decoration_Spawner")
             return None
         decoration = spawn_function(self.game, pos)
-        if decoration:
-            if data:
-                decoration.Load_Data(data)
+        if not decoration:
+            return None
+        
+        if data:
+            decoration.Load_Data(data)
         self.decorations.append(decoration)
         return decoration
 
-
+    def _Strip_Suffix(self, type):
+        base_type = type
+        parts = type.split('_')
+        if parts[-1].isdigit():
+            base_type = '_'.join(parts[:-1])
+        return base_type
 
     def Update(self, delta_time):
         self.Check_Keyboard_Input()
@@ -181,10 +192,12 @@ class Decoration_Handler():
         return None
  
     def Check_Item_Collision(self, item):
-        for decoration in self.item_sacrifice:
-            if decoration.rect().colliderect(item.rect()):
-                return decoration.Spawn_Reward(item)
-                 
+        nearby_decorations = self.Find_Nearby_Decorations()
+        if not nearby_decorations:
+            return
+        for decoration in nearby_decorations:
+            if decoration.Check_Item_Collision(item):
+                return True
             
         return False
     

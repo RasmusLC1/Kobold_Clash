@@ -1,0 +1,12 @@
+[run]
+omit =
+    # Exclude entry point scripts or main render loops
+    src/main.py
+    src/rendering/*
+
+[report]
+exclude_lines =
+    # Ignore debug or string repr code
+    pragma: no cover
+    def __repr__
+    if __name__ == .__main__.:

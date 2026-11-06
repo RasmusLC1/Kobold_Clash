@@ -7,7 +7,8 @@ import random
 
 
 class Rune(Item):
-    def __init__(self, game, type, pos, upgrades, soul_cost, animation_time_max = 0.5, animation_size_max = 15):
+    def __init__(self, game, type, pos, upgrades, soul_cost,
+                 animation_time_max=0.5, animation_size_max=15):
         self.player = game.player
         self.menu_pos = pos
         self.Initialise_Upgrades(soul_cost, upgrades)
@@ -16,11 +17,11 @@ class Rune(Item):
         self.animation_size = 0
         self.animation_size_max = animation_size_max
         self.effect = type.replace('_rune', '')
-        self.activate_cooldown = 0
-        self.activate_cooldown_max = 5
-        self.clicked = False # Used for projectiles
-        super().__init__(game,  type, keys.rune, pos, size=(16, 16), amount=1, max_amount=1, add_to_tile=False, rarity_value=soul_cost, durability=100, max_durability=100)
 
+        self.clicked = False
+        super().__init__(game, type, keys.rune, pos, size=(16, 16), amount=1, max_amount=1,
+                          add_to_tile=False, rarity_value=soul_cost, durability=100, max_durability=100)
+        self.activate_cooldown_handler.max_value = 5
 
     def Save_Data(self):
         super().Save_Data()
@@ -48,14 +49,11 @@ class Rune(Item):
     # Checks defauls activation is valid, then checks if the player can pay the souls
     # Then trigger the effect
     def Activate(self):
-        if self.activate_cooldown:
-            return False
-        if not super().Activate():
+        if self.activate_cooldown_handler.value > 0:
             return False
         if self.player.Get_Total_Available_Souls() < self.soul_cost:
             return False
         self.Trigger_Effect()
-
         return True
 
     # Add the player's current power level to the runes power and checks if it is
@@ -69,7 +67,7 @@ class Rune(Item):
         self.Compute_Souls_Cost()
         self.Set_Animation_Time()
         self.Reset_Animation_Size()
-        self.Set_Activate_Cooldown(self.activate_cooldown_max)
+        self.Set_Activate_Cooldown()
         self.player.weapon_handler.Set_Attack_Lock(True)
 
         durability_damage = int(max(1, self.power // 2))
@@ -131,14 +129,16 @@ class Rune(Item):
 
     
     def Update_Activate_Cooldown(self, delta_time):
-        if self.activate_cooldown:
-            self.activate_cooldown = max(0, self.activate_cooldown - delta_time)
-            if self.activate_cooldown > 0:
-                self.player.weapon_handler.Set_Attack_Lock(True)
-            else:
-                self.player.weapon_handler.Set_Attack_Lock(False)
-
+        if self.activate_cooldown_handler.value <= 0:
             return
+        self.activate_cooldown_handler.Tick(delta_time)
+        if self.activate_cooldown_handler.value > 0:
+            self.player.weapon_handler.Set_Attack_Lock(True)
+        else:
+            self.player.weapon_handler.Set_Attack_Lock(False)
+
+    def Set_Activate_Cooldown(self):
+        self.activate_cooldown_handler.Reset_Cooldown()
 
     # Updated in rune inventory when player's power is modified
     def Set_Description(self):
@@ -148,10 +148,6 @@ class Rune(Item):
                             f"Dur {self.durability}/{self.max_durability}\n"
                             f"{self.Calculate_Value()} {keys.gold}\n"
                         )  
-
-    
-    def Set_Activate_Cooldown(self, value):
-        self.activate_cooldown = value
 
     def Set_Animation_Time(self):
         self.animation_time = self.animation_time_max
@@ -163,7 +159,7 @@ class Rune(Item):
         self.animation_size = min(self.animation_size + 0.1, self.animation_size_max)
 
 
-    def Update_Animation(self, delta_time):
+    def Update_Animation(self, delta_time, movement=(0, 0)):
         if self.animation_time:
             self.animation_time = max(0, self.animation_time - delta_time)
             self.Increase_Animation_Size()
@@ -218,7 +214,7 @@ class Rune(Item):
         if not self.rendered_image:
             self.Set_Sprite()
             if not self.rendered_image:
-                print("UNABLE TO RENDER RUNE", self.type, vars(self))
+                print("UNABLE TO RENDER RUNE", self.type)
                 self.broken_rendering_counter += 1
                 if self.broken_rendering_counter >= 10:
                       self.Delete_Item()

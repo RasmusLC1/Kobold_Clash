@@ -6,7 +6,8 @@ from scripts.entities.items.loot.utility.utility_loot_handler import Utility_Loo
 from scripts.entities.items.loot.passive.passive_loot_handler import Passive_Loot_Handler
 from scripts.entities.items.loot.revive.revive_loot_handler import Revive_Loot_Handler
 from scripts.entities.items.loot.curse.cursed_loot_handler import Cursed_Loot_Handler
-from scripts.entities.items.loot.gems_ingots.gem_ingot_loot_handler import Gem_Ingot_Loot_Handler
+from scripts.entities.items.loot.gems_ingots.gem_loot_handler import Gem_Loot_Handler
+from scripts.entities.items.loot.gems_ingots.ingot_loot_handler import Ingot_Loot_Handler
 
 
 from scripts.entities.items.loot.potions.potion_handler import Potion_Handler
@@ -32,7 +33,8 @@ class Loot_Handler():
         self.potion_loot_handler = Potion_Handler(game) 
         self.cursed_loot_handler = Cursed_Loot_Handler(game) 
         self.valueable_loot_handler = Valuable_Loot_Handler(game) 
-        self.gem_ingot_loot_handler = Gem_Ingot_Loot_Handler(game) 
+        self.gem_loot_handler = Gem_Loot_Handler(game) 
+        self.ingot_loot_handler = Ingot_Loot_Handler(game) 
 
         self.loot_types = [
             self.key_loot_handler,
@@ -53,7 +55,8 @@ class Loot_Handler():
             keys.potion : self.potion_loot_handler,
             keys.curse : self.cursed_loot_handler,
             keys.valuable : self.valueable_loot_handler,
-            keys.gem_ingot : self.gem_ingot_loot_handler,
+            keys.gem : self.gem_loot_handler,
+            keys.ingot : self.ingot_loot_handler,
         }
 
         self.loot_types_weights = {
@@ -64,7 +67,8 @@ class Loot_Handler():
             keys.revive : 0.02,
             keys.potion : 0.3,
             keys.curse : 0.1,
-            keys.gem_ingot : 0.1,
+            keys.gem : 0.1,
+            keys.ingot : 0.1,
         }
 
         self.loot_types_keys = [
@@ -76,7 +80,8 @@ class Loot_Handler():
             keys.potion,
             keys.curse,
             keys.valuable,
-            keys.gem_ingot
+            keys.gem,
+            keys.ingot
         ]
 
     
@@ -145,7 +150,7 @@ class Loot_Handler():
         return self.key_loot_handler.Loot_Spawner(pos)
 
     def Get_Gems_For_Weapon(self, value):
-        return self.gem_ingot_loot_handler.Get_Random_Gem(value)
+        return self.gem_loot_handler.Get_Random_Gem(value)
 
     def Spawn_Loot_Type(self, loot_type, pos, data = None, type = None, rarity_value = 1):
         loot_handler = self.loot_types_dic.get(loot_type)

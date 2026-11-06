@@ -2,22 +2,42 @@ from scripts.entities.items.weapons.weapon import Weapon
 from scripts.entities.items.weapons.magic_attacks.fire.flame_thrower import Flame_Thrower
 import random
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.shared.shared_registry import Register_Decoration
+from scripts.entities.entity.animation_handlers.fire_animation_handler import Fire_Animation_Handler
 
 
+@Register_Decoration(keys.torch)
 class Torch(Weapon):
+    _animation_handler = Fire_Animation_Handler 
+    
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.torch, 1, 2, 3, 100, 'one_handed_melee', keys.fire, max_animation=3)
-        self.animation_cooldown_max = 0.5
+        super().__init__(game, pos, keys.torch, 1, 2, 3, 100, 'one_handed_melee',
+                         keys.fire, max_animation=3, animation_cooldown_max=0.5)
         self.light_source = self.game.light_handler.Add_Light(self.pos, 8, self.tile)
         self.light_level = self.game.light_handler.Initialise_Light_Level(self.tile)
         self.flame_thrower = Flame_Thrower(self.game, None)
         self.fire_charge_max = 2
+        self.link_to_other = False # Decoration flag
 
     def Update(self, delta_time, offset=None):
         self.flame_thrower.Update(delta_time)
         return super().Update(delta_time, offset)
     
-    
+    def Render_Floor(self, surf, offset=(0, 0)):
+        self.Update_Light_Level()  
+        self.Update_Dark_Surface()
+
+        
+        if not self.rendered_image:
+            self.Set_Sprite()
+            if not self.rendered_image:
+                self.broken_rendering_counter += 1
+                if self.broken_rendering_counter >= 10:
+                    self.Delete_Item()
+                return
+
+        self.broken_rendering_counter = 0  # reset once a good frame lands
+        surf.blit(self.rendered_image, (self.pos[0] - offset[0], self.pos[1] - offset[1]))
 
     # Pick up the torch and update the general light in the area
     def Pick_Up(self):
@@ -39,19 +59,6 @@ class Torch(Weapon):
         self.game.sound_handler.Play_Sound(keys.torch_attack, 0.5)
         return True
 
-
-    def Update_Animation(self, delta_time):
-        if self.picked_up or self.equipped:
-            return
-        if self.animation_cooldown > 0:
-            self.animation_cooldown -= delta_time
-        else:
-            self.sub_type = keys.torch
-            self.animation_cooldown = random.uniform(self.animation_cooldown_max * 0.7, self.animation_cooldown_max)
-            self.Spawn_Fire_Particle()
-
-            self.animation = random.randint(0,self.max_animation)
-            self.Set_Entity_Image()
 
     def Ability(self):
         if self.special_attack <= 0 or not self.equipped:
@@ -76,13 +83,12 @@ class Torch(Weapon):
         return True
 
     def Place_Down(self):
-        # Parent class Place_down function
+    # Parent class Place_down function
         if not super().Place_Down():
             return False
 
         # Set the player light to False to trigger a general update of the light
         # levels around the player and move the torch light to the new location
-        self.game.light_handler.Add_Light_Source(self.light_source)
         self.light_source.Move_Light(self.pos, self.tile)
         return True
 

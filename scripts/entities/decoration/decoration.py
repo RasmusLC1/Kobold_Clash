@@ -5,11 +5,14 @@ import random
 
 
 class Decoration(PhysicsEntity):
-    def __init__(self, game, type, pos, size, destructable = False, health = 0, destruction_sound = None, destruction_clatter = 500, animation = 0, max_animation = 0) -> None:
-        # Version 0 indexed
-        self.animation = animation
-        self.max_version = max_animation
-        super().__init__(game, type, keys.decoration, pos, size)
+    def __init__(self, game, type, pos, size, destructable = False, health = 0,
+                destruction_sound = None, destruction_clatter = 500,
+                animation = 0, max_animation = 0, animation_cooldown_max = 0,
+                link_to_other = False) -> None:
+        super().__init__(game, type, keys.decoration, pos, size,
+                        max_animation=max_animation,
+                        animation_cooldown_max=animation_cooldown_max)
+
         self.game.tilemap.Add_Entity_To_Tile(self.tile, self)
         self.light_level = 10
         self.destructable = destructable
@@ -17,39 +20,24 @@ class Decoration(PhysicsEntity):
         self.empty = False
         self.destruction_sound = destruction_sound
         self.destruction_clatter_range = destruction_clatter
+        self.animation_handler.Set_Frame(animation)
+        self.link_to_other = link_to_other
         self.Set_Sprite()
 
 
     def Save_Data(self):
         super().Save_Data()
-        self.saved_data['animation'] = self.animation
         self.saved_data['empty'] = self.empty
 
     def Load_Data(self, data):
-        self.Set_Animation(data['animation'])
         self.empty = data['empty']
         return super().Load_Data(data)
 
-    def Update_Animation(self, delta_time):
-        pass
 
     def Open(self, generate_clatter = False):
         pass
 
-    def Set_Animation(self, animation_state):
-        self.animation = animation_state
-        self.Set_Entity_Image()
     
-    # Setting the initial sprite type from assets, only called during initial setup
-    def Set_Sprite(self):
-        self.sprite = self.game.assets[self.type]
-        self.Set_Entity_Image()
-
-    # Setting the item image and scaling it
-    def Set_Entity_Image(self):
-        self.entity_image = self.sprite[self.animation].convert_alpha()
-        # self.entity_image = pygame.transform.scale(entity_image, self.size)
-
     def Damage_Taken(self, damage, effect):
         if not self.health:
             return
@@ -75,22 +63,6 @@ class Decoration(PhysicsEntity):
     def Spawn_Reward(self, item):
         pass
 
-    def Render(self, surf, offset = (0,0)):
-        if not self.Update_Light_Level():
-            return
+    def Check_Item_Collision(self, item):
+        pass
 
-        
-        self.Update_Dark_Surface()
-
-        if not self.rendered_image:
-            self.render_needs_update = True
-            self.Update_Dark_Surface()
-            if not self.rendered_image:
-                self.Set_Sprite()
-                self.rendered_image = self.entity_image
-                print("Failed to update dark surface decoration", vars(self))
-                return
-        
-        # Render the chest
-        surf.blit(self.rendered_image, (self.pos[0] - offset[0], self.pos[1] - offset[1]))
-    

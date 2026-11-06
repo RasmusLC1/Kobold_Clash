@@ -18,10 +18,10 @@ class Loot_Types_Handler():
             return None
         
         try:
-            loot = loot_class(self.game, type, pos, amount, value)
+            loot = loot_class(self.game, type, pos, amount, value) # Amount doubles as effect power
             self.game.item_handler.Add_Item(loot)
         except Exception as e:
-            print(f"Failed to spawn loot{e}", type, pos, amount, value, loot_class)
+            print(f"Failed to spawn loot {e}", type, pos, amount, value)
             return
 
         return loot

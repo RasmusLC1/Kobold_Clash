@@ -4,7 +4,7 @@ from scripts.engine.keys.keys import keys
 
 class Spawn_Enemy():
     @staticmethod
-    def Enemy_Spawner(map, tile_size, size_x, size_y, A_Star_Search, offgrid_tiles):
+    def Enemy_Spawner(map, tile_size, size_x, size_y, Pathfinding_Search, offgrid_tiles):
         spawners = 0
         fails = 0
         path = []
@@ -15,7 +15,7 @@ class Spawn_Enemy():
             spawner_y = random.randint(1, size_y - 2)
             if map[spawner_x][spawner_y] == WALL:
                 continue
-            path = A_Star_Search(spawner_x, spawner_y)
+            path = Pathfinding_Search(spawner_x, spawner_y)
             
             if path:
                 offgrid_tiles.append({keys.type: keys.spawners, keys.variant: 1, keys.pos: (spawner_x * tile_size, spawner_y * tile_size)})

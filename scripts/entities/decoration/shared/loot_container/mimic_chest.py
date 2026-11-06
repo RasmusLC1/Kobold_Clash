@@ -1,8 +1,10 @@
 from scripts.entities.decoration.shared.loot_container.chest import Chest
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.shared.shared_registry import Register_Decoration
 import random
 
 
+@Register_Decoration(keys.mimic_chest)
 class Mimic_Chest(Chest):
 
     def Drop_Loot(self):
@@ -15,7 +17,7 @@ class Mimic_Chest(Chest):
         self.game.player.Set_Effect(keys.slow, 4)
 
 
-    def Set_Loot_Types(self):
+    def Get_Loot_Types(self):
         self.loot_weights = {}
         
         self.enemies = {

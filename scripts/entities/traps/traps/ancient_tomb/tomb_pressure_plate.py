@@ -1,5 +1,6 @@
 from scripts.entities.traps.trap import Trap
 from scripts.engine.keys.keys import keys
+from .ancient_tomb_registry import register_trap
 
 import random
 
@@ -9,6 +10,7 @@ TILESIZE = 32
 NEIGHBOR_OFFSETS = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 0), (-1, 1), (0, 1), (1, 1)]
 
 
+@register_trap(keys.tomb_pressure_plate, 0.5)
 class Tomb_Pressure_Plate(Trap):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.pressure_plate)

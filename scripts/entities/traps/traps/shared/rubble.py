@@ -1,10 +1,10 @@
 from scripts.entities.traps.trap import Trap
 from scripts.engine.keys.keys import keys
-
+from .shared_registry import register_trap
 import random
 
 CLATTER_RANGE = 500
-
+@register_trap(keys.rubble, 1)
 class Rubble(Trap):
     def __init__(self, game, pos):
         super().__init__(game, pos, keys.rubble)
@@ -15,10 +15,5 @@ class Rubble(Trap):
         if entity.type != keys.player:
             return
         
-
         self.Generate_Sound(keys.rubble, 0.4, CLATTER_RANGE)
 
-        self.game.sound_handler.Play_Sound(keys.rubble, 0.4)
-        self.game.clatter.Generate_Clatter(self.pos, CLATTER_RANGE) # Generate clatter to alert nearby enemies
-
-            

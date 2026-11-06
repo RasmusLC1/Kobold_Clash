@@ -1,9 +1,11 @@
 from scripts.entities.decoration.shared.loot_container.loot_container import Loot_Container
 from scripts.engine.keys.keys import keys
+from scripts.entities.decoration.ancient_tomb.ancient_tomb_registry import Register_Decoration
 import random
 
 key_empty = 'empty'
 
+@Register_Decoration(keys.bookshelf)
 class Bookshelf(Loot_Container):
     def __init__(self, game, pos) -> None:
         self.enemies = {}
@@ -11,7 +13,7 @@ class Bookshelf(Loot_Container):
         self.tile.Set_Physics(True) # Bookshelf is impassible
 
 
-    def Set_Loot_Types(self):
+    def Get_Loot_Types(self):
         self.loot_weights = {keys.recipe_scroll : 0.1,
                              keys.temptress_embrace: 0.1,
                              keys.demonic_bargain: 0.1,
@@ -40,28 +42,16 @@ class Bookshelf(Loot_Container):
 
 
     def Select_Available_Rune(self):
-        # Get the rune object using the random key
         runes = self.Adjust_Rune_Weight()
+        if not runes:
+            return False  # every rune is already active; nothing to spawn
 
-        counter = 0
-        rune_handler = self.game.item_handler.rune_handler
-        rune_type = None
-        rune_active = False
-        while not rune_active:
-            rune_type = random.choices(
-                    population=list(runes.keys()),
-                    weights=list(runes.values()),
-                    k=1
-                )[0]
-            counter += 1
-            rune_active = rune_handler.Check_If_Rune_Is_Active(rune_type)
-            if counter >= 20 or not rune_active:
-                break
+        rune_type = random.choices(
+            population=list(runes.keys()),
+            weights=list(runes.values()),
+            k=1
+        )[0]
 
-        if not rune_type:
-            print("UNIQUE RUNE NOT FOUND BOOKSHELF")
-            return self.Select_Available_Rune(keys.recipe_scroll, self.Get_Pos())
-        
         self.Spawn_Rune(rune_type)
         return True
 
@@ -123,6 +113,8 @@ class Bookshelf(Loot_Container):
                 if damage_rune in runes:
                     runes[damage_rune] += 0.1
 
+        rune_handler = self.game.item_handler.rune_handler
+        runes = {r: w for r, w in runes.items() if not rune_handler.Check_If_Rune_Is_Active(r)}
         return runes
         
     

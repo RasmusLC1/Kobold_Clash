@@ -1,7 +1,6 @@
 from scripts.entities.items.runes.rune import Rune
 import math
 import pygame
-from scripts.engine.keys.keys import keys
 
 class Projectile_Rune(Rune):
     def __init__(self, game, type, pos, power, soul_cost, animation_time_max = 0.4, animation_size_max = 0):
@@ -30,7 +29,7 @@ class Projectile_Rune(Rune):
         return
 
     def Handle_Shooting(self):
-        if not self.game.mouse.left_click or self.activate_cooldown:
+        if not self.game.mouse.left_click or self.activate_cooldown_handler.value:
             self.Reset_Charge()
 
             return
@@ -40,7 +39,7 @@ class Projectile_Rune(Rune):
             if self.game.player.Get_Total_Available_Souls() < self.soul_cost:
                 return
             self.Set_Charge()
-            self.Set_Activate_Cooldown(self.activate_cooldown_max )
+            self.Set_Activate_Cooldown()
             self.Compute_Souls_Cost()
             self.clicked = False
         

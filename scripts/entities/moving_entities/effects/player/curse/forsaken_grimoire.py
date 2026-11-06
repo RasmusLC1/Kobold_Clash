@@ -1,6 +1,8 @@
 from scripts.entities.moving_entities.effects.effect import Effect
 from scripts.engine.keys.keys import keys
+from ..player_registry import register_effect
 
+@register_effect(keys.forsaken_grimoire)
 # Improves runes but reduces strength
 class Forsaken_Grimoire(Effect):
     def __init__(self, entity):

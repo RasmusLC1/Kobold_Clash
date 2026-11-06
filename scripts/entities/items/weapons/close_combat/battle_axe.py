@@ -5,7 +5,8 @@ from scripts.engine.keys.keys import keys
 
 class Battle_Axe(Weapon):
     def __init__(self, game, pos):
-        super().__init__(game, pos, keys.battle_axe, 5, 2, 3, 70, 'two_handed_melee', attack_types = [keys.two_hand])
+        super().__init__(game, pos, keys.battle_axe, 5, 2, 3, 70,
+                         'two_handed_melee', attack_types = [keys.two_hand])
         self.special_attack_effect_animation_max = 8
         self.spin_index = 0
         self.spin_countdown = 0

@@ -12,7 +12,11 @@ import random
 from scripts.engine.keys.keys import keys
 
 class Weapon(Item):
-    def __init__(self, game, pos, type, damage, speed, range, max_charge_time, weapon_class, effect = 'slash', attack_types = ['cut'], size = (16, 16), add_to_tile = True, max_animation = 0, amount = 1, max_amount = 1, durability = 100, max_durability = 100):
+    def __init__(self, game, pos, type, damage, speed, range, max_charge_time,
+                 weapon_class, effect = 'slash', attack_types = ['cut'],
+                 size = (16, 16), add_to_tile = True, max_animation = 0,
+                 amount = 1, max_amount = 1, durability = 100, max_durability = 100,
+                 animation_cooldown_max = 0):
         self.speed = speed # Speed of the weapon
         self.range = range # Range of the weapon
         self.damage = damage
@@ -41,7 +45,7 @@ class Weapon(Item):
         self.weapon_cooldown = 0
         self.weapon_cooldown_max = 50 # How fast the weapon can attack
 
-        self.delete_timer = 0 # time before weapon is deleted
+        self.delete_countdown = 0 # time before weapon is deleted
 
         self.Set_Inventory_Image(game, type)
 
@@ -50,7 +54,11 @@ class Weapon(Item):
         self.charge_effect_handler = Charge_Effect_Weapon(game, self)
         self.attack_effect_handler = Attack_Effect_Weapon(game, self)
         self.gem_handler = Gem_Handler(self)
-        super().__init__(game, type, keys.weapon, pos, size, amount=amount, max_amount=max_amount, add_to_tile=add_to_tile, max_animation = max_animation, durability=durability, max_durability=max_durability)
+        super().__init__(game, type, keys.weapon, pos, size, amount=amount,
+                         max_amount=max_amount, add_to_tile=add_to_tile,
+                         max_animation = max_animation, durability=durability,
+                         max_durability=max_durability,
+                         animation_cooldown_max=animation_cooldown_max)
 
     def Save_Data(self):
         # if self.entity:

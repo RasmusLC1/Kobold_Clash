@@ -7,6 +7,8 @@ from .tile_entity_handler import Tile_Entity_Handler
 import math
 
 TILE_SIZE = 32
+HITBOX_COLOUR = (255, 0, 0)
+LARGE_FOOTPRINT_OFFSETS = [(1, 1), (0, 1), (-1, 1)]
 
 class Tile:
     # REMOVED: 'light_level', 'max_light', 'distance_to_player', 'entities'
@@ -119,8 +121,19 @@ class Tile:
     def Set_Light_ID(self, light_id):
         self.lighting.light_ID = light_id
 
-    def Set_Contains_Decoration(self, state):
+    # Tiles are set in top right, leaving other 3 tiles for large decorations not covered
+    def Get_Large_Footprint_Tiles(self):
+        x, y = self.pos
+        wanted = {(x + dx, y + dy) for dx, dy in LARGE_FOOTPRINT_OFFSETS}
+        return [tile for tile in self.neighbor_tiles if tuple(tile.pos) in wanted]
+
+    def Set_Contains_Decoration(self, state, is_large=False):
         self.contains_decoration = state
+        if not is_large:
+            return
+
+        for tile in self.Get_Large_Footprint_Tiles():
+            tile.Set_Contains_Decoration(state)
 
     def Add_To_Minimap(self):
         if self.minimap:
@@ -129,6 +142,7 @@ class Tile:
         return True
 
 # --- Core Mechanics API ---
+    # Floor tiles do not have physics
     def Set_Physics(self, state):
         self.physics = state
         self.hitbox = pygame.Rect(self.scaled_pos[0], self.scaled_pos[1], TILE_SIZE, TILE_SIZE) if state else None
@@ -180,3 +194,19 @@ class Tile:
         
         self.needs_redraw = True
         self.renderer.Set_Sprite()
+
+
+# Debug
+###################
+    def Render_Debug(self, surf, offset=(0, 0)):
+        self.Render_Hitbox(surf, offset)
+        for tile in self.neighbor_tiles:
+            if tile.contains_decoration:
+                tile.Render_Hitbox(surf, offset)
+
+
+    def Render_Hitbox(self, surf, offset):
+        rect = pygame.Rect(self.scaled_pos[0] - offset[0],
+                        self.scaled_pos[1] - offset[1],
+                        TILE_SIZE, TILE_SIZE)
+        pygame.draw.rect(surf, HITBOX_COLOUR, rect, 1)

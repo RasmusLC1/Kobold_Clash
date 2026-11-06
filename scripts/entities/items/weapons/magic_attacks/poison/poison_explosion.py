@@ -16,7 +16,7 @@ class Poison_Explosion(Elemental_Explosion):
         for entity in self.nearby_entities:
             entity.effects.Set_Effect(self.effect, 1)
 
-    def Update_Animation(self, delta_time = 0):
+    def Update_Animation(self, delta_time = 0, movement = (0,0)):
         self.Poison_Entities()
 
-        return super().Update_Animation(delta_time)
+        return super().Update_Animation(delta_time, movement)

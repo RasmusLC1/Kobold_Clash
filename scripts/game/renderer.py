@@ -19,10 +19,10 @@ class Renderer():
         self.game.tilemap.Render_Tiles(self.game.ray_caster.tiles, surf, offset=render_scroll)
 
 
-        self.game.particle_handler.Particle_Render(surf, render_scroll)
         self.game.entities_render.Render(surf, render_scroll)
         self.game.item_handler.rune_handler.Render_Animation(surf, render_scroll)
         self.game.noise_handler.Render(surf, render_scroll)
+        self.game.particle_handler.Particle_Render(surf, render_scroll)
 
         
 
